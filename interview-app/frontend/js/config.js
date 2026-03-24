@@ -1,7 +1,7 @@
 
 const CONFIG = {
   // Backend API base URL (no trailing slash)
-  API_BASE_URL: "https://interview-prep-q3b8.onrender.com/",
+  API_BASE_URL: "https://interview-prep-q3b8.onrender.com",
 
   // Supabase project credentials (public / anon key — safe for frontend)
   SUPABASE_URL: "https://armfnjzilchguppytyvm.supabase.co",
