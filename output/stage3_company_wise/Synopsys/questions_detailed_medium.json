@@ -1,0 +1,479 @@
+[
+  {
+    "company": "Synopsys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/operations-on-binary-min-heap/1",
+      "problem_name": "Binary Heap Operations",
+      "slug": "operations-on-binary-min-heap",
+      "difficulty": "Medium",
+      "accuracy": "22.3%",
+      "marks": 4,
+      "all_submissions": 113206,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "Q = &!//!&Queries[] = ",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Ola Cabs",
+          "Walmart",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "Heap",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Heap",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Ola Cabs",
+        "Walmart",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/binary-heap/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-265-on-campus-internship/"
+      ],
+      "statement_text": "A binary heap is a Binary Tree with the following properties:\n1) Its a complete tree (All levels are completely filled except possibly the last level and the last level has all keys as left as possible). This property of Binary Heap makes them suitable to be stored in an array.\n\n2) A Binary Heap is either Min Heap or Max Heap. In a Min Binary Heap, the key at the root must be minimum among all keys present in Binary Heap. The same property must be recursively true for all nodes in Binary Tree. Max Binary Heap is similar to MinHeap.\n\nYou are given an empty Binary Min Heap and some queries and your task is to implement the three methods insertKey,  deleteKey,  and extractMin on the Binary Min Heap and call them as per the query given below:\n1) 1  x  (a query of this type means to insert an element in the min-heap with value x )\n2) 2  x  (a query of this type means to remove an element at position x from the min-heap)\n3) 3  (a query like this removes the min element from the min-heap and prints it ).\n\nExamples :\n\nInput:\nQ = 7\nQueries:\ninsertKey(4)\ninsertKey(2)\nextractMin()\ninsertKey(6)\ndeleteKey(0)\nextractMin()\nextractMin()\nOutput: [2, 6, -1]\nExplanation: In the first test case for\nquery\ninsertKey(4) the heap will have  {4}\ninsertKey(2) the heap will be {2 4}\nextractMin() removes min element from\n             heap ie 2 and prints it\n             now heap is {4}\ninsertKey(6) inserts 6 to heap now heap\n             is {4 6}\ndeleteKey(0) delete element at position 0\n             of the heap,now heap is {6}\nextractMin() remove min element from heap\n             ie 6 and prints it  now the\n             heap is empty\nextractMin() since the heap is empty thus\n             no min element exist so -1\n             is printed.\n\nInput:\nQ = 5\nQueries:\ninsertKey(8)\ninsertKey(9)\ndeleteKey(1)\nextractMin()\nextractMin()\nOutput: [8, -1]\n\nConstraints:\n1 <= Q <= 104\n1 <= x <= 104",
+      "full_text": "A binary heap is a Binary Tree with the following properties:\n1) Its a complete tree (All levels are completely filled except possibly the last level and the last level has all keys as left as possible). This property of Binary Heap makes them suitable to be stored in an array.\n\n2) A Binary Heap is either Min Heap or Max Heap. In a Min Binary Heap, the key at the root must be minimum among all keys present in Binary Heap. The same property must be recursively true for all nodes in Binary Tree. Max Binary Heap is similar to MinHeap.\n\nYou are given an empty Binary Min Heap and some queries and your task is to implement the three methods insertKey,  deleteKey,  and extractMin on the Binary Min Heap and call them as per the query given below:\n1) 1  x  (a query of this type means to insert an element in the min-heap with value x )\n2) 2  x  (a query of this type means to remove an element at position x from the min-heap)\n3) 3  (a query like this removes the min element from the min-heap and prints it ).\n\nExamples :\n\nInput:\nQ = 7\nQueries:\ninsertKey(4)\ninsertKey(2)\nextractMin()\ninsertKey(6)\ndeleteKey(0)\nextractMin()\nextractMin()\nOutput: [2, 6, -1]\nExplanation: In the first test case for\nquery\ninsertKey(4) the heap will have  {4}\ninsertKey(2) the heap will be {2 4}\nextractMin() removes min element from\n             heap ie 2 and prints it\n             now heap is {4}\ninsertKey(6) inserts 6 to heap now heap\n             is {4 6}\ndeleteKey(0) delete element at position 0\n             of the heap,now heap is {6}\nextractMin() remove min element from heap\n             ie 6 and prints it  now the\n             heap is empty\nextractMin() since the heap is empty thus\n             no min element exist so -1\n             is printed.\n\nInput:\nQ = 5\nQueries:\ninsertKey(8)\ninsertKey(9)\ndeleteKey(1)\nextractMin()\nextractMin()\nOutput: [8, -1]\n\nConstraints:\n1 <= Q <= 104\n1 <= x <= 104",
+      "examples": [
+        "Input:\nQ = 7\nQueries:\ninsertKey(4)\ninsertKey(2)\nextractMin()\ninsertKey(6)\ndeleteKey(0)\nextractMin()\nextractMin()\nOutput:\n[2, 6, -1]\nExplanation:\nIn the first test case for\nquery\ninsertKey(4) the heap will have  {4}\ninsertKey(2) the heap will be {2 4}\nextractMin() removes min element from\nheap ie 2 and prints it\nnow heap is {4}\ninsertKey(6) inserts 6 to heap now heap\nis {4 6}\ndeleteKey(0) delete element at position 0\nof the heap,now heap is {6}\nextractMin() remove min element from heap\nie 6 and prints it  now the\nheap is empty\nextractMin() since the heap is empty thus\nno min element exist so -1\nis printed.",
+        "Input:\nQ = 5\nQueries:\ninsertKey(8)\ninsertKey(9)\ndeleteKey(1)\nextractMin()\nextractMin()\nOutput:\n[8, -1]"
+      ],
+      "constraints_text": "Constraints:\n1 <=\nQ\n<= 10\n4\n1 <=\nx\n<= 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">A <strong>binary heap</strong> is a Binary Tree with the following properties:<br /><strong>1)</strong> Its a <em>complete tree</em><strong> </strong>(All levels are completely filled except possibly the last level and the last level has all keys as left as possible). This property of Binary Heap makes them suitable to be stored in an array.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>2)</strong> A Binary Heap is either <strong>Min Heap</strong> or <strong>Max Heap</strong>. In a <em>Min Binary Heap</em>, the key at the&nbsp;<em>root</em> must be <em>minimum</em><strong> </strong>among all keys present in Binary Heap. The same property must be recursively true for all nodes in Binary Tree. Max Binary Heap is similar to MinHeap.</span></p>\n<p><span style=\"font-size: 18px;\">You are given an empty Binary Min Heap and some queries and your task is to implement the three methods <strong>insertKey, &nbsp;deleteKey, </strong>&nbsp;and&nbsp;<strong>extractMin </strong>on&nbsp;the Binary Min Heap and call them as per the query given below:<br /><strong>1) </strong><em>1 &nbsp;x</em> &nbsp;(a query of this type means to insert an element in the min-heap with value x&nbsp;)<br /><strong>2)</strong> <em>2 &nbsp;x</em> &nbsp;(a query of this type means to remove an element at position x from the min-heap)<br /><strong>3)</strong><strong> </strong><em>3</em> &nbsp;(a query like this removes&nbsp;the min element from the min-heap and prints it&nbsp;).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong></span><span style=\"font-size: 18px;\">Q = 7\nQueries:\ninsertKey(4)\ninsertKey(2)\nextractMin()\ninsertKey(6)\ndeleteKey(0)\nextractMin()\nextractMin()\n<strong>Output: </strong>[2, 6, -1]<strong>\nExplanation: </strong>In the first test case for\nquery&nbsp;\ninsertKey(4) the heap will have &nbsp;{4}&nbsp;&nbsp;\ninsertKey(2) the heap will be {2 4}\nextractMin()&nbsp;removes min element from \n&nbsp;            heap ie 2 and prints it\n&nbsp;            now heap is {4}&nbsp;\ninsertKey(6)&nbsp;inserts 6 to heap now heap\n&nbsp;            is {4 6}\ndeleteKey(0)&nbsp;delete element at position 0\n             of the heap,now heap is {6}\nextractMin() remove min element from heap\n             ie 6 and prints it&nbsp;&nbsp;now the\n&nbsp;            heap is empty\nextractMin() since the heap is empty thus\n             no min element exist so -1\n&nbsp;            is printed.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>Q = 5\nQueries:\ninsertKey(8)\ninsertKey(9)\ndeleteKey(1)\nextractMin()\nextractMin()\n<strong>Output: </strong>[8, -1]</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= <strong>Q</strong> &lt;= 10<sup>4</sup><br />1 &lt;= <strong>x</strong> &lt;= 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2232
+  },
+  {
+    "company": "Synopsys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/clone-a-binary-tree/1",
+      "problem_name": "Clone a Binary Tree",
+      "slug": "clone-a-binary-tree",
+      "difficulty": "Medium",
+      "accuracy": "67.71%",
+      "marks": 4,
+      "all_submissions": 21558,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&query = ",
+        "datatype": "INTEGER&!//!&STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/clone-binary-tree-random-pointers/"
+      ],
+      "interview_links": [],
+      "statement_text": "A special binary tree with random pointers along with the usual left and right pointers is given. Clone the given tree.\n\nNote: The output is 1 if the tree is cloned successfully. Otherwise, the output is 0.\n\nExamples:\n\nInput:\n\nOutput: 1\nExplanation: The tree was cloned successfully.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "full_text": "A special binary tree with random pointers along with the usual left and right pointers is given. Clone the given tree.\n\nNote: The output is 1 if the tree is cloned successfully. Otherwise, the output is 0.\n\nExamples:\n\nInput:\n\nOutput: 1\nExplanation: The tree was cloned successfully.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nOutput:\n1\nExplanation:\nThe tree was cloned successfully."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">A special binary tree with random pointers along with the usual left and right pointers is given. Clone the given tree.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong>&nbsp;The output is <strong>1</strong> if the tree is cloned successfully. Otherwise, the output is <strong>0</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong></span><img src=\"https://media.geeksforgeeks.org/wp-content/uploads/20241029105236980132/clone-a-binary-tree-with-random-pointers.webp\" alt=\"clone-a-binary-tree-with-random-pointers\" width=\"298\" height=\"265\" />\n<span style=\"font-size: 18px;\"><strong>Output: </strong>1\n<strong>Explanation: </strong>The tree was cloned successfully.</span></pre>\n<p><span style=\"font-size: 18px;\"><br /></span><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>5</sup><br />1 &le; node-&gt;data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2233
+  },
+  {
+    "company": "Synopsys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/number-of-coins1824/1",
+      "problem_name": "Coin Change (Minimum Coins)",
+      "slug": "number-of-coins1824",
+      "difficulty": "Medium",
+      "accuracy": "26.74%",
+      "marks": 4,
+      "all_submissions": 275582,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "sum =&!//!&coins[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "Oracle",
+          "Visa",
+          "Google",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "Oracle",
+        "Visa",
+        "Google",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-minimum-number-of-coins-that-make-a-change/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-6-on-campus/"
+      ],
+      "statement_text": "You are given an array\ncoins[]\n, where each element represents a coin of a\ndifferent\ndenomination, and a target value\nsum\n.\nYou have an\nunlimited\nsupply of each coin type {coins1, coins2, ..., coinsm}.\nYour task is to determine the\nminimum\nnumber of coins needed to obtain the target\nsum\n. If it is not possible to form the sum using the given coins, return\n-1\n.",
+      "full_text": "You are given an array\ncoins[]\n, where each element represents a coin of a\ndifferent\ndenomination, and a target value\nsum\n.\nYou have an\nunlimited\nsupply of each coin type {coins1, coins2, ..., coinsm}.\nYour task is to determine the\nminimum\nnumber of coins needed to obtain the target\nsum\n. If it is not possible to form the sum using the given coins, return\n-1\n.\nExamples:\nInput:\ncoins[] = [25, 10, 5], sum = 30\nOutput:\n2\nExplanation:\nMinimum 2 coins needed, 25 and 5\nInput:\ncoins[] = [9, 6, 5, 1], sum = 19\nOutput:\n3\nExplanation:\n19 = 9 + 9 + 1\nInput:\ncoins[] = [5, 1], sum = 0\nOutput:\n0\nExplanation:\nFor 0 sum, we do not need a coin\nInput:\ncoins[] = [4, 6, 2], sum = 5\nOutput:\n-1\nExplanation:\nNot possible to make the given sum.\nConstraints:\n1 ≤ sum * coins.size() ≤ 10\n6\n0 <= sum <= 10\n4\n1 <= coins[i] <= 10\n4\n1 <= coins.size() <= 10\n3",
+      "examples": [
+        "Input:\ncoins[] = [25, 10, 5], sum = 30\nOutput:\n2\nExplanation:\nMinimum 2 coins needed, 25 and 5",
+        "Input:\ncoins[] = [9, 6, 5, 1], sum = 19\nOutput:\n3\nExplanation:\n19 = 9 + 9 + 1",
+        "Input:\ncoins[] = [5, 1], sum = 0\nOutput:\n0\nExplanation:\nFor 0 sum, we do not need a coin",
+        "Input:\ncoins[] = [4, 6, 2], sum = 5\nOutput:\n-1\nExplanation:\nNot possible to make the given sum."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ sum * coins.size() ≤ 10\n6\n0 <= sum <= 10\n4\n1 <= coins[i] <= 10\n4\n1 <= coins.size() <= 10\n3",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">You are given an array <strong>coins[]</strong>, where each element represents a coin of a <strong>different</strong> denomination, and a target value <strong>sum</strong>. </span><span style=\"font-size: 18.6667px;\">You have an <strong>unlimited</strong> supply of each coin type {coins1, coins2, ..., coinsm}. </span></p>\n<p><span style=\"font-size: 18.6667px;\">Your task is to determine the <strong>minimum</strong> number of coins needed to obtain the target <strong>sum</strong>. If it is not possible to form the sum using the given coins, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre dir=\"ltr\" style=\"color: #222222; font-family: Arial, Helvetica, sans-serif; font-size: small; white-space: normal; background-color: #ffffff;\"><span style=\"font-size: 14pt;\"><strong>Input:</strong>&nbsp;coins[] = [25, 10, 5], sum = 30</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong>&nbsp;2</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong>&nbsp;Minimum 2 coins needed, 25 and 5 &nbsp;</span></pre>\n<pre dir=\"ltr\" style=\"color: #222222; font-family: Arial, Helvetica, sans-serif; font-size: small; white-space: normal; background-color: #ffffff;\"><span style=\"font-size: 14pt;\"><strong>Input:</strong>&nbsp;coins[] = [9, 6, 5, 1], sum = 19</span><br /><span style=\"font-size: 14pt;\"><strong>Output:&nbsp;</strong>3</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong>&nbsp;19 = 9 + 9 + 1</span></pre>\n<pre dir=\"ltr\" style=\"color: #222222; font-family: Arial, Helvetica, sans-serif; font-size: small; white-space: normal; background-color: #ffffff;\"><span style=\"font-size: 14pt;\"><strong>Input:</strong>&nbsp;coins[] = [5, 1], sum = 0</span><br /><span style=\"font-size: 14pt;\"><strong>Output:&nbsp;</strong>0</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong>&nbsp;For 0 sum, we do not need a coin</span></pre>\n<pre dir=\"ltr\" style=\"color: #222222; font-family: Arial, Helvetica, sans-serif; font-size: small; white-space: normal; background-color: #ffffff;\"><span style=\"font-size: 14pt;\"><strong>Input:</strong>&nbsp;coins[] = [4, 6, 2], sum = 5</span><br /><span style=\"font-size: 14pt;\"><strong>Output:&nbsp;</strong>-1</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong>&nbsp;Not possible to make the given sum.</span></pre>\n<div>&nbsp;</div>\n<div><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; sum * coins.size() &le; 10<sup>6</sup></span></div>\n<div><span style=\"font-size: 14pt;\">0 &lt;= sum &lt;= 10<sup>4</sup></span></div>\n<div><span style=\"font-size: 14pt;\">1 &lt;= coins[i] &lt;= 10<sup>4</sup></span></div>\n<div><span style=\"font-size: 14pt;\">1 &lt;= coins.size() &lt;= 10<sup>3</sup></span></div>"
+    },
+    "qnum": 2234
+  },
+  {
+    "company": "Synopsys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/length-of-the-longest-substring3036/1",
+      "problem_name": "Length of the longest substring",
+      "slug": "length-of-the-longest-substring3036",
+      "difficulty": "Medium",
+      "accuracy": "27.88%",
+      "marks": 4,
+      "all_submissions": 134030,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Google",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "sliding-window",
+          "Strings",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "sliding-window",
+        "Strings",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Google",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/length-of-the-longest-substring-without-repeating-characters/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-389-campus-full-time/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-on-campus-for-sde-1-4/"
+      ],
+      "statement_text": "Given a string s, find the length of the longest substring without repeating characters.\n\nExamples:\n\nInput: s = \"geeksforgeeks\"\nOutput: 7\nExplanation: Longest substring is \"eksforg\".\n\nInput: s = \"abdefgabef\"\nOutput: 6\nExplanation: Longest substring are \"abdefg\" , \"bdefga\" and \"defgab\".\n\nInput: s = \"aaaaa\"\nOutput: 1\nExplanation: Longest substring is \"a\".\n\nConstraints:\n1 ≤ s.size() ≤ 105\n\nIt is guaranteed that all characters of the String s will be lowercase letters from 'a' to 'z'",
+      "full_text": "Given a string s, find the length of the longest substring without repeating characters.\n\nExamples:\n\nInput: s = \"geeksforgeeks\"\nOutput: 7\nExplanation: Longest substring is \"eksforg\".\n\nInput: s = \"abdefgabef\"\nOutput: 6\nExplanation: Longest substring are \"abdefg\" , \"bdefga\" and \"defgab\".\n\nInput: s = \"aaaaa\"\nOutput: 1\nExplanation: Longest substring is \"a\".\n\nConstraints:\n1 ≤ s.size() ≤ 105\n\nIt is guaranteed that all characters of the String s will be lowercase letters from 'a' to 'z'",
+      "examples": [
+        "Input:\ns = \"geeksforgeeks\"\nOutput:\n7\nExplanation:\nLongest substring is \"eksforg\".",
+        "Input:\ns = \"abdefgabef\"\nOutput:\n6\nExplanation:\nLongest substring are \"abdefg\" , \"bdefga\" and \"defgab\".",
+        "Input:\ns = \"aaaaa\"\nOutput:\n1\nExplanation:\nLongest substring is \"a\"."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n5\nIt is guaranteed that all characters of the String s will be lowercase letters from\n'a'\nto\n'z'",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string <strong>s</strong>, find the length of the longest substring without repeating characters. <br /><br /><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"geeksforgeeks\"<strong>\nOutput: </strong>7\n<strong>Explanation: </strong>Longest substring is \"eksforg\".</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"abdefgabef\"\n<strong>Output: </strong>6\n<strong>Explanation: </strong>Longest substring are \"abdefg\" , \"bdefga\" and \"defgab\".</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"aaaaa\"<strong>\nOutput: </strong>1\n<strong>Explanation: </strong>Longest substring is \"a\".</span></pre>\n<div><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.size() &le; 10<sup>5</sup></span></div>\n<div><span style=\"font-size: 14pt;\">It is guaranteed that all characters of the String s will be lowercase letters from <strong>'a'</strong> to <strong>'z'</strong></span></div>"
+    },
+    "qnum": 2235
+  },
+  {
+    "company": "Synopsys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lowest-common-ancestor-in-a-bst/1",
+      "problem_name": "Lowest Common Ancestor in a BST",
+      "slug": "lowest-common-ancestor-in-a-bst",
+      "difficulty": "Medium",
+      "accuracy": "65.2%",
+      "marks": 4,
+      "all_submissions": 185614,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root =&!//!&n1->data =&!//!&n2->data =",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "MAQ Software",
+          "Synopsys",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "MAQ Software",
+        "Synopsys",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/lowest-common-ancestor-in-a-binary-search-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-rd-institute-noidasrin-internship-interview-experience/"
+      ],
+      "statement_text": "Given the root of a Binary Search Tree (with all values unique) and two nodes n1 and n2 (n1 != n2). You may assume that both nodes exist in the tree. Find the Lowest Common Ancestor (LCA) of the given two nodes in the BST.\n\nNote: LCA between two nodes n1 and n2 is defined as the deepest node that has both n1 and n2 as descendants (where we allow a node to be a descendant of itself).\n\nExamples:\n\nInput: root = [5, 4, 6, 3, N, N, 7, N, N, N, 8], n1->data = 7, n2->data = 8\n\nOutput: 7\nExplanation: 7 is the lowest node that has both 7 and 8 as descendants.\n\nInput: root = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], n1->data = 8, n2->data = 14\n\nOutput: 8\nExplanation: 8 is the lowest node that has both 8 and 14 as descendants.\n\nInput: root = [2, 1, 3], n1->data = 1, n2->data = 3\n\nOutput: 2\nExplanation: 2 is the lowest node that has both 1 and 3 as descendants.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105\n1 ≤ n1->data, n2->data ≤ 105",
+      "full_text": "Given the root of a Binary Search Tree (with all values unique) and two nodes n1 and n2 (n1 != n2). You may assume that both nodes exist in the tree. Find the Lowest Common Ancestor (LCA) of the given two nodes in the BST.\n\nNote: LCA between two nodes n1 and n2 is defined as the deepest node that has both n1 and n2 as descendants (where we allow a node to be a descendant of itself).\n\nExamples:\n\nInput: root = [5, 4, 6, 3, N, N, 7, N, N, N, 8], n1->data = 7, n2->data = 8\n\nOutput: 7\nExplanation: 7 is the lowest node that has both 7 and 8 as descendants.\n\nInput: root = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], n1->data = 8, n2->data = 14\n\nOutput: 8\nExplanation: 8 is the lowest node that has both 8 and 14 as descendants.\n\nInput: root = [2, 1, 3], n1->data = 1, n2->data = 3\n\nOutput: 2\nExplanation: 2 is the lowest node that has both 1 and 3 as descendants.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105\n1 ≤ n1->data, n2->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [5, 4, 6, 3, N, N, 7, N, N, N, 8], n1->data = 7, n2->data = 8\nOutput:\n7\nExplanation:\n7 is the lowest node that has both 7 and 8 as descendants.",
+        "Input:\nroot = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], n1->data = 8, n2->data = 14\nOutput:\n8\nExplanation:\n8\nis the lowest node that has both 8 and 14 as descendants.",
+        "Input:\nroot = [2, 1, 3], n1->data = 1, n2->data = 3\nOutput:\n2\nExplanation:\n2\nis the lowest node that has both 1 and 3 as descendants."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n5\n1 ≤ n1->data, n2->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root</strong> of a Binary Search Tree (with all values unique) and two nodes <strong>n1 </strong>and <strong>n2 </strong>(n1 != n2). </span><span style=\"font-size: 18px;\">You may assume that both nodes exist in the tree. Find the </span><strong style=\"font-size: 18px;\">Lowest Common Ancestor (LCA)</strong><span style=\"font-size: 18px;\"> of the given two nodes in the BST.</span></p>\n<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\"><strong>Note: </strong>LCA between two nodes <strong>n1 </strong>and <strong>n2 </strong>is defined as the deepest node that has both n1 and n2 as descendants (where we allow a node to be a descendant of itself).</span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [5, 4, 6, 3, N, N, 7, N, N, N, 8], n1-&gt;data = 7, n2-&gt;data = 8\n      <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700236/Web/Other/blobid0_1738413634.png\" alt=\"\" width=\"301\" height=\"263\" />\n<strong>Output: </strong>7<br /><strong>Explanation:</strong> 7 is the lowest node that has both 7 and 8 as descendants.\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], n1-&gt;data = 8, n2-&gt;data = 14<br />      <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700236/Web/Other/blobid1_1739265251.png\" width=\"288\" height=\"254\" /> &nbsp; &nbsp; \n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">8<br /><strong>Explanation:</strong> 8</span></span><span style=\"font-size: 14pt;\"> is the lowest node that has both 8 and 14 as descendants.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [2, 1, 3], n1-&gt;data = 1, n2-&gt;data = 3\n        <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700236/Web/Other/blobid1_1738413633.png\" alt=\"\" width=\"309\" height=\"249\" />\n<strong>Output: </strong>2<br /><strong>Explanation:</strong> 2 </span><span style=\"font-size: 14pt;\">is the lowest node that has both 1 and 3 as descendants.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le;&nbsp;number of nodes &le; 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &le; node-&gt;data &le;&nbsp;10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &le; n1-&gt;data, n2-&gt;data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2236
+  },
+  {
+    "company": "Synopsys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-two-sorted-linked-lists/1",
+      "problem_name": "Merge two sorted linked lists",
+      "slug": "merge-two-sorted-linked-lists",
+      "difficulty": "Medium",
+      "accuracy": "62.91%",
+      "marks": 4,
+      "all_submissions": 207416,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head1 = &!//!&head2 = ",
+        "datatype": "LINKED_LIST_NODE&!//!&LINKED_LIST_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "FactSet",
+          "MakeMyTrip",
+          "Oracle",
+          "Brocade",
+          "Synopsys",
+          "OATS Systems",
+          "Belzabar",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "FactSet",
+        "MakeMyTrip",
+        "Oracle",
+        "Brocade",
+        "Synopsys",
+        "OATS Systems",
+        "Belzabar",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-two-sorted-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-set-2-campus/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-2-campus/",
+        "httpss://www.geeksforgeeks.org/microsoft-interview-experience-set-151-sde-2-3-5-years-experience/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-6-months-internship/"
+      ],
+      "statement_text": "Given the\nhead\nof two\nsorted linked lists\nconsisting of nodes respectively.\nMerge\nboth lists and return the\nhead\nof the\nsorted merged list\n.",
+      "full_text": "Given the\nhead\nof two\nsorted linked lists\nconsisting of nodes respectively.\nMerge\nboth lists and return the\nhead\nof the\nsorted merged list\n.\nExamples:\nInput:\nOutput:\n2 -> 3 -> 5 -> 10 -> 15 -> 20 -> 40\nExplanation:\nInput\n:\nOutput:\n1 -> 1 -> 2 -> 4\nExplanation:\nConstraints:\n1\n≤\nlist1.size, list2.size\n≤\n10\n3\n0\n≤\nnode->data\n≤\n10\n5",
+      "examples": [
+        "Input:\nOutput:\n2 -> 3 -> 5 -> 10 -> 15 -> 20 -> 40\nExplanation:",
+        "Input\n:\nOutput:\n1 -> 1 -> 2 -> 4\nExplanation:"
+      ],
+      "constraints_text": "Constraints:\n1\n≤\nlist1.size, list2.size\n≤\n10\n3\n0\n≤\nnode->data\n≤\n10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>head</strong> of two&nbsp;<strong>sorted linked lists&nbsp;</strong>consisting of nodes respectively. <strong>Merge</strong>&nbsp;both lists and return the&nbsp;<strong>head&nbsp;</strong>of the&nbsp;<strong>sorted merged list</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:<br /></strong>  <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid0_1755952530.webp\" width=\"437\" height=\"108\" /><br /><strong>Output: </strong>2 -&gt; 3 -&gt; 5 -&gt; 10 -&gt; 15 -&gt; 20 -&gt; 40<strong>\nExplanation:<br /></strong></span>   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid1_1755952582.webp\" width=\"592\" height=\"60\" /></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>:<br />  <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid2_1755952649.webp\" width=\"320\" height=\"114\" /><br /><strong>Output: </strong>1 -&gt; 1 -&gt; 2 -&gt; 4<strong>\nExplanation:<br />  <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid3_1755952660.webp\" width=\"433\" height=\"67\" /><br /></strong></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le; </span><span style=\"font-size: 18px;\">list1.size, list2.size</span><span style=\"font-size: 18px;\">&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le;</span><span style=\"font-size: 18px;\">&nbsp;10</span><sup>3<br /></sup><span style=\"font-size: 18px;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le; </span><span style=\"font-size: 18px;\">node-&gt;data&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le;</span><span style=\"font-size: 18px;\">&nbsp;10</span><sup>5</sup></p>"
+    },
+    "qnum": 2237
+  },
+  {
+    "company": "Synopsys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1",
+      "problem_name": "Merge Without Extra Space",
+      "slug": "merge-two-sorted-arrays-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "32.01%",
+      "marks": 4,
+      "all_submissions": 330349,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "a[] =&!//!&b[] =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Microsoft",
+          "Snapdeal",
+          "Goldman Sachs",
+          "Adobe",
+          "Linkedin",
+          "Amdocs",
+          "Brocade",
+          "Juniper Networks",
+          "Quikr",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "Sorting",
+          "Algorithms",
+          "Arrays",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Sorting",
+        "Algorithms",
+        "Arrays",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Microsoft",
+        "Snapdeal",
+        "Goldman Sachs",
+        "Adobe",
+        "Linkedin",
+        "Amdocs",
+        "Brocade",
+        "Juniper Networks",
+        "Quikr",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays-o1-extra-space/",
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-2020-product-intern/"
+      ],
+      "statement_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.",
+      "full_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.\nExamples:\nInput\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]\nInput\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].\nInput\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3].\nConstraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "examples": [
+        "Input\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]",
+        "Input\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].",
+        "Input\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two sorted arrays <strong>a[]</strong> and <strong>b[] </strong>of size <strong>n </strong>and <strong>m </strong>respectively, the task is to merge them in sorted order without using any <strong>extra space</strong>. Modify <strong>a[]</strong> so that it contains the first <strong>n</strong> elements and modify <strong>b[]</strong> so that it contains the last <strong>m</strong> elements.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [2, 4, 7, 10], b[] = [2, 3]\n<strong>Output</strong>: a[] = [2, 2, 3, 4], b[] = [7, 10]\n<strong>Explanation</strong>: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\n<strong>Output</strong>: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\n<strong>Explanation</strong>: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Output</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Explanation</strong>: After merging two sorted arrays we get [0, 1, 2, 3].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; n, m &le; 10<sup>5</sup><br />0 &le; a[i], b[i] &le; 10<sup>7</sup></span></p>"
+    },
+    "qnum": 2238
+  }
+]

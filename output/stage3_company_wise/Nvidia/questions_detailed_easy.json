@@ -1,0 +1,157 @@
+[
+  {
+    "company": "Nvidia",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-bits3556/1",
+      "problem_name": "Reverse Bits",
+      "slug": "reverse-bits3556",
+      "difficulty": "Easy",
+      "accuracy": "53.96%",
+      "marks": 2,
+      "all_submissions": 69900,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Cisco",
+          "Qualcomm",
+          "HCL",
+          "Nvidia"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Bit Magic",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Bit Magic",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Cisco",
+        "Qualcomm",
+        "HCL",
+        "Nvidia"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-an-efficient-c-program-to-reverse-bits-of-a-number/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-8-experienced/"
+      ],
+      "statement_text": "Given a\nnumber x\n,\nreverse\nits binary form and return the answer in\ndecimal\n.\nExample 1:\nInput:\nx =\n1\nOutput:\n2147483648\nExplanation:\nBinary of 1 in 32 bits representation-\n00000000000000000000000000000001\nReversing the binary form we get,\n10000000000000000000000000000000,\nwhose decimal value is 2147483648.\nExample 2:\nInput:\nx =\n5\nOutput:\n2684354560\nExplanation:\nBinary of 5 in 32 bits representation-\n00000000000000000000000000000101\nReversing the binary form we get,\n10100000000000000000000000000000,\nwhose decimal value is 2684354560.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nreversedBits()\nwhich takes an Integer\nx\nas input and returns the reverse binary form of\nx\nin decimal form.\nExpected Time Complexity:\nO(log (x))\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a\nnumber x\n,\nreverse\nits binary form and return the answer in\ndecimal\n.\nExample 1:\nInput:\nx =\n1\nOutput:\n2147483648\nExplanation:\nBinary of 1 in 32 bits representation-\n00000000000000000000000000000001\nReversing the binary form we get,\n10000000000000000000000000000000,\nwhose decimal value is 2147483648.\nExample 2:\nInput:\nx =\n5\nOutput:\n2684354560\nExplanation:\nBinary of 5 in 32 bits representation-\n00000000000000000000000000000101\nReversing the binary form we get,\n10100000000000000000000000000000,\nwhose decimal value is 2684354560.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nreversedBits()\nwhich takes an Integer\nx\nas input and returns the reverse binary form of\nx\nin decimal form.\nExpected Time Complexity:\nO(log (x))\nExpected Auxiliary Space:\nO(1)\nConstraints:\n0  <=  x  <  2\n32",
+      "examples": [
+        "Input:\nx =\n1\nOutput:\n2147483648\nExplanation:\nBinary of 1 in 32 bits representation-\n00000000000000000000000000000001\nReversing the binary form we get,\n10000000000000000000000000000000,\nwhose decimal value is 2147483648.",
+        "Input:\nx =\n5\nOutput:\n2684354560\nExplanation:\nBinary of 5 in 32 bits representation-\n00000000000000000000000000000101\nReversing the binary form we get,\n10100000000000000000000000000000,\nwhose decimal value is 2684354560."
+      ],
+      "constraints_text": "Constraints:\n0  <=  x  <  2\n32",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a <strong>number x</strong>, <strong>reverse </strong>its binary form and return the answer in <strong>decimal</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nx =<strong> </strong>1\n<strong>Output:</strong>\n2147483648 \n<strong>Explanation:</strong>\nBinary of 1 in 32 bits representation-\n00000000000000000000000000000001\nReversing the binary form we get, \n10000000000000000000000000000000,\nwhose decimal value is 2147483648.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nx =<strong> </strong>5\n<strong>Output:</strong>\n</span><span style=\"font-size: 18px;\">2684354560</span> <span style=\"font-size: 18px;\">\n<strong>Explanation:</strong>\nBinary of 5 in 32 bits representation-\n00000000000000000000000000000101\nReversing the binary form we get, \n10100000000000000000000000000000,\nwhose decimal value is 2684354560.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong></span><br /><span style=\"font-size: 18px;\">You don't need to read input or print anything. Your task is to complete the function <strong>reversedBits()</strong> which takes an Integer&nbsp;<strong>x</strong> as input and returns the reverse binary form of <strong>x </strong>in decimal form.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(log (x))<br /><strong>Expected Auxiliary Space:</strong> O(1)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">0&nbsp; &lt;=&nbsp; x&nbsp; &lt;&nbsp; 2<sup>32</sup> </span></p>"
+    },
+    "qnum": 1962
+  },
+  {
+    "company": "Nvidia",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
+      "problem_name": "Stock Buy and Sell – Max one Transaction Allowed",
+      "slug": "buy-stock-2",
+      "difficulty": "Easy",
+      "accuracy": "49.33%",
+      "marks": 2,
+      "all_submissions": 140469,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "Intel",
+          "Infosys",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Yahoo",
+          "PayPal",
+          "Nvidia",
+          "Oracle",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "TCS",
+          "Adobe",
+          "Google",
+          "IBM",
+          "Accenture",
+          "Apple",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "Intel",
+        "Infosys",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Yahoo",
+        "PayPal",
+        "Nvidia",
+        "Oracle",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "TCS",
+        "Adobe",
+        "Google",
+        "IBM",
+        "Accenture",
+        "Apple",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-variations-of-stock-problems/",
+        "https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.",
+      "full_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.\nExamples:\nInput:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.\nInput:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.\nInput:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].\nConstraint:\n1\n≤\nprices.size()\n≤\n10\n5\n0\n≤\nprices[i]\n≤\n10\n4",
+      "examples": [
+        "Input:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.",
+        "Input:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.",
+        "Input:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1]."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given an array <strong>prices[]</strong> of non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when <strong>at most one </strong>transaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then <strong>return 0</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">Note: Stock must be bought before being sold.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 10, 1, 3, 6, 9, 2]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 8<br /></span><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> You can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 6, 4, 3, 1]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 0 <br /></span><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Here the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.<br /></span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>prices[] = [1, 3, 6, 9, 11]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 10 </span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Since the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraint:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices.size()&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;10</span><sup>5<br /></sup><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices[i] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> &nbsp;</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup></p>"
+    },
+    "qnum": 1963
+  }
+]

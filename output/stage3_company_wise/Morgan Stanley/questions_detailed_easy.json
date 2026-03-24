@@ -1,0 +1,2032 @@
+[
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/day-of-the-week1637/1",
+      "problem_name": "Day of the week",
+      "slug": "day-of-the-week1637",
+      "difficulty": "Easy",
+      "accuracy": "41.67%",
+      "marks": 2,
+      "all_submissions": 13340,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Microsoft",
+          "Samsung"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Microsoft",
+        "Samsung"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-day-of-the-week-for-a-given-date/"
+      ],
+      "interview_links": [],
+      "statement_text": "Write a program that calculates the day of the week for any particular date in the past or future.\nExample 1:\nInput:\nd =\n28,\nm =\n12,\ny =\n1995\nOutput:\nThursday\nExplanation:\n28 December 1995 was a Thursday.\nExample 2:\nInput:\nd =\n30,\nm =\n8,\ny =\n2010\nOutput:\nMonday\nExplanation:\n30 August 2010 was a Monday.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ngetDayOfWeek()\nwhich takes 3 Integers d, m and y denoting day, month and year as input and return a String denoting the answer.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Write a program that calculates the day of the week for any particular date in the past or future.\nExample 1:\nInput:\nd =\n28,\nm =\n12,\ny =\n1995\nOutput:\nThursday\nExplanation:\n28 December 1995 was a Thursday.\nExample 2:\nInput:\nd =\n30,\nm =\n8,\ny =\n2010\nOutput:\nMonday\nExplanation:\n30 August 2010 was a Monday.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ngetDayOfWeek()\nwhich takes 3 Integers d, m and y denoting day, month and year as input and return a String denoting the answer.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 <= d <= 31\n1 <= m <= 12\n1 <= y <= 2100",
+      "examples": [
+        "Input:\nd =\n28,\nm =\n12,\ny =\n1995\nOutput:\nThursday\nExplanation:\n28 December 1995 was a Thursday.",
+        "Input:\nd =\n30,\nm =\n8,\ny =\n2010\nOutput:\nMonday\nExplanation:\n30 August 2010 was a Monday."
+      ],
+      "constraints_text": "Constraints:\n1 <= d <= 31\n1 <= m <= 12\n1 <= y <= 2100",
+      "question_html": "<p><span style=\"font-size: 18px;\">Write a program that calculates the day of the week for any particular date in the past or future.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong></span>\n<span style=\"font-size: 18px;\"><strong>d = </strong>28, <strong>m = </strong>12, <strong>y = </strong>1995</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong></span>\n<span style=\"font-size: 18px;\">Thursday</span>\n<span style=\"font-size: 18px;\"><strong>Explanation:</strong></span>\n<span style=\"font-size: 18px;\">28 December 1995 was a Thursday.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong></span>\n<span style=\"font-size: 18px;\"><strong>d = </strong>30, <strong>m = </strong>8, <strong>y = </strong>2010</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong></span>\n<span style=\"font-size: 18px;\">Monday</span>\n<span style=\"font-size: 18px;\"><strong>Explanation:</strong></span>\n<span style=\"font-size: 18px;\">30 August 2010 was a Monday.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>getDayOfWeek()</strong> which takes 3 Integers d, m and y denoting day, month and year as input and return a String denoting the answer.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(1)<br /><strong>Expected Auxiliary Space:</strong> O(1)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &lt;= d &lt;= 31<br />1 &lt;= m &lt;= 12<br />1 &lt;= y &lt;= 2100</span></p>"
+    },
+    "qnum": 1889
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/delete-alternate-nodes/1",
+      "problem_name": "Delete Alternate Nodes",
+      "slug": "delete-alternate-nodes",
+      "difficulty": "Easy",
+      "accuracy": "56.09%",
+      "marks": 2,
+      "all_submissions": 90155,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/delete-alternate-nodes-of-a-linked-list/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a Singly Linked List, Delete all\nalternate\nnodes of the list ie delete all the nodes present in even positions.\nExamples :\nInput:\nLinkedList: 1->2->3->4->5->6\nOutput:\n1->3->5\nExplanation:\nDeleting alternate nodes ie 2, 4, 6 results in the linked list with elements 1->3->5.\nInput:\nLinkedList: 99->59->42->20\nOutput:\n99->42\nExpected Time Complexity:\nO(n)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a Singly Linked List, Delete all\nalternate\nnodes of the list ie delete all the nodes present in even positions.\nExamples :\nInput:\nLinkedList: 1->2->3->4->5->6\nOutput:\n1->3->5\nExplanation:\nDeleting alternate nodes ie 2, 4, 6 results in the linked list with elements 1->3->5.\nInput:\nLinkedList: 99->59->42->20\nOutput:\n99->42\nExpected Time Complexity:\nO(n)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 <= number of nodes <= 10\n5\n1 <= node->data <= 10\n3",
+      "examples": [
+        "Input:\nLinkedList: 1->2->3->4->5->6\nOutput:\n1->3->5\nExplanation:\nDeleting alternate nodes ie 2, 4, 6 results in the linked list with elements 1->3->5.",
+        "Input:\nLinkedList: 99->59->42->20\nOutput:\n99->42"
+      ],
+      "constraints_text": "Constraints:\n1 <= number of nodes <= 10\n5\n1 <= node->data <= 10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a Singly Linked List, Delete all <strong>alternate</strong> nodes of the list ie delete all the nodes present in even positions.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>LinkedList: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700584/Web/Other/blobid0_1720609786.png\" width=\"400\" height=\"76\" /> <br /><strong>Output: </strong>1-&gt;3-&gt;5<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700584/Web/Other/blobid1_1720609803.png\" width=\"400\" height=\"88\" /><strong>\nExplanation: </strong>Deleting alternate nodes ie 2, 4, 6 results in the linked list with elements 1-&gt;3-&gt;5.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>LinkedList: 99-&gt;59-&gt;42-&gt;20<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700584/Web/Other/blobid2_1720609822.png\" width=\"400\" height=\"77\" /> <br /><strong>Output: </strong>99-&gt;42<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700584/Web/Other/blobid3_1720609839.png\" width=\"400\" height=\"82\" /> </span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity: </strong>O(n)<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(1)</span></p>\n<p><strong style=\"font-size: 18px;\">Constraints:</strong><br style=\"font-size: 18px;\" /><span style=\"font-size: 18px;\">1 &lt;= number of nodes &lt;= 10</span><sup>5</sup><br style=\"font-size: 18px;\" /><span style=\"font-size: 18px;\">1 &lt;= node-&gt;data &lt;= 10</span><sup>3</sup></p>"
+    },
+    "qnum": 1890
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-the-numbers2359/1",
+      "problem_name": "Digits in a set",
+      "slug": "count-the-numbers2359",
+      "difficulty": "Easy",
+      "accuracy": "47.84%",
+      "marks": 2,
+      "all_submissions": 11781,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-total-number-digits-1-n/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a number\nn\n, count the numbers from\n1\nto\nn\n,\nwhich comprise only digits\nfrom set {1, 2, 3, 4, 5}.",
+      "full_text": "Given a number\nn\n, count the numbers from\n1\nto\nn\n,\nwhich comprise only digits\nfrom set {1, 2, 3, 4, 5}.\nExamples:\nInput:\nn = 20\nOutput:\n10\nExplanation:\nThe numbers whose digits are from the given set are: 1, 2, 3, 4, 5, 11, 12, 13, 14, 15.\nInput:\nn = 100\nOutput:\n30\nConstraints:\n1 ≤ n ≤ 10\n5",
+      "examples": [
+        "Input:\nn = 20\nOutput:\n10\nExplanation:\nThe numbers whose digits are from the given set are: 1, 2, 3, 4, 5, 11, 12, 13, 14, 15.",
+        "Input:\nn = 100\nOutput:\n30"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a number&nbsp;<strong>n</strong>, count the numbers from&nbsp;<strong>1</strong>&nbsp;to&nbsp;<strong>n</strong><span style=\"box-sizing: border-box; margin: 0px; padding: 0px;\"><strong>,</strong>&nbsp;which comprise only digits</span>&nbsp;from&nbsp;set {1, 2, 3, 4,&nbsp;5}.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 20\n<strong>Output:</strong> 10\n<strong>Explanation:</strong> The numbers whose digits are from the given set are: 1, 2, 3, 4, 5, 11, 12, 13, 14, 15.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 100\n<strong>Output:</strong> 30</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; n &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1891
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/factorial5739/1",
+      "problem_name": "Factorial",
+      "slug": "factorial5739",
+      "difficulty": "Basic",
+      "accuracy": "40.58%",
+      "marks": 1,
+      "all_submissions": 231623,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = ",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Samsung",
+          "FactSet",
+          "MAQ Software",
+          "Wipro"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Samsung",
+        "FactSet",
+        "MAQ Software",
+        "Wipro"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-for-factorial-of-a-number/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a positive integer,\nn\n. Find the factorial of\nn\n.\nExamples :\nInput:\nn = 5\nOutput:\n120\nExplanation:\n1 x 2 x 3 x 4 x 5 = 120\nInput:\nn = 4\nOutput:\n24\nExplanation:\n1 x 2 x 3 x 4 = 24",
+      "full_text": "Given a positive integer,\nn\n. Find the factorial of\nn\n.\nExamples :\nInput:\nn = 5\nOutput:\n120\nExplanation:\n1 x 2 x 3 x 4 x 5 = 120\nInput:\nn = 4\nOutput:\n24\nExplanation:\n1 x 2 x 3 x 4 = 24\nConstraints:\n0 ≤ n ≤ 12",
+      "examples": [
+        "Input:\nn = 5\nOutput:\n120\nExplanation:\n1 x 2 x 3 x 4 x 5 = 120",
+        "Input:\nn = 4\nOutput:\n24\nExplanation:\n1 x 2 x 3 x 4 = 24"
+      ],
+      "constraints_text": "Constraints:\n0 ≤ n ≤ 12",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a positive integer, <strong>n</strong>. Find the factorial of <strong>n</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 5\n<strong>Output: </strong>120\n<strong>Explanation: </strong>1 x 2 x 3 x 4 x 5 = 120</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 4\n<strong>Output: </strong>24\n<strong>Explanation: </strong>1 x 2 x 3 x 4 = 24</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &le; n &le; 12</span></p>"
+    },
+    "qnum": 1892
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/inorder-successor-in-bst/1",
+      "problem_name": "Inorder Successor in BST",
+      "slug": "inorder-successor-in-bst",
+      "difficulty": "Easy",
+      "accuracy": "34.97%",
+      "marks": 2,
+      "all_submissions": 152263,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root  = &!//!&k = ",
+        "datatype": "STRING&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-350-sde/"
+      ],
+      "statement_text": "Given a BST, and a reference to a Node k in the BST. Find the Inorder Successor of the given node in the BST. If there is no successor, return -1.\n\nExamples :\n\nInput: root = [2, 1, 3], k = 2\n      2\n    /   \\\n   1     3\nOutput: 3\nExplanation: Inorder traversal : 1 2 3 Hence, inorder successor of 2 is 3.\n\nInput: root = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], k = 8\n             20\n            /   \\\n           8     22\n          / \\\n         4   12\n            /  \\\n           10   14\nOutput: 10\nExplanation: Inorder traversal: 4 8 10 12 14 20 22. Hence, successor of 8 is 10.\n\nInput: root = [2, 1, 3], k = 3\n      2\n    /   \\\n   1     3\nOutput: -1\nExplanation: Inorder traversal : 1 2 3 Hence, inorder successor of 3 is null.\n\nConstraints:\n1 <= n <= 105, where n is the number of nodes",
+      "full_text": "Given a BST, and a reference to a Node k in the BST. Find the Inorder Successor of the given node in the BST. If there is no successor, return -1.\n\nExamples :\n\nInput: root = [2, 1, 3], k = 2\n      2\n    /   \\\n   1     3\nOutput: 3\nExplanation: Inorder traversal : 1 2 3 Hence, inorder successor of 2 is 3.\n\nInput: root = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], k = 8\n             20\n            /   \\\n           8     22\n          / \\\n         4   12\n            /  \\\n           10   14\nOutput: 10\nExplanation: Inorder traversal: 4 8 10 12 14 20 22. Hence, successor of 8 is 10.\n\nInput: root = [2, 1, 3], k = 3\n      2\n    /   \\\n   1     3\nOutput: -1\nExplanation: Inorder traversal : 1 2 3 Hence, inorder successor of 3 is null.\n\nConstraints:\n1 <= n <= 105, where n is the number of nodes",
+      "examples": [
+        "Input:\nroot = [2, 1, 3], k = 2\n2\n/   \\\n1     3\nOutput:\n3\nExplanation:\nInorder traversal : 1 2 3 Hence, inorder successor of 2 is 3.",
+        "Input:\nroot = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], k = 8\n20\n/   \\\n8\n22\n/ \\\n4   12\n/\n\\\n10   14\nOutput:\n10\nExplanation:\nInorder traversal: 4 8 10 12 14 20 22. Hence, successor of 8 is 10.",
+        "Input:\nroot = [2, 1, 3], k = 3\n2\n/   \\\n1     3\nOutput:\n-1\nExplanation:\nInorder traversal : 1 2 3 Hence, inorder successor of 3 is null."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 10\n5\n,\nwhere n is the number of nodes",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a BST, and a reference to a Node <strong>k</strong> in the BST. Find the Inorder Successor of the given node in the BST. If there is no successor, return -1.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [2, 1, 3], k = 2\n&nbsp;  <strong> </strong>  2\n&nbsp;   /   \\\n<strong>   </strong>1     3\n<strong>Output: </strong>3 \n<strong>Explanation:</strong> Inorder traversal : 1 2 3 Hence, inorder successor of 2 is 3.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [20, 8, 22, 4, 12, N, N, N, N, 10, 14], k = 8\n             20\n&nbsp;           /   \\\n&nbsp;          8<strong>     </strong>22\n&nbsp;         / \\\n&nbsp;        4   12\n&nbsp;           /<strong>  </strong>\\\n&nbsp;          10   14\n<strong>Output: </strong>10<strong>\nExplanation: </strong>Inorder traversal: 4 8 10 12 14 20 22. Hence, successor of 8 is 10.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [2, 1, 3], k = 3\n&nbsp;     2\n&nbsp;   /   \\\n<strong>   </strong>1     3\n<strong>Output: </strong>-1 \n<strong>Explanation:</strong> Inorder traversal : 1 2 3 Hence, inorder successor of 3 is null.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= n &lt;= 10<sup>5</sup><sup>,</sup> where n is the number of nodes</span></p>"
+    },
+    "qnum": 1893
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/nth-node-from-end-of-linked-list/1",
+      "problem_name": "Kth from End of Linked List",
+      "slug": "nth-node-from-end-of-linked-list",
+      "difficulty": "Easy",
+      "accuracy": "41.18%",
+      "marks": 2,
+      "all_submissions": 451905,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "LinkedList = &!//!&k = ",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "FactSet",
+          "Hike",
+          "MAQ Software",
+          "Adobe",
+          "Qualcomm",
+          "Epic Systems",
+          "Citicorp",
+          "Monotype Solutions"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "FactSet",
+        "Hike",
+        "MAQ Software",
+        "Adobe",
+        "Qualcomm",
+        "Epic Systems",
+        "Citicorp",
+        "Monotype Solutions"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/nth-node-from-the-end-of-a-linked-list/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-8-off-campus-for-software-engineer-1/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-rnd-bangalore-interview-2018/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-for-mts-1-2/"
+      ],
+      "statement_text": "You are given the\nhead\nof a linked list and the number\nk\n, You have to return the k\nth\nnode from the end of linkedList. If k is more than the number of nodes, then the return\n-1.\nExamples\nInput:\nLinkedList:\n1->2->3->4->5->6->7->8->9, k = 2\nOutput:\n8\nExplanation:\nThe given linked list is 1->2->3->4->5->6->7->8->9. The 2nd node from end is 8.\nInput:\nLinkedList:\n10->5->100->5, k = 5\nOutput:\n-1\nExplanation:\nThe given linked list is 10->5->100->5. Since 'k' is more than the number of nodes, the output is -1.",
+      "full_text": "You are given the\nhead\nof a linked list and the number\nk\n, You have to return the k\nth\nnode from the end of linkedList. If k is more than the number of nodes, then the return\n-1.\nExamples\nInput:\nLinkedList:\n1->2->3->4->5->6->7->8->9, k = 2\nOutput:\n8\nExplanation:\nThe given linked list is 1->2->3->4->5->6->7->8->9. The 2nd node from end is 8.\nInput:\nLinkedList:\n10->5->100->5, k = 5\nOutput:\n-1\nExplanation:\nThe given linked list is 10->5->100->5. Since 'k' is more than the number of nodes, the output is -1.\nConstraints:\n1 ≤ number of nodes ≤ 10\n6\n1 ≤ node->data , x ≤ 10\n6\n1 ≤ k ≤ 10\n6",
+      "examples": [
+        "Input:\nLinkedList:\n1->2->3->4->5->6->7->8->9, k = 2\nOutput:\n8\nExplanation:\nThe given linked list is 1->2->3->4->5->6->7->8->9. The 2nd node from end is 8.",
+        "Input:\nLinkedList:\n10->5->100->5, k = 5\nOutput:\n-1\nExplanation:\nThe given linked list is 10->5->100->5. Since 'k' is more than the number of nodes, the output is -1."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n6\n1 ≤ node->data , x ≤ 10\n6\n1 ≤ k ≤ 10\n6",
+      "question_html": "<p class=\"ajy\" tabindex=\"0\" role=\"button\" aria-haspopup=\"true\" data-tooltip=\"Show details\" aria-label=\"Show details\"><span style=\"font-size: 14pt;\">You are given the <strong>head</strong> of a linked list and the number <strong>k</strong>, You have to return the k<sup>th</sup> node from the end of linkedList. If k is more than the number of nodes, then the return <strong>-1.</strong></span></p>\n<div dir=\"ltr\">\n<p><span style=\"font-size: 14pt;\"><strong>Examples<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>LinkedList:<strong> </strong>1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7-&gt;8-&gt;9, k = 2<br /><strong>Output: </strong>8<strong>\nExplanation: </strong>The given linked list is 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7-&gt;8-&gt;9. The 2nd node from end is 8.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700170/Web/Other/blobid0_1723031071.png\" width=\"518\" height=\"55\" /><br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>LinkedList:<strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> </strong>10-&gt;5-&gt;100-&gt;5, k = 5<br /><strong>Output: </strong>-1<strong>\nExplanation: </strong>The given linked list is 10-&gt;5-&gt;100-&gt;5. Since 'k' is more than the number of nodes, the output is -1.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700170/Web/Other/blobid1_1723031085.png\" width=\"335\" height=\"68\" /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>6<br /></sup>1 &le; node-&gt;data , x &le; 10<sup>6</sup><br />1 &le; k &le; 10<sup>6</sup></span></p>\n</div>"
+    },
+    "qnum": 1894
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-element-in-array4009/1",
+      "problem_name": "Largest in Array",
+      "slug": "largest-element-in-array4009",
+      "difficulty": "Basic",
+      "accuracy": "67.48%",
+      "marks": 1,
+      "all_submissions": 584674,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Oracle",
+          "Wipro",
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Oracle",
+        "Wipro",
+        "Morgan Stanley"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/java-program-for-program-to-find-largest-element-in-an-array/",
+        "https://www.geeksforgeeks.org/program-to-find-largest-element-in-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[].\nThe task is to find the largest element and return it.",
+      "full_text": "Given an array\narr[].\nThe task is to find the largest element and return it.\nExamples:\nInput:\narr[] = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.\nInput:\narr[] = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.\nInput:\narr[] = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest.\nConstraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "examples": [
+        "Input:\narr[] = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.",
+        "Input:\narr[] = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.",
+        "Input:\narr[] = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[].</strong><strong> </strong>The task is to find the largest element and return it.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 8, 7, 56, 90]\n<strong>Output: </strong>90\n<strong>Explanation: </strong>The largest element of the given array is 90.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 5, 5, 5]\n<strong>Output: </strong>5\n<strong>Explanation: </strong>The largest element of the given array is 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [10]\n<strong>Output: </strong>10\n<strong>Explanation: </strong>There is only one element which is the largest.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &lt;= arr.size()&lt;= 10<sup>6</sup><br />0 &lt;= arr[i] &lt;= 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1895
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-subarray-of-0s-and-1s/1",
+      "problem_name": "Largest subarray of 0's and 1's",
+      "slug": "largest-subarray-of-0s-and-1s",
+      "difficulty": "Easy",
+      "accuracy": "32.96%",
+      "marks": 2,
+      "all_submissions": 132440,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Morgan Stanley",
+          "Amazon",
+          "MakeMyTrip"
+        ],
+        "topic_tags": [
+          "sliding-window",
+          "Hash",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "sliding-window",
+        "Hash",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Morgan Stanley",
+        "Amazon",
+        "MakeMyTrip"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/largest-subarray-with-equal-number-of-0s-and-1s/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-5-recruitment-drive/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/"
+      ],
+      "statement_text": "Given an array\narr\nof 0s and 1s. Find and return the length of the\nlongest\nsubarray with\nequal\nnumber of 0s and 1s.",
+      "full_text": "Given an array\narr\nof 0s and 1s. Find and return the length of the\nlongest\nsubarray with\nequal\nnumber of 0s and 1s.\nExamples:\nInput:\narr[] = [1, 0, 1, 1, 1, 0, 0]\nOutput:\n6\nExplanation:\narr[1...6] is the longest subarray with three 0s and three 1s.\nInput:\narr[] = [0, 0, 1, 1, 0]\nOutput:\n4\nExplnation:\narr[0...3] or arr[1...4] is the longest subarray with two 0s and two 1s.\nInput:\narr[] = [0]\nOutput:\n0\nExplnation:\nThere is no subarray with an equal number of 0s and 1s.\nConstraints:\n1 <= arr.size() <= 10\n5\n0 <= arr[i] <= 1",
+      "examples": [
+        "Input:\narr[] = [1, 0, 1, 1, 1, 0, 0]\nOutput:\n6\nExplanation:\narr[1...6] is the longest subarray with three 0s and three 1s.",
+        "Input:\narr[] = [0, 0, 1, 1, 0]\nOutput:\n4\nExplnation:\narr[0...3] or arr[1...4] is the longest subarray with two 0s and two 1s.",
+        "Input:\narr[] = [0]\nOutput:\n0\nExplnation:\nThere is no subarray with an equal number of 0s and 1s."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size() <= 10\n5\n0 <= arr[i] <= 1",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr</strong> of 0s and 1s. Find and return the length of the <strong>longest</strong> subarray with <strong>equal</strong> number of 0s and 1s.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 0, 1, 1, 1, 0, 0]\n<strong>Output: </strong>6<strong>\nExplanation: </strong>arr[1...6] is the longest subarray with three 0s and three 1s.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [0, 0, 1, 1, 0]\n<strong>Output: </strong>4<br /><strong>Explnation: </strong>arr[0...3] or arr[1...4] is the longest subarray with two 0s and two 1s.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [0]\n<strong>Output: </strong>0<br /><strong>Explnation: </strong>There is no subarray with an equal number of 0s and 1s.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= arr.size() &lt;= 10<sup>5</sup><br />0 &lt;= arr[i] &lt;= 1</span></p>"
+    },
+    "qnum": 1896
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/level-order-traversal-in-spiral-form/1",
+      "problem_name": "Level Order in Spiral",
+      "slug": "level-order-traversal-in-spiral-form",
+      "difficulty": "Easy",
+      "accuracy": "36.43%",
+      "marks": 2,
+      "all_submissions": 239862,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Hike",
+          "Housing.com",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Payu",
+          "Teradata",
+          "Walmart",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Recursion",
+          "Stack",
+          "Tree",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Recursion",
+        "Stack",
+        "Tree",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Hike",
+        "Housing.com",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Payu",
+        "Teradata",
+        "Walmart",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/level-order-traversal-in-spiral-form/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-24/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-set-47/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-357-1-5-years-experienced/",
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-12/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-13-on-campus-for-internship-and-fte/",
+        "https://www.geeksforgeeks.org/make-my-trip-interview-experience-on-campus/"
+      ],
+      "statement_text": "Given a root binary tree and the task is to find the spiral order traversal of the tree and return the list containing the elements.\nSpiral Order Traversal mean: Starting from level 0 for root node, for all the even levels we print the node's value from right to left and for all the odd levels we print the node's value from left to right.\n\nExamples:\n\nInput: root = [1, 3, 2]\n\nOutput: [1, 3, 2]\nExplanation: Start with root (1), print level 0 (right to left), then level 1 (left to right).\n\nInput: root = [10, 20, 30, 40, 60]\n\nOutput: [10, 20, 30, 60, 40]\nExplanation: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating.\n\nConstraints:\n1  ≤ number of nodes  ≤105\n0  ≤ node->data  ≤ 105",
+      "full_text": "Given a root binary tree and the task is to find the spiral order traversal of the tree and return the list containing the elements.\nSpiral Order Traversal mean: Starting from level 0 for root node, for all the even levels we print the node's value from right to left and for all the odd levels we print the node's value from left to right.\n\nExamples:\n\nInput: root = [1, 3, 2]\n\nOutput: [1, 3, 2]\nExplanation: Start with root (1), print level 0 (right to left), then level 1 (left to right).\n\nInput: root = [10, 20, 30, 40, 60]\n\nOutput: [10, 20, 30, 60, 40]\nExplanation: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating.\n\nConstraints:\n1  ≤ number of nodes  ≤105\n0  ≤ node->data  ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 3, 2]\nOutput:\n[1, 3, 2]\nExplanation\n: Start with root (1), print level 0 (right to left), then level 1 (left to right).",
+        "Input:\nroot = [10, 20, 30, 40, 60]\nOutput:\n[10, 20, 30, 60, 40]\nExplanation\n: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating."
+      ],
+      "constraints_text": "Constraints:\n1  ≤ number of nodes  ≤10\n5\n0  ≤ node->data  ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a <strong>root</strong> binary tree and the task is to find the <strong>spiral order traversal</strong> of the tree and return the list containing the elements.<br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Spiral Order Traversal mean:</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> Starting from level 0 for root node, for all the even levels we print the node's value from right to left and for all the odd levels we print the node's value from left to right.</span><br /></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 3, 2]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700201/Web/Other/blobid2_1746530526.webp\" width=\"186\" height=\"150\" /> <br /><strong>Output: </strong>[1, 3, 2]<br /><strong>Explanation</strong>: Start with root (1), print level 0 (right to left), then level 1 (left to right).</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [10, 20, 30, 40, 60]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700201/Web/Other/blobid3_1746530612.webp\" width=\"207\" height=\"221\" /><br /><strong>Output: </strong>[10, 20, 30, 60, 40]<br /><strong>Explanation</strong>: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &nbsp;&le; number of nodes &nbsp;&le;10<sup>5</sup><br />0 &nbsp;&le; node-&gt;data &nbsp;&le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1897
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/level-order-traversal-line-by-line/1",
+      "problem_name": "Level Order Line by Line",
+      "slug": "level-order-traversal-line-by-line",
+      "difficulty": "Easy",
+      "accuracy": "53.78%",
+      "marks": 2,
+      "all_submissions": 86999,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root =",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Hike"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Hike"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-level-order-traversal-line-line/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/"
+      ],
+      "statement_text": "Given root of a binary Tree,  return its level order traversal.\nExamples:\n\nInput: root = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, N, 8]\n\nOutput: [[1], [2, 3], [4, 5, 6, 7], [8]]\nExplanation:  At first level 1 present then at second level 2 3 present at third level 4 5 6 7 present and at fourth level 8 present.\n\nInput: root = [10, 20, 30, 40, 60]\n\nOutput: [[10], [20, 30] , [40, 60]]\nExplanation: At first level 10 present then at second level 20 30 present then at third level 40 60 present.\n\nConstraints:\n1 ≤ number of nodes ≤ 1000\n0 ≤ node->data ≤ 100",
+      "full_text": "Given root of a binary Tree,  return its level order traversal.\nExamples:\n\nInput: root = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, N, 8]\n\nOutput: [[1], [2, 3], [4, 5, 6, 7], [8]]\nExplanation:  At first level 1 present then at second level 2 3 present at third level 4 5 6 7 present and at fourth level 8 present.\n\nInput: root = [10, 20, 30, 40, 60]\n\nOutput: [[10], [20, 30] , [40, 60]]\nExplanation: At first level 10 present then at second level 20 30 present then at third level 40 60 present.\n\nConstraints:\n1 ≤ number of nodes ≤ 1000\n0 ≤ node->data ≤ 100",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, N, 8]\nOutput:\n[[1], [2, 3], [4, 5, 6, 7], [8]]\nExplanation:\nAt first level 1 present then at second level 2 3 present at third level 4 5 6 7 present and at fourth level 8 present\n.",
+        "Input:\nroot = [10, 20, 30, 40, 60]\nOutput:\n[[10], [20, 30] , [40, 60]]\nExplanation:\nAt first level 10 present then at second level 20 30 present then at third level 40 60 present."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 1000\n0 ≤ node->data ≤ 100",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given <strong>root</strong> of a <strong>binary Tree</strong>,&nbsp; return its level order traversal.<br /></span><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, N, 8]</span><span style=\"font-size: 20px;\">\n &nbsp; &nbsp; &nbsp;  <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/907334/Web/Other/blobid0_1754392564.webp\" width=\"175\" height=\"161\" /> &nbsp; &nbsp; &nbsp; </span><span style=\"font-size: 18px;\">\n<strong>Output: </strong>[[1], [2, 3], [4, 5, 6, 7], [8]]</span>\n<span style=\"font-size: 14pt;\"><strong>Explanation:  </strong>At first level 1 present then at second level 2 3 present at third level 4 5 6 7 present and at fourth level 8 present</span>.</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [10, 20, 30, 40, 60]\n&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/907334/Web/Other/blobid1_1754393504.webp\" width=\"158\" height=\"125\" /> &nbsp; &nbsp; &nbsp; &nbsp; \n<strong>Output: </strong>[[10], [20, 30] , [40, 60]] <br /></span><strong style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong><span style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">At first level 10 present then at second level 20 30 present then at third level 40 60 present.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 1000<br />0 &le; node-&gt;data &le; 100</span></p>"
+    },
+    "qnum": 1898
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-element-in-array4009--142158/1",
+      "problem_name": "Maximum Element in Array",
+      "slug": "largest-element-in-array4009--142158",
+      "difficulty": "Basic",
+      "accuracy": "68.97%",
+      "marks": 1,
+      "all_submissions": 9834,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Oracle",
+          "Wipro",
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Oracle",
+        "Wipro",
+        "Morgan Stanley"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[].\nThe task is to find the\nlargest\nelement and return it.",
+      "full_text": "Given an array\narr[].\nThe task is to find the\nlargest\nelement and return it.\nExamples:\nInput:\narr = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.\nInput:\narr = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.\nInput:\narr = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest.\nConstraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "examples": [
+        "Input:\narr = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.",
+        "Input:\narr = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.",
+        "Input:\narr = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[].</strong><strong> </strong>The task is to find the <strong>largest</strong> element and return it.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 8, 7, 56, 90]\n<strong>Output: </strong>90\n<strong>Explanation: </strong>The largest element of the given array is 90.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [5, 5, 5, 5]\n<strong>Output: </strong>5\n<strong>Explanation: </strong>The largest element of the given array is 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [10]\n<strong>Output: </strong>10\n<strong>Explanation: </strong>There is only one element which is the largest.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &lt;= arr.size()&lt;= 10<sup>6</sup><br />0 &lt;= arr[i] &lt;= 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1899
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-sum-problem2211/1",
+      "problem_name": "Maximum Sum Problem",
+      "slug": "maximum-sum-problem2211",
+      "difficulty": "Easy",
+      "accuracy": "57.09%",
+      "marks": 2,
+      "all_submissions": 59108,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/recursively-break-number-3-parts-get-maximum-sum/"
+      ],
+      "interview_links": [],
+      "statement_text": "A number\nn\ncan be broken into three parts\nn/2\n,\nn/3\n,\nand\nn/4\n(consider only the\ninteger\npart). Each number obtained in this process can be divided further recursively. Find the\nmaximum sum\nthat can be obtained by summing up the divided parts together.\nNote:\nIt is possible that we don't divide the number at all.\nExample 1:\nInput:\nn = 12\nOutput:\n13\nExplanation\n:\nB\nreak n = 12 in three parts {12/2, 12/3, 12/4} = {6, 4, 3}, now current sum is = (6 + 4 + 3) = 13. Further breaking 6, 4 and 3 into parts will produce sum less than or equal to 6, 4 and 3 respectively.\nExample 2:\nInput\n:\nn = 24\nOutput:\n27\nExplanation\n:\nBreak n = 24 in three parts {24/2, 24/3, 24/4} = {12, 8, 6}, now current sum is = (12 + 8 + 6) = 26 . But recursively breaking 12 would produce value 13. So our maximum sum is 13 + 8 + 6 = 27.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmaxSum()\nwhich accepts an integer n and returns the maximum sum.\nExpected Time Complexity:\nO(n)\nExpected Auxiliary Space:\nO(n)",
+      "full_text": "A number\nn\ncan be broken into three parts\nn/2\n,\nn/3\n,\nand\nn/4\n(consider only the\ninteger\npart). Each number obtained in this process can be divided further recursively. Find the\nmaximum sum\nthat can be obtained by summing up the divided parts together.\nNote:\nIt is possible that we don't divide the number at all.\nExample 1:\nInput:\nn = 12\nOutput:\n13\nExplanation\n:\nB\nreak n = 12 in three parts {12/2, 12/3, 12/4} = {6, 4, 3}, now current sum is = (6 + 4 + 3) = 13. Further breaking 6, 4 and 3 into parts will produce sum less than or equal to 6, 4 and 3 respectively.\nExample 2:\nInput\n:\nn = 24\nOutput:\n27\nExplanation\n:\nBreak n = 24 in three parts {24/2, 24/3, 24/4} = {12, 8, 6}, now current sum is = (12 + 8 + 6) = 26 . But recursively breaking 12 would produce value 13. So our maximum sum is 13 + 8 + 6 = 27.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmaxSum()\nwhich accepts an integer n and returns the maximum sum.\nExpected Time Complexity:\nO(n)\nExpected Auxiliary Space:\nO(n)\nConstraints:\n0 <= n <= 10\n6",
+      "examples": [
+        "Input:\nn = 12\nOutput:\n13\nExplanation\n:\nB\nreak n = 12 in three parts {12/2, 12/3, 12/4} = {6, 4, 3}, now current sum is = (6 + 4 + 3) = 13. Further breaking 6, 4 and 3 into parts will produce sum less than or equal to 6, 4 and 3 respectively.",
+        "Input\n:\nn = 24\nOutput:\n27\nExplanation\n:\nBreak n = 24 in three parts {24/2, 24/3, 24/4} = {12, 8, 6}, now current sum is = (12 + 8 + 6) = 26 . But recursively breaking 12 would produce value 13. So our maximum sum is 13 + 8 + 6 = 27."
+      ],
+      "constraints_text": "Constraints:\n0 <= n <= 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">A number <strong>n </strong>can be broken&nbsp;into&nbsp;three parts<strong> n/2</strong>,<strong> n/3</strong>,<strong> </strong>and<strong> n/4&nbsp;</strong>(consider only the&nbsp;<strong>integer </strong>part). Each number obtained in this process can be divided further recursively.&nbsp;Find the <strong>maximum sum </strong>that can be obtained by&nbsp;summing up the divided parts&nbsp;together.<br /><strong>Note: </strong>It is possible that we don't divide the number at all.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nn = 12\n<strong>Output:</strong> <br />13\n<strong>Explanation</strong>:</span>&nbsp;<br /><span style=\"font-size: 18px;\">B</span><span style=\"font-size: 18px;\">reak n = 12 in three parts {12/2, 12/3, 12/4} = {6, 4, 3}, now current sum is = (6 + 4 + 3) = 13. Further breaking 6, 4 and 3 into parts will produce sum less than or equal to 6, 4 and 3 respectively.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>:\nn = 24\n<strong>Output:</strong> <br />27\n<strong>Explanation</strong>: <br />Break n = 24 in three parts {24/2, 24/3, 24/4} = {12, 8, 6}, now current sum is = (12 + 8 + 6) = 26 . But recursively breaking 12 would produce value 13. So our maximum sum is 13 + 8 + 6 = 27.\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>maxSum()&nbsp;</strong>which accepts an integer n and returns the maximum sum.<br /></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity: </strong>O(n)<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(n)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &lt;= n &lt;= 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1900
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/finding-middle-element-in-a-linked-list/1",
+      "problem_name": "Middle of a Linked List",
+      "slug": "finding-middle-element-in-a-linked-list",
+      "difficulty": "Easy",
+      "accuracy": "57.93%",
+      "marks": 2,
+      "all_submissions": 403694,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head = ",
+        "datatype": "LINKED_LIST_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Hike",
+          "Payu",
+          "MAQ Software",
+          "Adobe",
+          "Wipro",
+          "SAP Labs",
+          "Qualcomm",
+          "Nagarro",
+          "GE",
+          "Veritas",
+          "IgniteWorld",
+          "Netskope",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Hike",
+        "Payu",
+        "MAQ Software",
+        "Adobe",
+        "Wipro",
+        "SAP Labs",
+        "Qualcomm",
+        "Nagarro",
+        "GE",
+        "Veritas",
+        "IgniteWorld",
+        "Netskope",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-a-c-function-to-print-the-middle-of-the-linked-list/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-4-campus/",
+        "https://www.geeksforgeeks.org/veritas-interview-experience-set-2-campus/"
+      ],
+      "statement_text": "You are given the\nhead\nof a linked list, You have to return the value of the\nmiddle node\nof the linked list.\nIf the number of nodes is odd, return the middle node value.\nIf the number of nodes is even, there are two middle nodes, so return the second middle node value.",
+      "full_text": "You are given the\nhead\nof a linked list, You have to return the value of the\nmiddle node\nof the linked list.\nIf the number of nodes is odd, return the middle node value.\nIf the number of nodes is even, there are two middle nodes, so return the second middle node value.\nExamples:\nInput:\nOutput:\n3\nExplanation:\nThe given linked list is 1->2->3->4->5 and its middle is 3.\nInput:\nOutput:\n7\nExplanation:\nThe given linked list is 2->4->6->7->5->1 so, there are two middle node 6 and 7, return the second middle node as 7.\nConstraints:\n1 ≤ no. of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n5",
+      "examples": [
+        "Input:\nOutput:\n3\nExplanation:\nThe given linked list is 1->2->3->4->5 and its middle is 3.",
+        "Input:\nOutput:\n7\nExplanation:\nThe given linked list is 2->4->6->7->5->1 so, there are two middle node 6 and 7, return the second middle node as 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ no. of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given the <strong>head </strong>of a linked list, You have to return the value of the <strong>middle node </strong>of the linked list. <br /></span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\">If the number of nodes is odd, return the middle node value.</span></li>\n<li><span style=\"font-size: 14pt;\">If the number of nodes is even, there are two middle nodes, so return the second middle node value.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: <br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908246/Web/Other/blobid0_1756126203.webp\" width=\"505\" height=\"67\" /></strong>\n<strong>Output: </strong>3<br /><strong>Explanation:</strong> The given linked list is 1-&gt;2-&gt;3-&gt;4-&gt;5 and its middle is 3.<br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908246/Web/Other/blobid1_1756126356.webp\" width=\"506\" height=\"67\" /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong><br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908246/Web/Other/blobid2_1756126428.webp\" width=\"567\" height=\"66\" /><br /><strong>Output: </strong>7 <br /><strong>Explanation:</strong> The given linked list is 2-&gt;4-&gt;6-&gt;7-&gt;5-&gt;1 so, there are two middle node 6 and 7, return the second middle node as 7.<br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908246/Web/Other/blobid4_1756126588.jpg\" width=\"571\" height=\"67\" /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; no. of nodes &le; 10<sup>5</sup><br />1 &le; node-&gt;data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1901
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-distinct-ids3251/1",
+      "problem_name": "Minimum Distinct Ids",
+      "slug": "minimum-distinct-ids3251",
+      "difficulty": "Easy",
+      "accuracy": "39.75%",
+      "marks": 2,
+      "all_submissions": 10125,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-number-of-distinct-elements-after-removing-m-items/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array of items, the i'th index element denotes the item id’s and given a number m, the task is to remove m elements such that there should be minimum distinct id’s left. Print the number of distinct id’s.\nExample 1 -\nInput\n:\nn = 6\narr[] = {2, 2, 1, 3, 3, 3}\nm = 3\nOutput\n:\n1\nExplanation :\nRemove 2,2,1\nExample 2 -\nInput\n:\nn = 8\narr[] = {2, 4, 1, 5, 3, 5, 1, 3}\nm = 2\nOutput\n:\n3\nExplanation\n:\nRemove 2,4\nYour Task:\nThis is a function problem. You don't have to take any input. Your task is to complete the\ndistinctIds\n() which takes sorted array, its size n, and m as its parameter. You only need to find the minimum number of distinct IDs and return it. The driver code will print the returned value.\nExpected Time Complexity\n: O(n log(n))\nExpected Auxillary Space\n: O(n)\nConstraints\n:\n1 ≤ n ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6\n1 ≤ m ≤ 10\n3",
+      "full_text": "Given an array of items, the i'th index element denotes the item id’s and given a number m, the task is to remove m elements such that there should be minimum distinct id’s left. Print the number of distinct id’s.\nExample 1 -\nInput\n:\nn = 6\narr[] = {2, 2, 1, 3, 3, 3}\nm = 3\nOutput\n:\n1\nExplanation :\nRemove 2,2,1\nExample 2 -\nInput\n:\nn = 8\narr[] = {2, 4, 1, 5, 3, 5, 1, 3}\nm = 2\nOutput\n:\n3\nExplanation\n:\nRemove 2,4\nYour Task:\nThis is a function problem. You don't have to take any input. Your task is to complete the\ndistinctIds\n() which takes sorted array, its size n, and m as its parameter. You only need to find the minimum number of distinct IDs and return it. The driver code will print the returned value.\nExpected Time Complexity\n: O(n log(n))\nExpected Auxillary Space\n: O(n)\nConstraints\n:\n1 ≤ n ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6\n1 ≤ m ≤ 10\n3",
+      "examples": [
+        "Input\n:\nn = 6\narr[] = {2, 2, 1, 3, 3, 3}\nm = 3\nOutput\n:\n1\nExplanation :\nRemove 2,2,1",
+        "Input\n:\nn = 8\narr[] = {2, 4, 1, 5, 3, 5, 1, 3}\nm = 2\nOutput\n:\n3\nExplanation\n:\nRemove 2,4"
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ n ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6\n1 ≤ m ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size:18px\">Given an array of items, the i&#39;th index element denotes the item id&rsquo;s and given a number m, the task is to remove m elements such that there should be minimum distinct id&rsquo;s left. Print the number of distinct id&rsquo;s.</span></p>\n\n<p><span style=\"font-size:18px\"><strong>Example 1 -</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input</strong>:\nn = 6\narr[] = {2, 2, 1, 3, 3, 3}\nm = 3\n<strong>Output</strong>:\n1\n<strong>Explanation :</strong> \nRemove 2,2,1</span></pre>\n\n<p><span style=\"font-size:18px\"><strong>Example 2 -</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input</strong>:\nn = 8\narr[] = {2, 4, 1, 5, 3, 5, 1, 3}\nm = 2\n<strong>Output</strong>:\n3\n<strong>Explanation</strong>:\nRemove 2,4</span></pre>\n\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\nThis is a function problem. You don&#39;t have to take any input. Your task is to complete the <strong>distinctIds</strong>() which takes sorted array, its size n, and m as its parameter. You only need to find the minimum number of distinct IDs&nbsp;and return it. The driver code will print the returned value.</span></p>\n\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity</strong>: O(n log(n))<br />\n<strong>Expected Auxillary Space</strong>: O(n)</span></p>\n\n<p><span style=\"font-size:18px\"><strong>Constraints</strong>:<br />\n1 &le; n &le; 10<sup>5</sup><br />\n1 &le; arr[i] &le; 10<sup>6</sup><br />\n1 &le; m &le; 10<sup>3</sup></span></p>\n"
+    },
+    "qnum": 1902
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/mirror-tree/1",
+      "problem_name": "Mirror Tree",
+      "slug": "mirror-tree",
+      "difficulty": "Easy",
+      "accuracy": "72.67%",
+      "marks": 2,
+      "all_submissions": 243937,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "SAP Labs",
+          "Myntra",
+          "Belzabar",
+          "eBay",
+          "PropTiger"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "SAP Labs",
+        "Myntra",
+        "Belzabar",
+        "eBay",
+        "PropTiger"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-an-efficient-c-function-to-convert-a-tree-into-its-mirror-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-4-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/"
+      ],
+      "statement_text": "Given the root of a binary tree, convert the binary tree to its Mirror tree.\n\nNote: Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.\n\nExamples:\n\nInput: root = [1, 2, 3, N, N, 4]\nOutput: [1, 3, 2, N, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nInput: root = [1, 2, 3, 4, 5]\nOutput: [1, 3, 2, N, N, 5, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 105",
+      "full_text": "Given the root of a binary tree, convert the binary tree to its Mirror tree.\n\nNote: Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.\n\nExamples:\n\nInput: root = [1, 2, 3, N, N, 4]\nOutput: [1, 3, 2, N, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nInput: root = [1, 2, 3, 4, 5]\nOutput: [1, 3, 2, N, N, 5, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, N, N, 4]\nOutput:\n[1, 3, 2, N, 4]\nExplanation:\nIn the inverted tree, every non-leaf node has its left and right child interchanged.",
+        "Input:\nroot = [1, 2, 3, 4, 5]\nOutput:\n[1, 3, 2, N, N, 5, 4]\nExplanation:\nIn the inverted tree, every non-leaf node has its left and right child interchanged."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n4\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root </strong>of a binary tree, convert the binary tree to its <strong>Mirror tree. </strong></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, N, N, 4]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[1, 3, 2, N, 4]</span><strong style=\"font-size: 18px;\">\nExplanation: </strong><span style=\"font-size: 18px;\"><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700155/Web/Other/blobid0_1736926809.png\" alt=\"\" width=\"523\" height=\"262\" /><br />In the inverted tree, every non-leaf node has its left and right child interchanged.</span></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, 4, 5]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[1, 3, 2, N, N, 5, 4]</span><strong style=\"font-size: 18px;\">\nExplanation:<br /></strong><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700155/Web/Other/blobid1_1736926809.png\" alt=\"\" width=\"525\" height=\"263\" /><br />In the inverted tree, every non-leaf node has its left and right child interchanged.</span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>4</sup><br />1 &le; node-&gt;data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1903
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/missing-number-in-array1416/1",
+      "problem_name": "Missing in Array",
+      "slug": "missing-number-in-array1416",
+      "difficulty": "Easy",
+      "accuracy": "29.59%",
+      "marks": 2,
+      "all_submissions": 1652558,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Ola Cabs",
+          "Payu",
+          "Visa",
+          "Intuit",
+          "Adobe",
+          "Cisco",
+          "Qualcomm",
+          "TCS",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Bit Magic",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Bit Magic",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Ola Cabs",
+        "Payu",
+        "Visa",
+        "Intuit",
+        "Adobe",
+        "Cisco",
+        "Qualcomm",
+        "TCS",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-missing-number/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-12/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "You are given an array\narr[]\nof size\nn - 1\nthat contains\ndistinct integers\nin the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with\none element missing\n. Your task is to identify and return the\nmissing element\n.",
+      "full_text": "You are given an array\narr[]\nof size\nn - 1\nthat contains\ndistinct integers\nin the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with\none element missing\n. Your task is to identify and return the\nmissing element\n.\nExamples:\nInput:\narr[] = [1, 2, 3, 5]\nOutput:\n4\nExplanation:\nAll the numbers from 1 to 5 are present except 4.\nInput:\narr[] = [8, 2, 4, 5, 3, 7, 1]\nOutput:\n6\nExplanation:\nAll the numbers from 1 to 8 are present except 6.\nInput:\narr[] = [1]\nOutput:\n2\nExplanation:\nOnly 1 is present so the missing element is 2.\nConstraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ arr.size() + 1",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 5]\nOutput:\n4\nExplanation:\nAll the numbers from 1 to 5 are present except 4.",
+        "Input:\narr[] = [8, 2, 4, 5, 3, 7, 1]\nOutput:\n6\nExplanation:\nAll the numbers from 1 to 8 are present except 6.",
+        "Input:\narr[] = [1]\nOutput:\n2\nExplanation:\nOnly 1 is present so the missing element is 2."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ arr.size() + 1",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array <strong>arr[]</strong> of size <strong>n - 1</strong> that contains<strong> distinct integers </strong>in the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with <strong>one element missing</strong>. Your task is to identify and return the <strong>missing element</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 5]\n<strong>Output: </strong>4\n<strong>Explanation: </strong>All the numbers from 1 to 5 are present except 4.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [8, 2, 4, 5, 3, 7, 1]\n<strong>Output:</strong> 6\n<strong>Explanation: </strong>All the numbers from 1 to 8 are present except 6.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1]\n<strong>Output: </strong>2\n<strong>Explanation: </strong>Only 1 is present so the missing element is 2.<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>6</sup><br />1 &le; arr[i] &le; arr.size() + 1</span></p>"
+    },
+    "qnum": 1904
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/next-greater-number-set-digits3503/1",
+      "problem_name": "Next greater number set digits",
+      "slug": "next-greater-number-set-digits3503",
+      "difficulty": "Easy",
+      "accuracy": "30.08%",
+      "marks": 2,
+      "all_submissions": 25818,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "Hike",
+          "Adobe",
+          "Zillious",
+          "Oxigen Wallet",
+          "Vizury Interactive Solutions"
+        ],
+        "topic_tags": [
+          "Searching",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Searching",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "Hike",
+        "Adobe",
+        "Zillious",
+        "Oxigen Wallet",
+        "Vizury Interactive Solutions"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-next-greater-number-set-digits/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/morgan-stanley-interview-set-2-2/"
+      ],
+      "statement_text": "Given a number n, find the smallest number that has the same set of digits as n and is greater than n. If n is the greatest possible number with its set of digits, report it.\nExample 1:\nInput:\nN = 143\nOutput:\n314\nExplanation\n: Numbers possible with digits\n1, 3 and 4 are: 134,\n143\n,\n314\n, 341, 413, 431.\nThe first greater number after 143 is 314.\nExample 2:\nInput\n:\nN = 431\nOutput:\nnot possible\nExplanation\n: Numbers possible with digits\n1, 3 and 4 are: 134, 143, 314, 341, 413, 431.\nClearly, there's no number greater than 431.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nfindNext ()\nwhich takes an integer N as input and returns the smallest number greater than N with the same set of digits as N. If such a number is not possible, return -1.\nExpected Time Complexity:\nO(LogN).\nExpected Auxiliary Space:\nO(LogN).",
+      "full_text": "Given a number n, find the smallest number that has the same set of digits as n and is greater than n. If n is the greatest possible number with its set of digits, report it.\nExample 1:\nInput:\nN = 143\nOutput:\n314\nExplanation\n: Numbers possible with digits\n1, 3 and 4 are: 134,\n143\n,\n314\n, 341, 413, 431.\nThe first greater number after 143 is 314.\nExample 2:\nInput\n:\nN = 431\nOutput:\nnot possible\nExplanation\n: Numbers possible with digits\n1, 3 and 4 are: 134, 143, 314, 341, 413, 431.\nClearly, there's no number greater than 431.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nfindNext ()\nwhich takes an integer N as input and returns the smallest number greater than N with the same set of digits as N. If such a number is not possible, return -1.\nExpected Time Complexity:\nO(LogN).\nExpected Auxiliary Space:\nO(LogN).\nConstraints:\n1 ≤ N ≤ 100000",
+      "examples": [
+        "Input:\nN = 143\nOutput:\n314\nExplanation\n: Numbers possible with digits\n1, 3 and 4 are: 134,\n143\n,\n314\n, 341, 413, 431.\nThe first greater number after 143 is 314.",
+        "Input\n:\nN = 431\nOutput:\nnot possible\nExplanation\n: Numbers possible with digits\n1, 3 and 4 are: 134, 143, 314, 341, 413, 431.\nClearly, there's no number greater than 431."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 100000",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a number n, find the smallest number that has the same set of digits as n and is greater than n.&nbsp;If n&nbsp;is the greatest possible number with its set of digits, report it.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nN = 143\n<strong>Output:</strong> 314\n<strong>Explanation</strong>: Numbers possible with digits\n1, 3 and 4 are: 134, <strong>143</strong>, <strong>314</strong>, 341, 413, 431.\nThe first greater number after 143 is 314.\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>:\nN = 431\n<strong>Output:</strong> not possible\n<strong>Explanation</strong>: Numbers possible with digits\n1, 3 and 4 are: 134, 143, 314, 341, 413, 431.\nClearly, there's no number greater than 431.</span></pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>findNext ()&nbsp;</strong>which takes an integer N&nbsp;as input and returns the smallest number greater than N&nbsp;with the same set of digits as N. If such a number is not possible, return -1.</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:&nbsp;</strong>O(LogN).<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(LogN).</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N&nbsp;&le; 100000</span></p>"
+    },
+    "qnum": 1905
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/odd-to-even0537/1",
+      "problem_name": "Odd to Even",
+      "slug": "odd-to-even0537",
+      "difficulty": "Basic",
+      "accuracy": "23.71%",
+      "marks": 1,
+      "all_submissions": 20078,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/largest-even-number-possible-using-one-swap-operation-given-number/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an\nodd number\nin the form of string, the task is to make largest even number possible from the given number provided one is allowed to do exactly only one swap operation, if no such number is possible then return the input string itself.\nExample 1:\nInput:\ns = 4543\nOutput:\n4534\nExplanation\n: Swap 4(3rd pos) and 3.\nExample 2:\nInput:\ns = 1539\nOutput:\n1539\nExplanation\n: No even no. present.\nYour Task:\nYou dont need to read input or print anything. Complete the function\nmakeEven()\nwhich takes a string\ns\nas input parameter and returns a string after performing given operations.\nExpected Time Complexity:\nO(Length of Input string).\nExpected Auxiliary Space:\nO(1).",
+      "full_text": "Given an\nodd number\nin the form of string, the task is to make largest even number possible from the given number provided one is allowed to do exactly only one swap operation, if no such number is possible then return the input string itself.\nExample 1:\nInput:\ns = 4543\nOutput:\n4534\nExplanation\n: Swap 4(3rd pos) and 3.\nExample 2:\nInput:\ns = 1539\nOutput:\n1539\nExplanation\n: No even no. present.\nYour Task:\nYou dont need to read input or print anything. Complete the function\nmakeEven()\nwhich takes a string\ns\nas input parameter and returns a string after performing given operations.\nExpected Time Complexity:\nO(Length of Input string).\nExpected Auxiliary Space:\nO(1).\nConstraints:\n1 <= Length of odd number string<= 10\n5",
+      "examples": [
+        "Input:\ns = 4543\nOutput:\n4534\nExplanation\n: Swap 4(3rd pos) and 3.",
+        "Input:\ns = 1539\nOutput:\n1539\nExplanation\n: No even no. present."
+      ],
+      "constraints_text": "Constraints:\n1 <= Length of odd number string<= 10\n5",
+      "question_html": "<p><span style=\"font-size: 20px;\">Given an <strong>odd number</strong> in the form of string, the task is to make largest even number possible from the given number provided one is allowed to do exactly only one swap operation, if no such number is possible then return the input string itself.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\ns = 4543\n<strong>Output:</strong> 4534\n<strong>Explanation</strong>: Swap 4(3rd pos) and 3.</span></pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\ns = 1539\n<strong>Output:</strong> 1539\n<strong>Explanation</strong>: No even no. present.</span></pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Your Task: &nbsp;</strong><br />You dont need to read input or print anything. Complete the function&nbsp;<strong>makeEven()</strong>&nbsp;which takes a string&nbsp;<strong>s</strong> as input parameter and returns a string after performing given operations.</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:&nbsp;</strong>O(Length of Input string).<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(1).</span><br />&nbsp;</p>\n<p><strong><span style=\"font-size: 18px;\">Constraints:</span></strong><br /><span style=\"font-size: 18px;\">1 &lt;= Length of odd number string&lt;= 10<sup>5</sup></span></p>\n<p>&nbsp;</p>"
+    },
+    "qnum": 1906
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/palindrome-string0817/1",
+      "problem_name": "Palindrome String",
+      "slug": "palindrome-string0817",
+      "difficulty": "Easy",
+      "accuracy": "51.21%",
+      "marks": 2,
+      "all_submissions": 477157,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "D-E-Shaw",
+          "FactSet",
+          "Cisco",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "D-E-Shaw",
+        "FactSet",
+        "Cisco",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/palindrome-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-14-for-senior-android-developer/"
+      ],
+      "statement_text": "You are given a string\ns\n. Your task is to determine if the string is a\npalindrome\n. A string is considered a palindrome if it reads the same forwards and backwards.\nExamples :\nInput:\ns = \"abba\"\nOutput:\ntrue\nExplanation:\n\"abba\"\nreads the same forwards\nand\nbackwards, so it\nis\na palindrome.\nInput:\ns = \"abc\"\nOutput:\nfalse\nExplanation:\n\"abc\"\ndoes\nnot\nread the same forwards\nand\nbackwards, so it\nis\nnot\na palindrome.",
+      "full_text": "You are given a string\ns\n. Your task is to determine if the string is a\npalindrome\n. A string is considered a palindrome if it reads the same forwards and backwards.\nExamples :\nInput:\ns = \"abba\"\nOutput:\ntrue\nExplanation:\n\"abba\"\nreads the same forwards\nand\nbackwards, so it\nis\na palindrome.\nInput:\ns = \"abc\"\nOutput:\nfalse\nExplanation:\n\"abc\"\ndoes\nnot\nread the same forwards\nand\nbackwards, so it\nis\nnot\na palindrome.\nConstraints:\n1 ≤ s.size() ≤ 10\n6\nThe string\ns\ncontains only lowercase english letters (a-z).",
+      "examples": [
+        "Input:\ns = \"abba\"\nOutput:\ntrue\nExplanation:\n\"abba\"\nreads the same forwards\nand\nbackwards, so it\nis\na palindrome.",
+        "Input:\ns = \"abc\"\nOutput:\nfalse\nExplanation:\n\"abc\"\ndoes\nnot\nread the same forwards\nand\nbackwards, so it\nis\nnot\na palindrome."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n6\nThe string\ns\ncontains only lowercase english letters (a-z).",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a string <strong>s</strong>. Your task is to determine if the string is a <strong>palindrome</strong>. A string is considered a palindrome if it reads the same forwards and backwards.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"abba\"\n<strong>Output: </strong>true\n<strong>Explanation: </strong>\"abba\"<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> reads the same forwards </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">and</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> backwards, so it </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">is</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> a palindrome.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"abc\" \n<strong>Output:</strong> false\n<strong>Explanation: </strong>\"abc\"<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> does </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">not</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> read the same forwards </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">and</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> backwards, so it </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">is</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">not</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> a palindrome.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.size() &le; 10<sup>6</sup><br />The string&nbsp;<code>s</code> contains only lowercase english letters (a-z).</span></p>"
+    },
+    "qnum": 1907
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/postorder-traversal/1",
+      "problem_name": "Postorder Traversal",
+      "slug": "postorder-traversal",
+      "difficulty": "Easy",
+      "accuracy": "74.96%",
+      "marks": 2,
+      "all_submissions": 149503,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Snapdeal",
+          "Walmart"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Snapdeal",
+        "Walmart"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/morris-traversal-for-postorder/",
+        "https://www.geeksforgeeks.org/postorder-traversal-of-binary-tree/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given the root of a Binary Tree, your task is to return its Postorder Traversal.\n\nNote: A postorder traversal first visits the left child (including its entire subtree), then visits the right child (including its entire subtree), and finally visits the node itself.\n\nExamples:\n\nInput: root = [19, 10, 8, 11, 13]\n\nOutput: [11, 13, 10, 8, 19]\nExplanation: The postorder traversal of the given binary tree is [11, 13, 10, 8, 19].\n\nInput: root = [11, 15, N, 7]\n\nOutput: [7, 15, 11]\nExplanation: The postorder traversal of the given binary tree is [7, 15, 11].\n\nConstraints:\n1 ≤ number of nodes ≤ 3*104\n0 ≤ node->data ≤ 105",
+      "full_text": "Given the root of a Binary Tree, your task is to return its Postorder Traversal.\n\nNote: A postorder traversal first visits the left child (including its entire subtree), then visits the right child (including its entire subtree), and finally visits the node itself.\n\nExamples:\n\nInput: root = [19, 10, 8, 11, 13]\n\nOutput: [11, 13, 10, 8, 19]\nExplanation: The postorder traversal of the given binary tree is [11, 13, 10, 8, 19].\n\nInput: root = [11, 15, N, 7]\n\nOutput: [7, 15, 11]\nExplanation: The postorder traversal of the given binary tree is [7, 15, 11].\n\nConstraints:\n1 ≤ number of nodes ≤ 3*104\n0 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [19, 10, 8, 11, 13]\nOutput:\n[11, 13, 10, 8, 19]\nExplanation:\nThe postorder traversal of the given binary tree is [11, 13, 10, 8, 19].",
+        "Input:\nroot = [11, 15, N, 7]\nOutput:\n[7, 15, 11]\nExplanation:\nThe postorder traversal of the given binary tree is [7, 15, 11]."
+      ],
+      "constraints_text": "Constraints:\n1\n≤\nnumber of nodes\n≤\n3*10\n4\n0\n≤\nnode->data\n≤\n10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\"><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Given the <strong>root </strong>of a Binary Tree, your task is to return its&nbsp;</span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Postorder Traversal</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:&nbsp;</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">A <strong>postorder traversal </strong>first visits the left child (including its entire subtree), then visits the right child (including its entire subtree), and finally visits the node itself.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [19, 10, 8, 11, 13]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700199/Web/Other/blobid0_1752318711.webp\" width=\"205\" height=\"205\" />\n<strong>Output: </strong>[11, 13, 10, 8, 19]<br /><strong>Explanation: </strong>The postorder traversal of the given binary tree is [11, 13, 10, 8, 19].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [11, 15, N, 7]<br /> <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700199/Web/Other/blobid1_1752318749.webp\" width=\"160\" height=\"216\" />\n<strong>Output:</strong> [7, 15, 11]<br /><strong>Explanation: </strong>The postorder traversal of the given binary tree is [7, 15, 11].</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1&nbsp;<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le; </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">number of nodes&nbsp;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> 3*10<sup>4</sup></span><sup style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><br /></sup>0&nbsp;<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le; </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">node-&gt;data&nbsp;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le; </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">10<sup>5</sup></span></span></p>"
+    },
+    "qnum": 1908
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/product-array-puzzle4525/1",
+      "problem_name": "Product array puzzle",
+      "slug": "product-array-puzzle4525",
+      "difficulty": "Easy",
+      "accuracy": "33.46%",
+      "marks": 2,
+      "all_submissions": 309714,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Intuit",
+          "Opera"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "Algorithms",
+          "prefix-sum"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "Algorithms",
+        "prefix-sum"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Intuit",
+        "Opera"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/a-product-array-puzzle/",
+        "https://www.geeksforgeeks.org/product-array-puzzle-set-2-o1-space/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/intuit-interview-set-5-campus-internship/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-13-campus/"
+      ],
+      "statement_text": "Given an array,\narr[]\nc\nonstruct a product array,\nres[]\nwhere each element in\nres[i]\nis the product of all elements in\narr[]\nexcept\narr[i]\n. Return this resultant array,\nres[].\nNote:\nEach element is res[] lies inside the 32-bit integer range.",
+      "full_text": "Given an array,\narr[]\nc\nonstruct a product array,\nres[]\nwhere each element in\nres[i]\nis the product of all elements in\narr[]\nexcept\narr[i]\n. Return this resultant array,\nres[].\nNote:\nEach element is res[] lies inside the 32-bit integer range.\nExamples:\nInput:\narr[] = [10, 3, 5, 6, 2]\nOutput:\n[180, 600, 360, 300, 900]\nExplanation:\nFor i=0, res[i] = 3 * 5 * 6 * 2 is 180.\nFor i = 1, res[i] = 10 * 5 * 6 * 2 is 600.\nFor i = 2, res[i] = 10 * 3 * 6 * 2 is 360.\nFor i = 3, res[i] = 10 * 3 * 5 * 2 is 300.\nFor i = 4, res[i] = 10 * 3 * 5 * 6 is 900.\nInput:\narr[] = [12, 0]\nOutput:\n[0, 12]\nExplanation:\nFor i = 0, res[i] is 0.\nFor i = 1, res[i] is 12.\nConstraints:\n2 <= arr.size() <= 10\n5\n-100 <= arr[i] <= 100",
+      "examples": [
+        "Input:\narr[] = [10, 3, 5, 6, 2]\nOutput:\n[180, 600, 360, 300, 900]\nExplanation:\nFor i=0, res[i] = 3 * 5 * 6 * 2 is 180.\nFor i = 1, res[i] = 10 * 5 * 6 * 2 is 600.\nFor i = 2, res[i] = 10 * 3 * 6 * 2 is 360.\nFor i = 3, res[i] = 10 * 3 * 5 * 2 is 300.\nFor i = 4, res[i] = 10 * 3 * 5 * 6 is 900.",
+        "Input:\narr[] = [12, 0]\nOutput:\n[0, 12]\nExplanation:\nFor i = 0, res[i] is 0.\nFor i = 1, res[i] is 12."
+      ],
+      "constraints_text": "Constraints:\n2 <= arr.size() <= 10\n5\n-100 <= arr[i] <= 100",
+      "question_html": "<p><span style=\"font-size: 14pt;\"><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Given an array, <strong>arr[] </strong>c</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">onstruct a product array, </span><strong><code>res[]</code></strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> where each element in <strong>res[i] </strong></span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">is the product of all elements in </span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><code>arr[]</code></strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> except </span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><code>arr[i]</code></strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">. Return this resultant array, </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><code>res[].<br /><strong>Note:</strong> Each element is res[] lies inside the 32-bit integer range.</code></span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [10, 3, 5, 6, 2]\n<strong>Output: </strong>[180, 600, 360, 300, 900]<strong>\nExplanation: </strong>For i=0, res[i] = 3 * 5 * 6 * 2 is 180.\nFor i = 1, res[i] = 10 * 5 * 6 * 2 is 600.\nFor i = 2, res[i] = 10 * 3 * 6 * 2 is 360.\nFor i = 3, res[i] = 10 * 3 * 5 * 2 is 300.\nFor i = 4, res[i] = 10 * 3 * 5 * 6 is 900.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [12, 0]\n<strong>Output: </strong>[0, 12]<br /><strong style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong><span style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">For i = 0, res[i] is 0.<br /></span>For i = 1, res[i] is 12.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />2 &lt;= arr.size() &lt;= 10<sup>5</sup><br />-100 &lt;= arr[i] &lt;= 100</span></p>"
+    },
+    "qnum": 1909
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/queue-using-two-stacks--115418/1",
+      "problem_name": "Queue using two Stacks",
+      "slug": "queue-using-two-stacks--115418",
+      "difficulty": "Easy",
+      "accuracy": "76.84%",
+      "marks": 2,
+      "all_submissions": 3118,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "queries.size() = &!//!&queries[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Hike",
+          "MakeMyTrip",
+          "Oracle",
+          "Walmart",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "InfoEdge",
+          "InMobi"
+        ],
+        "topic_tags": [
+          "Stack",
+          "Queue",
+          "STL",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Stack",
+        "Queue",
+        "STL",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Hike",
+        "MakeMyTrip",
+        "Oracle",
+        "Walmart",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "InfoEdge",
+        "InMobi"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-8-off-campus-3-years-experience/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-9-off-campus-for-sr-android-developer/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-set-48-campus/"
+      ],
+      "statement_text": "Implement a Queue using 2 stacks\ns1\nand\ns2\n.\nA Query\nq\nis of 2 Types\n(i)\n1\nx\n(a query of this type means  pushing\n'x'\ninto the queue)\n(ii)\n2   (a query of this type means to pop an element from the queue and print the popped element)\nNote: If there is no element return -1 as the answer while popping.",
+      "full_text": "Implement a Queue using 2 stacks\ns1\nand\ns2\n.\nA Query\nq\nis of 2 Types\n(i)\n1\nx\n(a query of this type means  pushing\n'x'\ninto the queue)\n(ii)\n2   (a query of this type means to pop an element from the queue and print the popped element)\nNote: If there is no element return -1 as the answer while popping.\nExamples:\nInput:\nqueries =\n[[1, 2],[1, 3],[2],[1, 4],[2]]\nOutput:\n2 3\nExplanation:\n1 2 the queue will be {2}\n1 3 the queue will be {2 3}\n2   poped element will be 2 the queue will be {3}\n1 4 the queue will be {3 4}\n2   poped element will be 3.\nInput:\nqueries = [[1, 2],[2],[2],[1, 4]]\nOutput:\n2 -1\nExplanation:\n1 2 the queue will be {2}\n2   poped element will be 2 and\nthen the queue will be empty\n2   the queue is empty and hence -1\n1 4 the queue will be {4}.\nConstraints:\n1 <=queries.size() <= 100\n1 <= x <= 100",
+      "examples": [
+        "Input:\nqueries =\n[[1, 2],[1, 3],[2],[1, 4],[2]]\nOutput:\n2 3\nExplanation:\n1 2 the queue will be {2}\n1 3 the queue will be {2 3}\n2   poped element will be 2 the queue will be {3}\n1 4 the queue will be {3 4}\n2   poped element will be 3.",
+        "Input:\nqueries = [[1, 2],[2],[2],[1, 4]]\nOutput:\n2 -1\nExplanation:\n1 2 the queue will be {2}\n2   poped element will be 2 and\nthen the queue will be empty\n2   the queue is empty and hence -1\n1 4 the queue will be {4}."
+      ],
+      "constraints_text": "Constraints:\n1 <=queries.size() <= 100\n1 <= x <= 100",
+      "question_html": "<p><span style=\"font-size: 18px;\">Implement a Queue using 2 stacks<strong> s1</strong> and<strong> s2</strong>.<br />A Query <strong>q</strong> is of 2 Types<br /><strong>(i)</strong> 1 <strong>x</strong> (a query of this type means&nbsp;&nbsp;pushing <strong>'x'</strong> into the queue)<br /><strong>(ii)</strong> 2 &nbsp; (a query of this type means to pop an element from the queue and print the popped element)</span></p>\n<p><span style=\"font-size: 18px;\">Note:&nbsp;If there is no element return -1 as the answer while popping.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">queries =</span><strong><span style=\"font-size: 18px;\"> </span></strong><span style=\"font-size: 18px;\">[[1, 2],[1, 3],[2],[1, 4],[2]]\n<strong>Output: </strong>2 3<strong>\nExplanation: </strong>\n1 2 the queue will be {2}\n1 3 the queue will be {2 3}\n2 &nbsp; poped element will be 2 the queue will be {3}\n1 4 the queue will be {3 4}\n2 &nbsp; poped element will be 3.</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">queries = [[1, 2],[2],[2],[1, 4]]\n<strong>Output: </strong>2 -1<strong>\nExplanation: </strong>\n1 2&nbsp;the queue will be {2}\n2&nbsp; &nbsp;poped element will be 2 and \n&nbsp;   then the queue will be empty\n2&nbsp; &nbsp;the queue is empty and hence -1\n1 4&nbsp;the queue will be {4}.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;=queries.size()&nbsp;&lt;= 100<br />1 &lt;= x &lt;= 100</span></p>"
+    },
+    "qnum": 1910
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/queue-using-two-stacks/1",
+      "problem_name": "Queue using two Stacks",
+      "slug": "queue-using-two-stacks",
+      "difficulty": "Easy",
+      "accuracy": "58.89%",
+      "marks": 2,
+      "all_submissions": 144488,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Hike",
+          "MakeMyTrip",
+          "Oracle",
+          "Walmart",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "InfoEdge",
+          "InMobi"
+        ],
+        "topic_tags": [
+          "Stack",
+          "Queue",
+          "STL",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Stack",
+        "Queue",
+        "STL",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Hike",
+        "MakeMyTrip",
+        "Oracle",
+        "Walmart",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "InfoEdge",
+        "InMobi"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/queue-using-stacks/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-8-off-campus-3-years-experience/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-9-off-campus-for-sr-android-developer/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-set-48-campus/"
+      ],
+      "statement_text": "Implement a Queue using 2 stacks\ns1\nand\ns2\n.\nA Query\nq\nis of 2 Types\n(i)\n1 x (a query of this type means  pushing\n'x'\ninto the queue)\n(ii)\n2   (a query of this type means to pop element from queue and print the poped element)\nNote :\nIf there is no element return -1 as answer while popping.\nExamples :\nInput:\nq=5, queries[][]=[[1, 2], [1, 3], [2], [1, 4], [2]]\nOutput:\n[2, 3]\nExplanation:\nIn the first testcase\n[1 2] the queue will be [2]\n[1 3] the queue will be [2 3]\n[2]   poped element will be 2 the queue\nwill be [3]\n[1 4] the queue will be [3 4]\n[2 ]  poped element will be 3.\nInput:\nq = 4, queries[][] = [[1, 2], [2], [2], [1, 4]]\nOutput:\n[2, -1]\nExplanation:\nIn the second testcase\n[1, 2] the queue will be [2]\n[2]   poped element will be [2] and\nthen the queue will be empty\n[2]   the queue is empty and hence -1\n[1, 4] the queue will be [4].",
+      "full_text": "Implement a Queue using 2 stacks\ns1\nand\ns2\n.\nA Query\nq\nis of 2 Types\n(i)\n1 x (a query of this type means  pushing\n'x'\ninto the queue)\n(ii)\n2   (a query of this type means to pop element from queue and print the poped element)\nNote :\nIf there is no element return -1 as answer while popping.\nExamples :\nInput:\nq=5, queries[][]=[[1, 2], [1, 3], [2], [1, 4], [2]]\nOutput:\n[2, 3]\nExplanation:\nIn the first testcase\n[1 2] the queue will be [2]\n[1 3] the queue will be [2 3]\n[2]   poped element will be 2 the queue\nwill be [3]\n[1 4] the queue will be [3 4]\n[2 ]  poped element will be 3.\nInput:\nq = 4, queries[][] = [[1, 2], [2], [2], [1, 4]]\nOutput:\n[2, -1]\nExplanation:\nIn the second testcase\n[1, 2] the queue will be [2]\n[2]   poped element will be [2] and\nthen the queue will be empty\n[2]   the queue is empty and hence -1\n[1, 4] the queue will be [4].\nConstraints:\n1 <=\nq <= 100\n1 <= x <= 100",
+      "examples": [
+        "Input:\nq=5, queries[][]=[[1, 2], [1, 3], [2], [1, 4], [2]]\nOutput:\n[2, 3]\nExplanation:\nIn the first testcase\n[1 2] the queue will be [2]\n[1 3] the queue will be [2 3]\n[2]   poped element will be 2 the queue\nwill be [3]\n[1 4] the queue will be [3 4]\n[2 ]  poped element will be 3.",
+        "Input:\nq = 4, queries[][] = [[1, 2], [2], [2], [1, 4]]\nOutput:\n[2, -1]\nExplanation:\nIn the second testcase\n[1, 2] the queue will be [2]\n[2]   poped element will be [2] and\nthen the queue will be empty\n[2]   the queue is empty and hence -1\n[1, 4] the queue will be [4]."
+      ],
+      "constraints_text": "Constraints:\n1 <=\nq <= 100\n1 <= x <= 100",
+      "question_html": "<p><span style=\"font-size: 18px;\">Implement a Queue using 2 stacks<strong> s1</strong> and<strong> s2</strong> .<br />A Query <strong>q </strong>is of 2 Types<br /><strong>(i)</strong> 1 x (a query of this type means&nbsp;&nbsp;pushing <strong>'x'</strong> into the queue)<br /><strong>(ii)</strong> 2 &nbsp; (a query of this type means to pop&nbsp;element from queue and print the poped element)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note :</strong>&nbsp;If there is no element return -1 as answer while popping.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples :</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">q=5, queries[][]=[[1, 2], [1, 3], [2], [1, 4], [2]]\n<strong>Output: </strong>[2, 3]<strong><br /></strong><strong>Explanation: \n</strong>In the first testcase\n[1 2] the queue will be [2]\n[1 3] the queue will be [2 3]\n[2] &nbsp; poped element will be 2 the queue \nwill be [3]\n[1 4] the queue will be [3 4]\n[2 ]&nbsp; poped element will be 3.</span>\n</pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">q = 4, queries[][] = [[1, 2], [2], [2], [1, 4]]\n<strong>Output: </strong>[2, -1]\n<strong>Explanation: \n</strong>In the second testcase&nbsp;\n[1, 2] the queue will be [2]\n[2]&nbsp; &nbsp;poped element will be [2] and \n&nbsp;   then the queue will be empty\n[2]&nbsp; &nbsp;the queue is empty and hence -1\n[1, 4] the queue will be [4].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;=<strong> </strong>q&nbsp;&lt;= 100<br />1 &lt;= x &lt;= 100</span></p>"
+    },
+    "qnum": 1911
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reach-the-nth-point5433/1",
+      "problem_name": "Reach the Nth point",
+      "slug": "reach-the-nth-point5433",
+      "difficulty": "Easy",
+      "accuracy": "31.23%",
+      "marks": 2,
+      "all_submissions": 78649,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Intel"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Intel"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-ways-reach-nth-stair/"
+      ],
+      "interview_links": [],
+      "statement_text": "There are\nN\npoints on the road, you can step ahead by 1 or 2 . If you start from a point 0, and can only move from point\ni\nto point\ni+1\nafter taking a step of length one, find the number of ways you can reach at point\nN.\nExample 1:\nInput:\nN =\n4\nOutput:\n5\nExplanation:\nNumber of ways to reach at 4th\npoint are {1, 1, 1, 1}, {1, 1, 2},\n{1, 2, 1} {2, 1, 1}, {2, 2}.\nExample 2:\nInput:\nN = 5\nOutput:\n8\nExplanation:\nNumber of ways to reach at 5th\npoint are {1, 1, 1, 1, 1},\n{1, 1, 1, 2}, {1, 1, 2, 1}, {1, 2, 1, 1},\n{2, 1, 1, 1}{1, 2, 2}, {2, 1, 2}, {2, 2, 1}\nYour Task:\nYou don't need to read or print anyhting. Your task is to complete the function\nnthPoint()\nwhich takes\nN\nas input parameter and returns the total number of ways\nmodulo 10\n9\n+ 7\nto reach at\nN\nth\npoint.\nExpected Time Complexity:\nO(N)\nExpected Space Complexity:\nO(N)",
+      "full_text": "There are\nN\npoints on the road, you can step ahead by 1 or 2 . If you start from a point 0, and can only move from point\ni\nto point\ni+1\nafter taking a step of length one, find the number of ways you can reach at point\nN.\nExample 1:\nInput:\nN =\n4\nOutput:\n5\nExplanation:\nNumber of ways to reach at 4th\npoint are {1, 1, 1, 1}, {1, 1, 2},\n{1, 2, 1} {2, 1, 1}, {2, 2}.\nExample 2:\nInput:\nN = 5\nOutput:\n8\nExplanation:\nNumber of ways to reach at 5th\npoint are {1, 1, 1, 1, 1},\n{1, 1, 1, 2}, {1, 1, 2, 1}, {1, 2, 1, 1},\n{2, 1, 1, 1}{1, 2, 2}, {2, 1, 2}, {2, 2, 1}\nYour Task:\nYou don't need to read or print anyhting. Your task is to complete the function\nnthPoint()\nwhich takes\nN\nas input parameter and returns the total number of ways\nmodulo 10\n9\n+ 7\nto reach at\nN\nth\npoint.\nExpected Time Complexity:\nO(N)\nExpected Space Complexity:\nO(N)\nConstraints:\n1 ≤ N ≤ 10\n5",
+      "examples": [
+        "Input:\nN =\n4\nOutput:\n5\nExplanation:\nNumber of ways to reach at 4th\npoint are {1, 1, 1, 1}, {1, 1, 2},\n{1, 2, 1} {2, 1, 1}, {2, 2}.",
+        "Input:\nN = 5\nOutput:\n8\nExplanation:\nNumber of ways to reach at 5th\npoint are {1, 1, 1, 1, 1},\n{1, 1, 1, 2}, {1, 1, 2, 1}, {1, 2, 1, 1},\n{2, 1, 1, 1}{1, 2, 2}, {2, 1, 2}, {2, 2, 1}"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">There are<strong> N </strong>points on the road, you can step ahead by 1 or 2 . If you start from a point 0, and can only move from point <strong>i</strong> to point <strong>i+1</strong> after taking a step of length one, find the number of ways you can reach at point <strong>N.</strong>&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong>N =<strong> </strong>4\n<strong>Output: <br /></strong>5\n<strong>Explanation:</strong> Number of ways to reach at 4th\npoint are {1, 1, 1, 1}, {1, 1, 2},\n{1, 2, 1} {2, 1, 1}, {2, 2}.\n</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>N = 5\n<strong>Output: </strong>8\n<strong>Explanation: </strong>Number of ways to reach at 5th\npoint are {1, 1, 1, 1, 1},\n{1, 1, 1, 2}, {1, 1, 2, 1}, {1, 2, 1, 1},\n{2, 1, 1, 1}{1, 2, 2}, {2, 1, 2}, {2, 2, 1}</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anyhting. Your task is to complete the function&nbsp;<strong>nthPoint()</strong>&nbsp;which takes <strong>N</strong> as input parameter and returns the total number of ways <strong>modulo 10<sup>9</sup>&nbsp;+ 7 </strong>to reach at <strong>N<sup>th</sup> </strong>point.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:&nbsp;</strong>O(N)<br /><strong>Expected Space Complexity:&nbsp;</strong>O(N)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1912
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/remove-duplicate-elements-from-sorted-array/1",
+      "problem_name": "Remove Duplicates Sorted Array",
+      "slug": "remove-duplicate-elements-from-sorted-array",
+      "difficulty": "Easy",
+      "accuracy": "38.18%",
+      "marks": 2,
+      "all_submissions": 360866,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Morgan Stanley",
+          "Microsoft",
+          "Samsung",
+          "Google",
+          "Wipro",
+          "Xome"
+        ],
+        "topic_tags": [
+          "two-pointer-algorithm",
+          "Arrays",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "two-pointer-algorithm",
+        "Arrays",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Morgan Stanley",
+        "Microsoft",
+        "Samsung",
+        "Google",
+        "Wipro",
+        "Xome"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/cpp-program-to-remove-duplicates-from-sorted-array/",
+        "https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/",
+        "https://www.geeksforgeeks.org/remove-duplicates-sorted-array/",
+        "https://www.geeksforgeeks.org/remove-repeated-elements-from-arraylist-in-java/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a\nsorted array arr[]\ncontaining positive integers. Your task is to\nremove all duplicate elements\nfrom this array such that each element appears only once. Return an array containing these distinct elements in the same order as they appeared.\nExamples :\nInput:\narr[] = [2, 2, 2, 2, 2]\nOutput:\n[2]\nExplanation:\nAfter removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.\nInput:\narr[] = [1, 2, 4]\nOutput:\n[1, 2, 4]\nExplation:\nAs the array does not contain any duplicates so you should return [1, 2, 4].",
+      "full_text": "You are given a\nsorted array arr[]\ncontaining positive integers. Your task is to\nremove all duplicate elements\nfrom this array such that each element appears only once. Return an array containing these distinct elements in the same order as they appeared.\nExamples :\nInput:\narr[] = [2, 2, 2, 2, 2]\nOutput:\n[2]\nExplanation:\nAfter removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.\nInput:\narr[] = [1, 2, 4]\nOutput:\n[1, 2, 4]\nExplation:\nAs the array does not contain any duplicates so you should return [1, 2, 4].\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [2, 2, 2, 2, 2]\nOutput:\n[2]\nExplanation:\nAfter removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.",
+        "Input:\narr[] = [1, 2, 4]\nOutput:\n[1, 2, 4]\nExplation:\nAs the array does not contain any duplicates so you should return [1, 2, 4]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given a <strong>sorted array arr[]</strong> containing positive integers. Your task is to <strong>remove all duplicate elements</strong> from this array such that each element appears only once. Return an array containing these distinct elements in the same order as they appeared.<br /></span><strong style=\"font-size: 18px;\">Examples :</strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [2, 2, 2, 2, 2]\n<strong>Output:</strong> [2]\n<strong>Explanation:</strong> After removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 2, 4]\n<strong>Output:</strong> [1, 2, 4]<br /><strong>Explation:  </strong>As the array does not contain any duplicates so you should return [1, 2, 4].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1913
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-an-array/1",
+      "problem_name": "Reverse an Array",
+      "slug": "reverse-an-array",
+      "difficulty": "Easy",
+      "accuracy": "55.32%",
+      "marks": 2,
+      "all_submissions": 284228,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "TCS",
+          "Adobe",
+          "Google",
+          "Infosys",
+          "Capgemini",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Apple",
+          "Yahoo",
+          "PayPal",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "TCS",
+        "Adobe",
+        "Google",
+        "Infosys",
+        "Capgemini",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Apple",
+        "Yahoo",
+        "PayPal",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-reverse-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.",
+      "full_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.\nExamples:\nInput:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].\nInput\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].\nInput\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].",
+        "Input\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].",
+        "Input\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array of integers&nbsp;<strong>arr[]</strong>. You have to <strong>reverse</strong> the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:<span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito;\">&nbsp;</span></strong>Modify the array in place.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 4, 3, 2, 6, 5]\n<strong>Output: </strong>[5, 6, 2, 3, 4, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>The elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [4, 5, 2]\n<strong>Output: </strong>[2, 5, 4]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [1]\n<strong>Output: </strong>[1]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The array has only single element, hence the reversed array is same as the original.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup></span><br /><span style=\"font-size: 14pt;\">0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1914
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/shortest-path-from-1-to-n0156/1",
+      "problem_name": "Shortest path from 1 to n",
+      "slug": "shortest-path-from-1-to-n0156",
+      "difficulty": "Easy",
+      "accuracy": "37.62%",
+      "marks": 2,
+      "all_submissions": 87869,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = ",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Accolite",
+          "Samsung",
+          "Synopsys",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Graph",
+          "Shortest Path",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Graph",
+        "Shortest Path",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Accolite",
+        "Samsung",
+        "Synopsys",
+        "Cisco"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Consider a directed graph whose vertices are numbered from 1 to n. There is an edge from a vertex i to a vertex j if and only if either j = i + 1 or j = 3 * i. The task is to find the minimum number of edges in a path from vertex 1 to vertex n.\n\nExamples :\n\nInput: n = 9\nOutput: 2\nExplanation: Many paths are possible from 1 to 9. Shortest one possible is, 1 -> 3 -> 9, of length 2.\n\nInput: n = 4\nOutput: 2\nExplanation: Possible paths from 1 to 4 are, 1 -> 2 -> 3 -> 4 and 1 -> 3 -> 4. Second path of length 2 is the shortest.\n\nInput: n = 15\nOutput: 4\n\nConstraints:\n1 ≤ n ≤ 108",
+      "full_text": "Consider a directed graph whose vertices are numbered from 1 to n. There is an edge from a vertex i to a vertex j if and only if either j = i + 1 or j = 3 * i. The task is to find the minimum number of edges in a path from vertex 1 to vertex n.\n\nExamples :\n\nInput: n = 9\nOutput: 2\nExplanation: Many paths are possible from 1 to 9. Shortest one possible is, 1 -> 3 -> 9, of length 2.\n\nInput: n = 4\nOutput: 2\nExplanation: Possible paths from 1 to 4 are, 1 -> 2 -> 3 -> 4 and 1 -> 3 -> 4. Second path of length 2 is the shortest.\n\nInput: n = 15\nOutput: 4\n\nConstraints:\n1 ≤ n ≤ 108",
+      "examples": [
+        "Input:\nn = 9\nOutput:\n2\nExplanation\n: Many paths are possible from 1 to 9. Shortest one possible is, 1 -> 3 -> 9, of length 2.",
+        "Input\n: n = 4\nOutput:\n2\nExplanation\n: Possible paths from 1 to 4 are, 1 -> 2 -> 3 -> 4 and 1 -> 3 -> 4. Second path of length 2 is the shortest.",
+        "Input\n: n = 15\nOutput:\n4"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10\n8",
+      "question_html": "<p><span style=\"font-size: 18px;\">Consider a <strong>directed graph </strong>whose vertices are numbered from <strong>1</strong> <strong>to n</strong>. There is an edge from a vertex <strong>i</strong> to a vertex <strong>j</strong> if and only if either <strong>j = i + 1 or j = 3 * i</strong>. The task is to find the <strong>minimum </strong>number of edges in a path from vertex <strong>1</strong> to vertex <strong>n</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 9\n<strong>Output: </strong>2\n<strong>Explanation</strong>: Many paths are possible from 1 to 9. Shortest one possible is, 1 -&gt; 3 -&gt; 9, of length 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: n = 4\n<strong>Output: </strong>2\n<strong>Explanation</strong>: Possible paths from 1 to 4 are, 1 -&gt; 2 -&gt; 3 -&gt; 4 and 1 -&gt; 3 -&gt; 4. Second path of length 2 is the shortest.<br /></span></pre>\n<pre><strong>Input</strong>: n = 15\n<strong>Output: </strong>4</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; n &le; 10<sup>8</sup></span></p>"
+    },
+    "qnum": 1915
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-element-in-a-sorted-and-rotated-array3611/1",
+      "problem_name": "Sorted and Rotated Minimum",
+      "slug": "minimum-element-in-a-sorted-and-rotated-array3611",
+      "difficulty": "Easy",
+      "accuracy": "40.57%",
+      "marks": 2,
+      "all_submissions": 170211,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "Adobe",
+          "Times Internet"
+        ],
+        "topic_tags": [
+          "Searching",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Searching",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "Adobe",
+        "Times Internet"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-minimum-element-in-a-sorted-and-rotated-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "A sorted array\nof distinct elements\narr[]\nis rotated at some unknown point, the task is to find the minimum element in it.",
+      "full_text": "A sorted array\nof distinct elements\narr[]\nis rotated at some unknown point, the task is to find the minimum element in it.\nExamples:\nInput:\narr[] = [5, 6, 1, 2, 3, 4]\nOutput:\n1\nExplanation:\n1 is the minimum element in the array.\nInput:\narr[] = [3, 1, 2]\nOutput:\n1\nExplanation:\nHere 1 is the minimum element.\nInput:\narr[] = [4, 2, 3]\nOutput:\n2\nExplanation:\nHere 2 is the minimum element.\nConstraints\n:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ 10\n9",
+      "examples": [
+        "Input:\narr[] = [5, 6, 1, 2, 3, 4]\nOutput:\n1\nExplanation:\n1 is the minimum element in the array.",
+        "Input:\narr[] = [3, 1, 2]\nOutput:\n1\nExplanation:\nHere 1 is the minimum element.",
+        "Input:\narr[] = [4, 2, 3]\nOutput:\n2\nExplanation:\nHere 2 is the minimum element."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">A sorted array<strong>&nbsp;</strong></span><span style=\"font-size: 18.6667px;\">of distinct elements </span><strong style=\"font-size: 18.6667px;\">arr[]</strong><span style=\"font-size: 18.6667px;\">&nbsp;is rotated at some unknown point, the task is to find the minimum element in it.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 6, 1, 2, 3, 4]\n<strong>Output: </strong>1\n<strong>Explanation:</strong> 1 is the minimum element in the array.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [3, 1, 2]\n<strong>Output: </strong>1\n<strong>Explanation:</strong> Here 1 is the minimum element.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [4, 2, 3]\n<strong>Output: </strong>2\n<strong>Explanation:</strong> Here 2 is the minimum element.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &le; arr.size() &le; 10<sup>6</sup><br />1 &le; arr[i] &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1916
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
+      "problem_name": "Stock Buy and Sell – Max one Transaction Allowed",
+      "slug": "buy-stock-2",
+      "difficulty": "Easy",
+      "accuracy": "49.33%",
+      "marks": 2,
+      "all_submissions": 140469,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "Intel",
+          "Infosys",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Yahoo",
+          "PayPal",
+          "Nvidia",
+          "Oracle",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "TCS",
+          "Adobe",
+          "Google",
+          "IBM",
+          "Accenture",
+          "Apple",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "Intel",
+        "Infosys",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Yahoo",
+        "PayPal",
+        "Nvidia",
+        "Oracle",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "TCS",
+        "Adobe",
+        "Google",
+        "IBM",
+        "Accenture",
+        "Apple",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-variations-of-stock-problems/",
+        "https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.",
+      "full_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.\nExamples:\nInput:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.\nInput:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.\nInput:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].\nConstraint:\n1\n≤\nprices.size()\n≤\n10\n5\n0\n≤\nprices[i]\n≤\n10\n4",
+      "examples": [
+        "Input:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.",
+        "Input:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.",
+        "Input:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1]."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given an array <strong>prices[]</strong> of non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when <strong>at most one </strong>transaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then <strong>return 0</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">Note: Stock must be bought before being sold.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 10, 1, 3, 6, 9, 2]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 8<br /></span><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> You can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 6, 4, 3, 1]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 0 <br /></span><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Here the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.<br /></span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>prices[] = [1, 3, 6, 9, 11]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 10 </span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Since the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraint:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices.size()&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;10</span><sup>5<br /></sup><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices[i] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> &nbsp;</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup></p>"
+    },
+    "qnum": 1917
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/swap-kth-elements5500/1",
+      "problem_name": "Swap kth elements",
+      "slug": "swap-kth-elements5500",
+      "difficulty": "Basic",
+      "accuracy": "52.76%",
+      "marks": 1,
+      "all_submissions": 81793,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "k =&!//!&arr[] = ",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Rockstand"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Rockstand"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[]\n, swap the\nk\nth\nelement from the beginning with the\nk\nth\nelement from the end.\nNote: 1-based indexing is followed.\nExamples :\nInput:\narr[] = [1, 2, 3, 4, 5, 6, 7, 8], k = 3\nOutput:\n[1, 2, 6, 4, 5, 3, 7, 8]\nExplanation:\n3\nrd\nelement from beginning is 3 and 3rd element from end is 6, so we replace 3 & 6.\nInput:\narr[] = [5, 3, 6, 1, 2], k = 2\nOutput:\n[5, 1, 6, 3, 2]\nExplanation:\n2\nnd\nelement from beginning is 3 and from end is 1.",
+      "full_text": "Given an array\narr[]\n, swap the\nk\nth\nelement from the beginning with the\nk\nth\nelement from the end.\nNote: 1-based indexing is followed.\nExamples :\nInput:\narr[] = [1, 2, 3, 4, 5, 6, 7, 8], k = 3\nOutput:\n[1, 2, 6, 4, 5, 3, 7, 8]\nExplanation:\n3\nrd\nelement from beginning is 3 and 3rd element from end is 6, so we replace 3 & 6.\nInput:\narr[] = [5, 3, 6, 1, 2], k = 2\nOutput:\n[5, 1, 6, 3, 2]\nExplanation:\n2\nnd\nelement from beginning is 3 and from end is 1.\nConstraints:\n1 ≤ arr.size(), k ≤ 10\n6\n-10\n9\n≤ arr[i] ≤ 10\n9",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 4, 5, 6, 7, 8], k = 3\nOutput:\n[1, 2, 6, 4, 5, 3, 7, 8]\nExplanation:\n3\nrd\nelement from beginning is 3 and 3rd element from end is 6, so we replace 3 & 6.",
+        "Input:\narr[] = [5, 3, 6, 1, 2], k = 2\nOutput:\n[5, 1, 6, 3, 2]\nExplanation:\n2\nnd\nelement from beginning is 3 and from end is 1."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size(), k ≤ 10\n6\n-10\n9\n≤ arr[i] ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr[]</strong>, swap the <strong>k<sup>th</sup></strong> element from the beginning with the <strong>k<sup>th</sup></strong> element from the end.</span></p>\n<p><span style=\"font-size: 18px;\">Note: 1-based indexing is followed.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4, 5, 6, 7, 8], k = 3\n<strong>Output: </strong>[1, 2, 6, 4, 5, 3, 7, 8]\n<strong>Explanation: </strong></span><span style=\"font-size: 18px;\">3<sup>rd</sup> element from beginning is 3 and 3rd element from end is 6, so we replace 3 &amp; 6.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [5, 3, 6, 1, 2], k = 2\n<strong>Output:</strong> [5, 1, 6, 3, 2]\n<strong>Explanation: </strong>2<sup>nd</sup> element from beginning is 3 and from end is 1.\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size(), k &le; 10<sup>6</sup><br />-10<sup>9</sup> &le; arr[i] &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1918
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/key-pair5616/1",
+      "problem_name": "Two Sum - Pair with Given Sum",
+      "slug": "key-pair5616",
+      "difficulty": "Easy",
+      "accuracy": "30.61%",
+      "marks": 2,
+      "all_submissions": 461690,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "target = &!//!&arr[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Hike",
+          "Adobe",
+          "Google",
+          "Wipro",
+          "SAP Labs",
+          "CarWale"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Hash",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Hash",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Hike",
+        "Adobe",
+        "Google",
+        "Wipro",
+        "SAP Labs",
+        "CarWale"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-pair-with-given-sum-exists-in-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-24/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-2020-internship-off-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-5-rounds/"
+      ],
+      "statement_text": "Given an array\narr[]\nof integers and another integer\ntarget\n. Determine if there exist\ntwo distinct indices\nsuch that the\nsum\nof their elements is equal to the\ntarget.",
+      "full_text": "Given an array\narr[]\nof integers and another integer\ntarget\n. Determine if there exist\ntwo distinct indices\nsuch that the\nsum\nof their elements is equal to the\ntarget.\nExamples:\nInput:\narr[] = [0, -1, 2, -3, 1], target = -2\nOutput:\ntrue\nExplanation:\narr[3] + arr[4] = -3 + 1 = -2\nInput:\narr[] = [1, -2, 1, 0, 5], target = 0\nOutput:\nfalse\nExplanation:\nNone of the pair makes a sum of 0\nInput:\narr[] = [11], target = 11\nOutput:\nfalse\nExplanation:\nNo pair is possible as only one element is present in arr[]\nConstraints:\n1 ≤ arr.size ≤ 10\n5\n-10\n5\n≤ arr[i] ≤ 10\n5\n-2*10\n5\n≤ target ≤ 2*10\n5",
+      "examples": [
+        "Input:\narr[] = [0, -1, 2, -3, 1], target = -2\nOutput:\ntrue\nExplanation:\narr[3] + arr[4] = -3 + 1 = -2",
+        "Input:\narr[] = [1, -2, 1, 0, 5], target = 0\nOutput:\nfalse\nExplanation:\nNone of the pair makes a sum of 0",
+        "Input:\narr[] = [11], target = 11\nOutput:\nfalse\nExplanation:\nNo pair is possible as only one element is present in arr[]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size ≤ 10\n5\n-10\n5\n≤ arr[i] ≤ 10\n5\n-2*10\n5\n≤ target ≤ 2*10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\"><span style=\"font-size: 14pt;\">Given an array </span><strong style=\"font-size: 14pt;\">arr[]</strong><span style=\"font-size: 14pt;\"> of integers and another integer </span><strong style=\"font-size: 14pt;\">target</strong><span style=\"font-size: 14pt;\">. Determine if there exist <strong>two distinct indices</strong> such that the <strong>sum</strong> of their elements is equal to the <strong>target.</strong></span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [0, -1, 2, -3, 1], target = -2\n<strong>Output: </strong>true\n<strong>Explanation:</strong> arr[3] + arr[4] = -3 + 1 = -2</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, -2, 1, 0, 5], target = 0\n<strong>Output:</strong> false\n<strong>Explanation:</strong> None of the pair makes a sum of 0<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [11], target = 11\n<strong>Output:</strong> false\n<strong>Explanation:</strong> No pair is possible as only one element is present in arr[]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size &le; 10<sup>5</sup><br />-10<sup>5</sup> &le; arr[i] &le; 10<sup>5<br /></sup><span style=\"font-size: 18.6667px;\">-2*10<sup>5</sup> &le; target &le; 2*10</span><sup>5</sup></span></p>"
+    },
+    "qnum": 1919
+  }
+]

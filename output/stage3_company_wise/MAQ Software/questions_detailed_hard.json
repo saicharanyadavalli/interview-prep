@@ -1,0 +1,359 @@
+[
+  {
+    "company": "MAQ Software",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/n-queen-problem0315/1",
+      "problem_name": "N-Queen Problem",
+      "slug": "n-queen-problem0315",
+      "difficulty": "Hard",
+      "accuracy": "35.43%",
+      "marks": 8,
+      "all_submissions": 117156,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Visa",
+          "MAQ Software",
+          "Amdocs",
+          "Twitter",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Backtracking",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Backtracking",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Visa",
+        "MAQ Software",
+        "Amdocs",
+        "Twitter",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/printing-solutions-n-queen-problem/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-16-campus/"
+      ],
+      "statement_text": "The\nn\n-queens puzzle is the problem of placing n queens on a (\nn × n)\nchessboard such that no two queens can attack each other. Note that two queens attack each other if they are placed on the same row, the same column, or the same diagonal.\nGiven an integer\nn\n, find all distinct solutions to the\nn-queens puzzle\n.\nYou can return your answer in\nany\norder but e\nach solution should represent a distinct board configuration of the queen placements, where the solutions are represented as permutations of [1, 2, 3, ..., n].\nIn this representation, the number in the\nith\nposition denotes the column in which the queen is placed in the\nith\nrow.\nFor eg. below figure represents a chessboard\n[2, 4, 1, 3]\n.",
+      "full_text": "The\nn\n-queens puzzle is the problem of placing n queens on a (\nn × n)\nchessboard such that no two queens can attack each other. Note that two queens attack each other if they are placed on the same row, the same column, or the same diagonal.\nGiven an integer\nn\n, find all distinct solutions to the\nn-queens puzzle\n.\nYou can return your answer in\nany\norder but e\nach solution should represent a distinct board configuration of the queen placements, where the solutions are represented as permutations of [1, 2, 3, ..., n].\nIn this representation, the number in the\nith\nposition denotes the column in which the queen is placed in the\nith\nrow.\nFor eg. below figure represents a chessboard\n[2, 4, 1, 3]\n.\nExamples:\nInput:\nn = 1\nOutput:\n[1]\nExplaination:\nOnly one queen can be placed in the single cell available.\nInput:\nn =\n4\nOutput:\n[[2, 4, 1, 3], [3, 1, 4, 2]]\nExplaination:\nThere are 2 possible solutions for n = 4.\nInput:\nn =\n3\nOutput:\n[]\nExplaination:\nThere are no possible solutions for n = 3.\nConstraints:\n1 ≤ n ≤ 10",
+      "examples": [
+        "Input:\nn = 1\nOutput:\n[1]\nExplaination:\nOnly one queen can be placed in the single cell available.",
+        "Input:\nn =\n4\nOutput:\n[[2, 4, 1, 3], [3, 1, 4, 2]]\nExplaination:\nThere are 2 possible solutions for n = 4.",
+        "Input:\nn =\n3\nOutput:\n[]\nExplaination:\nThere are no possible solutions for n = 3."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10",
+      "question_html": "<p><span style=\"font-size: 18px;\">The&nbsp;<strong>n</strong>-queens puzzle is the problem of placing n queens on a&nbsp;(<strong>n &times; n)</strong>&nbsp;chessboard such that no two queens can attack each other. Note that two queens attack each other if they are placed on the same row, the same column, or the same diagonal.</span></p>\n<p><span style=\"font-size: 18px;\">Given an integer&nbsp;<strong>n</strong>, find all distinct solutions to the&nbsp;<strong>n-queens puzzle</strong>.<br />You can return your answer in&nbsp;<strong>any&nbsp;</strong>order but e</span><span style=\"font-size: 18px;\">ach solution should represent a distinct board configuration of the queen placements, where the solutions are represented as permutations of [1, 2, 3, ..., n]. </span></p>\n<p><span style=\"font-size: 18px;\">In this representation, the number in the&nbsp;<strong>ith&nbsp;</strong>position denotes the column in which the queen is placed in the&nbsp;<strong>ith&nbsp;</strong>row.<br /></span><span style=\"font-size: 18px;\">For eg. below figure represents a chessboard&nbsp;<strong>[2, 4, 1, 3]</strong>.</span><span style=\"font-size: 18px;\"><br /><span style=\"font-size: 18px; height: 201px; width: 231px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/705336/Web/Other/blobid0_1759217621.jpg\" width=\"193\" height=\"200\" /></span></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 1\n<strong>Output: </strong>[1]\n<strong>Explaination: </strong>Only one queen can be placed in the single cell available.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n =<strong> </strong>4\n<strong>Output: </strong>[[2, 4, 1, 3], [3, 1, 4, 2]]\n<strong>Explaination: </strong>There are 2 possible solutions for n = 4.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/705336/Web/Other/blobid1_1759217689.webp\" width=\"375\" height=\"181\" /><br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n =<strong> </strong>3\n<strong>Output: </strong>[]\n<strong>Explaination: </strong>There are no possible solutions for n = 3.</span></pre>\n<p><strong style=\"font-size: 18px;\">Constraints:<br /></strong><span style=\"font-size: 18px;\">1 &le; n &le; 10</span></p>"
+    },
+    "qnum": 1449
+  },
+  {
+    "company": "MAQ Software",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/serialize-and-deserialize-a-binary-tree/1",
+      "problem_name": "Serialize and deserialize a binary tree",
+      "slug": "serialize-and-deserialize-a-binary-tree",
+      "difficulty": "Hard",
+      "accuracy": "51.67%",
+      "marks": 8,
+      "all_submissions": 103740,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "MAQ Software",
+          "Adobe",
+          "Linkedin",
+          "Quikr",
+          "Yahoo",
+          "InMobi",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "MAQ Software",
+        "Adobe",
+        "Linkedin",
+        "Quikr",
+        "Yahoo",
+        "InMobi",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/serialize-deserialize-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-16-on-campus-fteinternship/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-11-on-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-10-experienced/",
+        "httpss://www.geeksforgeeks.org/microsoft-interview-experience-set-157-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-8-sde-1/"
+      ],
+      "statement_text": "You are given the root of a binary tree. You have to perform Serialization and Deserialization. Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions:\n\nserialize() : stores the tree into an array and returns the array.\n\ndeSerialize() : deserializes the array to the tree and returns the root of the tree.\n\nNote: Multiple nodes can have the same data and the node values are always positive integers. Your code will be correct if the tree returned by deSerialize(serialize(input_tree)) is same as the input tree. Driver code will print the level order traversal of the tree returned by deSerialize(serialize(input_tree)).\n\nExamples :\n\nInput: root = [1, 2, 3]\n\nOutput: [1, 2, 3]\n\nInput: root = [10, 20, 30, 40, 60, N, N]\n\nOutput: [10, 20, 30, 40, 60]\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 109",
+      "full_text": "You are given the root of a binary tree. You have to perform Serialization and Deserialization. Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions:\n\nserialize() : stores the tree into an array and returns the array.\n\ndeSerialize() : deserializes the array to the tree and returns the root of the tree.\n\nNote: Multiple nodes can have the same data and the node values are always positive integers. Your code will be correct if the tree returned by deSerialize(serialize(input_tree)) is same as the input tree. Driver code will print the level order traversal of the tree returned by deSerialize(serialize(input_tree)).\n\nExamples :\n\nInput: root = [1, 2, 3]\n\nOutput: [1, 2, 3]\n\nInput: root = [10, 20, 30, 40, 60, N, N]\n\nOutput: [10, 20, 30, 40, 60]\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 109",
+      "examples": [
+        "Input:\nroot = [1, 2, 3]\nOutput:\n[1, 2, 3]",
+        "Input:\nroot = [10, 20, 30, 40, 60, N, N]\nOutput:\n[10, 20, 30, 40, 60]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n4\n1 ≤ node->data ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given the <strong>root</strong> of a binary tree. You have to perform <strong>Serialization</strong> and <strong>Deserialization</strong>. Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions:</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>serialize() :</strong> stores the tree into an array&nbsp;and returns the array.</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>deSerialize() :</strong>&nbsp;deserializes the array to the tree and returns the root of the tree.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Note:&nbsp;</strong>Multiple nodes can have the same data and the node values are<strong>&nbsp;</strong>always&nbsp;positive integers. Your code will be correct if the tree returned by&nbsp;<strong>deSerialize(serialize(input_tree))</strong> is same as the input tree. Driver code will print the level order traversal of the tree returned by deSerialize(serialize(input_tree)).</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3] &nbsp; &nbsp; &nbsp; </span><br /><span style=\"font-size: 14pt;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908076/Web/Other/blobid1_1754980863.webp\" width=\"245\" height=\"151\" />\n<strong>Output: </strong>[1, 2, 3]\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [10, 20, 30, 40, 60, N, N] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908076/Web/Other/blobid0_1754980083.webp\" width=\"249\" height=\"198\" />\n<strong>Output: </strong>[10, 20, 30, 40, 60]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>4</sup><br />1 &le; node-&gt;data &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1450
+  },
+  {
+    "company": "MAQ Software",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/solve-the-sudoku-1587115621/1",
+      "problem_name": "Solve the Sudoku",
+      "slug": "solve-the-sudoku-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "37.98%",
+      "marks": 8,
+      "all_submissions": 133894,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "mat[][] =",
+        "datatype": "INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "MAQ Software",
+          "Directi",
+          "PayPal",
+          "Samsung",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Backtracking",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Backtracking",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "MAQ Software",
+        "Directi",
+        "PayPal",
+        "Samsung",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sudoku-backtracking-7/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-8-for-sde-2/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-sde-1-2/"
+      ],
+      "statement_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.",
+      "full_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.\nExamples:\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nConstraints:\n0 ≤ mat[i][j] ≤ 9",
+      "examples": [
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.",
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers."
+      ],
+      "constraints_text": "Constraints:\n0 ≤ mat[i][j] ≤ 9",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">Given an&nbsp;incomplete&nbsp;</span><a style=\"font-size: 18px;\" href=\"https://www.geeksforgeeks.org/introduction-to-sudoku-puzzles-and-how-to-solve-them/\"><strong>Sudoku</strong></a><span style=\"font-size: 18px;\">&nbsp;in the form of matrix <strong>mat[][]</strong> of order 9*9, the task is to solve the Sudoku.&nbsp;</span></span><span style=\"font-size: 18px;\">It is <strong>guaranteed </strong>that the input Sudoku will have exactly <strong>one </strong>solution.</span></p>\n<p><span style=\"font-size: 18px;\">A sudoku solution must satisfy&nbsp;all of the following rules:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each row.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each column.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code> must occur exactly once in each of the 9,&nbsp;<code>3x3</code>&nbsp;sub-boxes of the grid.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Zeros represent blanks to be filled with numbers 1-9, while non-zero cells are <strong>fixed </strong>and cannot be changed.</span><span style=\"font-size: 18px;\"><br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306620.png\" alt=\"\" width=\"260\" height=\"212\" />\n</span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\">\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /></span><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886267/Web/Other/blobid1_1738136756.png\" alt=\"\" width=\"262\" height=\"209\" /><br /></span><strong style=\"font-size: 18px;\">Output:</strong><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &le; mat[i][j] &le; 9<br /></span></p>"
+    },
+    "qnum": 1451
+  },
+  {
+    "company": "MAQ Software",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/permutations-of-a-given-string-1587115620/1",
+      "problem_name": "String Permutations",
+      "slug": "permutations-of-a-given-string-1587115620",
+      "difficulty": "Hard",
+      "accuracy": "48.33%",
+      "marks": 8,
+      "all_submissions": 65417,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "S =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Amazon",
+          "OYO Rooms",
+          "Samsung",
+          "Citrix",
+          "MAQ Software",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Recursion",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Recursion",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Amazon",
+        "OYO Rooms",
+        "Samsung",
+        "Citrix",
+        "MAQ Software",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-n-th-lexicographically-permutation-string-set-2/",
+        "https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-16-on-campus-fteinternship/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-9-on-campus/"
+      ],
+      "statement_text": "Given a string S. The task is to find all permutations (need not be different) of a given string.\n\nNote: return the permutations in lexicographically increasing order.\n\nExample 1:\n\nInput:\nS = AAA\nOutput: AAA AAA AAA AAA AAA AAA\nExplanation: There are total 6 permutations, as given in the output.\n\nExample 2:\n\nInput:\nS = ABSG\nOutput: ABGS ABSG AGBS AGSB ASBG ASGB\nBAGS BASG BGAS BGSA BSAG BSGA GABS\nGASB GBAS GBSA GSAB GSBA SABG SAGB\nSBAG SBGA SGAB SGBA\nExplanation: There are total 24 permutations, as given in the output.\n\nYour Task:\nThis is a function problem. You only need to complete the function permutation that takes S as parameter and returns the list of permutations in lexicographically increasing order. The newline is automatically added by driver code.\n\nConstraints:\n1 ≤ size of string ≤ 5",
+      "full_text": "Given a string S. The task is to find all permutations (need not be different) of a given string.\n\nNote: return the permutations in lexicographically increasing order.\n\nExample 1:\n\nInput:\nS = AAA\nOutput: AAA AAA AAA AAA AAA AAA\nExplanation: There are total 6 permutations, as given in the output.\n\nExample 2:\n\nInput:\nS = ABSG\nOutput: ABGS ABSG AGBS AGSB ASBG ASGB\nBAGS BASG BGAS BGSA BSAG BSGA GABS\nGASB GBAS GBSA GSAB GSBA SABG SAGB\nSBAG SBGA SGAB SGBA\nExplanation: There are total 24 permutations, as given in the output.\n\nYour Task:\nThis is a function problem. You only need to complete the function permutation that takes S as parameter and returns the list of permutations in lexicographically increasing order. The newline is automatically added by driver code.\n\nConstraints:\n1 ≤ size of string ≤ 5",
+      "examples": [
+        "Input:\nS = AAA\nOutput:\nAAA AAA AAA AAA AAA AAA\nExplanation:\nThere are total 6 permutations, as given in the output.",
+        "Input:\nS = ABSG\nOutput:\nABGS ABSG AGBS AGSB ASBG ASGB\nBAGS BASG BGAS BGSA BSAG BSGA GABS\nGASB GBAS GBSA GSAB GSBA SABG SAGB\nSBAG SBGA SGAB SGBA\nExplanation:\nThere are total 24 permutations, as given in the output."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ size of string ≤ 5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string S. The task is to find all permutations (<strong>need not be different</strong>) of a given string.</span></p>\n<p><span style=\"font-size: 18px;\">Note: return the permutations in </span><span style=\"font-size: 18px;\"><strong>lexicographically increasing</strong> order.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>S = AAA\n<strong>Output: </strong>AAA AAA AAA AAA AAA AAA<br /><strong>Explanation:</strong> There are total 6 permutations, as given in the output.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>S = ABSG\n<strong>Output: </strong>ABGS ABSG AGBS AGSB ASBG ASGB\nBAGS BASG BGAS BGSA BSAG BSGA GABS\nGASB GBAS GBSA GSAB GSBA SABG SAGB\nSBAG SBGA SGAB SGBA<br /><strong>Explanation:</strong> There are total 24 permutations, as given in the output.</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Your Task:</span></strong><br /><span style=\"font-size: 18px;\">This is a function problem. You only need to complete the <strong>function permutation </strong>that takes <strong>S as parameter</strong> and returns&nbsp;the list of&nbsp;<strong>permutations </strong>in lexicographically increasing&nbsp;order. The <strong>newline is automatically </strong>added by driver code.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; size of string &le; 5</span></p>"
+    },
+    "qnum": 1452
+  },
+  {
+    "company": "MAQ Software",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-break-trie--141631/1",
+      "problem_name": "Word Break (Trie)",
+      "slug": "word-break-trie--141631",
+      "difficulty": "Hard",
+      "accuracy": "48.85%",
+      "marks": 8,
+      "all_submissions": 13984,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Hike",
+          "Walmart",
+          "MAQ Software",
+          "Google",
+          "IBM"
+        ],
+        "topic_tags": [
+          "Trie",
+          "Advanced Data Structure"
+        ]
+      },
+      "topic_tags": [
+        "Trie",
+        "Advanced Data Structure"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Hike",
+        "Walmart",
+        "MAQ Software",
+        "Google",
+        "IBM"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-break-problem-trie-solution/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-9-on-campus-for-se-1/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-7-off-campus/"
+      ],
+      "statement_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "full_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "examples": [
+        "Input:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput:\n1\nExplanation:\nThe string can be segmented as\n\"i like\".",
+        "Input\n:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput:\n1\nExplanation\n: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\"."
+      ],
+      "constraints_text": "Constraints\n:\n1 <= N <= 12\n1 <= s <=1000 , where s = length of string A\nThe length of each word is less than 15.",
+      "question_html": "<p><span style=\"font-size:18px\">Given a string <strong>A </strong>and a dictionary of n words <strong>B</strong>, find out if A&nbsp;can be segmented into a space-separated sequence of dictionary words.&nbsp;</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nn = 12\r\nB = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;,\r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilike&quot;\r\n<strong>Output:</strong> 1\r\n<strong>Explanation: </strong>The string can be segmented as\r\n&quot;i like&quot;.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input</strong>: </span>\r\n<span style=\"font-size:18px\">n = 12 </span>\r\n<span style=\"font-size:18px\">B = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;, \r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilikesamsung&quot; </span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong> 1</span>\r\n<span style=\"font-size:18px\"><strong>Explanation</strong>: The string can be segmented as \r\n&quot;i like samsung&quot; or &quot;i like sam sung&quot;.</span>\r\n\r\n</pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nComplete&nbsp;<strong>wordBreak()</strong>&nbsp;function which takes a string and list of strings as a parameter&nbsp;and returns 1 if it is possible to break words, else return&nbsp;0. You don&#39;t need to read any input or print any output, it is done by driver code.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected time complexity:&nbsp;</strong>O(n*l+|A|<sup>2</sup>) where l is the leght of longest string present in the dictionary and |A| is the length of&nbsp;string A</span><br />\r\n<span style=\"font-size:18px\"><strong>Expected auxiliary space:</strong>&nbsp;O(|A| + k) , where k = sum of length of all strings present in B</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints</strong>:<br />\r\n1 &lt;= N &lt;= 12<br />\r\n1 &lt;= s &lt;=1000 , where s =&nbsp;length of string A<br />\r\n&nbsp;The length of each word is less than 15.</span></p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    },
+    "qnum": 1453
+  }
+]

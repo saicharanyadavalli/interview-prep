@@ -1,0 +1,83 @@
+[
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1",
+      "problem_name": "Smallest window containing all characters",
+      "slug": "smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "30.19%",
+      "marks": 8,
+      "all_submissions": 202424,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = &!//!&p = ",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Google",
+          "Streamoid Technologies",
+          "Media.net",
+          "Atlassian",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "sliding-window",
+          "Hash",
+          "Strings",
+          "Dynamic Programming",
+          "Binary Search"
+        ]
+      },
+      "topic_tags": [
+        "sliding-window",
+        "Hash",
+        "Strings",
+        "Dynamic Programming",
+        "Binary Search"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Google",
+        "Streamoid Technologies",
+        "Media.net",
+        "Atlassian",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-315/",
+        "https://www.geeksforgeeks.org/streamoid-technologies-interview-experience-set-1-for-freshers/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-2-campus/",
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-22-pool-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-5-off-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-2-for-sde-1/"
+      ],
+      "statement_text": "Given two strings s and p. Find the smallest substring in s consisting of all the characters (including duplicates) of the string p. Return empty string in case no such substring is present.\nIf there are multiple such substring of the same length found, return the one with the least starting index.\n\nExamples:\n\nInput: s = \"timetopractice\", p = \"toc\"\nOutput: \"toprac\"\nExplanation: \"toprac\" is the smallest substring in which \"toc\" can be found.\n\nInput: s = \"zoomlazapzo\", p = \"oza\"\nOutput: \"apzo\"\nExplanation: \"apzo\" is the smallest substring in which \"oza\" can be found.\n\nInput: s = \"zoom\", p = \"zooe\"\nOutput: \"\"\nExplanation: No substring is present containing all characters of p.\n\nConstraints:\n1 ≤ s.length(), p.length() ≤ 106\ns, p consists of lowercase english letters",
+      "full_text": "Given two strings s and p. Find the smallest substring in s consisting of all the characters (including duplicates) of the string p. Return empty string in case no such substring is present.\nIf there are multiple such substring of the same length found, return the one with the least starting index.\n\nExamples:\n\nInput: s = \"timetopractice\", p = \"toc\"\nOutput: \"toprac\"\nExplanation: \"toprac\" is the smallest substring in which \"toc\" can be found.\n\nInput: s = \"zoomlazapzo\", p = \"oza\"\nOutput: \"apzo\"\nExplanation: \"apzo\" is the smallest substring in which \"oza\" can be found.\n\nInput: s = \"zoom\", p = \"zooe\"\nOutput: \"\"\nExplanation: No substring is present containing all characters of p.\n\nConstraints:\n1 ≤ s.length(), p.length() ≤ 106\ns, p consists of lowercase english letters",
+      "examples": [
+        "Input:\ns = \"timetopractice\", p = \"toc\"\nOutput:\n\"toprac\"\nExplanation:\n\"toprac\" is the smallest substring in which \"toc\" can be found.",
+        "Input:\ns = \"zoomlazapzo\", p = \"oza\"\nOutput:\n\"apzo\"\nExplanation:\n\"apzo\" is the smallest substring in which \"oza\" can be found.",
+        "Input:\ns = \"zoom\", p = \"zooe\"\nOutput:\n\"\"\nExplanation:\nNo substring is present containing all characters of p."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.length(), p.length() ≤ 10\n6\ns, p consists of lowercase english letters",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given two strings <strong>s</strong> and <strong>p</strong>. Find the smallest substring in <strong>s</strong> consisting of all the characters (<strong>including duplicates</strong>) of the string <strong>p</strong>. Return empty string in case no such substring is present. <br /></span><span style=\"font-size: 14pt;\">If there are multiple such substring of the same length found, return the one with the <strong>least starting index</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"timetopractice\", p = \"toc\"\n<strong>Output: </strong>\"toprac\"<strong>\nExplanation: </strong>\"toprac\" is the smallest substring in which \"toc\" can be found.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"zoomlazapzo\", p = \"oza\"\n<strong>Output: </strong>\"apzo\"<strong>\nExplanation: </strong>\"apzo\" is the smallest substring in which \"oza\" can be found.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"zoom\", p = \"zooe\"\n<strong>Output:</strong> \"\"<strong>\nExplanation: </strong>No substring is present containing all characters of p.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:&nbsp;</strong><br />1 &le; s.length(), p.length() &le; 10<sup>6<br /></sup></span><span style=\"font-size: 14pt;\">s, p consists of lowercase english letters</span></p>"
+    },
+    "qnum": 836
+  }
+]

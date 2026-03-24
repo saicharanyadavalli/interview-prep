@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Solve Question — Interview Practice Platform</title>
+    <meta name="description" content="Focused question solving page with notes and AI assistant." />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="bg-shape bg-shape-a"></div>
+    <div class="bg-shape bg-shape-b"></div>
+
+    <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Toggle menu">☰</button>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-brand">
+          <h2><span class="brand-icon">🎯</span> InterviewPrep</h2>
+        </div>
+        <nav class="sidebar-nav"></nav>
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <img class="sidebar-avatar" src="" alt="Avatar" />
+            <div class="sidebar-user-info">
+              <p class="sidebar-user-name">Guest</p>
+              <p class="sidebar-user-email">Not signed in</p>
+            </div>
+          </div>
+          <div class="button-row">
+            <button id="themeToggleBtn" class="btn btn-sm btn-icon" type="button" aria-label="Toggle theme">🌙</button>
+            <button id="loginBtn" class="btn btn-sm btn-primary" type="button">Sign In</button>
+            <button id="signOutBtn" class="btn btn-sm hidden" type="button">Sign Out</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="page-header">
+          <h1>🧠 Solve Question</h1>
+          <a href="questions.html" class="btn btn-sm">← Back To All Questions</a>
+        </div>
+
+        <div class="status-bar section">
+          <span id="statusText" class="status-text">Loading question...</span>
+          <div class="status-right">
+            <span id="qnumBadge" class="counter-badge">#0</span>
+          </div>
+        </div>
+
+        <section id="questionCard" class="question-card section" aria-live="polite">
+          <div class="question-head">
+            <h2 id="qTitle">Question Title</h2>
+            <div class="pill-row">
+              <span id="qCompany" class="pill"></span>
+              <span id="qDifficulty" class="pill"></span>
+            </div>
+          </div>
+
+          <div class="quick-links">
+            <a id="qProblemUrl" href="#" target="_blank" rel="noopener noreferrer">Open Problem</a>
+          </div>
+
+          <div class="details-grid">
+            <article>
+              <h3>Statement</h3>
+              <pre id="qStatement" class="text-block"></pre>
+            </article>
+            <article id="examplesArticle">
+              <h3>Examples</h3>
+              <div id="qExamples" class="chip-list"></div>
+            </article>
+            <article>
+              <h3>Tags</h3>
+              <details class="inline-dropdown">
+                <summary>Show Tags</summary>
+                <div id="qTags" class="chip-list"></div>
+              </details>
+            </article>
+            <article>
+              <h3>Constraints</h3>
+              <pre id="qConstraints" class="text-block"></pre>
+            </article>
+          </div>
+        </section>
+
+        <section class="card-flat section">
+          <div class="card-header">
+            <h3>✅ Question Outcome</h3>
+          </div>
+          <p class="card-subtitle">Set this manually. Opening a question does not mark it as solved.</p>
+          <div class="button-row">
+            <button id="markSolvedBtn" class="btn btn-sm outcome-btn" type="button">✅ Mark Solved</button>
+            <button id="markUnsolvedBtn" class="btn btn-sm outcome-btn" type="button">❌ Mark Not Solved</button>
+            <button id="markRevisitBtn" class="btn btn-sm outcome-btn" type="button">🔄 Add To Revisit</button>
+          </div>
+        </section>
+
+        <section class="card-flat section">
+          <div class="card-header">
+            <h3>💬 Your Note</h3>
+          </div>
+          <p class="card-subtitle">Your previous note is loaded automatically. Save again to overwrite.</p>
+          <div id="commentsList" class="comments-list">
+            <p class="text-muted text-sm">Loading note...</p>
+          </div>
+          <div class="comment-input-wrap">
+            <textarea id="commentInput" placeholder="Write your note for this question..." rows="3"></textarea>
+            <button id="saveCommentBtn" class="btn btn-primary btn-sm" style="margin-top:0.4rem" type="button">Save Note</button>
+          </div>
+        </section>
+
+        <section class="assistant-panel section">
+          <div class="assistant-head">
+            <h3>🤖 Ask AI About This Question</h3>
+          </div>
+          <p class="card-subtitle">Ask only about this question. You can ask hints, approach, complexity, and edge cases.</p>
+          <div id="chatMessages" class="chat-messages"></div>
+          <div class="chat-input-wrap">
+            <textarea id="doubtInput" placeholder="Ask your doubt about this question..." rows="3"></textarea>
+            <div class="chat-actions">
+              <button id="sendDoubtBtn" class="btn btn-primary" type="button">Ask Assistant</button>
+              <button id="clearChatBtn" class="btn" type="button">Clear Chat</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/solve.js"></script>
+  </body>
+</html>

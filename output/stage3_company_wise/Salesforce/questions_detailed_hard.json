@@ -1,0 +1,67 @@
+[
+  {
+    "company": "Salesforce",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/binary-tree-to-dll/1",
+      "problem_name": "Binary Tree to DLL",
+      "slug": "binary-tree-to-dll",
+      "difficulty": "Hard",
+      "accuracy": "53.36%",
+      "marks": 8,
+      "all_submissions": 168952,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[]",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Goldman Sachs",
+          "Salesforce"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Goldman Sachs",
+        "Salesforce"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/convert-binary-tree-to-doubly-linked-list-by-fixing-left-and-right-pointers/",
+        "https://www.geeksforgeeks.org/convert-binary-tree-to-doubly-linked-list-using-inorder-traversal/",
+        "https://www.geeksforgeeks.org/convert-given-binary-tree-to-doubly-linked-list-in-linear-time/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a root of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the same node structure. The left and right pointers in the binary tree nodes should be used as prev and next pointers respectively in the resulting DLL .The DLL should be formed by performing an inorder traversal of the binary tree (i.e., Left → Root → Right).The first node in the inorder traversal (i.e., the leftmost node) should become the head of the DLL. Return the head of the resulting DLL.\nNote: h is the tree's height, and this space is used implicitly for the recursion stack.\n\nExamples:\n\nInput: root = [1, 2, 3]\nOutput: [2, 1, 3]\n\nExplanation: DLL would be 2<=>1<=>3\n\nInput:  root = [10, 20, 30, 40, 60]\nOutput: [40, 20, 60, 10, 30]\n\nExplanation: DLL would be 40<=>20<=>60<=>10<=>30.\n\nConstraints:\n1 ≤ Number of nodes ≤ 105\n0 ≤ Data of a node ≤ 105",
+      "full_text": "Given a root of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the same node structure. The left and right pointers in the binary tree nodes should be used as prev and next pointers respectively in the resulting DLL .The DLL should be formed by performing an inorder traversal of the binary tree (i.e., Left → Root → Right).The first node in the inorder traversal (i.e., the leftmost node) should become the head of the DLL. Return the head of the resulting DLL.\nNote: h is the tree's height, and this space is used implicitly for the recursion stack.\n\nExamples:\n\nInput: root = [1, 2, 3]\nOutput: [2, 1, 3]\n\nExplanation: DLL would be 2<=>1<=>3\n\nInput:  root = [10, 20, 30, 40, 60]\nOutput: [40, 20, 60, 10, 30]\n\nExplanation: DLL would be 40<=>20<=>60<=>10<=>30.\n\nConstraints:\n1 ≤ Number of nodes ≤ 105\n0 ≤ Data of a node ≤ 105",
+      "examples": [
+        "Input:\nroot\n=\n[1, 2, 3]\nOutput:\n[2, 1, 3]\nExplanation:\nDLL would be 2<=>1<=>3",
+        "Input:\nroot = [10, 20, 30, 40, 60]\nOutput:\n[40, 20, 60, 10, 30]\nExplanation:\nDLL would be 40<=>20<=>60<=>10<=>30."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ Number of nodes ≤ 10\n5\n0 ≤ Data of a node ≤ 10\n5",
+      "question_html": "<p data-pm-slice=\"0 0 []\">G<span style=\"font-size: 14pt;\">iven a <strong>root</strong> of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the <strong>same node</strong> structure. The<strong> left </strong>and <strong>right</strong> pointers in the binary tree nodes should be used as <strong>prev</strong> and <strong>next</strong> pointers respectively in the resulting DLL .The DLL should be formed by performing an <strong>inorder</strong> traversal of the binary tree (i.e., Left &rarr; Root &rarr; Right).The <strong>first node </strong>in the inorder traversal (i.e., the leftmost node) should become the <strong>head</strong> of the DLL. Return the <strong>head</strong> of the resulting DLL.<br /></span><span style=\"font-size: 14pt;\"><strong>Note: </strong>h&nbsp;is the tree's height, and this space is used implicitly for the recursion stack.</span></p>\n<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid0_1763203392.webp\" width=\"333\" height=\"266\" /></span></p>\n<p><span style=\"font-size: 12pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 12pt;\"><strong>Input: </strong>root<strong> = </strong>[1, 2, 3]\n<strong>Output: </strong>[2, 1, 3] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid3_1768475771.jpg\" width=\"245\" height=\"243\" /><br /><strong>Explanation:</strong> DLL would be 2&lt;=&gt;1&lt;=&gt;3</span></pre>\n<pre><span style=\"font-size: 12pt;\"><strong>Input:  </strong>root = [10, 20, 30, 40, 60]\n<strong>Output:</strong> [40, 20, 60, 10, 30] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid2_1763203489.webp\" width=\"286\" height=\"225\" /><strong><br />Explanation: </strong>DLL would be 40&lt;=&gt;20&lt;=&gt;60&lt;=&gt;10&lt;=&gt;30.</span></pre>\n<p><span style=\"font-size: 12pt;\"><strong>Constraints:</strong><br />1 &le; Number of nodes &le; 10<sup>5</sup><br />0 &le; Data of a node &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2229
+  }
+]

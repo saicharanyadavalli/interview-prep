@@ -1,0 +1,252 @@
+[
+  {
+    "company": "Oracle",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/avl-tree-deletion/1",
+      "problem_name": "AVL Tree Deletion",
+      "slug": "avl-tree-deletion",
+      "difficulty": "Hard",
+      "accuracy": "47.98%",
+      "marks": 8,
+      "all_submissions": 41973,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Oracle",
+          "Oxigen Wallet"
+        ],
+        "topic_tags": [
+          "Tree",
+          "AVL-Tree",
+          "Data Structures",
+          "Advanced Data Structure"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "AVL-Tree",
+        "Data Structures",
+        "Advanced Data Structure"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Oracle",
+        "Oxigen Wallet"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/deletion-in-an-avl-tree/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an AVL tree and N values to be deleted from the tree. Write a function to delete a given value from the tree. All the N values which needs to be deleted are passed one by one as input data by driver code itself, you are asked to return the root of modified tree after deleting the value.\n\nExample 1:\n\nTree =\n        4\n      /   \\\n     2     6\n    / \\   / \\\n   1   3 5   7\n\nN = 4\nValues to be deleted = {4,1,3,6}\n\nInput: Value to be deleted = 4\nOutput:\n        5\n      /   \\\n     2     6\n    / \\     \\\n   1   3     7\n\nInput: Value to be deleted = 1\nOutput:\n        5\n      /   \\\n     2     6\n      \\     \\\n       3     7\n\nInput: Value to be deleted = 3\nOutput:\n        5\n      /   \\\n     2     6\n            \\\n             7\n\nInput: Value to be deleted = 6\nOutput:\n        5\n      /   \\\n     2     7\n\nYour Task:\nYou dont need to read input or print anything. Complete the function delelteNode() which takes the root of the tree and the value of the node to be deleted as input parameters and returns the root of the modified tree.\n\nNote: The tree will be checked after each deletion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all deletion are successful, inorder traversal of tree will be printed.\nIf every single node is deleted from tree, 'null' will be printed.\n\nExpected Time Complexity: O(height of tree)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 500",
+      "full_text": "Given an AVL tree and N values to be deleted from the tree. Write a function to delete a given value from the tree. All the N values which needs to be deleted are passed one by one as input data by driver code itself, you are asked to return the root of modified tree after deleting the value.\n\nExample 1:\n\nTree =\n        4\n      /   \\\n     2     6\n    / \\   / \\\n   1   3 5   7\n\nN = 4\nValues to be deleted = {4,1,3,6}\n\nInput: Value to be deleted = 4\nOutput:\n        5\n      /   \\\n     2     6\n    / \\     \\\n   1   3     7\n\nInput: Value to be deleted = 1\nOutput:\n        5\n      /   \\\n     2     6\n      \\     \\\n       3     7\n\nInput: Value to be deleted = 3\nOutput:\n        5\n      /   \\\n     2     6\n            \\\n             7\n\nInput: Value to be deleted = 6\nOutput:\n        5\n      /   \\\n     2     7\n\nYour Task:\nYou dont need to read input or print anything. Complete the function delelteNode() which takes the root of the tree and the value of the node to be deleted as input parameters and returns the root of the modified tree.\n\nNote: The tree will be checked after each deletion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all deletion are successful, inorder traversal of tree will be printed.\nIf every single node is deleted from tree, 'null' will be printed.\n\nExpected Time Complexity: O(height of tree)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 500",
+      "examples": [
+        "Example 1:\nTree =\n4\n/   \\\n2     6\n/ \\   / \\\n1   3 5   7\nN = 4\nValues to be deleted = {4,1,3,6}\nInput:\nValue to be deleted = 4\nOutput:\n5\n/   \\\n2     6\n/ \\     \\\n1   3     7\nInput:\nValue to be deleted = 1\nOutput:\n5\n/   \\\n2     6\n\\     \\\n3     7\nInput:\nValue to be deleted = 3\nOutput:\n5\n/   \\\n2     6\n\\\n7\nInput:\nValue to be deleted = 6\nOutput:\n5\n/   \\\n2     7"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 500",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an <strong>AVL tree</strong> and <strong>N</strong> values to be deleted from the tree. Write a function to delete a given value from the tree. All the <strong>N</strong> values which needs to be deleted are passed one by one as input <strong>data </strong>by driver code itself, you are asked to return the root of modified tree after deleting the value.</span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Example 1:\n</strong>\nTree = \n        4\n      /   \\\n     2     6\n    / \\   / \\  \n   1   3 5   7</span>\n\n<span style=\"font-size: 18px;\">N = 4\nValues to be deleted = {4,1,3,6}</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 4\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     6\n    / \\     \\  \n   1   3     7</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 1\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     6\n      \\     \\  \n       3     7</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 3\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     6\n            \\  \n             7</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 6\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     7</span>\n\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task: &nbsp;</strong><br />You dont need to read input or print anything. Complete the function<strong> delelteNode()</strong> which takes the root of the tree and the value of the node to be deleted as input parameters and returns the root of the modified tree.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:&nbsp;</strong>The tree will be checked after each deletion.&nbsp;<br />If it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.<br />If instead all deletion are successful, inorder traversal of tree will be printed.<br />If every single node is deleted from tree, 'null' will be printed.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(height of tree)<br /><strong>Expected Auxiliary Space: </strong>O(height of tree)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 500</span></p>"
+    },
+    "qnum": 2065
+  },
+  {
+    "company": "Oracle",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/avl-tree-insertion/1",
+      "problem_name": "AVL Tree Insertion",
+      "slug": "avl-tree-insertion",
+      "difficulty": "Hard",
+      "accuracy": "37.01%",
+      "marks": 8,
+      "all_submissions": 46347,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Oracle",
+          "Oxigen Wallet",
+          "Informatica",
+          "Citicorp"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Oracle",
+        "Oxigen Wallet",
+        "Informatica",
+        "Citicorp"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/avl-tree-set-1-insertion/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an AVL tree and N values to be inserted in the tree. Write a function to insert elements into the given AVL tree.\n\nNote:\nThe tree will be checked after each insertion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all insertions are successful, inorder traversal of the tree will be printed.\n\nExample 1:\n\nInput:\nN = 3\nValues to be inserted = {5,1,4}\nOutput:\n1 4 5\nExplanation:\nValue to be inserted = 5\n    5\nValue to be inserted = 1\n    5\n   /\n  1\nValue to be inserted = 4\n  5                     4\n /    LR rotation        /  \\\n1    ----------->       1   5\n \\\n 4\nTherefore the inorder of the final tree will be 1, 4, 5.\n\nExample 2:\n\nInput:\nN = 7\nValues to be inserted = {21,26,30,9,4,14,28}\nOutput:\n4 9 14 21 26 28 30\nExplanation:\nValue to be inserted = 21\n    21\nValue to be inserted = 26\n    21\n     \\\n     26\nValue to be inserted = 30\n  21                        26\n   \\      LL rotation         /  \\\n   26    ----------->       21  30\n    \\\n     30\nValue to be inserted = 9\n    26\n   /  \\\n  21  30\n /\n9\nValue to be inserted = 4\n      26                          26\n     /  \\                          /  \\\n    21  30                      9   30\n   /          RR rotation        /  \\\n  9          ----------->       4  21\n /\n4\nValue to be inserted = 14\n      26                          21\n     /  \\                          /  \\\n    9   30                      9   26\n   / \\          LR rotation      /  \\    \\\n  4  21        ----------->    4  14  30\n     /\n    14\nValue to be inserted = 28\n      21                          21\n     /  \\                          /  \\\n    9   26                      9   28\n   / \\    \\     RL rotation       / \\    / \\\n  4  14   30   ----------->   4  14 26 30\n          /\n         28\nTherefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30.\n\nYour Task:\nYou don't need to read input or print anything. Complete the function insertToAVL() which takes the root of the tree and the value of the node to be inserted as input parameters and returns the root of the modified tree.\n\nExpected Time Complexity: O(log N)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 2000",
+      "full_text": "Given an AVL tree and N values to be inserted in the tree. Write a function to insert elements into the given AVL tree.\n\nNote:\nThe tree will be checked after each insertion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all insertions are successful, inorder traversal of the tree will be printed.\n\nExample 1:\n\nInput:\nN = 3\nValues to be inserted = {5,1,4}\nOutput:\n1 4 5\nExplanation:\nValue to be inserted = 5\n    5\nValue to be inserted = 1\n    5\n   /\n  1\nValue to be inserted = 4\n  5                     4\n /    LR rotation        /  \\\n1    ----------->       1   5\n \\\n 4\nTherefore the inorder of the final tree will be 1, 4, 5.\n\nExample 2:\n\nInput:\nN = 7\nValues to be inserted = {21,26,30,9,4,14,28}\nOutput:\n4 9 14 21 26 28 30\nExplanation:\nValue to be inserted = 21\n    21\nValue to be inserted = 26\n    21\n     \\\n     26\nValue to be inserted = 30\n  21                        26\n   \\      LL rotation         /  \\\n   26    ----------->       21  30\n    \\\n     30\nValue to be inserted = 9\n    26\n   /  \\\n  21  30\n /\n9\nValue to be inserted = 4\n      26                          26\n     /  \\                          /  \\\n    21  30                      9   30\n   /          RR rotation        /  \\\n  9          ----------->       4  21\n /\n4\nValue to be inserted = 14\n      26                          21\n     /  \\                          /  \\\n    9   30                      9   26\n   / \\          LR rotation      /  \\    \\\n  4  21        ----------->    4  14  30\n     /\n    14\nValue to be inserted = 28\n      21                          21\n     /  \\                          /  \\\n    9   26                      9   28\n   / \\    \\     RL rotation       / \\    / \\\n  4  14   30   ----------->   4  14 26 30\n          /\n         28\nTherefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30.\n\nYour Task:\nYou don't need to read input or print anything. Complete the function insertToAVL() which takes the root of the tree and the value of the node to be inserted as input parameters and returns the root of the modified tree.\n\nExpected Time Complexity: O(log N)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 2000",
+      "examples": [
+        "Input:\nN = 3\nValues to be inserted = {5,1,4}\nOutput:\n1 4 5\nExplanation:\nValue to be inserted = 5\n5\nValue to be inserted = 1\n5\n/\n1\nValue to be inserted = 4\n5                     4\n/\nLR rotation\n/  \\\n1    ----------->       1   5\n\\\n4\nTherefore the inorder of the final tree will be 1, 4, 5.",
+        "Input:\nN = 7\nValues to be inserted = {21,26,30,9,4,14,28}\nOutput:\n4 9 14 21 26 28 30\nExplanation:\nValue to be inserted = 21\n21\nValue to be inserted = 26\n21\n\\\n26\nValue to be inserted = 30\n21                        26\n\\\nLL rotation\n/  \\\n26    ----------->       21  30\n\\\n30\nValue to be inserted = 9\n26\n/  \\\n21  30\n/\n9\nValue to be inserted = 4\n26                          26\n/  \\                          /  \\\n21  30                      9   30\n/\nRR rotation\n/  \\\n9          ----------->       4  21\n/\n4\nValue to be inserted = 14\n26                          21\n/  \\                          /  \\\n9   30                      9   26\n/ \\\nLR rotation\n/  \\    \\\n4  21        ----------->    4  14  30\n/\n14\nValue to be inserted = 28\n21                          21\n/  \\                          /  \\\n9   26                      9   28\n/ \\    \\\nRL rotation\n/ \\    / \\\n4  14   30   ----------->   4  14 26 30\n/\n28\nTherefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 2000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an AVL tree and N values to be inserted in the tree. Write a function to insert elements into the given&nbsp;<strong>AVL tree</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong><br />The tree will be checked after each insertion.&nbsp;<br />If it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.<br />If instead all insertions are successful, inorder traversal of the tree will be printed.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:<br /></strong>N = 3<strong><br /></strong>Values to be inserted = {5,1,4}<strong> </strong>\n<strong>Output:<br /></strong>1 4 5<br /><strong>Explanation:<br /></strong>Value to be inserted = 5<strong><br /></strong>    5\nValue to be inserted = 1\n    5\n   /\n  1\nValue to be inserted = 4\n  5                     4\n /    <strong>LR rotation</strong>        /  \\\n1    -----------&gt;       1   5\n&nbsp;\\\n&nbsp;4<br />Therefore the inorder of the final tree will be 1, 4, 5.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong><br />N = 7<strong><br /></strong>Values to be inserted = {21,26,30,9,4,14,28}<strong> </strong>\n<strong>Output:<br /></strong>4 9 14 21 26 28 30<br /><strong style=\"font-family: sans-serif;\">Explanation:</strong><br />Value to be inserted = 21<strong><br /></strong>    21\nValue to be inserted = 26\n    21\n     \\\n     26\nValue to be inserted = 30\n  21                        26\n   \\      <strong>LL rotation</strong>         /  \\\n   26    -----------&gt;       21  30\n    \\\n     30<br />Value to be inserted = 9<br />    26<br />   /  \\<br />  21  30<br /> /<br />9<br />Value to be inserted = 4<br />      26                          26<br />     /  \\                          /  \\<br />    21  30                      9   30<br />   /          <strong>RR rotation</strong>        /  \\<br />  9          -----------&gt;       4  21<br /> /<br />4<br />Value to be inserted = 14<br />      26                          21<br />     /  \\                          /  \\<br />    9   30                      9   26<br />   / \\          <strong>LR rotation</strong>      /  \\    \\<br />  4  21        -----------&gt;    4  14  30<br /> &nbsp; &nbsp; /<br />    14<br />Value to be inserted = 28<br />      21                          21<br />     /  \\                          /  \\<br />    9   26                      9   28<br />   / \\    \\     <strong>RL rotation</strong>       / \\    / \\<br />  4  14   30   -----------&gt;   4  14 26 30<br />          /<br />         28<br />Therefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Your Task: &nbsp;</strong><br />You don't need to read input or print anything. Complete the function<strong>&nbsp;insertToAVL()</strong>&nbsp;which takes the root of the tree and the value of the node to be inserted as input parameters and returns the root of the modified tree.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Expected Time Complexity:</strong>&nbsp;O(log N)<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(height of tree)</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; N &le; 2000</span></p>"
+    },
+    "qnum": 2066
+  },
+  {
+    "company": "Oracle",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/redundant-parenthesis--170647/1",
+      "problem_name": "Redundant Parenthesis",
+      "slug": "redundant-parenthesis--170647",
+      "difficulty": "Hard",
+      "accuracy": "51.49%",
+      "marks": 8,
+      "all_submissions": 26449,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Oracle"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Stack",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Stack",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Oracle"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/remove-all-redundant-parenthesis/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/oracle-interview-experience-for-application-developer-on-campus-virtual/"
+      ],
+      "statement_text": "Given a valid expression containing only binary operators\n'+', '-', '*', '/'\nand operands, remove all the redundant parenthesis.\nA set of parenthesis is said to be redundant if, removing them, does not change the value of the expression.\nNote:\nThe operators\n'+'\nand\n'-'\nhave the same priority.\n'*'\nand\n'/'\nalso have the same priority.\n'*'\nand\n'/'\nhave more priority than\n'+'\nand\n'-'\n.\nExample 1:\nInput\n:\nExp = (A*(B+C))\nOutput:\nA*(B+C)\nExplanation\n: The outermost parenthesis\nare redundant.\nExample 2:\nInput:\nExp = A+(B+(C))\nOutput:\nA+B+C\nExplanation\n: All the parenthesis\nare redundant.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nremoveBrackets()\nwhich takes the string\nExp\nas input parameters and returns the updated expression.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)",
+      "full_text": "Given a valid expression containing only binary operators\n'+', '-', '*', '/'\nand operands, remove all the redundant parenthesis.\nA set of parenthesis is said to be redundant if, removing them, does not change the value of the expression.\nNote:\nThe operators\n'+'\nand\n'-'\nhave the same priority.\n'*'\nand\n'/'\nalso have the same priority.\n'*'\nand\n'/'\nhave more priority than\n'+'\nand\n'-'\n.\nExample 1:\nInput\n:\nExp = (A*(B+C))\nOutput:\nA*(B+C)\nExplanation\n: The outermost parenthesis\nare redundant.\nExample 2:\nInput:\nExp = A+(B+(C))\nOutput:\nA+B+C\nExplanation\n: All the parenthesis\nare redundant.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nremoveBrackets()\nwhich takes the string\nExp\nas input parameters and returns the updated expression.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)\nConstraints:\n1\n<\nLength of Exp\n<\n10\n5\nExp contains uppercase english letters, '(' , ')', '+', '-', '*' and '/'.",
+      "examples": [
+        "Input\n:\nExp = (A*(B+C))\nOutput:\nA*(B+C)\nExplanation\n: The outermost parenthesis\nare redundant.",
+        "Input:\nExp = A+(B+(C))\nOutput:\nA+B+C\nExplanation\n: All the parenthesis\nare redundant."
+      ],
+      "constraints_text": "Constraints:\n1\n<\nLength of Exp\n<\n10\n5\nExp contains uppercase english letters, '(' , ')', '+', '-', '*' and '/'.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a valid expression containing only binary operators&nbsp;<strong>'+', '-', '*', '/' </strong>and operands,&nbsp;remove all the redundant parenthesis.</span></p>\n<blockquote>\n<p><span style=\"font-size: 18px;\">A set of parenthesis is said to be redundant&nbsp;if,&nbsp;removing them, does not change the value of the expression.</span></p>\n</blockquote>\n<p><span style=\"font-size: 18px;\"><strong>Note: </strong>The operators&nbsp;<strong>'+'</strong> and <strong>'-'</strong> have the same priority. <strong>'*'</strong> and <strong>'/'</strong> also have the same priority. <strong>'*'</strong> and <strong>'/'</strong> have more priority than <strong>'+'</strong> and <strong>'-'</strong>.</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>:\nExp = (A*(B+C))\n<strong>Output:</strong>&nbsp;A*(B+C)\n<strong>Explanation</strong>: The outermost parenthesis\nare redundant.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nExp = A+(B+(C))\n<strong>Output:&nbsp;</strong>A+B+C\n<strong>Explanation</strong>: All the parenthesis\nare redundant.</span></pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:&nbsp;&nbsp;</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>removeBrackets()</strong>&nbsp;which takes the string <strong>Exp&nbsp;</strong>as input parameters&nbsp;and returns the updated expression.</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(N)<br /><strong>Expected Auxiliary Space:</strong> O(N)</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 <u>&lt;</u> Length of Exp <u>&lt;</u>&nbsp;10<sup>5</sup><br />Exp contains uppercase english letters, '(' , ')', '+', '-', '*' and '/'.</span></p>"
+    },
+    "qnum": 2067
+  },
+  {
+    "company": "Oracle",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/solve-the-sudoku-1587115621/1",
+      "problem_name": "Solve the Sudoku",
+      "slug": "solve-the-sudoku-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "37.98%",
+      "marks": 8,
+      "all_submissions": 133894,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "mat[][] =",
+        "datatype": "INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "MAQ Software",
+          "Directi",
+          "PayPal",
+          "Samsung",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Backtracking",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Backtracking",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "MAQ Software",
+        "Directi",
+        "PayPal",
+        "Samsung",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sudoku-backtracking-7/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-8-for-sde-2/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-sde-1-2/"
+      ],
+      "statement_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.",
+      "full_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.\nExamples:\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nConstraints:\n0 ≤ mat[i][j] ≤ 9",
+      "examples": [
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.",
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers."
+      ],
+      "constraints_text": "Constraints:\n0 ≤ mat[i][j] ≤ 9",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">Given an&nbsp;incomplete&nbsp;</span><a style=\"font-size: 18px;\" href=\"https://www.geeksforgeeks.org/introduction-to-sudoku-puzzles-and-how-to-solve-them/\"><strong>Sudoku</strong></a><span style=\"font-size: 18px;\">&nbsp;in the form of matrix <strong>mat[][]</strong> of order 9*9, the task is to solve the Sudoku.&nbsp;</span></span><span style=\"font-size: 18px;\">It is <strong>guaranteed </strong>that the input Sudoku will have exactly <strong>one </strong>solution.</span></p>\n<p><span style=\"font-size: 18px;\">A sudoku solution must satisfy&nbsp;all of the following rules:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each row.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each column.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code> must occur exactly once in each of the 9,&nbsp;<code>3x3</code>&nbsp;sub-boxes of the grid.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Zeros represent blanks to be filled with numbers 1-9, while non-zero cells are <strong>fixed </strong>and cannot be changed.</span><span style=\"font-size: 18px;\"><br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306620.png\" alt=\"\" width=\"260\" height=\"212\" />\n</span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\">\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /></span><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886267/Web/Other/blobid1_1738136756.png\" alt=\"\" width=\"262\" height=\"209\" /><br /></span><strong style=\"font-size: 18px;\">Output:</strong><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &le; mat[i][j] &le; 9<br /></span></p>"
+    },
+    "qnum": 2068
+  }
+]

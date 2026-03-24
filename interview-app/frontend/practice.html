@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Practice — Interview Practice Platform</title>
+    <meta name="description" content="Practice coding interview questions with company-specific filtering, AI hints, and progress tracking." />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="bg-shape bg-shape-a"></div>
+    <div class="bg-shape bg-shape-b"></div>
+
+    <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Toggle menu">☰</button>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+      <!-- Sidebar -->
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-brand">
+          <h2><span class="brand-icon">🎯</span> InterviewPrep</h2>
+        </div>
+        <nav class="sidebar-nav"></nav>
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <img class="sidebar-avatar" src="" alt="Avatar" />
+            <div class="sidebar-user-info">
+              <p class="sidebar-user-name">Guest</p>
+              <p class="sidebar-user-email">Not signed in</p>
+            </div>
+          </div>
+          <div class="button-row">
+            <button id="themeToggleBtn" class="btn btn-sm btn-icon" type="button" aria-label="Toggle theme">🌙</button>
+            <button id="loginBtn" class="btn btn-sm btn-primary" type="button">Sign In</button>
+            <button id="signOutBtn" class="btn btn-sm hidden" type="button">Sign Out</button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <div class="page-header">
+          <h1>🎯 Practice</h1>
+        </div>
+
+        <!-- Control Panel -->
+        <section class="card-flat section">
+          <div class="form-row">
+            <div class="control-group">
+              <label for="companyInput">Company</label>
+              <input id="companyInput" list="companyOptions" placeholder="Type company name" />
+              <datalist id="companyOptions"></datalist>
+            </div>
+            <div class="control-group">
+              <label for="difficultySelect">Difficulty</label>
+              <select id="difficultySelect">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+              </select>
+            </div>
+          </div>
+          <div class="button-row" style="margin-top: 0.85rem">
+            <button id="startBtn" class="btn btn-primary" type="button">Load Questions</button>
+            <button id="prevBtn" class="btn" type="button" disabled>⟪ Prev</button>
+            <button id="nextBtn" class="btn" type="button" disabled>Next ⟫</button>
+            <button id="recommendBtn" class="btn" type="button" disabled>Recommend 💡</button>
+            <button id="resetBtn" class="btn" type="button" disabled>Reset 🔄</button>
+            <button id="surpriseBtn" class="btn" type="button">Surprise 🎲</button>
+            <button id="copyBtn" class="btn" type="button" disabled>Copy Link 📋</button>
+          </div>
+        </section>
+
+        <!-- Status Bar -->
+        <div class="status-bar section">
+          <span id="statusText" class="status-text">Choose company and difficulty to begin.</span>
+          <div class="status-right">
+            <span id="counterBadge" class="counter-badge">0 / 0</span>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="progress-wrap section">
+          <div id="progressFill" class="progress-fill"></div>
+        </div>
+
+        <!-- Question Card -->
+        <section id="questionCard" class="question-card hidden section" aria-live="polite">
+          <div class="question-head">
+            <h2 id="qTitle">Question Title</h2>
+            <div class="pill-row">
+              <span id="qIndex" class="pill"></span>
+              <span id="qDifficulty" class="pill"></span>
+            </div>
+          </div>
+
+          <div class="quick-links">
+            <a id="qProblemUrl" href="#" target="_blank" rel="noopener noreferrer">Open Problem</a>
+          </div>
+
+          <div class="details-grid">
+            <article>
+              <h3>Statement</h3>
+              <pre id="qStatement" class="text-block"></pre>
+            </article>
+            <article id="examplesArticle">
+              <h3>Examples</h3>
+              <div id="qExamples" class="chip-list"></div>
+            </article>
+            <article>
+              <h3>Tags</h3>
+              <details class="inline-dropdown">
+                <summary>Show Tags</summary>
+                <div id="qTags" class="chip-list"></div>
+              </details>
+            </article>
+            <article>
+              <h3>Constraints</h3>
+              <pre id="qConstraints" class="text-block"></pre>
+            </article>
+          </div>
+
+          <details>
+            <summary>Show Raw JSON</summary>
+            <pre id="qRaw" class="raw-json"></pre>
+          </details>
+        </section>
+
+        <!-- Practice Actions -->
+        <section class="card-flat section">
+          <div class="card-header">
+            <h3>✅ Question Outcome</h3>
+          </div>
+          <p class="card-subtitle">Set this manually. Opening a question does not mark it as solved.</p>
+          <div class="button-row">
+            <button id="markSolvedBtn" class="btn outcome-btn" type="button" disabled>✅ Mark Solved</button>
+            <button id="markUnsolvedBtn" class="btn outcome-btn" type="button" disabled>❌ Mark Not Solved</button>
+            <button id="markRevisitBtn" class="btn outcome-btn" type="button" disabled>🔄 Add To Revisit</button>
+          </div>
+        </section>
+
+        <!-- Comments Section -->
+        <section id="commentSection" class="card-flat section">
+          <div class="card-header">
+            <h3>💬 Your Notes</h3>
+          </div>
+          <p class="card-subtitle">Your latest note is auto-loaded here. Save again to overwrite it.</p>
+          <div id="commentsList" class="comments-list">
+            <p class="text-muted text-sm">Load a question to see comments.</p>
+          </div>
+          <div class="comment-input-wrap">
+            <textarea id="commentInput" placeholder="Write a note or comment..." rows="2"></textarea>
+            <button id="addCommentBtn" class="btn btn-primary btn-sm" style="margin-top:0.4rem" type="button">Save Note</button>
+          </div>
+        </section>
+
+        <!-- AI Assistant Panel -->
+        <section class="assistant-panel section">
+          <div class="assistant-head">
+            <h3>🤖 AI Interview Assistant</h3>
+          </div>
+          <p class="card-subtitle">Ask doubts about the current problem. The assistant gives hints, not full solutions.</p>
+          <div id="chatMessages" class="chat-messages"></div>
+          <div class="chat-input-wrap">
+            <textarea id="doubtInput" placeholder="Ask about approach, complexity, edge cases..." rows="3"></textarea>
+            <div class="chat-actions">
+              <button id="sendDoubtBtn" class="btn btn-primary" type="button" disabled>Ask Assistant</button>
+              <button id="clearChatBtn" class="btn" type="button">Clear Chat</button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/practice.js"></script>
+  </body>
+</html>

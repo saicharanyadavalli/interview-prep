@@ -1,0 +1,473 @@
+[
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/root-to-leaf-path-sum/1",
+      "problem_name": "Root to leaf path sum",
+      "slug": "root-to-leaf-path-sum",
+      "difficulty": "Easy",
+      "accuracy": "40.79%",
+      "marks": 2,
+      "all_submissions": 135271,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] =&!//!&target",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "FactSet",
+          "Housing.com",
+          "Oracle",
+          "Goldman Sachs",
+          "Adobe",
+          "CouponDunia",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "FactSet",
+        "Housing.com",
+        "Oracle",
+        "Goldman Sachs",
+        "Adobe",
+        "CouponDunia",
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/"
+      ],
+      "interview_links": [
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-395-campus-internship/",
+        "https://www.geeksforgeeks.org/atlassian-interview-experience-on-campus-august-2020/"
+      ],
+      "statement_text": "Given a binary tree and an integer target, check whether there is a root-to-leaf path with its sum as target.\n\nExamples :\n\nInput: target = 2\n   1\n /   \\\n2     3\nOutput: false\nExplanation: There is no root to leaf path with sum 2.\n\nInput: target = 4\n   1\n /   \\\n2     3\nOutput: true\nExplanation: The sum of path from leaf node 3 to root 1 is 4.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ target ≤ 106",
+      "full_text": "Given a binary tree and an integer target, check whether there is a root-to-leaf path with its sum as target.\n\nExamples :\n\nInput: target = 2\n   1\n /   \\\n2     3\nOutput: false\nExplanation: There is no root to leaf path with sum 2.\n\nInput: target = 4\n   1\n /   \\\n2     3\nOutput: true\nExplanation: The sum of path from leaf node 3 to root 1 is 4.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ target ≤ 106",
+      "examples": [
+        "Input:\ntarget = 2\n1\n/   \\\n2     3\nOutput:\nfalse\nExplanation:\nThere is no root to leaf path with sum 2.",
+        "Input:\ntarget = 4\n1\n/   \\\n2     3\nOutput:\ntrue\nExplanation:\nThe sum of path from leaf node 3 to root 1 is 4."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n4\n1 ≤ target ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary <strong>tree </strong>and an integer <strong>target</strong>, check whether there is a root-to-leaf path with its sum as <strong>target</strong>.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples :</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>target = 2<strong><br /></strong>   1 \n /   \\\n2     3</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong> false</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>There is no root to leaf path with sum 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>target = 4<strong><br /></strong>   1\n /   \\\n2     3</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong> true</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>The sum of path from leaf node 3 to root 1 is 4.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>4</sup><br />1 &le; target &le; 10<sup>6</sup></span></p>"
+    }
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621/1",
+      "problem_name": "Winner of an election",
+      "slug": "winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621",
+      "difficulty": "Easy",
+      "accuracy": "53.75%",
+      "marks": 2,
+      "all_submissions": 100156,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n&!//!&arr",
+        "datatype": "INTEGER&!//!&STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Adobe",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Adobe",
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-winner-election-votes-represented-candidate-names/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/atlassian-interview-experience/"
+      ],
+      "statement_text": "Given an array of n names arr of candidates in an election, where each name is a string of lowercase characters. A candidate name in the array represents a vote casted to the candidate. Print the name of the candidate that received the maximum count of votes. If there is a draw between two candidates, then print lexicographically smaller name.\n\nExamples :\n\nInput: n = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\nOutput: john 4\nExplanation: john has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.\n\nInput: n = 3\narr[] = {andy,blake,clark}\nOutput: Andy 1\nExplanation: All the candidates get 1 votes each. We print andy as it is lexicographically smaller.\n\nYour Task:\nYou only need to complete the function winner() that takes an array of strings arr, and length of arr n as parameters and returns an array of string of length 2. First element of the array should be the name of the candidate and second element should be the number of votes that candidate got in string format.\n\nConstraints:\n1 <= n <= 105\n1 <= |arri| <= 105",
+      "full_text": "Given an array of n names arr of candidates in an election, where each name is a string of lowercase characters. A candidate name in the array represents a vote casted to the candidate. Print the name of the candidate that received the maximum count of votes. If there is a draw between two candidates, then print lexicographically smaller name.\n\nExamples :\n\nInput: n = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\nOutput: john 4\nExplanation: john has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.\n\nInput: n = 3\narr[] = {andy,blake,clark}\nOutput: Andy 1\nExplanation: All the candidates get 1 votes each. We print andy as it is lexicographically smaller.\n\nYour Task:\nYou only need to complete the function winner() that takes an array of strings arr, and length of arr n as parameters and returns an array of string of length 2. First element of the array should be the name of the candidate and second element should be the number of votes that candidate got in string format.\n\nConstraints:\n1 <= n <= 105\n1 <= |arri| <= 105",
+      "examples": [
+        "Input:\nn = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\nOutput:\njohn 4\nExplanation:\njohn has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.",
+        "Input:\nn = 3\narr[] = {andy,blake,clark}\nOutput:\nAndy 1\nExplanation:\nAll the candidates get 1 votes each. We print andy as it is lexicographically smaller."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 10\n5\n1 <= |arr\ni\n| <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of <em>n </em>names arr of candidates in an election, where each name is </span><span style=\"font-size: 18px;\">a string of lowercase characters</span><span style=\"font-size: 18px;\">. A candidate name in the array represents a vote casted to the candidate. Print the name of the candidate that received the maximum count of votes. If there is a draw between two candidates, then print <em>lexicographically </em>smaller name.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :<br /></strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\n<strong>Output: </strong>john 4<strong>\nExplanation: </strong>john has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3\narr[] = {andy,blake,clark}\n<strong>Output: </strong>Andy 1<strong>\nExplanation: </strong>All the candidates get 1 votes each. We print andy as it is lexicographically smaller.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You only need to complete the function&nbsp;<strong>winner()</strong>&nbsp;that takes an array of strings&nbsp;<strong>arr</strong>, and length of <strong>arr</strong>&nbsp;<strong>n</strong> as parameters and returns an <strong>array of string </strong>of <strong>length 2</strong>. First element of the array should be the <strong>name </strong>of the candidate and second element should be the <strong>number of votes </strong>that candidate got in <strong>string format</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= n&nbsp;&lt;= 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &lt;= |arr<sub>i</sub>| &lt;= 10<sup>5</sup></span></p>"
+    }
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621--162858/1",
+      "problem_name": "Winner of an election",
+      "slug": "winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621--162858",
+      "difficulty": "Easy",
+      "accuracy": "74.71%",
+      "marks": 2,
+      "all_submissions": 636,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Adobe",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Adobe",
+        "Atlassian"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/atlassian-interview-experience/"
+      ],
+      "statement_text": "Given a lowercase string array arr[]. Each element in the array represents a vote cast for a candidate. Return the name of the candidate who received the maximum number of votes and the count of votes he received. In case of a tie between two or more candidates, return the lexicographically smallest name.\n\nNote: Return an array of strings, the winning candidate name as the first element and the vote count as the second element (typecast the count to string).\n\nExamples :\n\nInput: arr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\nOutput: [\"john\", \"4\"]\nExplanation: \"john\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.\n\nInput: n = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\nOutput: [\"Andy\", \"1\"]\nExplanation: All the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller.\n\nConstraints:\n1 <= arr.size() <= 105\n1 <= arr[i].size() <= 105",
+      "full_text": "Given a lowercase string array arr[]. Each element in the array represents a vote cast for a candidate. Return the name of the candidate who received the maximum number of votes and the count of votes he received. In case of a tie between two or more candidates, return the lexicographically smallest name.\n\nNote: Return an array of strings, the winning candidate name as the first element and the vote count as the second element (typecast the count to string).\n\nExamples :\n\nInput: arr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\nOutput: [\"john\", \"4\"]\nExplanation: \"john\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.\n\nInput: n = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\nOutput: [\"Andy\", \"1\"]\nExplanation: All the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller.\n\nConstraints:\n1 <= arr.size() <= 105\n1 <= arr[i].size() <= 105",
+      "examples": [
+        "Input:\narr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\nOutput:\n[\"john\", \"4\"]\nExplanation: \"\njohn\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.",
+        "Input:\nn = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\nOutput:\n[\n\"\nAndy\", \"1\"]\nExplanation:\nAll the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size() <= 10\n5\n1 <= arr[i].size() <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a lowercase string array <strong>arr</strong>[]. Each element in the array represents a vote cast for a candidate. Return the name of the candidate who received the maximum number of votes and the count of votes he received. In case of a tie between two or more candidates, return the <strong>lexicographically</strong> smallest name.<br /></span></p>\n<p><span style=\"font-size: 18px;\">Note: Return an array of strings, the winning candidate name as the first element and the vote count as the second element (typecast the count to string).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :<br /></strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\n<strong>Output: </strong>[\"john\", \"4\"]<strong>\nExplanation: \"</strong>john\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\n<strong>Output: </strong>[<strong>\"</strong>Andy\", \"1\"]<strong>\nExplanation: </strong>All the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= arr.size() &lt;= 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &lt;= arr[i].size() &lt;= 10<sup>5</sup></span></p>"
+    }
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/majority-element-1587115620/1",
+      "problem_name": "Majority Element",
+      "slug": "majority-element-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "27.82%",
+      "marks": 4,
+      "all_submissions": 812753,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Google",
+          "Nagarro",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Greedy",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Greedy",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Google",
+        "Nagarro",
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/majority-element/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-187-for-sde1/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-set-86-on-campus/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-138-sde-1/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-155-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-set-24/"
+      ],
+      "statement_text": "Given an array\narr[]\n. Find the\nmajority element\nin the array. If no majority element exists, return\n-1\n.\nNote:\nA majority element in an array is an element that appears\nstrictly\nmore than\narr.size()/2\ntimes in the array.",
+      "full_text": "Given an array\narr[]\n. Find the\nmajority element\nin the array. If no majority element exists, return\n-1\n.\nNote:\nA majority element in an array is an element that appears\nstrictly\nmore than\narr.size()/2\ntimes in the array.\nExamples:\nInput:\narr[] = [1, 1, 2, 1, 3, 5, 1]\nOutput:\n1\nExplanation:\nSince, 1 is present more than 7/2 times, so it is the majority element.\nInput:\narr[] = [7]\nOutput:\n7\nExplanation:\nSince, 7 is single element and present more than 1/2 times, so it is the majority element.\nInput:\narr[] = [2, 13]\nOutput:\n-1\nExplanation:\nSince, no element is present more than 2/2 times, so there is no majority element.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 1, 2, 1, 3, 5, 1]\nOutput:\n1\nExplanation:\nSince, 1 is present more than 7/2 times, so it is the majority element.",
+        "Input:\narr[] = [7]\nOutput:\n7\nExplanation:\nSince, 7 is single element and present more than 1/2 times, so it is the majority element.",
+        "Input:\narr[] = [2, 13]\nOutput:\n-1\nExplanation:\nSince, no element is present more than 2/2 times, so there is no majority element."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[]</strong>. Find the <strong>majority element</strong> in the array. If no majority element exists, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> A majority element in an array is an element that appears <strong>strictly </strong>more than<strong> arr.size()/2 </strong>times in the array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 1, 2, 1, 3, 5, 1]\n<strong>Output: </strong>1<strong>\nExplanation: </strong>Since, 1 is present more than 7/2 times, so it is the majority element.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [7]\n<strong>Output: </strong>7<strong>\nExplanation: </strong>Since, 7 is single element and present more than 1/2 times, so it is the majority element.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [2, 13]\n<strong>Output: </strong>-1<strong>\nExplanation: </strong>Since, no element is present more than 2/2 times, so there is no majority element.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    }
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-platforms-1587115620/1",
+      "problem_name": "Minimum Platforms",
+      "slug": "minimum-platforms-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "26.84%",
+      "marks": 4,
+      "all_submissions": 625542,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =&!//!&dep[] =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Hike",
+          "Walmart",
+          "Adobe",
+          "Google",
+          "Boomerang Commerce",
+          "Zillious",
+          "Atlassian",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Greedy",
+          "Sorting",
+          "Binary Search",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Greedy",
+        "Sorting",
+        "Binary Search",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Hike",
+        "Walmart",
+        "Adobe",
+        "Google",
+        "Boomerang Commerce",
+        "Zillious",
+        "Atlassian",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-number-platforms-required-railwaybus-station/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-for-member-of-technical-staff-2/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-on-campus-for-internship/",
+        "https://www.geeksforgeeks.org/adobe-interview-questions-computer-scientist/",
+        "https://www.geeksforgeeks.org/atlassian-interview-experience-for-full-time-software-engineer-bangalore-on-campus/"
+      ],
+      "statement_text": "Given arrival\narr[]\nand departure\ndep[]\ntimes of trains on the same day, find the minimum number of platforms needed so that no train waits. A platform cannot serve two trains at the same time; if a train arrives before another departs, an extra platform is needed.\nNote:\nTime intervals are in the 24-hour format\n(\nHHMM)\n,\nwhere the first two characters represent hour (between 00 to 23 ) and the last two characters represent minutes (this will be <= 59 and >= 0).\nLeading zeros for hours less than 10 are optional (e.g., 0900 is the same as 900).",
+      "full_text": "Given arrival\narr[]\nand departure\ndep[]\ntimes of trains on the same day, find the minimum number of platforms needed so that no train waits. A platform cannot serve two trains at the same time; if a train arrives before another departs, an extra platform is needed.\nNote:\nTime intervals are in the 24-hour format\n(\nHHMM)\n,\nwhere the first two characters represent hour (between 00 to 23 ) and the last two characters represent minutes (this will be <= 59 and >= 0).\nLeading zeros for hours less than 10 are optional (e.g., 0900 is the same as 900).\nExamples:\nInput\n: arr[] = [900, 940, 950, 1100, 1500, 1800], dep[] = [910, 1200, 1120, 1130, 1900, 2000]\nOutput\n: 3\nExplanation\n: There are three trains during the time 9:40 to 12:00. So we need a minimum of 3 platforms.\nInput\n: arr[] = [900, 1235, 1100], dep[] = [1000, 1240, 1200]\nOutput\n: 1\nExplanation\n: All train times are mutually exclusive. So we need only one platform.\nInput\n: arr[] = [1000, 935, 1100], dep[] = [1200, 1240, 1130]\nOutput\n: 3\nExplanation\n: All 3 trains have to be there from 11:00 to 11:30\nConstraints:\n1 ≤ number of trains ≤ 10\n5\n0000 ≤ arr[i] ≤ dep[i] ≤ 2359",
+      "examples": [
+        "Input\n: arr[] = [900, 940, 950, 1100, 1500, 1800], dep[] = [910, 1200, 1120, 1130, 1900, 2000]\nOutput\n: 3\nExplanation\n: There are three trains during the time 9:40 to 12:00. So we need a minimum of 3 platforms.",
+        "Input\n: arr[] = [900, 1235, 1100], dep[] = [1000, 1240, 1200]\nOutput\n: 1\nExplanation\n: All train times are mutually exclusive. So we need only one platform.",
+        "Input\n: arr[] = [1000, 935, 1100], dep[] = [1200, 1240, 1130]\nOutput\n: 3\nExplanation\n: All 3 trains have to be there from 11:00 to 11:30"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of trains ≤ 10\n5\n0000 ≤ arr[i] ≤ dep[i] ≤ 2359",
+      "question_html": "<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\">Given arrival <strong>arr[] </strong>and departure <strong>dep[] </strong>times of trains on the same day, find the minimum number of platforms needed so that no train waits. A platform cannot serve two trains at the same time; if a train arrives before another departs, an extra platform is needed.</span></p>\n<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><strong><span style=\"box-sizing: border-box; color: #1e2229; background-color: #ffffff; font-family: 'Source Sans 3' !important;\">Note:</span></strong><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\"> Time intervals are in the 24-hour format <strong>(</strong></span><span style=\"box-sizing: border-box; font-weight: bolder; color: #1e2229; background-color: #ffffff; font-family: 'Source Sans 3' !important;\"><strong>HHMM)</strong> ,</span><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\"> where the first two characters represent hour (between 00 to 23 ) and the last two characters represent minutes (this will be &lt;= 59 and &gt;= 0).&nbsp;</span>Leading zeros for hours less than 10 are optional (e.g., 0900 is the same as 900).</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr[] = [900, 940, 950, 1100, 1500, 1800], dep[] = [910, 1200, 1120, 1130, 1900, 2000]\n<strong>Output</strong>: 3\n<strong>Explanation</strong>: There are three trains during the time 9:40 to 12:00. So we need a minimum of 3 platforms.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr[] = [900, 1235, 1100], dep[] = [1000, 1240, 1200]\n<strong>Output</strong>: 1\n<strong>Explanation</strong>: All train times are mutually exclusive. So we need only one platform.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr[] = [1000, 935, 1100], dep[] = [1200, 1240, 1130]\n<strong>Output</strong>: 3\n<strong>Explanation</strong>: All 3 trains have to be there from 11:00 to 11:30</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; number of trains &le; 10<sup>5</sup><br />0000 &le; arr[i] &le; dep[i] &le; 2359<br /></span></p>"
+    }
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/nearest-smaller-tower--170647/1",
+      "problem_name": "Nearest smaller tower",
+      "slug": "nearest-smaller-tower--170647",
+      "difficulty": "Medium",
+      "accuracy": "55.45%",
+      "marks": 4,
+      "all_submissions": 28955,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&arr[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Stack",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Stack",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/finding-nearest-shortest-tower-in-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/atlassian-interview-experience/"
+      ],
+      "statement_text": "Given an array where each element\narr[i]\nrepresents the height of the tower. Find for each tower, the nearest possible tower that is shorter than it. You can look left or right on both sides.\nNote :\nIf two smaller towers are at the same distance, pick the smallest tower.\nIf two towers have the same height then we choose the one with a smaller index.",
+      "full_text": "Given an array where each element\narr[i]\nrepresents the height of the tower. Find for each tower, the nearest possible tower that is shorter than it. You can look left or right on both sides.\nNote :\nIf two smaller towers are at the same distance, pick the smallest tower.\nIf two towers have the same height then we choose the one with a smaller index.\nExamples:\nInput:\narr[] = [1, 3, 2]\nOutput:\n[-1, 0, 0]\nExplanation:\nFor\n0th\nindex : no tower is smallest, so\n-1\n.\nFor\n1st\nindex : For 3, here 1 & 2 both are\nsmall & at a same distance, so we will pick 1,\nbeacuse it has smallest value, so\n0(index)\nFor\n2nd\nIndex : here 1 is smaller, so\n0(index)\nSo the final output will be which consistes\nindexes are [-1, 0, 0].\nInput:\narr[] = [4, 8, 3, 5, 3]\nOutput =\n[2, 2, -1, 2, -1]\nExplanation:\nFor\n0th\nindex : here 3 is the smaller, so\n2(index)\nFor\n1st\nindex : For 8, here 4 & 3 both are\nsmall & at a same distance, so we will pick 3, so\n2(index)\nFor\n2nd\nindex : no tower is smallest, so\n-1\n.\nFor\n3rd\nindex : For 5, here 3 & 3 both are\nsmall & at a same distance, so we will pick\n3\n(2nd Index) because it smaller Index, so\n2(index)\nFor\n4th\nindex : no tower is smallest, so\n-1\n.\nSo the final output will be which consistes\nIndexes are [2, 2, -1, 2, -1].\nConstraints:\n1 <= n<= 10\n5\n1 <= arr[i] <= 10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 3, 2]\nOutput:\n[-1, 0, 0]\nExplanation:\nFor\n0th\nindex : no tower is smallest, so\n-1\n.\nFor\n1st\nindex : For 3, here 1 & 2 both are\nsmall & at a same distance, so we will pick 1,\nbeacuse it has smallest value, so\n0(index)\nFor\n2nd\nIndex : here 1 is smaller, so\n0(index)\nSo the final output will be which consistes\nindexes are [-1, 0, 0].",
+        "Input:\narr[] = [4, 8, 3, 5, 3]\nOutput =\n[2, 2, -1, 2, -1]\nExplanation:\nFor\n0th\nindex : here 3 is the smaller, so\n2(index)\nFor\n1st\nindex : For 8, here 4 & 3 both are\nsmall & at a same distance, so we will pick 3, so\n2(index)\nFor\n2nd\nindex : no tower is smallest, so\n-1\n.\nFor\n3rd\nindex : For 5, here 3 & 3 both are\nsmall & at a same distance, so we will pick\n3\n(2nd Index) because it smaller Index, so\n2(index)\nFor\n4th\nindex : no tower is smallest, so\n-1\n.\nSo the final output will be which consistes\nIndexes are [2, 2, -1, 2, -1]."
+      ],
+      "constraints_text": "Constraints:\n1 <= n<= 10\n5\n1 <= arr[i] <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array where each element <strong>arr[i]</strong>&nbsp;represents the height of the tower. Find for each tower, the nearest possible tower that is shorter than it. You can look left or right on both sides.<br /><strong>Note :&nbsp;</strong></span></p>\n<ul>\n<li>\n<p><span style=\"font-size: 18px;\">If&nbsp;two smaller towers&nbsp;are at the same distance, pick the smallest tower.</span></p>\n</li>\n<li>\n<p><span style=\"font-size: 18px;\">If two towers have the same height then we choose the one with a smaller index.</span></p>\n</li>\n</ul>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 3, 2]</span>\n<span style=\"font-size: 18px;\"><strong>Output: </strong>[-1, 0, 0] </span>\n<strong><span style=\"font-size: 18px;\">Explanation:</span></strong>\n<span style=\"font-size: 18px;\">For <strong>0th</strong> index : no tower is smallest, so <strong>-1</strong>.\nFor <strong>1st</strong> index : For 3, here 1 &amp; 2 both are \nsmall &amp; at a same distance, so we will pick 1, \nbeacuse it has smallest value, so <strong>0(index)</strong>\nFor <strong>2nd</strong> Index : here 1 is smaller, so <strong>0(index)\n</strong></span><span style=\"font-size: 18px;\">So the final output will be which consistes \nindexes are [-1, 0, 0].</span>\n</pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">arr[] = [4, 8, 3, 5, 3]</span><strong><span style=\"font-size: 18px;\"><br />Output =</span></strong><span style=\"font-size: 18px;\"> [2, 2, -1, 2, -1]</span>\n<strong><span style=\"font-size: 18px;\">Explanation:</span></strong> \n<span style=\"font-size: 18px;\">For <strong>0th</strong> index : here 3 is the smaller, so <strong>2(index)</strong> \nFor <strong>1st</strong> index : For 8, here 4 &amp; 3 both are\nsmall &amp; at a same distance, so we will pick 3, so <strong>2(index)</strong>\nFor <strong>2nd</strong> index : no tower is smallest, so <strong>-1</strong>.\nFor <strong>3rd</strong> index : For 5, here 3 &amp; 3 both are\nsmall &amp; at a same distance, so we will pick \n<strong>3</strong>(2nd Index) because it smaller Index, so <strong>2(index)\n</strong>For <strong>4th</strong> index : no tower is smallest, so <strong>-1</strong>.</span>\n<span style=\"font-size: 18px;\">So the final output will be which consistes\nIndexes are [2, 2, -1, 2, -1].</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &lt;= n&lt;= 10<sup>5</sup><br />1 &lt;= arr[i]&nbsp;&lt;= 10<sup>5</sup></span></p>\n<p>&nbsp;</p>"
+    }
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1",
+      "problem_name": "Smallest window containing all characters",
+      "slug": "smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "30.19%",
+      "marks": 8,
+      "all_submissions": 202424,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = &!//!&p = ",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Google",
+          "Streamoid Technologies",
+          "Media.net",
+          "Atlassian",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "sliding-window",
+          "Hash",
+          "Strings",
+          "Dynamic Programming",
+          "Binary Search"
+        ]
+      },
+      "topic_tags": [
+        "sliding-window",
+        "Hash",
+        "Strings",
+        "Dynamic Programming",
+        "Binary Search"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Google",
+        "Streamoid Technologies",
+        "Media.net",
+        "Atlassian",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-315/",
+        "https://www.geeksforgeeks.org/streamoid-technologies-interview-experience-set-1-for-freshers/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-2-campus/",
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-22-pool-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-5-off-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-2-for-sde-1/"
+      ],
+      "statement_text": "Given two strings s and p. Find the smallest substring in s consisting of all the characters (including duplicates) of the string p. Return empty string in case no such substring is present.\nIf there are multiple such substring of the same length found, return the one with the least starting index.\n\nExamples:\n\nInput: s = \"timetopractice\", p = \"toc\"\nOutput: \"toprac\"\nExplanation: \"toprac\" is the smallest substring in which \"toc\" can be found.\n\nInput: s = \"zoomlazapzo\", p = \"oza\"\nOutput: \"apzo\"\nExplanation: \"apzo\" is the smallest substring in which \"oza\" can be found.\n\nInput: s = \"zoom\", p = \"zooe\"\nOutput: \"\"\nExplanation: No substring is present containing all characters of p.\n\nConstraints:\n1 ≤ s.length(), p.length() ≤ 106\ns, p consists of lowercase english letters",
+      "full_text": "Given two strings s and p. Find the smallest substring in s consisting of all the characters (including duplicates) of the string p. Return empty string in case no such substring is present.\nIf there are multiple such substring of the same length found, return the one with the least starting index.\n\nExamples:\n\nInput: s = \"timetopractice\", p = \"toc\"\nOutput: \"toprac\"\nExplanation: \"toprac\" is the smallest substring in which \"toc\" can be found.\n\nInput: s = \"zoomlazapzo\", p = \"oza\"\nOutput: \"apzo\"\nExplanation: \"apzo\" is the smallest substring in which \"oza\" can be found.\n\nInput: s = \"zoom\", p = \"zooe\"\nOutput: \"\"\nExplanation: No substring is present containing all characters of p.\n\nConstraints:\n1 ≤ s.length(), p.length() ≤ 106\ns, p consists of lowercase english letters",
+      "examples": [
+        "Input:\ns = \"timetopractice\", p = \"toc\"\nOutput:\n\"toprac\"\nExplanation:\n\"toprac\" is the smallest substring in which \"toc\" can be found.",
+        "Input:\ns = \"zoomlazapzo\", p = \"oza\"\nOutput:\n\"apzo\"\nExplanation:\n\"apzo\" is the smallest substring in which \"oza\" can be found.",
+        "Input:\ns = \"zoom\", p = \"zooe\"\nOutput:\n\"\"\nExplanation:\nNo substring is present containing all characters of p."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.length(), p.length() ≤ 10\n6\ns, p consists of lowercase english letters",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given two strings <strong>s</strong> and <strong>p</strong>. Find the smallest substring in <strong>s</strong> consisting of all the characters (<strong>including duplicates</strong>) of the string <strong>p</strong>. Return empty string in case no such substring is present. <br /></span><span style=\"font-size: 14pt;\">If there are multiple such substring of the same length found, return the one with the <strong>least starting index</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"timetopractice\", p = \"toc\"\n<strong>Output: </strong>\"toprac\"<strong>\nExplanation: </strong>\"toprac\" is the smallest substring in which \"toc\" can be found.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"zoomlazapzo\", p = \"oza\"\n<strong>Output: </strong>\"apzo\"<strong>\nExplanation: </strong>\"apzo\" is the smallest substring in which \"oza\" can be found.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"zoom\", p = \"zooe\"\n<strong>Output:</strong> \"\"<strong>\nExplanation: </strong>No substring is present containing all characters of p.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:&nbsp;</strong><br />1 &le; s.length(), p.length() &le; 10<sup>6<br /></sup></span><span style=\"font-size: 14pt;\">s, p consists of lowercase english letters</span></p>"
+    }
+  }
+]

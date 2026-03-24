@@ -1,0 +1,159 @@
+[
+  {
+    "company": "Amdocs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/cutting-rectangles--170647/1",
+      "problem_name": "Cutting Rectangles",
+      "slug": "cutting-rectangles--170647",
+      "difficulty": "Easy",
+      "accuracy": "52.88%",
+      "marks": 2,
+      "all_submissions": 24010,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amdocs"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Combinatorial",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Combinatorial",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amdocs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/paper-cut-minimum-number-squares/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amdocs-interview-experience-for-software-engineering-associate-on-campus-2020/"
+      ],
+      "statement_text": "Given a rectangle of dimensions\nL\nx\nB\nfind the minimum number (\nN\n) of identical squares of maximum side that can be cut out from that rectangle so that no residue remains in the rectangle. Also find the dimension\nK\nof that square.\nExample 1:\nInput:\nL = 2, B = 4\nOutput:\nN = 2, K = 2\nExplaination:\n2 squares of 2x2 dimension.\nExample 2:\nInput:\nL = 6, B = 3\nOutput:\nN = 2, K = 3\nExplaintion:\n2 squares of 3x3 dimension.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nminimumSquares()\nwhich takes L and B as input parameters and returns a list of 2 integers containing the values of N and K respectively.\nExpected Time Complexity:\nO(log min(L, B))\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a rectangle of dimensions\nL\nx\nB\nfind the minimum number (\nN\n) of identical squares of maximum side that can be cut out from that rectangle so that no residue remains in the rectangle. Also find the dimension\nK\nof that square.\nExample 1:\nInput:\nL = 2, B = 4\nOutput:\nN = 2, K = 2\nExplaination:\n2 squares of 2x2 dimension.\nExample 2:\nInput:\nL = 6, B = 3\nOutput:\nN = 2, K = 3\nExplaintion:\n2 squares of 3x3 dimension.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nminimumSquares()\nwhich takes L and B as input parameters and returns a list of 2 integers containing the values of N and K respectively.\nExpected Time Complexity:\nO(log min(L, B))\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 ≤ L, B ≤ 10\n9",
+      "examples": [
+        "Input:\nL = 2, B = 4\nOutput:\nN = 2, K = 2\nExplaination:\n2 squares of 2x2 dimension.",
+        "Input:\nL = 6, B = 3\nOutput:\nN = 2, K = 3\nExplaintion:\n2 squares of 3x3 dimension."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ L, B ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size:18px\">Given a&nbsp;rectangle of dimensions <strong>L</strong>&nbsp;x&nbsp;<strong>B</strong>&nbsp;find the minimum number (<strong>N</strong>) of identical squares of maximum side that can be cut out&nbsp;from that rectangle so that no residue remains in the rectangle. Also find the dimension <strong>K</strong>&nbsp;of that square.</span></p>\r\n\r\n<p><strong><span style=\"font-size:18px\">Example 1:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> L = 2, B = 4\r\n<strong>Output:</strong> N = 2, K = 2\r\n<strong>Explaination:</strong> 2 squares of 2x2 dimension.</span>\r\n\r\n</pre>\r\n\r\n<p><strong><span style=\"font-size:18px\">Example 2:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> L = 6, B = 3\r\n<strong>Output:</strong> N = 2, K = 3\r\n<strong>Explaintion:</strong> 2 squares of 3x3 dimension. </span></pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou do not need to read input or print anything. Your task is to complete the function <strong>minimumSquares()</strong> which takes L and&nbsp;B as input parameters and returns a list of 2 integers containing&nbsp;the values of N and K respectively.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(log min(L, B))<br />\r\n<strong>Expected Auxiliary Space:</strong> O(1)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &le; L, B &le; 10<sup>9</sup></span></p>\r\n"
+    },
+    "qnum": 814
+  },
+  {
+    "company": "Amdocs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/cutting-rectangles3659/1",
+      "problem_name": "Cutting Rectangles",
+      "slug": "cutting-rectangles3659",
+      "difficulty": "Easy",
+      "accuracy": "26.92%",
+      "marks": 2,
+      "all_submissions": 5394,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amdocs"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Combinatorial",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Combinatorial",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amdocs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/paper-cut-minimum-number-squares/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amdocs-interview-experience-for-software-engineering-associate-on-campus-2020/"
+      ],
+      "statement_text": "Given a rectangle of dimensions\nL\nx\nB\nfind the minimum number (\nN\n) of identical squares of maximum side that can be cut out from that rectangle so that no residue remains in the rectangle. Also find the dimension\nK\nof that square.\nExample 1:\nInput:\nL = 2, B = 4\nOutput:\nN = 2, K = 2\nExplaination:\n2 squares of 2x2 dimension.\nExample 2:\nInput:\nL = 6, B = 3\nOutput:\nN = 2, K = 3\nExplaintion:\n2 squares of 3x3 dimension.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nminimumSquares()\nwhich takes L and B as input parameters and returns a list of 2 integers containing the values of N and K respectively.\nExpected Time Complexity:\nO(log min(L, B))\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a rectangle of dimensions\nL\nx\nB\nfind the minimum number (\nN\n) of identical squares of maximum side that can be cut out from that rectangle so that no residue remains in the rectangle. Also find the dimension\nK\nof that square.\nExample 1:\nInput:\nL = 2, B = 4\nOutput:\nN = 2, K = 2\nExplaination:\n2 squares of 2x2 dimension.\nExample 2:\nInput:\nL = 6, B = 3\nOutput:\nN = 2, K = 3\nExplaintion:\n2 squares of 3x3 dimension.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nminimumSquares()\nwhich takes L and B as input parameters and returns a list of 2 integers containing the values of N and K respectively.\nExpected Time Complexity:\nO(log min(L, B))\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 ≤ L, B ≤ 10\n9",
+      "examples": [
+        "Input:\nL = 2, B = 4\nOutput:\nN = 2, K = 2\nExplaination:\n2 squares of 2x2 dimension.",
+        "Input:\nL = 6, B = 3\nOutput:\nN = 2, K = 3\nExplaintion:\n2 squares of 3x3 dimension."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ L, B ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size:18px\">Given a&nbsp;rectangle of dimensions <strong>L</strong>&nbsp;x&nbsp;<strong>B</strong>&nbsp;find the minimum number (<strong>N</strong>) of identical squares of maximum side that can be cut out&nbsp;from that rectangle so that no residue remains in the rectangle. Also find the dimension <strong>K</strong>&nbsp;of that square.</span></p>\r\n\r\n<p><strong><span style=\"font-size:18px\">Example 1:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> L = 2, B = 4\r\n<strong>Output:</strong> N = 2, K = 2\r\n<strong>Explaination:</strong> 2 squares of 2x2 dimension.</span>\r\n\r\n</pre>\r\n\r\n<p><strong><span style=\"font-size:18px\">Example 2:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> L = 6, B = 3\r\n<strong>Output:</strong> N = 2, K = 3\r\n<strong>Explaintion:</strong> 2 squares of 3x3 dimension. </span></pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou do not need to read input or print anything. Your task is to complete the function <strong>minimumSquares()</strong> which takes L and&nbsp;B as input parameters and returns a list of 2 integers containing&nbsp;the values of N and K respectively.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(log min(L, B))<br />\r\n<strong>Expected Auxiliary Space:</strong> O(1)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &le; L, B &le; 10<sup>9</sup></span></p>\r\n"
+    },
+    "qnum": 815
+  },
+  {
+    "company": "Amdocs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merging-two-unsorted-arrays-in-sorted-order1020/1",
+      "problem_name": "Merging two unsorted arrays in sorted order",
+      "slug": "merging-two-unsorted-arrays-in-sorted-order1020",
+      "difficulty": "Easy",
+      "accuracy": "51.32%",
+      "marks": 2,
+      "all_submissions": 17808,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Amdocs"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Amdocs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merging-two-unsorted-arrays-sorted-order/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amdocs-interview-experience-for-software-developer-java/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-18-for-sde-i/"
+      ],
+      "statement_text": "Given two different arrays\narr1[]\nand\narr2[]\n, the task is to merge the two unsorted arrays and return a sorted array.",
+      "full_text": "Given two different arrays\narr1[]\nand\narr2[]\n, the task is to merge the two unsorted arrays and return a sorted array.\nExamples:\nInput:\narr1[] = [10, 5, 15] , arr2[] = [20, 3, 2]\nOutput:\n[2, 3, 5, 10, 15, 20]\nExplanation\n: After merging both the array's and sorting it with get the desired output.\nInput:\narr1[] = [1, 10, 5, 15] , arr2[] = [20, 0, 2]\nOutput:\n[0, 1, 2, 5, 10, 15, 20]\nExpected Time Complexity:\nO (nlogn + mlogm + (n + m))\nExpected Auxiliary Space:\nO(n+m).\nConstraints:\n1 ≤ arr1.size(), arr2.size()≤ 10\n5\n-\n10\n5\n≤ arr1[i], arr2[i]≤ 10\n5",
+      "examples": [
+        "Input:\narr1[] = [10, 5, 15] , arr2[] = [20, 3, 2]\nOutput:\n[2, 3, 5, 10, 15, 20]\nExplanation\n: After merging both the array's and sorting it with get the desired output.",
+        "Input:\narr1[] = [1, 10, 5, 15] , arr2[] = [20, 0, 2]\nOutput:\n[0, 1, 2, 5, 10, 15, 20]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr1.size(), arr2.size()≤ 10\n5\n-\n10\n5\n≤ arr1[i], arr2[i]≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two different arrays <strong>arr1[]</strong> and <strong>arr2[]</strong>, the task is to merge the two unsorted arrays and return a sorted array.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr1[] = [10, 5, 15] , arr2[] = [20, 3, 2]\n<strong>Output:</strong> [2, 3, 5, 10, 15, 20]\n<strong>Explanation</strong>: After merging both the array's and sorting it with get the desired output.  \n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr1[] = [1, 10, 5, 15] , arr2[] = [20, 0, 2]\n<strong>Output:</strong> [0, 1, 2, 5, 10, 15, 20]\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O (nlogn + mlogm + (n + m))<br /><strong>Expected Auxiliary Space:</strong> O(n+m).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr1.size(), arr2.size()&le; 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">-</span><span style=\"font-size: 18px;\">10</span><sup>5</sup><span style=\"font-size: 18px;\"> &le; arr1[i], arr2[i]&le; 10</span><sup>5</sup></p>"
+    },
+    "qnum": 816
+  }
+]

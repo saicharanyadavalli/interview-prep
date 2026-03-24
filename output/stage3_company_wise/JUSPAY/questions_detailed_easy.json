@@ -1,0 +1,53 @@
+[
+  {
+    "company": "JUSPAY",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-weight-node--170645/1",
+      "problem_name": "Maximum Weight Node",
+      "slug": "maximum-weight-node--170645",
+      "difficulty": "Easy",
+      "accuracy": "53.85%",
+      "marks": 2,
+      "all_submissions": 33498,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "exits [] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "JUSPAY"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Graph",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Graph",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "JUSPAY"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/maximum-weight-node/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a maze with n cells. Each cell may have multiple entry points but not more than one exit point (i.e entry/exit points are unidirectional doors like valves).\n\nYou are given an array exits[], where exits[i] contains the exit point of the ith cell.\nIf exits[i] is -1, then ith cell doesn't have an exit.\n\nThe task is to find the cell with maximum weight (The weight of a cell i is the sum of all the cell indexes that have exit point as i ). If there are multiple cells with the maximum weight return the cell with highest index.\n\nNote: The cells are indexed with an integer value from 0 to n-1.\nA cell i has weight 0 if no cell has exit point as i.\n\nExamples:\n\nInput: exits[] = [2, 0, -1, 2}\nOutput: 2\nExplanation:\n1 -> 0 -> 2 <- 3\nweight of 0th cell = 1\nweight of 1st cell = 0 (because there is no cell pointing to the 1st cell)\nweight of 2nd cell = 0+3 = 3\nweight of 3rd cell = 0\nThere is only one cell which has maximum weight (i.e 2)\nSo, cell 2 is the output.\n\nInput: exits[] = [-1]\nOutput: 0\nExplanation:\nweight of 0th cell is 0.\nThere is only one cell so cell 0 has maximum weight.\n\nConstraints:\n1  ≤  n  ≤  105\n-1  <  exits[i]  <  N\nexits[i]  ≠  i",
+      "full_text": "Given a maze with n cells. Each cell may have multiple entry points but not more than one exit point (i.e entry/exit points are unidirectional doors like valves).\n\nYou are given an array exits[], where exits[i] contains the exit point of the ith cell.\nIf exits[i] is -1, then ith cell doesn't have an exit.\n\nThe task is to find the cell with maximum weight (The weight of a cell i is the sum of all the cell indexes that have exit point as i ). If there are multiple cells with the maximum weight return the cell with highest index.\n\nNote: The cells are indexed with an integer value from 0 to n-1.\nA cell i has weight 0 if no cell has exit point as i.\n\nExamples:\n\nInput: exits[] = [2, 0, -1, 2}\nOutput: 2\nExplanation:\n1 -> 0 -> 2 <- 3\nweight of 0th cell = 1\nweight of 1st cell = 0 (because there is no cell pointing to the 1st cell)\nweight of 2nd cell = 0+3 = 3\nweight of 3rd cell = 0\nThere is only one cell which has maximum weight (i.e 2)\nSo, cell 2 is the output.\n\nInput: exits[] = [-1]\nOutput: 0\nExplanation:\nweight of 0th cell is 0.\nThere is only one cell so cell 0 has maximum weight.\n\nConstraints:\n1  ≤  n  ≤  105\n-1  <  exits[i]  <  N\nexits[i]  ≠  i",
+      "examples": [
+        "Input:\nexits[] = [2, 0, -1, 2}\nOutput:\n2\nExplanation\n:\n1 -> 0 -> 2 <- 3\nweight of 0th cell = 1\nweight of 1st cell = 0 (because there is no cell pointing to the 1st cell)\nweight of 2nd cell = 0+3 = 3\nweight of 3rd cell = 0\nThere is only one cell which has maximum weight (i.e 2)\nSo, cell 2 is the output.",
+        "Input:\nexits[] = [-1]\nOutput:\n0\nExplanation\n:\nweight of 0\nth\ncell is 0.\nThere is only one cell so cell 0 has maximum weight."
+      ],
+      "constraints_text": "Constraints:\n1  ≤  n  ≤  10\n5\n-1\n<\nexits[i]  <  N\nexits[i]  ≠  i",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a maze with <strong>n</strong> cells. Each cell may have <strong>multiple entry points</strong> but <strong>not more than one exit point</strong> (i.e entry/exit points are unidirectional doors like valves).</span></p>\n<p><span style=\"font-size: 18px;\">You are given an array <strong>exits[]</strong>,&nbsp;where<strong> exits[i] </strong>contains the exit point of the ith cell.<br />If <strong>exits[i]</strong> is <strong>-1,</strong> then ith cell doesn't have an exit. </span></p>\n<p><span style=\"font-size: 18px;\">The task is to find the cell with&nbsp;<strong>maximum weight </strong>(The <strong>weight</strong> of a cell <strong>i</strong> is the <strong>sum of all the cell indexes</strong> that have <strong>exit point</strong> as <strong>i </strong>). If there are multiple cells with the maximum weight return the cell with highest index.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:&nbsp;</strong>The cells are indexed with an integer value from 0 to n-1.<br />A cell <strong>i</strong> has <strong>weight 0</strong> if <strong>no cell</strong> has <strong>exit point</strong> as <strong>i.</strong></span></p>\n<p><span style=\"font-size: 18px;\"><strong><strong>Examples:</strong></strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong><strong>Input: </strong></strong>exits[] = [2, 0, -1, 2}<strong>\n<strong>Output:</strong> </strong>2<strong>\n<strong>Explanation</strong>: \n</strong>1 -&gt; 0 -&gt; 2 &lt;- 3\nweight of 0th cell = 1\nweight of 1st cell = 0 (because there is no cell pointing to the 1st cell)\nweight of 2nd cell = 0+3 = 3\nweight of 3rd cell = 0\nThere is only one cell which has maximum weight (i.e 2)<br />So, cell 2 is the output.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong><strong>Input: </strong></strong>exits[] = [-1]<strong>\n<strong>Output:</strong> </strong>0<strong>\n<strong>Explanation</strong>:\n</strong>weight of 0<sup>th</sup> cell is 0.\nThere is only one cell so cell 0 has maximum weight.\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong><strong>Constraints:</strong></strong><br />1 &nbsp;&le; &nbsp;n &nbsp;&le; &nbsp;10<sup>5</sup><br />-1 &nbsp;<u>&lt;</u>&nbsp; exits[i] &nbsp;&lt; &nbsp;N<br />exits[i] &nbsp;&ne; &nbsp;i</span></p>"
+    },
+    "qnum": 1409
+  }
+]

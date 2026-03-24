@@ -1,0 +1,1209 @@
+[
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/bird-and-maximum-fruit-gathering0509/1",
+      "problem_name": "Bird and maximum fruit gathering",
+      "slug": "bird-and-maximum-fruit-gathering0509",
+      "difficulty": "Easy",
+      "accuracy": "26.35%",
+      "marks": 2,
+      "all_submissions": 8258,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&arr[] = ",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "sliding-window",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "sliding-window",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/facebook-interview-set-2-campus-interview-internship/"
+      ],
+      "statement_text": "There are several trees, each with a fruit value associated with it. A bird can gather all the fruits from a tree by sitting on it for 0.5 seconds and can move to a neighboring tree in another 0.5 seconds. Once all the fruits are picked from a tree, the bird cannot pick any more from that tree until all fruits are picked, it cannot move to next tree. The bird has totalTime seconds to gather as many fruits as possible and can start from any tree.\n\nGiven the array arr[] of fruit values and totalTime, determine the maximum number of fruits the bird can gather.\n\nExamples:\n\nInput: arr[] = [2, 1, 3, 5, 0, 1, 4], totalTime = 3\nOutput: 9\nExplanation: Starting at tree 1 and moving to tree 2, then to tree 3, the bird gathers 1 + 3 + 5 = 9 fruits.\n\nInput: arr[] = [1, 6, 2, 5, 3, 4], totalTime = 2\nOutput: 8\nExplanation: Starting at tree 1 and moving to tree 2, the bird gathers 6 + 2 = 8 fruits. Alternatively, starting at tree 3 and moving to tree 4, the bird also gathers 5 + 3 = 8 fruits.\n\nConstraints:\n2 ≤ arr.size() ≤ 106\n1 ≤ totalTime ≤ 108\n0 ≤ arr[i] ≤ 105",
+      "full_text": "There are several trees, each with a fruit value associated with it. A bird can gather all the fruits from a tree by sitting on it for 0.5 seconds and can move to a neighboring tree in another 0.5 seconds. Once all the fruits are picked from a tree, the bird cannot pick any more from that tree until all fruits are picked, it cannot move to next tree. The bird has totalTime seconds to gather as many fruits as possible and can start from any tree.\n\nGiven the array arr[] of fruit values and totalTime, determine the maximum number of fruits the bird can gather.\n\nExamples:\n\nInput: arr[] = [2, 1, 3, 5, 0, 1, 4], totalTime = 3\nOutput: 9\nExplanation: Starting at tree 1 and moving to tree 2, then to tree 3, the bird gathers 1 + 3 + 5 = 9 fruits.\n\nInput: arr[] = [1, 6, 2, 5, 3, 4], totalTime = 2\nOutput: 8\nExplanation: Starting at tree 1 and moving to tree 2, the bird gathers 6 + 2 = 8 fruits. Alternatively, starting at tree 3 and moving to tree 4, the bird also gathers 5 + 3 = 8 fruits.\n\nConstraints:\n2 ≤ arr.size() ≤ 106\n1 ≤ totalTime ≤ 108\n0 ≤ arr[i] ≤ 105",
+      "examples": [
+        "Input:\narr[] = [2, 1, 3, 5, 0, 1, 4], totalTime = 3\nOutput:\n9\nExplanation:\nStarting at tree 1 and moving to tree 2, then to tree 3, the bird gathers 1 + 3 + 5 = 9 fruits.",
+        "Input:\narr[] = [1, 6, 2, 5, 3, 4], totalTime = 2\nOutput:\n8\nExplanation:\nStarting at tree 1 and moving to tree 2, the bird gathers 6 + 2 = 8 fruits. Alternatively, starting at tree 3 and moving to tree 4, the bird also gathers 5 + 3 = 8 fruits."
+      ],
+      "constraints_text": "Constraints\n:\n2 ≤ arr.size() ≤ 10\n6\n1 ≤ totalTime ≤ 10\n8\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">There are several trees, each with a fruit value associated with it. A bird can gather all the fruits from a tree by sitting on it for 0.5 seconds and can move to a neighboring tree in another 0.5 seconds. Once all the fruits are picked from a tree, the bird cannot pick any more from that tree until all fruits are picked, it cannot move to next tree. The bird has <strong>totalTime</strong> seconds to gather as many fruits as possible and can start from any tree.</span></p>\n<p><span style=\"font-size: 14pt;\">Given the array <strong>arr[]</strong> of fruit values and <strong>totalTime</strong>, determine the maximum number of fruits the bird can gather.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples</strong>:</span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [2, 1, 3, 5, 0, 1, 4], totalTime = 3</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 9</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> Starting at tree 1 and moving to tree 2, then to tree 3, the bird gathers 1 + 3 + 5 = 9 fruits.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [1, 6, 2, 5, 3, 4], totalTime = 2</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 8</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> Starting at tree 1 and moving to tree 2, the bird gathers 6 + 2 = 8 fruits. Alternatively, starting at tree 3 and moving to tree 4, the bird also gathers 5 + 3 = 8 fruits.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br /></span><span style=\"font-size: 14pt;\">2 &le; arr.size() &le; 10<sup>6</sup></span><br /><span style=\"font-size: 18.6667px;\">1 &le; totalTime &le; 10<sup>8</sup></span><br /><span style=\"font-size: 14pt;\">0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 898
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/bird-and-maximum-fruit-gathering--170645/1",
+      "problem_name": "Bird and maximum fruit gathering",
+      "slug": "bird-and-maximum-fruit-gathering--170645",
+      "difficulty": "Easy",
+      "accuracy": "25.2%",
+      "marks": 2,
+      "all_submissions": 1147,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/facebook-interview-set-2-campus-interview-internship/"
+      ],
+      "statement_text": "given an array arr[] representing the fruit values of N trees arranged in a circle. A bird can move between neighboring trees, collecting fruit. In each second, the bird can either pick the fruits from the current tree or move to a neighboring one. Given m seconds, maximize the total fruit value the bird can gather. The bird can start from any tree.\n\nExamples:\n\nInput: arr[] = [2, 1, 3, 5, 0, 1, 4], m = 3\nOutput: 9\nExplanation: She can start from tree 1 and move to tree2 and then to tree 3. Hence, total number of gathered fruits = 1 + 3 + 5 = 9.\n\nInput: arr[] = [1, 6, 2, 5, 3, 4], m = 2\nOutput: 8\nExplanation: She can start from tree 1 and move to tree 2. In this case she will gather 6 + 2 = 8 fruits. She can also start from tree 3 and move to tree 4. In this case, too, she will gather 5 + 3 = 8 fruits.\n\nExpected Time Complexity: O(n).\nExpected Auxiliary Space: O(1).\n\nConstraints:\n2 ≤ m, arr.size ≤ 106\n1 ≤ arr[i] ≤ 106\n2 ≤ arr.size ≤ 106",
+      "full_text": "given an array arr[] representing the fruit values of N trees arranged in a circle. A bird can move between neighboring trees, collecting fruit. In each second, the bird can either pick the fruits from the current tree or move to a neighboring one. Given m seconds, maximize the total fruit value the bird can gather. The bird can start from any tree.\n\nExamples:\n\nInput: arr[] = [2, 1, 3, 5, 0, 1, 4], m = 3\nOutput: 9\nExplanation: She can start from tree 1 and move to tree2 and then to tree 3. Hence, total number of gathered fruits = 1 + 3 + 5 = 9.\n\nInput: arr[] = [1, 6, 2, 5, 3, 4], m = 2\nOutput: 8\nExplanation: She can start from tree 1 and move to tree 2. In this case she will gather 6 + 2 = 8 fruits. She can also start from tree 3 and move to tree 4. In this case, too, she will gather 5 + 3 = 8 fruits.\n\nExpected Time Complexity: O(n).\nExpected Auxiliary Space: O(1).\n\nConstraints:\n2 ≤ m, arr.size ≤ 106\n1 ≤ arr[i] ≤ 106\n2 ≤ arr.size ≤ 106",
+      "examples": [
+        "Input:\narr[] = [2, 1, 3, 5, 0, 1, 4], m = 3\nOutput:\n9\nExplanation\n: She can start from tree 1 and move to tree2 and then to tree 3. Hence, total number of gathered fruits = 1 + 3 + 5 = 9.",
+        "Input:\narr[] = [1, 6, 2, 5, 3, 4], m = 2\nOutput:\n8\nExplanation\n: She can start from tree 1 and move to tree 2. In this case she will gather 6 + 2 = 8 fruits. She can also start from tree 3 and move to tree 4. In this case, too, she will gather 5 + 3 = 8 fruits."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ m, arr.size ≤ 10\n6\n1 ≤ arr[i] ≤ 10\n6\n2 ≤ arr.size ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 12pt;\">given an array <strong><code>arr[]</code></strong> representing the fruit values of <strong><code>N</code></strong> trees arranged in a circle. A bird can move between neighboring trees, collecting fruit. In each second, the bird can either pick the fruits from the current tree or move to a neighboring one. Given <strong>m</strong> seconds, maximize the total fruit value the bird can gather. The bird can start from any tree.<br /></span></p>\n<p><span style=\"font-size: 12pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 12pt;\"><strong>Input: </strong>arr[] = [2, 1, 3, 5, 0, 1, 4], m = 3\n<strong>Output:</strong> 9\n<strong>Explanation</strong>: She can start from tree 1 and move to tree2 and then to tree 3. Hence, total number of gathered fruits = 1 + 3 + 5 = 9.</span></pre>\n<pre><span style=\"font-size: 12pt;\"><strong>Input: </strong>arr[] = [1, 6, 2, 5, 3, 4], m = 2\n<strong>Output:</strong> 8\n<strong>Explanation</strong>: She can start from tree 1 and move to tree 2. In this case she will gather 6 + 2 = 8 fruits. She can also start from tree 3 and move to tree 4. In this case, too, she will gather 5 + 3 = 8 fruits.\n</span></pre>\n<p><span style=\"font-size: 12pt;\"><strong>Expected Time Complexity:</strong> O(n).<br /><strong>Expected Auxiliary Space:</strong> O(1).</span></p>\n<p><span style=\"font-size: 12pt;\"><strong>Constraints:</strong><br />2 &le; m, arr.size &le; 10<sup>6<br /></sup>1 &le; arr[i] &le; 10<sup>6<br /></sup>2 &le; arr.size &le; 10<sup>6</sup><sup><br /></sup></span></p>"
+    },
+    "qnum": 899
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/convert-to-roman-no/1",
+      "problem_name": "Convert to Roman No",
+      "slug": "convert-to-roman-no",
+      "difficulty": "Easy",
+      "accuracy": "51.57%",
+      "marks": 2,
+      "all_submissions": 41502,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "InfoEdge",
+          "Facebook",
+          "Twitter"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "InfoEdge",
+        "Facebook",
+        "Twitter"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/converting-decimal-number-lying-between-1-to-3999-to-roman-numerals/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an integer n, your task is to complete the function\nconvertToRoman\nwhich prints the corresponding roman number of n. Various symbols and their values are given below\nNote:- There are a few exceptions for some numbers like 4 in roman is IV,9 in roman is IX, similarly, 40 is XL while 90 is XC. Similarly, 400 is CD while 900 is CM\nI 1\nV 5\nX 10\nL 50\nC 100\nD 500\nM 1000\nExample 1:\nInput:\nn = 5\nOutput:\nV\nExample 2:\nInput:\nn = 3\nOutput:\nIII\nYour Task:\nComplete the function\nconvertToRoman()\nwhich takes an integer N as input parameter and returns the equivalent roman.\nExpected Time Complexity:\nO(log\n10\nN)\nExpected Auxiliary Space:\nO(log\n10\nN * 10)",
+      "full_text": "Given an integer n, your task is to complete the function\nconvertToRoman\nwhich prints the corresponding roman number of n. Various symbols and their values are given below\nNote:- There are a few exceptions for some numbers like 4 in roman is IV,9 in roman is IX, similarly, 40 is XL while 90 is XC. Similarly, 400 is CD while 900 is CM\nI 1\nV 5\nX 10\nL 50\nC 100\nD 500\nM 1000\nExample 1:\nInput:\nn = 5\nOutput:\nV\nExample 2:\nInput:\nn = 3\nOutput:\nIII\nYour Task:\nComplete the function\nconvertToRoman()\nwhich takes an integer N as input parameter and returns the equivalent roman.\nExpected Time Complexity:\nO(log\n10\nN)\nExpected Auxiliary Space:\nO(log\n10\nN * 10)\nConstraints:\n1<=\nn\n<=3999",
+      "examples": [
+        "Input:\nn = 5\nOutput:\nV",
+        "Input:\nn = 3\nOutput:\nIII"
+      ],
+      "constraints_text": "Constraints:\n1<=\nn\n<=3999",
+      "question_html": "<p><span style=\"font-size:18px\">Given an integer n, your task is to complete the function <strong>convertToRoman</strong> which prints&nbsp;the corresponding roman number of n. Various symbols and their values are given below<br />\r\nNote:- There are a few exceptions for some numbers like 4 in roman is IV,9 in roman is IX, similarly, 40 is XL while 90 is XC. Similarly, 400 is CD while 900 is CM</span></p>\r\n\r\n<p><span style=\"font-size:18px\">I 1<br />\r\nV 5<br />\r\nX 10<br />\r\nL 50<br />\r\nC 100<br />\r\nD 500<br />\r\nM 1000</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>n = 5\r\n<strong>Output: </strong>V</span>\r\n</pre>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>n = 3\r\n<strong>Output: </strong>III\r\n</span></pre>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nComplete the function&nbsp;<strong>convertToRoman()&nbsp;</strong>which takes an integer N as input parameter and returns&nbsp;the equivalent roman.&nbsp;</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong>&nbsp;O(log<sub>10</sub>N)<br />\r\n<strong>Expected Auxiliary Space:</strong>&nbsp;O(log<sub>10</sub>N * 10)</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1&lt;=<strong>n</strong>&lt;=3999 </span></p>\r\n"
+    },
+    "qnum": 900
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/digital-root/1",
+      "problem_name": "Digital Root",
+      "slug": "digital-root",
+      "difficulty": "Easy",
+      "accuracy": "56.33%",
+      "marks": 2,
+      "all_submissions": 64525,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = ",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Facebook",
+          "FiberLink",
+          "Adobe",
+          "FactSet"
+        ],
+        "topic_tags": [
+          "Recursion",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Recursion",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Facebook",
+        "FiberLink",
+        "Adobe",
+        "FactSet"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "You are given a number\nn\n. You need to find the\ndigital root\nof n. DigitalRoot of a number is the recursive sum of its digits until we get a single digit number.\nExamples :\nInput:\nn = 1\nOutput:\n1\nExplanation:\nDigital root of 1 is 1\nInput:\nn = 99999\nOutput:\n9\nExplanation:\nSum of digits of 99999 is 45 which is not a single digit number, hence sum of digit of 45 is 9 which is a single digit number.",
+      "full_text": "You are given a number\nn\n. You need to find the\ndigital root\nof n. DigitalRoot of a number is the recursive sum of its digits until we get a single digit number.\nExamples :\nInput:\nn = 1\nOutput:\n1\nExplanation:\nDigital root of 1 is 1\nInput:\nn = 99999\nOutput:\n9\nExplanation:\nSum of digits of 99999 is 45 which is not a single digit number, hence sum of digit of 45 is 9 which is a single digit number.\nConstraints:\n1 ≤ n ≤ 10\n7",
+      "examples": [
+        "Input:\nn = 1\nOutput:\n1\nExplanation:\nDigital root of 1 is 1",
+        "Input:\nn = 99999\nOutput:\n9\nExplanation:\nSum of digits of 99999 is 45 which is not a single digit number, hence sum of digit of 45 is 9 which is a single digit number."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10\n7",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given a number <strong>n</strong>. You need to find the<strong> digital root </strong>of n.&nbsp;DigitalRoot of a number is the recursive sum of its digits until we get a single digit number.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>n = 1\n<strong>Output:  </strong>1\n<strong>Explanation: </strong>Digital root of 1 is 1</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 99999\n<strong>Output: </strong>9\n<strong>Explanation: </strong>Sum of digits of 99999 is 45 which is not a single digit number, hence sum of digit of 45 is 9 which is a single digit number.</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Constraints: </span></strong><br /><span style=\"font-size: 18px;\">1 &le; n &le; 10<sup>7</sup></span></p>"
+    },
+    "qnum": 901
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/equilibrium-point-1587115620/1",
+      "problem_name": "Equilibrium Point",
+      "slug": "equilibrium-point-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "28.13%",
+      "marks": 2,
+      "all_submissions": 685815,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[]",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Adobe",
+          "Google",
+          "Facebook",
+          "Microsoft",
+          "Uber"
+        ],
+        "topic_tags": [
+          "prefix-sum",
+          "Arrays",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "prefix-sum",
+        "Arrays",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Adobe",
+        "Google",
+        "Facebook",
+        "Microsoft",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/equilibrium-index-of-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array of integers\narr[]\n,\nthe task is to find the first\nequilibrium point\nin the array.\nThe equilibrium point in an array is an index (0-based indexing) such that the sum of all elements before\nthat index is the same as the sum\nof elements after\nit.\nReturn -1 if no such point exists.",
+      "full_text": "Given an array of integers\narr[]\n,\nthe task is to find the first\nequilibrium point\nin the array.\nThe equilibrium point in an array is an index (0-based indexing) such that the sum of all elements before\nthat index is the same as the sum\nof elements after\nit.\nReturn -1 if no such point exists.\nExamples:\nInput:\narr[] = [1, 2, 0, 3]\nOutput:\n2\nExplanation:\nThe sum of left of index 2 is 1 + 2 = 3 and sum on right of index 2 is 3.\nInput:\narr[] = [1, 1, 1, 1]\nOutput:\n-1\nExplanation:\nThere is no equilibrium index in the array.\nInput:\narr[] = [-7, 1, 5, 2, -4, 3, 0]\nOutput:\n3\nExplanation:\nThe sum of left of index 3 is -7 + 1 + 5 = -1 and sum on right of index 3 is -4 + 3 + 0 = -1.\nConstraints:\n3 <= arr.size() <= 10\n5\n-10\n4\n<= arr[i] <= 10\n4",
+      "examples": [
+        "Input:\narr[] = [1, 2, 0, 3]\nOutput:\n2\nExplanation:\nThe sum of left of index 2 is 1 + 2 = 3 and sum on right of index 2 is 3.",
+        "Input:\narr[] = [1, 1, 1, 1]\nOutput:\n-1\nExplanation:\nThere is no equilibrium index in the array.",
+        "Input:\narr[] = [-7, 1, 5, 2, -4, 3, 0]\nOutput:\n3\nExplanation:\nThe sum of left of index 3 is -7 + 1 + 5 = -1 and sum on right of index 3 is -4 + 3 + 0 = -1."
+      ],
+      "constraints_text": "Constraints:\n3 <= arr.size() <= 10\n5\n-10\n4\n<= arr[i] <= 10\n4",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array of integers<strong> arr[]</strong>,<strong> </strong>the task is to find the first <strong>equilibrium point</strong>&nbsp;in the array.</span></p>\n<p><span style=\"font-size: 14pt;\">The equilibrium point in an array is an index (0-based indexing) such that the sum of all elements before<strong>&nbsp;</strong>that index is the&nbsp;same&nbsp;as the&nbsp;sum<strong>&nbsp;</strong>of elements&nbsp;after<strong>&nbsp;</strong>it.&nbsp;</span><span style=\"font-size: 14pt;\">Return -1 if no such point exists.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 0, 3]<br /><strong>Output: </strong>2<strong> \nExplanation: </strong></span><span style=\"font-size: 18.6667px;\">The sum of left of index 2 is 1 + 2 = 3 and sum on right of index 2 is 3.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 1, 1, 1]<br /><strong>Output: </strong>-1<strong>\nExplanation: </strong>There is no equilibrium index in the array.<br /></span></pre>\n<pre style=\"text-wrap: wrap; color: #222222; background-color: #ffffff;\"><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [-7, 1, 5, 2, -4, 3, 0]</span><span style=\"color: #222222;\"><span style=\"text-wrap-mode: wrap;\"><br /></span></span><span style=\"font-size: 14pt;\"><strong>Output: </strong>3<strong>\nExplanation: </strong></span><span style=\"color: #222222;\"><span style=\"font-size: 18.6667px; text-wrap-mode: wrap;\">The sum of left of index 3 is -7 + 1 + 5 = -1 and sum on right of index 3 is -4 + 3 + 0 = -1.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />3 &lt;= arr.size() &lt;= 10<sup>5</sup><br /><span style=\"font-size: 18.6667px;\">-10</span><sup>4</sup> &lt;= arr[i] &lt;= 10<sup>4</sup></span></p>"
+    },
+    "qnum": 902
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-all-pairs-whose-sum-is-x5808/1",
+      "problem_name": "Find all pairs with a given sum",
+      "slug": "find-all-pairs-whose-sum-is-x5808",
+      "difficulty": "Easy",
+      "accuracy": "23.94%",
+      "marks": 2,
+      "all_submissions": 177084,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "x =&!//!&arr1[] =&!//!&arr2[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "MakeMyTrip",
+          "Facebook",
+          "United Health Group"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Hash",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Hash",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "MakeMyTrip",
+        "Facebook",
+        "United Health Group"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-two-unsorted-arrays-find-pairs-whose-sum-x/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-for-software-engineer/"
+      ],
+      "statement_text": "Given two unsorted arrays\na[]\nand b\n[]\n, the task is to find all pairs whose sum equals\nx\nfrom both arrays.\nNote:\nAll pairs should be returned in\nincreasing\norder of u. For eg. for two pairs (u\n1\n,v\n1\n) and (u\n2\n,v\n2\n), if u\n1\n< u\n2\nthen (u\n1\n,v\n1\n) should be returned first else second.",
+      "full_text": "Given two unsorted arrays\na[]\nand b\n[]\n, the task is to find all pairs whose sum equals\nx\nfrom both arrays.\nNote:\nAll pairs should be returned in\nincreasing\norder of u. For eg. for two pairs (u\n1\n,v\n1\n) and (u\n2\n,v\n2\n), if u\n1\n< u\n2\nthen (u\n1\n,v\n1\n) should be returned first else second.\nExamples:\nInput:\ntarget = 9, a[] = [1, 2, 4, 5, 7], b[] = [5, 6, 3, 4, 8]\nOutput:\n1 8\n4 5\n5 4\nExplanation:\n(1, 8), (4, 5), (5, 4) are the pairs which sum to 9.\nInput:\ntarget = 8, a[] = [-1, -2, 4, -6, 5, 7], b[] = [6, 3, 4, 0]\nOutput:\n4 4\n5 3\nInput\n: target = 9, a[] = [1, 2, 4, 5, 7, 4], b[] = [5, 6, 3, 4, 8, 4]\nOutput\n:\n1 8\n4 5\n4 5\n5 4\n5 4\nExplanation\n: (1, 8), (4, 5), (4, 5), (5, 4) and (5, 4) are the pairs which sum to 9.\nConstraints:\n1 ≤ arr1.size, arr2.size ≤ 10\n5\n-2*10\n4\n≤ target, arr1[i], arr2[i] ≤ 2*10\n4",
+      "examples": [
+        "Input:\ntarget = 9, a[] = [1, 2, 4, 5, 7], b[] = [5, 6, 3, 4, 8]\nOutput:\n1 8\n4 5\n5 4\nExplanation:\n(1, 8), (4, 5), (5, 4) are the pairs which sum to 9.",
+        "Input:\ntarget = 8, a[] = [-1, -2, 4, -6, 5, 7], b[] = [6, 3, 4, 0]\nOutput:\n4 4\n5 3",
+        "Input\n: target = 9, a[] = [1, 2, 4, 5, 7, 4], b[] = [5, 6, 3, 4, 8, 4]\nOutput\n:\n1 8\n4 5\n4 5\n5 4\n5 4\nExplanation\n: (1, 8), (4, 5), (4, 5), (5, 4) and (5, 4) are the pairs which sum to 9."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr1.size, arr2.size ≤ 10\n5\n-2*10\n4\n≤ target, arr1[i], arr2[i] ≤ 2*10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two unsorted arrays <strong>a[]</strong> &nbsp;and b<strong>[]</strong>, the task is to find all pairs whose sum equals <strong>x</strong> from both arrays.</span></p>\n<p><span style=\"font-size: 18px;\">Note:<strong>&nbsp;</strong>All pairs should be returned in <strong>increasing </strong>order of u. For eg. for two pairs (u<sub>1</sub>,v<sub>1</sub>) and (u<sub>2</sub>,v<sub>2</sub>), if u<sub>1&nbsp;</sub>&lt; u<sub>2</sub> then (u<sub>1</sub>,v<sub>1</sub>) should be returned first else second.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>target = 9, a[] = [1, 2, 4, 5, 7], b[] = [5, 6, 3, 4, 8]\n<strong>Output: <br /></strong>1 8\n4 5 \n5 4\n<strong>Explanation: </strong>(1, 8), (4, 5), (5, 4) are the pairs which sum to 9.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">target = 8, a[] = [-1, -2, 4, -6, 5, 7], b[] = [6, 3, 4, 0]\n</span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\">\n4 4 \n5 3<br /></span></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input</strong><span style=\"font-size: 18px;\">: target = 9, a[] = [1, 2, 4, 5, 7, 4], b[] = [5, 6, 3, 4, 8, 4]<br /><strong>Output</strong>:<br />1 8<br />4 5<br />4 5<br />5 4<br />5 4\n<strong>Explanation</strong>: (1, 8), (4, 5), (4, 5), (5, 4) and (5, 4) are the pairs which sum to 9.</span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr1.size, arr2.size &le; 10<sup>5</sup><br />-2*10<sup>4</sup> &le; target, arr1[i], arr2[i] &le; 2*10<sup>4</sup></span></p>"
+    },
+    "qnum": 903
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/implement-strstr/1",
+      "problem_name": "First Occurence",
+      "slug": "implement-strstr",
+      "difficulty": "Basic",
+      "accuracy": "46.9%",
+      "marks": 1,
+      "all_submissions": 223675,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 =&!//!&s2 =",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Facebook",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Pattern Searching",
+          "Design-Pattern",
+          "Data Structures",
+          "implementation"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Pattern Searching",
+        "Design-Pattern",
+        "Data Structures",
+        "implementation"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Facebook",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-string-substring-another/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-set-2/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-7-off-campus/"
+      ],
+      "statement_text": "Given two strings txt and pat, return the 0-based index of the first occurrence of the substring pat in txt. If pat is not found, return -1.\nNote: You are not allowed to use the inbuilt function.\n\nExamples :\n\nInput: txt = \"GeeksForGeeks\", pat = \"Fr\"\nOutput: -1\nExplanation: \"Fr\" is not present in the string \"GeeksForGeeks\" as substring.\n\nInput: txt = \"GeeksForGeeks\", pat = \"For\"\nOutput: 5\nExplanation: \"For\" is present as substring in \"GeeksForGeeks\" from index 5 (0 based indexing).\n\nInput: txt = \"GeeksForGeeks\", pat = \"gr\"\nOutput: -1\nExplanation: \"gr\" is not present in the string \"GeeksForGeeks\" as substring.\n\nConstraints:\n1 ≤ txt.size(),pat.size() ≤ 1000",
+      "full_text": "Given two strings txt and pat, return the 0-based index of the first occurrence of the substring pat in txt. If pat is not found, return -1.\nNote: You are not allowed to use the inbuilt function.\n\nExamples :\n\nInput: txt = \"GeeksForGeeks\", pat = \"Fr\"\nOutput: -1\nExplanation: \"Fr\" is not present in the string \"GeeksForGeeks\" as substring.\n\nInput: txt = \"GeeksForGeeks\", pat = \"For\"\nOutput: 5\nExplanation: \"For\" is present as substring in \"GeeksForGeeks\" from index 5 (0 based indexing).\n\nInput: txt = \"GeeksForGeeks\", pat = \"gr\"\nOutput: -1\nExplanation: \"gr\" is not present in the string \"GeeksForGeeks\" as substring.\n\nConstraints:\n1 ≤ txt.size(),pat.size() ≤ 1000",
+      "examples": [
+        "Input:\ntxt = \"GeeksForGeeks\", pat = \"Fr\"\nOutput:\n-1\nExplanation: \"\nFr\" is not present in the string \"GeeksForGeeks\" as substring.",
+        "Input:\ntxt = \"GeeksForGeeks\", pat = \"For\"\nOutput:\n5\nExplanation: \"\nFor\" is present as substring in \"GeeksForGeeks\" from index 5 (0 based indexing).",
+        "Input:\ntxt = \"GeeksForGeeks\", pat = \"gr\"\nOutput:\n-1\nExplanation: \"\ngr\" is not present in the string \"GeeksForGeeks\" as substring."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ txt.size(),pat.size() ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two strings <strong>txt</strong> and <strong>pat</strong>, return the 0-based index of the first occurrence of the substring <strong>pat</strong> in <strong>txt</strong>. If pat is not found, return -1.<br /></span><strong><span style=\"font-size: 18px;\">Note:&nbsp;</span></strong><span style=\"font-size: 18px;\">You are not allowed to use the inbuilt function.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>txt = \"GeeksForGeeks\", pat = \"Fr\"\n<strong>Output: </strong>-1<strong>\nExplanation: \"</strong>Fr\" is not present in the string \"GeeksForGeeks\" as substring.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>txt = \"GeeksForGeeks\", pat = \"For\"\n<strong>Output: </strong>5<strong>\nExplanation: \"</strong>For\" is present as substring in \"GeeksForGeeks\" from index 5 (0 based indexing).<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>txt = \"GeeksForGeeks\", pat = \"gr\"\n<strong>Output: </strong>-1<strong>\nExplanation: \"</strong>gr\" is not present in the string \"GeeksForGeeks\" as substring.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; txt.size(),pat.size() &le; 1000</span></p>"
+    },
+    "qnum": 904
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/k-palindrome/1",
+      "problem_name": "K-Palindrome",
+      "slug": "k-palindrome",
+      "difficulty": "Easy",
+      "accuracy": "38.46%",
+      "marks": 2,
+      "all_submissions": 14673,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms",
+          "Strings"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms",
+        "Strings"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-if-string-is-k-palindrome-or-not-set-2/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string\ns\ncontaining\nn\nlowercase alphabets and an integer\nk\n, a string is considered a \"\nk-palindrome\n\" if it can be converted into a palindrome by removing\nno more than k characters\n. Your task is to determine whether the given string s can be made into a k-palindrome or not.\nExample 1:\nInput:\ns = abcdecba\nk = 1\nOutput:\ntrue\nExplanation:\nSince k = 1, by removing either 'd' or 'e', the string can become a palindrome.\n- Hence answer is\ntrue\n.\nExample 2:\nInput:\ns = abcd\nk = 2\nOutput:\nfalse\nExplanation:\nSince k = 2, we can remove at most 2 characters. but for given string it is impossible to make it palindrome by removing at most 2 characters.\n- Hence answer is\nfalse\n.\nYour Task:\nThe task is to complete the function\niskPalindrome()\nwhich takes a string\ns\nand an integer\nk\nas input parameters and returns the\ntrue\nif s is k-palindrome, else\nfalse\n.",
+      "full_text": "Given a string\ns\ncontaining\nn\nlowercase alphabets and an integer\nk\n, a string is considered a \"\nk-palindrome\n\" if it can be converted into a palindrome by removing\nno more than k characters\n. Your task is to determine whether the given string s can be made into a k-palindrome or not.\nExample 1:\nInput:\ns = abcdecba\nk = 1\nOutput:\ntrue\nExplanation:\nSince k = 1, by removing either 'd' or 'e', the string can become a palindrome.\n- Hence answer is\ntrue\n.\nExample 2:\nInput:\ns = abcd\nk = 2\nOutput:\nfalse\nExplanation:\nSince k = 2, we can remove at most 2 characters. but for given string it is impossible to make it palindrome by removing at most 2 characters.\n- Hence answer is\nfalse\n.\nYour Task:\nThe task is to complete the function\niskPalindrome()\nwhich takes a string\ns\nand an integer\nk\nas input parameters and returns the\ntrue\nif s is k-palindrome, else\nfalse\n.\nConstraints:\n1 ≤ n ≤ 1000\n0 ≤ k ≤ n",
+      "examples": [
+        "Input:\ns = abcdecba\nk = 1\nOutput:\ntrue\nExplanation:\nSince k = 1, by removing either 'd' or 'e', the string can become a palindrome.\n- Hence answer is\ntrue\n.",
+        "Input:\ns = abcd\nk = 2\nOutput:\nfalse\nExplanation:\nSince k = 2, we can remove at most 2 characters. but for given string it is impossible to make it palindrome by removing at most 2 characters.\n- Hence answer is\nfalse\n."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 1000\n0 ≤ k ≤ n",
+      "question_html": "<p><span style=\"font-size: 20px;\"><span style=\"font-size: 20px;\">Given a string <strong>s</strong> containing <strong>n</strong> lowercase alphabets and an integer <strong>k</strong>, a string is considered a \"<strong>k-palindrome</strong>\" if it can be converted into a palindrome by removing <strong>no more than k characters</strong>. Your task is to determine whether the given string s can be made into a k-palindrome or not.</span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong>s = abcdecba<br />k = 1\n<strong>Output: <br /></strong>true<strong>\nExplanation: <br /></strong>Since k = 1, by removing either 'd' or 'e', the string can become a palindrome. <br />- Hence answer is <strong>true</strong>.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong>s = abcd<br />k = 2\n<strong>Output: <br /></strong>false<strong>\nExplanation: <br /></strong>Since k = 2, we can remove at most 2 characters. but for given string it is impossible to make it palindrome by removing at most 2 characters.<br />- Hence answer is <strong>false</strong>.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />The task is to complete the function&nbsp;<strong>iskPalindrome() </strong>which takes a string <strong>s </strong>and an integer <strong>k</strong> as input parameters and returns the <strong>true</strong> if s is k-palindrome, else&nbsp;<strong>false</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; n &le; 1000</span><br /><span style=\"font-size: 18px;\">0 &le; k &le; n</span></p>"
+    },
+    "qnum": 905
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/k-th-missing-element3635/1",
+      "problem_name": "K-th missing element",
+      "slug": "k-th-missing-element3635",
+      "difficulty": "Easy",
+      "accuracy": "31.53%",
+      "marks": 2,
+      "all_submissions": 37047,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Facebook",
+          "Apple",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Facebook",
+        "Apple",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/k-th-missing-element-in-sorted-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an increasing sequence\narr\n, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.",
+      "full_text": "Given an increasing sequence\narr\n, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.\nExample:\nInput:\narr[] = [1, 3, 4, 5, 7] and k = 2\nOutput:\n6\nExplanation:\nk = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.\nInput:\narr[] = [2, 3, 4, 5, 6, 8] and k = 1\nOutput:\n7\nExplanation:\nk = 1, the first missing number in the array is 7.\nExpected Time Complexity:\nO(n).\nExpected Auxiliary Space:\nO(1).\nConstraints:\n1 ≤  arr.size() ≤ 10\n6\n0 ≤  k, arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 3, 4, 5, 7] and k = 2\nOutput:\n6\nExplanation:\nk = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.",
+        "Input:\narr[] = [2, 3, 4, 5, 6, 8] and k = 1\nOutput:\n7\nExplanation:\nk = 1, the first missing number in the array is 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤  arr.size() ≤ 10\n6\n0 ≤  k, arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an increasing sequence <strong>arr</strong>, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [1, 3, 4, 5, 7] and k = 2\n<strong>Output:</strong> 6\n<strong>Explanation: </strong>k = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [2, 3, 4, 5, 6, 8] and k = 1<strong>\nOutput:</strong> 7<br /><strong>Explanation: </strong>k = 1, the first missing number in the array is 7.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n).<br /><strong>Expected Auxiliary Space:</strong>&nbsp;O(1).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 18px;\">1 &le;&nbsp; arr.size() &le; 10<sup>6</sup><br />0 &le;&nbsp; k, arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 906
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-fibonacci-subsequence2206/1",
+      "problem_name": "Largest Fibonacci Subsequence",
+      "slug": "largest-fibonacci-subsequence2206",
+      "difficulty": "Easy",
+      "accuracy": "53.13%",
+      "marks": 2,
+      "all_submissions": 18984,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Hash",
+          "Fibonacci",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Hash",
+        "Fibonacci",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/largest-subset-whose-all-elements-are-fibonacci-numbers/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr\nwith positive integers, the task is to find the largest subsequence from the array which contains only\nFibonacci numbers\n.",
+      "full_text": "Given an array\narr\nwith positive integers, the task is to find the largest subsequence from the array which contains only\nFibonacci numbers\n.\nExamples:\nInput:\narr[] = [1, 4, 3, 9, 10, 13, 7]\nOutput:\n[1, 3, 13]\nExplanation:\nThe output three numbers are Fibonacci numbers.\nInput:\narr[] = [0, 2, 8, 5, 2, 1, 4, 13, 23]\nOutput:\n[0, 2, 8, 5, 2, 1, 13]\nExplanation:\nThe output seven numbers are Fibonacci numbers.\nConstraints:\n1<= arr.size() <=10\n5\n1<= arr[i] <=\n10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 4, 3, 9, 10, 13, 7]\nOutput:\n[1, 3, 13]\nExplanation:\nThe output three numbers are Fibonacci numbers.",
+        "Input:\narr[] = [0, 2, 8, 5, 2, 1, 4, 13, 23]\nOutput:\n[0, 2, 8, 5, 2, 1, 13]\nExplanation:\nThe output seven numbers are Fibonacci numbers."
+      ],
+      "constraints_text": "Constraints:\n1<= arr.size() <=10\n5\n1<= arr[i] <=\n10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr</strong> with positive integers, the task is to find the largest subsequence from the array which contains only <a href=\"http://www.geeksforgeeks.org/program-for-nth-fibonacci-number/\">Fibonacci numbers</a>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [1, 4, 3, 9, 10, 13, 7]\n<strong>Output:</strong> [1, 3, 13]\n<strong>Explanation:</strong> The output three numbers are Fibonacci numbers.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [0, 2, 8, 5, 2, 1, 4, 13, 23]\n<strong>Output:</strong> [0, 2, 8, 5, 2, 1, 13]<br /><strong>Explanation: </strong></span><span style=\"font-size: 14pt;\">The output seven numbers are Fibonacci numbers.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&lt;= arr.size() &lt;=10<sup>5</sup><br />1&lt;= arr[i] &lt;=</span><span style=\"font-size: 18px;\">10</span><sup>5</sup></p>"
+    },
+    "qnum": 907
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-depth-of-binary-tree/1",
+      "problem_name": "Maximum Depth Of Binary Tree",
+      "slug": "maximum-depth-of-binary-tree",
+      "difficulty": "Easy",
+      "accuracy": "77.83%",
+      "marks": 2,
+      "all_submissions": 35873,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-maximum-depth-or-height-of-a-tree/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a binary tree, find its maximum depth.\nA binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.\n\nExample 1:\n\nInput:\n root  -->     1\n             /   \\\n            3     2\n           /\n          4\nOutput: 3\nExplanation:\nMaximum depth is between nodes 1 and 4, which is 3.\n\nExample 2:\n\nInput:\n root -->    10\n           /    \\\n          20    30\n           \\      \\\n           40     60\n                  /\n                 2\nOutput: 4\nExplanation:\nMaximum depth is between nodes 10 and 2, which is 4\n\nYour Task:\nYou don't need to read input or print anything. Complete the function maxDepth() which takes the root node as an input parameter and returns the maximum depth.\n\nExpected Time Complexity: O(N)\nExpected Auxiliary Space: O(height of the tree)\n\nConstraints:\n1 ≤ N ≤ 10^5",
+      "full_text": "Given a binary tree, find its maximum depth.\nA binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.\n\nExample 1:\n\nInput:\n root  -->     1\n             /   \\\n            3     2\n           /\n          4\nOutput: 3\nExplanation:\nMaximum depth is between nodes 1 and 4, which is 3.\n\nExample 2:\n\nInput:\n root -->    10\n           /    \\\n          20    30\n           \\      \\\n           40     60\n                  /\n                 2\nOutput: 4\nExplanation:\nMaximum depth is between nodes 10 and 2, which is 4\n\nYour Task:\nYou don't need to read input or print anything. Complete the function maxDepth() which takes the root node as an input parameter and returns the maximum depth.\n\nExpected Time Complexity: O(N)\nExpected Auxiliary Space: O(height of the tree)\n\nConstraints:\n1 ≤ N ≤ 10^5",
+      "examples": [
+        "Input:\nroot  -->     1\n/   \\\n3     2\n/\n4\nOutput:\n3\nExplanation:\nMaximum depth is between nodes 1 and 4, which is 3.",
+        "Input:\nroot -->    10\n/    \\\n20    30\n\\      \\\n40     60\n/\n2\nOutput:\n4\nExplanation:\nMaximum depth is between nodes 10 and 2, which is 4"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 10^5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree, find its <strong>maximum</strong>&nbsp;<strong>depth</strong>.<br />A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre style=\"background: #eeeeee; border: 1px solid #cccccc; padding: 5px 10px; --darkreader-inline-bgimage: initial; --darkreader-inline-bgcolor: #222426; --darkreader-inline-border-top: #3e4446; --darkreader-inline-border-right: #3e4446; --darkreader-inline-border-bottom: #3e4446; --darkreader-inline-border-left: #3e4446;\"><span style=\"font-size: 18px;\"><strong>Input:</strong><br />&nbsp;root&nbsp; --&gt;&nbsp; &nbsp; &nbsp;1<br />  &nbsp; &nbsp;  &nbsp; &nbsp; &nbsp; /&nbsp;&nbsp; \\<br />  &nbsp; &nbsp; &nbsp; &nbsp;   3&nbsp; &nbsp;  2<br />  &nbsp; &nbsp; &nbsp; &nbsp;  /<br />  &nbsp; &nbsp; &nbsp; &nbsp; 4 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><br /><strong><span style=\"font-size: 18px;\">Output:</span></strong><span style=\"font-size: 18px;\"> 3<br /><strong>Explanation:</strong><br />Maximum depth is between nodes 1 and 4, which is 3.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\n root --&gt;    10\n           /    \\\n          20    30\n           \\      \\  \n           40     60\n                  /\n                 2 </span>\n<strong><span style=\"font-size: 18px;\">Output: </span></strong><span style=\"font-size: 18px;\">4\n<strong>Explanation:</strong>\nMaximum depth is between nodes 10 and 2, which is 4\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task: &nbsp;</strong><br />You don't need to read input or print anything. Complete the function <strong>maxDepth()</strong> which takes the root node as an input parameter and returns the maximum depth.</span><br />&nbsp;<br /><span style=\"font-size: 18px;\"><strong>Expected Time Complexity: </strong>O(N)<br /><strong>Expected Auxiliary Space: </strong>O(height of the tree)</span><br />&nbsp;<br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 10^5</span></p>"
+    },
+    "qnum": 908
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-integer-value1434/1",
+      "problem_name": "Maximum Integer Value",
+      "slug": "maximum-integer-value1434",
+      "difficulty": "Basic",
+      "accuracy": "39.56%",
+      "marks": 1,
+      "all_submissions": 7915,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/extract-maximum-numeric-value-given-string/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string\nS\nof digits(0-9).Find the\nmaximum value\nthat can be obtained from the string by putting either\n'*' or '+'\noperators in between the digits while traversing from left to right of the string and picking up a single digit at a time.\nExample 1:\nInput:\nS=\"01230\"\nOutput:\n9\nExplanation:\nwe have 01230.We traverse from\nleft and pick zero.Now we encounter '1'.\nWe see if 0*1 gives maximum or 0+1.Now we\nhave ans=1.Now we traverse further.We\nencounter '2'.Now we see whether 1*2 gives\nmax or 1+2.Now we have ans=3.Now we\ntraverse further. We encounter'3'.\nWe see if 3*3 gives max or 3+3.\nThe ans is now 9.Now we traverse further.\nWe encounter 0, we see if 9+0 gives max or\n9*0. The ans is now 9. We've traversed the\nwhole string so we stop.\nExample 2:\nInput:\nS=\"891\"\nOutput:\n73\nExplanation:\nWe start at 8,then go to\n9 and see whether 8+9 is greater or\n8*9.Now we have 72,we traverse\nforward and check whether 72*1 is\ngreater or 72+1.In this way, we get\nthe answer as 73.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nMaximumIntegerValue()\nwhich takes the string S as input parameter and returns the maximum integer value that can be created using given procedures\nExpected Time Complexity:\nO(|S|)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a string\nS\nof digits(0-9).Find the\nmaximum value\nthat can be obtained from the string by putting either\n'*' or '+'\noperators in between the digits while traversing from left to right of the string and picking up a single digit at a time.\nExample 1:\nInput:\nS=\"01230\"\nOutput:\n9\nExplanation:\nwe have 01230.We traverse from\nleft and pick zero.Now we encounter '1'.\nWe see if 0*1 gives maximum or 0+1.Now we\nhave ans=1.Now we traverse further.We\nencounter '2'.Now we see whether 1*2 gives\nmax or 1+2.Now we have ans=3.Now we\ntraverse further. We encounter'3'.\nWe see if 3*3 gives max or 3+3.\nThe ans is now 9.Now we traverse further.\nWe encounter 0, we see if 9+0 gives max or\n9*0. The ans is now 9. We've traversed the\nwhole string so we stop.\nExample 2:\nInput:\nS=\"891\"\nOutput:\n73\nExplanation:\nWe start at 8,then go to\n9 and see whether 8+9 is greater or\n8*9.Now we have 72,we traverse\nforward and check whether 72*1 is\ngreater or 72+1.In this way, we get\nthe answer as 73.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nMaximumIntegerValue()\nwhich takes the string S as input parameter and returns the maximum integer value that can be created using given procedures\nExpected Time Complexity:\nO(|S|)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 <= |S| < 20\nS contains only digits from 0 to 9\nLeading 0's maybe present.",
+      "examples": [
+        "Input:\nS=\"01230\"\nOutput:\n9\nExplanation:\nwe have 01230.We traverse from\nleft and pick zero.Now we encounter '1'.\nWe see if 0*1 gives maximum or 0+1.Now we\nhave ans=1.Now we traverse further.We\nencounter '2'.Now we see whether 1*2 gives\nmax or 1+2.Now we have ans=3.Now we\ntraverse further. We encounter'3'.\nWe see if 3*3 gives max or 3+3.\nThe ans is now 9.Now we traverse further.\nWe encounter 0, we see if 9+0 gives max or\n9*0. The ans is now 9. We've traversed the\nwhole string so we stop.",
+        "Input:\nS=\"891\"\nOutput:\n73\nExplanation:\nWe start at 8,then go to\n9 and see whether 8+9 is greater or\n8*9.Now we have 72,we traverse\nforward and check whether 72*1 is\ngreater or 72+1.In this way, we get\nthe answer as 73."
+      ],
+      "constraints_text": "Constraints:\n1 <= |S| < 20\nS contains only digits from 0 to 9\nLeading 0's maybe present.",
+      "question_html": "<p><span style=\"font-size:18px\">Given a string <strong>S</strong> of digits(0-9).Find the <strong>maximum value</strong> that can be obtained from the string by putting either<strong> &#39;*&#39; or &#39;+&#39; </strong>operators in between the digits while traversing from left to right of the string and picking up a single digit at a time.</span></p>\n\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input: \n</strong>S=&quot;01230&quot;\n<strong>Output: \n</strong>9\n<strong>Explanation: \n</strong>we have 01230.We traverse from \nleft and pick zero.Now we encounter &#39;1&#39;. \nWe see if 0*1 gives maximum or 0+1.Now we \nhave ans=1.Now we traverse further.We \nencounter &#39;2&#39;.Now we see whether 1*2 gives \nmax or 1+2.Now we have ans=3.Now we \ntraverse further. We encounter&#39;3&#39;.\nWe see if 3*3 gives max or 3+3.\nThe ans is now 9.Now we traverse further. \nWe encounter 0, we see if 9+0 gives max or \n9*0. The ans is now 9. We&#39;ve traversed the\nwhole string so we stop.</span></pre>\n\n<p><strong><span style=\"font-size:18px\">Example 2:</span></strong></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input:</strong> \nS=&quot;891&quot;\n<strong>Output:</strong> \n73\n<strong>Explanation:\n</strong>We start at 8,then go to\n9 and see whether 8+9 is greater or\n8*9.Now we have 72,we traverse \nforward and check whether 72*1 is \ngreater or 72+1.In this way, we get \nthe answer as 73.\n</span>\n</pre>\n\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\nYou don&#39;t need to read input or print anything. Your task is to complete the function <strong>MaximumIntegerValue()&nbsp;</strong>which takes the string&nbsp;S&nbsp;as input parameter&nbsp;and returns the maximum integer value that can be&nbsp;created using given procedures</span></p>\n\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity:&nbsp;</strong>O(|S|)<br />\n<strong>Expected Auxiliary Space:&nbsp;</strong>O(1)</span></p>\n\n<p><span style=\"font-size:18px\"><strong>Constraints:</strong><br />\n1 &lt;= |S|&nbsp;&lt;&nbsp;20<br />\nS contains only digits from 0 to 9<br />\nLeading 0&#39;s maybe present.</span></p>\n"
+    },
+    "qnum": 909
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-depth-of-a-binary-tree/1",
+      "problem_name": "Minimum Depth of a Binary Tree",
+      "slug": "minimum-depth-of-a-binary-tree",
+      "difficulty": "Easy",
+      "accuracy": "42.09%",
+      "marks": 2,
+      "all_submissions": 80521,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-minimum-depth-of-a-binary-tree/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a binary tree, find its minimum depth.\n\nExamples:\n\nInput: root = [1, 3, 2, 4]\n\nOutput: 2\nExplanation: Minimum depth is between nodes 1 and 2 since minimum depth is defined as  the number of nodes along the shortest path from the root node down to the nearest leaf node.\n\nInput: root = [10, 20, 30, N, 40, N, 60, N, N, 2]\n\nOutput: 3\nExplanation: Minimum depth is between nodes 10,20 and 40.\n\nExpected Time Complexity: O(n)\nExpected Auxiliary Space: O(height of the tree)\n\nConstraints:\n1 ≤ number of nodes ≤ 105",
+      "full_text": "Given a binary tree, find its minimum depth.\n\nExamples:\n\nInput: root = [1, 3, 2, 4]\n\nOutput: 2\nExplanation: Minimum depth is between nodes 1 and 2 since minimum depth is defined as  the number of nodes along the shortest path from the root node down to the nearest leaf node.\n\nInput: root = [10, 20, 30, N, 40, N, 60, N, N, 2]\n\nOutput: 3\nExplanation: Minimum depth is between nodes 10,20 and 40.\n\nExpected Time Complexity: O(n)\nExpected Auxiliary Space: O(height of the tree)\n\nConstraints:\n1 ≤ number of nodes ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 3, 2, 4]\nOutput:\n2\nExplanation:\nMinimum depth is between nodes 1 and 2 since minimum depth is defined as  the number of nodes along the shortest path from the root node down to the nearest leaf node.",
+        "Input:\nroot = [10, 20, 30, N, 40, N, 60, N, N, 2]\nOutput:\n3\nExplanation:\nMinimum depth is between nodes 10,20 and 40."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree, find its minimum depth.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [1, 3, 2, 4]\n</span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700257/Web/Other/blobid0_1746691285.webp\" width=\"165\" height=\"146\" /><br /><span style=\"font-size: 18px;\"><strong>Output:</strong> 2</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong></span><span style=\"font-size: 18px;\">Minimum depth is between nodes 1 and 2 since minimum depth is defined as  the number of nodes along the shortest path from the root node down to the nearest leaf node.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [10, 20, 30, N, 40, N, 60, N, N, 2]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700257/Web/Other/blobid0_1746693521.webp\" width=\"186\" height=\"221\" /> <br /></span><span style=\"font-size: 18px;\"><strong>Output: </strong>3</span> <br /><span style=\"font-size: 18px;\"><strong>Explanation: </strong>Minimum depth is between nodes 10,20 and 40.</span>&nbsp;</pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity: </strong>O(n)<br /><strong>Expected Auxiliary Space: </strong>O(height of the tree)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 910
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/string-palindromic-ignoring-spaces4723/1",
+      "problem_name": "Palindrome Sentence",
+      "slug": "string-palindromic-ignoring-spaces4723",
+      "difficulty": "Easy",
+      "accuracy": "50.04%",
+      "marks": 2,
+      "all_submissions": 54342,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "two-pointer-algorithm",
+          "Strings",
+          "palindrome",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "two-pointer-algorithm",
+        "Strings",
+        "palindrome",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sentence-palindrome-palindrome-removing-spaces-dots-etc/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/facebook-interview-set-1/"
+      ],
+      "statement_text": "Given a single string\ns\n, the task is to check if it is a\npalindrome sentence\nor not.\nA palindrome sentence is a sequence of characters, such as word, phrase, or series of symbols that reads the\nsame\nbackward as forward after converting all\nuppercase\nletters to\nlowercase\nand\nremoving\nall\nnon-alphanumeric\ncharacters (including spaces and punctuation).",
+      "full_text": "Given a single string\ns\n, the task is to check if it is a\npalindrome sentence\nor not.\nA palindrome sentence is a sequence of characters, such as word, phrase, or series of symbols that reads the\nsame\nbackward as forward after converting all\nuppercase\nletters to\nlowercase\nand\nremoving\nall\nnon-alphanumeric\ncharacters (including spaces and punctuation).\nExamples:\nInput:\ns = \"Too hot to hoot\"\nOutput:\ntrue\nExplanation:\nIf we remove all non-alphanumeric characters and convert all uppercase letters to lowercase, string s will become\n\"toohottohoot\"\nwhich is a palindrome.\nInput:\ns = \"Abc 012..## 10cbA\"\nOutput:\ntrue\nExplanation:\nIf we remove all non-alphanumeric characters and convert all uppercase letters to lowercase, string s will become\n\"abc01210cba\"\nwhich is a palindrome.\nInput:\ns = \"ABC $. def01ASDF\"\nOutput:\nfalse\nExplanation:\nThe processed string becomes\n\"abcdef01asdf\"\n, which is not a palindrome.\nConstraints:\n1 ≤ s.length() ≤ 10\n6",
+      "examples": [
+        "Input:\ns = \"Too hot to hoot\"\nOutput:\ntrue\nExplanation:\nIf we remove all non-alphanumeric characters and convert all uppercase letters to lowercase, string s will become\n\"toohottohoot\"\nwhich is a palindrome.",
+        "Input:\ns = \"Abc 012..## 10cbA\"\nOutput:\ntrue\nExplanation:\nIf we remove all non-alphanumeric characters and convert all uppercase letters to lowercase, string s will become\n\"abc01210cba\"\nwhich is a palindrome.",
+        "Input:\ns = \"ABC $. def01ASDF\"\nOutput:\nfalse\nExplanation:\nThe processed string becomes\n\"abcdef01asdf\"\n, which is not a palindrome."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.length() ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a single string&nbsp;<strong>s</strong>, the task is to check if it is a <strong>palindrome sentence</strong> or not.<br />A palindrome sentence is a sequence of characters, such as word, phrase, or series of symbols that reads the <strong>same</strong> backward as forward after converting all <strong>uppercase </strong>letters to<strong> lowercase </strong>and <strong>removing</strong> all <strong>non-alphanumeric</strong> characters (including spaces and punctuation).</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"Too hot to hoot\"\n<strong>Output:</strong> true\n<strong>Explanation:</strong> </span><span style=\"font-size: 18.6667px;\">If we remove all non-alphanumeric characters and convert all uppercase letters to lowercase, string s will become <code>\"toohottohoot\"</code> which is a palindrome.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"Abc 012..## 10cbA\"\n<strong>Output:</strong> true\n<strong>Explanation:</strong> </span><span style=\"font-size: 18.6667px;\">If we remove all non-alphanumeric characters and convert all uppercase letters to lowercase, string s will become <code>\"abc01210cba\"</code> which is a palindrome.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"ABC $. def01ASDF\"<br /><strong>Output:</strong> false<br /><strong>Explanation:</strong> The processed string becomes <code>\"abcdef01asdf\"</code><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">, which is not a palindrome.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.length() &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 911
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/palindrome-string0817/1",
+      "problem_name": "Palindrome String",
+      "slug": "palindrome-string0817",
+      "difficulty": "Easy",
+      "accuracy": "51.21%",
+      "marks": 2,
+      "all_submissions": 477157,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "D-E-Shaw",
+          "FactSet",
+          "Cisco",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "D-E-Shaw",
+        "FactSet",
+        "Cisco",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/palindrome-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-14-for-senior-android-developer/"
+      ],
+      "statement_text": "You are given a string\ns\n. Your task is to determine if the string is a\npalindrome\n. A string is considered a palindrome if it reads the same forwards and backwards.\nExamples :\nInput:\ns = \"abba\"\nOutput:\ntrue\nExplanation:\n\"abba\"\nreads the same forwards\nand\nbackwards, so it\nis\na palindrome.\nInput:\ns = \"abc\"\nOutput:\nfalse\nExplanation:\n\"abc\"\ndoes\nnot\nread the same forwards\nand\nbackwards, so it\nis\nnot\na palindrome.",
+      "full_text": "You are given a string\ns\n. Your task is to determine if the string is a\npalindrome\n. A string is considered a palindrome if it reads the same forwards and backwards.\nExamples :\nInput:\ns = \"abba\"\nOutput:\ntrue\nExplanation:\n\"abba\"\nreads the same forwards\nand\nbackwards, so it\nis\na palindrome.\nInput:\ns = \"abc\"\nOutput:\nfalse\nExplanation:\n\"abc\"\ndoes\nnot\nread the same forwards\nand\nbackwards, so it\nis\nnot\na palindrome.\nConstraints:\n1 ≤ s.size() ≤ 10\n6\nThe string\ns\ncontains only lowercase english letters (a-z).",
+      "examples": [
+        "Input:\ns = \"abba\"\nOutput:\ntrue\nExplanation:\n\"abba\"\nreads the same forwards\nand\nbackwards, so it\nis\na palindrome.",
+        "Input:\ns = \"abc\"\nOutput:\nfalse\nExplanation:\n\"abc\"\ndoes\nnot\nread the same forwards\nand\nbackwards, so it\nis\nnot\na palindrome."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n6\nThe string\ns\ncontains only lowercase english letters (a-z).",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a string <strong>s</strong>. Your task is to determine if the string is a <strong>palindrome</strong>. A string is considered a palindrome if it reads the same forwards and backwards.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"abba\"\n<strong>Output: </strong>true\n<strong>Explanation: </strong>\"abba\"<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> reads the same forwards </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">and</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> backwards, so it </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">is</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> a palindrome.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"abc\" \n<strong>Output:</strong> false\n<strong>Explanation: </strong>\"abc\"<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> does </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">not</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> read the same forwards </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">and</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> backwards, so it </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">is</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> </span><span class=\"hljs-built_in\" style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">not</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> a palindrome.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.size() &le; 10<sup>6</sup><br />The string&nbsp;<code>s</code> contains only lowercase english letters (a-z).</span></p>"
+    },
+    "qnum": 912
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/rearrange-a-string4100/1",
+      "problem_name": "Rearrange a string",
+      "slug": "rearrange-a-string4100",
+      "difficulty": "Easy",
+      "accuracy": "59.54%",
+      "marks": 2,
+      "all_submissions": 22300,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/rearrange-a-string-in-sorted-order-followed-by-the-integer-sum/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string containing uppercase alphabets and integer digits (from 0 to 9), the task is to print the alphabets in the lexicographical order followed by the sum of digits.\n\nExample 1:\n\nInput: S = \"AC2BEW3\"\nOutput: \"ABCEW5\"\nExplanation: 2 + 3 = 5 and we print all\nalphabets in the lexicographical order.\n\nExample 2:\n\nInput: S = \"ACCBA10D2EW30\"\nOutput: \"AABCCDEW6\"\nExplanation: 0+1+2+3 = 6 and we print all\nalphabets in the lexicographical order.\n\nYour Task:\n\nYou don't need to read input or print anything. Your task is to complete the function arrangeString() which takes the string S as inputs and returns the modified string.\n\nExpected Time Complexity: O(|S|)\n\nExpected Auxiliary Space: O(26)\n\nConstraints:\n\n1 ≤ |S| ≤ 105\n\nS contains only upper case alphabets and digits.",
+      "full_text": "Given a string containing uppercase alphabets and integer digits (from 0 to 9), the task is to print the alphabets in the lexicographical order followed by the sum of digits.\n\nExample 1:\n\nInput: S = \"AC2BEW3\"\nOutput: \"ABCEW5\"\nExplanation: 2 + 3 = 5 and we print all\nalphabets in the lexicographical order.\n\nExample 2:\n\nInput: S = \"ACCBA10D2EW30\"\nOutput: \"AABCCDEW6\"\nExplanation: 0+1+2+3 = 6 and we print all\nalphabets in the lexicographical order.\n\nYour Task:\n\nYou don't need to read input or print anything. Your task is to complete the function arrangeString() which takes the string S as inputs and returns the modified string.\n\nExpected Time Complexity: O(|S|)\n\nExpected Auxiliary Space: O(26)\n\nConstraints:\n\n1 ≤ |S| ≤ 105\n\nS contains only upper case alphabets and digits.",
+      "examples": [
+        "Input:\nS = \"AC2BEW3\"\nOutput:\n\"ABCEW5\"\nExplanation\n: 2 + 3 = 5 and we print all\nalphabets in the lexicographical order.",
+        "Input:\nS = \"ACCBA10D2EW30\"\nOutput:\n\"AABCCDEW6\"\nExplanation\n: 0+1+2+3 = 6 and we print all\nalphabets in the lexicographical order."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ |S| ≤ 10\n5\nS contains only upper case alphabets and digits.",
+      "question_html": "<p><span style=\"font-size:18px\">Given a string containing uppercase alphabets and integer digits (from 0 to 9), the task is to print the alphabets in the lexicographical order followed by the sum of digits.</span></p>\n\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input:</strong> S = &quot;AC2BEW3&quot;\n<strong>Output:</strong> &quot;ABCEW5&quot;\n<strong>Explanation</strong>: 2 + 3 = 5 and we print all\nalphabets in the lexicographical order. \n</span></pre>\n\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input:</strong> S = &quot;ACCBA10D2EW30&quot;\n<strong>Output:</strong> &quot;AABCCDEW6&quot;\n<strong>Explanation</strong>: 0+1+2+3 = 6 and we print all\nalphabets in the lexicographical order. </span></pre>\n\n<p><br />\n<span style=\"font-size:18px\"><strong>Your Task:&nbsp;&nbsp;</strong><br />\nYou don&#39;t need to read input or print anything. Your task is to complete the function&nbsp;<strong>arrangeString()</strong>&nbsp;which takes the string <strong>S&nbsp;</strong>as inputs and returns the modified string.<br />\n<br />\n<strong>Expected Time Complexity:</strong>&nbsp;O(|S|)<br />\n<strong>Expected Auxiliary Space:</strong>&nbsp;O(26)<br />\n<br />\n<strong>Constraints:</strong><br />\n1 &le; |S| &le; 10<sup>5</sup><br />\nS contains only upper case alphabets and digits.</span></p>\n"
+    },
+    "qnum": 913
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-an-array/1",
+      "problem_name": "Reverse an Array",
+      "slug": "reverse-an-array",
+      "difficulty": "Easy",
+      "accuracy": "55.32%",
+      "marks": 2,
+      "all_submissions": 284228,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "TCS",
+          "Adobe",
+          "Google",
+          "Infosys",
+          "Capgemini",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Apple",
+          "Yahoo",
+          "PayPal",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "TCS",
+        "Adobe",
+        "Google",
+        "Infosys",
+        "Capgemini",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Apple",
+        "Yahoo",
+        "PayPal",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-reverse-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.",
+      "full_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.\nExamples:\nInput:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].\nInput\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].\nInput\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].",
+        "Input\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].",
+        "Input\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array of integers&nbsp;<strong>arr[]</strong>. You have to <strong>reverse</strong> the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:<span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito;\">&nbsp;</span></strong>Modify the array in place.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 4, 3, 2, 6, 5]\n<strong>Output: </strong>[5, 6, 2, 3, 4, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>The elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [4, 5, 2]\n<strong>Output: </strong>[2, 5, 4]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [1]\n<strong>Output: </strong>[1]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The array has only single element, hence the reversed array is same as the original.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup></span><br /><span style=\"font-size: 14pt;\">0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 914
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/roman-number-to-integer3201/1",
+      "problem_name": "Roman to Integer",
+      "slug": "roman-number-to-integer3201",
+      "difficulty": "Easy",
+      "accuracy": "43.31%",
+      "marks": 2,
+      "all_submissions": 212867,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Facebook",
+          "Twitter",
+          "Uber",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Facebook",
+        "Twitter",
+        "Uber",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/roman-number-to-integer/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string\ns\nin Roman number format, your task is to\nconvert\nit to an\ninteger\n. Various symbols and their values are given below.\nNote:\nI = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000",
+      "full_text": "Given a string\ns\nin Roman number format, your task is to\nconvert\nit to an\ninteger\n. Various symbols and their values are given below.\nNote:\nI = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000\nExamples:\nInput:\ns = \"IX\"\nOutput:\n9\nExplanation:\nIX is a Roman symbol which represents 10 – 1 = 9.\nInput:\ns = \"XL\"\nOutput:\n40\nExplanation:\nXL is a Roman symbol which represents 50 – 10 = 40.\nInput:\ns = \"MCMIV\"\nOutput:\n1904\nExplanation:\nM is 1000, CM is 1000 – 100 = 900, and IV is 4. So we have total as 1000 + 900 + 4 = 1904.\nConstraints:\n1 ≤ roman number ≤ 3999\ns[i] belongs to [I, V, X, L, C, D, M]",
+      "examples": [
+        "Input:\ns = \"IX\"\nOutput:\n9\nExplanation:\nIX is a Roman symbol which represents 10 – 1 = 9.",
+        "Input:\ns = \"XL\"\nOutput:\n40\nExplanation:\nXL is a Roman symbol which represents 50 – 10 = 40.",
+        "Input:\ns = \"MCMIV\"\nOutput:\n1904\nExplanation:\nM is 1000, CM is 1000 – 100 = 900, and IV is 4. So we have total as 1000 + 900 + 4 = 1904."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ roman number ≤ 3999\ns[i] belongs to [I, V, X, L, C, D, M]",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string <strong>s</strong> in Roman number format, your task is to <strong>convert</strong> it to an <strong>integer</strong>. Various symbols and their values are given below.<br /><strong>Note: </strong>I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"IX\"\n<strong>Output: </strong>9<br /><strong>Explanation: </strong>IX is a Roman symbol which represents 10 &ndash; 1 = 9.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"XL\"\n<strong>Output: </strong>40<br /><strong>Explanation: </strong>XL is a Roman symbol which represents 50 &ndash; 10 = 40.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"MCMIV\"</span><span style=\"font-size: 18px;\"><br /></span><span style=\"font-size: 18px;\"><strong>Output: </strong>1904<br /><strong>Explanation: </strong>M is 1000, CM is 1000 &ndash; 100 = 900, and IV is 4. So we have total as 1000 + 900 + 4 = 1904.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; roman number &le; 3999<br />s[i] belongs to [I, V, X, L, C, D, M]</span></p>"
+    },
+    "qnum": 915
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/smallest-subarray-with-sum-greater-than-x5651/1",
+      "problem_name": "Smallest subarray with sum greater than x",
+      "slug": "smallest-subarray-with-sum-greater-than-x5651",
+      "difficulty": "Easy",
+      "accuracy": "37.07%",
+      "marks": 2,
+      "all_submissions": 156812,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "x =&!//!&arr[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Amazon",
+          "Goldman Sachs",
+          "Google",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "sliding-window"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "sliding-window"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Amazon",
+        "Goldman Sachs",
+        "Google",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-length-subarray-sum-greater-given-value/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given\na number\nx\nand an array of integers\narr\n, find the smallest subarray with sum greater than the given value. If such a subarray do not exist return 0 in that case.",
+      "full_text": "Given\na number\nx\nand an array of integers\narr\n, find the smallest subarray with sum greater than the given value. If such a subarray do not exist return 0 in that case.\nExamples:\nInput:\nx = 51, arr[] = [1, 4, 45, 6, 0, 19]\nOutput:\n3\nExplanation:\nMinimum length subarray is [4, 45, 6]\nInput:\nx = 100, arr[] = [1, 10, 5, 2, 7]\nOutput:\n0\nExplanation:\nNo subarray exist\nConstraints:\n1 ≤ arr.size, x ≤ 10\n5\n0 ≤ arr[] ≤ 10\n4",
+      "examples": [
+        "Input:\nx = 51, arr[] = [1, 4, 45, 6, 0, 19]\nOutput:\n3\nExplanation:\nMinimum length subarray is [4, 45, 6]",
+        "Input:\nx = 100, arr[] = [1, 10, 5, 2, 7]\nOutput:\n0\nExplanation:\nNo subarray exist"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size, x ≤ 10\n5\n0 ≤ arr[] ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given&nbsp;</span><span style=\"font-size: 18px;\">a number&nbsp;</span><strong style=\"font-size: 18px;\">x </strong><span style=\"font-size: 18px;\">and&nbsp;an array of integers </span><strong style=\"font-size: 18px;\">arr</strong><span style=\"font-size: 18px;\">, find the smallest subarray with sum greater than the given value. If such a subarray do not exist return 0 in that case.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>x = 51, arr[] = [1, 4, 45, 6, 0, 19]\n<strong>Output:</strong> 3\n<strong>Explanation: </strong>Minimum length subarray is [4, 45, 6]</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>x = 100, arr[] = [1, 10, 5, 2, 7]\n<strong>Output:</strong> 0\n<strong>Explanation: </strong>No subarray exist</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size, x &le; 10<sup>5</sup><br />0 &le; arr[] &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 916
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/split-an-array-into-two-equal-sum-subarrays/1",
+      "problem_name": "Split an array into two equal Sum subarrays",
+      "slug": "split-an-array-into-two-equal-sum-subarrays",
+      "difficulty": "Easy",
+      "accuracy": "54.45%",
+      "marks": 2,
+      "all_submissions": 42479,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Facebook"
+        ],
+        "topic_tags": [
+          "prefix-sum",
+          "sliding-window",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "prefix-sum",
+        "sliding-window",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/split-array-two-equal-sum-subarrays/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array of integers\narr\n, return\ntrue\nif it is possible to split it in two subarrays (without reordering the elements), such that the sum of the two subarrays are equal. If it is not possible then return\nfalse\n.",
+      "full_text": "Given an array of integers\narr\n, return\ntrue\nif it is possible to split it in two subarrays (without reordering the elements), such that the sum of the two subarrays are equal. If it is not possible then return\nfalse\n.\nExamples:\nInput:\narr = [1, 2, 3, 4, 5, 5]\nOutput:\ntrue\nExplanation:\nIn the above example, we can divide the array into two subarrays with equal sum. The two subarrays are:\n[1, 2, 3, 4]\nand\n[5, 5]. The sum of both the subarrays are 10. Hence, the answer is\ntrue.\nInput:\narr = [4, 3, 2, 1]\nOutput:\nfalse\nExplanation:\nIn the above example, we cannot divide the array into two subarrays with equal sum. Hence, the answer is false.\nExpected Time Complexity:\nO(n)\nExpected Space Complexity:\nO(1)\nConstraints:\n1<=arr.size()<=10\n5\n1<=arr[i]<=10\n6",
+      "examples": [
+        "Input:\narr = [1, 2, 3, 4, 5, 5]\nOutput:\ntrue\nExplanation:\nIn the above example, we can divide the array into two subarrays with equal sum. The two subarrays are:\n[1, 2, 3, 4]\nand\n[5, 5]. The sum of both the subarrays are 10. Hence, the answer is\ntrue.",
+        "Input:\narr = [4, 3, 2, 1]\nOutput:\nfalse\nExplanation:\nIn the above example, we cannot divide the array into two subarrays with equal sum. Hence, the answer is false."
+      ],
+      "constraints_text": "Constraints:\n1<=arr.size()<=10\n5\n1<=arr[i]<=10\n6",
+      "question_html": "<p><span style=\"color: #273239; font-family: Nunito, sans-serif; font-size: 14pt; letter-spacing: 0.162px; background-color: #ffffff;\">Given an array of integers <strong>arr</strong>, return <strong>true </strong>if it is possible to split it in two subarrays (without reordering the elements), such that the sum of the two subarrays are equal. If it is not possible then return <strong>false</strong>.<br /></span></p>\n<p><span style=\"color: #273239; font-family: Nunito, sans-serif; font-size: 14pt; letter-spacing: 0.162px; background-color: #ffffff;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 2, 3, 4, 5, 5]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> true</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> In the above example, we can divide the array into two subarrays with equal sum. The two subarrays are:<strong> </strong>[1, 2, 3, 4]<strong> </strong>and<strong> </strong>[5, 5]. The sum of both the subarrays are 10. Hence, the answer is<strong> </strong>true.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:&nbsp;</strong>arr = [4, 3, 2, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> false</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> In the above example, we cannot divide the array into two subarrays with equal sum. Hence, the answer is false.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Expected Time Complexity: </strong>O(n)</span><br /><span style=\"font-size: 14pt;\"><strong>Expected Space Complexity: </strong>O(1)</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1&lt;=arr.size()&lt;=10<sup>5&nbsp;</sup></span><br /><span style=\"font-size: 14pt;\">1&lt;=arr[i]&lt;=10<sup>6</sup></span></p>"
+    },
+    "qnum": 917
+  },
+  {
+    "company": "Facebook",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
+      "problem_name": "Stock Buy and Sell – Max one Transaction Allowed",
+      "slug": "buy-stock-2",
+      "difficulty": "Easy",
+      "accuracy": "49.33%",
+      "marks": 2,
+      "all_submissions": 140469,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "Intel",
+          "Infosys",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Yahoo",
+          "PayPal",
+          "Nvidia",
+          "Oracle",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "TCS",
+          "Adobe",
+          "Google",
+          "IBM",
+          "Accenture",
+          "Apple",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "Intel",
+        "Infosys",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Yahoo",
+        "PayPal",
+        "Nvidia",
+        "Oracle",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "TCS",
+        "Adobe",
+        "Google",
+        "IBM",
+        "Accenture",
+        "Apple",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-variations-of-stock-problems/",
+        "https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.",
+      "full_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.\nExamples:\nInput:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.\nInput:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.\nInput:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].\nConstraint:\n1\n≤\nprices.size()\n≤\n10\n5\n0\n≤\nprices[i]\n≤\n10\n4",
+      "examples": [
+        "Input:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.",
+        "Input:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.",
+        "Input:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1]."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given an array <strong>prices[]</strong> of non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when <strong>at most one </strong>transaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then <strong>return 0</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">Note: Stock must be bought before being sold.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 10, 1, 3, 6, 9, 2]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 8<br /></span><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> You can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 6, 4, 3, 1]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 0 <br /></span><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Here the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.<br /></span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>prices[] = [1, 3, 6, 9, 11]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 10 </span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Since the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraint:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices.size()&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;10</span><sup>5<br /></sup><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices[i] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> &nbsp;</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup></p>"
+    },
+    "qnum": 918
+  }
+]

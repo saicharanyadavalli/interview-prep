@@ -1,0 +1,2263 @@
+[
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/absolute-difference-divisible-by-k/1",
+      "problem_name": "Absolute difference divisible by K",
+      "slug": "absolute-difference-divisible-by-k",
+      "difficulty": "Medium",
+      "accuracy": "52.72%",
+      "marks": 4,
+      "all_submissions": 23843,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Hash",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Hash",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-pairs-in-an-array-whose-absolute-difference-is-divisible-by-k/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/goldman-sachs-interview-experience-for-analyst-position/"
+      ],
+      "statement_text": "Given an array of integers of size\nn\nand an integer\nk\n, find all the pairs in the array whose absolute difference is divisible by k.\nExample 1:\nInput:\nn = 3\narr[] = {3, 7, 11}\nk = 4\nOutput:\n3\nExplanation:\n(11-3) = 8 is divisible by 4\n(11-7) = 4 is divisible by 4\n(7-3) = 4 is divisible by 4\nExample 2:\nInput:\nn = 4\narr[] = {1, 2, 3, 4}\nk = 2\nOutput :\n2\nExplanation:\nValid pairs are (1,3), and (2,4).\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncountPairs()\nwhich takes integers n, array arr[ ], integer k as input parameters and returns the number of pairs whose absolute difference is divisible by k.\nNote:\nThe answer may be large so use 64-bit integer.\nExpected Time Complexity:\nO(n + k)\nExpected Auxiliary Space:\nO(k)",
+      "full_text": "Given an array of integers of size\nn\nand an integer\nk\n, find all the pairs in the array whose absolute difference is divisible by k.\nExample 1:\nInput:\nn = 3\narr[] = {3, 7, 11}\nk = 4\nOutput:\n3\nExplanation:\n(11-3) = 8 is divisible by 4\n(11-7) = 4 is divisible by 4\n(7-3) = 4 is divisible by 4\nExample 2:\nInput:\nn = 4\narr[] = {1, 2, 3, 4}\nk = 2\nOutput :\n2\nExplanation:\nValid pairs are (1,3), and (2,4).\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncountPairs()\nwhich takes integers n, array arr[ ], integer k as input parameters and returns the number of pairs whose absolute difference is divisible by k.\nNote:\nThe answer may be large so use 64-bit integer.\nExpected Time Complexity:\nO(n + k)\nExpected Auxiliary Space:\nO(k)\nConstraints:\n2 ≤ n ≤ 10\n5\n1 ≤ k,arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\nn = 3\narr[] = {3, 7, 11}\nk = 4\nOutput:\n3\nExplanation:\n(11-3) = 8 is divisible by 4\n(11-7) = 4 is divisible by 4\n(7-3) = 4 is divisible by 4",
+        "Input:\nn = 4\narr[] = {1, 2, 3, 4}\nk = 2\nOutput :\n2\nExplanation:\nValid pairs are (1,3), and (2,4)."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ n ≤ 10\n5\n1 ≤ k,arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of integers&nbsp;of size <strong>n</strong> and an integer&nbsp;<strong>k</strong>, find all the pairs in the array&nbsp;whose absolute difference is divisible by k.</span><br /><br /><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>n = 3\narr[] = {3, 7, 11}\nk = 4\n<strong>Output:\n</strong>3\n<strong>Explanation:</strong>\n(11-3) = 8 is divisible by 4\n(11-7) = 4 is divisible by 4\n(7-3) = 4 is divisible by 4</span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>n = 4\narr[] = {1, 2, 3, 4}\nk = 2\n<strong>Output :</strong>\n2\n<strong>Explanation:</strong>\nValid pairs are (1,3), and (2,4).\n</span></pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:&nbsp;&nbsp;</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>countPairs()</strong>&nbsp;which takes integers n,&nbsp;array arr[ ], integer k as input parameters&nbsp;and returns the number of pairs whose&nbsp;absolute difference is divisible by k.<br /><strong>Note:&nbsp;</strong>The answer may be large so use 64-bit integer.&nbsp;</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n + k)<br /><strong>Expected Auxiliary Space:</strong> O(k)</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />2 &le; n &le; 10<sup>5</sup><br />1 &le; k,arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1143
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/array-pair-sum-divisibility-problem3257/1",
+      "problem_name": "Array Pair Sum Divisibility Problem",
+      "slug": "array-pair-sum-divisibility-problem3257",
+      "difficulty": "Medium",
+      "accuracy": "27.85%",
+      "marks": 4,
+      "all_submissions": 135148,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr&!//!&k",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Goldman Sachs",
+          "Directi"
+        ],
+        "topic_tags": [
+          "Hash",
+          "STL",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "STL",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Goldman Sachs",
+        "Directi"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-an-array-can-be-divided-into-pairs-whose-sum-is-divisible-by-k/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/directi-interview-set-8-off-campus/"
+      ],
+      "statement_text": "Given an array of integers\nnums\nand a number\nk\n, write a function that returns\ntrue\nif given array can be divided into pairs such that sum of every pair is divisible by\nk\n.",
+      "full_text": "Given an array of integers\nnums\nand a number\nk\n, write a function that returns\ntrue\nif given array can be divided into pairs such that sum of every pair is divisible by\nk\n.\nExamples:\nInput:\narr[] = [9, 5, 7, 3], k = 6\nOutput:\ntrue\nExplanation:\n{(9, 3), (5, 7)} is a possible solution. 9 + 3 = 12 is divisible by 6 and 7 + 5 = 12 is also divisible by 6.\nInput:\narr[] = [4, 4, 4], k = 4\nOutput:\nfalse\nExplanation:\nYou can make 1 pair at max, leaving a single element unpaired.\nInput:\narr[]\n= [4, 4], k = 4\nOutput:\ntrue\nExplanation:\nHere only {(4,4)} is possible whose sum 4 + 4 = 8 is divisible by 4.\nConstraints:\n1 <= arr.size() <= 10\n5\n1 <= arr[i] <= 10\n5\n1 <= k <= 10\n5",
+      "examples": [
+        "Input:\narr[] = [9, 5, 7, 3], k = 6\nOutput:\ntrue\nExplanation:\n{(9, 3), (5, 7)} is a possible solution. 9 + 3 = 12 is divisible by 6 and 7 + 5 = 12 is also divisible by 6.",
+        "Input:\narr[] = [4, 4, 4], k = 4\nOutput:\nfalse\nExplanation:\nYou can make 1 pair at max, leaving a single element unpaired.",
+        "Input:\narr[]\n= [4, 4], k = 4\nOutput:\ntrue\nExplanation:\nHere only {(4,4)} is possible whose sum 4 + 4 = 8 is divisible by 4."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size() <= 10\n5\n1 <= arr[i] <= 10\n5\n1 <= k <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of integers <strong>nums</strong> and a number <strong>k</strong>, write a function that returns <strong>true </strong>if given array can be divided into pairs such that sum of every pair is divisible by <strong>k</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [9, 5, 7, 3], k = 6\n<strong>Output: </strong>true\n<strong>Explanation: </strong>{(9, 3), (5, 7)} is a possible solution. 9 + 3 = 12 is divisible by 6 and 7 + 5 = 12 is also divisible by 6.\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [4, 4, 4], k = 4\n<strong>Output: </strong>false\n<strong>Explanation: </strong>You can make 1 pair at max, leaving a single element unpaired.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[]<strong> </strong>= [4, 4], k = 4\n<strong>Output: </strong>true\n<strong>Explanation: </strong>Here only {(4,4)} is possible whose sum 4 + 4 = 8 is divisible by 4.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= arr.size() &lt;= 10<sup>5</sup><br />1 &lt;= arr[i] &lt;= 10<sup>5</sup><br />1 &lt;= k &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1144
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/check-for-bst/1",
+      "problem_name": "Check for BST",
+      "slug": "check-for-bst",
+      "difficulty": "Medium",
+      "accuracy": "25.37%",
+      "marks": 4,
+      "all_submissions": 601055,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "FactSet",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "Linkedin",
+          "Qualcomm",
+          "Boomerang Commerce",
+          "GreyOrange",
+          "Wooker",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "FactSet",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "Linkedin",
+        "Qualcomm",
+        "Boomerang Commerce",
+        "GreyOrange",
+        "Wooker",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/a-program-to-check-if-a-binary-tree-is-bst-or-not/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given the root of a binary tree. Check whether it is a BST or not.\n\nA BST is defined as follows:\n\nThe left subtree of a node contains only nodes with data less than the node's data.\n\nThe right subtree of a node contains only nodes with data greater than the node's data.\n\nBoth the left and right subtrees must also be binary search trees.\n\nNote: We are considering that BSTs can not contain duplicate Nodes.\n\nExamples:\n\nInput: root = [2, 1, 3, N, N, N, 5]\n\nOutput: true\nExplanation: The left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.\n\nInput: root = [2, N, 7, N, 6, N, 9]\n\nOutput: false\nExplanation: Since the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.\n\nInput: root = [10, 5, 20, N, N, 9, 25]\n\nOutput: false\nExplanation: The node with data 9 present in the right subtree has lesser key value than root node 10.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 109",
+      "full_text": "Given the root of a binary tree. Check whether it is a BST or not.\n\nA BST is defined as follows:\n\nThe left subtree of a node contains only nodes with data less than the node's data.\n\nThe right subtree of a node contains only nodes with data greater than the node's data.\n\nBoth the left and right subtrees must also be binary search trees.\n\nNote: We are considering that BSTs can not contain duplicate Nodes.\n\nExamples:\n\nInput: root = [2, 1, 3, N, N, N, 5]\n\nOutput: true\nExplanation: The left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.\n\nInput: root = [2, N, 7, N, 6, N, 9]\n\nOutput: false\nExplanation: Since the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.\n\nInput: root = [10, 5, 20, N, N, 9, 25]\n\nOutput: false\nExplanation: The node with data 9 present in the right subtree has lesser key value than root node 10.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 109",
+      "examples": [
+        "Input:\nroot = [2, 1, 3, N, N, N, 5]\nOutput:\ntrue\nExplanation:\nThe left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.",
+        "Input:\nroot = [2, N, 7, N, 6, N, 9]\nOutput:\nfalse\nExplanation:\nSince the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.",
+        "Input:\nroot = [10, 5, 20, N, N, 9, 25]\nOutput:\nfalse\nExplanation:\nThe node with data 9 present in the right subtree has lesser key value than root node 10."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root</strong> of a binary tree. Check whether it is a BST or not.<br /></span></p>\n<p><span style=\"font-size: 18px;\">A&nbsp;<strong>BST</strong>&nbsp;is defined as follows:</span></p>\n<ul>\n<li>\n<div><span style=\"font-size: 18px;\">The left subtree of a node contains only nodes with data <strong>less than</strong> the node's data.</span></div>\n</li>\n<li>\n<div><span style=\"font-size: 18px;\">The right subtree of a node contains only nodes with data <strong>greater than</strong> the node's data.</span></div>\n</li>\n<li>\n<div><span style=\"font-size: 18px;\">Both the left and right subtrees must also be binary search trees.</span></div>\n</li>\n</ul>\n<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\"><strong>Note:</strong> We are considering that BSTs can not contain duplicate Nodes.</span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [2, 1, 3, N, N, N, 5]\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700149/Web/Other/blobid0_1739182093.jpg\" width=\"249\" height=\"220\" /></span><br /><br /><span style=\"font-size: 18px;\"><strong>Output: </strong>true \n<strong>Explanation: </strong></span><span style=\"font-size: 18px;\">The left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [2, N, 7, N, 6, N, 9] </span><br /><br /><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700149/Web/Other/blobid2_1739182131.jpg\" width=\"238\" height=\"211\" /></span><br /><br /><span style=\"font-size: 18px;\"><strong>Output: </strong>false \n<strong>Explanation: </strong>Since the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [10, 5, 20, N, N, 9, 25]\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700149/Web/Other/blobid3_1739182159.jpg\" width=\"240\" height=\"212\" /></span><br /><br /><span style=\"font-size: 18px;\"><strong>Output: </strong>false\n<strong>Explanation: </strong>The node with data 9 present in the right subtree has lesser key value than root node 10.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 18px;\">1 &le; number of nodes &le; 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &le; node-&gt;data &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1145
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/column-name-from-a-given-column-number4244/1",
+      "problem_name": "Column name from a given column number",
+      "slug": "column-name-from-a-given-column-number4244",
+      "difficulty": "Medium",
+      "accuracy": "32.41%",
+      "marks": 4,
+      "all_submissions": 81212,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Goldman Sachs",
+          "Directi"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Mathematical",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Mathematical",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Goldman Sachs",
+        "Directi"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-excel-column-name-given-number/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-15/"
+      ],
+      "statement_text": "Given a positive integer, return its corresponding column title as appear in an Excel sheet.\nExcel columns has a pattern like A, B, C, … ,Z, AA, AB, AC,…. ,AZ, BA, BB, … ZZ, AAA, AAB ….. etc. In other words, column 1 is named as “A”, column 2 as “B”, column 27 as “AA” and so on.\nExample 1:\nInput:\nN = 28\nOutput:\nAB\nExplanation\n: 1 to 26 are A to Z.\nThen, 27 is AA and 28 = AB.\nExample 2:\nInput\n:\nN = 13\nOutput:\nM\nExplanation\n: M is the 13th character of\nalphabet.\nExample 3:\nInput:\nN = 5473578\nOutput:\nKYJZF\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncolName()\nwhich takes the column number N as input and returns the column name represented as a string.\nExpected Time Complexity:\nO(LogN).\nExpected Auxiliary Space:\nO(1).",
+      "full_text": "Given a positive integer, return its corresponding column title as appear in an Excel sheet.\nExcel columns has a pattern like A, B, C, … ,Z, AA, AB, AC,…. ,AZ, BA, BB, … ZZ, AAA, AAB ….. etc. In other words, column 1 is named as “A”, column 2 as “B”, column 27 as “AA” and so on.\nExample 1:\nInput:\nN = 28\nOutput:\nAB\nExplanation\n: 1 to 26 are A to Z.\nThen, 27 is AA and 28 = AB.\nExample 2:\nInput\n:\nN = 13\nOutput:\nM\nExplanation\n: M is the 13th character of\nalphabet.\nExample 3:\nInput:\nN = 5473578\nOutput:\nKYJZF\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncolName()\nwhich takes the column number N as input and returns the column name represented as a string.\nExpected Time Complexity:\nO(LogN).\nExpected Auxiliary Space:\nO(1).\nConstraints:\n1 <= N <= 10\n18",
+      "examples": [
+        "Input:\nN = 28\nOutput:\nAB\nExplanation\n: 1 to 26 are A to Z.\nThen, 27 is AA and 28 = AB.",
+        "Input\n:\nN = 13\nOutput:\nM\nExplanation\n: M is the 13th character of\nalphabet.",
+        "Input:\nN = 5473578\nOutput:\nKYJZF"
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 10\n18",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a positive integer, return its corresponding column title as appear in an Excel sheet.<br />Excel columns has a pattern like A, B, C, &hellip; ,Z, AA, AB, AC,&hellip;. ,AZ, BA, BB, &hellip; ZZ, AAA, AAB &hellip;.. etc. In other words, column 1 is named as &ldquo;A&rdquo;, column 2 as &ldquo;B&rdquo;, column 27 as &ldquo;AA&rdquo; and so on.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nN = 28\n<strong>Output:</strong> <br />AB\n<strong>Explanation</strong>: 1 to 26 are A to Z.\nThen, 27 is AA and 28 = AB.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: \nN = 13\n<strong>Output:</strong> <br />M\n<strong>Explanation</strong>: M is the 13th character of\nalphabet.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 3:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nN = 5473578\n<strong>Output:</strong> <br />KYJZF<br /></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>colName()&nbsp;</strong>which takes the column number&nbsp;N as input and returns the column name represented as a string.</span><br /><span style=\"font-size: 18px;\"><strong>Expected Time Complexity: </strong>O(LogN).<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(1).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;= 10<sup>18</sup></span></p>\n<p>&nbsp;</p>"
+    },
+    "qnum": 1146
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/delete-without-head-pointer/1",
+      "problem_name": "Delete without head pointer",
+      "slug": "delete-without-head-pointer",
+      "difficulty": "Medium",
+      "accuracy": "78.57%",
+      "marks": 4,
+      "all_submissions": 224266,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "linkedList[] =&!//!&del_node =",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Visa",
+          "Goldman Sachs",
+          "Kritikal Solutions"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Visa",
+        "Goldman Sachs",
+        "Kritikal Solutions"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/delete-a-node-from-linked-list-without-head-pointer/",
+        "https://www.geeksforgeeks.org/given-only-a-pointer-to-a-node-to-be-deleted-in-a-singly-linked-list-how-do-you-delete-it/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a node\ndel_node\nof a Singly Linked List where you have to\ndelete\nthis given node from the linked list but you are not given the\nhead\nof the list.\nAfter deleting the given node:\nThe number of nodes in the linked list should decrease by one.\nAll the values before & after the\ndel_node\nnode should be in the same order.\nNote:\nIt is guaranteed that there exists a node with a value equal to the del_node value\nand it will\nnot be the last node\nof the linked list.",
+      "full_text": "You are given a node\ndel_node\nof a Singly Linked List where you have to\ndelete\nthis given node from the linked list but you are not given the\nhead\nof the list.\nAfter deleting the given node:\nThe number of nodes in the linked list should decrease by one.\nAll the values before & after the\ndel_node\nnode should be in the same order.\nNote:\nIt is guaranteed that there exists a node with a value equal to the del_node value\nand it will\nnot be the last node\nof the linked list.\nExamples:\nInput:\nLinked List = 1 -> 2, del_node = 1\nOutput:\n2\nExplanation:\nAfter deleting 1 from the linked list, we have remaining nodes as 2.\nInput:\nLinked List = 10 -> 20 -> 4 -> 30, del_node = 20\nOutput:\n10->4->30\nExplanation:\nAfter deleting 20 from the linked list, we have remaining nodes as 10, 4, 30.\nConstraints:\n2 ≤ number of nodes ≤ 10\n6\n1 ≤ node->data ≤ 10\n6",
+      "examples": [
+        "Input:\nLinked List = 1 -> 2, del_node = 1\nOutput:\n2\nExplanation:\nAfter deleting 1 from the linked list, we have remaining nodes as 2.",
+        "Input:\nLinked List = 10 -> 20 -> 4 -> 30, del_node = 20\nOutput:\n10->4->30\nExplanation:\nAfter deleting 20 from the linked list, we have remaining nodes as 10, 4, 30."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ number of nodes ≤ 10\n6\n1 ≤ node->data ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given a node <strong>del_node</strong> of a Singly Linked List where you have to <strong>delete</strong> this&nbsp;given node from the linked list but you are not given the <strong>head</strong> of the list.</span></p>\n<p><span style=\"font-size: 18px;\">After deleting the given node:</span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">The number of nodes in the linked list should decrease by one.</span></li>\n<li><span style=\"font-size: 18px;\">All the values before &amp; after the <strong>del_node </strong>node should be in the same order.</span></li>\n</ul>\n<p><span style=\"font-size: 18px;\"><strong>Note: </strong></span><span style=\"font-size: 18px;\">It is guaranteed that there exists a node with a value equal to the del_node value<strong> </strong>and it will <strong>not be the last node</strong> of the linked list.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>Linked List = 1 -&gt; 2, del_node = 1\n<strong>Output: </strong></span><span style=\"font-size: 18px;\">2<strong>\nExplanation: </strong>After deleting 1 from the linked list, we have remaining nodes as 2.<br /></span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700161/Web/Other/blobid0_1724435615.png\" width=\"398\" height=\"159\" /> </pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>Linked List = 10 -&gt; 20 -&gt; 4 -&gt; 30, del_node = 20\n<strong>Output: </strong>10-&gt;4-&gt;30<strong>\nExplanation: </strong>After deleting 20 from the linked list, we have remaining nodes as 10, 4, 30.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700161/Web/Other/blobid1_1724435635.png\" width=\"390\" height=\"156\" /><br /></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />2 &le; number of nodes &le; 10<sup>6&nbsp;</sup>&nbsp;<br />1 &le; node-&gt;data &le; 10<sup>6</sup><br /></span></p>"
+    },
+    "qnum": 1147
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/detect-cycle-in-a-directed-graph/1",
+      "problem_name": "Directed Graph Cycle",
+      "slug": "detect-cycle-in-a-directed-graph",
+      "difficulty": "Medium",
+      "accuracy": "27.88%",
+      "marks": 4,
+      "all_submissions": 568422,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "V = &!//!&E = &!//!&edges[][]",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "MakeMyTrip",
+          "Oracle",
+          "Goldman Sachs",
+          "Adobe",
+          "BankBazaar",
+          "Rockstand",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Graph",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Graph",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "MakeMyTrip",
+        "Oracle",
+        "Goldman Sachs",
+        "Adobe",
+        "BankBazaar",
+        "Rockstand",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/detect-cycle-in-a-graph/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-13-on-campus-for-full-time/",
+        "https://www.geeksforgeeks.org/samsung-r-d-noida-interview-experience-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-interview-experience-on-campus-for-software-engineer-september-2018/"
+      ],
+      "statement_text": "Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, check whether it contains any cycle or not.\nThe graph is represented as a 2D vector edges[][], where each entry edges[i] = [u, v] denotes an edge from vertex u to v.\n\nExamples:\n\nInput: V = 4, edges[][] = [[0, 1], [1, 2], [2, 0], [2, 3]]\n\nOutput: true\nExplanation: The diagram clearly shows a cycle 0 → 1 → 2 → 0\n\nInput: V = 4, edges[][] = [[0, 1], [0, 2], [1, 2], [2, 3]]\n\nOutput: false\nExplanation: no cycle in the graph\n\nConstraints:\n1 ≤ V ≤ 105\n0 ≤ E ≤ 105\n0 ≤ edges[i][0], edges[i][1] < V",
+      "full_text": "Given a Directed Graph with V vertices (Numbered from 0 to V-1) and E edges, check whether it contains any cycle or not.\nThe graph is represented as a 2D vector edges[][], where each entry edges[i] = [u, v] denotes an edge from vertex u to v.\n\nExamples:\n\nInput: V = 4, edges[][] = [[0, 1], [1, 2], [2, 0], [2, 3]]\n\nOutput: true\nExplanation: The diagram clearly shows a cycle 0 → 1 → 2 → 0\n\nInput: V = 4, edges[][] = [[0, 1], [0, 2], [1, 2], [2, 3]]\n\nOutput: false\nExplanation: no cycle in the graph\n\nConstraints:\n1 ≤ V ≤ 105\n0 ≤ E ≤ 105\n0 ≤ edges[i][0], edges[i][1] < V",
+      "examples": [
+        "Input:\nV = 4, edges[][] = [[0, 1], [1, 2], [2, 0], [2, 3]]\nOutput:\ntrue\nExplanation\n: The diagram clearly shows a cycle 0 → 1 → 2 → 0",
+        "Input:\nV = 4, edges[][] = [[0, 1], [0, 2], [1, 2], [2, 3]]\nOutput:\nfalse\nExplanation\n: no cycle in the graph"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ V ≤ 10\n5\n0 ≤ E ≤ 10\n5\n0 ≤ edges[i][0], edges[i][1] < V",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a Directed Graph with&nbsp;<strong>V</strong>&nbsp;vertices (Numbered from&nbsp;<strong>0</strong>&nbsp;to&nbsp;<strong>V-1</strong>) and&nbsp;<strong>E</strong>&nbsp;edges, check whether it contains any&nbsp;<strong>cycle&nbsp;</strong>or not.<br />The graph is&nbsp;</span><span style=\"font-size: 18.6667px;\">represented as a 2D vector&nbsp;</span><strong style=\"font-size: 18.6667px;\">edges[][]</strong><span style=\"font-size: 18.6667px;\">, where each entry&nbsp;</span><strong style=\"font-size: 18.6667px;\">edges[i] = [u, v]</strong><span style=\"font-size: 18.6667px;\"> denotes an edge from vertex </span><strong style=\"font-size: 18.6667px;\">u</strong><span style=\"font-size: 18.6667px;\">&nbsp;to&nbsp;</span><strong style=\"font-size: 18.6667px;\">v.</strong></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>V = 4, edges[][] = [[0, 1], [1, 2], [2, 0], [2, 3]]</span>\n\n<span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700218/Web/Other/blobid0_1761112751.jpg\" width=\"238\" height=\"222\" /></span>\n\n<span style=\"font-size: 18px;\"><strong>Output:</strong> true\n<strong>Explanation</strong>: The diagram clearly shows a cycle 0 &rarr; 1 &rarr; 2 &rarr; 0</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>V = 4, edges[][] = [[0, 1], [0, 2], [1, 2], [2, 3]]<strong><br /></strong></span>\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700218/Web/Other/blobid1_1761112778.jpg\" width=\"244\" height=\"216\" /><br /><span style=\"font-size: 18px;\"><strong>Output:</strong> false\n<strong>Explanation</strong>: no cycle in the graph</span></pre>\n<p><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Constraints:</strong><br /><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">1 &le; V &le; 10<sup>5</sup></span><br /><span style=\"font-size: 18px;\">0 &le; E &le; 10<sup>5</sup></span><br /></span></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">0 &le; edges[i][0], edges[i][1] &lt; V</span></span></p>"
+    },
+    "qnum": 1148
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/egg-dropping-puzzle-1587115620/1",
+      "problem_name": "Egg Dropping Puzzle",
+      "slug": "egg-dropping-puzzle-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "39.64%",
+      "marks": 4,
+      "all_submissions": 166059,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&k = ",
+        "datatype": "INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "D-E-Shaw",
+          "Hike",
+          "MakeMyTrip",
+          "Oracle",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Google",
+          "Myntra",
+          "nearbuy",
+          "Opera",
+          "Philips",
+          "Service Now",
+          "Unisys"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "D-E-Shaw",
+        "Hike",
+        "MakeMyTrip",
+        "Oracle",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Google",
+        "Myntra",
+        "nearbuy",
+        "Opera",
+        "Philips",
+        "Service Now",
+        "Unisys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given\nn\nidentical eggs and you have access to a\nk\n-floored building from\n1\nto\nk.\nThere exists a floor\nf\nwhere\n0\n<=\nf\n<=\nk\nsuch that any egg dropped from a floor higher than\nf\nwill break, and any egg dropped\nfrom or below\nfloor f\nwill\nnot break\n.\nThere are few rules given below.\nAn egg that survives a fall can be used again.\nA broken egg must be discarded.\nThe effect of a fall is the same for all eggs.\nIf the egg doesn't break at a certain floor, it will not break at any floor below.\nIf the egg breaks on a certain floor, it will break on any floor above.\nReturn the minimum number of moves\nyou need to determine the value of\nf\nwith certainty\n.",
+      "full_text": "You are given\nn\nidentical eggs and you have access to a\nk\n-floored building from\n1\nto\nk.\nThere exists a floor\nf\nwhere\n0\n<=\nf\n<=\nk\nsuch that any egg dropped from a floor higher than\nf\nwill break, and any egg dropped\nfrom or below\nfloor f\nwill\nnot break\n.\nThere are few rules given below.\nAn egg that survives a fall can be used again.\nA broken egg must be discarded.\nThe effect of a fall is the same for all eggs.\nIf the egg doesn't break at a certain floor, it will not break at any floor below.\nIf the egg breaks on a certain floor, it will break on any floor above.\nReturn the minimum number of moves\nyou need to determine the value of\nf\nwith certainty\n.\nExamples:\nInput:\nn = 2, k = 36\nOutput:\n8\nExplanation:\nIn all the situations, 8 minimum moves are required to find the maximum floor. Following is the strategy to do so:\nDrop from\nfloor 8\n→ If breaks, check 1-7 sequentially.\nDrop from\nfloor 15\n→ If breaks, check 9-14.\nDrop from\nfloor 21\n→ If breaks, check 16-20.\nDrop from\nfloor 26\n→ If breaks, check 22-25.\nDrop from\nfloor 30\n→ If breaks, check 27-29.\nDrop from\nfloor 33\n→ If breaks, check 31-32.\nDrop from\nfloor 35\n→ If breaks, check 34.\nDrop from\nfloor 36\n→ Final check.\nInput:\nn = 1, k = 36\nOutput:\n36\nExplanation:\nDrop the egg from the first-floor window; if it survives, drop it from the second-floor window. Continue upward until it breaks. In the worst case, this method may require 36 droppings.\nConstraints:\n1 ≤ n ≤ 1000\n1 ≤ k ≤ 1000",
+      "examples": [
+        "Input:\nn = 2, k = 36\nOutput:\n8\nExplanation:\nIn all the situations, 8 minimum moves are required to find the maximum floor. Following is the strategy to do so:\nDrop from\nfloor 8\n→ If breaks, check 1-7 sequentially.\nDrop from\nfloor 15\n→ If breaks, check 9-14.\nDrop from\nfloor 21\n→ If breaks, check 16-20.\nDrop from\nfloor 26\n→ If breaks, check 22-25.\nDrop from\nfloor 30\n→ If breaks, check 27-29.\nDrop from\nfloor 33\n→ If breaks, check 31-32.\nDrop from\nfloor 35\n→ If breaks, check 34.\nDrop from\nfloor 36\n→ Final check.",
+        "Input:\nn = 1, k = 36\nOutput:\n36\nExplanation:\nDrop the egg from the first-floor window; if it survives, drop it from the second-floor window. Continue upward until it breaks. In the worst case, this method may require 36 droppings."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 1000\n1 ≤ k ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given <strong>n </strong>identical eggs and you have access to a<strong> k</strong>-floored building from&nbsp;<strong>1</strong> to <strong>k.</strong></span></p>\n<p><span style=\"font-size: 14pt;\">There exists a floor <strong>f</strong> where <strong>0</strong> &lt;= <strong>f</strong> &lt;= <strong>k </strong>such that any egg dropped from a floor higher than <strong>f</strong>&nbsp;will break, and any egg dropped <strong>from or below </strong>floor f<strong>&nbsp;</strong>will <strong>not break</strong>. <br />There are few rules given below.&nbsp;</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\">An egg that survives a fall can be used again.</span></li>\n<li><span style=\"font-size: 14pt;\">A broken egg must be discarded.</span></li>\n<li><span style=\"font-size: 14pt;\">The effect of a fall is the same for all eggs.</span></li>\n<li><span style=\"font-size: 14pt;\">If the egg doesn't break at a certain floor, it will not break at any floor below.</span></li>\n<li><span style=\"font-size: 14pt;\">If the egg breaks on a certain floor, it will break on any floor above.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\">Return the minimum number of moves&nbsp;<span style=\"box-sizing: border-box; margin: 0px; padding: 0px;\">you need to determine the value of&nbsp;<strong>f</strong> with certainty</span>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre dir=\"ltr\"><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 2, k = 36</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>8</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>In all the situations, 8 minimum moves are required to find the maximum floor. Following is the strategy to do so:<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 8</strong> &rarr; If breaks, check 1-7 sequentially.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 15</strong> &rarr; If breaks, check 9-14.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 21</strong>  &rarr; If breaks, check 16-20.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 26</strong> &rarr; If breaks, check 22-25.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 30</strong> &rarr; If breaks, check 27-29.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 33</strong> &rarr; If breaks, check 31-32.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 35 </strong>&rarr; If breaks, check 34.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 36</strong> &rarr; Final check.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 1, k = 36</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>36</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>Drop the egg from the first-floor window; if it survives, drop it from the second-floor window. Continue upward until it breaks. In the worst case, this method may require 36 droppings.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; n &le;&nbsp;1000<br />1 &le; k &le; 1000</span></p>"
+    },
+    "qnum": 1149
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/tug-of-war--122234/1",
+      "problem_name": "Equal Partition",
+      "slug": "tug-of-war--122234",
+      "difficulty": "Medium",
+      "accuracy": "41.95%",
+      "marks": 4,
+      "all_submissions": 844,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Google",
+          "Goldman Sachs",
+          "Amazon"
+        ],
+        "topic_tags": [
+          "Backtracking",
+          "Arrays",
+          "Recursion"
+        ]
+      },
+      "topic_tags": [
+        "Backtracking",
+        "Arrays",
+        "Recursion"
+      ],
+      "company_tags": [
+        "Google",
+        "Goldman Sachs",
+        "Amazon"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[]\nof size\nn\n, your task is to divide the array in\ntwo\nsubsets such that the\nabsolute difference\nbetween the\nsum of elements\nin the two subsets is equal to\nzero\n(i.e., both subsets have the same sum).\nIf\nn\nis\neven\n, both subsets must contain exactly\nn/2\nelements.\nIf\nn\nis\nodd\n, one subset must contain\n(n-1)/2\nelements and the other subset must contain\n(n+1)/2\nelements.\nNote :\nIf multiple answers exist, you may return any of them.\nThe driver code will check and print\ntrue\nif your partition is valid, otherwise\nfalse\n.\nIt is\nguaranteed\nthat there will always be\natleast one\nvalid partition.",
+      "full_text": "Given an array\narr[]\nof size\nn\n, your task is to divide the array in\ntwo\nsubsets such that the\nabsolute difference\nbetween the\nsum of elements\nin the two subsets is equal to\nzero\n(i.e., both subsets have the same sum).\nIf\nn\nis\neven\n, both subsets must contain exactly\nn/2\nelements.\nIf\nn\nis\nodd\n, one subset must contain\n(n-1)/2\nelements and the other subset must contain\n(n+1)/2\nelements.\nNote :\nIf multiple answers exist, you may return any of them.\nThe driver code will check and print\ntrue\nif your partition is valid, otherwise\nfalse\n.\nIt is\nguaranteed\nthat there will always be\natleast one\nvalid partition.\nExamples:\nInput:\narr[] = [1, 2, 3, 4]\nOutput:\n[[1, 4], [2, 3]]\nExplanation:\nThe absolute difference between the sum of both subsets is 0.\nInput:\narr[] = [5, 10, 15]\nOutput:\n[[5, 10], [15]]\nExplanation:\nThe absolute difference between the sum of both subsets is 0.\nConstraints:\n1 ≤ n ≤ 20\n-200 ≤ arr[i] ≤ 200",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 4]\nOutput:\n[[1, 4], [2, 3]]\nExplanation:\nThe absolute difference between the sum of both subsets is 0.",
+        "Input:\narr[] = [5, 10, 15]\nOutput:\n[[5, 10], [15]]\nExplanation:\nThe absolute difference between the sum of both subsets is 0."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 20\n-200 ≤ arr[i] ≤ 200",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[]</strong> of size <strong>n</strong>, your task is to divide the array in <strong>two </strong>subsets such that the <strong>absolute difference </strong>between the <strong>sum of elements </strong>in the two subsets is equal to <strong>zero </strong>(i.e., both subsets have the same sum).</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\">If <strong>n </strong>is <strong>even</strong>, both subsets must contain exactly <strong>n/2</strong> elements.</span></li>\n<li><span style=\"font-size: 14pt;\">If <strong>n </strong>is <strong>odd</strong>, one subset must contain <strong>(n-1)/2</strong> elements and the other subset must contain <strong>(n+1)/2</strong> elements.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Note : </strong></span><span style=\"font-size: 14pt;\">If multiple answers exist, you may return any of them. </span><span style=\"font-size: 14pt;\">The driver code will check and print <strong>true</strong>&nbsp;if your partition is valid, otherwise&nbsp;<strong>false</strong>. <br /></span><span style=\"font-size: 14pt;\">It is <strong>guaranteed </strong>that there will always be <strong>atleast one</strong> valid partition.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4]<br /><strong>Output: </strong>[[1, 4], [2, 3]]<br /><strong>Explanation: </strong>The absolute difference between the sum of both subsets is 0.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 10, 15]<br /><strong>Output: </strong>[[5, 10], [15]]<br /><strong>Explanation: </strong>The absolute difference between the sum of both subsets is 0.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:&nbsp;<br /></strong><span style=\"font-size: 18px;\">1 &le; n &le; 20<br /></span><span style=\"font-size: 18px;\">-200 &le; arr[i] &le; 200</span></span></p>"
+    },
+    "qnum": 1150
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/fibonacci-sum1423/1",
+      "problem_name": "Fibonacci Sum",
+      "slug": "fibonacci-sum1423",
+      "difficulty": "Medium",
+      "accuracy": "26.82%",
+      "marks": 4,
+      "all_submissions": 32313,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Fibonacci",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Fibonacci",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sum-fibonacci-numbers/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a number positive number N, find the value of f\n0\n+ f\n1\n+ f\n2\n+... + f\nN\nwhere f\ni\nindicates ith Fibonacci number.\nRemember that f\n0\n= 0, f\n1\n= 1, f\n2\n= 1, f\n3\n= 2, f\n4\n= 3, f\n5\n= 5,\nSince the answer can be very large, the\nanswer\ntakes\nmodulo\nwith\n1000000007\nand returned.\nExample 1:\nInput:\nN = 3\nOutput:\n4\nExplanation:\n0 + 1 + 1 + 2  = 4\nExample 2:\nInput :\nN = 4\nOutput :\n7\nExplanation :\n0 + 1 + 1 + 2 + 3 = 7\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nfibSum()\nwhich takes an integer N\nas input parameter and returns the sum of all the Fibonacci numbers from F\n0\nto F\nN\n.\nExpected Time Complexity:\nO(Log N)\nExpected Space Complexity:\nO(1)",
+      "full_text": "Given a number positive number N, find the value of f\n0\n+ f\n1\n+ f\n2\n+... + f\nN\nwhere f\ni\nindicates ith Fibonacci number.\nRemember that f\n0\n= 0, f\n1\n= 1, f\n2\n= 1, f\n3\n= 2, f\n4\n= 3, f\n5\n= 5,\nSince the answer can be very large, the\nanswer\ntakes\nmodulo\nwith\n1000000007\nand returned.\nExample 1:\nInput:\nN = 3\nOutput:\n4\nExplanation:\n0 + 1 + 1 + 2  = 4\nExample 2:\nInput :\nN = 4\nOutput :\n7\nExplanation :\n0 + 1 + 1 + 2 + 3 = 7\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nfibSum()\nwhich takes an integer N\nas input parameter and returns the sum of all the Fibonacci numbers from F\n0\nto F\nN\n.\nExpected Time Complexity:\nO(Log N)\nExpected Space Complexity:\nO(1)\nConstraints:\n1 <= N <= 100000",
+      "examples": [
+        "Input:\nN = 3\nOutput:\n4\nExplanation:\n0 + 1 + 1 + 2  = 4",
+        "Input :\nN = 4\nOutput :\n7\nExplanation :\n0 + 1 + 1 + 2 + 3 = 7"
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 100000",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a number positive number N, find the value of f<sub>0</sub> + f<sub>1</sub> + f<sub>2</sub> +... + f<sub>N</sub> where f<sub>i</sub> indicates ith Fibonacci number.<br />Remember that f<sub>0</sub> = 0, f<sub>1</sub> = 1, f<sub>2</sub> = 1, f<sub>3</sub> = 2, f<sub>4</sub> = 3, f<sub>5</sub> = 5, <br />Since the answer can be very large, the <strong>answer </strong>takes<strong> modulo</strong> with <strong>1000000007</strong> and returned.<br /><br /><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\">Input:\nN = 3\nOutput:\n4\nExplanation:\n0 + 1 + 1 + 2  = 4</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\">Input :\nN = 4\nOutput :\n7\nExplanation :\n0 + 1 + 1 + 2 + 3 = 7</span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>fibSum()</strong>&nbsp;which takes an integer N<strong>&nbsp;</strong>as input parameter and returns the sum of all the Fibonacci numbers from F<sub>0</sub>&nbsp;to F<sub>N</sub>.<br /><br /><strong>Expected Time Complexity:</strong>&nbsp;O(Log N)<br /><strong>Expected Space Complexity:</strong>&nbsp;O(1)</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;= 100000</span></p>"
+    },
+    "qnum": 1151
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/flattening-a-linked-list/1",
+      "problem_name": "Flattening a Linked List",
+      "slug": "flattening-a-linked-list",
+      "difficulty": "Medium",
+      "accuracy": "51.53%",
+      "marks": 4,
+      "all_submissions": 212061,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&root[][] =",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "24*7 Innovation Labs",
+          "Payu",
+          "Visa",
+          "Goldman Sachs",
+          "Qualcomm",
+          "Drishti-Soft"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "24*7 Innovation Labs",
+        "Payu",
+        "Visa",
+        "Goldman Sachs",
+        "Qualcomm",
+        "Drishti-Soft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/flattening-a-linked-list/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/"
+      ],
+      "statement_text": "Given a linked list containing\nn\nhead nodes where every node in the linked list contains two pointers:\n(i)\nnext\npoints to the next node in the list.\n(ii)\nbottom\npoints to a sub-linked list where the current node is the head.\nEach of the sub-linked lists nodes and the head nodes are sorted in\nascending\norder based on their data.\nF\nlatten\nthe linked list such that all the nodes appear in a single level while maintaining the sorted order.\nNote:\n1.\n↓\nrepresents the bottom pointer and\n→\nrepresents the next pointer.\n2. The flattened list will be printed using the\nbottom\npointer instead of the next pointer.",
+      "full_text": "Given a linked list containing\nn\nhead nodes where every node in the linked list contains two pointers:\n(i)\nnext\npoints to the next node in the list.\n(ii)\nbottom\npoints to a sub-linked list where the current node is the head.\nEach of the sub-linked lists nodes and the head nodes are sorted in\nascending\norder based on their data.\nF\nlatten\nthe linked list such that all the nodes appear in a single level while maintaining the sorted order.\nNote:\n1.\n↓\nrepresents the bottom pointer and\n→\nrepresents the next pointer.\n2. The flattened list will be printed using the\nbottom\npointer instead of the next pointer.\nExamples:\nInput:\nOutput:\n5 -> 7 -> 8 -> 10 -> 19 -> 20 -> 22 -> 28 -> 40 -> 45.\nExplanation\n:\nBottom pointer of 5 is pointing to 7.\nBottom pointer of 7 is pointing to 8.\nBottom pointer of 10 is pointing to 20 and so on.\nSo, after flattening the linked list the sorted list will be\n5 -> 7 -> 8 -> 10 -> 19 -> 20 -> 22 -> 28 -> 40 -> 45.\nInput:\nOutput:\n5 -> 7 -> 8 -> 10 -> 19 -> 22 -> 28 -> 30 -> 50\nExplanation:\nBottom pointer of 5 is pointing to 7.\nBottom pointer of 7 is pointing to 8.\nBottom pointer of 8 is pointing to 30 and so on.\nSo, after flattening the linked list the sorted list will be\n5 -> 7 -> 8 -> 10 -> 19 -> 22 -> 28 -> 30 -> 50.\nConstraints:\n0\n≤\nn\n≤\n100\n1\n≤\nnumber of nodes in sub-linked list(m\ni\n)\n≤\n50\n1\n≤\nnode->data\n≤\n10\n4",
+      "examples": [
+        "Input:\nOutput:\n5 -> 7 -> 8 -> 10 -> 19 -> 20 -> 22 -> 28 -> 40 -> 45.\nExplanation\n:\nBottom pointer of 5 is pointing to 7.\nBottom pointer of 7 is pointing to 8.\nBottom pointer of 10 is pointing to 20 and so on.\nSo, after flattening the linked list the sorted list will be\n5 -> 7 -> 8 -> 10 -> 19 -> 20 -> 22 -> 28 -> 40 -> 45.",
+        "Input:\nOutput:\n5 -> 7 -> 8 -> 10 -> 19 -> 22 -> 28 -> 30 -> 50\nExplanation:\nBottom pointer of 5 is pointing to 7.\nBottom pointer of 7 is pointing to 8.\nBottom pointer of 8 is pointing to 30 and so on.\nSo, after flattening the linked list the sorted list will be\n5 -> 7 -> 8 -> 10 -> 19 -> 22 -> 28 -> 30 -> 50."
+      ],
+      "constraints_text": "Constraints:\n0\n≤\nn\n≤\n100\n1\n≤\nnumber of nodes in sub-linked list(m\ni\n)\n≤\n50\n1\n≤\nnode->data\n≤\n10\n4",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a linked list containing&nbsp;<strong>n</strong>&nbsp;head nodes where every node in the linked list contains two pointers:</span><br /><span style=\"font-size: 14pt;\">(i)&nbsp;<strong>next&nbsp;</strong>points to the next node in the list.</span><br /><span style=\"font-size: 14pt;\">(ii)&nbsp;<strong>bottom&nbsp;</strong>points to a sub-linked list where the current node is the head.</span><br /><span style=\"font-size: 14pt;\">Each of the sub-linked lists nodes and the head nodes are sorted in <strong>ascending </strong>order based on their data. <strong>F</strong><strong>latten </strong>the linked list such that all the nodes appear in a single level while maintaining the sorted order.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:<br /></strong>1. <strong>&darr; </strong>represents the bottom pointer and <strong>&rarr;</strong>&nbsp;represents the next pointer.<br />2.&nbsp;The flattened list will be printed using the&nbsp;<strong>bottom</strong> pointer instead of the next pointer.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input:<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700192/Web/Other/blobid0_1756383797.webp\" width=\"407\" height=\"219\" /><br /></strong><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 5 -&gt; 7 -&gt; 8 -&gt; 10 -&gt; 19 -&gt; 20 -&gt; 22 -&gt; 28 -&gt; 40 -&gt; 45.<br /></span><strong style=\"font-size: 14pt;\">Explanation</strong><span style=\"font-size: 14pt;\">: <br />Bottom pointer of 5 is pointing to 7.<br />Bottom pointer of 7 is pointing to 8.<br />Bottom pointer of 10 is pointing to 20 and so on.\nSo, after flattening the linked list the sorted list will be <br /></span><span style=\"font-size: 18.6667px;\">5 -&gt; 7 -&gt; 8 -&gt; 10 -&gt; 19 -&gt; 20 -&gt; 22 -&gt; 28 -&gt; 40 -&gt; 45.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input:<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700192/Web/Other/blobid1_1756383851.webp\" width=\"412\" height=\"187\" /><br /></strong><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 5 -&gt; 7 -&gt; 8 -&gt; 10 -&gt; 19 -&gt; 22 -&gt; 28 -&gt; 30 -&gt; 50<br /></span><strong style=\"font-size: 14pt;\">Explanation:<br /></strong><span style=\"font-size: 14pt;\">Bottom pointer of 5 is pointing to 7.<br />Bottom pointer of 7 is pointing to 8.<br />Bottom pointer of 8 is pointing to 30 and so on.<br /></span><span style=\"font-size: 18.6667px;\">So, after flattening the linked list the sorted list will be \n5 -&gt; 7 -&gt; 8 -&gt; 10 -&gt; 19 -&gt; 22 -&gt; 28 -&gt; 30 -&gt; 50.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">0&nbsp;<span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif;\">&le;</span>&nbsp;n <span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif;\">&le;</span>&nbsp;100<br />1&nbsp;<span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif;\">&le;</span><strong>&nbsp;</strong>number of nodes in sub-linked list(m<sub>i</sub>)&nbsp;<span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif;\">&le;</span>&nbsp;50<br />1&nbsp;<span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif;\">&le;</span>&nbsp;node-&gt;data <span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif;\">&le;</span>&nbsp;10<sup>4</sup></span></p>"
+    },
+    "qnum": 1152
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/flattening-a-linked-list--170645/1",
+      "problem_name": "Flattening a Linked List",
+      "slug": "flattening-a-linked-list--170645",
+      "difficulty": "Medium",
+      "accuracy": "50.24%",
+      "marks": 4,
+      "all_submissions": 24069,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "24*7 Innovation Labs",
+          "Payu",
+          "Visa",
+          "Goldman Sachs",
+          "Qualcomm",
+          "Drishti-Soft"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "24*7 Innovation Labs",
+        "Payu",
+        "Visa",
+        "Goldman Sachs",
+        "Qualcomm",
+        "Drishti-Soft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/flattening-a-linked-list/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/"
+      ],
+      "statement_text": "Given a Linked List of size N, where every node represents a sub-linked-list and contains two pointers:\n(i) a\nnext\npointer to the next node,\n(ii) a\nbottom\npointer to a linked list where this node is head.\nEach of the sub-linked-list is in sorted order.\nFlatten the Link List such that all the nodes appear in a single level while maintaining the sorted order.\nNote:\nThe flattened list will be printed using the bottom pointer instead of next pointer.\nExample 1:\nInput:\n5 -> 10 -> 19 -> 28\n|     |     |     |\n7     20    22   35\n|           |     |\n8          50    40\n|                 |\n30               45\nOutput:\n5-> 7-> 8- > 10 -> 19-> 20->\n22-> 28-> 30-> 35-> 40-> 45-> 50.\nExplanation\n:\nThe resultant linked lists has every\nnode in a single level.\n(\nNote:\n| represents the bottom pointer.)\nExample 2:\nInput:\n5 -> 10 -> 19 -> 28\n|          |\n7          22\n|          |\n8          50\n|\n30\nOutput:\n5->7->8->10->19->22->28->30->50\nExplanation:\nThe resultant linked lists has every\nnode in a single level.\n(\nNote:\n| represents the bottom pointer.)\nYour Task:\nYou do not need to read input or print anything. Complete the function\nflatten()\nthat takes the\nhead\nof the linked list as input parameter\nand returns the head of flattened link list.\nExpected Time Complexity:\nO(N*M)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a Linked List of size N, where every node represents a sub-linked-list and contains two pointers:\n(i) a\nnext\npointer to the next node,\n(ii) a\nbottom\npointer to a linked list where this node is head.\nEach of the sub-linked-list is in sorted order.\nFlatten the Link List such that all the nodes appear in a single level while maintaining the sorted order.\nNote:\nThe flattened list will be printed using the bottom pointer instead of next pointer.\nExample 1:\nInput:\n5 -> 10 -> 19 -> 28\n|     |     |     |\n7     20    22   35\n|           |     |\n8          50    40\n|                 |\n30               45\nOutput:\n5-> 7-> 8- > 10 -> 19-> 20->\n22-> 28-> 30-> 35-> 40-> 45-> 50.\nExplanation\n:\nThe resultant linked lists has every\nnode in a single level.\n(\nNote:\n| represents the bottom pointer.)\nExample 2:\nInput:\n5 -> 10 -> 19 -> 28\n|          |\n7          22\n|          |\n8          50\n|\n30\nOutput:\n5->7->8->10->19->22->28->30->50\nExplanation:\nThe resultant linked lists has every\nnode in a single level.\n(\nNote:\n| represents the bottom pointer.)\nYour Task:\nYou do not need to read input or print anything. Complete the function\nflatten()\nthat takes the\nhead\nof the linked list as input parameter\nand returns the head of flattened link list.\nExpected Time Complexity:\nO(N*M)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n0 <= N <= 50\n1 <=\nM\ni\n<= 20\n1 <= Element of linked list <= 10\n3",
+      "examples": [
+        "Input:\n5 -> 10 -> 19 -> 28\n|     |     |     |\n7     20    22   35\n|           |     |\n8          50    40\n|                 |\n30               45\nOutput:\n5-> 7-> 8- > 10 -> 19-> 20->\n22-> 28-> 30-> 35-> 40-> 45-> 50.\nExplanation\n:\nThe resultant linked lists has every\nnode in a single level.\n(\nNote:\n| represents the bottom pointer.)",
+        "Input:\n5 -> 10 -> 19 -> 28\n|          |\n7          22\n|          |\n8          50\n|\n30\nOutput:\n5->7->8->10->19->22->28->30->50\nExplanation:\nThe resultant linked lists has every\nnode in a single level.\n(\nNote:\n| represents the bottom pointer.)"
+      ],
+      "constraints_text": "Constraints:\n0 <= N <= 50\n1 <=\nM\ni\n<= 20\n1 <= Element of linked list <= 10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a Linked List of size N, where every node represents a sub-linked-list and contains two pointers:<br />(i) a<strong> next </strong>pointer to the next node,<br />(ii) a<strong>&nbsp;bottom</strong>&nbsp;pointer&nbsp;to a linked list where this node is head.<br />Each of the&nbsp;sub-linked-list is in sorted order.<br />Flatten the Link List such that all the nodes appear in a single level while maintaining the sorted order.&nbsp;</span><br /><span style=\"font-size: 18px;\"><strong>Note:</strong> The flattened list will be printed using the bottom pointer instead of next pointer.</span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>5 -&gt; 10 -&gt; 19 -&gt; 28\n|     |     |     | \n7     20    22   35\n|           |     | \n8          50    40\n|                 | \n30               45<strong>\nOutput: </strong>&nbsp;5-&gt; 7-&gt; 8- &gt; 10 -&gt; 19-&gt; 20-&gt;\n22-&gt; 28-&gt; 30-&gt; 35-&gt; 40-&gt; 45-&gt; 50.\n<strong>Explanation</strong>:\nThe resultant linked lists has every \nnode in a single level.\n(<strong>Note: </strong>| represents the bottom pointer.)</span>\n</pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\n5 -&gt; 10 -&gt; 19 -&gt; 28\n|          |                \n7          22   \n|          |                 \n8          50 \n|                           \n30              \n<strong>Output:</strong> 5-&gt;7-&gt;8-&gt;10-&gt;19-&gt;22-&gt;28-&gt;30-&gt;50\n<strong>Explanation:</strong>\nThe resultant linked lists has every\nnode in a single level.\n\n(<strong>Note: </strong>| represents the bottom pointer.)</span></pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You do not need to read input or print anything. Complete the function <strong>flatten()</strong></span><span style=\"font-size: 18px;\"> that takes the&nbsp;<strong>head </strong>of the linked list as input&nbsp;parameter<strong> </strong>and returns the head of flattened link list.</span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong>&nbsp;O(N*M)<br /><strong>Expected Auxiliary Space:</strong>&nbsp;O(1)</span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">0 &lt;= N &lt;= 50<br />1 &lt;=<strong> M<sub>i</sub> </strong>&lt;= 20<br />1 &lt;= Element of linked list &lt;= 10<sup>3</sup></span></p>"
+    },
+    "qnum": 1153
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/get-minimum-element-from-stack/1",
+      "problem_name": "Get Min from Stack",
+      "slug": "get-minimum-element-from-stack",
+      "difficulty": "Medium",
+      "accuracy": "22.59%",
+      "marks": 4,
+      "all_submissions": 300772,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "q =&!//!&queries[] = ",
+        "datatype": "INTEGER&!//!&STRING_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "D-E-Shaw",
+          "FactSet",
+          "Walmart",
+          "Goldman Sachs",
+          "SAP Labs",
+          "Sapient",
+          "One97",
+          "GreyOrange",
+          "Kuliza"
+        ],
+        "topic_tags": [
+          "Stack",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Stack",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "D-E-Shaw",
+        "FactSet",
+        "Walmart",
+        "Goldman Sachs",
+        "SAP Labs",
+        "Sapient",
+        "One97",
+        "GreyOrange",
+        "Kuliza"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/design-a-stack-that-supports-getmin-in-o1-time-and-o1-extra-space/"
+      ],
+      "interview_links": [],
+      "statement_text": "Implement a class SpecialStack that supports following operations:\n\npush(x) – Insert an integer x into the stack.\n\npop() – Remove the top element from the stack.\n\npeek() – Return the top element from the stack. If the stack is empty, return -1.\n\ngetMin() – Retrieve the minimum element from the stack in O(1) time. If the stack is empty, return -1.\n\nisEmpty() –  Return true if stack is empty, else false\n\nThere will be a sequence of queries queries[][]. The queries are represented in numeric form:\n\n1 x : Call push(x)\n\n2:  Call pop()\n\n3: Call peek()\n\n4: Call getMin()\n\n5: Call isEmpty()\n\nThe driver code will process the queries, call the corresponding functions, and print the outputs of peek(), getMin(), isEmpty() operations.\nYou only need to implement the above five functions.\n\nExamples:\n\nInput: q = 7, queries[][] = [[1, 2], [1, 3], [3], [2], [4], [1, 1], [4]]\nOutput: [3, 2, 1]\nExplanation:\npush(2): Stack is [2]\npush(3): Stack is [2, 3]\npeek(): Top element is 3\npop(): Removes 3, stack is [2]\ngetMin(): Minimum element is 2\npush(1): Stack is [2, 1]\ngetMin(): Minimum element is 1\n\nInput: q = 4, queries[][] = [[1, 4], [1, 2], [4], [3], [5]]\nOutput: [2, 2, false]\nExplanation:\npush(4): Stack is [4]\npush(2): Stack is [4, 2]\ngetMin(): Minimum element is 2\npeek(): Top element is 2\nisEmpty(): false\n\nConstraints:\n1 ≤ q ≤ 105\n0 ≤ values on the stack ≤ 109",
+      "full_text": "Implement a class SpecialStack that supports following operations:\n\npush(x) – Insert an integer x into the stack.\n\npop() – Remove the top element from the stack.\n\npeek() – Return the top element from the stack. If the stack is empty, return -1.\n\ngetMin() – Retrieve the minimum element from the stack in O(1) time. If the stack is empty, return -1.\n\nisEmpty() –  Return true if stack is empty, else false\n\nThere will be a sequence of queries queries[][]. The queries are represented in numeric form:\n\n1 x : Call push(x)\n\n2:  Call pop()\n\n3: Call peek()\n\n4: Call getMin()\n\n5: Call isEmpty()\n\nThe driver code will process the queries, call the corresponding functions, and print the outputs of peek(), getMin(), isEmpty() operations.\nYou only need to implement the above five functions.\n\nExamples:\n\nInput: q = 7, queries[][] = [[1, 2], [1, 3], [3], [2], [4], [1, 1], [4]]\nOutput: [3, 2, 1]\nExplanation:\npush(2): Stack is [2]\npush(3): Stack is [2, 3]\npeek(): Top element is 3\npop(): Removes 3, stack is [2]\ngetMin(): Minimum element is 2\npush(1): Stack is [2, 1]\ngetMin(): Minimum element is 1\n\nInput: q = 4, queries[][] = [[1, 4], [1, 2], [4], [3], [5]]\nOutput: [2, 2, false]\nExplanation:\npush(4): Stack is [4]\npush(2): Stack is [4, 2]\ngetMin(): Minimum element is 2\npeek(): Top element is 2\nisEmpty(): false\n\nConstraints:\n1 ≤ q ≤ 105\n0 ≤ values on the stack ≤ 109",
+      "examples": [
+        "Input:\nq = 7, queries[][] = [[1, 2], [1, 3], [3], [2], [4], [1, 1], [4]]\nOutput:\n[3, 2, 1]\nExplanation:\npush(2): Stack is [2]\npush(3): Stack is [2, 3]\npeek(): Top element is 3\npop(): Removes 3, stack is [2]\ngetMin(): Minimum element is 2\npush(1): Stack is [2, 1]\ngetMin(): Minimum element is 1",
+        "Input:\nq = 4, queries[][] = [[1, 4], [1, 2], [4], [3], [5]]\nOutput:\n[2, 2, false]\nExplanation:\npush(4): Stack is [4]\npush(2): Stack is [4, 2]\ngetMin(): Minimum element is 2\npeek(): Top element is 2\nisEmpty(): false"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ q ≤ 10\n5\n0 ≤ values on the stack ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Implement a class&nbsp;<strong>SpecialStack</strong>&nbsp;that supports following operations:</span></p>\n<ul>\n<li style=\"text-align: left;\"><span style=\"font-size: 18.6667px;\"><strong>push(x) &ndash;&nbsp;</strong>Insert an integer x into the stack.</span></li>\n<li style=\"text-align: left;\"><span style=\"font-size: 18.6667px;\"><strong>pop() &ndash;&nbsp;</strong>Remove the top element from the stack.</span></li>\n<li style=\"text-align: left;\"><span style=\"font-size: 18.6667px;\"><strong>peek()&nbsp;</strong><strong>&ndash;</strong><strong>&nbsp;</strong>Return the top element&nbsp;</span><span style=\"font-size: 18.6667px;\">from the stack.<strong><strong>&nbsp;</strong><span style=\"font-family: monospace; font-size: 18.6667px; font-weight: 400;\">If the stack is empty, return -1.</span></strong></span></li>\n<li style=\"text-align: left;\"><span style=\"font-size: 18.6667px;\"><span style=\"font-size: 18.6667px;\"><strong>getMin</strong></span><strong style=\"font-size: 18.6667px;\">() &ndash; </strong><span style=\"font-size: 18.6667px;\">Retrieve the minimum element from the stack in O(1) time. If the stack is empty, return -1.</span></span></li>\n<li style=\"text-align: left;\"><strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18.6667px;\">isEmpty()</span></strong><span style=\"font-size: 18.6667px;\">&nbsp;</span><span style=\"font-size: 18.6667px;\"><strong>&ndash;&nbsp;</strong></span><span style=\"font-size: 18.6667px;\">&nbsp;R</span><span style=\"font-size: 18.6667px;\">eturn true if stack is empty, else false</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><span style=\"font-size: 14pt;\">There will be a sequence of queries&nbsp;</span><strong>queries</strong><strong style=\"font-size: 14pt;\">[][]</strong><span style=\"font-size: 14pt;\">. The queries are represented in numeric form:</span></span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>1 x</strong>&nbsp;<strong>:</strong>&nbsp;Call push(x)</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>2</strong><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\">&nbsp;&nbsp;</span><span style=\"font-size: 14pt;\"><span style=\"font-family: monospace;\">Call</span>&nbsp;pop()</span></span></li>\n<li><span style=\"font-family: monospace;\"><span style=\"font-size: 18.6667px;\"><strong>3:&nbsp;</strong>Call peek()</span></span></li>\n<li><span style=\"font-family: monospace;\"><span style=\"font-size: 18.6667px;\"><strong>4:</strong> Call getMin()</span></span></li>\n<li><span style=\"font-family: monospace;\"><span style=\"font-size: 18.6667px;\"><strong>5:</strong>&nbsp;Call isEmpty()</span></span></li>\n</ul>\n<p><span style=\"font-family: monospace;\"><span style=\"font-size: 18.6667px;\">The driver code will process the queries, call the corresponding functions, and print the outputs of peek(), getMin(), isEmpty() operations.</span><br /></span><span style=\"font-family: monospace;\"><span style=\"font-size: 18.6667px;\">You only need to implement the above five functions.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> q = 7, queries[][] = [[1, 2], [1, 3], [3], [2], [4], [1, 1], [4]]<strong>\nOutput: </strong>[3, 2, 1]<strong>\nExplanation: </strong>\npush(2): Stack is [2]\npush(3): Stack is [2, 3]\npeek(): Top element is 3\npop(): Removes 3, stack is [2]\ngetMin(): Minimum element is 2\npush(1): Stack is [2, 1]\ngetMin(): Minimum element is 1</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input:</strong><span style=\"font-size: 14pt;\"> q = 4, queries[][] = [[1, 4], [1, 2], [4], [3], [5]]</span><strong style=\"font-size: 14pt;\">\nOutput: </strong><span style=\"font-size: 14pt;\">[2, 2, false]</span><strong style=\"font-size: 14pt;\">\nExplanation: <br /></strong><span style=\"font-size: 18.6667px;\">push(4): Stack is [4]\npush(2): Stack is [4, 2]</span><span style=\"font-size: 14pt;\"><br /></span><span style=\"font-size: 18.6667px;\">getMin(): Minimum element is 2</span><span style=\"font-size: 14pt;\"><br /></span><span style=\"font-size: 18.6667px;\">peek(): Top element is 2<br />isEmpty(): false</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; q &le; 10<sup>5</sup><br />0 &le; values on the stack &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1154
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/implement-stack-using-array/1",
+      "problem_name": "Implement stack using array",
+      "slug": "implement-stack-using-array",
+      "difficulty": "Medium",
+      "accuracy": "54.76%",
+      "marks": 4,
+      "all_submissions": 315893,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&q =&!//!&queries[][] =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "FactSet",
+          "Visa",
+          "Goldman Sachs",
+          "Qualcomm",
+          "Kritikal Solutions"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Stack",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Stack",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "FactSet",
+        "Visa",
+        "Goldman Sachs",
+        "Qualcomm",
+        "Kritikal Solutions"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/implement-stack-using-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Implement a\nStack using an Array\n, where the size of the array,\nn\nis given.\nThe Stack must support the following operations:\n(i) push(x):\nInsert an element x\nat the top of the stack.\n(ii) pop():\nRemove the element from the top of the stack.\n(iii) peek():\nReturn the top element if not empty, else -1\n.\n(iv) isEmpty():\nReturn true\nif the stack is empty else return false.\n(v) isFull():\nReturn true\nif the stack is full else return false\n.\nThere will be a sequence of queries\nqueries[][]\n. The queries are represented in numeric form:\n1 x : Call push(x)\n2 : Call pop()\n3 : Call peek()\n4  : Call isEmpty()\n5 : Call isFull()\nYou just have to implement the functions\npush, pop, peek, isEmpty,\nand\nisFull.\nThe driver code will handle the output.\nNote:\nAll the queries are valid.",
+      "full_text": "Implement a\nStack using an Array\n, where the size of the array,\nn\nis given.\nThe Stack must support the following operations:\n(i) push(x):\nInsert an element x\nat the top of the stack.\n(ii) pop():\nRemove the element from the top of the stack.\n(iii) peek():\nReturn the top element if not empty, else -1\n.\n(iv) isEmpty():\nReturn true\nif the stack is empty else return false.\n(v) isFull():\nReturn true\nif the stack is full else return false\n.\nThere will be a sequence of queries\nqueries[][]\n. The queries are represented in numeric form:\n1 x : Call push(x)\n2 : Call pop()\n3 : Call peek()\n4  : Call isEmpty()\n5 : Call isFull()\nYou just have to implement the functions\npush, pop, peek, isEmpty,\nand\nisFull.\nThe driver code will handle the output.\nNote:\nAll the queries are valid.\nExamples:\nInput:\nn = 3, q = 6,\nqueries\n[][] = [[1, 5], [1, 3], [3], [2], [4], [5]]\nOutput:\n[3, false, false]\nExplanation:\nQueries on stack are as follows:\npush(5) : Insert 5 at the top of the stack.\npush(3) : Insert 3 at the top of the stack.\npeek() : Return the top element i.e. 3.\npop() : Remove the top element i.e. 3.\nisEmpty() : return false as the stack is not empty.\nisFull() : return false as the stack is not full. Capacity = 3.\nInput:\nn = 1, q = 5,\nqueries[]\n[] =  [[2], [3], [4], [1, 9], [5]]\nOutput:\n[-1, -1, true, true]\nExplanation:\nQueries on stack are as follows:\npop(): Since stack is empty, nothing is popped.\npeek(): Return the top element. Since the stack is empty, return -1.\nisEmpty(): Return true as the stack is empty.\npush(9): Insert 9 at the top of the stack. The stack will be [9].\nisFull(): Return true as the stack is full. Capacity = 1.\nConstraints:\n1\n≤ n ≤ 10\n3\n1 ≤ q ≤ 10\n3\n0 ≤ x\n≤ 10\n5",
+      "examples": [
+        "Input:\nn = 3, q = 6,\nqueries\n[][] = [[1, 5], [1, 3], [3], [2], [4], [5]]\nOutput:\n[3, false, false]\nExplanation:\nQueries on stack are as follows:\npush(5) : Insert 5 at the top of the stack.\npush(3) : Insert 3 at the top of the stack.\npeek() : Return the top element i.e. 3.\npop() : Remove the top element i.e. 3.\nisEmpty() : return false as the stack is not empty.\nisFull() : return false as the stack is not full. Capacity = 3.",
+        "Input:\nn = 1, q = 5,\nqueries[]\n[] =  [[2], [3], [4], [1, 9], [5]]\nOutput:\n[-1, -1, true, true]\nExplanation:\nQueries on stack are as follows:\npop(): Since stack is empty, nothing is popped.\npeek(): Return the top element. Since the stack is empty, return -1.\nisEmpty(): Return true as the stack is empty.\npush(9): Insert 9 at the top of the stack. The stack will be [9].\nisFull(): Return true as the stack is full. Capacity = 1."
+      ],
+      "constraints_text": "Constraints:\n1\n≤ n ≤ 10\n3\n1 ≤ q ≤ 10\n3\n0 ≤ x\n≤ 10\n5",
+      "question_html": "<p data-start=\"319\" data-end=\"453\"><span style=\"font-size: 14pt;\">Implement a <strong data-start=\"331\" data-end=\"355\">Stack using an Array</strong>, where the size of the array, <strong>n</strong>&nbsp;is given.</span><br data-start=\"400\" data-end=\"403\" /><span style=\"font-size: 14pt;\"> The Stack must support the following operations:</span></p>\n<p data-start=\"319\" data-end=\"453\"><strong style=\"font-size: 14pt;\" data-start=\"458\" data-end=\"470\">(i) push(x):</strong><span style=\"font-size: 14pt;\"> Insert an element x </span><span style=\"font-size: 14pt;\">at the top of the stack.<br /></span><strong style=\"font-size: 14pt;\" data-start=\"523\" data-end=\"533\">(ii) pop():</strong><span style=\"font-size: 14pt;\"> Remove the element from the top of the stack.<br /></span><strong style=\"font-size: 14pt;\" data-start=\"585\" data-end=\"596\">(iii) peek():</strong><span style=\"font-size: 14pt;\"> Return the top element if not empty, else -1</span><span style=\"font-size: 14pt;\">.<br /></span><strong style=\"font-size: 14pt;\" data-start=\"650\" data-end=\"664\">(iv) isEmpty():</strong><span style=\"font-size: 14pt;\"> Return true </span><span style=\"font-size: 14pt;\">if the stack is empty else return false.</span><span style=\"font-size: 14pt;\"><br /></span><strong style=\"font-size: 14pt;\" data-start=\"727\" data-end=\"740\">(v) isFull():</strong><span style=\"font-size: 14pt;\"> Return true </span><span style=\"font-size: 14pt;\">if the stack is full else return false</span><span style=\"font-size: 14pt;\">.</span></p>\n<p data-start=\"800\" data-end=\"897\"><span style=\"font-size: 14pt;\">There will be a sequence of queries <strong>queries[][]</strong>.&nbsp;The queries are represented in numeric form:</span></p>\n<ul data-start=\"899\" data-end=\"1025\">\n<li data-start=\"899\" data-end=\"925\"><span style=\"font-size: 14pt;\"> </span>\n<p data-start=\"901\" data-end=\"925\"><span style=\"font-size: 14pt;\">1 x : Call push(x)</span></p>\n</li>\n<li data-start=\"899\" data-end=\"925\">\n<p data-start=\"901\" data-end=\"925\"><span style=\"font-size: 14pt;\">2 : Call pop()</span></p>\n</li>\n<li data-start=\"949\" data-end=\"972\"><span style=\"font-size: 14pt;\"> </span>\n<p data-start=\"951\" data-end=\"972\"><span style=\"font-size: 14pt;\">3 : Call peek()</span></p>\n</li>\n<li data-start=\"949\" data-end=\"972\">\n<p data-start=\"951\" data-end=\"972\"><span style=\"font-size: 18.6667px;\">4&nbsp; : Call isEmpty()</span></p>\n</li>\n<li data-start=\"973\" data-end=\"999\">\n<p data-start=\"975\" data-end=\"999\"><span style=\"font-size: 14pt;\">5 : Call isFull()</span></p>\n</li>\n</ul>\n<p><span style=\"font-size: 14pt;\">You just have to implement the functions <strong>push, pop, peek, isEmpty, </strong>and <strong>isFull.</strong>&nbsp;The driver code will handle the output.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> All the queries are valid.</span></p>\n<p><strong style=\"font-size: 14pt;\">Examples:</strong></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">n = 3, q = 6,</span><strong style=\"font-size: 14pt;\"> </strong><span style=\"font-size: 14pt;\">queries</span><span style=\"font-size: 18.6667px;\">[][] = [[1, 5], [1, 3], [3], [2], [4], [5]]</span>\n<strong style=\"font-size: 14pt;\">Output: </strong><span style=\"font-size: 14pt;\">[3, false, false]</span><strong style=\"font-size: 14pt;\">\nExplanation: </strong><span style=\"font-size: 14pt;\">Queries on stack are as follows:<br />push(5) : Insert 5 at the top of the stack.<br />push(3) : Insert 3 at the top of the stack.<br />peek() : Return the top element i.e. 3.<br />pop() : Remove the top element i.e. 3.<br />isEmpty() : return false as the stack is not empty.<br />isFull() : return false as the stack is not full. Capacity = 3.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">n = 1, q = 5,</span><strong style=\"font-size: 14pt;\"> </strong><span style=\"font-size: 14pt;\">queries[]</span><span style=\"font-size: 18.6667px;\">[] =  [[2], [3], [4], [1, 9], [5]]\n</span><strong style=\"font-size: 14pt;\">Output: </strong><span style=\"font-size: 14pt;\">[-1, -1, true, true]</span><strong style=\"font-size: 14pt;\">\nExplanation: </strong><span style=\"font-size: 14pt;\">Queries on stack are as follows:<br />pop(): Since stack is empty, nothing is popped.<br />peek(): Return the top element. Since the stack is empty, return -1.<br /></span><span style=\"font-size: 14pt;\">isEmpty(): Return true as the stack is empty.<br /></span><span style=\"font-size: 14pt;\">push(9): Insert 9 at the top of the stack. The stack will be [9].<br />isFull(): Return true as the stack is full. Capacity = 1.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Constraints:</strong><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 14pt;\">1&nbsp;</span>&le; n &le; 10<sup>3</sup><br /></span><span style=\"font-size: 14pt;\">1 &le; q &le; 10<sup>3</sup><br />0 &le; x<strong>&nbsp;</strong>&le; 10<sup>5<br /><br /></sup></span></span></p>"
+    },
+    "qnum": 1155
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1",
+      "problem_name": "Intersection in Y Shaped Lists",
+      "slug": "intersection-point-in-y-shapped-linked-lists",
+      "difficulty": "Medium",
+      "accuracy": "44.67%",
+      "marks": 4,
+      "all_submissions": 324992,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head1= &!//!&head2 =&!//!&CommonList = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "D-E-Shaw",
+          "FactSet",
+          "MakeMyTrip",
+          "Visa",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "D-E-Shaw",
+        "FactSet",
+        "MakeMyTrip",
+        "Visa",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-a-function-to-get-the-intersection-point-of-two-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-5-rounds/"
+      ],
+      "statement_text": "You are given the heads of two non-empty singly linked lists,\nhead1\nand\nhead2\n, that intersect at a certain point. Return that\nNode\nwhere these two linked lists\nintersect\n.\nNote:\nIt is guaranteed that the intersected node always exists.\nIn the custom input you have to give input for CommonList which pointed at the end of both head1 and head2 to form a Y-shaped linked list.",
+      "full_text": "You are given the heads of two non-empty singly linked lists,\nhead1\nand\nhead2\n, that intersect at a certain point. Return that\nNode\nwhere these two linked lists\nintersect\n.\nNote:\nIt is guaranteed that the intersected node always exists.\nIn the custom input you have to give input for CommonList which pointed at the end of both head1 and head2 to form a Y-shaped linked list.\nExamples:\nInput:\nhead1: 10 -> 15 -> 30, head2: 3 -> 6 -> 9 -> 15 -> 30\nOutput:\n15\nExplanation:\nFrom the above image, it is clearly seen that the common part is 15 -> 30, whose starting point is 15.\nInput:\nhead1: 4 -> 1 -> 8 -> 5, head2: 5 -> 6 -> 1 -> 8 -> 5\nOutput:\n1\nExplanation:\nFrom the above image, it is clearly seen that the common part is 1 -> 8 -> 5, whose starting point is 1.\nConstraints:\n2 ≤ total number of nodes ≤ 2*10\n5\n-10\n4\n≤ node->data ≤ 10\n4",
+      "examples": [
+        "Input:\nhead1: 10 -> 15 -> 30, head2: 3 -> 6 -> 9 -> 15 -> 30\nOutput:\n15\nExplanation:\nFrom the above image, it is clearly seen that the common part is 15 -> 30, whose starting point is 15.",
+        "Input:\nhead1: 4 -> 1 -> 8 -> 5, head2: 5 -> 6 -> 1 -> 8 -> 5\nOutput:\n1\nExplanation:\nFrom the above image, it is clearly seen that the common part is 1 -> 8 -> 5, whose starting point is 1."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ total number of nodes ≤ 2*10\n5\n-10\n4\n≤ node->data ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given the heads of two non-empty singly linked lists, <strong>head1</strong> and <strong>head2</strong>, that intersect at a certain point. Return that <strong>Node </strong>where these two linked lists <strong>intersect</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong>&nbsp;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18px;\">It is guaranteed that the intersected node always exists.</span></p>\n<h3><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18px;\">In the custom input you have to give input for CommonList which pointed at the end of both head1 and head2 to form a Y-shaped linked list.</span></h3>\n<p><strong style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Examples:</strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>head1: 10 -&gt; 15 -&gt; 30, head2: 3 -&gt; 6 -&gt; 9 -&gt; 15 -&gt; 30\n<strong>Output:</strong> 15\n<strong>Explanation: </strong>From the above image, it is clearly seen that the common part is 15 -&gt; 30, whose starting point is 15.<br />    <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/906399/Web/Other/blobid2_1756127894.webp\" width=\"473\" height=\"137\" /><br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>head1: 4 -&gt; 1 -&gt; 8 -&gt; 5, head2: 5 -&gt; 6 -&gt; 1 -&gt; 8 -&gt; 5<br /><strong>Output: </strong>1\n<strong>Explanation: </strong>From the above image, it is clearly seen that the common part is 1 -&gt; 8 -&gt; 5, whose starting point is 1.<br />    <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/906399/Web/Other/blobid0_1756127732.webp\" width=\"514\" height=\"149\" /></span></pre>\n<p><strong style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Constraints:<br /></strong><span style=\"font-size: 18px;\">2 &le; total number of nodes &le; 2*10<sup>5</sup><br />-10<sup>4</sup> &le; node-&gt;data &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1156
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shaped-linked-lists--170645/1",
+      "problem_name": "Intersection Point in Y Shaped Linked Lists",
+      "slug": "intersection-point-in-y-shaped-linked-lists--170645",
+      "difficulty": "Medium",
+      "accuracy": "55.77%",
+      "marks": 4,
+      "all_submissions": 30519,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "D-E-Shaw",
+          "FactSet",
+          "MakeMyTrip",
+          "Visa",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "D-E-Shaw",
+        "FactSet",
+        "MakeMyTrip",
+        "Visa",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-a-function-to-get-the-intersection-point-of-two-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-5-rounds/"
+      ],
+      "statement_text": "Given two singly linked lists\n,\nwrite a program to get the point where two linked lists intersect each other. If the linked list does not merge at any point, it should return NULL.",
+      "full_text": "Given two singly linked lists\n,\nwrite a program to get the point where two linked lists intersect each other. If the linked list does not merge at any point, it should return NULL.\nExamples:\nInput:\nLinkedList1: 3->6->9->common, LinkedList2: 10->common, common: 15->30->NULL\nOutput:\n15\nExplanation:\nInput:\nLinkedList1: 4->1->common, LinkedList2: 5->6->1->common, common: 8->4->5->NULL\nOutput:\n8\nExplanation:\nExpected Time Complexity:\nO(n+m)\nExpected Space\nComplexity\n:\nO(n)\nConstraints:\nLength of Both LinkedList before the intersection(if any) is greater than 0.\n1 ≤ no. of nodes in LinkedList1, LinkedList2 ≤ 10\n5\n-1000 ≤ node->data ≤ 1000\nChallenge\n: Try to solve the problem without using any extra space.",
+      "examples": [
+        "Input:\nLinkedList1: 3->6->9->common, LinkedList2: 10->common, common: 15->30->NULL\nOutput:\n15\nExplanation:",
+        "Input:\nLinkedList1: 4->1->common, LinkedList2: 5->6->1->common, common: 8->4->5->NULL\nOutput:\n8\nExplanation:"
+      ],
+      "constraints_text": "Constraints:\nLength of Both LinkedList before the intersection(if any) is greater than 0.\n1 ≤ no. of nodes in LinkedList1, LinkedList2 ≤ 10\n5\n-1000 ≤ node->data ≤ 1000\nChallenge\n: Try to solve the problem without using any extra space.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two singly linked lists<strong>, </strong>write a program to get the point where two linked lists intersect each other. If the linked list does not merge at any point, it should return NULL.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>LinkedList1: 3-&gt;6-&gt;9-&gt;common, LinkedList2: 10-&gt;common, common: 15-&gt;30-&gt;NULL\n<strong>Output: </strong>15\n<strong>Explanation:\n</strong></span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/713544/Web/Other/blobid1_1723204650.png\" width=\"443\" height=\"265\" /> </pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>LinkedList1: 4-&gt;1-&gt;common, LinkedList2: 5-&gt;6-&gt;1-&gt;common, common: 8-&gt;4-&gt;5-&gt;NULL\n<strong>Output: </strong>8\n<strong>Explanation: </strong></span>\n<span style=\"font-size: 18px;\"><strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/713544/Web/Other/blobid2_1723204735.png\" width=\"428\" height=\"322\" /> &nbsp;</strong></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n+m)<br /><strong>Expected Space&nbsp;</strong></span><strong style=\"font-size: 18px;\">Complexity</strong><strong style=\"font-size: 18px;\">:</strong><span style=\"font-size: 18px;\"> O(n)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 18px;\">Length of Both LinkedList before the intersection(if any) is greater than 0.<br />1 &le; no. of nodes in LinkedList1, LinkedList2 &le; 10<sup>5</sup><br />-1000 &le; node-&gt;data &le; 1000</span></p>\n<p><strong style=\"font-size: 18px;\">Challenge</strong><span style=\"font-size: 18px;\">: Try to solve the problem without using any extra space.</span></p>"
+    },
+    "qnum": 1157
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/knight-walk4521/1",
+      "problem_name": "Knight Walk",
+      "slug": "knight-walk4521",
+      "difficulty": "Medium",
+      "accuracy": "37.61%",
+      "marks": 4,
+      "all_submissions": 53279,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Goldman Sachs",
+          "Google"
+        ],
+        "topic_tags": [
+          "DFS",
+          "Graph",
+          "BFS",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "DFS",
+        "Graph",
+        "BFS",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Goldman Sachs",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-steps-to-reach-a-destination/",
+        "https://www.geeksforgeeks.org/the-knights-tour-problem/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a square chessboard, the initial position of Knight and position of a target. Find out the minimum steps a Knight will take to reach the target position.If it cannot reach the target position return -1.\n\nNote:\nThe initial and the target position co-ordinates of Knight have been given according to 1-base indexing.\n\nExample 1:\n\nInput:\nN=6\nknightPos[ ] = {4, 5}\ntargetPos[ ] = {1, 1}\nOutput:\n3\nExplanation:\n\nKnight takes 3 step to reach from\n(4, 5) to (1, 1):\n(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).\n\nExample 2:\n\nInput:\nN=8\nknightPos[ ] = {7, 7}\ntargetPos[ ] = {1, 5}\nOutput:\n4\nExplanation:\nKnight takes 4 steps to reach from\n(7, 7) to (1, 5):\n(4, 5) -> (6, 5) -> (5, 3) -> (7, 2) -> (1, 5).\n\n\n\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function minStepToReachTarget() which takes the inital position of Knight (KnightPos), the target position of Knight (TargetPos) and the size of the chess board (N) as an input parameters and returns the minimum number of steps required by the knight to reach from its current position to the given target position.If it cannot reach the target position return -1.\n\nExpected Time Complexity: O(N2).\nExpected Auxiliary Space: O(N2).\n\nConstraints:\n1 <= N <= 1000\n1 <= Knight_pos(X, Y), Targer_pos(X, Y) <= N",
+      "full_text": "Given a square chessboard, the initial position of Knight and position of a target. Find out the minimum steps a Knight will take to reach the target position.If it cannot reach the target position return -1.\n\nNote:\nThe initial and the target position co-ordinates of Knight have been given according to 1-base indexing.\n\nExample 1:\n\nInput:\nN=6\nknightPos[ ] = {4, 5}\ntargetPos[ ] = {1, 1}\nOutput:\n3\nExplanation:\n\nKnight takes 3 step to reach from\n(4, 5) to (1, 1):\n(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).\n\nExample 2:\n\nInput:\nN=8\nknightPos[ ] = {7, 7}\ntargetPos[ ] = {1, 5}\nOutput:\n4\nExplanation:\nKnight takes 4 steps to reach from\n(7, 7) to (1, 5):\n(4, 5) -> (6, 5) -> (5, 3) -> (7, 2) -> (1, 5).\n\n\n\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function minStepToReachTarget() which takes the inital position of Knight (KnightPos), the target position of Knight (TargetPos) and the size of the chess board (N) as an input parameters and returns the minimum number of steps required by the knight to reach from its current position to the given target position.If it cannot reach the target position return -1.\n\nExpected Time Complexity: O(N2).\nExpected Auxiliary Space: O(N2).\n\nConstraints:\n1 <= N <= 1000\n1 <= Knight_pos(X, Y), Targer_pos(X, Y) <= N",
+      "examples": [
+        "Input:\nN=6\nknightPos[ ] = {4, 5}\ntargetPos[ ] = {1, 1}\nOutput:\n3\nExplanation:\nKnight takes 3 step to reach from\n(4, 5) to (1, 1):\n(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).",
+        "Input:\nN=8\nknightPos[ ] = {7, 7}\ntargetPos[ ] = {1, 5}\nOutput:\n4\nExplanation:\nKnight takes 4 steps to reach from\n(7, 7) to (1, 5):\n(4, 5) -> (6, 5) -> (5, 3) -> (7, 2) -> (1, 5)."
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 1000\n1 <= Knight_pos(X, Y), Targer_pos(X, Y) <= N",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a square chessboard, the initial position of Knight and position of a target. Find out the minimum steps a Knight will take to reach the target position.If it cannot reach the target position return -1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong><br />The initial and the target position co-ordinates of Knight have been given according to 1-base indexing.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nN=6\nknightPos[ ] = {4, 5}\ntargetPos[ ] = {1, 1}\n<strong>Output:</strong>\n3\n<strong>Explanation:</strong>\n<img src=\"https://media.geeksforgeeks.org/wp-content/uploads/KnightChess.jpg\" />\nKnight takes 3 step to reach from\n(4, 5) to (1, 1):\n(4, 5) -&gt; (5, 3) -&gt; (3, 2) -&gt; (1, 1). </span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nN=8\nknightPos[ ] = {7, 7}\ntargetPos[ ] = {1, 5}\n<strong>Output:</strong>\n4\n<strong>Explanation:</strong></span>\n<span style=\"font-size: 18px;\">Knight takes 4 steps to reach from\n(7, 7) to (1, 5):\n(4, 5) -&gt; (6, 5) -&gt; (5, 3) -&gt; (7, 2) -&gt; (1, 5).</span></pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>minStepToReachTarget()</strong>&nbsp;which takes the inital position of Knight (KnightPos), the target position of Knight (TargetPos) and the size of the chess board (N) as an input parameters&nbsp;and returns the minimum number of steps required by the knight to reach from its current position to the given target position.If it cannot reach the target position return -1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong>&nbsp;O(N<sup>2</sup>).<br /><strong>Expected Auxiliary Space:</strong>&nbsp;O(N<sup>2</sup>).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;= 1000<br />1 &lt;= Knight_pos(X, Y), Targer_pos(X, Y)&nbsp;&lt;= N</span></p>"
+    },
+    "qnum": 1158
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-sort/1",
+      "problem_name": "Merge Sort",
+      "slug": "merge-sort",
+      "difficulty": "Medium",
+      "accuracy": "54.1%",
+      "marks": 4,
+      "all_submissions": 279097,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Oracle",
+          "Goldman Sachs",
+          "Wipro",
+          "Qualcomm",
+          "Boomerang Commerce",
+          "Grofers",
+          "Target Corporation",
+          "Medlife"
+        ],
+        "topic_tags": [
+          "Divide and Conquer",
+          "Sorting",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Divide and Conquer",
+        "Sorting",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Oracle",
+        "Goldman Sachs",
+        "Wipro",
+        "Qualcomm",
+        "Boomerang Commerce",
+        "Grofers",
+        "Target Corporation",
+        "Medlife"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/cpp-program-for-merge-sort/",
+        "https://www.geeksforgeeks.org/merge-sort-with-o1-extra-space-merge-and-on-lg-n-time/",
+        "https://www.geeksforgeeks.org/merge-sort/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-16/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-set-1/"
+      ],
+      "statement_text": "Given an array\narr[]\n, its starting position\nl\nand its ending position\nr\n.\nSort\nthe array using the\nmerge sort\nalgorithm.",
+      "full_text": "Given an array\narr[]\n, its starting position\nl\nand its ending position\nr\n.\nSort\nthe array using the\nmerge sort\nalgorithm.\nExamples:\nInput:\narr[] = [4, 1, 3, 9, 7]\nOutput:\n[1, 3, 4, 7, 9]\nExplanation:\nWe get the sorted array after using merge sort\nInput:\narr[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]\nOutput:\n[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\nExplanation:\nWe get the sorted array after using merge sort\nConstraints:\n1\n≤\narr.size()\n≤\n10\n5\n1\n≤\narr[i]\n≤\n10\n5",
+      "examples": [
+        "Input:\narr[] = [4, 1, 3, 9, 7]\nOutput:\n[1, 3, 4, 7, 9]\nExplanation:\nWe get the sorted array after using merge sort",
+        "Input:\narr[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]\nOutput:\n[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]\nExplanation:\nWe get the sorted array after using merge sort"
+      ],
+      "constraints_text": "Constraints:\n1\n≤\narr.size()\n≤\n10\n5\n1\n≤\narr[i]\n≤\n10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr[]</strong>, its starting position <strong>l</strong> and its ending position <strong>r</strong>. <strong>Sort</strong> the array using the <strong>merge sort</strong> algorithm.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [4, 1, 3, 9, 7]</span>\n<span style=\"font-size: 18px;\"><strong>Output: </strong>[1, 3, 4, 7, 9]<br /><strong>Explanation: </strong>We get the sorted array after using merge sort</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [10, 9, 8, 7, 6, 5, 4, 3, 2, 1]\n<strong>Output: </strong>[1, 2, 3, 4, 5, 6, 7, 8, 9, 10]<br /><strong>Explanation:</strong> We get the sorted array after using merge sort </span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&nbsp;<span style=\"color: #001d35; font-family: 'Google Sans', Arial, sans-serif; background-color: #ffffff;\">&le;</span>&nbsp;arr.size()&nbsp;<span style=\"color: #001d35; font-family: 'Google Sans', Arial, sans-serif; background-color: #ffffff;\">&le;</span>&nbsp;10<sup>5</sup><br />1&nbsp;<span style=\"color: #001d35; font-family: 'Google Sans', Arial, sans-serif; background-color: #ffffff;\">&le;</span>&nbsp;arr[i]&nbsp;<span style=\"color: #001d35; font-family: 'Google Sans', Arial, sans-serif; background-color: #ffffff;\">&le;</span>&nbsp;10</span><sup><span style=\"font-size: 15px;\">5</span></sup></p>"
+    },
+    "qnum": 1159
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1",
+      "problem_name": "Merge Without Extra Space",
+      "slug": "merge-two-sorted-arrays-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "32.01%",
+      "marks": 4,
+      "all_submissions": 330349,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "a[] =&!//!&b[] =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Microsoft",
+          "Snapdeal",
+          "Goldman Sachs",
+          "Adobe",
+          "Linkedin",
+          "Amdocs",
+          "Brocade",
+          "Juniper Networks",
+          "Quikr",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "Sorting",
+          "Algorithms",
+          "Arrays",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Sorting",
+        "Algorithms",
+        "Arrays",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Microsoft",
+        "Snapdeal",
+        "Goldman Sachs",
+        "Adobe",
+        "Linkedin",
+        "Amdocs",
+        "Brocade",
+        "Juniper Networks",
+        "Quikr",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays-o1-extra-space/",
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-2020-product-intern/"
+      ],
+      "statement_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.",
+      "full_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.\nExamples:\nInput\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]\nInput\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].\nInput\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3].\nConstraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "examples": [
+        "Input\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]",
+        "Input\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].",
+        "Input\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two sorted arrays <strong>a[]</strong> and <strong>b[] </strong>of size <strong>n </strong>and <strong>m </strong>respectively, the task is to merge them in sorted order without using any <strong>extra space</strong>. Modify <strong>a[]</strong> so that it contains the first <strong>n</strong> elements and modify <strong>b[]</strong> so that it contains the last <strong>m</strong> elements.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [2, 4, 7, 10], b[] = [2, 3]\n<strong>Output</strong>: a[] = [2, 2, 3, 4], b[] = [7, 10]\n<strong>Explanation</strong>: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\n<strong>Output</strong>: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\n<strong>Explanation</strong>: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Output</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Explanation</strong>: After merging two sorted arrays we get [0, 1, 2, 3].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; n, m &le; 10<sup>5</sup><br />0 &le; a[i], b[i] &le; 10<sup>7</sup></span></p>"
+    },
+    "qnum": 1160
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-cost-of-ropes-1587115620/1",
+      "problem_name": "Minimum Cost of ropes",
+      "slug": "minimum-cost-of-ropes-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "42.73%",
+      "marks": 4,
+      "all_submissions": 274724,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Heap",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Heap",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-sde-1-internship-2/",
+        "https://www.geeksforgeeks.org/oyo-interview-experience-for-sde-1-on-campus-2/"
+      ],
+      "statement_text": "Given an array,\narr[]\nof rope lengths, connect all ropes into a single rope with the\nminimum total cost\n. The\ncost\nto connect two ropes is the\nsum of their lengths\n.",
+      "full_text": "Given an array,\narr[]\nof rope lengths, connect all ropes into a single rope with the\nminimum total cost\n. The\ncost\nto connect two ropes is the\nsum of their lengths\n.\nExamples:\nInput:\narr[] = [4, 3, 2, 6]\nOutput:\n29\nExplanation:\nFirst connect 2 and 3 to get [4, 5, 6] with a cost of 5, then connect 4 and 5 to get [9, 6] with a cost of 9, and finally connect 9 and 6 to get one rope with a cost of 15, giving a total minimum cost of 29. Any other order, such as connecting 4 and 6 first, results in a higher total cost of 38.\nInput:\narr[] = [4, 2, 7, 6, 9]\nOutput:\n62\nExplanation:\nFirst, connect ropes 4 and 2, which makes the array [6, 7, 6, 9]. Cost of this operation 4 + 2 = 6. Next, add ropes 6 and 6, which results in [12, 7, 9]. Cost of this operation 6 + 6 = 12. Then, add 7 and 9, which makes the array [12,16]. Cost of this operation 7 + 9 = 16. And finally, add these two which gives [28]. Hence, the total cost is 6 + 12 + 16 + 28 = 62.\nInput:\narr[] = [10]\nOutput:\n0\nExplanation\n: Since there is only one rope, no connections are needed, so the cost is 0.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n4",
+      "examples": [
+        "Input:\narr[] = [4, 3, 2, 6]\nOutput:\n29\nExplanation:\nFirst connect 2 and 3 to get [4, 5, 6] with a cost of 5, then connect 4 and 5 to get [9, 6] with a cost of 9, and finally connect 9 and 6 to get one rope with a cost of 15, giving a total minimum cost of 29. Any other order, such as connecting 4 and 6 first, results in a higher total cost of 38.",
+        "Input:\narr[] = [4, 2, 7, 6, 9]\nOutput:\n62\nExplanation:\nFirst, connect ropes 4 and 2, which makes the array [6, 7, 6, 9]. Cost of this operation 4 + 2 = 6. Next, add ropes 6 and 6, which results in [12, 7, 9]. Cost of this operation 6 + 6 = 12. Then, add 7 and 9, which makes the array [12,16]. Cost of this operation 7 + 9 = 16. And finally, add these two which gives [28]. Hence, the total cost is 6 + 12 + 16 + 28 = 62.",
+        "Input:\narr[] = [10]\nOutput:\n0\nExplanation\n: Since there is only one rope, no connections are needed, so the cost is 0."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array, <strong>arr[]</strong> of rope lengths, connect all ropes into a single rope with the <strong>minimum total cost</strong>. The <strong>cost</strong> to connect two ropes is the <strong>sum of their lengths</strong>.&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [4, 3, 2, 6]\n<strong>Output: </strong>29<strong>\nExplanation:</strong></span> First connect 2 and 3 to get [4, 5, 6] with a cost of 5, then connect 4 and 5 to get [9, 6] with a cost of 9, and finally connect 9 and 6 to get one rope with a cost of 15, giving a total minimum cost of 29. Any other order, such as connecting 4 and 6 first, results in a higher total cost of 38.</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [4, 2, 7, 6, 9]\n<strong>Output: </strong>62 \n<strong>Explanation: </strong>First, connect ropes 4 and 2, which makes the array [6, 7, 6, 9]. Cost of this operation 4 + 2 = 6. Next, add ropes 6 and 6, which results in [12, 7, 9]. Cost of this operation 6 + 6 = 12. Then, add 7 and 9, which makes the array [12,16]. Cost of this operation 7 + 9 = 16. And finally, add these two which gives [28]. Hence, the total cost is 6 + 12 + 16 + 28 = 62.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [10]\n<strong>Output: </strong>0<br /><strong>Explanation</strong>: Since there is only one rope, no connections are needed, so the cost is 0.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>4</sup></span></p>\n<div id=\"professor_prebid-root\"></div>"
+    },
+    "qnum": 1161
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/number-following-a-pattern3126/1",
+      "problem_name": "Number following a pattern",
+      "slug": "number-following-a-pattern3126",
+      "difficulty": "Medium",
+      "accuracy": "55.44%",
+      "marks": 4,
+      "all_submissions": 56383,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Goldman Sachs",
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Goldman Sachs",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/form-minimum-number-from-given-sequence/"
+      ],
+      "interview_links": [
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-241-1-5-years-experience/"
+      ],
+      "statement_text": "Given a pattern containing only\nI\n's and\nD\n's. I for\nincreasing\nand D for\ndecreasing\n. Devise an algorithm to print the\nminimum number\nfollowing that pattern. Digits from\n1-9\nand digits\ncan't repeat\n.\nExample 1:\nInput:\nD\nOutput:\n21\nExplanation:\nD is meant for decreasing,\nso we choose the minimum number\namong all possible numbers like 21,31,54,87,etc.\nExample 2:\nInput:\nIIDDD\nOutput:\n126543\nExplanation:\nAbove example is self- explanatory,\n1 < 2 < 6 > 5 > 4 > 3\nI - I - D - D - D\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nprintMinNumberForPattern()\nwhich takes the string\nS\nand returns a string containing the minimum number following the valid number.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)",
+      "full_text": "Given a pattern containing only\nI\n's and\nD\n's. I for\nincreasing\nand D for\ndecreasing\n. Devise an algorithm to print the\nminimum number\nfollowing that pattern. Digits from\n1-9\nand digits\ncan't repeat\n.\nExample 1:\nInput:\nD\nOutput:\n21\nExplanation:\nD is meant for decreasing,\nso we choose the minimum number\namong all possible numbers like 21,31,54,87,etc.\nExample 2:\nInput:\nIIDDD\nOutput:\n126543\nExplanation:\nAbove example is self- explanatory,\n1 < 2 < 6 > 5 > 4 > 3\nI - I - D - D - D\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nprintMinNumberForPattern()\nwhich takes the string\nS\nand returns a string containing the minimum number following the valid number.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)\nConstraints:\n1 ≤ Length of String ≤ 8",
+      "examples": [
+        "Input:\nD\nOutput:\n21\nExplanation:\nD is meant for decreasing,\nso we choose the minimum number\namong all possible numbers like 21,31,54,87,etc.",
+        "Input:\nIIDDD\nOutput:\n126543\nExplanation:\nAbove example is self- explanatory,\n1 < 2 < 6 > 5 > 4 > 3\nI - I - D - D - D"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ Length of String ≤ 8",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a pattern containing only <strong>I</strong>'s and <strong>D</strong>'s. I for <strong>increasing</strong> and D for <strong>decreasing</strong>. Devise an algorithm to print the <strong>minimum number</strong> following that pattern. Digits from <strong>1-9</strong> and digits <strong>can't repeat</strong>.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Example 1:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input:</span></strong>\n<span style=\"font-size: 18px;\">D</span>\n<strong><span style=\"font-size: 18px;\">Output:</span></strong>\n<span style=\"font-size: 18px;\">21</span>\n<strong><span style=\"font-size: 18px;\">Explanation:</span></strong>\n<span style=\"font-size: 18px;\">D is meant for decreasing,</span> <span style=\"font-size: 18px;\">so we choose the minimum number</span> <span style=\"font-size: 18px;\">among all possible numbers like 21,31,54,87,etc.</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Example 2:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input:</span></strong>\n<span style=\"font-size: 18px;\">IIDDD</span>\n<strong><span style=\"font-size: 18px;\">Output:</span></strong>\n<span style=\"font-size: 18px;\">126543</span>\n<strong><span style=\"font-size: 18px;\">Explanation:</span></strong>\n<span style=\"font-size: 18px;\">Above example is self- explanatory,</span>\n<span style=\"font-size: 18px;\">1 &lt; 2 &lt; 6 &gt; 5 &gt; 4 &gt; 3</span>\n<span style=\"font-size: 18px;\">  I - I - D - D - D</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Your Task:</span></strong></p>\n<p><span style=\"font-size: 18px;\">You don't need to read input or print anything. Your task is to complete the function <strong>printMinNumberForPattern()</strong> which takes the string <strong>S</strong> and returns a string containing the minimum number following the valid number.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(N)<br /><strong>Expected Auxiliary Space:</strong> O(N)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; Length of String &le; 8</span></p>"
+    },
+    "qnum": 1162
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/print-anagrams-together/1",
+      "problem_name": "Print Anagrams Together",
+      "slug": "print-anagrams-together",
+      "difficulty": "Medium",
+      "accuracy": "65.78%",
+      "marks": 4,
+      "all_submissions": 107380,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "D-E-Shaw",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "D-E-Shaw",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-set-2/",
+        "https://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together-using-stl/",
+        "https://www.geeksforgeeks.org/given-a-sequence-of-words-print-all-anagrams-together/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-144-campus-sde-1/",
+        "https://www.geeksforgeeks.org/snapdeal-interview-experience-set-8-on-campus/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-188-for-sde1/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-sde-1-2/"
+      ],
+      "statement_text": "Given an array of strings, return all groups of strings that are anagrams. The strings in each group must be arranged in the order of their appearance in the original array. Refer to the sample case for clarification.",
+      "full_text": "Given an array of strings, return all groups of strings that are anagrams. The strings in each group must be arranged in the order of their appearance in the original array. Refer to the sample case for clarification.\nExamples:\nInput:\narr[] = [\"act\", \"god\", \"cat\", \"dog\", \"tac\"]\nOutput:\n[[\"act\", \"cat\", \"tac\"], [\"god\", \"dog\"]]\nExplanation:\nThere are 2 groups of anagrams \"god\", \"dog\" make group 1. \"act\", \"cat\", \"tac\" make group 2.\nInput:\narr[] = [\"no\", \"on\", \"is\"]\nOutput:\n[[\"is\"], [\"no\", \"on\"]]\nExplanation:\nThere are 2 groups of anagrams \"is\" makes group 1. \"no\", \"on\" make group 2.\nInput\n: arr[] = [\"listen\", \"silent\", \"enlist\", \"abc\", \"cab\", \"bac\", \"rat\", \"tar\", \"art\"]\nOutput\n: [[\"abc\", \"cab\", \"bac\"], [\"listen\", \"silent\", \"enlist\"], [\"rat\", \"tar\", \"art\"]]\nExplanation\n:\nGroup 1: \"abc\", \"bac\", and \"cab\" are anagrams.\nGroup 2: \"listen\", \"silent\", and \"enlist\" are anagrams.\nGroup 3: \"rat\", \"tar\", and \"art\" are anagrams.\nConstraints:\n1<= arr.size() <=100\n1<= arr[i].size() <=10",
+      "examples": [
+        "Input:\narr[] = [\"act\", \"god\", \"cat\", \"dog\", \"tac\"]\nOutput:\n[[\"act\", \"cat\", \"tac\"], [\"god\", \"dog\"]]\nExplanation:\nThere are 2 groups of anagrams \"god\", \"dog\" make group 1. \"act\", \"cat\", \"tac\" make group 2.",
+        "Input:\narr[] = [\"no\", \"on\", \"is\"]\nOutput:\n[[\"is\"], [\"no\", \"on\"]]\nExplanation:\nThere are 2 groups of anagrams \"is\" makes group 1. \"no\", \"on\" make group 2.",
+        "Input\n: arr[] = [\"listen\", \"silent\", \"enlist\", \"abc\", \"cab\", \"bac\", \"rat\", \"tar\", \"art\"]\nOutput\n: [[\"abc\", \"cab\", \"bac\"], [\"listen\", \"silent\", \"enlist\"], [\"rat\", \"tar\", \"art\"]]\nExplanation\n:\nGroup 1: \"abc\", \"bac\", and \"cab\" are anagrams.\nGroup 2: \"listen\", \"silent\", and \"enlist\" are anagrams.\nGroup 3: \"rat\", \"tar\", and \"art\" are anagrams."
+      ],
+      "constraints_text": "Constraints:\n1<= arr.size() <=100\n1<= arr[i].size() <=10",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of strings, return all groups of strings that are anagrams. The strings in each group must be arranged in the order of their appearance in the original array. Refer to the sample case for clarification.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [\"act\", \"god\", \"cat\", \"dog\", \"tac\"]\n<strong>Output: </strong>[[\"act\", \"cat\", \"tac\"], [\"god\", \"dog\"]]<strong>\nExplanation: </strong>There are 2 groups of anagrams \"god\", \"dog\" make group 1. \"act\", \"cat\", \"tac\" make group 2.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [\"no\", \"on\", \"is\"]\n<strong>Output: </strong>[[\"is\"], [\"no\", \"on\"]]<strong>\nExplanation: </strong>There are 2 groups of anagrams \"is\" makes group 1. \"no\", \"on\" make group 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: arr[] = [\"listen\", \"silent\", \"enlist\", \"abc\", \"cab\", \"bac\", \"rat\", \"tar\", \"art\"]<br /><strong>Output</strong>: [[\"abc\", \"cab\", \"bac\"], [\"listen\", \"silent\", \"enlist\"], [\"rat\", \"tar\", \"art\"]]<br /><strong>Explanation</strong>: <br />Group 1: \"abc\", \"bac\", and \"cab\" are anagrams.\nGroup 2: \"listen\", \"silent\", and \"enlist\" are anagrams.\nGroup 3: \"rat\", \"tar\", and \"art\" are anagrams.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&lt;= arr.size() &lt;=100<br /></span><span style=\"font-size: 18px;\">1&lt;= arr[i].size() &lt;=10</span></p>"
+    },
+    "qnum": 1163
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/quick-sort/1",
+      "problem_name": "Quick Sort",
+      "slug": "quick-sort",
+      "difficulty": "Medium",
+      "accuracy": "55.23%",
+      "marks": 4,
+      "all_submissions": 307604,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Hike",
+          "Ola Cabs",
+          "Goldman Sachs",
+          "Adobe",
+          "SAP Labs",
+          "Qualcomm",
+          "HSBC",
+          "Grofers",
+          "Target Corporation"
+        ],
+        "topic_tags": [
+          "Divide and Conquer",
+          "Sorting",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Divide and Conquer",
+        "Sorting",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Hike",
+        "Ola Cabs",
+        "Goldman Sachs",
+        "Adobe",
+        "SAP Labs",
+        "Qualcomm",
+        "HSBC",
+        "Grofers",
+        "Target Corporation"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/iterative-quick-sort/",
+        "https://www.geeksforgeeks.org/quick-sort-algorithm/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/"
+      ],
+      "statement_text": "Implement Quick Sort\n, a Divide and Conquer algorithm, to sort an array,\narr[]\nin ascending order.\nGiven an array\narr[]\n, with starting index\nlow\nand ending index\nhigh\n, complete the functions\npartition()\nand\nquickSort()\n.\nUse the\nlast element as the pivot\n, so that all elements\nless than or equal\nto the pivot come before it, and elements\ngreater than\nthe pivot follow it.\nNote:\nlow\nand\nhigh\nare inclusive.",
+      "full_text": "Implement Quick Sort\n, a Divide and Conquer algorithm, to sort an array,\narr[]\nin ascending order.\nGiven an array\narr[]\n, with starting index\nlow\nand ending index\nhigh\n, complete the functions\npartition()\nand\nquickSort()\n.\nUse the\nlast element as the pivot\n, so that all elements\nless than or equal\nto the pivot come before it, and elements\ngreater than\nthe pivot follow it.\nNote:\nlow\nand\nhigh\nare inclusive.\nExamples:\nInput:\narr[] = [4, 1, 3, 9, 7]\nOutput:\n[1, 3, 4, 7, 9]\nExplanation:\nAfter sorting, all elements are arranged in ascending order.\nInput:\narr[] = [2, 1, 6, 10, 4, 1, 3, 9, 7]\nOutput: [\n1, 1, 2, 3, 4, 6, 7, 9, 10]\nExplanation:\nDuplicate elements (1) are retained in sorted order.\nInput:\narr[] = [5, 5, 5, 5]\nOutput:\n[5, 5, 5, 5]\nExplanation:\nAll elements are identical, so the array remains unchanged.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [4, 1, 3, 9, 7]\nOutput:\n[1, 3, 4, 7, 9]\nExplanation:\nAfter sorting, all elements are arranged in ascending order.",
+        "Input:\narr[] = [2, 1, 6, 10, 4, 1, 3, 9, 7]\nOutput: [\n1, 1, 2, 3, 4, 6, 7, 9, 10]\nExplanation:\nDuplicate elements (1) are retained in sorted order.",
+        "Input:\narr[] = [5, 5, 5, 5]\nOutput:\n[5, 5, 5, 5]\nExplanation:\nAll elements are identical, so the array remains unchanged."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p data-start=\"166\" data-end=\"264\"><span style=\"font-size: 14pt;\"><strong>Implement Quick Sort</strong>, a Divide and Conquer algorithm, to sort an array, <strong><code data-start=\"237\" data-end=\"244\">arr[]</code></strong> in ascending order.<br /></span><span style=\"font-size: 14pt;\">Given an array <strong><code data-start=\"281\" data-end=\"288\">arr[]</code></strong>, with starting index <strong><code data-start=\"310\" data-end=\"315\">low</code> </strong>and ending index <strong><code data-start=\"333\" data-end=\"339\">high</code></strong>, complete the functions <strong><code data-start=\"364\" data-end=\"377\">partition()</code></strong> and <strong><code data-start=\"382\" data-end=\"395\">quickSort()</code></strong>.<br /></span><span style=\"font-size: 14pt;\">Use the <strong data-start=\"406\" data-end=\"435\">last element as the pivot</strong>, so that all elements <strong data-start=\"458\" data-end=\"493\">less than or equal </strong>to the pivot come before it, and elements <strong data-start=\"523\" data-end=\"549\">greater than </strong>the pivot follow it.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong data-start=\"564\" data-end=\"573\">Note: <code data-start=\"574\" data-end=\"579\">low</code></strong> and <strong><code data-start=\"584\" data-end=\"590\">high</code> </strong>are inclusive.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [4, 1, 3, 9, 7]\n<strong>Output: </strong>[1, 3, 4, 7, 9]<br /><strong>Explanation:</strong> After sorting, all elements are arranged in ascending order.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [2, 1, 6, 10, 4, 1, 3, 9, 7]\n<strong>Output: [</strong>1, 1, 2, 3, 4, 6, 7, 9, 10]<br /><strong>Explanation:</strong> Duplicate elements (1) are retained in sorted order.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 5, 5, 5]\n<strong>Output: </strong>[5, 5, 5, 5]<br /><strong>Explanation:</strong> All elements are identical, so the array remains unchanged.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1164
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/remove-loop-in-linked-list/1",
+      "problem_name": "Remove loop in Linked List",
+      "slug": "remove-loop-in-linked-list",
+      "difficulty": "Medium",
+      "accuracy": "27.66%",
+      "marks": 4,
+      "all_submissions": 552004,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head =&!//!&pos =",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Oracle",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Qualcomm",
+          "Kuliza",
+          "Netskope"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "two-pointer-algorithm",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "two-pointer-algorithm",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Oracle",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Qualcomm",
+        "Kuliza",
+        "Netskope"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/detect-and-remove-loop-in-a-linked-list/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-9-internship-rd/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/"
+      ],
+      "statement_text": "Given the\nhead\nof a singly linked list, the task is to\nremove a cycle\nif present. A cycle exists when a node's next pointer points back to a previous node, forming a loop. Internally, a variable\npos\ndenotes the index of the node where the cycle starts, but it is not passed as a parameter. The terminal will print\ntrue\nif a cycle is removed otherwise, it will print\nfalse.",
+      "full_text": "Given the\nhead\nof a singly linked list, the task is to\nremove a cycle\nif present. A cycle exists when a node's next pointer points back to a previous node, forming a loop. Internally, a variable\npos\ndenotes the index of the node where the cycle starts, but it is not passed as a parameter. The terminal will print\ntrue\nif a cycle is removed otherwise, it will print\nfalse.\nExamples:\nInput:\nhead =\n1 -> 3 -> 4, pos = 2\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed.\nInput:\nhead = 1 -> 8 -> 3 -> 4, pos = 0\nOutput:\ntrue\nExplanation:\nThe Linked list does not contains any loop.\nInput:\nhead =\n1 -> 2 -> 3 -> 4, pos = 1\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed.\nConstraints:\n1 ≤ size of linked list ≤ 10\n5",
+      "examples": [
+        "Input:\nhead =\n1 -> 3 -> 4, pos = 2\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed.",
+        "Input:\nhead = 1 -> 8 -> 3 -> 4, pos = 0\nOutput:\ntrue\nExplanation:\nThe Linked list does not contains any loop.",
+        "Input:\nhead =\n1 -> 2 -> 3 -> 4, pos = 1\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ size of linked list ≤ 10\n5",
+      "question_html": "<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\">Given the<strong> head </strong>of a singly linked list, the task is to <strong>remove a cycle</strong> if present. A cycle exists when a node's next pointer points back to a previous node, forming a loop. Internally, a variable <strong>pos</strong> denotes the index of the node where the cycle starts, but it is not passed as a parameter. The terminal will print <strong>true</strong> if a cycle is removed otherwise, it will print <strong>false.</strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head =<strong> </strong>1 -&gt; 3 -&gt; 4, pos = 2\n<strong>Output: </strong>true<strong>\nExplanation: </strong>The linked list looks like<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700332/Web/Other/blobid0_1718609709.png\" width=\"403\" height=\"161\" /><br />A loop is present in the list, and it is removed.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = 1 -&gt; 8 -&gt; 3 -&gt; 4, pos = 0\n<strong>Output: </strong>true<strong>\nExplanation: <br /></strong><strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700332/Web/Other/blobid0_1718609876.png\" height=\"100\" /><br /></strong>The Linked list does not contains any loop. </span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head =<strong> </strong>1 -&gt; 2 -&gt; 3 -&gt; 4, pos = 1\n<strong>Output: </strong>true<strong>\nExplanation: </strong>The linked list looks like <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700332/Web/Other/blobid2_1718609744.png\" width=\"400\" height=\"160\" /><br />A loop is present in the list, and it is removed.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; size of linked list &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1165
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/search-in-a-matrix-1587115621/1",
+      "problem_name": "Search in a sorted Matrix",
+      "slug": "search-in-a-matrix-1587115621",
+      "difficulty": "Medium",
+      "accuracy": "56.27%",
+      "marks": 4,
+      "all_submissions": 153649,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&m = &!//!&mat[][] = &!//!&x = ",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Accolite",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "Visa",
+          "Goldman Sachs",
+          "Directi",
+          "Groupon",
+          "InMobi",
+          "One97",
+          "Polycom",
+          "TinyOwl"
+        ],
+        "topic_tags": [
+          "Searching",
+          "Matrix",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Searching",
+        "Matrix",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Accolite",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "Visa",
+        "Goldman Sachs",
+        "Directi",
+        "Groupon",
+        "InMobi",
+        "One97",
+        "Polycom",
+        "TinyOwl"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/search-element-sorted-matrix/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-16-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/"
+      ],
+      "statement_text": "Given a strictly sorted 2D matrix\nmat\n[][] of size\nn x m\nand\na number\nx.\nFind whether the number\nx\nis present in the matrix or not.\nNote:\nIn a strictly sorted matrix, each row is sorted in strictly increasing order, and the first element of the\ni\nth\nrow (\ni\n!=0) is greater than the last element of the (\ni-1\n)\nth\nrow.",
+      "full_text": "Given a strictly sorted 2D matrix\nmat\n[][] of size\nn x m\nand\na number\nx.\nFind whether the number\nx\nis present in the matrix or not.\nNote:\nIn a strictly sorted matrix, each row is sorted in strictly increasing order, and the first element of the\ni\nth\nrow (\ni\n!=0) is greater than the last element of the (\ni-1\n)\nth\nrow.\nExamples:\nInput\n: mat[][] = [[1, 5, 9], [14, 20, 21], [30, 34, 43]], x = 14\nOutput\n: true\nExplanation\n: 14 is present in the matrix, so output is true.\nInput\n: mat[][] = [[1, 5, 9, 11], [14, 20, 21, 26], [30, 34, 43, 50]], x = 42\nOutput\n: false\nExplanation\n: 42 is not present in the matrix.\nInput\n: mat[][] = [[87, 96, 99], [101, 103, 111]], x = 101\nOutput\n: true\nExplanation\n: 101 is present in the matrix.\nConstraints:\n1 ≤ n, m ≤ 1000\n1 ≤ mat[i][j] ≤ 10\n9\n1 ≤ x ≤ 10\n9",
+      "examples": [
+        "Input\n: mat[][] = [[1, 5, 9], [14, 20, 21], [30, 34, 43]], x = 14\nOutput\n: true\nExplanation\n: 14 is present in the matrix, so output is true.",
+        "Input\n: mat[][] = [[1, 5, 9, 11], [14, 20, 21, 26], [30, 34, 43, 50]], x = 42\nOutput\n: false\nExplanation\n: 42 is not present in the matrix.",
+        "Input\n: mat[][] = [[87, 96, 99], [101, 103, 111]], x = 101\nOutput\n: true\nExplanation\n: 101 is present in the matrix."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 1000\n1 ≤ mat[i][j] ≤ 10\n9\n1 ≤ x ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a strictly sorted 2D matrix<strong> mat</strong>[][] of size <strong>n x m&nbsp;</strong>and<strong>&nbsp;</strong>a number&nbsp;<strong>x.</strong> Find whether the number <strong>x</strong> is present in the matrix or not.<br /><strong>Note:</strong> In a strictly sorted matrix, each row is sorted in strictly increasing order, and&nbsp;the first element of the <strong>i</strong><sup>th</sup>&nbsp;row (<strong>i</strong>!=0) is greater than the last element of the (<strong>i-1</strong>)<sup>th&nbsp;</sup>row.</span><br style=\"font-size: 18px;\" /><br /><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[1, 5, 9], [14, 20, 21], [30, 34, 43]], x = 14\n<strong>Output</strong>: true\n<strong>Explanation</strong>: 14 is present in the matrix, so output is true.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[1, 5, 9, 11], [14, 20, 21, 26], [30, 34, 43, 50]], x = 42<br /><strong>Output</strong>: false\n<strong>Explanation</strong>: 42 is not present in the matrix.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[87, 96, 99], [101, 103, 111]], x = 101</span><br /><span style=\"font-size: 14pt;\"><strong>Output</strong>: true\n<strong>Explanation</strong>: 101 is present in the matrix.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; n, m &le; 1000<br />1 &le; mat[i][j] &le; 10<sup>9</sup><br />1 &le; x &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1166
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/sort-a-stack/1",
+      "problem_name": "Sort a stack",
+      "slug": "sort-a-stack",
+      "difficulty": "Medium",
+      "accuracy": "69.19%",
+      "marks": 4,
+      "all_submissions": 172365,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "st =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Goldman Sachs",
+          "Intuit",
+          "Yahoo",
+          "IBM",
+          "Kuliza"
+        ],
+        "topic_tags": [
+          "Recursion",
+          "Stack",
+          "STL",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Recursion",
+        "Stack",
+        "STL",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Goldman Sachs",
+        "Intuit",
+        "Yahoo",
+        "IBM",
+        "Kuliza"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sort-a-stack/",
+        "https://www.geeksforgeeks.org/sort-stack-using-temporary-stack/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a stack of integers\nst[]\n. Sort the stack in\nascending order\n(smallest element at the bottom and largest at the top).",
+      "full_text": "Given a stack of integers\nst[]\n. Sort the stack in\nascending order\n(smallest element at the bottom and largest at the top).\nExamples:\nInput:\nst[] = [1, 2, 3]\nOutput:\n[3, 2, 1]\nExplanation:\nThe stack is already sorted in ascending order.\nInput:\nst[] = [41, 3, 32, 2, 11]\nOutput:\n[41, 32, 11, 3, 2]\nExplanation:\nAfter sorting, the smallest element (2) is at the bottom and the largest element (41) is at the top.\nConstraints:\n1 ≤ st.size() ≤ 10\n3\n0 ≤ stack element ≤ 10\n3",
+      "examples": [
+        "Input:\nst[] = [1, 2, 3]\nOutput:\n[3, 2, 1]\nExplanation:\nThe stack is already sorted in ascending order.",
+        "Input:\nst[] = [41, 3, 32, 2, 11]\nOutput:\n[41, 32, 11, 3, 2]\nExplanation:\nAfter sorting, the smallest element (2) is at the bottom and the largest element (41) is at the top."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ st.size() ≤ 10\n3\n0 ≤ stack element ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a stack of integers <strong>st[]</strong>. Sort the stack in <strong>ascending order</strong> (smallest element at the bottom and largest at the top).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>st[] = [1, 2, 3]<strong><br />Output: </strong>[3, 2, 1]<strong><br />Explanation: </strong>The stack is already sorted in ascending order.<br /><strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/911853/Web/Other/blobid2_1758086056.jpg\" width=\"376\" height=\"154\" /></strong></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>st[] = [41, 3, 32, 2, 11]<strong><br />Output: </strong>[41, 32, 11, 3, 2]<strong><br />Explanation: </strong>After sorting, the smallest element (2) is at the bottom and the largest element (41) is at the top.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/911853/Web/Other/blobid1_1758085973.jpg\" width=\"396\" height=\"193\" /><br /></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; st.size() &le; 10<sup>3<br /></sup>0 &le; stack element &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 1167
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/steps-by-knight5927/1",
+      "problem_name": "Steps by Knight",
+      "slug": "steps-by-knight5927",
+      "difficulty": "Medium",
+      "accuracy": "37.32%",
+      "marks": 4,
+      "all_submissions": 133320,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n=&!//!&knightPos[] = &!//!&targetPos[] = ",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "MakeMyTrip",
+          "Goldman Sachs",
+          "Intuit",
+          "Linkedin"
+        ],
+        "topic_tags": [
+          "Graph",
+          "BFS",
+          "Data Structures",
+          "Algorithms",
+          "Queue"
+        ]
+      },
+      "topic_tags": [
+        "Graph",
+        "BFS",
+        "Data Structures",
+        "Algorithms",
+        "Queue"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "MakeMyTrip",
+        "Goldman Sachs",
+        "Intuit",
+        "Linkedin"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-steps-reach-target-knight/"
+      ],
+      "interview_links": [
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-414-sdet-1/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-13-campus/"
+      ],
+      "statement_text": "Given a square chessboard of size (n x n), the initial position and target postion of Knight are given. Find out the minimum steps a Knight will take to reach the target position.\n\nNote: The initial and the target position coordinates of Knight have been given according to 1-base indexing.\n\nExamples:\n\nInput: n = 3, knightPos[] = [3, 3], targetPos[]= [1, 2]\nOutput: 1\nExplanation:\nKnight takes 1 step to reach from\n(3, 3) to (1 ,2).\n\nInput: n = 6, knightPos[] = [4, 5],targetPos[] = [1, 1]\nOutput: 3\nExplanation:\n\nKnight takes 3 step to reach from\n(4, 5) to (1, 1):\n(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).\n\nConstraints:\n1 <= n<= 1000\n1 <= knightpos ≤ [x, y], targertpos[x, y] ≤  n",
+      "full_text": "Given a square chessboard of size (n x n), the initial position and target postion of Knight are given. Find out the minimum steps a Knight will take to reach the target position.\n\nNote: The initial and the target position coordinates of Knight have been given according to 1-base indexing.\n\nExamples:\n\nInput: n = 3, knightPos[] = [3, 3], targetPos[]= [1, 2]\nOutput: 1\nExplanation:\nKnight takes 1 step to reach from\n(3, 3) to (1 ,2).\n\nInput: n = 6, knightPos[] = [4, 5],targetPos[] = [1, 1]\nOutput: 3\nExplanation:\n\nKnight takes 3 step to reach from\n(4, 5) to (1, 1):\n(4, 5) -> (5, 3) -> (3, 2) -> (1, 1).\n\nConstraints:\n1 <= n<= 1000\n1 <= knightpos ≤ [x, y], targertpos[x, y] ≤  n",
+      "examples": [
+        "Input:\nn = 3\n,\nknightPos[] = [3, 3], targetPos[]= [1, 2]\nOutput:\n1\nExplanation:\nKnight takes 1 step to reach from\n(3, 3) to (1 ,2).",
+        "Input:\nn = 6, knightPos[] = [4, 5],targetPos[] = [1, 1]\nOutput:\n3\nExplanation:\nKnight takes 3 step to reach from\n(4, 5) to (1, 1):\n(4, 5) -> (5, 3) -> (3, 2) -> (1, 1)."
+      ],
+      "constraints_text": "Constraints:\n1 <= n<= 1000\n1 <= knightpos\n≤\n[x, y],\ntargertpos[x, y]\n≤\nn",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a square <strong>chessboard </strong>of<strong> </strong>size <strong>(n x n)</strong>, the initial position and target postion of Knight are given. Find out the <strong>minimum steps</strong> a Knight will take to reach the target position.<br /><br /></span><span style=\"font-size: 18px;\"><strong>Note: </strong>The initial and the target position coordinates of Knight have been given according to 1-base indexing.<br /></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3<strong>, </strong>knightPos[] = [3, 3], targetPos[]= [1, 2]<strong><br />Output:</strong> 1<strong><br />Explanation:<br /></strong>Knight takes 1 step to reach from&nbsp;<br />(3, 3) to (1 ,2).</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 6, knightPos[] = [4, 5],targetPos[] = [1, 1]</span>\n<span style=\"font-size: 18px;\"><strong>Output: </strong>3</span>\n<span style=\"font-size: 18px;\"><strong>Explanation:</strong></span>\n<img src=\"https://media.geeksforgeeks.org/wp-content/uploads/KnightChess.jpg\" />\n<span style=\"font-size: 18px;\">Knight takes 3 step to reach from \n(4, 5) to (1, 1):\n(4, 5) -&gt; (5, 3) -&gt; (3, 2) -&gt; (1, 1).</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= n&lt;= 1000<br />1 &lt;= knightpos </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le; </span><span style=\"font-size: 18px;\">[x, y], </span><span style=\"font-size: 18px;\">targertpos[x, y] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;&nbsp;</span><span style=\"font-size: 18px;\"> n&nbsp;</span></p>"
+    },
+    "qnum": 1168
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/stock-buy-and-sell-1587115621/1",
+      "problem_name": "Stock buy and sell",
+      "slug": "stock-buy-and-sell-1587115621",
+      "difficulty": "Medium",
+      "accuracy": "29.18%",
+      "marks": 4,
+      "all_submissions": 304704,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "Walmart",
+          "Goldman Sachs",
+          "Directi",
+          "Intuit",
+          "Google",
+          "Quikr",
+          "Salesforce",
+          "Pubmatic",
+          "Sapient",
+          "Swiggy",
+          "Media.net"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Dynamic Programming",
+          "Greedy",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Dynamic Programming",
+        "Greedy",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "Walmart",
+        "Goldman Sachs",
+        "Directi",
+        "Intuit",
+        "Google",
+        "Quikr",
+        "Salesforce",
+        "Pubmatic",
+        "Sapient",
+        "Swiggy",
+        "Media.net"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/stock-buy-sell/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-7-for-sde-1/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-4-on-campus/",
+        "https://www.geeksforgeeks.org/directi-interview-set-1/",
+        "https://www.geeksforgeeks.org/intuit-interview-set-4-sse/",
+        "https://www.geeksforgeeks.org/one97paytm-interview-experience/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-4-walk-in-drive/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-8-off-campus-3-years-experience/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-7-on-campus/",
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-22-pool-campus/"
+      ],
+      "statement_text": "Given an array\narr[]\ndenoting\nthe cost of stock on each day, the task is to find the maximum total profit if we can buy and sell the stocks any number of times.\nNote:\nWe can only sell a stock which we have bought earlier and we cannot hold multiple stocks on any day.",
+      "full_text": "Given an array\narr[]\ndenoting\nthe cost of stock on each day, the task is to find the maximum total profit if we can buy and sell the stocks any number of times.\nNote:\nWe can only sell a stock which we have bought earlier and we cannot hold multiple stocks on any day.\nExamples:\nInput:\narr[] = [100, 180, 260, 310, 40, 535, 695]\nOutput:\n865\nExplanation:\nBuy the stock on day 0 and sell it on day 3 => 310 – 100 = 210 Buy the stock on day 4 and sell it on day 6 => 695 – 40 = 655 Maximum Profit  = 210 + 655 = 865\nInput:\narr[] = [4, 2, 2, 2, 4]\nOutput:\n2\nExplanation:\nBuy the stock on day 3 and sell it on day 4 => 4 – 2 = 2\nInput:\narr[] = [4, 2]\nOutput:\n0\nExplanation:\nDon't\nBuy the stock.\nConstraints:\n2 ≤ arr.size() ≤ 10\n6\n0 ≤ arr[i] ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [100, 180, 260, 310, 40, 535, 695]\nOutput:\n865\nExplanation:\nBuy the stock on day 0 and sell it on day 3 => 310 – 100 = 210 Buy the stock on day 4 and sell it on day 6 => 695 – 40 = 655 Maximum Profit  = 210 + 655 = 865",
+        "Input:\narr[] = [4, 2, 2, 2, 4]\nOutput:\n2\nExplanation:\nBuy the stock on day 3 and sell it on day 4 => 4 – 2 = 2",
+        "Input:\narr[] = [4, 2]\nOutput:\n0\nExplanation:\nDon't\nBuy the stock."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ arr.size() ≤ 10\n6\n0 ≤ arr[i] ≤ 10\n6",
+      "question_html": "<p dir=\"ltr\" style=\"box-sizing: border-box; margin: 0px 0px 10px; padding: 0px; border: 0px; font-size: 18px; vertical-align: baseline; color: #273239; font-family: Nunito, sans-serif; letter-spacing: 0.162px; background-color: #ffffff;\"><span style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">Given an array&nbsp;</span><span style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><span style=\"box-sizing: border-box; margin: 0px; padding: 0px;\"><strong>arr[] </strong>denoting</span>&nbsp;the cost of stock on each day, the task is to find the maximum total profit if we can buy and sell the stocks any number of times.</span></p>\n<p dir=\"ltr\" style=\"box-sizing: border-box; margin: 0px 0px 10px; padding: 0px; border: 0px; font-size: 18px; vertical-align: baseline; color: #273239; font-family: Nunito, sans-serif; letter-spacing: 0.162px; background-color: #ffffff;\"><strong style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">Note:&nbsp;</strong><span style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">We can only sell a stock which we have bought earlier and we cannot hold multiple stocks on any day.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [100, 180, 260, 310, 40, 535, 695]\n<strong>Output: </strong>865\n<strong>Explanation: </strong></span><span style=\"font-size: 14pt;\">Buy the stock on day 0 and sell it on day 3 =&gt; 310 &ndash; 100 = 210 Buy the stock on day 4 and sell it on day 6 =&gt; 695 &ndash; 40 = 655 Maximum Profit  = 210 + 655 = 865</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [4, 2, 2, 2, 4]\n<strong>Output: </strong>2\n<strong>Explanation: </strong></span><span style=\"font-size: 14pt;\">Buy the stock on day 3 and sell it on day 4 =&gt; 4 &ndash; 2 = 2<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [4, 2]\n<strong>Output: </strong>0\n<strong>Explanation: </strong>Don't<strong> </strong></span><span style=\"font-size: 14pt;\">Buy the stock.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />2 &le; arr.size() &le; 10<sup>6</sup><br />0 &le; arr[i] &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1169
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/stock-buy-and-sell2615/1",
+      "problem_name": "Stock Buy and Sell – Multiple Transaction Allowed",
+      "slug": "stock-buy-and-sell2615",
+      "difficulty": "Medium",
+      "accuracy": "13.43%",
+      "marks": 4,
+      "all_submissions": 196685,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "D-E-Shaw",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "Walmart",
+          "Goldman Sachs",
+          "Directi",
+          "Intuit",
+          "SAP Labs",
+          "Quikr",
+          "Facebook",
+          "Salesforce",
+          "Pubmatic",
+          "Sapient",
+          "Swiggy"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "D-E-Shaw",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "Walmart",
+        "Goldman Sachs",
+        "Directi",
+        "Intuit",
+        "SAP Labs",
+        "Quikr",
+        "Facebook",
+        "Salesforce",
+        "Pubmatic",
+        "Sapient",
+        "Swiggy"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/stock-buy-sell/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-7-for-sde-1/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-4-on-campus/",
+        "https://www.geeksforgeeks.org/directi-interview-set-1/",
+        "https://www.geeksforgeeks.org/intuit-interview-set-4-sse/",
+        "https://www.geeksforgeeks.org/one97paytm-interview-experience/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-4-walk-in-drive/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-8-off-campus-3-years-experience/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-7-on-campus/"
+      ],
+      "statement_text": "The cost of stock on each day is given in an array\nprice[]\n. Each day you may decide to either buy or sell the stock i at\nprice[i]\n, you can even buy and sell the stock on the same day. Find the\nmaximum profit\nthat you can get.\nNote: A stock can only be sold if it has been bought previously and multiple stocks cannot be held on any given day.",
+      "full_text": "The cost of stock on each day is given in an array\nprice[]\n. Each day you may decide to either buy or sell the stock i at\nprice[i]\n, you can even buy and sell the stock on the same day. Find the\nmaximum profit\nthat you can get.\nNote: A stock can only be sold if it has been bought previously and multiple stocks cannot be held on any given day.\nExamples:\nInput:\nprices[] = [100, 180, 260, 310, 40, 535, 695]\nOutput:\n865\nExplanation:\nBuy the stock on day 0 and sell it on day 3 => 310 – 100 = 210. Buy the stock on day 4 and sell it on day 6 => 695 – 40 = 655. Maximum Profit = 210 + 655 = 865.\nInput:\nprices[] = [4, 2, 2, 2, 4]\nOutput:\n2\nExplanation:\nBuy the stock on day 3 and sell it on day 4 => 4 – 2 = 2. Maximum Profit = 2.\nConstraints:\n1 <= prices.size() <= 10\n5\n0 <= prices[i] <= 10\n4",
+      "examples": [
+        "Input:\nprices[] = [100, 180, 260, 310, 40, 535, 695]\nOutput:\n865\nExplanation:\nBuy the stock on day 0 and sell it on day 3 => 310 – 100 = 210. Buy the stock on day 4 and sell it on day 6 => 695 – 40 = 655. Maximum Profit = 210 + 655 = 865.\nInput:\nprices[] = [4, 2, 2, 2, 4]\nOutput:\n2\nExplanation:\nBuy the stock on day 3 and sell it on day 4 => 4 – 2 = 2. Maximum Profit = 2."
+      ],
+      "constraints_text": "Constraints:\n1 <= prices.size() <= 10\n5\n0 <= prices[i] <= 10\n4",
+      "question_html": "<p><span style=\"font-size: 14pt;\">The cost of stock on each day is given in an array <strong>price[]</strong>. Each day you may decide to either buy or sell the stock i at <strong>price[i]</strong>, you can even buy and sell the stock on the same day. Find the <strong>maximum profit</strong> that you can get.</span></p>\n<p><span style=\"font-size: 14pt;\">Note: A stock can only be sold if it has been bought previously and multiple stocks cannot be held on any given day.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong></span><span style=\"font-size: 14pt;\">prices[] = [100, 180, 260, 310, 40, 535, 695]</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong></span><span style=\"font-size: 14pt;\">865</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong></span><span style=\"font-size: 18.6667px;\">Buy the stock on day 0 and sell it on day 3 =&gt; 310 &ndash; 100 = 210. Buy the stock on day 4 and sell it on day 6 =&gt; 695 &ndash; 40 = 655. Maximum Profit = 210 + 655 = 865.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/878914/Web/Other/blobid2_1731054745.png\" width=\"324\" height=\"200\" /><br /><br /></span><span style=\"font-size: 14pt;\"><strong>Input: </strong></span><span style=\"font-size: 14pt;\">prices[] = [4, 2, 2, 2, 4]</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong></span><span style=\"font-size: 14pt;\">2</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong></span><span style=\"font-size: 18.6667px;\">Buy the stock on day 3 and sell it on day 4 =&gt; 4 &ndash; 2 = 2. Maximum Profit = 2.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">1 &lt;= prices.size() &lt;= 10<sup>5</sup></span><br /><span style=\"font-size: 14pt;\">0 &lt;= prices[i] &lt;= 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1170
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-the-subarrays-having-product-less-than-k1708/1",
+      "problem_name": "Subarrays Product Less than K",
+      "slug": "count-the-subarrays-having-product-less-than-k1708",
+      "difficulty": "Medium",
+      "accuracy": "21.0%",
+      "marks": 4,
+      "all_submissions": 116623,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n k&!//!&arr[] = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Goldman Sachs",
+          "Facebook",
+          "Walmart",
+          "Yatra.com",
+          "Amazon",
+          "Linkedin",
+          "Microsoft",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "Algorithms",
+          "sliding-window"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "Algorithms",
+        "sliding-window"
+      ],
+      "company_tags": [
+        "Goldman Sachs",
+        "Facebook",
+        "Walmart",
+        "Yatra.com",
+        "Amazon",
+        "Linkedin",
+        "Microsoft",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/number-subarrays-product-less-k/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/goldman-sachs-interview-experience-set-32-campus/"
+      ],
+      "statement_text": "Given an array of positive numbers, the task is to find the number of possible contiguous subarrays having product less than a given number k.\nExample 1:\nInput :\nn = 4, k = 10\na[] = [1, 2, 3, 4]\nOutput :\n7\nExplanation:\nThe contiguous subarrays are {1}, {2}, {3}, {4}\n{1, 2}, {1, 2, 3} and {2, 3}, in all these subarrays\nproduct of elements is less than 10, count of\nsuch subarray is 7.\n{2,3,4} will not be a valid subarray, because\n2*3*4=24 which is greater than 10.\nExample 2:\nInput:\nn = 7 , k = 100\na[] = [1, 9, 2, 8, 6, 4, 3]\nOutput:\n16\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncountSubArrayProductLessThanK()\nwhich takes the array\na[]\n, its size\nn\nand an integer\nk\nas inputs and returns the count of required subarrays.",
+      "full_text": "Given an array of positive numbers, the task is to find the number of possible contiguous subarrays having product less than a given number k.\nExample 1:\nInput :\nn = 4, k = 10\na[] = [1, 2, 3, 4]\nOutput :\n7\nExplanation:\nThe contiguous subarrays are {1}, {2}, {3}, {4}\n{1, 2}, {1, 2, 3} and {2, 3}, in all these subarrays\nproduct of elements is less than 10, count of\nsuch subarray is 7.\n{2,3,4} will not be a valid subarray, because\n2*3*4=24 which is greater than 10.\nExample 2:\nInput:\nn = 7 , k = 100\na[] = [1, 9, 2, 8, 6, 4, 3]\nOutput:\n16\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncountSubArrayProductLessThanK()\nwhich takes the array\na[]\n, its size\nn\nand an integer\nk\nas inputs and returns the count of required subarrays.\nConstraints:\n1<=n<=10\n6\n1<=k<=10\n15\n1<=a[i]<=10\n5",
+      "examples": [
+        "Input :\nn = 4, k = 10\na[] = [1, 2, 3, 4]\nOutput :\n7\nExplanation:\nThe contiguous subarrays are {1}, {2}, {3}, {4}\n{1, 2}, {1, 2, 3} and {2, 3}, in all these subarrays\nproduct of elements is less than 10, count of\nsuch subarray is 7.\n{2,3,4} will not be a valid subarray, because\n2*3*4=24 which is greater than 10.",
+        "Input:\nn = 7 , k = 100\na[] = [1, 9, 2, 8, 6, 4, 3]\nOutput:\n16"
+      ],
+      "constraints_text": "Constraints:\n1<=n<=10\n6\n1<=k<=10\n15\n1<=a[i]<=10\n5",
+      "question_html": "<p><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\">Given an array of positive numbers, the task is to find the number of possible contiguous subarrays having product less than a given number k. </span></span></p>\n<p><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\"><strong>Example 1:</strong></span></span></p>\n<pre><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\"><strong>Input : \n</strong>n = 4, k = 10\na[] = [1, 2, 3, 4]\n<strong>Output : </strong>\n7\n<strong>Explanation:</strong>\nThe contiguous subarrays are {1}, {2}, {3}, {4} \n{1, 2}, {1, 2, 3} and {2, 3}, in all these subarrays<br /></span></span><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\">product of elements is less than 10, count of<br />such subarray is 7.<br />{2,3,4} will not be a valid subarray, because <br />2*3*4=24 which is greater than 10.</span></span></pre>\n<p><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\"><strong>Example 2:</strong></span></span></p>\n<pre><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\"><strong>Input:\n</strong>n = 7 , k = 100\na[] = [1, 9, 2, 8, 6, 4, 3]\n<strong>Output:</strong>\n16</span></span></pre>\n<p><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\"><strong>Your Task:&nbsp;&nbsp;</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>countSubArrayProductLessThanK()</strong>&nbsp;which takes the array <strong>a[]</strong>, its size <strong>n</strong><strong> </strong>and an integer <strong>k</strong> as inputs and returns the count of required subarrays.</span></span></p>\n<p><span style=\"font-family: arial,helvetica,sans-serif;\"><span style=\"font-size: 20px;\"><strong>Constraints:</strong><br />1&lt;=n&lt;=10<sup>6</sup></span><span style=\"font-size: 20px;\"><br /><span style=\"font-size: 20px;\">1&lt;=k&lt;=10</span><sup style=\"font-size: 20px;\">15</sup><br /><span style=\"font-size: 20px;\">1&lt;=a[i]&lt;=10</span><sup style=\"font-size: 20px;\">5</sup></span></span></p>"
+    },
+    "qnum": 1171
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/sum-tree/1",
+      "problem_name": "Sum Tree",
+      "slug": "sum-tree",
+      "difficulty": "Medium",
+      "accuracy": "37.17%",
+      "marks": 4,
+      "all_submissions": 285619,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Goldman Sachs",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Goldman Sachs",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-sumtree/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a Binary Tree. Check for the Sum Tree for every node except the leaf node. Return true if it is a Sum Tree otherwise, return false.\n\nA SumTree is a Binary Tree where the value of a node is equal to the sum of the nodes present in its left subtree and right subtree. An empty tree is also a Sum Tree as the sum of an empty tree can be considered to be 0. A leaf node is also considered a Sum Tree.\n\nExamples:\n\nInput:\n    3\n  /   \\\n 1     2\nOutput: true\nExplanation: The sum of left subtree and right subtree is 1 + 2 = 3, which is the value of the root node. Therefore,the given binary tree is a sum tree.\n\nInput:\n          10\n        /    \\\n      20      30\n    /   \\\n   10    10\nOutput: false\nExplanation: The given tree is not a sum tree. For the root node, sum of elements in left subtree is 40 and sum of elements in right subtree is 30. Root element = 10 which is not equal to 30+40.\n\nInput:\n   25\n  /   \\\n 9     15\nOutput: false\n\nConstraints:\n2 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "full_text": "Given a Binary Tree. Check for the Sum Tree for every node except the leaf node. Return true if it is a Sum Tree otherwise, return false.\n\nA SumTree is a Binary Tree where the value of a node is equal to the sum of the nodes present in its left subtree and right subtree. An empty tree is also a Sum Tree as the sum of an empty tree can be considered to be 0. A leaf node is also considered a Sum Tree.\n\nExamples:\n\nInput:\n    3\n  /   \\\n 1     2\nOutput: true\nExplanation: The sum of left subtree and right subtree is 1 + 2 = 3, which is the value of the root node. Therefore,the given binary tree is a sum tree.\n\nInput:\n          10\n        /    \\\n      20      30\n    /   \\\n   10    10\nOutput: false\nExplanation: The given tree is not a sum tree. For the root node, sum of elements in left subtree is 40 and sum of elements in right subtree is 30. Root element = 10 which is not equal to 30+40.\n\nInput:\n   25\n  /   \\\n 9     15\nOutput: false\n\nConstraints:\n2 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\n3\n/   \\\n1     2\nOutput:\ntrue\nExplanation:\nThe sum of left subtree and right subtree is 1 + 2 = 3, which is the value of the root node. Therefore,the given binary tree is a sum tree.",
+        "Input:\n10\n/    \\\n20      30\n/   \\\n10    10\nOutput:\nfalse\nExplanation:\nThe given tree is not a sum tree. For the root node, sum of elements in left subtree is 40 and sum of elements in right subtree is 30. Root element = 10 which is not equal to 30+40.",
+        "Input:\n25\n/   \\\n9     15\nOutput:\nfalse"
+      ],
+      "constraints_text": "Constraints:\n2 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<div class=\"entry-content\">\n<p><span style=\"font-size: 14pt;\">Given a Binary Tree. Check for the <strong>Sum Tree</strong> for every node except the leaf node. Return true if it is a Sum Tree otherwise, return false.</span></p>\n<blockquote>\n<p><span style=\"font-size: 14pt;\"><span style=\"color: #273239; font-family: Nunito, sans-serif; letter-spacing: 0.162px; background-color: #ffffff;\">A <strong>SumTree</strong> is a Binary Tree where the value of a node is equal to the sum of the nodes present in its<strong> left</strong> subtree and <strong>right </strong>subtree. </span>An empty tree is also a Sum Tree as the sum of an empty tree can be considered to be <strong>0</strong>. A leaf node is also considered a Sum Tree.</span></p>\n</blockquote>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong>\n    3\n  /   \\    \n 1     2\n<strong>Output:</strong> true\n<strong>Explanation: </strong>The sum of left subtree and right subtree is 1 + 2 = 3, which is the value of the root node. Therefore,the given binary tree is a sum tree.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong>\n          10\n        /    \\\n      20      30\n    /   \\ \n   10    10\n<strong>Output: </strong>false\n<strong>Explanation: </strong>The given tree is not a sum tree. For the root node, sum of elements in left subtree is 40 and sum of elements in right subtree is 30. Root element = 10 which is not equal to 30+40.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong>\n   25\n  /   \\    \n 9     15\n<strong>Output:</strong> false</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />2 &le; number of nodes &le; 10<sup>5<br /></sup>1 &le; node-&gt;data &le; 10<sup>5</sup></span></p>\n</div>"
+    },
+    "qnum": 1172
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/total-decoding-messages1235/1",
+      "problem_name": "Total Decoding Messages",
+      "slug": "total-decoding-messages1235",
+      "difficulty": "Medium",
+      "accuracy": "15.79%",
+      "marks": 4,
+      "all_submissions": 159317,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "digits = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "MakeMyTrip",
+          "Goldman Sachs",
+          "Nutanix",
+          "Linkedin",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "MakeMyTrip",
+        "Goldman Sachs",
+        "Nutanix",
+        "Linkedin",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-possible-decodings-given-digit-sequence/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-6-online-coding/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-17-for-sde-ii/"
+      ],
+      "statement_text": "A message containing letters\nA-Z\nis being encoded to numbers using the following mapping:\n'A' -> 1\n'B' -> 2\n...\n'Z' -> 26\nYou are given a string\ndigits\n. You have to determine the\ntotal number of ways\nthat message can be decoded.",
+      "full_text": "A message containing letters\nA-Z\nis being encoded to numbers using the following mapping:\n'A' -> 1\n'B' -> 2\n...\n'Z' -> 26\nYou are given a string\ndigits\n. You have to determine the\ntotal number of ways\nthat message can be decoded.\nExamples:\nInput:\ndigits\n= \"123\"\nOutput:\n3\nExplanation:\n\"123\" can be decoded as \"ABC\"(1, 2, 3), \"LC\"(12, 3) and \"AW\"(1, 23).\nInput:\ndigits\n= \"90\"\nOutput:\n0\nExplanation:\n\"90\" cannot be decoded, as it's an invalid string and we cannot decode '0'.\nInput:\ndigits = \"05\"\nOutput:\n0\nExplanation:\n\"05\" cannot be mapped to \"E\" because of the leading zero (\"5\" is different from \"05\"), the string is not a valid encoding message.\nConstraints:\n1 ≤ digits.size() ≤ 10\n3",
+      "examples": [
+        "Input:\ndigits\n= \"123\"\nOutput:\n3\nExplanation:\n\"123\" can be decoded as \"ABC\"(1, 2, 3), \"LC\"(12, 3) and \"AW\"(1, 23).",
+        "Input:\ndigits\n= \"90\"\nOutput:\n0\nExplanation:\n\"90\" cannot be decoded, as it's an invalid string and we cannot decode '0'.",
+        "Input:\ndigits = \"05\"\nOutput:\n0\nExplanation:\n\"05\" cannot be mapped to \"E\" because of the leading zero (\"5\" is different from \"05\"), the string is not a valid encoding message."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ digits.size() ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size: 14pt;\">A message containing letters<code>&nbsp;A-Z </code>is being encoded to numbers using the following mapping:</span></p>\n<div class=\"highlighter-rouge\">\n<blockquote>\n<p><span style=\"font-size: 14pt;\">'A' -&gt; 1 <br />'B' -&gt; 2 <br />... <br />'Z' -&gt; 26 </span></p>\n</blockquote>\n</div>\n<p><span style=\"font-size: 14pt;\">You are given a string <strong>digits</strong>. You have to determine the <strong>total number of ways</strong> that message can be decoded.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">digits </span>= \"123\"\n<strong>Output: </strong>3\n<strong>Explanation: </strong>\"123\" can be decoded as \"ABC\"(1, 2, 3), \"LC\"(12, 3) and \"AW\"(1, 23).\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">digits</span> = \"90\"</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>0\n<strong>Explanation: </strong>\"90\" cannot be decoded, as it's an invalid string and we cannot decode '0'.<sup><br /></sup></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>digits = \"05\"\n<strong>Output: </strong>0\n<strong>Explanation: </strong>\"05\" cannot be mapped to \"E\" because of the leading zero (\"5\" is different from \"05\"), the string is not a valid encoding message.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; digits.size() &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 1173
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/wave-array-1587115621/1",
+      "problem_name": "Wave Array",
+      "slug": "wave-array-1587115621",
+      "difficulty": "Medium",
+      "accuracy": "63.69%",
+      "marks": 4,
+      "all_submissions": 290898,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Goldman Sachs",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Goldman Sachs",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sort-array-wave-form-2/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an sorted array arr[] of integers. Sort the array into a wave-like array(In Place). In other words, arrange the elements into a sequence such that arr[1] >= arr[2] <= arr[3] >= arr[4] <= arr[5] ..... and so on. If there are multiple solutions, find the lexicographically smallest one.\n\nNote: The given array is sorted in ascending order, and modify the given array in-place without returning a new array.\n\nExamples:\n\nInput: arr[] = [1, 2, 3, 4, 5]\nOutput: [2, 1, 4, 3, 5]\nExplanation: Array elements after sorting it in the waveform are 2, 1, 4, 3, 5.\n\nInput: arr[] = [2, 4, 7, 8, 9, 10]\nOutput: [4, 2, 8, 7, 10, 9]\nExplanation: Array elements after sorting it in the waveform are 4, 2, 8, 7, 10, 9.\n\nInput: arr[] = [1]\nOutput: [1]\n\nConstraints:\n1 ≤ arr.size ≤ 106\n0 ≤ arr[i] ≤109",
+      "full_text": "Given an sorted array arr[] of integers. Sort the array into a wave-like array(In Place). In other words, arrange the elements into a sequence such that arr[1] >= arr[2] <= arr[3] >= arr[4] <= arr[5] ..... and so on. If there are multiple solutions, find the lexicographically smallest one.\n\nNote: The given array is sorted in ascending order, and modify the given array in-place without returning a new array.\n\nExamples:\n\nInput: arr[] = [1, 2, 3, 4, 5]\nOutput: [2, 1, 4, 3, 5]\nExplanation: Array elements after sorting it in the waveform are 2, 1, 4, 3, 5.\n\nInput: arr[] = [2, 4, 7, 8, 9, 10]\nOutput: [4, 2, 8, 7, 10, 9]\nExplanation: Array elements after sorting it in the waveform are 4, 2, 8, 7, 10, 9.\n\nInput: arr[] = [1]\nOutput: [1]\n\nConstraints:\n1 ≤ arr.size ≤ 106\n0 ≤ arr[i] ≤109",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 4, 5]\nOutput:\n[2, 1, 4, 3, 5]\nExplanation:\nArray elements after sorting it in the waveform are 2, 1, 4, 3, 5.",
+        "Input:\narr[] = [2, 4, 7, 8, 9, 10]\nOutput:\n[4, 2, 8, 7, 10, 9]\nExplanation:\nArray elements after sorting it in the waveform are 4, 2, 8, 7, 10, 9.",
+        "Input:\narr[] = [1]\nOutput:\n[1]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size ≤ 10\n6\n0 ≤ arr[i] ≤10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an <strong>s</strong><strong>orted</strong> array <strong>arr[]</strong> of integers. Sort the array into a <strong>wave-like</strong> array(In Place). In other words, <strong>arrange the elements</strong> into a sequence such that arr[1] &gt;= arr[2] &lt;= arr[3] &gt;= arr[4] &lt;= arr[5] ..... and so on. If there are multiple solutions, find the <strong>lexicographically smallest</strong> one.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note: </strong>The given array is sorted in ascending order, and modify the given array in-place without returning a new array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4, 5]\n<strong>Output: </strong>[2, 1, 4, 3, 5]<strong>\nExplanation: </strong>Array elements after sorting it in the waveform are 2, 1, 4, 3, 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [2, 4, 7, 8, 9, 10]\n<strong>Output: </strong>[4, 2, 8, 7, 10, 9]<strong>\nExplanation: </strong>Array elements after sorting it in the waveform are 4, 2, 8, 7, 10, 9.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [1]<br /><strong>Output:</strong> [1]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size &le; 10<sup>6</sup><br />0 &le; arr[i] &le;10<sup>9</sup></span></p>"
+    },
+    "qnum": 1174
+  }
+]

@@ -1,0 +1,395 @@
+/*  ============================================================
+    GLOBAL DESIGN SYSTEM — Interview Practice Platform
+    Contains CSS variables, resets, typography, sidebar layout,
+    background decorations, and responsive utilities.
+    ============================================================ */
+
+/* ---------- Google Fonts ---------- */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+/* ---------- Light Theme (default) ---------- */
+:root {
+  --bg:             #f8f4eb;
+  --paper:          #fffdf8;
+  --ink:            #1e1f24;
+  --muted:          #5f6672;
+  --teal:           #0f766e;
+  --teal-light:     #14b8a6;
+  --teal-soft:      #c6efea;
+  --amber:          #f59e0b;
+  --red:            #ef4444;
+  --green:          #22c55e;
+  --line:           #e6dcc7;
+  --shadow:         0 18px 45px rgba(15,118,110,0.12);
+  --surface-soft:   #fffcf6;
+  --surface-chip:   #fff;
+  --sidebar-bg:     #f3efe6;
+  --sidebar-hover:  #e8e2d5;
+  --sidebar-active: #ddd6c4;
+  --overlay:        rgba(0,0,0,0.3);
+  --radius:         14px;
+  --radius-lg:      18px;
+  --radius-sm:      10px;
+  --transition:     180ms ease;
+}
+
+/* ---------- Dark Theme ---------- */
+body[data-theme="dark"] {
+  --bg:             #0f172a;
+  --paper:          #111827;
+  --ink:            #f3f4f6;
+  --muted:          #9ca3af;
+  --teal:           #22d3ee;
+  --teal-light:     #67e8f9;
+  --teal-soft:      #164e63;
+  --amber:          #f59e0b;
+  --red:            #f87171;
+  --green:          #4ade80;
+  --line:           #263447;
+  --shadow:         0 18px 45px rgba(0,0,0,0.42);
+  --surface-soft:   #0b1220;
+  --surface-chip:   #111827;
+  --sidebar-bg:     #0b1220;
+  --sidebar-hover:  #1e293b;
+  --sidebar-active: #263447;
+  --overlay:        rgba(0,0,0,0.6);
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+  color: var(--ink);
+  background: radial-gradient(circle at 10% 10%, #fff7dd 0%, var(--bg) 40%, #f1efe8 100%);
+  overflow-x: hidden;
+  transition: background-color 220ms ease, color 220ms ease;
+  line-height: 1.5;
+}
+
+body[data-theme="dark"] {
+  background: radial-gradient(circle at 10% 10%, #1e293b 0%, #0f172a 42%, #020617 100%);
+}
+
+a {
+  color: var(--teal);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+/* ---------- Background Shapes ---------- */
+.bg-shape {
+  position: fixed;
+  z-index: -1;
+  filter: blur(1px);
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.bg-shape-a {
+  width: 340px;
+  height: 340px;
+  background: linear-gradient(140deg, #7dd3c7, #fcd34d);
+  border-radius: 48% 52% 58% 42% / 44% 45% 55% 56%;
+  top: -90px;
+  right: -90px;
+  animation: floatA 12s ease-in-out infinite;
+}
+
+.bg-shape-b {
+  width: 260px;
+  height: 260px;
+  background: linear-gradient(160deg, #f59e0b, #34d399);
+  border-radius: 63% 37% 40% 60% / 44% 56% 44% 56%;
+  bottom: -80px;
+  left: -80px;
+  animation: floatB 14s ease-in-out infinite;
+}
+
+/* ---------- App Layout ---------- */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ---------- Sidebar ---------- */
+.sidebar {
+  width: 260px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: 100;
+  transition: transform 300ms ease;
+}
+
+.sidebar-brand {
+  padding: 0 1.25rem 1.25rem;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 0.5rem;
+}
+
+.sidebar-brand h2 {
+  font-size: 1.1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--teal);
+}
+
+.sidebar-brand h2 .brand-icon {
+  font-size: 1.4rem;
+}
+
+.sidebar-nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.85rem;
+  border-radius: var(--radius-sm);
+  color: var(--ink);
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition: background var(--transition), color var(--transition);
+  text-decoration: none;
+}
+
+.sidebar-link:hover {
+  background: var(--sidebar-hover);
+  text-decoration: none;
+}
+
+.sidebar-link.active {
+  background: var(--sidebar-active);
+  color: var(--teal);
+  font-weight: 700;
+}
+
+.sidebar-link .nav-icon {
+  font-size: 1.15rem;
+  width: 1.5rem;
+  text-align: center;
+}
+
+.sidebar-footer {
+  border-top: 1px solid var(--line);
+  padding: 0.85rem 1rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  padding: 0.5rem 0.5rem;
+}
+
+.sidebar-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--teal-soft);
+  border: 2px solid var(--teal);
+  object-fit: cover;
+}
+
+.sidebar-user-info {
+  min-width: 0;
+}
+
+.sidebar-user-name {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar-user-email {
+  font-size: 0.72rem;
+  color: var(--muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ---------- Main Content Area ---------- */
+.main-content {
+  flex: 1;
+  margin-left: 260px;
+  padding: 1.5rem 2rem 2rem;
+  max-width: 1100px;
+}
+
+/* ---------- Page Header ---------- */
+.page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.page-header h1 {
+  font-size: clamp(1.4rem, 2.5vw, 2rem);
+  line-height: 1.2;
+}
+
+.page-header-actions {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+/* ---------- Typography ---------- */
+h1, h2, h3, h4 {
+  line-height: 1.25;
+}
+
+.text-muted {
+  color: var(--muted);
+}
+
+.text-teal {
+  color: var(--teal);
+}
+
+.text-sm {
+  font-size: 0.85rem;
+}
+
+/* ---------- Animations ---------- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes floatA {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50%      { transform: translate(-15px, 12px) rotate(6deg); }
+}
+
+@keyframes floatB {
+  0%, 100% { transform: translate(0, 0) rotate(0deg); }
+  50%      { transform: translate(16px, -10px) rotate(-5deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.5; }
+}
+
+.animate-rise  { animation: rise 500ms ease both; }
+.animate-fade  { animation: fadeIn 400ms ease both; }
+.animate-slide { animation: slideUp 500ms ease both; }
+
+/* ---------- Utility ---------- */
+.hidden { display: none !important; }
+
+.mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  border: 0;
+}
+
+/* ---------- Responsive ---------- */
+.sidebar-toggle {
+  display: none;
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  background: var(--paper);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.5rem 0.65rem;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--ink);
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    transform: translateX(-100%);
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
+
+  .sidebar-toggle {
+    display: block;
+  }
+
+  .sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--overlay);
+    z-index: 90;
+  }
+
+  .sidebar-overlay.open {
+    display: block;
+  }
+
+  .main-content {
+    margin-left: 0;
+    padding: 3.5rem 1rem 1.5rem;
+  }
+}

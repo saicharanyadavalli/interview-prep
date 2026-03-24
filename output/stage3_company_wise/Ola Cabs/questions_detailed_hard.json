@@ -1,0 +1,633 @@
+[
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1",
+      "problem_name": "Clone List with Next and Random",
+      "slug": "clone-a-linked-list-with-next-and-random-pointer",
+      "difficulty": "Hard",
+      "accuracy": "64.8%",
+      "marks": 8,
+      "all_submissions": 122561,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&head = ",
+        "datatype": "INTEGER&!//!&STRING_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "D-E-Shaw",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Walmart",
+          "Adobe",
+          "BankBazaar"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "D-E-Shaw",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Walmart",
+        "Adobe",
+        "BankBazaar"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/",
+        "https://www.geeksforgeeks.org/clone-linked-list-next-arbit-pointer-set-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/bankbazaar-com-interview-experience-set-7-senior-android-developer/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-2-android-1-5-years/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/"
+      ],
+      "statement_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.",
+      "full_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.\nExamples:\nInput:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.\nInput:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.\nInput:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.\nConstraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "examples": [
+        "Input:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.",
+        "Input:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.",
+        "Input:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a special linked list with&nbsp;<strong>n</strong>&nbsp;nodes where each node has two pointers a&nbsp;<strong>next pointer</strong>&nbsp;that points to the next node of the singly linked list, and a&nbsp;<strong>random pointer</strong>&nbsp;that points to the random node of the linked list.<br /></span></p>\n<p><span style=\"font-size: 14pt;\">Construct a&nbsp;<strong>copy</strong>&nbsp;of this linked list.&nbsp;The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state.&nbsp;None of the pointers in the new list should point to nodes in the original list.</span></p>\n<p><span style=\"font-size: 14pt;\">Return the&nbsp;<strong>head</strong>&nbsp;of the copied linked list.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>NOTE :&nbsp;</strong>Original linked list should remain unchanged.<br />Each node of the linked list is represented as a pair of [val, random_index] where:</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>val</strong> represents node.data.</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>random_index </strong>(1-based index) represents the index of the node that the random pointer of the current node points to, or <strong>NULL </strong>if it does not point to any node.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [3, 3], [5, NULL], [9, 3]] <br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid0_1756531264.jpg\" width=\"433\" height=\"147\" /><br /><strong>Output: </strong>[[1, 3], [3, 3], [5, NULL], [9, 3]]<strong>\nExplanation: </strong>\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5<strong> </strong>points to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<br /> &nbsp;<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid1_1756531275.jpg\" width=\"456\" height=\"133\" /><br /><strong>Output: </strong>[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<strong>\nExplanation: </strong>\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[7, NULL], [7, NULL]]<br /><strong>Output: </strong>head<strong> </strong>=<strong> </strong>[[7, NULL], [7, NULL]]<strong>\nExplanation: </strong>\nNode 7<strong> </strong>points to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &le; n &le; 100<br />0 &le; node-&gt;data &le; 1000</span></p>"
+    },
+    "qnum": 2005
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/convex-hull2138/1",
+      "problem_name": "Convex Hull",
+      "slug": "convex-hull2138",
+      "difficulty": "Hard",
+      "accuracy": "14.07%",
+      "marks": 8,
+      "all_submissions": 12649,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&points[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Samsung",
+          "Ola Cabs",
+          "Goldman Sachs",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Divide and Conquer",
+          "Geometric",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Divide and Conquer",
+        "Geometric",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Samsung",
+        "Ola Cabs",
+        "Goldman Sachs",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/quickhull-algorithm-convex-hull/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a 2D array\npoints[][]\n, where each element represents a point\n(x\ni\n, y\ni\n)\nin a\n2D plane\n. Your task is to find all the points that form the\nconvex hull\n— the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return\n-1\n.\nNote:\nConvex hull is the smallest\nconvex polygon\nthat contains a given set of points. It is the\nminimal boundary\nthat\nencloses\nall the points such that every line segment connecting any two points within the hull lies entirely\ninside\nor on the\nboundary\nof the polygon.\nYou can\nreturn\nthe points in any order, the driver code will print them in\nsorted order\nonly.",
+      "full_text": "You are given a 2D array\npoints[][]\n, where each element represents a point\n(x\ni\n, y\ni\n)\nin a\n2D plane\n. Your task is to find all the points that form the\nconvex hull\n— the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return\n-1\n.\nNote:\nConvex hull is the smallest\nconvex polygon\nthat contains a given set of points. It is the\nminimal boundary\nthat\nencloses\nall the points such that every line segment connecting any two points within the hull lies entirely\ninside\nor on the\nboundary\nof the polygon.\nYou can\nreturn\nthe points in any order, the driver code will print them in\nsorted order\nonly.\nExamples:\nInput:\npoints[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],\n[-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\nOutput:\n[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]\nExplanation:\nThe figure below shows the points of a convex polygon. These points define the boundary of the polygon.\nInput:\npoints[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\nOutput:\n[[-2, 1], [1, -2], [4, 4]]\nConstraints:\n1 <= points.size() <= 10\n4\n-10\n5\n<= x\ni\n, y\ni\n<= 10\n5",
+      "examples": [
+        "Input:\npoints[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],\n[-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\nOutput:\n[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]\nExplanation:\nThe figure below shows the points of a convex polygon. These points define the boundary of the polygon.",
+        "Input:\npoints[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\nOutput:\n[[-2, 1], [1, -2], [4, 4]]"
+      ],
+      "constraints_text": "Constraints:\n1 <= points.size() <= 10\n4\n-10\n5\n<= x\ni\n, y\ni\n<= 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a 2D array<strong> points[][]</strong>, where each element represents a point <strong>(x<sub>i</sub> , y<sub>i</sub>) </strong>in a <strong>2D plane</strong>. Your task is to find all the points that form the <strong>convex hull</strong> &mdash; the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> Convex hull is the smallest <strong>convex polygon</strong> that contains a given set of points. It is the <strong>minimal boundary</strong> that <strong>encloses</strong> all the points such that every line segment connecting any two points within the hull lies entirely <strong>inside </strong>or on the <strong>boundary</strong> of the polygon.</span></p>\n<p><span style=\"font-size: 14pt;\">You can <strong>return</strong> the points in any order, the driver code will print them in <strong>sorted order </strong>only.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>points[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],<br />                   [-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\n<strong>Output: </strong>[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]<br /><strong>Explanation:</strong> The figure below shows the points of a convex polygon. These points define the boundary of the polygon.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/893675/Web/Other/blobid0_1746091555.jpg\" width=\"410\" height=\"362\" /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>points[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\n<strong>Output: </strong>[[-2, 1], [1, -2], [4, 4]]<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= points.size() &lt;= 10<sup>4</sup><br />-10<sup>5</sup> &lt;= x<sub>i</sub> , y<sub>i</sub> &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2006
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/distinct-palindromic-substrings5141/1",
+      "problem_name": "Distinct palindromic substrings",
+      "slug": "distinct-palindromic-substrings5141",
+      "difficulty": "Hard",
+      "accuracy": "39.92%",
+      "marks": 8,
+      "all_submissions": 26482,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "MakeMyTrip",
+          "Ola Cabs",
+          "SAP Labs",
+          "Linkedin"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "palindrome",
+          "STL",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "palindrome",
+        "STL",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "MakeMyTrip",
+        "Ola Cabs",
+        "SAP Labs",
+        "Linkedin"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-number-distinct-palindromic-sub-strings-given-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-7-on-campus/"
+      ],
+      "statement_text": "Given a string s of lowercase English letters. The task is to find all the distinct continuous palindromic sub-strings which are present in the string s.\n\nNote: You can return the Palindromic sub-strings in any order but the driver code will print the result in sorted order.\n\nExamples:\n\nInput: s = \"abaaa\"\nOutput: [\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\nExplanation: All 5 distinct continuous palindromic sub-strings are listed above.\n\nInput: s = \"geek\"\nOutput: [\"e\", \"ee\", \"g\", \"k\"]\nExplanation: All 4 distinct continuous palindromic sub-strings are listed above.\n\nConstraints:\n1 ≤ s.length() ≤ 104",
+      "full_text": "Given a string s of lowercase English letters. The task is to find all the distinct continuous palindromic sub-strings which are present in the string s.\n\nNote: You can return the Palindromic sub-strings in any order but the driver code will print the result in sorted order.\n\nExamples:\n\nInput: s = \"abaaa\"\nOutput: [\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\nExplanation: All 5 distinct continuous palindromic sub-strings are listed above.\n\nInput: s = \"geek\"\nOutput: [\"e\", \"ee\", \"g\", \"k\"]\nExplanation: All 4 distinct continuous palindromic sub-strings are listed above.\n\nConstraints:\n1 ≤ s.length() ≤ 104",
+      "examples": [
+        "Input:\ns = \"abaaa\"\nOutput:\n[\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\nExplanation:\nAll 5 distinct continuous palindromic sub-strings are listed above.",
+        "Input:\ns = \"geek\"\nOutput:\n[\"e\", \"ee\", \"g\", \"k\"]\nExplanation:\nAll 4 distinct continuous palindromic sub-strings are listed above."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ s.length() ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">Given a string </span><strong style=\"font-size: 18px;\">s</strong><span style=\"font-size: 18px;\"> of lowercase English letters. The task is to find all the&nbsp;</span><strong style=\"font-size: 18px;\">distinct </strong><span style=\"font-size: 18px;\">continuous </span><strong style=\"font-size: 18px;\">palindromic sub-strings</strong><span style=\"font-size: 18px;\"> which are present in the string </span><strong style=\"font-size: 18px;\">s</strong><span style=\"font-size: 18px;\">.</span></span></p>\n<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\"><strong>Note:</strong> You can return the Palindromic sub-strings in any order but the driver code will print the result in <strong>sorted</strong> order.</span></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> s = \"abaaa\"\n<strong>Output:</strong> [\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\n<strong>Explanation:</strong> All 5 distinct continuous palindromic sub-strings are listed above.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"geek\"\n<strong>Output:</strong> [\"e\", \"ee\", \"g\", \"k\"]\n<strong>Explanation:</strong> All 4 distinct continuous palindromic sub-strings are listed above.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints</strong>:<br />1 &le; s.length() &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2007
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lru-cache/1",
+      "problem_name": "LRU Cache",
+      "slug": "lru-cache",
+      "difficulty": "Hard",
+      "accuracy": "18.44%",
+      "marks": 8,
+      "all_submissions": 192488,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "capacity =&!//!&Q =&!//!&Queries =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "Yahoo"
+        ],
+        "topic_tags": [
+          "doubly-linked-list",
+          "Hash",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "doubly-linked-list",
+        "Hash",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "Yahoo"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/design-a-data-structure-for-lru-cache/",
+        "https://www.geeksforgeeks.org/lru-cache-implementation-using-double-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-7-3-5-years-experienced/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-interview-questions/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-21/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.",
+      "full_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.\nExamples:\nInput:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.\nInput:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.\nConstraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "examples": [
+        "Input:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.",
+        "Input:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Design a data structure that works like a LRU Cache. Here&nbsp;<strong>cap</strong>&nbsp;denotes&nbsp;the capacity of the cache and&nbsp;<strong>Q</strong>&nbsp;denotes the number of queries. Query can be&nbsp;</span><span style=\"font-size: 18px;\">of two types:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>PUT</strong>&nbsp;<strong>x</strong>&nbsp;<strong>y</strong>: sets the value of the key&nbsp;<strong>x</strong>&nbsp;with value&nbsp;<strong>y</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>GET</strong>&nbsp;<strong>x</strong>: gets the value of key <strong>x</strong>&nbsp;if present else returns&nbsp;<strong>-1</strong>.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\">The LRUCache class has two methods&nbsp;<strong>get</strong>() and&nbsp;<strong>put</strong>() which are defined as follows.</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>get(key)</strong>: returns the value of the key if it&nbsp;already exists in the cache otherwise returns&nbsp;<strong>-1.</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>put(key, value)</strong>: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.</span></li>\n<li><span style=\"font-size: 18px;\">In the&nbsp;<strong>constructor</strong>&nbsp;of the class the capacity of the cache should be initialized.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\n<strong>Output: </strong>[2]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]<br /><strong>Output: </strong>[5, -1]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1-&gt;2, 2-&gt;3(the most recently used one is kept at the rightmost position)&nbsp;\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -&gt; 3, 1 -&gt; 5\n[\"PUT\", 4, 5] : 1 -&gt; 5, 4 -&gt; 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -&gt; 5, 6 -&gt; 7&nbsp;\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -&gt; 7, 4-&gt;5)\n[\"PUT\", 1, 2] : 4 -&gt; 5, 1 -&gt; 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; cap &le; 10<sup>3</sup><br />1 &le; Q &le; 10<sup>5</sup><br />1 &le; x, y &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2008
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/min-distance-between-two-given-nodes-of-a-binary-tree/1",
+      "problem_name": "Min distance between two given nodes of a Binary Tree",
+      "slug": "min-distance-between-two-given-nodes-of-a-binary-tree",
+      "difficulty": "Hard",
+      "accuracy": "39.13%",
+      "marks": 8,
+      "all_submissions": 133246,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] = &!//!&a = &!//!&b = ",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Samsung",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Linkedin",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Samsung",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Linkedin",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-distance-between-two-nodes-of-a-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-8-experienced/",
+        "https://www.geeksforgeeks.org/samsung-research-institute-bangalore-srib-intern/",
+        "https://www.geeksforgeeks.org/samsung-r-d-banglore-intern-interview-experience/",
+        "https://www.geeksforgeeks.org/samsung-bangalore-internship-interview-experience-2018/",
+        "https://www.geeksforgeeks.org/samsung-r-d-bangalore-internship-experience-2018/",
+        "https://www.geeksforgeeks.org/samsung-srib-internship-interview-experience-august-2018/"
+      ],
+      "statement_text": "Given a binary tree with n nodes and two node values, a and b, your task is to find the minimum distance between them. The given two nodes are guaranteed to be in the binary tree and all node values are unique.\n\nExamples :\n\nInput: Tree = [1, 2, 3]\n        1\n      /  \\\n     2    3\na = 2, b = 3\nOutput: 2\nExplanation: We need the distance between 2 and 3. Being at node 2, we need to take two steps ahead in order to reach node 3. The path followed will be: 2 -> 1 -> 3. Hence, the result is 2.\n\nInput: Tree = [11, 22, 33, 44, 55, 66, 77]\n        11\n      /   \\\n     22  33\n    /  \\  /  \\\n  44 55 66 77\na = 77, b = 22\nOutput: 3\nExplanation: We need the distance between 77 and 22. Being at node 77, we need to take three steps ahead in order to reach node 22. The path followed will be: 77 -> 33 -> 11 -> 22. Hence, the result is 3.\n\nInput: Tree = [1, 2, 3]\n        1\n      /  \\\n     2    3\na = 1, b = 3\nOutput: 1\n\nConstraints:\n2 <= number of nodes <= 105",
+      "full_text": "Given a binary tree with n nodes and two node values, a and b, your task is to find the minimum distance between them. The given two nodes are guaranteed to be in the binary tree and all node values are unique.\n\nExamples :\n\nInput: Tree = [1, 2, 3]\n        1\n      /  \\\n     2    3\na = 2, b = 3\nOutput: 2\nExplanation: We need the distance between 2 and 3. Being at node 2, we need to take two steps ahead in order to reach node 3. The path followed will be: 2 -> 1 -> 3. Hence, the result is 2.\n\nInput: Tree = [11, 22, 33, 44, 55, 66, 77]\n        11\n      /   \\\n     22  33\n    /  \\  /  \\\n  44 55 66 77\na = 77, b = 22\nOutput: 3\nExplanation: We need the distance between 77 and 22. Being at node 77, we need to take three steps ahead in order to reach node 22. The path followed will be: 77 -> 33 -> 11 -> 22. Hence, the result is 3.\n\nInput: Tree = [1, 2, 3]\n        1\n      /  \\\n     2    3\na = 1, b = 3\nOutput: 1\n\nConstraints:\n2 <= number of nodes <= 105",
+      "examples": [
+        "Input:\nTree = [1, 2, 3]\n1\n/  \\\n2    3\na = 2, b = 3\nOutput:\n2\nExplanation:\nWe need the distance between 2 and 3. Being at node 2, we need to take two steps ahead in order to reach node 3. The path followed will be: 2 -> 1 -> 3. Hence, the result is 2.",
+        "Input:\nTree = [11, 22, 33, 44, 55, 66, 77]\n11\n/   \\\n22  33\n/  \\  /  \\\n44 55 66 77\na = 77, b = 22\nOutput:\n3\nExplanation:\nWe need the distance between 77 and 22. Being at node 77, we need to take three steps ahead in order to reach node 22. The path followed will be: 77 -> 33 -> 11 -> 22. Hence, the result is 3.",
+        "Input:\nTree = [1, 2, 3]\n1\n/  \\\n2    3\na = 1, b = 3\nOutput:\n1"
+      ],
+      "constraints_text": "Constraints:\n2 <= number of nodes <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree with <strong>n</strong> nodes and two node values, <strong>a</strong> and <strong>b</strong>, your task is to find the minimum distance between them. The given two nodes are guaranteed to be in the binary tree and all node values are <strong>unique</strong>.<br /></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>Tree = [1, 2, 3]<strong>\n&nbsp;       </strong>1\n&nbsp;     /  \\\n&nbsp;    2    3\na = 2, b = 3\n<strong>Output: </strong>2<strong>\nExplanation: </strong>We need the distance between 2 and 3. Being at node 2, we need to take two steps ahead in order to reach node 3. The path followed will be: 2 -&gt; 1 -&gt; 3. Hence, the result is 2. </span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>Tree = [11, 22, 33, 44, 55, 66, 77]<strong>\n&nbsp;       </strong>11\n&nbsp;     /   \\\n&nbsp;    22  33<br />    /  \\  /  \\<br />  44 55 66 77\na = 77, b = 22\n<strong>Output: </strong>3<strong>\nExplanation: </strong>We need the distance between 77 and 22. Being at node 77, we need to take three steps ahead in order to reach node 22. The path followed will be: 77 -&gt; 33 -&gt; 11 -&gt; 22. Hence, the result is 3.<br /></span></pre>\n<pre><strong>Input: </strong>Tree = [1, 2, 3]<strong>\n&nbsp;       </strong>1\n&nbsp;     /  \\\n&nbsp;    2    3\na = 1, b = 3\n<strong>Output: </strong>1</pre>\n<p dir=\"ltr\"><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />2 &lt;= number of nodes &lt;= 10<sup>5</sup><br /></span></p>"
+    },
+    "qnum": 2009
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/nodes-at-given-distance-in-binary-tree/1",
+      "problem_name": "Nodes at given distance in binary tree",
+      "slug": "nodes-at-given-distance-in-binary-tree",
+      "difficulty": "Hard",
+      "accuracy": "32.36%",
+      "marks": 8,
+      "all_submissions": 88210,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] =&!//!&target =&!//!&k =",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Hike",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Hike",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/samsung-rnd-bangalore-interview-2018/"
+      ],
+      "statement_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "full_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5], target = 2, k = 2\nOutput:\n[3]\nExplanation:\nNodes at a distance 2 from the given node 2 is 3.",
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\nOutput:\n[1, 6, 7]\nExplanation:\nNodes at a distance 1 from the given target node 3 are 1, 6 & 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n6\n1 ≤  node->data ≤ 10\n9\n1 ≤ target ≤ 10\n9\n1 ≤ k ≤ 20",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.<br /><strong>Note</strong>: </span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">You have to return the list in sorted order.</span></li>\n<li><span style=\"font-size: 18px;\">The tree will <strong>not </strong>contain <strong>duplicate </strong>values.</span></li>\n</ul>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [1, 2, 3, 4, 5], target = 2, k = 2   \n</span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid0_1733895958.png\" width=\"317\" height=\"283\" />\n<span style=\"font-size: 18px;\"><strong>Output:</strong> [3]</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>Nodes at a distance 2 from the given node 2 is 3.</span>\n</pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid1_1733896181.png\" width=\"324\" height=\"289\" />\n</span><span style=\"font-size: 18px;\"><span style=\"font-size: 14pt;\"><strong>Output:</strong> [1, 6, 7]<br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation:</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> Nodes at a distance 1 from the given target node 3 are 1, 6 &amp; 7.</span></span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>6</sup><br />1 &le;&nbsp; node-&gt;data &le; 10<sup>9</sup><br />1 &le; target &le; 10<sup>9</sup><br />1 &le; k &le; 20</span></p>"
+    },
+    "qnum": 2010
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-palindrome-sub-strings-of-a-string0652/1",
+      "problem_name": "Palindrome SubStrings",
+      "slug": "count-palindrome-sub-strings-of-a-string0652",
+      "difficulty": "Hard",
+      "accuracy": "45.8%",
+      "marks": 8,
+      "all_submissions": 59031,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Ola Cabs",
+          "SAP Labs",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Ola Cabs",
+        "SAP Labs",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-palindrome-sub-strings-string-set-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/"
+      ],
+      "statement_text": "Given a string s, count all palindromic sub-strings present in the string. The length of the palindromic sub-string must be greater than or equal to 2.\n\nNote: A substring is palindromic if it reads the same forwards and backwards.\n\nExamples:\n\nInput: s = \"abaab\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".\n\nInput: s = \"aaa\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".\n\nInput: s = \"abbaeae\"\nOutput: 4\nExplanation: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\".\n\nConstraints:\n2 ≤ s.size() ≤ 5 * 103\ns contains only lowercase english characters",
+      "full_text": "Given a string s, count all palindromic sub-strings present in the string. The length of the palindromic sub-string must be greater than or equal to 2.\n\nNote: A substring is palindromic if it reads the same forwards and backwards.\n\nExamples:\n\nInput: s = \"abaab\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".\n\nInput: s = \"aaa\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".\n\nInput: s = \"abbaeae\"\nOutput: 4\nExplanation: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\".\n\nConstraints:\n2 ≤ s.size() ≤ 5 * 103\ns contains only lowercase english characters",
+      "examples": [
+        "Input:\ns = \"abaab\"\nOutput:\n3\nExplanation\n: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".",
+        "Input:\ns = \"aaa\"\nOutput:\n3\nExplanation\n: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".",
+        "Input:\ns = \"abbaeae\"\nOutput:\n4\nExplanation\n: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\"."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ s.size() ≤ 5 * 10\n3\ns contains only lowercase english characters",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string <strong>s</strong>, count all palindromic sub-strings present in the string. The length of the <strong>palindromic sub-string</strong> must be greater than or equal to <strong>2</strong>.<br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Note:&nbsp;</span></strong><span style=\"font-size: 18px;\">A substring is palindromic if it reads the same forwards and backwards.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"abaab\"\n<strong>Output: </strong>3\n<strong>Explanation</strong>: All palindromic substrings (of length &gt; 1) are: \"aba\", \"aa\", \"baab\".<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"aaa\"\n<strong>Output: </strong>3\n<strong>Explanation</strong>: All palindromic substrings (of length &gt; 1) are: \"aa\", \"aa\", \"aaa\".</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">s = \"abbaeae\"\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">4\n</span><strong style=\"font-size: 18px;\">Explanation</strong><span style=\"font-size: 18px;\">: All palindromic substrings (of length &gt; 1) are: \"bb\", \"abba\", \"aea\", \"eae\".</span></span></pre>\n<p style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: medium; white-space: normal;\"><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br /></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18.6667px;\">2 &le; s.size() &le; 5 * 10</span><sup>3</sup><br /></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18.6667px;\">s contains only lowercase english characters</span></span></p>"
+    },
+    "qnum": 2011
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/solve-the-sudoku-1587115621/1",
+      "problem_name": "Solve the Sudoku",
+      "slug": "solve-the-sudoku-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "37.98%",
+      "marks": 8,
+      "all_submissions": 133894,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "mat[][] =",
+        "datatype": "INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "MAQ Software",
+          "Directi",
+          "PayPal",
+          "Samsung",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Backtracking",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Backtracking",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "MAQ Software",
+        "Directi",
+        "PayPal",
+        "Samsung",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sudoku-backtracking-7/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-8-for-sde-2/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-sde-1-2/"
+      ],
+      "statement_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.",
+      "full_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.\nExamples:\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nConstraints:\n0 ≤ mat[i][j] ≤ 9",
+      "examples": [
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.",
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers."
+      ],
+      "constraints_text": "Constraints:\n0 ≤ mat[i][j] ≤ 9",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">Given an&nbsp;incomplete&nbsp;</span><a style=\"font-size: 18px;\" href=\"https://www.geeksforgeeks.org/introduction-to-sudoku-puzzles-and-how-to-solve-them/\"><strong>Sudoku</strong></a><span style=\"font-size: 18px;\">&nbsp;in the form of matrix <strong>mat[][]</strong> of order 9*9, the task is to solve the Sudoku.&nbsp;</span></span><span style=\"font-size: 18px;\">It is <strong>guaranteed </strong>that the input Sudoku will have exactly <strong>one </strong>solution.</span></p>\n<p><span style=\"font-size: 18px;\">A sudoku solution must satisfy&nbsp;all of the following rules:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each row.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each column.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code> must occur exactly once in each of the 9,&nbsp;<code>3x3</code>&nbsp;sub-boxes of the grid.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Zeros represent blanks to be filled with numbers 1-9, while non-zero cells are <strong>fixed </strong>and cannot be changed.</span><span style=\"font-size: 18px;\"><br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306620.png\" alt=\"\" width=\"260\" height=\"212\" />\n</span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\">\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /></span><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886267/Web/Other/blobid1_1738136756.png\" alt=\"\" width=\"262\" height=\"209\" /><br /></span><strong style=\"font-size: 18px;\">Output:</strong><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &le; mat[i][j] &le; 9<br /></span></p>"
+    },
+    "qnum": 2012
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/wildcard-string-matching1126/1",
+      "problem_name": "Wildcard string matching",
+      "slug": "wildcard-string-matching1126",
+      "difficulty": "Hard",
+      "accuracy": "23.88%",
+      "marks": 8,
+      "all_submissions": 66068,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/wildcard-character-matching/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-6-for-sde-1/"
+      ],
+      "statement_text": "Given two strings\nwild\nand\npattern\n. Determine if the given two strings can be matched given that,\nwil\nd\nstring may contain\n*\nand\n?\nbut string\npattern\nwill not. *\nand\n?\ncan be converted to another character according to the following rules:\n* --> This character in string wild can be replaced by any sequence of characters, it can also be replaced by an empty string.\n? --> This character in string wild can be replaced by any one character.\nExample 1:\nInput:\nwild = ge*ks\npattern = geeks\nOutput:\nYes\nExplanation:\nReplace the '*' in wild string\nwith 'e' to obtain pattern \"geeks\".\nExample 2:\nInput:\nwild =\nge?ks*\npattern = geeksforgeeks\nOutput:\nYes\nExplanation:\nReplace '?' and '*' in wild string with\n'e' and 'forgeeks' respectively to obtain pattern\n\"geeksforgeeks\"\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmatch()\nwhich takes\nthe string\nwild\nand\npattern\nas input parameters and returns\ntrue\nif the string\nwild\ncan be made equal to the string\npattern\n, otherwise, returns\nfalse\n.\nExpected Time Complexity:\nO(length of wild string * length of pattern string)\nExpected Auxiliary Space:\nO(length of wild string * length of pattern string)",
+      "full_text": "Given two strings\nwild\nand\npattern\n. Determine if the given two strings can be matched given that,\nwil\nd\nstring may contain\n*\nand\n?\nbut string\npattern\nwill not. *\nand\n?\ncan be converted to another character according to the following rules:\n* --> This character in string wild can be replaced by any sequence of characters, it can also be replaced by an empty string.\n? --> This character in string wild can be replaced by any one character.\nExample 1:\nInput:\nwild = ge*ks\npattern = geeks\nOutput:\nYes\nExplanation:\nReplace the '*' in wild string\nwith 'e' to obtain pattern \"geeks\".\nExample 2:\nInput:\nwild =\nge?ks*\npattern = geeksforgeeks\nOutput:\nYes\nExplanation:\nReplace '?' and '*' in wild string with\n'e' and 'forgeeks' respectively to obtain pattern\n\"geeksforgeeks\"\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmatch()\nwhich takes\nthe string\nwild\nand\npattern\nas input parameters and returns\ntrue\nif the string\nwild\ncan be made equal to the string\npattern\n, otherwise, returns\nfalse\n.\nExpected Time Complexity:\nO(length of wild string * length of pattern string)\nExpected Auxiliary Space:\nO(length of wild string * length of pattern string)\nConstraints:\n1 <= length of the two string <= 10^3",
+      "examples": [
+        "* --> This character in string wild can be replaced by any sequence of characters, it can also be replaced by an empty string.\n? --> This character in string wild can be replaced by any one character.",
+        "Input:\nwild = ge*ks\npattern = geeks\nOutput:\nYes\nExplanation:\nReplace the '*' in wild string\nwith 'e' to obtain pattern \"geeks\".",
+        "Input:\nwild =\nge?ks*\npattern = geeksforgeeks\nOutput:\nYes\nExplanation:\nReplace '?' and '*' in wild string with\n'e' and 'forgeeks' respectively to obtain pattern\n\"geeksforgeeks\""
+      ],
+      "constraints_text": "Constraints:\n1 <= length of the two string <= 10^3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two strings <strong>wild</strong> and <strong>pattern</strong>. Determine if the given two strings can be matched given that, <strong>wil</strong><strong>d</strong> string may contain <strong>*</strong> and <strong>?</strong> but string <strong>pattern </strong>will not.&nbsp;*<strong>&nbsp;</strong>and <strong>?</strong> can be converted to another character according to the following rules:</span></p>\n<pre><span style=\"font-size: 18px;\">* --&gt; This character in string wild can be replaced by any sequence of characters, it can also be replaced by an empty string.\n? --&gt; This character in string wild can be replaced by any one character.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong>wild = ge*ks<br />pattern = geeks\n<strong>Output: </strong>Yes\n<strong>Explanation:</strong> Replace the '*' in wild string \nwith 'e' to obtain pattern \"geeks\".</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong>wild =<strong> </strong>ge?ks*<br />pattern = geeksforgeeks\n<strong>Output:</strong> Yes\n<strong>Explanation:</strong> Replace '?' and '*' in wild string with\n'e' and 'forgeeks' respectively to obtain pattern \n\"geeksforgeeks\"\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read&nbsp;input or print anything. Your task is to&nbsp;complete the function <strong>match() </strong>which takes<strong>&nbsp;</strong>the string <strong>wild</strong> and <strong>pattern</strong> as input parameters and returns <strong>true</strong> if the string <strong>wild </strong>can be made equal to the string <strong>pattern</strong>, otherwise, returns&nbsp;<strong>false</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(length of wild string *&nbsp;length of pattern string)<br /><strong>Expected Auxiliary Space:</strong> O(length of wild string *&nbsp;length of pattern string)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= length of the two string &lt;= 10^3</span><span style=\"font-size: 18px;\">&nbsp;</span></p>"
+    },
+    "qnum": 2013
+  }
+]

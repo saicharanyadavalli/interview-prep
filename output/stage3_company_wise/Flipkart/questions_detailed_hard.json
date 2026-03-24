@@ -1,0 +1,1450 @@
+[
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/alien-dictionary/1",
+      "problem_name": "Alien Dictionary",
+      "slug": "alien-dictionary",
+      "difficulty": "Hard",
+      "accuracy": "47.81%",
+      "marks": 8,
+      "all_submissions": 231402,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "words[] = ",
+        "datatype": "STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Walmart",
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Sorting",
+          "Graph",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Sorting",
+        "Graph",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Walmart",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-sorted-dictionary-find-precedence-characters/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-9-off-campus/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-sde-1-6-months-internship-on-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-2-sde-2/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-2/"
+      ],
+      "statement_text": "A new alien language uses the English alphabet, but the order of letters is unknown. You are given a list of words[] from the alien language’s dictionary, where the words are claimed to be sorted lexicographically according to the language’s rules.\n\nYour task is to determine the correct order of letters in this alien language based on the given words. If the order is valid, return a string containing the unique letters in lexicographically increasing order as per the new language's rules. If there are multiple valid orders, return any one of them.\n\nHowever, if the given arrangement of words is inconsistent with any possible letter ordering, return an empty string (\"\").\n\nA string a is lexicographically smaller than a string b if, at the first position where they differ, the character in a appears earlier in the alien language than the corresponding character in b. If all characters in the shorter word match the beginning of the longer word, the shorter word is considered smaller.\n\nNote: Your implementation will be tested using a driver code. It will print true if your returned order correctly follows the alien language’s lexicographic rules; otherwise, it will print false.\n\nExamples:\n\nInput: words[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"bdac\".\nThe pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' → 'd' → 'a' → 'c' is a valid ordering.\n\nInput: words[] = [\"caa\", \"aaa\", \"aab\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"cab\".\nThe pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.\nThe pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary.\nSo, 'c' → 'a' → 'b' is a valid ordering.\n\nInput: words[] = [\"ab\", \"cd\", \"ef\", \"ad\"]\nOutput: \"\"\nExplanation: No valid ordering of letters is possible.\nThe pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".\nThe pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules.\n\nConstraints:\n1 ≤ words.length ≤ 500\n1 ≤ words[i].length ≤ 100\nwords[i] consists only of lowercase English letters.",
+      "full_text": "A new alien language uses the English alphabet, but the order of letters is unknown. You are given a list of words[] from the alien language’s dictionary, where the words are claimed to be sorted lexicographically according to the language’s rules.\n\nYour task is to determine the correct order of letters in this alien language based on the given words. If the order is valid, return a string containing the unique letters in lexicographically increasing order as per the new language's rules. If there are multiple valid orders, return any one of them.\n\nHowever, if the given arrangement of words is inconsistent with any possible letter ordering, return an empty string (\"\").\n\nA string a is lexicographically smaller than a string b if, at the first position where they differ, the character in a appears earlier in the alien language than the corresponding character in b. If all characters in the shorter word match the beginning of the longer word, the shorter word is considered smaller.\n\nNote: Your implementation will be tested using a driver code. It will print true if your returned order correctly follows the alien language’s lexicographic rules; otherwise, it will print false.\n\nExamples:\n\nInput: words[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"bdac\".\nThe pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' → 'd' → 'a' → 'c' is a valid ordering.\n\nInput: words[] = [\"caa\", \"aaa\", \"aab\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"cab\".\nThe pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.\nThe pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary.\nSo, 'c' → 'a' → 'b' is a valid ordering.\n\nInput: words[] = [\"ab\", \"cd\", \"ef\", \"ad\"]\nOutput: \"\"\nExplanation: No valid ordering of letters is possible.\nThe pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".\nThe pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules.\n\nConstraints:\n1 ≤ words.length ≤ 500\n1 ≤ words[i].length ≤ 100\nwords[i] consists only of lowercase English letters.",
+      "examples": [
+        "Input:\nwords[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]\nOutput:\ntrue\nExplanation:\nA possible corrct order of letters in the alien dictionary is \"bdac\".\nThe pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' → 'd' → 'a' → 'c' is a valid ordering.",
+        "Input:\nwords[] = [\"caa\", \"aaa\", \"aab\"]\nOutput:\ntrue\nExplanation:\nA possible corrct order of letters in the alien dictionary is \"cab\".\nThe pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.\nThe pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary.\nSo, 'c' → 'a' → 'b' is a valid ordering.",
+        "Input:\nwords[] = [\"ab\", \"cd\", \"ef\", \"ad\"]\nOutput:\n\"\"\nExplanation:\nNo valid ordering of letters is possible.\nThe pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".\nThe pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules."
+      ],
+      "constraints_text": "Constraints:\n1\n≤\nwords.length\n≤\n500\n1\n≤\nwords[i].length\n≤\n100\nwords[i] consists only of lowercase English letters.",
+      "question_html": "<p><span style=\"font-size: 14pt;\">A new alien language uses the English alphabet, but the order of letters is unknown. You are given a list of <strong>words[] </strong>from the alien language&rsquo;s dictionary, where the words are claimed to be <strong>sorted lexicographically</strong> according to the language&rsquo;s rules.</span></p>\n<p><span style=\"font-size: 14pt;\">Your task is to determine<strong> the correct order of letters</strong> in this alien language based on the given words. If the order is valid, return a string containing the unique letters in lexicographically increasing order as per the new language's rules. If there are multiple valid orders, return any one of them.</span></p>\n<p><span style=\"font-size: 14pt;\">However, if the given arrangement of words is inconsistent with any possible letter ordering, return an empty string<strong> (\"\")</strong>.</span></p>\n<blockquote>\n<p><span style=\"font-size: 14pt;\">A string <strong>a</strong> is lexicographically smaller than a string <strong>b</strong> if, at the first position where they differ, the character in <strong>a</strong> appears earlier in the alien language than the corresponding character in <strong>b</strong>. If all characters in the shorter word match the beginning of the longer word, the shorter word is considered smaller.</span></p>\n</blockquote>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> Your implementation will be tested using a driver code. It will print <strong>true </strong>if your returned order correctly follows the alien language&rsquo;s lexicographic rules; otherwise, it will print <strong>false</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> words[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> true</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Explanation: </strong><span style=\"font-size: 14pt;\">A possible corrct order of letters in the alien dictionary is \"bdac\".<br /></span><span style=\"font-size: 18.6667px;\">The pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' &rarr; 'd' &rarr; 'a' &rarr; 'c' is a valid ordering.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>words[] = [\"caa\", \"aaa\", \"aab\"]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> true</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> A possible corrct order of letters in the alien dictionary is \"cab\".<br /></span><span style=\"font-size: 18.6667px;\">The pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.<br /></span></span><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\">The pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary. <br />So, 'c' &rarr; 'a' &rarr; 'b' is a valid ordering.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> words[] = [\"ab\", \"cd\", \"ef\", \"ad\"]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> \"\"</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> No valid ordering of letters is possible.<br /></span><span style=\"font-size: 14pt;\">The pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".<br />The pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 14pt;\">1&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\"> words.length&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\">&nbsp;500<br /></span><span style=\"font-size: 14pt;\">1&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\"> words[i].length&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\">&nbsp;100<br /></span><span style=\"font-size: 14pt;\">words[i] consists only of lowercase English letters.</span></p>"
+    },
+    "qnum": 1091
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/burning-tree/1",
+      "problem_name": "Burning Tree",
+      "slug": "burning-tree",
+      "difficulty": "Hard",
+      "accuracy": "53.53%",
+      "marks": 8,
+      "all_submissions": 134666,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = &!//!&target =",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Adobe",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Tree",
+          "BFS",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "BFS",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Adobe",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-time-to-burn-a-tree-starting-from-a-leaf-node/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-adobe-for-women/"
+      ],
+      "statement_text": "Given the root of a binary tree and a target node, determine the minimum time required to burn the entire tree if the target node is set on fire. In one second, the fire spreads from a node to its left child, right child, and parent.\n\nNote: The tree contains unique values.\n\nExamples :\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 2\n\nOutput: 3\nExplanation: Initially 2 is set to fire at 0 sec\nAt 1 sec: Nodes 4, 5, 1 catches fire.\nAt 2 sec: Node 3 catches fire.\nAt 3 sec: Nodes 6, 7 catches fire.\nIt takes 3s to burn the complete tree.\n\nInput: root = [1, 2, 3, 4, 5, N, 7, 8, N, N, 10], target = 10\n\nOutput: 5\nExplanation: Initially 10 is set to fire at 0 sec\nAt 1 sec: Node 5 catches fire.\nAt 2 sec: Node 2 catches fire.\nAt 3 sec: Nodes 1 and 4 catches fire.\nAt 4 sec: Node 3 and 8 catches fire.\nAt 5 sec: Node 7 catches fire.\nIt takes 5s to burn the complete tree.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "full_text": "Given the root of a binary tree and a target node, determine the minimum time required to burn the entire tree if the target node is set on fire. In one second, the fire spreads from a node to its left child, right child, and parent.\n\nNote: The tree contains unique values.\n\nExamples :\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 2\n\nOutput: 3\nExplanation: Initially 2 is set to fire at 0 sec\nAt 1 sec: Nodes 4, 5, 1 catches fire.\nAt 2 sec: Node 3 catches fire.\nAt 3 sec: Nodes 6, 7 catches fire.\nIt takes 3s to burn the complete tree.\n\nInput: root = [1, 2, 3, 4, 5, N, 7, 8, N, N, 10], target = 10\n\nOutput: 5\nExplanation: Initially 10 is set to fire at 0 sec\nAt 1 sec: Node 5 catches fire.\nAt 2 sec: Node 2 catches fire.\nAt 3 sec: Nodes 1 and 4 catches fire.\nAt 4 sec: Node 3 and 8 catches fire.\nAt 5 sec: Node 7 catches fire.\nIt takes 5s to burn the complete tree.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7], target = 2\nOutput:\n3\nExplanation:\nInitially 2 is set to fire at 0 sec\nAt 1 sec: Nodes 4, 5, 1 catches fire.\nAt 2 sec: Node 3 catches fire.\nAt 3 sec: Nodes 6, 7 catches fire.\nIt takes 3s to burn the complete tree.",
+        "Input:\nroot\n=\n[\n1\n,\n2\n,\n3\n,\n4\n,\n5\n,\nN\n,\n7\n,\n8\n, N,\nN,\n10\n]\n,\ntarget = 10\nOutput:\n5\nExplanation\n:\nInitially 10 is set to fire at 0 sec\nAt 1 sec: Node 5 catches fire.\nAt 2 sec: Node 2 catches fire.\nAt 3 sec: Nodes 1 and 4 catches fire.\nAt 4 sec: Node 3 and 8 catches fire.\nAt 5 sec: Node 7 catches fire.\nIt takes 5s to burn the complete tree."
+      ],
+      "constraints_text": "Constraints:\n1 ≤\nnumber of nodes\n≤ 10\n5\n1 ≤ node->data\n≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root </strong>of a binary tree and a <strong>target</strong> node, determine the <strong>minimum time</strong> required to burn the entire tree if the <strong>target </strong>node is set on fire. In one second, the fire spreads from a node to its left child, right child, and parent.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> The tree contains unique values.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples :&nbsp;</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, 4, 5, 6, 7], target = 2</span><strong style=\"font-size: 18px;\"><br /></strong><strong style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/702131/Web/Other/blobid0_1747048733.webp\" width=\"397\" height=\"253\" /> &nbsp;</strong></span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong> 3</span>\n<span style=\"font-size: 18px;\"><strong>Explanation:</strong> Initially 2 is set to fire at 0 sec <br />At 1 sec: Nodes 4, 5, 1 catches fire.<br />At 2 sec: Node 3 catches fire.<br />At 3 sec: Nodes 6, 7 catches fire.<br />It takes 3s to burn the complete tree.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> <span class=\"hljs-variable\">root </span><span class=\"hljs-operator\">=</span> <span class=\"hljs-punctuation\">[</span><span class=\"hljs-number\">1</span><span class=\"hljs-operator\">,</span> <span class=\"hljs-number\">2</span><span class=\"hljs-operator\">,</span> <span class=\"hljs-number\">3</span><span class=\"hljs-operator\">,</span> <span class=\"hljs-number\">4</span><span class=\"hljs-operator\">,</span> <span class=\"hljs-number\">5</span><span class=\"hljs-operator\">,</span> <span class=\"hljs-built_in\">N</span><span class=\"hljs-operator\">,</span> <span class=\"hljs-number\">7</span><span class=\"hljs-operator\">,</span> <span class=\"hljs-number\">8</span><span class=\"hljs-operator\">, N,</span><span class=\"hljs-operator\"> N,</span> <span class=\"hljs-number\">10</span><span class=\"hljs-punctuation\">]</span><span class=\"hljs-operator\">, </span>target = 10<br /></span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/702131/Web/Other/blobid1_1747048769.webp\" width=\"340\" height=\"306\" /><br /><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\"> 5<br /></span><strong style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation</strong><strong style=\"font-size: 18px;\">: </strong><span style=\"font-size: 18px;\">Initially 10 is set to fire at 0 sec </span><strong style=\"font-size: 18px;\"><br /></strong><span style=\"font-size: 18px;\">At 1 sec: Node 5 catches fire.\nAt 2 sec: Node 2 catches fire.\nAt 3 sec: Nodes 1 and 4 catches fire.\nAt 4 sec: Node 3 and 8 catches fire.\nAt 5 sec: Node 7 catches fire.\nIt takes 5s to burn the complete tree.</span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le;&nbsp;</span><span style=\"font-size: 18px;\">number of nodes</span><span style=\"font-size: 18px;\">&nbsp;&le; 10</span><sup>5<br /></sup><span style=\"font-size: 18px;\">1 &le; node-&gt;data</span><span style=\"font-size: 18px;\">&nbsp;&le; 10</span><sup>5</sup></p>"
+    },
+    "qnum": 1092
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/circle-of-strings4530/1",
+      "problem_name": "Circle of strings",
+      "slug": "circle-of-strings4530",
+      "difficulty": "Hard",
+      "accuracy": "15.56%",
+      "marks": 8,
+      "all_submissions": 94243,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Microsoft",
+          "FactSet"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Graph",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Graph",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Microsoft",
+        "FactSet"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-array-strings-can-chained-form-circle-set-2/",
+        "https://www.geeksforgeeks.org/given-array-strings-find-strings-can-chained-form-circle/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-4-on-campus/",
+        "https://www.geeksforgeeks.org/flipkart-internship-interview-on-campus/"
+      ],
+      "statement_text": "Given an array arr of lowercase strings, determine if the strings can be chained together to form a circle.\nA string X can be chained together with another string Y if the last character of X is the same as the first character of Y. If every string of the array can be chained with exactly two strings of the array(one with the first character and the second with the last character of the string), it will form a circle.\n\nFor example, for the array arr[] = {\"for\", \"geek\", \"rig\", \"kaf\"} the answer will be Yes as the given strings can be chained as \"for\", \"rig\", \"geek\" and \"kaf\"\n\nExamples\n\nInput: arr[] = [\"abc\", \"bcd\", \"cdf\"]\nOutput: 0\nExplaination: These strings can't form a circle because no string has 'd'at the starting index.\n\nInput: arr[] = [\"ab\" , \"bc\", \"cd\", \"da\"]\nOutput: 1\nExplaination: These strings can form a circle of strings.\n\nExpected Time Complexity: O(n)\nExpected Auxiliary Space: O(n)\n\nConstraints:\n1 ≤ length of strings ≤ 20",
+      "full_text": "Given an array arr of lowercase strings, determine if the strings can be chained together to form a circle.\nA string X can be chained together with another string Y if the last character of X is the same as the first character of Y. If every string of the array can be chained with exactly two strings of the array(one with the first character and the second with the last character of the string), it will form a circle.\n\nFor example, for the array arr[] = {\"for\", \"geek\", \"rig\", \"kaf\"} the answer will be Yes as the given strings can be chained as \"for\", \"rig\", \"geek\" and \"kaf\"\n\nExamples\n\nInput: arr[] = [\"abc\", \"bcd\", \"cdf\"]\nOutput: 0\nExplaination: These strings can't form a circle because no string has 'd'at the starting index.\n\nInput: arr[] = [\"ab\" , \"bc\", \"cd\", \"da\"]\nOutput: 1\nExplaination: These strings can form a circle of strings.\n\nExpected Time Complexity: O(n)\nExpected Auxiliary Space: O(n)\n\nConstraints:\n1 ≤ length of strings ≤ 20",
+      "examples": [
+        "Input:\narr[] = [\"abc\", \"bcd\", \"cdf\"]\nOutput:\n0\nExplaination:\nThese strings can't form a circle because no string has 'd'at the starting index.",
+        "Input:\narr[] = [\"ab\" , \"bc\", \"cd\", \"da\"]\nOutput:\n1\nExplaination:\nThese strings can form a circle of strings."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ length of strings ≤ 20",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr </strong>of lowercase strings, determine if the strings can be chained together to form a circle.<br />A string <strong>X </strong>can be chained together with another string <strong>Y </strong>if the last character of <strong>X </strong>is the same as the first character of <strong>Y. </strong>If every string of the array can be chained with exactly two strings of the array(one with the first character and the second with the last character of the string), it will form a circle.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>For example</strong>, for the array&nbsp;arr[] = {\"for\", \"geek\", \"rig\", \"kaf\"} the answer will be Yes as the given strings can be chained as&nbsp;\"for\", \"rig\", \"geek\"&nbsp;and \"kaf\"</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [\"abc\", \"bcd\", \"cdf\"]\n<strong>Output: </strong>0\n<strong>Explaination: </strong>These strings can't form a circle because no string has 'd'at the starting index.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [\"ab\" , \"bc\", \"cd\", \"da\"]\n<strong>Output: </strong>1\n<strong>Explaination: </strong>These strings can form a circle of strings.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n)<br /><strong>Expected Auxiliary Space:</strong> O(n)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong>&nbsp;<br />1 &le; length of strings &le; 20</span></p>"
+    },
+    "qnum": 1093
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1",
+      "problem_name": "Clone List with Next and Random",
+      "slug": "clone-a-linked-list-with-next-and-random-pointer",
+      "difficulty": "Hard",
+      "accuracy": "64.8%",
+      "marks": 8,
+      "all_submissions": 122561,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&head = ",
+        "datatype": "INTEGER&!//!&STRING_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "D-E-Shaw",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Walmart",
+          "Adobe",
+          "BankBazaar"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "D-E-Shaw",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Walmart",
+        "Adobe",
+        "BankBazaar"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/",
+        "https://www.geeksforgeeks.org/clone-linked-list-next-arbit-pointer-set-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/bankbazaar-com-interview-experience-set-7-senior-android-developer/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-2-android-1-5-years/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/"
+      ],
+      "statement_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.",
+      "full_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.\nExamples:\nInput:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.\nInput:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.\nInput:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.\nConstraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "examples": [
+        "Input:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.",
+        "Input:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.",
+        "Input:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a special linked list with&nbsp;<strong>n</strong>&nbsp;nodes where each node has two pointers a&nbsp;<strong>next pointer</strong>&nbsp;that points to the next node of the singly linked list, and a&nbsp;<strong>random pointer</strong>&nbsp;that points to the random node of the linked list.<br /></span></p>\n<p><span style=\"font-size: 14pt;\">Construct a&nbsp;<strong>copy</strong>&nbsp;of this linked list.&nbsp;The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state.&nbsp;None of the pointers in the new list should point to nodes in the original list.</span></p>\n<p><span style=\"font-size: 14pt;\">Return the&nbsp;<strong>head</strong>&nbsp;of the copied linked list.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>NOTE :&nbsp;</strong>Original linked list should remain unchanged.<br />Each node of the linked list is represented as a pair of [val, random_index] where:</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>val</strong> represents node.data.</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>random_index </strong>(1-based index) represents the index of the node that the random pointer of the current node points to, or <strong>NULL </strong>if it does not point to any node.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [3, 3], [5, NULL], [9, 3]] <br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid0_1756531264.jpg\" width=\"433\" height=\"147\" /><br /><strong>Output: </strong>[[1, 3], [3, 3], [5, NULL], [9, 3]]<strong>\nExplanation: </strong>\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5<strong> </strong>points to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<br /> &nbsp;<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid1_1756531275.jpg\" width=\"456\" height=\"133\" /><br /><strong>Output: </strong>[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<strong>\nExplanation: </strong>\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[7, NULL], [7, NULL]]<br /><strong>Output: </strong>head<strong> </strong>=<strong> </strong>[[7, NULL], [7, NULL]]<strong>\nExplanation: </strong>\nNode 7<strong> </strong>points to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &le; n &le; 100<br />0 &le; node-&gt;data &le; 1000</span></p>"
+    },
+    "qnum": 1094
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lru-cache/1",
+      "problem_name": "LRU Cache",
+      "slug": "lru-cache",
+      "difficulty": "Hard",
+      "accuracy": "18.44%",
+      "marks": 8,
+      "all_submissions": 192488,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "capacity =&!//!&Q =&!//!&Queries =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "Yahoo"
+        ],
+        "topic_tags": [
+          "doubly-linked-list",
+          "Hash",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "doubly-linked-list",
+        "Hash",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "Yahoo"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/design-a-data-structure-for-lru-cache/",
+        "https://www.geeksforgeeks.org/lru-cache-implementation-using-double-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-7-3-5-years-experienced/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-interview-questions/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-21/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.",
+      "full_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.\nExamples:\nInput:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.\nInput:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.\nConstraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "examples": [
+        "Input:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.",
+        "Input:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Design a data structure that works like a LRU Cache. Here&nbsp;<strong>cap</strong>&nbsp;denotes&nbsp;the capacity of the cache and&nbsp;<strong>Q</strong>&nbsp;denotes the number of queries. Query can be&nbsp;</span><span style=\"font-size: 18px;\">of two types:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>PUT</strong>&nbsp;<strong>x</strong>&nbsp;<strong>y</strong>: sets the value of the key&nbsp;<strong>x</strong>&nbsp;with value&nbsp;<strong>y</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>GET</strong>&nbsp;<strong>x</strong>: gets the value of key <strong>x</strong>&nbsp;if present else returns&nbsp;<strong>-1</strong>.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\">The LRUCache class has two methods&nbsp;<strong>get</strong>() and&nbsp;<strong>put</strong>() which are defined as follows.</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>get(key)</strong>: returns the value of the key if it&nbsp;already exists in the cache otherwise returns&nbsp;<strong>-1.</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>put(key, value)</strong>: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.</span></li>\n<li><span style=\"font-size: 18px;\">In the&nbsp;<strong>constructor</strong>&nbsp;of the class the capacity of the cache should be initialized.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\n<strong>Output: </strong>[2]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]<br /><strong>Output: </strong>[5, -1]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1-&gt;2, 2-&gt;3(the most recently used one is kept at the rightmost position)&nbsp;\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -&gt; 3, 1 -&gt; 5\n[\"PUT\", 4, 5] : 1 -&gt; 5, 4 -&gt; 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -&gt; 5, 6 -&gt; 7&nbsp;\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -&gt; 7, 4-&gt;5)\n[\"PUT\", 1, 2] : 4 -&gt; 5, 1 -&gt; 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; cap &le; 10<sup>3</sup><br />1 &le; Q &le; 10<sup>5</sup><br />1 &le; x, y &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1095
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-of-minimum-for-every-window-size3453/1",
+      "problem_name": "Max of min for every window size",
+      "slug": "maximum-of-minimum-for-every-window-size3453",
+      "difficulty": "Hard",
+      "accuracy": "42.9%",
+      "marks": 8,
+      "all_submissions": 81988,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "sliding-window",
+          "Stack",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "sliding-window",
+        "Stack",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-maximum-of-minimums-for-every-window-size-in-a-given-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-384-campus-fte/"
+      ],
+      "statement_text": "You are given an integer array\narr[]\n, the\ntask is to find the\nmaximum of minimum values\nfor every window size\nk\nwhere\n1≤ k ≤ arr.size()\n.\nFor each window size\nk\n, consider all contiguous subarrays of length\nk\n, determine the minimum element in each subarray, and then take the maximum among all these minimums.\nReturn the results as an array, where the element at index\ni\nrepresents the answer for window size\ni+1\n.\nExamples :\nInput:\narr[] = [10, 20, 30, 50, 10, 70, 30]\nOutput:\n[70, 30, 20, 10, 10, 10, 10]\nExplanation:\nWindow size 1: minimums are [10, 20, 30, 50, 10, 70, 30], maximum of minimums is 70.\nWindow size 2: minimums are [10, 20, 30, 10, 10, 30], maximum of minimums is 30.\nWindow size 3: minimums are [10, 20, 10, 10, 10], maximum of minimums is 20.\nWindow size 4–7: minimums are [10, 10, 10, 10], maximum of minimums is 10.\nInput:\narr[] = [10, 20, 30]\nOutput:\n[30, 20, 10]\nExplanation:\nWindow size 1: minimums of  [10], [20], [30], maximum of minimums is 30.\nWindow size 2: minimums of [10, 20], [20,30], maximum of minimums is 20.\nWindow size 3: minimums of [10,20,30], maximum of minimums is 10.",
+      "full_text": "You are given an integer array\narr[]\n, the\ntask is to find the\nmaximum of minimum values\nfor every window size\nk\nwhere\n1≤ k ≤ arr.size()\n.\nFor each window size\nk\n, consider all contiguous subarrays of length\nk\n, determine the minimum element in each subarray, and then take the maximum among all these minimums.\nReturn the results as an array, where the element at index\ni\nrepresents the answer for window size\ni+1\n.\nExamples :\nInput:\narr[] = [10, 20, 30, 50, 10, 70, 30]\nOutput:\n[70, 30, 20, 10, 10, 10, 10]\nExplanation:\nWindow size 1: minimums are [10, 20, 30, 50, 10, 70, 30], maximum of minimums is 70.\nWindow size 2: minimums are [10, 20, 30, 10, 10, 30], maximum of minimums is 30.\nWindow size 3: minimums are [10, 20, 10, 10, 10], maximum of minimums is 20.\nWindow size 4–7: minimums are [10, 10, 10, 10], maximum of minimums is 10.\nInput:\narr[] = [10, 20, 30]\nOutput:\n[30, 20, 10]\nExplanation:\nWindow size 1: minimums of  [10], [20], [30], maximum of minimums is 30.\nWindow size 2: minimums of [10, 20], [20,30], maximum of minimums is 20.\nWindow size 3: minimums of [10,20,30], maximum of minimums is 10.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [10, 20, 30, 50, 10, 70, 30]\nOutput:\n[70, 30, 20, 10, 10, 10, 10]\nExplanation:\nWindow size 1: minimums are [10, 20, 30, 50, 10, 70, 30], maximum of minimums is 70.\nWindow size 2: minimums are [10, 20, 30, 10, 10, 30], maximum of minimums is 30.\nWindow size 3: minimums are [10, 20, 10, 10, 10], maximum of minimums is 20.\nWindow size 4–7: minimums are [10, 10, 10, 10], maximum of minimums is 10.",
+        "Input:\narr[] = [10, 20, 30]\nOutput:\n[30, 20, 10]\nExplanation:\nWindow size 1: minimums of  [10], [20], [30], maximum of minimums is 30.\nWindow size 2: minimums of [10, 20], [20,30], maximum of minimums is 20.\nWindow size 3: minimums of [10,20,30], maximum of minimums is 10."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an integer array <strong>arr[]</strong>, the&nbsp;<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">task is to find the </span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\" data-start=\"338\" data-end=\"367\">maximum of minimum values</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> for every window size <strong>k</strong> </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">where&nbsp;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><strong>1&le; k &le; arr.size()</strong>.</span></span></p>\n<p data-start=\"416\" data-end=\"592\"><span style=\"font-size: 14pt;\">For each window size<strong> k</strong>, consider all contiguous subarrays of length <strong>k</strong>, determine the minimum element in each subarray, and then take the maximum among all these minimums.</span></p>\n<p data-start=\"416\" data-end=\"592\"><span style=\"font-size: 14pt;\">Return the results as an array, where the element at index&nbsp;<strong>i</strong> represents the answer for window size <strong>i+1</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [10, 20, 30, 50, 10, 70, 30]\n<strong>Output: </strong>[70, 30, 20, 10, 10, 10, 10] <strong>\nExplanation: <br /></strong>Window size 1: minimums are [10, 20, 30, 50, 10, 70, 30], maximum of minimums is 70.<br />Window size 2: minimums are [10, 20, 30, 10, 10, 30], maximum of minimums is 30.<br />Window size 3: minimums are [10, 20, 10, 10, 10], maximum of minimums is 20.<br />Window size 4&ndash;7: minimums are [10, 10, 10, 10], maximum of minimums is 10.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [10, 20, 30]\n<strong>Output: </strong>[30, 20, 10]<strong>\nExplanation: <br /></strong>Window size 1: minimums of  [10], [20], [30], maximum of minimums is 30.<br />Window size 2: minimums of [10, 20], [20,30], maximum of minimums is 20.<br /></span><span style=\"font-size: 14pt;\">Window size 3: minimums of [10,20,30], maximum of minimums is 10.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1096
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/max-rectangle/1",
+      "problem_name": "Max rectangle",
+      "slug": "max-rectangle",
+      "difficulty": "Hard",
+      "accuracy": "36.43%",
+      "marks": 8,
+      "all_submissions": 131197,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&m = &!//!&mat[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "MakeMyTrip",
+          "Directi",
+          "Intuit",
+          "Google"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Stack",
+          "Matrix",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Stack",
+        "Matrix",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "MakeMyTrip",
+        "Directi",
+        "Intuit",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/maximum-size-rectangle-binary-sub-matrix-1s/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-15-on-campus/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-11-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-bangalore-internship-experience-2018/"
+      ],
+      "statement_text": "You are given a 2D binary matrix\nmat[ ][ ]\n, where each cell contains either\n0\nor\n1\n. Your task is to find the\nmaximum area\nof a rectangle that can be formed using only\n1's\nwithin the matrix.",
+      "full_text": "You are given a 2D binary matrix\nmat[ ][ ]\n, where each cell contains either\n0\nor\n1\n. Your task is to find the\nmaximum area\nof a rectangle that can be formed using only\n1's\nwithin the matrix.\nExamples:\nInput:\nmat[][] = [[0, 1, 1, 0],\n[1, 1, 1, 1],\n[1, 1, 1, 1],\n[1, 1, 0, 0]]\nOutput:\n8\nExplanation:\nThe largest rectangle with only 1’s is from (1, 0) to (2, 3) which is\n[1, 1, 1, 1]\n[1, 1, 1, 1]\nand area is 4 * 2 = 8\n.\nInput:\nmat[][] = [[0, 1, 1],\n[1, 1, 1],\n[0, 1, 1]]\nOutput:\n6\nExplanation:\nThe largest rectangle with only 1’s is from (0, 1) to (2, 2) which is\n[1, 1]\n[1, 1]\n[1, 1]\nand area is 2 * 3 = 6.\nConstraints:\n1 ≤ mat.size(), mat[0].size() ≤1000\n0 ≤ mat[][] ≤1",
+      "examples": [
+        "Input:\nmat[][] = [[0, 1, 1, 0],\n[1, 1, 1, 1],\n[1, 1, 1, 1],\n[1, 1, 0, 0]]\nOutput:\n8\nExplanation:\nThe largest rectangle with only 1’s is from (1, 0) to (2, 3) which is\n[1, 1, 1, 1]\n[1, 1, 1, 1]\nand area is 4 * 2 = 8\n.",
+        "Input:\nmat[][] = [[0, 1, 1],\n[1, 1, 1],\n[0, 1, 1]]\nOutput:\n6\nExplanation:\nThe largest rectangle with only 1’s is from (0, 1) to (2, 2) which is\n[1, 1]\n[1, 1]\n[1, 1]\nand area is 2 * 3 = 6."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ mat.size(), mat[0].size() ≤1000\n0 ≤ mat[][] ≤1",
+      "question_html": "<p data-start=\"158\" data-end=\"378\"><span style=\"font-size: 14pt;\">You are given a 2D binary matrix <strong>mat[ ][ ]</strong>, where each cell contains either&nbsp;<strong>0</strong> or <strong>1</strong>. Your task is to find the <strong data-start=\"291\" data-end=\"322\">maximum area</strong> of a rectangle that can be formed using only <strong>1's</strong>&nbsp;within the matrix.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">mat[][] = [[0, 1, 1, 0],\n                [1, 1, 1, 1],\n                [1, 1, 1, 1],\n                [1, 1, 0, 0]]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">8</span><strong style=\"font-size: 18px;\">\nExplanation: </strong><span style=\"font-size: 18px;\">The largest rectangle with only 1&rsquo;s is from (1, 0) to (2, 3) which is\n[1, 1, 1, 1]\n[1, 1, 1, 1]\nand area is 4 * 2 = 8</span></span><span style=\"font-size: 18px;\">.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> mat[][] = [[0, 1, 1],\n                [1, 1, 1],\n                [0, 1, 1]]\n<strong>Output:</strong> 6\n<strong>Explanation:</strong> The largest rectangle with only 1&rsquo;s is from (0, 1) to (2, 2) which is\n[1, 1]\n[1, 1]\n[1, 1]<br />and area is 2 * 3 = 6.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; mat.size(), mat[0].size() &le;1000<br />0 &le; mat[][] &le;1<br /></span></p>"
+    },
+    "qnum": 1097
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-sum-rectangle2948/1",
+      "problem_name": "Maximum sum Rectangle",
+      "slug": "maximum-sum-rectangle2948",
+      "difficulty": "Hard",
+      "accuracy": "49.78%",
+      "marks": 8,
+      "all_submissions": 55350,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&m = &!//!&mat[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Samsung",
+          "D-E-Shaw",
+          "FactSet",
+          "Walmart"
+        ],
+        "topic_tags": [
+          "prefix-sum",
+          "Matrix",
+          "Kadane",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "prefix-sum",
+        "Matrix",
+        "Kadane",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Samsung",
+        "D-E-Shaw",
+        "FactSet",
+        "Walmart"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/maximum-sum-rectangle-in-a-2d-matrix-dp-27/"
+      ],
+      "interview_links": [
+        " http://www.geeksforgeeks.org/amazon-interview-experience-set-355-1-year-experienced/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-15-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-bangalore-internship-experience-2018/"
+      ],
+      "statement_text": "Given a 2D matrix\nmat[][]\nwith dimensions n×m. Find the maximum possible\nsum\nof any\nsubmatrix\nwithin the given matrix.",
+      "full_text": "Given a 2D matrix\nmat[][]\nwith dimensions n×m. Find the maximum possible\nsum\nof any\nsubmatrix\nwithin the given matrix.\nExamples:\nInput:\nmat[][] = [[1, 2, -1, -4, -20], [-8, -3, 4, 2, 1], [3, 8, 10, 1, 3], [-4, -1, 1, 7, -6]]\nOutput:\n29\nExplanation:\nThe matrix is as follows and the green rectangle denotes the maximum sum rectangle which is equal to 29.\nInput:\nmat[][] = [[-1, -2], [-3, -4]]\nOutput:\n-1\nExplanation:\nTaking only the first cell is the optimal choice.\nConstraints:\n1 ≤ n, m ≤ 300\n-1000 ≤ mat[i][j] ≤ 1000",
+      "examples": [
+        "Input:\nmat[][] = [[1, 2, -1, -4, -20], [-8, -3, 4, 2, 1], [3, 8, 10, 1, 3], [-4, -1, 1, 7, -6]]\nOutput:\n29\nExplanation:\nThe matrix is as follows and the green rectangle denotes the maximum sum rectangle which is equal to 29.",
+        "Input:\nmat[][] = [[-1, -2], [-3, -4]]\nOutput:\n-1\nExplanation:\nTaking only the first cell is the optimal choice."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 300\n-1000 ≤ mat[i][j] ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a 2D matrix <strong>mat[][]</strong> with dimensions n&times;m. Find the maximum possible <strong>sum</strong> of any <strong>submatrix </strong>within the given matrix.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>mat[][] = [[1, 2, -1, -4, -20], [-8, -3, 4, 2, 1], [3, 8, 10, 1, 3], [-4, -1, 1, 7, -6]]\n<strong>Output: </strong>29\n<strong>Explanation: </strong>The matrix is as follows and the green rectangle denotes the maximum sum rectangle which is equal to 29.\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/899247/Web/Other/blobid0_1751695089.jpg\" width=\"364\" height=\"225\" /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>mat[][] = [[-1, -2], [-3, -4]]\n<strong>Output: </strong>-1\n<strong>Explanation: </strong>Taking only the first cell is the optimal choice.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; n, m &le; 300<br />-1000 &le; mat[i][j] &le; 1000</span></p>"
+    },
+    "qnum": 1098
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/next-smallest-palindrome4740/1",
+      "problem_name": "Next Smallest Palindrome",
+      "slug": "next-smallest-palindrome4740",
+      "difficulty": "Hard",
+      "accuracy": "19.63%",
+      "marks": 8,
+      "all_submissions": 64872,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Adobe",
+          "Media.net"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Adobe",
+        "Media.net"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-a-number-find-next-smallest-palindrome-larger-than-this-number/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-356-6-year-experienced/",
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-22-pool-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-questions-computer-scientist/"
+      ],
+      "statement_text": "Given a number, in the form of an array\nNum[]\nof size\nN\ncontaining digits from\n1 to 9\n(inclusive). The task is to find the\nnext smallest palindrome strictly larger than the given number.\nExample 1:\nInput:\nN = 11\nNum[] = {9, 4, 1, 8, 7, 9, 7, 8, 3, 2, 2}\nOutput:\n9 4 1 8 8 0 8 8 1 4 9\nExplanation:\nNext smallest palindrome is\n9 4 1 8 8 0 8 8 1 4 9\nExample 2:\nInput:\nN = 5\nNum[] = {2, 3, 5, 4, 5}\nOutput:\n2 3 6 3 2\nExplanation:\nNext smallest palindrome is\n2 3 6 3 2\nYour Task:\nComplete the function\ngenerateNextPalindrome()\nwhich takes an array\nnum,\nand a single integer\nn\n, as input parameters and returns an array of integers denoting the answer. You don't have to print answers or take inputs.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a number, in the form of an array\nNum[]\nof size\nN\ncontaining digits from\n1 to 9\n(inclusive). The task is to find the\nnext smallest palindrome strictly larger than the given number.\nExample 1:\nInput:\nN = 11\nNum[] = {9, 4, 1, 8, 7, 9, 7, 8, 3, 2, 2}\nOutput:\n9 4 1 8 8 0 8 8 1 4 9\nExplanation:\nNext smallest palindrome is\n9 4 1 8 8 0 8 8 1 4 9\nExample 2:\nInput:\nN = 5\nNum[] = {2, 3, 5, 4, 5}\nOutput:\n2 3 6 3 2\nExplanation:\nNext smallest palindrome is\n2 3 6 3 2\nYour Task:\nComplete the function\ngenerateNextPalindrome()\nwhich takes an array\nnum,\nand a single integer\nn\n, as input parameters and returns an array of integers denoting the answer. You don't have to print answers or take inputs.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 <= N <= 10\n5\n1 <= Num[i] <= 9",
+      "examples": [
+        "Input:\nN = 11\nNum[] = {9, 4, 1, 8, 7, 9, 7, 8, 3, 2, 2}\nOutput:\n9 4 1 8 8 0 8 8 1 4 9\nExplanation:\nNext smallest palindrome is\n9 4 1 8 8 0 8 8 1 4 9",
+        "Input:\nN = 5\nNum[] = {2, 3, 5, 4, 5}\nOutput:\n2 3 6 3 2\nExplanation:\nNext smallest palindrome is\n2 3 6 3 2"
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 10\n5\n1 <= Num[i] <= 9",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a number, in the form of an array <strong>Num[]</strong>&nbsp;of size <strong>N</strong> containing digits from <strong>1 to 9</strong>(inclusive). The task is to find the <strong>next smallest palindrome strictly larger than the given&nbsp;number.</strong></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>N = 11\nNum[] = {9, 4, 1, 8, 7, 9, 7, 8, 3, 2, 2}\n<strong>Output:</strong> 9 4 1 8 8 0 8 8 1 4 9\n<strong>Explanation:</strong> Next smallest palindrome is\n9 4 1 8 8 0 8 8 1 4 9\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>N = 5\nNum[] = {2, 3, 5, 4, 5}\n<strong>Output:</strong> 2 3 6 3 2\n<strong>Explanation:</strong> Next smallest palindrome is\n2 3 6 3 2\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />Complete the function <strong>generateNextPalindrome()</strong>&nbsp;which takes an array <strong>num, </strong>and a single integer&nbsp;<strong>n</strong>, as input parameters and returns an array of integers denoting the answer. You don't have to print answers or take inputs.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong>&nbsp;O(N)<br /><strong>Expected Auxiliary Space:</strong>&nbsp;O(1)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;= 10<sup>5</sup><br />1 &lt;= Num[i] &lt;= 9</span></p>"
+    },
+    "qnum": 1099
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/nodes-at-given-distance-in-binary-tree/1",
+      "problem_name": "Nodes at given distance in binary tree",
+      "slug": "nodes-at-given-distance-in-binary-tree",
+      "difficulty": "Hard",
+      "accuracy": "32.36%",
+      "marks": 8,
+      "all_submissions": 88210,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] =&!//!&target =&!//!&k =",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Hike",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Hike",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/samsung-rnd-bangalore-interview-2018/"
+      ],
+      "statement_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "full_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5], target = 2, k = 2\nOutput:\n[3]\nExplanation:\nNodes at a distance 2 from the given node 2 is 3.",
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\nOutput:\n[1, 6, 7]\nExplanation:\nNodes at a distance 1 from the given target node 3 are 1, 6 & 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n6\n1 ≤  node->data ≤ 10\n9\n1 ≤ target ≤ 10\n9\n1 ≤ k ≤ 20",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.<br /><strong>Note</strong>: </span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">You have to return the list in sorted order.</span></li>\n<li><span style=\"font-size: 18px;\">The tree will <strong>not </strong>contain <strong>duplicate </strong>values.</span></li>\n</ul>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [1, 2, 3, 4, 5], target = 2, k = 2   \n</span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid0_1733895958.png\" width=\"317\" height=\"283\" />\n<span style=\"font-size: 18px;\"><strong>Output:</strong> [3]</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>Nodes at a distance 2 from the given node 2 is 3.</span>\n</pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid1_1733896181.png\" width=\"324\" height=\"289\" />\n</span><span style=\"font-size: 18px;\"><span style=\"font-size: 14pt;\"><strong>Output:</strong> [1, 6, 7]<br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation:</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> Nodes at a distance 1 from the given target node 3 are 1, 6 &amp; 7.</span></span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>6</sup><br />1 &le;&nbsp; node-&gt;data &le; 10<sup>9</sup><br />1 &le; target &le; 10<sup>9</sup><br />1 &le; k &le; 20</span></p>"
+    },
+    "qnum": 1100
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/palindrome-pairs/1",
+      "problem_name": "Palindrome Pairs",
+      "slug": "palindrome-pairs",
+      "difficulty": "Hard",
+      "accuracy": "31.71%",
+      "marks": 8,
+      "all_submissions": 19669,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon"
+        ],
+        "topic_tags": [
+          "Trie",
+          "Advanced Data Structure"
+        ]
+      },
+      "topic_tags": [
+        "Trie",
+        "Advanced Data Structure"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/palindrome-pair-in-an-array-of-words-or-strings/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-software-developer-intern/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-415-sde-2/"
+      ],
+      "statement_text": "Given an array of strings arr[] of size N, find if there exists 2 strings arr[i] and arr[j] such that arr[i]+arr[j] is a palindrome i.e the concatenation of string arr[i] and arr[j] results into a palindrome.\n\nExample 1:\n\nInput:\nN = 6\narr[] = {\"geekf\", \"geeks\", \"or\",\"keeg\", \"abc\",\n          \"bc\"}\nOutput: 1\nExplanation: There is a pair \"geekf\"\nand \"keeg\".\n\nExample 2:\n\nInput:\nN = 5\narr[] = {\"abc\", \"xyxcba\", \"geekst\", \"or\", \"bc\"}\nOutput: 1\nExplanation: There is a pair \"abc\"\nand \"xyxcba\".\n\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function palindromepair() which takes the array arr[], its size N and returns true if palindrome pair exists and returns false otherwise.\nThe driver code itself prints 1 if returned value is true and prints 0 if returned value is false.\n\n\nExpected Time Complexity: O(N*l2) where l = length of longest string in arr[]\nExpected Auxiliary Space: O(N*l2) where l = length of longest string in arr[]\n\n\nConstraints:\n1 ≤ N ≤ 2*104\n1 ≤ |arr[i]| ≤ 10",
+      "full_text": "Given an array of strings arr[] of size N, find if there exists 2 strings arr[i] and arr[j] such that arr[i]+arr[j] is a palindrome i.e the concatenation of string arr[i] and arr[j] results into a palindrome.\n\nExample 1:\n\nInput:\nN = 6\narr[] = {\"geekf\", \"geeks\", \"or\",\"keeg\", \"abc\",\n          \"bc\"}\nOutput: 1\nExplanation: There is a pair \"geekf\"\nand \"keeg\".\n\nExample 2:\n\nInput:\nN = 5\narr[] = {\"abc\", \"xyxcba\", \"geekst\", \"or\", \"bc\"}\nOutput: 1\nExplanation: There is a pair \"abc\"\nand \"xyxcba\".\n\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function palindromepair() which takes the array arr[], its size N and returns true if palindrome pair exists and returns false otherwise.\nThe driver code itself prints 1 if returned value is true and prints 0 if returned value is false.\n\n\nExpected Time Complexity: O(N*l2) where l = length of longest string in arr[]\nExpected Auxiliary Space: O(N*l2) where l = length of longest string in arr[]\n\n\nConstraints:\n1 ≤ N ≤ 2*104\n1 ≤ |arr[i]| ≤ 10",
+      "examples": [
+        "Input\n:\nN = 6\narr[] = {\"geekf\", \"geeks\", \"or\",\"keeg\", \"abc\",\n\"bc\"}\nOutput:\n1\nExplanation\n: There is a pair \"geekf\"\nand \"keeg\".",
+        "Input:\nN = 5\narr[] = {\"abc\", \"xyxcba\", \"geekst\", \"or\", \"bc\"}\nOutput:\n1\nExplanation\n: There is a pair \"abc\"\nand \"xyxcba\"."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 2*10\n4\n1 ≤ |arr[i]| ≤ 10",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of strings arr[] of size N, find if there exists 2 strings arr[i] and arr[j] such that arr[i]+arr[j] is a palindrome i.e the concatenation of string arr[i] and arr[j] results into a palindrome.</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong></span>:\n<span style=\"font-size: 18px;\">N = 6\narr[] = {\"geekf\", \"geeks\", \"or\",\"keeg\", \"abc\", \n          \"bc\"}\n<strong>Output:</strong>&nbsp;1&nbsp;\n<strong>Explanation</strong>: There is a pair \"geekf\"\nand \"keeg\".</span>\n</pre>\n<p><strong><span style=\"font-size: 18px;\">Example 2:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nN = 5\narr[] = {\"abc\", \"xyxcba\", \"geekst\", \"or\", \"bc\"}\n<strong>Output:&nbsp;</strong>1\n<strong>Explanation</strong>: There is a pair \"abc\"\nand \"xyxcba\".</span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:&nbsp;&nbsp;</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>palindromepair()</strong>&nbsp;which takes the array arr[], its size N<strong> </strong>and returns true if palindrome pair exists and returns false otherwise.<br />The driver code itself prints 1 if returned value is true and prints 0 if returned value is false.</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(N*l<sup>2</sup>) where l = length of longest string in arr[]<br /><strong>Expected Auxiliary Space:</strong> O(N*l<sup>2</sup>) where l = length of longest string in arr[]</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 2*10<sup>4</sup></span><br /><span style=\"font-size: 18px;\">1 &le; |arr[i]| &le; 10</span></p>"
+    },
+    "qnum": 1101
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/rearrange-the-array-1639032648/1",
+      "problem_name": "Rearrange the array",
+      "slug": "rearrange-the-array-1639032648",
+      "difficulty": "Hard",
+      "accuracy": "35.19%",
+      "marks": 8,
+      "all_submissions": 4255,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart"
+        ],
+        "topic_tags": [
+          "DFS",
+          "Prime Number",
+          "LCS",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "DFS",
+        "Prime Number",
+        "LCS",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-set-10-campus-sde-1/"
+      ],
+      "statement_text": "Given an sequence from 1 to N and also given an array arr[] of size N. Basically the array is the permutation of 1 to N which determines that the element from ith position should move to the jth position. Now the task is to find the minimum number of operations such that each array element is present at its original positions.\n(For more understanding please go through the examples)\n\nNote: the answer can be large, so return the answer modulo 10^9+7.\n\nExample 1:\n\nInput: N = 3, arr[] = {1,2,3}\nOutput: 1\nExplanation:\nGiven special arrangement arr[]:\n1 2 3\nGiven sequence\n1 2 3\nso 1 should go 1th position, 2 should\ngo 2nd position and 3 should go 3rd\nposition. So the minimum number of operation\nneeded is 1.\n\nExample 2:\n\nInput: N = 5, arr[] = {2,3,1,5,4}\nOutput: 6\nExplanation:\nGiven special arrangement arr[]:\n2 3 1 5 4\nGiven sequence is:\n1 2 3 4 5\nso, here we explained one step,\n1 should go to 2nd position, 2 should go\n3rd position, 3 should go 1st position, 4\nshould go 5th and 5 should go 4th position.\nthese are the required. So after 1st operation\nnew sqquence will look like\n3 1 2 5 4.\nHere we explained the complete operations.\noperations for the array\n0. 1 2 3 4 5\n1. 3 1 2 5 4\n2. 2 3 1 4 5\n3. 1 2 3 5 4\n4. 3 1 2 4 5\n5. 2 3 1 5 4\n6. 1 2 3 4 5.\nSo after 6th operations the\narray rearrange itself to\nits original positions.\n\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function rearrange_array() which take arr[] of size N as input parameter and returns an integer which denotes the minimum number of operations needed.\n\nConstraints:\n1 <= N <= 105",
+      "full_text": "Given an sequence from 1 to N and also given an array arr[] of size N. Basically the array is the permutation of 1 to N which determines that the element from ith position should move to the jth position. Now the task is to find the minimum number of operations such that each array element is present at its original positions.\n(For more understanding please go through the examples)\n\nNote: the answer can be large, so return the answer modulo 10^9+7.\n\nExample 1:\n\nInput: N = 3, arr[] = {1,2,3}\nOutput: 1\nExplanation:\nGiven special arrangement arr[]:\n1 2 3\nGiven sequence\n1 2 3\nso 1 should go 1th position, 2 should\ngo 2nd position and 3 should go 3rd\nposition. So the minimum number of operation\nneeded is 1.\n\nExample 2:\n\nInput: N = 5, arr[] = {2,3,1,5,4}\nOutput: 6\nExplanation:\nGiven special arrangement arr[]:\n2 3 1 5 4\nGiven sequence is:\n1 2 3 4 5\nso, here we explained one step,\n1 should go to 2nd position, 2 should go\n3rd position, 3 should go 1st position, 4\nshould go 5th and 5 should go 4th position.\nthese are the required. So after 1st operation\nnew sqquence will look like\n3 1 2 5 4.\nHere we explained the complete operations.\noperations for the array\n0. 1 2 3 4 5\n1. 3 1 2 5 4\n2. 2 3 1 4 5\n3. 1 2 3 5 4\n4. 3 1 2 4 5\n5. 2 3 1 5 4\n6. 1 2 3 4 5.\nSo after 6th operations the\narray rearrange itself to\nits original positions.\n\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function rearrange_array() which take arr[] of size N as input parameter and returns an integer which denotes the minimum number of operations needed.\n\nConstraints:\n1 <= N <= 105",
+      "examples": [
+        "Input:\nN = 3, arr[] = {1,2,3}\nOutput:\n1\nExplanation:\nGiven special arrangement\narr[]\n:\n1 2 3\nGiven sequence\n1 2 3\nso 1 should go 1\nth\nposition, 2 should\ngo 2\nnd\nposition and 3 should go 3\nrd\nposition. So the minimum number of operation\nneeded is 1.",
+        "Input:\nN = 5, arr[] = {2,3,1,5,4}\nOutput:\n6\nExplanation:\nGiven special arrangement arr[]:\n2 3 1 5 4\nGiven sequence is:\n1 2 3 4 5\nso, here we explained one step,\n1 should go to 2\nnd\nposition, 2 should go\n3\nrd\nposition, 3 should go 1\nst\nposition, 4\nshould go 5\nth\nand 5 should go 4\nth\nposition.\nthese are the required. So after 1st operation\nnew sqquence will look like\n3 1 2 5 4.\nHere we explained the complete operations.\noperations for the array\n0. 1 2 3 4 5\n1. 3 1 2 5 4\n2. 2 3 1 4 5\n3. 1 2 3 5 4\n4. 3 1 2 4 5\n5. 2 3 1 5 4\n6. 1 2 3 4 5.\nSo after 6th operations the\narray rearrange itself to\nits original positions."
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an sequence from 1 to N and also given an array&nbsp;<strong>arr[]</strong>&nbsp;of size&nbsp;<strong>N</strong>. Basically the array is the permutation of 1 to N which determines that the element from i<sup>th</sup>&nbsp;position should move to the j<sup>th</sup>&nbsp;position.&nbsp;Now the task is to find the minimum number of operations such that each array element is present at its original positions.</span><br /><span style=\"font-size: 18px;\">(For more understanding please go through the examples)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> the answer can be large, so return the answer <strong>modulo 10^9+7.</strong></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> N = 3, arr[] = {1,2,3}\n<strong>Output:</strong> 1\n</span><span style=\"font-size: 18px;\"><strong>Explanation: </strong>\nGiven special arrangement <strong>arr[]</strong>: \n1 2 3\nGiven sequence \n1 2 3\nso 1 should go 1<sup>th</sup> position, 2 should\ngo 2<sup>nd</sup> position and 3 should go 3<sup>rd</sup>\nposition. So the minimum number of operation\nneeded is 1.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> N = 5, arr[] = {2,3,1,5,4}\n<strong>Output:</strong> 6</span>\n<span style=\"font-size: 18px;\"><strong>Explanation:\n</strong>Given special arrangement arr[]:\n2 3 1 5 4\nGiven sequence is:\n1 2 3 4 5\nso, here we explained one step,\n1 should go to 2<sup>nd</sup> position, 2 should go \n3<sup>rd</sup> position, 3 should go 1<sup>st</sup> position, 4 \nshould go 5<sup>th</sup> and 5 should go 4<sup>th</sup> position. \nthese are the required. So after 1st operation\nnew sqquence will look like \n3 1 2 5 4.\nHere we explained the complete operations.\noperations for the array\n0. 1 2 3 4 5\n1. 3 1 2 5 4\n2. 2 3 1 4 5\n3. 1 2 3 5 4\n4. 3 1 2 4 5\n5. 2 3 1 5 4\n6. 1 2 3 4 5.\nSo after 6th operations the \narray rearrange itself to \nits original positions.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anything. Your task is to complete the function <strong>rearrange_array()&nbsp;</strong>which take&nbsp;<strong>arr[] </strong>of size <strong>N</strong> as input parameter and returns an integer which denotes the minimum number of operations needed.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1102
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/select-nodes--170645/1",
+      "problem_name": "Select Nodes",
+      "slug": "select-nodes--170645",
+      "difficulty": "Hard",
+      "accuracy": "63.66%",
+      "marks": 8,
+      "all_submissions": 16632,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&edges[][] =",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "DFS",
+          "Tree",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "DFS",
+        "Tree",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-number-of-nodes-to-be-selected-to-light-up-all-the-edges-of-the-tree-select-nodes/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-36-on-campus-for-sde-1/?ref=rp"
+      ],
+      "statement_text": "Given N nodes of a tree and a list of edges. Find the minimum number of nodes to be selected to light up all the edges of the tree.\nAn edge lights up when at least one node at the end of the edge is selected.\n\nExample 1:\n\nInput:\nN = 6\nedges[] = [[1,2], [1,3], [2,4], [3,5], [3,6]]\nOutput: 2\nExplanation: Selecting nodes 2 and 3 lights\nup all the edges.\n\nExample 2:\n\nInput:\nN = 3\narr[] = [[1,2], [1,3]]\nOutput: 1\nExplanation: Selecting Node 1\nlights up all the edges.\n\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function countVertex() which takes the number of nodes N, and the list of edges as input parameters and returns the minimum number of nodes selected.\n\nConstraints:\n1 ≤ N ≤ 105\n1 ≤ edges ≤ N\nGiven graph is a valid tree.",
+      "full_text": "Given N nodes of a tree and a list of edges. Find the minimum number of nodes to be selected to light up all the edges of the tree.\nAn edge lights up when at least one node at the end of the edge is selected.\n\nExample 1:\n\nInput:\nN = 6\nedges[] = [[1,2], [1,3], [2,4], [3,5], [3,6]]\nOutput: 2\nExplanation: Selecting nodes 2 and 3 lights\nup all the edges.\n\nExample 2:\n\nInput:\nN = 3\narr[] = [[1,2], [1,3]]\nOutput: 1\nExplanation: Selecting Node 1\nlights up all the edges.\n\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function countVertex() which takes the number of nodes N, and the list of edges as input parameters and returns the minimum number of nodes selected.\n\nConstraints:\n1 ≤ N ≤ 105\n1 ≤ edges ≤ N\nGiven graph is a valid tree.",
+      "examples": [
+        "Input\n:\nN = 6\nedges[] = [[1,2], [1,3], [2,4], [3,5], [3,6]]\nOutput:\n2\nExplanation\n: Selecting nodes 2 and 3 lights\nup all the edges.",
+        "Input:\nN = 3\narr[] = [[1,2], [1,3]]\nOutput:\n1\nExplanation\n: Selecting Node 1\nlights up all the edges."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 10\n5\n1 ≤ edges ≤ N\nGiven graph is a valid tree.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given <strong>N&nbsp;</strong>nodes of a tree and a list of edges. Find the <strong>minimum</strong> number of nodes to be selected to light up all the edges of the tree.<br />An edge <strong>lights up</strong> when at least one node at the end of the edge is selected.</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>:\nN = 6\nedges[] = [[1,2], [1,3], [2,4], [3,5], [3,6]]\n<strong>Output:</strong>&nbsp;2\n<strong>Explanation</strong>: Selecting nodes 2 and 3 lights\nup all the edges.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nN = 3\narr[] = [[1,2], [1,3]]\n<strong>Output:&nbsp;</strong>1\n<strong>Explanation</strong>: Selecting Node 1 \nlights up all the edges.</span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:&nbsp;&nbsp;</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>countVertex()</strong>&nbsp;which takes the number of nodes&nbsp;N, and the list of edges as input parameters&nbsp;and returns the minimum number of nodes selected.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 10<sup>5</sup><br />1 &le; edges &le; N<br />Given graph is a valid tree.</span></p>"
+    },
+    "qnum": 1103
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/serialize-and-deserialize-a-binary-tree/1",
+      "problem_name": "Serialize and deserialize a binary tree",
+      "slug": "serialize-and-deserialize-a-binary-tree",
+      "difficulty": "Hard",
+      "accuracy": "51.67%",
+      "marks": 8,
+      "all_submissions": 103740,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "MAQ Software",
+          "Adobe",
+          "Linkedin",
+          "Quikr",
+          "Yahoo",
+          "InMobi",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "MAQ Software",
+        "Adobe",
+        "Linkedin",
+        "Quikr",
+        "Yahoo",
+        "InMobi",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/serialize-deserialize-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-16-on-campus-fteinternship/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-11-on-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-10-experienced/",
+        "httpss://www.geeksforgeeks.org/microsoft-interview-experience-set-157-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-8-sde-1/"
+      ],
+      "statement_text": "You are given the root of a binary tree. You have to perform Serialization and Deserialization. Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions:\n\nserialize() : stores the tree into an array and returns the array.\n\ndeSerialize() : deserializes the array to the tree and returns the root of the tree.\n\nNote: Multiple nodes can have the same data and the node values are always positive integers. Your code will be correct if the tree returned by deSerialize(serialize(input_tree)) is same as the input tree. Driver code will print the level order traversal of the tree returned by deSerialize(serialize(input_tree)).\n\nExamples :\n\nInput: root = [1, 2, 3]\n\nOutput: [1, 2, 3]\n\nInput: root = [10, 20, 30, 40, 60, N, N]\n\nOutput: [10, 20, 30, 40, 60]\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 109",
+      "full_text": "You are given the root of a binary tree. You have to perform Serialization and Deserialization. Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions:\n\nserialize() : stores the tree into an array and returns the array.\n\ndeSerialize() : deserializes the array to the tree and returns the root of the tree.\n\nNote: Multiple nodes can have the same data and the node values are always positive integers. Your code will be correct if the tree returned by deSerialize(serialize(input_tree)) is same as the input tree. Driver code will print the level order traversal of the tree returned by deSerialize(serialize(input_tree)).\n\nExamples :\n\nInput: root = [1, 2, 3]\n\nOutput: [1, 2, 3]\n\nInput: root = [10, 20, 30, 40, 60, N, N]\n\nOutput: [10, 20, 30, 40, 60]\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 109",
+      "examples": [
+        "Input:\nroot = [1, 2, 3]\nOutput:\n[1, 2, 3]",
+        "Input:\nroot = [10, 20, 30, 40, 60, N, N]\nOutput:\n[10, 20, 30, 40, 60]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n4\n1 ≤ node->data ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given the <strong>root</strong> of a binary tree. You have to perform <strong>Serialization</strong> and <strong>Deserialization</strong>. Serialization is to store a tree in an array so that it can be later restored and deserialization is reading tree back from the array. Complete the functions:</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>serialize() :</strong> stores the tree into an array&nbsp;and returns the array.</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>deSerialize() :</strong>&nbsp;deserializes the array to the tree and returns the root of the tree.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Note:&nbsp;</strong>Multiple nodes can have the same data and the node values are<strong>&nbsp;</strong>always&nbsp;positive integers. Your code will be correct if the tree returned by&nbsp;<strong>deSerialize(serialize(input_tree))</strong> is same as the input tree. Driver code will print the level order traversal of the tree returned by deSerialize(serialize(input_tree)).</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3] &nbsp; &nbsp; &nbsp; </span><br /><span style=\"font-size: 14pt;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908076/Web/Other/blobid1_1754980863.webp\" width=\"245\" height=\"151\" />\n<strong>Output: </strong>[1, 2, 3]\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [10, 20, 30, 40, 60, N, N] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908076/Web/Other/blobid0_1754980083.webp\" width=\"249\" height=\"198\" />\n<strong>Output: </strong>[10, 20, 30, 40, 60]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>4</sup><br />1 &le; node-&gt;data &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1104
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-smallest-range-containing-elements-from-k-lists/1",
+      "problem_name": "Smallest range in K lists",
+      "slug": "find-smallest-range-containing-elements-from-k-lists",
+      "difficulty": "Hard",
+      "accuracy": "43.21%",
+      "marks": 8,
+      "all_submissions": 42169,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&k =&!//!&mat[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Heap",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Heap",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-smallest-range-containing-elements-from-k-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-set-8-sde-1/"
+      ],
+      "statement_text": "Given a 2d integer array\nmat[][]\nof size n*k, where each row is sorted in\nascending order\n. Your task is to find the\nsmallest range\n[l, r] that includes at least one element from each of the\nn\nlists. If more than one such ranges are found, return the first one.\nNote:\nIf there are two possible ranges [a, b] and [c, d] with the same size, choose the one with the smaller starting value, i.e., consider [a, b] if a < c.",
+      "full_text": "Given a 2d integer array\nmat[][]\nof size n*k, where each row is sorted in\nascending order\n. Your task is to find the\nsmallest range\n[l, r] that includes at least one element from each of the\nn\nlists. If more than one such ranges are found, return the first one.\nNote:\nIf there are two possible ranges [a, b] and [c, d] with the same size, choose the one with the smaller starting value, i.e., consider [a, b] if a < c.\nExamples:\nInput:\nmat[][] = [[4, 7, 9, 12, 15],\n[0, 8, 10, 14, 20],\n[6, 12, 16, 30, 50]]\nOutput:\n[6, 8]\nExplanation:\nSmallest range is formed by number 7 from the first list, 8 from second list and 6 from the third list.\nInput:\nmat[][] = [[2, 4],\n[1, 7],\n[20, 40]]\nOutput:\n[4, 20]\nExplanation:\nSmallest range is formed by number 4 from the first list, 7 from second list and 20 from the third list.\nConstraints:\n1\n≤ n\n, k\n≤\n500\n0\n≤\nmat[i][j]\n≤\n10\n5",
+      "examples": [
+        "Input:\nmat[][] = [[4, 7, 9, 12, 15],\n[0, 8, 10, 14, 20],\n[6, 12, 16, 30, 50]]\nOutput:\n[6, 8]\nExplanation:\nSmallest range is formed by number 7 from the first list, 8 from second list and 6 from the third list.",
+        "Input:\nmat[][] = [[2, 4],\n[1, 7],\n[20, 40]]\nOutput:\n[4, 20]\nExplanation:\nSmallest range is formed by number 4 from the first list, 7 from second list and 20 from the third list."
+      ],
+      "constraints_text": "Constraints:\n1\n≤ n\n, k\n≤\n500\n0\n≤\nmat[i][j]\n≤\n10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a 2d integer array <strong>mat[][]</strong> of size n*k, where each row is sorted in <strong>ascending order</strong>. Your task is to find the&nbsp;<strong>smallest range</strong> [l, r] that includes at least one element from each of the <strong>n&nbsp;</strong>lists. If more than one such ranges are found, return the&nbsp;first one.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> If there are two possible ranges [a, b] and [c, d] with the same size, choose the one with the smaller starting value, i.e., consider [a, b] if a &lt; c.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> mat[][] = [[4, 7, 9, 12, 15], <br /></span><span style=\"font-size: 18px;\">               [0, 8, 10, 14, 20], <br />               [6, 12, 16, 30, 50]]\n<strong>Output: </strong>[6, 8]<strong>\nExplanation: </strong>Smallest range is formed by number 7 from the first list, 8 from second list and 6 from the third list.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input:</strong><span style=\"font-size: 18px;\"> mat[][] = [[2, 4],<br />               [1, 7], <br />               [20, 40]]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[4, 20]<br /><strong>Explanation:</strong> Smallest range is formed by number 4 from the first list, 7 from second list and 20 from the third list.</span></span></pre>\n<div><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&nbsp;<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le; n</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">, k </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&nbsp;500</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><br /></span></span></div>\n<div><span style=\"font-size: 18px;\">0&nbsp;<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> mat[i][j] </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&le;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&nbsp;10</span><sup style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">5</sup><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><br /></span></span></div>"
+    },
+    "qnum": 1105
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621/1",
+      "problem_name": "Smallest window containing all characters",
+      "slug": "smallest-window-in-a-string-containing-all-the-characters-of-another-string-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "30.19%",
+      "marks": 8,
+      "all_submissions": 202424,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = &!//!&p = ",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Google",
+          "Streamoid Technologies",
+          "Media.net",
+          "Atlassian",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "sliding-window",
+          "Hash",
+          "Strings",
+          "Dynamic Programming",
+          "Binary Search"
+        ]
+      },
+      "topic_tags": [
+        "sliding-window",
+        "Hash",
+        "Strings",
+        "Dynamic Programming",
+        "Binary Search"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Google",
+        "Streamoid Technologies",
+        "Media.net",
+        "Atlassian",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-smallest-window-in-a-string-containing-all-characters-of-another-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-315/",
+        "https://www.geeksforgeeks.org/streamoid-technologies-interview-experience-set-1-for-freshers/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-2-campus/",
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-22-pool-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-5-off-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-2-for-sde-1/"
+      ],
+      "statement_text": "Given two strings s and p. Find the smallest substring in s consisting of all the characters (including duplicates) of the string p. Return empty string in case no such substring is present.\nIf there are multiple such substring of the same length found, return the one with the least starting index.\n\nExamples:\n\nInput: s = \"timetopractice\", p = \"toc\"\nOutput: \"toprac\"\nExplanation: \"toprac\" is the smallest substring in which \"toc\" can be found.\n\nInput: s = \"zoomlazapzo\", p = \"oza\"\nOutput: \"apzo\"\nExplanation: \"apzo\" is the smallest substring in which \"oza\" can be found.\n\nInput: s = \"zoom\", p = \"zooe\"\nOutput: \"\"\nExplanation: No substring is present containing all characters of p.\n\nConstraints:\n1 ≤ s.length(), p.length() ≤ 106\ns, p consists of lowercase english letters",
+      "full_text": "Given two strings s and p. Find the smallest substring in s consisting of all the characters (including duplicates) of the string p. Return empty string in case no such substring is present.\nIf there are multiple such substring of the same length found, return the one with the least starting index.\n\nExamples:\n\nInput: s = \"timetopractice\", p = \"toc\"\nOutput: \"toprac\"\nExplanation: \"toprac\" is the smallest substring in which \"toc\" can be found.\n\nInput: s = \"zoomlazapzo\", p = \"oza\"\nOutput: \"apzo\"\nExplanation: \"apzo\" is the smallest substring in which \"oza\" can be found.\n\nInput: s = \"zoom\", p = \"zooe\"\nOutput: \"\"\nExplanation: No substring is present containing all characters of p.\n\nConstraints:\n1 ≤ s.length(), p.length() ≤ 106\ns, p consists of lowercase english letters",
+      "examples": [
+        "Input:\ns = \"timetopractice\", p = \"toc\"\nOutput:\n\"toprac\"\nExplanation:\n\"toprac\" is the smallest substring in which \"toc\" can be found.",
+        "Input:\ns = \"zoomlazapzo\", p = \"oza\"\nOutput:\n\"apzo\"\nExplanation:\n\"apzo\" is the smallest substring in which \"oza\" can be found.",
+        "Input:\ns = \"zoom\", p = \"zooe\"\nOutput:\n\"\"\nExplanation:\nNo substring is present containing all characters of p."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.length(), p.length() ≤ 10\n6\ns, p consists of lowercase english letters",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given two strings <strong>s</strong> and <strong>p</strong>. Find the smallest substring in <strong>s</strong> consisting of all the characters (<strong>including duplicates</strong>) of the string <strong>p</strong>. Return empty string in case no such substring is present. <br /></span><span style=\"font-size: 14pt;\">If there are multiple such substring of the same length found, return the one with the <strong>least starting index</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"timetopractice\", p = \"toc\"\n<strong>Output: </strong>\"toprac\"<strong>\nExplanation: </strong>\"toprac\" is the smallest substring in which \"toc\" can be found.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"zoomlazapzo\", p = \"oza\"\n<strong>Output: </strong>\"apzo\"<strong>\nExplanation: </strong>\"apzo\" is the smallest substring in which \"oza\" can be found.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"zoom\", p = \"zooe\"\n<strong>Output:</strong> \"\"<strong>\nExplanation: </strong>No substring is present containing all characters of p.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:&nbsp;</strong><br />1 &le; s.length(), p.length() &le; 10<sup>6<br /></sup></span><span style=\"font-size: 14pt;\">s, p consists of lowercase english letters</span></p>"
+    },
+    "qnum": 1106
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/solve-the-sudoku-1587115621/1",
+      "problem_name": "Solve the Sudoku",
+      "slug": "solve-the-sudoku-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "37.98%",
+      "marks": 8,
+      "all_submissions": 133894,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "mat[][] =",
+        "datatype": "INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "MAQ Software",
+          "Directi",
+          "PayPal",
+          "Samsung",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Backtracking",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Backtracking",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "MAQ Software",
+        "Directi",
+        "PayPal",
+        "Samsung",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sudoku-backtracking-7/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-8-for-sde-2/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-sde-1-2/"
+      ],
+      "statement_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.",
+      "full_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.\nExamples:\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nConstraints:\n0 ≤ mat[i][j] ≤ 9",
+      "examples": [
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.",
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers."
+      ],
+      "constraints_text": "Constraints:\n0 ≤ mat[i][j] ≤ 9",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">Given an&nbsp;incomplete&nbsp;</span><a style=\"font-size: 18px;\" href=\"https://www.geeksforgeeks.org/introduction-to-sudoku-puzzles-and-how-to-solve-them/\"><strong>Sudoku</strong></a><span style=\"font-size: 18px;\">&nbsp;in the form of matrix <strong>mat[][]</strong> of order 9*9, the task is to solve the Sudoku.&nbsp;</span></span><span style=\"font-size: 18px;\">It is <strong>guaranteed </strong>that the input Sudoku will have exactly <strong>one </strong>solution.</span></p>\n<p><span style=\"font-size: 18px;\">A sudoku solution must satisfy&nbsp;all of the following rules:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each row.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each column.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code> must occur exactly once in each of the 9,&nbsp;<code>3x3</code>&nbsp;sub-boxes of the grid.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Zeros represent blanks to be filled with numbers 1-9, while non-zero cells are <strong>fixed </strong>and cannot be changed.</span><span style=\"font-size: 18px;\"><br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306620.png\" alt=\"\" width=\"260\" height=\"212\" />\n</span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\">\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /></span><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886267/Web/Other/blobid1_1738136756.png\" alt=\"\" width=\"262\" height=\"209\" /><br /></span><strong style=\"font-size: 18px;\">Output:</strong><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &le; mat[i][j] &le; 9<br /></span></p>"
+    },
+    "qnum": 1107
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/sorted-list-to-bst/1",
+      "problem_name": "Sorted Linked List to BST",
+      "slug": "sorted-list-to-bst",
+      "difficulty": "Hard",
+      "accuracy": "53.24%",
+      "marks": 8,
+      "all_submissions": 30250,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Google"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Binary Search Tree",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Binary Search Tree",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sorted-linked-list-to-balanced-bst/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-wow-2020-6-months-internship/"
+      ],
+      "statement_text": "Given a Singly Linked List which has data members sorted in ascending order. Construct a Balanced Binary Search Tree which has same data members as the given Linked List.\nNote: There might be nodes with the same value.\n\nExamples:\n\nInput: Linked List: 1->2->3->4->5->6->7\n\nOutput: 4 2 1 3 6 5 7\nExplanation : The BST formed using elements of the linked list is -\n        4\n      /   \\\n     2     6\n   /  \\   / \\\n  1   3  5   7\nHence, preorder traversal of this tree is 4 2 1 3 6 5 7\n\nInput: Linked List : 1->2->3->4\n\nOuput: 3 2 1 4\nExplanation: The BST formed using elements of the linked list is -\n\nHence, the preorder traversal of this tree is 3 2 1 4\n\nExpected Time Complexity: O(n)\nExpected Auxiliary Space: O(n)\n\n\n\nConstraints:\n\n1 ≤ Number of Nodes ≤ 106\n\n1 ≤ Value of each node ≤ 106",
+      "full_text": "Given a Singly Linked List which has data members sorted in ascending order. Construct a Balanced Binary Search Tree which has same data members as the given Linked List.\nNote: There might be nodes with the same value.\n\nExamples:\n\nInput: Linked List: 1->2->3->4->5->6->7\n\nOutput: 4 2 1 3 6 5 7\nExplanation : The BST formed using elements of the linked list is -\n        4\n      /   \\\n     2     6\n   /  \\   / \\\n  1   3  5   7\nHence, preorder traversal of this tree is 4 2 1 3 6 5 7\n\nInput: Linked List : 1->2->3->4\n\nOuput: 3 2 1 4\nExplanation: The BST formed using elements of the linked list is -\n\nHence, the preorder traversal of this tree is 3 2 1 4\n\nExpected Time Complexity: O(n)\nExpected Auxiliary Space: O(n)\n\n\n\nConstraints:\n\n1 ≤ Number of Nodes ≤ 106\n\n1 ≤ Value of each node ≤ 106",
+      "examples": [
+        "Input:\nLinked List: 1->2->3->4->5->6->7\nOutput:\n4 2 1 3 6 5 7\nExplanation :\nThe BST formed using elements of the linked list is -\n4\n/   \\\n2     6\n/  \\   / \\\n1   3  5   7\nHence, preorder traversal of this tree is 4 2 1 3 6 5 7",
+        "Input:\nLinked List : 1->2->3->4\nOuput:\n3 2 1 4\nExplanation:\nThe BST formed using elements of the linked list is -\nHence, the preorder traversal of this tree is 3 2 1 4"
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ Number of Nodes ≤ 10\n6\n1 ≤ Value of each node ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 12pt;\">Given a Singly Linked List which has data members sorted in ascending order. Construct a&nbsp;Balanced Binary Search Tree&nbsp;which has same data members as the given Linked List.<br /><strong>Note: </strong>There might be nodes with the same value.</span></p>\n<p><span style=\"font-size: 12pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 12pt;\"><strong>Input: </strong>Linked List: 1-&gt;2-&gt;3-&gt;4-&gt;5-&gt;6-&gt;7<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/706336/Web/Other/blobid0_1722838240.png\" width=\"404\" height=\"63\" />\n<strong>Output: </strong>4 2 1 3 6 5 7<br /><strong>Explanation : </strong>The BST formed using elements of the linked list is -\n        4\n      /   \\\n     2     6\n   /  \\   / \\\n  1   3  5   7  \nHence, preorder traversal of this tree is 4 2 1 3 6 5 7\n</span></pre>\n<pre><span style=\"font-size: 12pt;\"><strong>Input: </strong>Linked List : 1-&gt;2-&gt;3-&gt;4<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/706336/Web/Other/blobid1_1722838295.png\" width=\"404\" height=\"63\" /> <br /><strong>Ouput: </strong>3 2 1 4<br /></span><strong style=\"font-size: 12pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong><span style=\"font-size: 12pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">The BST formed using elements of the linked list is -</span><br /><span style=\"font-size: 12pt;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/706336/Web/Other/blobid2_1722838310.png\" width=\"402\" height=\"141\" />\nHence, the preorder traversal of this tree is 3 2 1 4\n</span></pre>\n<div><span style=\"font-size: 12pt;\"><strong>Expected Time Complexity:</strong> O(n)<br /><strong>Expected Auxiliary Space:</strong> O(n)</span></div>\n<div>&nbsp;</div>\n<div><span style=\"font-size: 12pt;\"><strong>Constraints</strong>:</span></div>\n<div><span style=\"font-size: 12pt;\">1 &le; Number of Nodes &le; 10<sup>6</sup></span></div>\n<div><span style=\"font-size: 12pt;\">1 &le; Value of each node &le; 10<sup>6</sup></span></div>"
+    },
+    "qnum": 1108
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1",
+      "problem_name": "Trapping Rain Water",
+      "slug": "trapping-rain-water-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "33.14%",
+      "marks": 8,
+      "all_submissions": 510338,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Google",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "Algorithms",
+          "Stack",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "Algorithms",
+        "Stack",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Google",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/trapping-rain-water/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/payu-iinterview-on-campus/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-13-on-campus-for-internship-and-fte/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-219-on-campus/"
+      ],
+      "statement_text": "Given an array\narr[]\nwith non-negative integers representing the height of blocks. If the width of each block is 1, compute how much water can be trapped between the blocks during the rainy season.",
+      "full_text": "Given an array\narr[]\nwith non-negative integers representing the height of blocks. If the width of each block is 1, compute how much water can be trapped between the blocks during the rainy season.\nExamples:\nInput:\narr[] = [3, 0, 1, 0, 4, 0, 2]\nOutput:\n10\nExplanation:\nTotal water trapped = 0 + 3 + 2 + 3 + 0 + 2 + 0 = 10 units.\nInput:\narr[] = [3, 0, 2, 0, 4]\nOutput:\n7\nExplanation:\nTotal water trapped = 0 + 3 + 1 + 3 + 0 = 7 units.\nInput:\narr[] = [1, 2, 3, 4]\nOutput:\n0\nExplanation:\nWe cannot trap water as there is no height bound on both sides.\nInput:\narr[] = [2, 1, 5, 3, 1, 0, 4]\nOutput:\n9\nExplanation:\nTotal water trapped = 0 + 1 + 0 + 1 + 3 + 4 + 0 = 9 units.\nConstraints:\n1\n<\narr.size()\n<\n10\n5\n0\n<\narr[i]\n<\n10\n3",
+      "examples": [
+        "Input:\narr[] = [3, 0, 1, 0, 4, 0, 2]\nOutput:\n10\nExplanation:\nTotal water trapped = 0 + 3 + 2 + 3 + 0 + 2 + 0 = 10 units.",
+        "Input:\narr[] = [3, 0, 2, 0, 4]\nOutput:\n7\nExplanation:\nTotal water trapped = 0 + 3 + 1 + 3 + 0 = 7 units.",
+        "Input:\narr[] = [1, 2, 3, 4]\nOutput:\n0\nExplanation:\nWe cannot trap water as there is no height bound on both sides.",
+        "Input:\narr[] = [2, 1, 5, 3, 1, 0, 4]\nOutput:\n9\nExplanation:\nTotal water trapped = 0 + 1 + 0 + 1 + 3 + 4 + 0 = 9 units."
+      ],
+      "constraints_text": "Constraints:\n1\n<\narr.size()\n<\n10\n5\n0\n<\narr[i]\n<\n10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr[] </strong>with non-negative integers representing the height of blocks. If the width of each block is 1, compute how much water can be trapped between the blocks during the rainy season.&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [3, 0, 1, 0, 4, 0, 2]\n<strong>Output: </strong>10<strong>\nExplanation: </strong>Total water trapped = 0 + 3 + 2 + 3 + 0 + 2 + 0 = 10 units.<br /></span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701211/Web/Other/blobid0_1741784862.png\" alt=\"\" /></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [3, 0, 2, 0, 4]\n<strong>Output: </strong>7<strong>\nExplanation: </strong>Total water trapped = 0 + 3 + 1 + 3 + 0 = 7 units.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4]\n<strong>Output: </strong>0<strong>\nExplanation: </strong>We cannot trap water as there is no height bound on both sides.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [2, 1, 5, 3, 1, 0, 4]\n<strong>Output: </strong>9<strong>\nExplanation: </strong>Total water trapped = 0 + 1 + 0 + 1 + 3 + 4 + 0 = 9 units.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 <u>&lt;</u> arr.size() <u>&lt;</u> 10<sup>5</sup><br />0 <u>&lt;</u> arr[i] <u>&lt;</u> 10<sup>3</sup></span></p>"
+    },
+    "qnum": 1109
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-ladder/1",
+      "problem_name": "Word Ladder I",
+      "slug": "word-ladder",
+      "difficulty": "Hard",
+      "accuracy": "37.65%",
+      "marks": 8,
+      "all_submissions": 58342,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Adobe",
+          "Google"
+        ],
+        "topic_tags": [
+          "Graph",
+          "BFS",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Graph",
+        "BFS",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Adobe",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-ladder-length-of-shortest-chain-to-reach-a-target-word/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-mts-2-1-5-years-experienced/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1-on-campus-2020/"
+      ],
+      "statement_text": "Given two distinct words startWord and targetWord, and a list denoting wordList of unique words of equal lengths. Find the length of the shortest transformation sequence from startWord to targetWord.\nKeep the following conditions in mind:\n\nA word can only consist of lowercase characters.\n\nOnly one letter can be changed in each transformation.\n\nEach transformed word must exist in the wordList including the targetWord.\n\nstartWord may or may not be part of the wordList\n\nThe second part of this problem can be found here.\n\nNote: If no possible way to transform sequence from startWord to targetWord return 0\n\nExample 1:\n\nInput:\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\nstartWord = \"der\", targetWord= \"dfs\",\nOutput:\n3\nExplanation:\nThe length of the smallest transformation\nsequence from \"der\" to \"dfs\" is 3\ni,e \"der\" -> \"dfr\" -> \"dfs\".\n\nExample 2:\n\nInput:\nwordList = {\"geek\", \"gefk\"}\nstartWord = \"gedk\", targetWord= \"geek\",\nOutput:\n2\nExplanation:\ngedk -> geek\n\nExample 3:\n\nInput:\nwordList = {\"poon\", \"plee\", \"same\", \"poie\",\"plea\",\"plie\",\"poin\"}\nstartWord = \"toon\", targetWord= \"plea\",\nOutput: 7\nExplanation:\ntoon -> poon -> poin -> poie -> plie -> plee -> plea\n\n\n\nYour Task:\nYou don't need to read or print anything, Your task is to complete the function wordLadderLength() which takes startWord, targetWord and wordList as input parameter and returns the length of the shortest transformation sequence from startWord to targetWord. If not possible return 0.\n\nExpected Time Compelxity: O(N2 * M)\nExpected Auxiliary Space: O(N * M) where N = length of wordList and M = |wordListi|\n\nConstraints:\n1 ≤ N ≤ 100\n1 ≤ M ≤ 10",
+      "full_text": "Given two distinct words startWord and targetWord, and a list denoting wordList of unique words of equal lengths. Find the length of the shortest transformation sequence from startWord to targetWord.\nKeep the following conditions in mind:\n\nA word can only consist of lowercase characters.\n\nOnly one letter can be changed in each transformation.\n\nEach transformed word must exist in the wordList including the targetWord.\n\nstartWord may or may not be part of the wordList\n\nThe second part of this problem can be found here.\n\nNote: If no possible way to transform sequence from startWord to targetWord return 0\n\nExample 1:\n\nInput:\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\nstartWord = \"der\", targetWord= \"dfs\",\nOutput:\n3\nExplanation:\nThe length of the smallest transformation\nsequence from \"der\" to \"dfs\" is 3\ni,e \"der\" -> \"dfr\" -> \"dfs\".\n\nExample 2:\n\nInput:\nwordList = {\"geek\", \"gefk\"}\nstartWord = \"gedk\", targetWord= \"geek\",\nOutput:\n2\nExplanation:\ngedk -> geek\n\nExample 3:\n\nInput:\nwordList = {\"poon\", \"plee\", \"same\", \"poie\",\"plea\",\"plie\",\"poin\"}\nstartWord = \"toon\", targetWord= \"plea\",\nOutput: 7\nExplanation:\ntoon -> poon -> poin -> poie -> plie -> plee -> plea\n\n\n\nYour Task:\nYou don't need to read or print anything, Your task is to complete the function wordLadderLength() which takes startWord, targetWord and wordList as input parameter and returns the length of the shortest transformation sequence from startWord to targetWord. If not possible return 0.\n\nExpected Time Compelxity: O(N2 * M)\nExpected Auxiliary Space: O(N * M) where N = length of wordList and M = |wordListi|\n\nConstraints:\n1 ≤ N ≤ 100\n1 ≤ M ≤ 10",
+      "examples": [
+        "Input:\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\nstartWord = \"der\", targetWord= \"dfs\",\nOutput:\n3\nExplanation:\nThe length of the smallest transformation\nsequence from \"der\" to \"dfs\" is 3\ni,e \"der\" -> \"dfr\" -> \"dfs\".",
+        "Input:\nwordList = {\"geek\", \"gefk\"}\nstartWord = \"gedk\", targetWord= \"geek\",\nOutput:\n2\nExplanation:\ngedk -> geek",
+        "Input:\nwordList = {\"poon\", \"plee\", \"same\", \"poie\",\"plea\",\"plie\",\"poin\"}\nstartWord = \"toon\", targetWord= \"plea\",\nOutput:\n7\nExplanation:\ntoon -> poon -> poin -> poie -> plie -> plee -> plea"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 100\n1 ≤ M ≤ 10",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two distinct words <strong>startWord</strong> and <strong>targetWord</strong>, and a list&nbsp;denoting <strong>wordList</strong>&nbsp;of unique words of equal lengths. Find the length of the shortest transformation sequence from startWord to targetWord.<br />Keep&nbsp;the following conditions in mind:</span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">A word can only consist of lowercase characters.</span></li>\n<li><span style=\"font-size: 18px;\">Only one letter can be changed in each transformation.</span></li>\n<li><span style=\"font-size: 18px;\">Each transformed word must exist in the wordList including the targetWord.</span></li>\n<li><span style=\"font-size: 18px;\">startWord may or may not be part of the&nbsp;wordList</span></li>\n</ul>\n<p><span style=\"font-size: 18px;\">The second part of this problem can be found <a href=\"https://practice.geeksforgeeks.org/problems/word-ladder-ii/1/\">here</a>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note</strong>: If no possible way to&nbsp;transform&nbsp;sequence from startWord to targetWord <strong>return 0</strong></span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\nstartWord = \"der\", targetWord= \"dfs\",\n<strong>Output:\n</strong>3\n<strong>Explanation:\n</strong>The length of the smallest transformation\nsequence from \"der\" to \"dfs\" is 3\ni,e \"der\" -&gt; \"dfr\" -&gt; \"dfs\".\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nwordList = {\"geek\", \"gefk\"}\nstartWord = \"gedk\", targetWord= \"geek\", \n<strong>Output:\n</strong>2\n<strong>Explanation:\n</strong>gedk -&gt; geek</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Example 3:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>\nwordList = {\"poon\", \"plee\", \"same\", \"poie\",\"plea\",\"plie\",\"poin\"}\nstartWord = \"toon\", targetWord= \"plea\",\n<strong>Output: </strong>7 \n<strong>Explanation:\n</strong>toon -&gt; poon -&gt; poin -&gt; poie -&gt; plie -&gt; plee -&gt; plea </span></pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anything, Your task is to complete the function&nbsp;<strong>wordLadderLength()&nbsp;</strong>which takes startWord, targetWord and wordList as input parameter and returns the&nbsp;length of the shortest transformation sequence from startWord to targetWord. If not possible return&nbsp;0.</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Expected Time Compelxity:&nbsp;</strong>O(N<sup>2</sup>&nbsp;* M)<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(N * M) where N = length of wordList and M = |wordList<sub>i</sub>|</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 100<br />1 &le; M &le; 10</span></p>"
+    },
+    "qnum": 1110
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-ladder-ii/1",
+      "problem_name": "Word Ladder II",
+      "slug": "word-ladder-ii",
+      "difficulty": "Hard",
+      "accuracy": "50.0%",
+      "marks": 8,
+      "all_submissions": 42741,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Adobe",
+          "Google"
+        ],
+        "topic_tags": [
+          "Graph",
+          "BFS",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Graph",
+        "BFS",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Adobe",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-ladder-length-of-shortest-chain-to-reach-a-target-word/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-mts-2-1-5-years-experienced/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1-on-campus-2020/"
+      ],
+      "statement_text": "Given two distinct words startWord and targetWord, and a list denoting wordList of unique words of equal lengths.  Find all shortest transformation sequence(s) from startWord to targetWord. You can return them in any order possible.\nKeep the following conditions in mind:\n\nA word can only consist of lowercase characters.\n\nOnly one letter can be changed in each transformation.\n\nEach transformed word must exist in the wordList including the targetWord.\n\nstartWord may or may not be part of the wordList.\n\nReturn an empty list if there is no such transformation sequence.\n\nThe first part of this problem can be found here.\n\nExample 1:\n\nInput:\nstartWord = \"der\", targetWord = \"dfs\",\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\nOutput:\nder dfr dfs\nder des dfs\nExplanation:\nThe length of the smallest transformation is 3.\nAnd the following are the only two ways to get\nto targetWord:-\n\"der\" -> \"des\" -> \"dfs\".\n\"der\" -> \"dfr\" -> \"dfs\".\n\nExample 2:\n\nInput:\nstartWord = \"gedk\", targetWord = \"geek\",\nwordList = {\"geek\", \"gefk\"}\nOutput:\n\"gedk\" -> \"geek\"\n\nYour Task:\nYou don't need to read or print anything, Your task is to complete the function findSequences() which takes startWord, targetWord and wordList as input parameter and returns a list of list of strings of the shortest transformation sequence from startWord to targetWord.\nNote: You don't have to return -1 in case of no possible sequence. Just return the Empty List.\n\nExpected Time Compelxity: O(N*(logN * M * 26))\nExpected Auxiliary Space: O(N * M) where N = length of wordList and M = |wordListi|\n\nConstraints:\n1 ≤ N ≤ 100\n1 ≤ M ≤ 10",
+      "full_text": "Given two distinct words startWord and targetWord, and a list denoting wordList of unique words of equal lengths.  Find all shortest transformation sequence(s) from startWord to targetWord. You can return them in any order possible.\nKeep the following conditions in mind:\n\nA word can only consist of lowercase characters.\n\nOnly one letter can be changed in each transformation.\n\nEach transformed word must exist in the wordList including the targetWord.\n\nstartWord may or may not be part of the wordList.\n\nReturn an empty list if there is no such transformation sequence.\n\nThe first part of this problem can be found here.\n\nExample 1:\n\nInput:\nstartWord = \"der\", targetWord = \"dfs\",\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\nOutput:\nder dfr dfs\nder des dfs\nExplanation:\nThe length of the smallest transformation is 3.\nAnd the following are the only two ways to get\nto targetWord:-\n\"der\" -> \"des\" -> \"dfs\".\n\"der\" -> \"dfr\" -> \"dfs\".\n\nExample 2:\n\nInput:\nstartWord = \"gedk\", targetWord = \"geek\",\nwordList = {\"geek\", \"gefk\"}\nOutput:\n\"gedk\" -> \"geek\"\n\nYour Task:\nYou don't need to read or print anything, Your task is to complete the function findSequences() which takes startWord, targetWord and wordList as input parameter and returns a list of list of strings of the shortest transformation sequence from startWord to targetWord.\nNote: You don't have to return -1 in case of no possible sequence. Just return the Empty List.\n\nExpected Time Compelxity: O(N*(logN * M * 26))\nExpected Auxiliary Space: O(N * M) where N = length of wordList and M = |wordListi|\n\nConstraints:\n1 ≤ N ≤ 100\n1 ≤ M ≤ 10",
+      "examples": [
+        "Input:\nstartWord = \"der\", targetWord = \"dfs\",\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\nOutput:\nder dfr dfs\nder des dfs\nExplanation:\nThe length of the smallest transformation is 3.\nAnd the following are the only two ways to get\nto targetWord:-\n\"der\" -> \"des\" -> \"dfs\".\n\"der\" -> \"dfr\" -> \"dfs\".",
+        "Input:\nstartWord = \"gedk\", targetWord = \"geek\",\nwordList = {\"geek\", \"gefk\"}\nOutput:\n\"gedk\" -> \"geek\""
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 100\n1 ≤ M ≤ 10",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two distinct words <strong>startWord</strong> and <strong>targetWord</strong>, and a list&nbsp;denoting <strong>wordList</strong>&nbsp;of unique words of equal lengths. </span> <span style=\"font-size: 18px;\">Find all shortest transformation sequence(s) from startWord to targetWord. You can return them in any order possible.</span><br /><span style=\"font-size: 18px;\">Keep&nbsp;the following conditions in mind:</span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">A word can only consist of lowercase characters.</span></li>\n<li><span style=\"font-size: 18px;\">Only one letter can be changed in each transformation.</span></li>\n<li><span style=\"font-size: 18px;\">Each transformed word must exist in the wordList including the targetWord.</span></li>\n<li><span style=\"font-size: 18px;\">startWord may or may not be part of the&nbsp;wordList.</span><span style=\"font-size: 18px;\"> </span></li>\n<li><span style=\"font-size: 18px;\">Return an empty list if there is no such transformation sequence.</span></li>\n</ul>\n<p><span style=\"font-size: 18px;\">The first part of this problem can be found <a href=\"https://practice.geeksforgeeks.org/problems/word-ladder/1/\">here</a>.</span></p>\n<p><br /><strong><span style=\"font-size: 18px;\">Example 1:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input:\n</span></strong><span style=\"font-size: 18px;\">startWord = \"der\", targetWord = \"dfs\",\nwordList = {\"des\",\"der\",\"dfr\",\"dgt\",\"dfs\"}\n<strong>Output:\n</strong>der dfr dfs\nder des dfs\n<strong>Explanation:\n</strong>The length of the smallest transformation is 3.\nAnd the following are the only two ways to get\nto targetWord:-\n\"der\" -&gt; \"des\" -&gt; \"dfs\".</span>\n<span style=\"font-size: 18px;\">\"der\" -&gt; \"dfr\" -&gt; \"dfs\".</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>startWord = \"gedk\", targetWord = \"geek\", \nwordList = {\"geek\", \"gefk\"}\n<strong>Output:\n</strong>\"gedk\" -&gt; \"geek\"</span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anything, Your task is to complete the function&nbsp;findSequences<strong>()&nbsp;</strong>which takes startWord, targetWord and wordList as input parameter and returns a list of list of strings of the shortest transformation sequence from startWord to targetWord.<br /><strong>Note: </strong>You don't have to return -1 in case of no possible sequence. Just return the Empty List.</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Expected Time Compelxity:&nbsp;</strong>O(N*(logN * M * 26))<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(N * M) where N = length of wordList and M = |wordList<sub>i</sub>|</span></p>\n<p><br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 100<br />1 &le; M &le; 10</span></p>"
+    },
+    "qnum": 1111
+  },
+  {
+    "company": "Flipkart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-wrap1646/1",
+      "problem_name": "Word Wrap",
+      "slug": "word-wrap1646",
+      "difficulty": "Hard",
+      "accuracy": "29.74%",
+      "marks": 8,
+      "all_submissions": 48734,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr [] = &!//!&k = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Microsoft"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Microsoft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-wrap-problem-dp-19/",
+        "https://www.geeksforgeeks.org/word-wrap-problem-space-optimized-solution/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[]\n, where\narr[i]\ndenotes the number of characters in one word.\nLet\nk\nbe the limit on the number of characters that can be put in one line (line width). Put line breaks in the given sequence such that the lines are printed neatly.\nAssume that the length of each word is smaller than the line width. When line breaks are inserted there is a possibility that extra spaces are present in each line. The extra spaces include spaces put at the end of every line\nexcept the last one\n.\nYou have to\nminimize\nthe following total cost where\ntotal cost\n= Sum of cost of all lines, where cost of line is = (Number of extra spaces in the line)\n2\n.",
+      "full_text": "Given an array\narr[]\n, where\narr[i]\ndenotes the number of characters in one word.\nLet\nk\nbe the limit on the number of characters that can be put in one line (line width). Put line breaks in the given sequence such that the lines are printed neatly.\nAssume that the length of each word is smaller than the line width. When line breaks are inserted there is a possibility that extra spaces are present in each line. The extra spaces include spaces put at the end of every line\nexcept the last one\n.\nYou have to\nminimize\nthe following total cost where\ntotal cost\n= Sum of cost of all lines, where cost of line is = (Number of extra spaces in the line)\n2\n.\nExamples:\nInput:\narr[] = [3,2,2,5], k = 6\nOutput:\n10\nExplanation\n: Given a line can have 6 characters,\nLine number 1: From word no. 1 to 1\nLine number 2: From word no. 2 to 3\nLine number 3: From word no. 4 to 4\nSo total cost = (6-3)\n2\n+ (6-2-2-1)\n2\n= 3\n2\n+1\n2\n= 10. As in the first line word length = 3 thus extra spaces = 6 - 3 = 3 and in the second line there are two word of length 2 and there already 1 space between two word thus extra spaces = 6 - 2 -2 -1 = 1. As mentioned in the problem description there will be no extra spaces in the last line. Placing first and second word in first line and third word on second line would take a cost of 0\n2\n+ 4\n2\n= 16 (zero spaces on first line and 6-2 = 4 spaces on second), which isn't the minimum possible cost.\nInput:\narr[] = [3,2,2], k = 4\nOutput:\n5\nExplanation:\nGiven a line can have 4 characters,\nLine number 1: From word no. 1 to 1\nLine number 2: From word no. 2 to 2\nLine number 3: From word no. 3 to 3\nSame explaination as above total cost = (4 - 3)\n2\n+ (4 - 2)\n2\n= 5\n.\nConstraints:\n1 ≤ arr.size() ≤ 500\n1 ≤ arr[i] ≤ 1000\nmax(arr[i]) ≤ k ≤ 2000",
+      "examples": [
+        "Input:\narr[] = [3,2,2,5], k = 6\nOutput:\n10\nExplanation\n: Given a line can have 6 characters,\nLine number 1: From word no. 1 to 1\nLine number 2: From word no. 2 to 3\nLine number 3: From word no. 4 to 4\nSo total cost = (6-3)\n2\n+ (6-2-2-1)\n2\n= 3\n2\n+1\n2\n= 10. As in the first line word length = 3 thus extra spaces = 6 - 3 = 3 and in the second line there are two word of length 2 and there already 1 space between two word thus extra spaces = 6 - 2 -2 -1 = 1. As mentioned in the problem description there will be no extra spaces in the last line. Placing first and second word in first line and third word on second line would take a cost of 0\n2\n+ 4\n2\n= 16 (zero spaces on first line and 6-2 = 4 spaces on second), which isn't the minimum possible cost.",
+        "Input:\narr[] = [3,2,2], k = 4\nOutput:\n5\nExplanation:\nGiven a line can have 4 characters,\nLine number 1: From word no. 1 to 1\nLine number 2: From word no. 2 to 2\nLine number 3: From word no. 3 to 3\nSame explaination as above total cost = (4 - 3)\n2\n+ (4 - 2)\n2\n= 5\n."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 500\n1 ≤ arr[i] ≤ 1000\nmax(arr[i]) ≤ k ≤ 2000",
+      "question_html": "<div class=\"row bottom\">\n<div class=\"col-xs-12 textAlign\">\n<div class=\"modifiedAnswer\">\n<p><span style=\"font-size: 18px;\">Given an array <strong>arr[]</strong>, where&nbsp;<strong>arr[i]</strong>&nbsp;denotes the number of characters in one word.</span><span style=\"font-size: 18px;\"> Let <strong>k</strong> be the&nbsp;limit on the number of characters that can be put in one line (line width). Put line breaks in the given sequence such that the lines are printed neatly.<br />Assume that the length of each word is smaller than the line width. When line breaks are inserted there is a possibility that extra spaces are present in each line. The extra spaces include spaces put at the end of every line <strong>except the last one</strong>.&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\">You have&nbsp;to <strong>minimize </strong>the following total cost where <strong>total cost </strong>= Sum of cost of all lines, where cost of line is = (Number of extra spaces in the line)<sup>2</sup>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [3,2,2,5], k = 6\n<strong>Output: </strong>10\n<strong>Explanation</strong>: Given a line can have 6 characters,\nLine number 1: From word no. 1 to 1\nLine number 2: From word no. 2 to 3\nLine number 3: From word no. 4 to 4\nSo total cost = (6-3)<sup>2</sup> + (6-2-2-1)<sup>2</sup> = 3<sup>2</sup>+1<sup>2</sup> = 10. As in the first line word length = 3 thus extra spaces = 6 - 3 = 3 and in the second line there are two word of length 2 and there already 1 space between two word thus extra spaces = 6 - 2 -2 -1 = 1. As mentioned in the problem description there will be no extra spaces in the last line. Placing first and second word in first line and third word on second line would take a cost of 0<sup>2</sup> + 4<sup>2</sup> = 16 (zero spaces on first line and 6-2 = 4 spaces on second), which isn't the minimum possible cost.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [3,2,2], k = 4\n<strong>Output: </strong>5\n<strong>Explanation: </strong>Given a line can have 4 characters,\nLine number 1: From word no. 1 to 1\nLine number 2: From word no. 2 to 2\nLine number 3: From word no. 3 to 3\nSame explaination as above total cost = (4 - 3)<sup>2</sup> + (4 - 2)<sup>2</sup> = 5<strong>.</strong></span>&nbsp;&nbsp;</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 500<br />1 &le; arr[i] &le; 1000<br />max(arr[i]) &le; k &le; 2000</span></p>\n</div>\n</div>\n</div>"
+    },
+    "qnum": 1112
+  }
+]

@@ -1,0 +1,79 @@
+[
+  {
+    "company": "Amdocs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1",
+      "problem_name": "Merge Without Extra Space",
+      "slug": "merge-two-sorted-arrays-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "32.01%",
+      "marks": 4,
+      "all_submissions": 330349,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "a[] =&!//!&b[] =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Microsoft",
+          "Snapdeal",
+          "Goldman Sachs",
+          "Adobe",
+          "Linkedin",
+          "Amdocs",
+          "Brocade",
+          "Juniper Networks",
+          "Quikr",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "Sorting",
+          "Algorithms",
+          "Arrays",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Sorting",
+        "Algorithms",
+        "Arrays",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Microsoft",
+        "Snapdeal",
+        "Goldman Sachs",
+        "Adobe",
+        "Linkedin",
+        "Amdocs",
+        "Brocade",
+        "Juniper Networks",
+        "Quikr",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays-o1-extra-space/",
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-2020-product-intern/"
+      ],
+      "statement_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.",
+      "full_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.\nExamples:\nInput\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]\nInput\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].\nInput\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3].\nConstraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "examples": [
+        "Input\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]",
+        "Input\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].",
+        "Input\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two sorted arrays <strong>a[]</strong> and <strong>b[] </strong>of size <strong>n </strong>and <strong>m </strong>respectively, the task is to merge them in sorted order without using any <strong>extra space</strong>. Modify <strong>a[]</strong> so that it contains the first <strong>n</strong> elements and modify <strong>b[]</strong> so that it contains the last <strong>m</strong> elements.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [2, 4, 7, 10], b[] = [2, 3]\n<strong>Output</strong>: a[] = [2, 2, 3, 4], b[] = [7, 10]\n<strong>Explanation</strong>: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\n<strong>Output</strong>: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\n<strong>Explanation</strong>: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Output</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Explanation</strong>: After merging two sorted arrays we get [0, 1, 2, 3].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; n, m &le; 10<sup>5</sup><br />0 &le; a[i], b[i] &le; 10<sup>7</sup></span></p>"
+    },
+    "qnum": 817
+  }
+]

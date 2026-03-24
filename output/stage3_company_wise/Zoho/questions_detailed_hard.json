@@ -1,0 +1,289 @@
+[
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lets-play0201/1",
+      "problem_name": "Let's Play!!!",
+      "slug": "lets-play0201",
+      "difficulty": "Hard",
+      "accuracy": "36.2%",
+      "marks": 8,
+      "all_submissions": 6575,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/rotate-matrix-elements/"
+      ],
+      "interview_links": [],
+      "statement_text": "Let's play a game!! Given a matrix mat[][] with n x m elements. Your task is to check that matrix is Super Similar or not. To perform this task you have to follow these Rules: Firstly all even index rows to be Rotated left and odd index rows to right, And Rotation is done X times(Index starting from zero). Secondly, After all the Rotations check if the initial and the final Matrix are same Return 1 else 0.\nExample 1:\nInput:\nn = 2, m = 2\nmat = {{1, 2},\n{5, 6}}\nx = 1\nOutput:\n0\nExplanation:\nMatrix after rotation:\nmat = {{ 2, 1}\n{ 6, 5}}\nAfter one rotation mat is\nnot same as the previous one.\nExample 2:\nInput:\nn = 2, m = 4\nmat = {{1, 2, 1, 2},\n{2, 1, 2, 1}}\nx = 2\nOutput:\n1\nExplanation:\nAfter two rotation mat is\nsame as the previous one.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nisSuperSimilar()\nwhich takes n, m, x and the matrix as input parameter and returns 1 if the initial and the final Matrix are same else returns 0.\nExpected Time Complexity:\nO(n*m)\nExpected Auxiliary Space:\nO(n*m)",
+      "full_text": "Let's play a game!! Given a matrix mat[][] with n x m elements. Your task is to check that matrix is Super Similar or not. To perform this task you have to follow these Rules: Firstly all even index rows to be Rotated left and odd index rows to right, And Rotation is done X times(Index starting from zero). Secondly, After all the Rotations check if the initial and the final Matrix are same Return 1 else 0.\nExample 1:\nInput:\nn = 2, m = 2\nmat = {{1, 2},\n{5, 6}}\nx = 1\nOutput:\n0\nExplanation:\nMatrix after rotation:\nmat = {{ 2, 1}\n{ 6, 5}}\nAfter one rotation mat is\nnot same as the previous one.\nExample 2:\nInput:\nn = 2, m = 4\nmat = {{1, 2, 1, 2},\n{2, 1, 2, 1}}\nx = 2\nOutput:\n1\nExplanation:\nAfter two rotation mat is\nsame as the previous one.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nisSuperSimilar()\nwhich takes n, m, x and the matrix as input parameter and returns 1 if the initial and the final Matrix are same else returns 0.\nExpected Time Complexity:\nO(n*m)\nExpected Auxiliary Space:\nO(n*m)\nConstraints:\n1 ≤ n, m ≤ 30\n1 ≤ mat[i][j] ≤ 100\n1 ≤ x ≤ 20",
+      "examples": [
+        "Input:\nn = 2, m = 2\nmat = {{1, 2},\n{5, 6}}\nx = 1\nOutput:\n0\nExplanation:\nMatrix after rotation:\nmat = {{ 2, 1}\n{ 6, 5}}\nAfter one rotation mat is\nnot same as the previous one.",
+        "Input:\nn = 2, m = 4\nmat = {{1, 2, 1, 2},\n{2, 1, 2, 1}}\nx = 2\nOutput:\n1\nExplanation:\nAfter two rotation mat is\nsame as the previous one."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 30\n1 ≤ mat[i][j] ≤ 100\n1 ≤ x ≤ 20",
+      "question_html": "<p><span style=\"font-size:18px\">Let&#39;s play a game!! Given a matrix mat[][] with n&nbsp;x m&nbsp;elements. Your task is to check that matrix is Super Similar or not. To perform this task you have to follow these Rules: Firstly all even index rows to be Rotated left and odd index rows to right, And Rotation is done X times(Index starting from zero). Secondly, After all the Rotations check if the initial and the final Matrix are same Return 1 else 0.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> n = 2, m = 2\r\nmat = {{1, 2}, \r\n&nbsp;      {5, 6}}\r\nx = 1\r\n<strong>Output:</strong> 0\r\n<strong>Explanation:</strong> Matrix after rotation:\r\nmat = {{ 2, 1}\r\n&nbsp;      { 6, 5}}\r\nAfter one rotation mat is \r\nnot same as the previous one.</span>\r\n</pre>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> n = 2, m = 4\r\nmat = {{1, 2, 1, 2}, \r\n&nbsp;      {2, 1, 2, 1}}\r\nx = 2\r\n<strong>Output:</strong> 1\r\n<strong>Explanation:</strong> After two rotation mat is \r\nsame as the previous one.</span>\r\n</pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou do not need to read input or print anything. Your task is to complete the function <strong>isSuperSimilar()</strong> which takes n, m, x and the matrix as input parameter and returns 1&nbsp;if the initial and the final Matrix are same&nbsp;else returns 0.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(n*m)<br />\r\n<strong>Expected Auxiliary Space:</strong> O(n*m)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &le; n, m &le; 30<br />\r\n1&nbsp;&le; mat[i][j] &le; 100&nbsp;<br />\r\n1 &le; x&nbsp;&le; 20</span></p>\r\n"
+    },
+    "qnum": 2490
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lru-cache/1",
+      "problem_name": "LRU Cache",
+      "slug": "lru-cache",
+      "difficulty": "Hard",
+      "accuracy": "18.44%",
+      "marks": 8,
+      "all_submissions": 192488,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "capacity =&!//!&Q =&!//!&Queries =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "Yahoo"
+        ],
+        "topic_tags": [
+          "doubly-linked-list",
+          "Hash",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "doubly-linked-list",
+        "Hash",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "Yahoo"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/design-a-data-structure-for-lru-cache/",
+        "https://www.geeksforgeeks.org/lru-cache-implementation-using-double-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-7-3-5-years-experienced/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-interview-questions/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-21/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.",
+      "full_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.\nExamples:\nInput:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.\nInput:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.\nConstraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "examples": [
+        "Input:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.",
+        "Input:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Design a data structure that works like a LRU Cache. Here&nbsp;<strong>cap</strong>&nbsp;denotes&nbsp;the capacity of the cache and&nbsp;<strong>Q</strong>&nbsp;denotes the number of queries. Query can be&nbsp;</span><span style=\"font-size: 18px;\">of two types:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>PUT</strong>&nbsp;<strong>x</strong>&nbsp;<strong>y</strong>: sets the value of the key&nbsp;<strong>x</strong>&nbsp;with value&nbsp;<strong>y</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>GET</strong>&nbsp;<strong>x</strong>: gets the value of key <strong>x</strong>&nbsp;if present else returns&nbsp;<strong>-1</strong>.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\">The LRUCache class has two methods&nbsp;<strong>get</strong>() and&nbsp;<strong>put</strong>() which are defined as follows.</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>get(key)</strong>: returns the value of the key if it&nbsp;already exists in the cache otherwise returns&nbsp;<strong>-1.</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>put(key, value)</strong>: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.</span></li>\n<li><span style=\"font-size: 18px;\">In the&nbsp;<strong>constructor</strong>&nbsp;of the class the capacity of the cache should be initialized.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\n<strong>Output: </strong>[2]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]<br /><strong>Output: </strong>[5, -1]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1-&gt;2, 2-&gt;3(the most recently used one is kept at the rightmost position)&nbsp;\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -&gt; 3, 1 -&gt; 5\n[\"PUT\", 4, 5] : 1 -&gt; 5, 4 -&gt; 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -&gt; 5, 6 -&gt; 7&nbsp;\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -&gt; 7, 4-&gt;5)\n[\"PUT\", 1, 2] : 4 -&gt; 5, 1 -&gt; 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; cap &le; 10<sup>3</sup><br />1 &le; Q &le; 10<sup>5</sup><br />1 &le; x, y &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2491
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/solve-the-sudoku-1587115621/1",
+      "problem_name": "Solve the Sudoku",
+      "slug": "solve-the-sudoku-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "37.98%",
+      "marks": 8,
+      "all_submissions": 133894,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "mat[][] =",
+        "datatype": "INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "MAQ Software",
+          "Directi",
+          "PayPal",
+          "Samsung",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Backtracking",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Backtracking",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "MAQ Software",
+        "Directi",
+        "PayPal",
+        "Samsung",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sudoku-backtracking-7/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-8-for-sde-2/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-sde-1-2/"
+      ],
+      "statement_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.",
+      "full_text": "Given an incomplete\nSudoku\nin the form of matrix\nmat[][]\nof order 9*9, the task is to solve the Sudoku.\nIt is\nguaranteed\nthat the input Sudoku will have exactly\none\nsolution.\nA sudoku solution must satisfy all of the following rules:\nEach of the digits\n1-9\nmust occur exactly once in each row.\nEach of the digits\n1-9\nmust occur exactly once in each column.\nEach of the digits\n1-9\nmust occur exactly once in each of the 9,\n3x3\nsub-boxes of the grid.\nNote:\nZeros represent blanks to be filled with numbers 1-9, while non-zero cells are\nfixed\nand cannot be changed.\nExamples:\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nInput:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.\nConstraints:\n0 ≤ mat[i][j] ≤ 9",
+      "examples": [
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers.",
+        "Input:\nmat[][] =\nOutput:\nExplanation:\nEach row, column and 3 x 3 box of the output matrix contains unique numbers."
+      ],
+      "constraints_text": "Constraints:\n0 ≤ mat[i][j] ≤ 9",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">Given an&nbsp;incomplete&nbsp;</span><a style=\"font-size: 18px;\" href=\"https://www.geeksforgeeks.org/introduction-to-sudoku-puzzles-and-how-to-solve-them/\"><strong>Sudoku</strong></a><span style=\"font-size: 18px;\">&nbsp;in the form of matrix <strong>mat[][]</strong> of order 9*9, the task is to solve the Sudoku.&nbsp;</span></span><span style=\"font-size: 18px;\">It is <strong>guaranteed </strong>that the input Sudoku will have exactly <strong>one </strong>solution.</span></p>\n<p><span style=\"font-size: 18px;\">A sudoku solution must satisfy&nbsp;all of the following rules:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each row.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code>&nbsp;must occur exactly once in each column.</span></li>\n<li><span style=\"font-size: 18px;\">Each of the digits&nbsp;<code>1-9</code> must occur exactly once in each of the 9,&nbsp;<code>3x3</code>&nbsp;sub-boxes of the grid.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Zeros represent blanks to be filled with numbers 1-9, while non-zero cells are <strong>fixed </strong>and cannot be changed.</span><span style=\"font-size: 18px;\"><br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306620.png\" alt=\"\" width=\"260\" height=\"212\" />\n</span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\">\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /></span><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">mat[][] = \n</span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886267/Web/Other/blobid1_1738136756.png\" alt=\"\" width=\"262\" height=\"209\" /><br /></span><strong style=\"font-size: 18px;\">Output:</strong><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701375/Web/Other/blobid0_1738306722.png\" alt=\"\" width=\"258\" height=\"203\" /><br /><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Each row, column and 3 x 3 box of the output matrix contains unique numbers.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &le; mat[i][j] &le; 9<br /></span></p>"
+    },
+    "qnum": 2492
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-break-trie--141631/1",
+      "problem_name": "Word Break (Trie)",
+      "slug": "word-break-trie--141631",
+      "difficulty": "Hard",
+      "accuracy": "48.85%",
+      "marks": 8,
+      "all_submissions": 13984,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Hike",
+          "Walmart",
+          "MAQ Software",
+          "Google",
+          "IBM"
+        ],
+        "topic_tags": [
+          "Trie",
+          "Advanced Data Structure"
+        ]
+      },
+      "topic_tags": [
+        "Trie",
+        "Advanced Data Structure"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Hike",
+        "Walmart",
+        "MAQ Software",
+        "Google",
+        "IBM"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-break-problem-trie-solution/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-9-on-campus-for-se-1/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-7-off-campus/"
+      ],
+      "statement_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "full_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "examples": [
+        "Input:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput:\n1\nExplanation:\nThe string can be segmented as\n\"i like\".",
+        "Input\n:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput:\n1\nExplanation\n: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\"."
+      ],
+      "constraints_text": "Constraints\n:\n1 <= N <= 12\n1 <= s <=1000 , where s = length of string A\nThe length of each word is less than 15.",
+      "question_html": "<p><span style=\"font-size:18px\">Given a string <strong>A </strong>and a dictionary of n words <strong>B</strong>, find out if A&nbsp;can be segmented into a space-separated sequence of dictionary words.&nbsp;</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nn = 12\r\nB = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;,\r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilike&quot;\r\n<strong>Output:</strong> 1\r\n<strong>Explanation: </strong>The string can be segmented as\r\n&quot;i like&quot;.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input</strong>: </span>\r\n<span style=\"font-size:18px\">n = 12 </span>\r\n<span style=\"font-size:18px\">B = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;, \r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilikesamsung&quot; </span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong> 1</span>\r\n<span style=\"font-size:18px\"><strong>Explanation</strong>: The string can be segmented as \r\n&quot;i like samsung&quot; or &quot;i like sam sung&quot;.</span>\r\n\r\n</pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nComplete&nbsp;<strong>wordBreak()</strong>&nbsp;function which takes a string and list of strings as a parameter&nbsp;and returns 1 if it is possible to break words, else return&nbsp;0. You don&#39;t need to read any input or print any output, it is done by driver code.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected time complexity:&nbsp;</strong>O(n*l+|A|<sup>2</sup>) where l is the leght of longest string present in the dictionary and |A| is the length of&nbsp;string A</span><br />\r\n<span style=\"font-size:18px\"><strong>Expected auxiliary space:</strong>&nbsp;O(|A| + k) , where k = sum of length of all strings present in B</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints</strong>:<br />\r\n1 &lt;= N &lt;= 12<br />\r\n1 &lt;= s &lt;=1000 , where s =&nbsp;length of string A<br />\r\n&nbsp;The length of each word is less than 15.</span></p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    },
+    "qnum": 2493
+  }
+]

@@ -1,0 +1,122 @@
+[
+  {
+    "company": "IBM",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-break-trie--141631/1",
+      "problem_name": "Word Break (Trie)",
+      "slug": "word-break-trie--141631",
+      "difficulty": "Hard",
+      "accuracy": "48.85%",
+      "marks": 8,
+      "all_submissions": 13984,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Hike",
+          "Walmart",
+          "MAQ Software",
+          "Google",
+          "IBM"
+        ],
+        "topic_tags": [
+          "Trie",
+          "Advanced Data Structure"
+        ]
+      },
+      "topic_tags": [
+        "Trie",
+        "Advanced Data Structure"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Hike",
+        "Walmart",
+        "MAQ Software",
+        "Google",
+        "IBM"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-break-problem-trie-solution/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-9-on-campus-for-se-1/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-7-off-campus/"
+      ],
+      "statement_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "full_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "examples": [
+        "Input:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput:\n1\nExplanation:\nThe string can be segmented as\n\"i like\".",
+        "Input\n:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput:\n1\nExplanation\n: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\"."
+      ],
+      "constraints_text": "Constraints\n:\n1 <= N <= 12\n1 <= s <=1000 , where s = length of string A\nThe length of each word is less than 15.",
+      "question_html": "<p><span style=\"font-size:18px\">Given a string <strong>A </strong>and a dictionary of n words <strong>B</strong>, find out if A&nbsp;can be segmented into a space-separated sequence of dictionary words.&nbsp;</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nn = 12\r\nB = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;,\r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilike&quot;\r\n<strong>Output:</strong> 1\r\n<strong>Explanation: </strong>The string can be segmented as\r\n&quot;i like&quot;.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input</strong>: </span>\r\n<span style=\"font-size:18px\">n = 12 </span>\r\n<span style=\"font-size:18px\">B = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;, \r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilikesamsung&quot; </span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong> 1</span>\r\n<span style=\"font-size:18px\"><strong>Explanation</strong>: The string can be segmented as \r\n&quot;i like samsung&quot; or &quot;i like sam sung&quot;.</span>\r\n\r\n</pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nComplete&nbsp;<strong>wordBreak()</strong>&nbsp;function which takes a string and list of strings as a parameter&nbsp;and returns 1 if it is possible to break words, else return&nbsp;0. You don&#39;t need to read any input or print any output, it is done by driver code.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected time complexity:&nbsp;</strong>O(n*l+|A|<sup>2</sup>) where l is the leght of longest string present in the dictionary and |A| is the length of&nbsp;string A</span><br />\r\n<span style=\"font-size:18px\"><strong>Expected auxiliary space:</strong>&nbsp;O(|A| + k) , where k = sum of length of all strings present in B</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints</strong>:<br />\r\n1 &lt;= N &lt;= 12<br />\r\n1 &lt;= s &lt;=1000 , where s =&nbsp;length of string A<br />\r\n&nbsp;The length of each word is less than 15.</span></p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    },
+    "qnum": 1367
+  },
+  {
+    "company": "IBM",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-break-part-23249/1",
+      "problem_name": "Word Break - 2",
+      "slug": "word-break-part-23249",
+      "difficulty": "Hard",
+      "accuracy": "57.49%",
+      "marks": 8,
+      "all_submissions": 36317,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "dict[] = &!//!&s = ",
+        "datatype": "STRING_ARRAY&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Google",
+          "IBM"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Recursion",
+          "Backtracking",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Recursion",
+        "Backtracking",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Google",
+        "IBM"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-break-problem-dp-32-set-2/",
+        "https://www.geeksforgeeks.org/word-break-problem-using-backtracking/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string\ns\nand a dictionary\ndict[]\nof valid words, you need to return\nall possible ways\nto break the string\ns\ninto\nsentence\nsuch that each word in the sentence is a valid dictionary word.\nYou are allowed to use a valid word multiple times in the sentence.",
+      "full_text": "Given a string\ns\nand a dictionary\ndict[]\nof valid words, you need to return\nall possible ways\nto break the string\ns\ninto\nsentence\nsuch that each word in the sentence is a valid dictionary word.\nYou are allowed to use a valid word multiple times in the sentence.\nExamples:\nInput:\ns = \"likegfg\", dict[] = [\"lik\", \"like\", \"egfg\", \"gfg\"]\nOutput:\n\"lik egfg\"\n\"like gfg\"\nExplanation:\nAll the words in the given sentences are present in the dictionary.\nInput:\ns = \"geeksforgeeks\", dict[] = [\"for\", \"geeks\"]\nOutput:\n\"geeks for geeks\"\nExplanation:\nThe string \"geeksforgeeks\" can be broken into valid words from the dictionary in one way.\nConstraints:\n1 ≤ dict.size() ≤ 20\n1 ≤ dict[i] ≤ 15\n1 ≤ s.size() ≤ 500",
+      "examples": [
+        "Input:\ns = \"likegfg\", dict[] = [\"lik\", \"like\", \"egfg\", \"gfg\"]\nOutput:\n\"lik egfg\"\n\"like gfg\"\nExplanation:\nAll the words in the given sentences are present in the dictionary.",
+        "Input:\ns = \"geeksforgeeks\", dict[] = [\"for\", \"geeks\"]\nOutput:\n\"geeks for geeks\"\nExplanation:\nThe string \"geeksforgeeks\" can be broken into valid words from the dictionary in one way."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ dict.size() ≤ 20\n1 ≤ dict[i] ≤ 15\n1 ≤ s.size() ≤ 500",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string <strong><code data-start=\"116\" data-end=\"119\">s</code></strong> and a dictionary <strong><code data-start=\"137\" data-end=\"145\">dict[] </code></strong>of valid words, you need to return <strong>all possible ways</strong> to break the string&nbsp;<strong>s </strong>into <strong>sentence </strong>such that each word in the sentence is a valid dictionary word. <br />You are allowed to use a valid word multiple times in the sentence.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"likegfg\", dict[] = [\"lik\", \"like\", \"egfg\", \"gfg\"]\n<strong>Output:</strong> <br />\"lik egfg\"<br />\"like gfg\"\n<strong>Explanation:</strong> All the words in the given sentences are present in the dictionary.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"geeksforgeeks\", dict[] = [\"for\", \"geeks\"]\n<strong>Output:</strong> \"geeks for geeks\"\n<strong>Explanation:</strong> The string \"geeksforgeeks\" can be broken into valid words from the dictionary in one way.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; dict.size() &le; 20<br />1 &le; dict[i] &le; 15<br />1 &le; s.size() &le; 500</span></p>"
+    },
+    "qnum": 1368
+  }
+]

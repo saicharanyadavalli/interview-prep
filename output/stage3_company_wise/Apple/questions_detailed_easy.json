@@ -1,0 +1,283 @@
+[
+  {
+    "company": "Apple",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/k-th-missing-element3635/1",
+      "problem_name": "K-th missing element",
+      "slug": "k-th-missing-element3635",
+      "difficulty": "Easy",
+      "accuracy": "31.53%",
+      "marks": 2,
+      "all_submissions": 37047,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Facebook",
+          "Apple",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Facebook",
+        "Apple",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/k-th-missing-element-in-sorted-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an increasing sequence\narr\n, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.",
+      "full_text": "Given an increasing sequence\narr\n, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.\nExample:\nInput:\narr[] = [1, 3, 4, 5, 7] and k = 2\nOutput:\n6\nExplanation:\nk = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.\nInput:\narr[] = [2, 3, 4, 5, 6, 8] and k = 1\nOutput:\n7\nExplanation:\nk = 1, the first missing number in the array is 7.\nExpected Time Complexity:\nO(n).\nExpected Auxiliary Space:\nO(1).\nConstraints:\n1 ≤  arr.size() ≤ 10\n6\n0 ≤  k, arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 3, 4, 5, 7] and k = 2\nOutput:\n6\nExplanation:\nk = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.",
+        "Input:\narr[] = [2, 3, 4, 5, 6, 8] and k = 1\nOutput:\n7\nExplanation:\nk = 1, the first missing number in the array is 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤  arr.size() ≤ 10\n6\n0 ≤  k, arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an increasing sequence <strong>arr</strong>, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [1, 3, 4, 5, 7] and k = 2\n<strong>Output:</strong> 6\n<strong>Explanation: </strong>k = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [2, 3, 4, 5, 6, 8] and k = 1<strong>\nOutput:</strong> 7<br /><strong>Explanation: </strong>k = 1, the first missing number in the array is 7.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n).<br /><strong>Expected Auxiliary Space:</strong>&nbsp;O(1).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 18px;\">1 &le;&nbsp; arr.size() &le; 10<sup>6</sup><br />0 &le;&nbsp; k, arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 819
+  },
+  {
+    "company": "Apple",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-an-array/1",
+      "problem_name": "Reverse an Array",
+      "slug": "reverse-an-array",
+      "difficulty": "Easy",
+      "accuracy": "55.32%",
+      "marks": 2,
+      "all_submissions": 284228,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "TCS",
+          "Adobe",
+          "Google",
+          "Infosys",
+          "Capgemini",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Apple",
+          "Yahoo",
+          "PayPal",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "TCS",
+        "Adobe",
+        "Google",
+        "Infosys",
+        "Capgemini",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Apple",
+        "Yahoo",
+        "PayPal",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-reverse-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.",
+      "full_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.\nExamples:\nInput:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].\nInput\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].\nInput\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].",
+        "Input\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].",
+        "Input\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array of integers&nbsp;<strong>arr[]</strong>. You have to <strong>reverse</strong> the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:<span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito;\">&nbsp;</span></strong>Modify the array in place.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 4, 3, 2, 6, 5]\n<strong>Output: </strong>[5, 6, 2, 3, 4, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>The elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [4, 5, 2]\n<strong>Output: </strong>[2, 5, 4]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [1]\n<strong>Output: </strong>[1]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The array has only single element, hence the reversed array is same as the original.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup></span><br /><span style=\"font-size: 14pt;\">0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 820
+  },
+  {
+    "company": "Apple",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
+      "problem_name": "Stock Buy and Sell – Max one Transaction Allowed",
+      "slug": "buy-stock-2",
+      "difficulty": "Easy",
+      "accuracy": "49.33%",
+      "marks": 2,
+      "all_submissions": 140469,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "Intel",
+          "Infosys",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Yahoo",
+          "PayPal",
+          "Nvidia",
+          "Oracle",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "TCS",
+          "Adobe",
+          "Google",
+          "IBM",
+          "Accenture",
+          "Apple",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "Intel",
+        "Infosys",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Yahoo",
+        "PayPal",
+        "Nvidia",
+        "Oracle",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "TCS",
+        "Adobe",
+        "Google",
+        "IBM",
+        "Accenture",
+        "Apple",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-variations-of-stock-problems/",
+        "https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.",
+      "full_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.\nExamples:\nInput:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.\nInput:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.\nInput:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].\nConstraint:\n1\n≤\nprices.size()\n≤\n10\n5\n0\n≤\nprices[i]\n≤\n10\n4",
+      "examples": [
+        "Input:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.",
+        "Input:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.",
+        "Input:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1]."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given an array <strong>prices[]</strong> of non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when <strong>at most one </strong>transaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then <strong>return 0</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">Note: Stock must be bought before being sold.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 10, 1, 3, 6, 9, 2]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 8<br /></span><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> You can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 6, 4, 3, 1]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 0 <br /></span><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Here the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.<br /></span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>prices[] = [1, 3, 6, 9, 11]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 10 </span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Since the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraint:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices.size()&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;10</span><sup>5<br /></sup><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices[i] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> &nbsp;</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup></p>"
+    },
+    "qnum": 821
+  },
+  {
+    "company": "Apple",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/unique-frequencies-of-not/1",
+      "problem_name": "Unique Number of Occurrences",
+      "slug": "unique-frequencies-of-not",
+      "difficulty": "Easy",
+      "accuracy": "57.68%",
+      "marks": 2,
+      "all_submissions": 52294,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "PayPal",
+          "Bloomberg",
+          "Adobe",
+          "Google",
+          "Amazon",
+          "Apple"
+        ],
+        "topic_tags": [
+          "set",
+          "Sorting",
+          "Map"
+        ]
+      },
+      "topic_tags": [
+        "set",
+        "Sorting",
+        "Map"
+      ],
+      "company_tags": [
+        "PayPal",
+        "Bloomberg",
+        "Adobe",
+        "Google",
+        "Amazon",
+        "Apple"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-frequency-of-each-element-in-given-array-is-unique-or-not/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr\nof\nN\nintegers, the task is to check whether the frequency of the elements in the array is unique or not. Or in other words, there are no two\ndistinct\nnumbers in array with equal frequency. If all the frequency is unique then return\ntrue\n, else return\nfalse\n.\nExample 1:\nI\nnput:\nN = 5\narr = [1, 1, 2, 5, 5]\nOutput:\nfalse\nExplanation:\nThe array contains 2 (1’s), 1 (2’s) and 2 (5’s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.\nExample 2:\nInput:\nN = 10\narr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\nOutput:\ntrue\nExplanation:\nNumber of 1’s -> 1\nNumber of 2’s -> 4\nNumber of 5’s -> 2\nNumber of 10’s -> 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition.\nYour task:\nYou don't need to read input or print anything. Your task is to complete the function\nisFrequencyUnique()\nwhich take integer\nN\nand array\narr\nof size N as arguments, and returns a boolean.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)",
+      "full_text": "Given an array\narr\nof\nN\nintegers, the task is to check whether the frequency of the elements in the array is unique or not. Or in other words, there are no two\ndistinct\nnumbers in array with equal frequency. If all the frequency is unique then return\ntrue\n, else return\nfalse\n.\nExample 1:\nI\nnput:\nN = 5\narr = [1, 1, 2, 5, 5]\nOutput:\nfalse\nExplanation:\nThe array contains 2 (1’s), 1 (2’s) and 2 (5’s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.\nExample 2:\nInput:\nN = 10\narr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\nOutput:\ntrue\nExplanation:\nNumber of 1’s -> 1\nNumber of 2’s -> 4\nNumber of 5’s -> 2\nNumber of 10’s -> 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition.\nYour task:\nYou don't need to read input or print anything. Your task is to complete the function\nisFrequencyUnique()\nwhich take integer\nN\nand array\narr\nof size N as arguments, and returns a boolean.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)\nConstraints:\n1 <= N <=10\n5\n-10\n9\n<= arr[i] <= 10\n9",
+      "examples": [
+        "I\nnput:\nN = 5\narr = [1, 1, 2, 5, 5]\nOutput:\nfalse\nExplanation:\nThe array contains 2 (1’s), 1 (2’s) and 2 (5’s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.",
+        "Input:\nN = 10\narr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\nOutput:\ntrue\nExplanation:\nNumber of 1’s -> 1\nNumber of 2’s -> 4\nNumber of 5’s -> 2\nNumber of 10’s -> 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition."
+      ],
+      "constraints_text": "Constraints:\n1 <= N <=10\n5\n-10\n9\n<= arr[i] <= 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr</strong> of <strong>N</strong> integers, the task is to check whether the frequency of the elements in the array is unique or not. Or in other words, there are no two <strong>distinct</strong> numbers in array with equal frequency. If all the frequency is unique then return <strong>true</strong>, else return <strong>false</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>I</strong><strong>nput:</strong>\nN = 5<br />arr = [1, 1, 2, 5, 5]\n<strong>Output:</strong>\nfalse\n<strong>Explanation:<br /></strong>The array contains 2 (1&rsquo;s), 1 (2&rsquo;s) and 2 (5&rsquo;s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.\n</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong>\nN = 10<br />arr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\n<strong>Output:</strong>\ntrue\n<strong>Explanation:</strong>\nNumber of 1&rsquo;s -&gt; 1\nNumber of 2&rsquo;s -&gt; 4\nNumber of 5&rsquo;s -&gt; 2\nNumber of 10&rsquo;s -&gt; 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Your task:</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>isFrequencyUnique()</strong> which take integer <strong>N</strong> and array <strong>arr</strong> of size N as arguments, and returns a boolean.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong style=\"font-size: 18px;\">Expected Time Complexity:</strong><span style=\"font-size: 18px;\">&nbsp;O(N)</span><br style=\"font-size: 18px;\" /><strong style=\"font-size: 18px;\">Expected Auxiliary Space:</strong><span style=\"font-size: 18px;\">&nbsp;O(N)</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;=10<sup>5</sup><br />-10<sup>9</sup> &lt;= arr[i] &lt;= 10<sup>9</sup></span></p>"
+    },
+    "qnum": 822
+  }
+]

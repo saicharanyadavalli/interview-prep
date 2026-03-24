@@ -1,0 +1,257 @@
+[
+  {
+    "company": "Directi",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/anagram-1587115620/1",
+      "problem_name": "Anagram",
+      "slug": "anagram-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "44.93%",
+      "marks": 2,
+      "all_submissions": 473224,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 = &!//!&s2 = ",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Directi",
+          "Adobe",
+          "Google",
+          "Nagarro",
+          "Media.net"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Directi",
+        "Adobe",
+        "Google",
+        "Nagarro",
+        "Media.net"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-whether-two-strings-are-anagram-of-each-other/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-22-pool-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-19-sdet/"
+      ],
+      "statement_text": "Given two non-empty strings\ns1\nand\ns2\n, consisting only of lowercase English letters, determine whether they are\nanagrams\nof each other or not.\nTwo strings are considered\nanagrams\nif they contain the\nsame characters\nwith exactly the\nsame frequencies\n, regardless of their order.",
+      "full_text": "Given two non-empty strings\ns1\nand\ns2\n, consisting only of lowercase English letters, determine whether they are\nanagrams\nof each other or not.\nTwo strings are considered\nanagrams\nif they contain the\nsame characters\nwith exactly the\nsame frequencies\n, regardless of their order.\nExamples:\nInput:\ns1 = \"geeks\" s2 = \"kseeg\"\nOutput:\ntrue\nExplanation:\nBoth the string have same characters with same frequency. So, they are anagrams.\nInput:\ns1 = \"allergy\", s2 = \"allergyy\"\nOutput\n: false\nExplanation:\nAlthough the characters are mostly the same, s2 contains an extra 'y' character. Since the frequency of characters differs, the strings are not anagrams.\nInput:\ns1 = \"listen\", s2 = \"lists\"\nOutput:\nfalse\nExplanation:\nThe characters in the two strings are not the same — some are missing or extra. So, they are not anagrams.\nConstraints:\n1 ≤ s1.size(), s2.size() ≤ 10\n5\ns1, s2 consists of lowercase English letters.",
+      "examples": [
+        "Input:\ns1 = \"geeks\" s2 = \"kseeg\"\nOutput:\ntrue\nExplanation:\nBoth the string have same characters with same frequency. So, they are anagrams.",
+        "Input:\ns1 = \"allergy\", s2 = \"allergyy\"\nOutput\n: false\nExplanation:\nAlthough the characters are mostly the same, s2 contains an extra 'y' character. Since the frequency of characters differs, the strings are not anagrams.",
+        "Input:\ns1 = \"listen\", s2 = \"lists\"\nOutput:\nfalse\nExplanation:\nThe characters in the two strings are not the same — some are missing or extra. So, they are not anagrams."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s1.size(), s2.size() ≤ 10\n5\ns1, s2 consists of lowercase English letters.",
+      "question_html": "<p data-start=\"96\" data-end=\"235\"><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\">Given two non-empty strings <strong>s1 </strong>and <strong>s2</strong>, consisting only of lowercase English letters, determine whether they are <strong>anagrams </strong>of each other or not.<br /></span><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\"> </span><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\">Two strings are considered <strong>anagrams</strong> if they contain the <strong>same characters</strong> with exactly the <strong>same frequencies</strong>, regardless of their order.</span></p>\n<p><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\"><strong>Examples:</strong></span></p>\n<pre dir=\"ltr\"><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Input:</strong> s1 = \"geeks\" s2 = \"kseeg\"<br /><strong>Output:</strong> true <br /><strong>Explanation:</strong> Both the string have same characters with same frequency. So, they are anagrams.</span></pre>\n<pre dir=\"ltr\"><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Input:</strong> s1 = \"allergy\", s2 = \"allergyy\" <br /></span><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Output</strong>: false <br /><strong>Explanation:</strong> Although the characters are mostly the same, s2 contains an extra 'y' character. Since the frequency of characters differs, the strings are not anagrams. </span></pre>\n<pre dir=\"ltr\"><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Input:</strong> s1 = \"listen\", s2 = \"lists\" <br /><strong>Output:</strong> false <br /><strong>Explanation:</strong> The characters in the two strings are not the same &mdash; some are missing or extra. So, they are not anagrams.</span></pre>\n<p><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\"><strong style=\"font-family: 'andale mono', monospace; font-size: 14pt;\">Constraints:</strong><br /><span style=\"font-family: andale mono, monospace;\"><span style=\"font-size: 14pt;\">1 &le; s1.size(), s2.size() &le; 10</span></span><sup style=\"font-family: 'andale mono', monospace; font-size: 14pt;\">5</sup><br /><span style=\"font-family: andale mono, monospace;\"><span style=\"font-size: 18.6667px;\">s1, s2 consists of lowercase English letters.</span></span></span></p>"
+    },
+    "qnum": 874
+  },
+  {
+    "company": "Directi",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/geek-and-its-colored-strings1355/1",
+      "problem_name": "Colorful Strings",
+      "slug": "geek-and-its-colored-strings1355",
+      "difficulty": "Easy",
+      "accuracy": "32.78%",
+      "marks": 2,
+      "all_submissions": 5968,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Directi"
+        ],
+        "topic_tags": [
+          "Strings",
+          "permutation",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "permutation",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Directi"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-number-of-strings-made-of-r-g-and-b-using-given-combination/"
+      ],
+      "interview_links": [],
+      "statement_text": "Find the count of all possible strings of size n.Each character of the string is either ‘R’, ‘B’ or ‘G’. In the final string there needs to be at least r number of ‘R’, at least b number of ‘B’ and at least g number of ‘G’ (such that r + g + b <= n).\nExample 1:\nInput\n: n = 4, r = 1, g = 1, b = 1\nOutput:\n36\nExplanation\n: No. of 'R' >= 1,\nNo. of ‘G’ >= 1, No. of ‘B’ >= 1\nand (No. of ‘R’) + (No. of ‘B’)\n+ (No. of ‘G’) = n then\nfollowing cases are possible:\n1. RBGR and its 12 permutation\n2. RBGB and its 12 permutation\n3. RBGG and its 12 permutation\nHence answer is 36.\nExample 2:\nInput:\nn = 4, r = 2, g = 0, b = 1\nOutput:\n22\nExplanation\n: No. of 'R' >= 2,\nNo. of ‘G’ >= 0, No. of ‘B’ >= 1\nand (No. of ‘R’) + (No. of ‘B’)\n+ (No. of ‘G’) <= n then\nfollowing cases are possible:\n1. RRBR and its 4 permutation\n2. RRBG and its 12 permutation\n3. RRBB and its 6 permutation\nHence answer is 22.\nYour Task:\nYou dont need to read input or print anything. Complete the function\npossibleStrings()\nwhich takes n, r, g, b as input parameter and returns the count of number of all possible strings.\n.\nExpected Time Complexity:\nO(n\n2\n)\nExpected Auxiliary Space:\nO(n)",
+      "full_text": "Find the count of all possible strings of size n.Each character of the string is either ‘R’, ‘B’ or ‘G’. In the final string there needs to be at least r number of ‘R’, at least b number of ‘B’ and at least g number of ‘G’ (such that r + g + b <= n).\nExample 1:\nInput\n: n = 4, r = 1, g = 1, b = 1\nOutput:\n36\nExplanation\n: No. of 'R' >= 1,\nNo. of ‘G’ >= 1, No. of ‘B’ >= 1\nand (No. of ‘R’) + (No. of ‘B’)\n+ (No. of ‘G’) = n then\nfollowing cases are possible:\n1. RBGR and its 12 permutation\n2. RBGB and its 12 permutation\n3. RBGG and its 12 permutation\nHence answer is 36.\nExample 2:\nInput:\nn = 4, r = 2, g = 0, b = 1\nOutput:\n22\nExplanation\n: No. of 'R' >= 2,\nNo. of ‘G’ >= 0, No. of ‘B’ >= 1\nand (No. of ‘R’) + (No. of ‘B’)\n+ (No. of ‘G’) <= n then\nfollowing cases are possible:\n1. RRBR and its 4 permutation\n2. RRBG and its 12 permutation\n3. RRBB and its 6 permutation\nHence answer is 22.\nYour Task:\nYou dont need to read input or print anything. Complete the function\npossibleStrings()\nwhich takes n, r, g, b as input parameter and returns the count of number of all possible strings.\n.\nExpected Time Complexity:\nO(n\n2\n)\nExpected Auxiliary Space:\nO(n)\nConstraints:\n1<= n <=20\n1<= r+b+g <=n",
+      "examples": [
+        "Input\n: n = 4, r = 1, g = 1, b = 1\nOutput:\n36\nExplanation\n: No. of 'R' >= 1,\nNo. of ‘G’ >= 1, No. of ‘B’ >= 1\nand (No. of ‘R’) + (No. of ‘B’)\n+ (No. of ‘G’) = n then\nfollowing cases are possible:\n1. RBGR and its 12 permutation\n2. RBGB and its 12 permutation\n3. RBGG and its 12 permutation\nHence answer is 36.",
+        "Input:\nn = 4, r = 2, g = 0, b = 1\nOutput:\n22\nExplanation\n: No. of 'R' >= 2,\nNo. of ‘G’ >= 0, No. of ‘B’ >= 1\nand (No. of ‘R’) + (No. of ‘B’)\n+ (No. of ‘G’) <= n then\nfollowing cases are possible:\n1. RRBR and its 4 permutation\n2. RRBG and its 12 permutation\n3. RRBB and its 6 permutation\nHence answer is 22."
+      ],
+      "constraints_text": "Constraints:\n1<= n <=20\n1<= r+b+g <=n",
+      "question_html": "<p><span style=\"font-size:18px\">Find the count of all possible strings of size n.Each character of the string is either &lsquo;R&rsquo;, &lsquo;B&rsquo; or &lsquo;G&rsquo;. In the final string there needs to be at least r number of &lsquo;R&rsquo;, at least b number of &lsquo;B&rsquo; and at least g number of &lsquo;G&rsquo; (such that r + g + b &lt;= n).&nbsp;</span><br />\n<br />\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input</strong>: n = 4, r = 1, g = 1, b = 1\n<strong>Output:</strong>&nbsp;36&nbsp;\n<strong>Explanation</strong>: No. of &#39;R&#39; &gt;= 1, \nNo. of &lsquo;G&rsquo; &gt;= 1, No. of &lsquo;B&rsquo; &gt;= 1 \nand (No. of &lsquo;R&rsquo;) + (No. of &lsquo;B&rsquo;) \n+ (No. of &lsquo;G&rsquo;) = n then \nfollowing cases are possible: \n1. RBGR and its 12 permutation \n2. RBGB and its 12 permutation \n3. RBGG and its 12 permutation \nHence answer is 36.\n</span></pre>\n\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input: </strong>n = 4, r = 2, g = 0, b = 1\n<strong>Output:&nbsp;</strong>22\n<strong>Explanation</strong>: No. of &#39;R&#39; &gt;= 2,\nNo. of &lsquo;G&rsquo; &gt;= 0, No. of &lsquo;B&rsquo; &gt;= 1\nand (No. of &lsquo;R&rsquo;) + (No. of &lsquo;B&rsquo;)\n+ (No. of &lsquo;G&rsquo;) &lt;= n then \nfollowing cases are possible:\n1. RRBR and its 4 permutation\n2. RRBG and its 12 permutation\n3. RRBB and its 6 permutation\nHence answer is 22.</span></pre>\n\n<p><br />\n<span style=\"font-size:18px\"><strong>Your Task:&nbsp;&nbsp;</strong><br />\nYou dont need to read input or print anything. Complete the function <strong>possibleStrings()&nbsp;</strong>which takes n, r, g, b&nbsp;as input parameter and returns the count&nbsp;of&nbsp;number of all possible&nbsp;strings.</span><span style=\"font-size:18px\">.<br />\n<br />\n<strong>Expected Time Complexity:</strong> O(n<sup>2</sup>)<br />\n<strong>Expected Auxiliary Space:</strong> O(n)<br />\n<br />\n<strong>Constraints:</strong><br />\n1&lt;= n&nbsp;&lt;=20<br />\n1&lt;= r+b+g&nbsp;&lt;=n</span></p>\n"
+    },
+    "qnum": 875
+  },
+  {
+    "company": "Directi",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-zigzag-sequence5416/1",
+      "problem_name": "Largest zigzag sequence",
+      "slug": "largest-zigzag-sequence5416",
+      "difficulty": "Easy",
+      "accuracy": "38.0%",
+      "marks": 2,
+      "all_submissions": 7259,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Directi"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Directi"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/largest-sum-zig-zag-sequence-in-a-matrix/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a matrix\nM\nof size\nn * n\n, the task is to find sum of the zigzag sequence with the largest sum. A zigzag sequence starts from the top and ends at the bottom. Two consecutive elements of sequence cannot belong to same column.\nExample 1:\nInput:\nn = 3\nM = {{3, 1, 2},\n{4, 8, 5},\n{6, 9, 7}}\nOutput:\n18\nExplaination:\nThe sequence is (3, 8, 7).\nExample 2:\nInput:\nn = 3\nM = {{1, 2, 4},\n{3, 9, 6},\n{11, 3, 15}}\nOutput:\n28\nExplaination:\nThe sequence is 4, 9, 15.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nzigzagSequence()\nwhich takes n and M as input parameters and returns the highest zigzag sum.\nExpected Time Complexity:\nO(n\n3\n)\nExpected Auxiliary Space:\nO(n\n2\n)",
+      "full_text": "Given a matrix\nM\nof size\nn * n\n, the task is to find sum of the zigzag sequence with the largest sum. A zigzag sequence starts from the top and ends at the bottom. Two consecutive elements of sequence cannot belong to same column.\nExample 1:\nInput:\nn = 3\nM = {{3, 1, 2},\n{4, 8, 5},\n{6, 9, 7}}\nOutput:\n18\nExplaination:\nThe sequence is (3, 8, 7).\nExample 2:\nInput:\nn = 3\nM = {{1, 2, 4},\n{3, 9, 6},\n{11, 3, 15}}\nOutput:\n28\nExplaination:\nThe sequence is 4, 9, 15.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nzigzagSequence()\nwhich takes n and M as input parameters and returns the highest zigzag sum.\nExpected Time Complexity:\nO(n\n3\n)\nExpected Auxiliary Space:\nO(n\n2\n)\nConstraints:\n1 ≤ n ≤ 100\n1 ≤ M[i][j] ≤ 1000",
+      "examples": [
+        "Input:\nn = 3\nM = {{3, 1, 2},\n{4, 8, 5},\n{6, 9, 7}}\nOutput:\n18\nExplaination:\nThe sequence is (3, 8, 7).",
+        "Input:\nn = 3\nM = {{1, 2, 4},\n{3, 9, 6},\n{11, 3, 15}}\nOutput:\n28\nExplaination:\nThe sequence is 4, 9, 15."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 100\n1 ≤ M[i][j] ≤ 1000",
+      "question_html": "<p><span style=\"font-size:18px\">Given a matrix <strong>M</strong> of size <strong>n * n</strong>, the task is to&nbsp;find sum of the zigzag sequence with the largest sum. A zigzag sequence starts from the top and ends at the bottom. Two consecutive elements of sequence cannot belong to same column.</span></p>\r\n\r\n<p><br />\r\n<strong><span style=\"font-size:18px\">Example 1:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> n = 3\r\nM = {{3, 1, 2}, \r\n&nbsp;    {4, 8, 5}, \r\n&nbsp;    {6, 9, 7}}\r\n<strong>Output:</strong> 18\r\n<strong>Explaination:</strong> The sequence is (3, 8, 7).</span></pre>\r\n\r\n<p><br />\r\n<strong><span style=\"font-size:18px\">Example 2:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong> n = 3\r\nM = {{1, 2, 4}, \r\n&nbsp;    {3, 9, 6}, \r\n&nbsp;    {11, 3, 15}}\r\n<strong>Output:</strong> 28\r\n<strong>Explaination:</strong> The sequence is 4, 9, 15.</span></pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou do not need to read input or print anything. Your task is to complete the function <strong>zigzagSequence()</strong> which takes n and M as input parameters and returns the highest zigzag sum.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(n<sup>3</sup>)<br />\r\n<strong>Expected Auxiliary Space:</strong> O(n<sup>2</sup>)&nbsp;&nbsp;</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &le; n &le; 100<br />\r\n1 &le; M[i][j] &le; 1000&nbsp;</span></p>\r\n"
+    },
+    "qnum": 876
+  },
+  {
+    "company": "Directi",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/search-in-a-matrix17201720/1",
+      "problem_name": "Search in a Row-Column Sorted",
+      "slug": "search-in-a-matrix17201720",
+      "difficulty": "Easy",
+      "accuracy": "41.62%",
+      "marks": 2,
+      "all_submissions": 200439,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&m =&!//!&mat[][] =&!//!&x =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "Visa",
+          "Goldman Sachs",
+          "Directi",
+          "Adobe",
+          "SAP Labs",
+          "Groupon",
+          "InMobi",
+          "One97",
+          "Polycom",
+          "TinyOwl"
+        ],
+        "topic_tags": [
+          "Searching",
+          "Matrix",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Searching",
+        "Matrix",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "Visa",
+        "Goldman Sachs",
+        "Directi",
+        "Adobe",
+        "SAP Labs",
+        "Groupon",
+        "InMobi",
+        "One97",
+        "Polycom",
+        "TinyOwl"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/search-in-row-wise-and-column-wise-sorted-matrix/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-16-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-for-internship/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-for-mts-1-2/"
+      ],
+      "statement_text": "Given a 2D integer matrix\nmat\n[][] of size\nn x m\n, where every row and column is sorted in increasing order and a number\nx\n,\nthe task is to find whether element\nx\nis present in the matrix.",
+      "full_text": "Given a 2D integer matrix\nmat\n[][] of size\nn x m\n, where every row and column is sorted in increasing order and a number\nx\n,\nthe task is to find whether element\nx\nis present in the matrix.\nExamples:\nInput\n: mat[][] = [[3, 30, 38],[20, 52, 54],[35, 60, 69]], x = 62\nOutput\n: false\nExplanation\n: 62 is not present in the matrix, so output is false.\nInput\n: mat[][] = [[18, 21, 27],[38, 55, 67]], x = 55\nOutput\n: true\nExplanation\n: 55 is present in the matrix.\nInput\n: mat[][] = [[1, 2, 3],[4, 5, 6],[7, 8, 9]], x = 3\nOutput\n: true\nExplanation\n: 3 is present in the matrix.\nConstraints\n:\n1 <= n, m <=1000\n1 <= mat[i][j] <= 10\n9\n1<= x <= 10\n9",
+      "examples": [
+        "Input\n: mat[][] = [[3, 30, 38],[20, 52, 54],[35, 60, 69]], x = 62\nOutput\n: false\nExplanation\n: 62 is not present in the matrix, so output is false.",
+        "Input\n: mat[][] = [[18, 21, 27],[38, 55, 67]], x = 55\nOutput\n: true\nExplanation\n: 55 is present in the matrix.",
+        "Input\n: mat[][] = [[1, 2, 3],[4, 5, 6],[7, 8, 9]], x = 3\nOutput\n: true\nExplanation\n: 3 is present in the matrix."
+      ],
+      "constraints_text": "Constraints\n:\n1 <= n, m <=1000\n1 <= mat[i][j] <= 10\n9\n1<= x <= 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a 2D integer matrix <strong>mat</strong>[][] of size <strong>n x m</strong>, where every row and column is sorted in increasing order and a number <strong>x</strong>,<strong> </strong>the task is to find whether element <strong>x</strong> is present in the matrix.</span></p>\n<p><strong><span style=\"font-size: 14pt;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[3, 30, 38],[20, 52, 54],[35, 60, 69]], x = 62\n<strong>Output</strong>: false\n<strong>Explanation</strong>: 62 is not present in the matrix, so output is false.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[18, 21, 27],[38, 55, 67]], x = 55\n<strong>Output</strong>: true\n<strong>Explanation</strong>: 55 is present in the matrix.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[1, 2, 3],[4, 5, 6],[7, 8, 9]], x = 3\n<strong>Output</strong>: true\n<strong>Explanation</strong>: 3 is present in the matrix.<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &lt;= n, m &lt;=1000<br />1 &lt;= mat[i][j] &lt;= 10<sup>9 <br /></sup>1&lt;= x &lt;= 10<sup>9</sup></span></p>"
+    },
+    "qnum": 877
+  }
+]

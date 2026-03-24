@@ -1,0 +1,48 @@
+[
+  {
+    "company": "HCL",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/partition-array-for-maximum-sum/1",
+      "problem_name": "Partition Array for Maximum Sum",
+      "slug": "partition-array-for-maximum-sum",
+      "difficulty": "Medium",
+      "accuracy": "71.15%",
+      "marks": 4,
+      "all_submissions": 4119,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "HCL",
+          "Samsung"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Arrays"
+      ],
+      "company_tags": [
+        "HCL",
+        "Samsung"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Given an integer array\narr\n, partition the array into (contiguous) subarrays of length\nat most\nk\n. After partitioning, each subarray has their values changed to become the maximum value of that subarray. Return the largest sum of the given array after partitioning.\nExample 1:\nInput:\nn = 7\nk = 3\narr = [1,15,7,9,2,5,10]\nOutput:\n84\nExplanation:\narr becomes [15,15,15,9,10,10,10]\nExample 2:\nInput:\nn = 1\nk = 1\narr = [1]\nOutput:\n1\nYour Task:\nYou don't have to read input or print anything. Your task is to complete the function\nSolve()\nwhich takes the integer\nn\nand array\narr and\ninteger\nk\nand returns the Largest Sum of the Array after Partitioning.\nExpected Time Complexity\n: O(n\n2\n)\nExpected Space Complexity:\nO(n)\nConstraint:\n1 <= n <= 500\n0 <= arr[i] <= 10\n9\n1 <= k <= n",
+      "full_text": "Given an integer array\narr\n, partition the array into (contiguous) subarrays of length\nat most\nk\n. After partitioning, each subarray has their values changed to become the maximum value of that subarray. Return the largest sum of the given array after partitioning.\nExample 1:\nInput:\nn = 7\nk = 3\narr = [1,15,7,9,2,5,10]\nOutput:\n84\nExplanation:\narr becomes [15,15,15,9,10,10,10]\nExample 2:\nInput:\nn = 1\nk = 1\narr = [1]\nOutput:\n1\nYour Task:\nYou don't have to read input or print anything. Your task is to complete the function\nSolve()\nwhich takes the integer\nn\nand array\narr and\ninteger\nk\nand returns the Largest Sum of the Array after Partitioning.\nExpected Time Complexity\n: O(n\n2\n)\nExpected Space Complexity:\nO(n)\nConstraint:\n1 <= n <= 500\n0 <= arr[i] <= 10\n9\n1 <= k <= n",
+      "examples": [
+        "Input:\nn = 7\nk = 3\narr = [1,15,7,9,2,5,10]\nOutput:\n84\nExplanation:\narr becomes [15,15,15,9,10,10,10]",
+        "Input:\nn = 1\nk = 1\narr = [1]\nOutput:\n1"
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size:18px\">Given an integer array&nbsp;<strong><code>arr</code></strong>, partition the array into (contiguous) subarrays of length&nbsp;<strong>at most</strong>&nbsp;<strong><code>k</code></strong>. After partitioning, each subarray has their values changed to become the maximum value of that subarray.&nbsp;Return&nbsp;the largest sum of the given array after partitioning.</span></p>\r\n\r\n<p><strong><span style=\"font-size:18px\">Example 1:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>n = 7\r\nk = 3\r\narr = [1,15,7,9,2,5,10]\r\n<strong>Output:</strong>\r\n84\r\n<strong>Explanation:</strong>\r\narr becomes [15,15,15,9,10,10,10]</span></pre>\r\n\r\n<p><strong><span style=\"font-size:18px\">Example 2:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>n = 1\r\nk = 1\r\narr = [1]\r\n<strong>Output:</strong>\r\n1</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong></span><br />\r\n<span style=\"font-size:18px\">You don&#39;t have to read input or print anything. Your task is to complete the function&nbsp;<strong>Solve()&nbsp;</strong>which takes the integer&nbsp;<strong>n</strong>&nbsp;and array&nbsp;<strong>arr and </strong>integer<strong> k</strong>&nbsp;and returns the Largest Sum of the Array after Partitioning.</span></p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity</strong>: O(n<sup>2</sup>)<br />\r\n<strong>Expected Space Complexity:</strong> O(n)</span></p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraint:</strong><br />\r\n1 &lt;= n &lt;= 500<br />\r\n0 &lt;= arr[i] &lt;= 10<sup>9</sup><br />\r\n1 &lt;= k &lt;= n</span></p>\r\n"
+    },
+    "qnum": 1359
+  }
+]

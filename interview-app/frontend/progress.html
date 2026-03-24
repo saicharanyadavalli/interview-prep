@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Progress — Interview Practice Platform</title>
+    <meta name="description" content="Track your coding interview practice progress. View stats and practice history." />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/components.css" />
+  </head>
+  <body data-theme="dark">
+    <div class="bg-shape bg-shape-a"></div>
+    <div class="bg-shape bg-shape-b"></div>
+
+    <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="Toggle menu">☰</button>
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+
+    <div class="app-layout">
+      <aside id="sidebar" class="sidebar">
+        <div class="sidebar-brand">
+          <h2><span class="brand-icon">🎯</span> InterviewPrep</h2>
+        </div>
+        <nav class="sidebar-nav"></nav>
+        <div class="sidebar-footer">
+          <div class="sidebar-user">
+            <img class="sidebar-avatar" src="" alt="Avatar" />
+            <div class="sidebar-user-info">
+              <p class="sidebar-user-name">Guest</p>
+              <p class="sidebar-user-email">Not signed in</p>
+            </div>
+          </div>
+          <div class="button-row">
+            <button id="themeToggleBtn" class="btn btn-sm btn-icon" type="button" aria-label="Toggle theme">🌙</button>
+            <button id="loginBtn" class="btn btn-sm btn-primary" type="button">Sign In</button>
+            <button id="signOutBtn" class="btn btn-sm hidden" type="button">Sign Out</button>
+          </div>
+        </div>
+      </aside>
+
+      <main class="main-content">
+        <div class="page-header">
+          <h1>📈 Progress</h1>
+        </div>
+
+        <section class="section">
+          <h3 class="section-title">Overview</h3>
+          <div id="statsGrid" class="stats-grid">
+            <p class="loading"><span class="loading-dot">⏳</span> Loading...</p>
+          </div>
+        </section>
+
+        <section class="section">
+          <h3 class="section-title">📝 Practice History</h3>
+          <div class="card-flat">
+            <div id="historyList" class="track-list">
+              <p class="loading"><span class="loading-dot">⏳</span> Loading history...</p>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/sidebar.js"></script>
+    <script src="js/progress.js"></script>
+  </body>
+</html>

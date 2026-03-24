@@ -1,0 +1,1378 @@
+[
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/check-for-bst/1",
+      "problem_name": "Check for BST",
+      "slug": "check-for-bst",
+      "difficulty": "Medium",
+      "accuracy": "25.37%",
+      "marks": 4,
+      "all_submissions": 601055,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "FactSet",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "Linkedin",
+          "Qualcomm",
+          "Boomerang Commerce",
+          "GreyOrange",
+          "Wooker",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "FactSet",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "Linkedin",
+        "Qualcomm",
+        "Boomerang Commerce",
+        "GreyOrange",
+        "Wooker",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/a-program-to-check-if-a-binary-tree-is-bst-or-not/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given the root of a binary tree. Check whether it is a BST or not.\n\nA BST is defined as follows:\n\nThe left subtree of a node contains only nodes with data less than the node's data.\n\nThe right subtree of a node contains only nodes with data greater than the node's data.\n\nBoth the left and right subtrees must also be binary search trees.\n\nNote: We are considering that BSTs can not contain duplicate Nodes.\n\nExamples:\n\nInput: root = [2, 1, 3, N, N, N, 5]\n\nOutput: true\nExplanation: The left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.\n\nInput: root = [2, N, 7, N, 6, N, 9]\n\nOutput: false\nExplanation: Since the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.\n\nInput: root = [10, 5, 20, N, N, 9, 25]\n\nOutput: false\nExplanation: The node with data 9 present in the right subtree has lesser key value than root node 10.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 109",
+      "full_text": "Given the root of a binary tree. Check whether it is a BST or not.\n\nA BST is defined as follows:\n\nThe left subtree of a node contains only nodes with data less than the node's data.\n\nThe right subtree of a node contains only nodes with data greater than the node's data.\n\nBoth the left and right subtrees must also be binary search trees.\n\nNote: We are considering that BSTs can not contain duplicate Nodes.\n\nExamples:\n\nInput: root = [2, 1, 3, N, N, N, 5]\n\nOutput: true\nExplanation: The left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.\n\nInput: root = [2, N, 7, N, 6, N, 9]\n\nOutput: false\nExplanation: Since the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.\n\nInput: root = [10, 5, 20, N, N, 9, 25]\n\nOutput: false\nExplanation: The node with data 9 present in the right subtree has lesser key value than root node 10.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 109",
+      "examples": [
+        "Input:\nroot = [2, 1, 3, N, N, N, 5]\nOutput:\ntrue\nExplanation:\nThe left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.",
+        "Input:\nroot = [2, N, 7, N, 6, N, 9]\nOutput:\nfalse\nExplanation:\nSince the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.",
+        "Input:\nroot = [10, 5, 20, N, N, 9, 25]\nOutput:\nfalse\nExplanation:\nThe node with data 9 present in the right subtree has lesser key value than root node 10."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root</strong> of a binary tree. Check whether it is a BST or not.<br /></span></p>\n<p><span style=\"font-size: 18px;\">A&nbsp;<strong>BST</strong>&nbsp;is defined as follows:</span></p>\n<ul>\n<li>\n<div><span style=\"font-size: 18px;\">The left subtree of a node contains only nodes with data <strong>less than</strong> the node's data.</span></div>\n</li>\n<li>\n<div><span style=\"font-size: 18px;\">The right subtree of a node contains only nodes with data <strong>greater than</strong> the node's data.</span></div>\n</li>\n<li>\n<div><span style=\"font-size: 18px;\">Both the left and right subtrees must also be binary search trees.</span></div>\n</li>\n</ul>\n<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\"><strong>Note:</strong> We are considering that BSTs can not contain duplicate Nodes.</span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [2, 1, 3, N, N, N, 5]\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700149/Web/Other/blobid0_1739182093.jpg\" width=\"249\" height=\"220\" /></span><br /><br /><span style=\"font-size: 18px;\"><strong>Output: </strong>true \n<strong>Explanation: </strong></span><span style=\"font-size: 18px;\">The left subtree of every node contains smaller data and right subtree of every node contains greater data. Hence, the tree is a BST.<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [2, N, 7, N, 6, N, 9] </span><br /><br /><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700149/Web/Other/blobid2_1739182131.jpg\" width=\"238\" height=\"211\" /></span><br /><br /><span style=\"font-size: 18px;\"><strong>Output: </strong>false \n<strong>Explanation: </strong>Since the node to the right of node with data 7 has lesser value 6, hence it is not a valid BST.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [10, 5, 20, N, N, 9, 25]\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700149/Web/Other/blobid3_1739182159.jpg\" width=\"240\" height=\"212\" /></span><br /><br /><span style=\"font-size: 18px;\"><strong>Output: </strong>false\n<strong>Explanation: </strong>The node with data 9 present in the right subtree has lesser key value than root node 10.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 18px;\">1 &le; number of nodes &le; 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &le; node-&gt;data &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 2272
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/detect-loop-in-linked-list/1",
+      "problem_name": "Detect Loop in linked list",
+      "slug": "detect-loop-in-linked-list",
+      "difficulty": "Medium",
+      "accuracy": "43.49%",
+      "marks": 4,
+      "all_submissions": 519600,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head = &!//!&pos = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Accolite",
+          "Amazon",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "D-E-Shaw",
+          "Hike",
+          "MakeMyTrip",
+          "Walmart",
+          "MAQ Software",
+          "Adobe",
+          "SAP Labs",
+          "Qualcomm",
+          "Veritas",
+          "Mahindra Comviva",
+          "Lybrate"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "two-pointer-algorithm",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "two-pointer-algorithm",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Accolite",
+        "Amazon",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "D-E-Shaw",
+        "Hike",
+        "MakeMyTrip",
+        "Walmart",
+        "MAQ Software",
+        "Adobe",
+        "SAP Labs",
+        "Qualcomm",
+        "Veritas",
+        "Mahindra Comviva",
+        "Lybrate"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/detect-loop-in-a-linked-list/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-6-on-campus/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-4-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-11-2-years-experienced/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-5-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-8-off-campus-3-years-experience/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-set-2/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-7-off-campus/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-8-experienced/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/",
+        "https://www.geeksforgeeks.org/veritas-interview-experience-set-2-campus/",
+        "https://www.geeksforgeeks.org/samsung-rnd-bangalore-interview-2018/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-2020-internship-off-campus/"
+      ],
+      "statement_text": "You are given the\nhead\nof a singly linked list. You have to determine whether the given linked list contains a\nloop\nor\nnot\n.\nA loop exists in a linked list if the next pointer of the last node points to any other node in the list (including itself), rather than being null.\nNote:\nInternally, pos(1 based index) is used to denote the position of the node that tail's next pointer is connected to. If pos = 0, it means the last node points to null. Note that pos is not passed as a parameter.",
+      "full_text": "You are given the\nhead\nof a singly linked list. You have to determine whether the given linked list contains a\nloop\nor\nnot\n.\nA loop exists in a linked list if the next pointer of the last node points to any other node in the list (including itself), rather than being null.\nNote:\nInternally, pos(1 based index) is used to denote the position of the node that tail's next pointer is connected to. If pos = 0, it means the last node points to null. Note that pos is not passed as a parameter.\nExamples:\nInput:\npos = 2,\nOutput:\ntrue\nExplanation:\nThere exists a loop as last node is connected back to the second node.\nInput:\npos = 0,\nOutput:\nfalse\nExplanation:\nThere exists no loop in given linked list.\nInput:\npos = 1,\nOutput:\ntrue\nExplanation:\nThere exists a loop as last node is connected back to the first node.\nConstraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n3\n0\n≤\npos\n≤ number of nodes",
+      "examples": [
+        "Input:\npos = 2,\nOutput:\ntrue\nExplanation:\nThere exists a loop as last node is connected back to the second node.",
+        "Input:\npos = 0,\nOutput:\nfalse\nExplanation:\nThere exists no loop in given linked list.",
+        "Input:\npos = 1,\nOutput:\ntrue\nExplanation:\nThere exists a loop as last node is connected back to the first node."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n3\n0\n≤\npos\n≤ number of nodes",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">You are given the <strong>head </strong>of a singly linked list. You have to determine whether the given linked list contains a <strong>loop </strong>or <strong>not</strong>.<strong>&nbsp;</strong>A loop exists in a linked list if the next pointer of the last node points to any other node in the list (including itself), rather than being null.<br /></span></p>\n<p><span style=\"font-size: 18.6667px;\"><strong>Note:&nbsp;</strong>Internally, pos(1 based index) is used to denote the position of the node that tail's next pointer is connected to. If pos = 0, it means the last node points to null. Note that pos is not passed as a parameter.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>pos = 2,<br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908280/Web/Other/blobid0_1756127210.webp\" width=\"348\" height=\"104\" /><br /><strong>Output: </strong>true<strong>\nExplanation: </strong>There exists a loop as last node is connected back to the second node.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>pos = 0,<br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908280/Web/Other/blobid1_1756127232.webp\" width=\"445\" height=\"66\" /><br /><strong>Output: </strong>false<strong>\nExplanation: </strong>There exists no loop in given linked list.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>pos = 1,<br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908280/Web/Other/blobid2_1756127467.webp\" width=\"389\" height=\"96\" /><br /><strong>Output: </strong>true<strong>\nExplanation: </strong>There exists a loop as last node is connected back to the first node.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">1 &le; number of nodes &le; 10<sup>5</sup><br />1 &le; node-&gt;data &le; 10<sup>3&nbsp; &nbsp; &nbsp; &nbsp;</sup></span><span style=\"font-size: 18.6667px;\"><br /></span><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;&nbsp;</span><span style=\"font-size: 14pt;\">pos&nbsp;</span><span style=\"font-size: 18.6667px;\">&le; number of nodes</span></p>"
+    },
+    "qnum": 2273
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/egg-dropping-puzzle-1587115620/1",
+      "problem_name": "Egg Dropping Puzzle",
+      "slug": "egg-dropping-puzzle-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "39.64%",
+      "marks": 4,
+      "all_submissions": 166059,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&k = ",
+        "datatype": "INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "D-E-Shaw",
+          "Hike",
+          "MakeMyTrip",
+          "Oracle",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Google",
+          "Myntra",
+          "nearbuy",
+          "Opera",
+          "Philips",
+          "Service Now",
+          "Unisys"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "D-E-Shaw",
+        "Hike",
+        "MakeMyTrip",
+        "Oracle",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Google",
+        "Myntra",
+        "nearbuy",
+        "Opera",
+        "Philips",
+        "Service Now",
+        "Unisys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/egg-dropping-puzzle-dp-11/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given\nn\nidentical eggs and you have access to a\nk\n-floored building from\n1\nto\nk.\nThere exists a floor\nf\nwhere\n0\n<=\nf\n<=\nk\nsuch that any egg dropped from a floor higher than\nf\nwill break, and any egg dropped\nfrom or below\nfloor f\nwill\nnot break\n.\nThere are few rules given below.\nAn egg that survives a fall can be used again.\nA broken egg must be discarded.\nThe effect of a fall is the same for all eggs.\nIf the egg doesn't break at a certain floor, it will not break at any floor below.\nIf the egg breaks on a certain floor, it will break on any floor above.\nReturn the minimum number of moves\nyou need to determine the value of\nf\nwith certainty\n.",
+      "full_text": "You are given\nn\nidentical eggs and you have access to a\nk\n-floored building from\n1\nto\nk.\nThere exists a floor\nf\nwhere\n0\n<=\nf\n<=\nk\nsuch that any egg dropped from a floor higher than\nf\nwill break, and any egg dropped\nfrom or below\nfloor f\nwill\nnot break\n.\nThere are few rules given below.\nAn egg that survives a fall can be used again.\nA broken egg must be discarded.\nThe effect of a fall is the same for all eggs.\nIf the egg doesn't break at a certain floor, it will not break at any floor below.\nIf the egg breaks on a certain floor, it will break on any floor above.\nReturn the minimum number of moves\nyou need to determine the value of\nf\nwith certainty\n.\nExamples:\nInput:\nn = 2, k = 36\nOutput:\n8\nExplanation:\nIn all the situations, 8 minimum moves are required to find the maximum floor. Following is the strategy to do so:\nDrop from\nfloor 8\n→ If breaks, check 1-7 sequentially.\nDrop from\nfloor 15\n→ If breaks, check 9-14.\nDrop from\nfloor 21\n→ If breaks, check 16-20.\nDrop from\nfloor 26\n→ If breaks, check 22-25.\nDrop from\nfloor 30\n→ If breaks, check 27-29.\nDrop from\nfloor 33\n→ If breaks, check 31-32.\nDrop from\nfloor 35\n→ If breaks, check 34.\nDrop from\nfloor 36\n→ Final check.\nInput:\nn = 1, k = 36\nOutput:\n36\nExplanation:\nDrop the egg from the first-floor window; if it survives, drop it from the second-floor window. Continue upward until it breaks. In the worst case, this method may require 36 droppings.\nConstraints:\n1 ≤ n ≤ 1000\n1 ≤ k ≤ 1000",
+      "examples": [
+        "Input:\nn = 2, k = 36\nOutput:\n8\nExplanation:\nIn all the situations, 8 minimum moves are required to find the maximum floor. Following is the strategy to do so:\nDrop from\nfloor 8\n→ If breaks, check 1-7 sequentially.\nDrop from\nfloor 15\n→ If breaks, check 9-14.\nDrop from\nfloor 21\n→ If breaks, check 16-20.\nDrop from\nfloor 26\n→ If breaks, check 22-25.\nDrop from\nfloor 30\n→ If breaks, check 27-29.\nDrop from\nfloor 33\n→ If breaks, check 31-32.\nDrop from\nfloor 35\n→ If breaks, check 34.\nDrop from\nfloor 36\n→ Final check.",
+        "Input:\nn = 1, k = 36\nOutput:\n36\nExplanation:\nDrop the egg from the first-floor window; if it survives, drop it from the second-floor window. Continue upward until it breaks. In the worst case, this method may require 36 droppings."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 1000\n1 ≤ k ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given <strong>n </strong>identical eggs and you have access to a<strong> k</strong>-floored building from&nbsp;<strong>1</strong> to <strong>k.</strong></span></p>\n<p><span style=\"font-size: 14pt;\">There exists a floor <strong>f</strong> where <strong>0</strong> &lt;= <strong>f</strong> &lt;= <strong>k </strong>such that any egg dropped from a floor higher than <strong>f</strong>&nbsp;will break, and any egg dropped <strong>from or below </strong>floor f<strong>&nbsp;</strong>will <strong>not break</strong>. <br />There are few rules given below.&nbsp;</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\">An egg that survives a fall can be used again.</span></li>\n<li><span style=\"font-size: 14pt;\">A broken egg must be discarded.</span></li>\n<li><span style=\"font-size: 14pt;\">The effect of a fall is the same for all eggs.</span></li>\n<li><span style=\"font-size: 14pt;\">If the egg doesn't break at a certain floor, it will not break at any floor below.</span></li>\n<li><span style=\"font-size: 14pt;\">If the egg breaks on a certain floor, it will break on any floor above.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\">Return the minimum number of moves&nbsp;<span style=\"box-sizing: border-box; margin: 0px; padding: 0px;\">you need to determine the value of&nbsp;<strong>f</strong> with certainty</span>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre dir=\"ltr\"><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 2, k = 36</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>8</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>In all the situations, 8 minimum moves are required to find the maximum floor. Following is the strategy to do so:<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 8</strong> &rarr; If breaks, check 1-7 sequentially.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 15</strong> &rarr; If breaks, check 9-14.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 21</strong>  &rarr; If breaks, check 16-20.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 26</strong> &rarr; If breaks, check 22-25.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 30</strong> &rarr; If breaks, check 27-29.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 33</strong> &rarr; If breaks, check 31-32.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 35 </strong>&rarr; If breaks, check 34.<br /></span><span style=\"font-size: 14pt;\">Drop from <strong>floor 36</strong> &rarr; Final check.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 1, k = 36</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>36</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>Drop the egg from the first-floor window; if it survives, drop it from the second-floor window. Continue upward until it breaks. In the worst case, this method may require 36 droppings.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; n &le;&nbsp;1000<br />1 &le; k &le; 1000</span></p>"
+    },
+    "qnum": 2274
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-prime-numbers-in-a-range4718/1",
+      "problem_name": "Find Prime numbers in a range",
+      "slug": "find-prime-numbers-in-a-range4718",
+      "difficulty": "Medium",
+      "accuracy": "48.64%",
+      "marks": 4,
+      "all_submissions": 56464,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Qualcomm",
+          "GE"
+        ],
+        "topic_tags": [
+          "Prime Number"
+        ]
+      },
+      "topic_tags": [
+        "Prime Number"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Qualcomm",
+        "GE"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/c-cpp-program-to-find-prime-numbers-between-given-range/",
+        "https://www.geeksforgeeks.org/cpp-program-to-find-prime-numbers-between-given-interval/",
+        "https://www.geeksforgeeks.org/java-program-to-display-all-prime-numbers-from-1-to-n/",
+        "https://www.geeksforgeeks.org/sieve-of-eratosthenes/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-7-campus/",
+        "https://www.geeksforgeeks.org/ge-interview-experience-set-5-campus-ge-digital/"
+      ],
+      "statement_text": "Given two integers M and N, generate all primes between M and N including M and N.\nExample 1:\nInput:\nM=1,N=10\nOutput:\n2 3 5 7\nExplanation:\nThe prime numbers between 1 and 10\nare 2,3,5 and 7.\nExample 2:\nInput:\nM=2, N=5\nOutput:\n2,3,5\nExplanation:\nThe prime numbers between 2 and 5 are\n2,3 and 5.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function primeRange() which takes 2 integer inputs M and N and returns a list of all primes between M and N including N and M.\nExpected Time Complexity:\nO(N*sqrt(N))\nExpected Auxillary Space:\nO(1)",
+      "full_text": "Given two integers M and N, generate all primes between M and N including M and N.\nExample 1:\nInput:\nM=1,N=10\nOutput:\n2 3 5 7\nExplanation:\nThe prime numbers between 1 and 10\nare 2,3,5 and 7.\nExample 2:\nInput:\nM=2, N=5\nOutput:\n2,3,5\nExplanation:\nThe prime numbers between 2 and 5 are\n2,3 and 5.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function primeRange() which takes 2 integer inputs M and N and returns a list of all primes between M and N including N and M.\nExpected Time Complexity:\nO(N*sqrt(N))\nExpected Auxillary Space:\nO(1)\nConstraints:\n1<=M<=N<=10\n6",
+      "examples": [
+        "Input:\nM=1,N=10\nOutput:\n2 3 5 7\nExplanation:\nThe prime numbers between 1 and 10\nare 2,3,5 and 7.",
+        "Input:\nM=2, N=5\nOutput:\n2,3,5\nExplanation:\nThe prime numbers between 2 and 5 are\n2,3 and 5."
+      ],
+      "constraints_text": "Constraints:\n1<=M<=N<=10\n6",
+      "question_html": "<p><span style=\"font-size:18px\">Given two integers M and N, generate all primes between M and N including M and N.</span></p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nM=1,N=10\r\n<strong>Output:</strong>\r\n2 3 5 7\r\n<strong>Explanation:</strong>\r\nThe prime numbers between 1 and 10\r\nare 2,3,5 and 7.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nM=2, N=5\r\n<strong>Output:</strong>\r\n2,3,5\r\n<strong>Explanation:</strong>\r\nThe prime numbers between 2 and 5 are \r\n2,3 and 5.</span></pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou don&#39;t need to read input or print anything. Your task is to complete the function primeRange() which takes 2 integer inputs M and N and returns a list of all primes between M and N including N and M.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong>O(N*sqrt(N))<br />\r\n<strong>Expected Auxillary Space:</strong>O(1)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1&lt;=M&lt;=N&lt;=10<sup>6</sup></span></p>\r\n"
+    },
+    "qnum": 2275
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/infix-to-postfix-1587115620/1",
+      "problem_name": "Infix to Postfix",
+      "slug": "infix-to-postfix-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "52.94%",
+      "marks": 4,
+      "all_submissions": 164460,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Microsoft"
+        ],
+        "topic_tags": [
+          "Stack",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Stack",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Microsoft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/convert-infix-expression-to-postfix-expression/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-6-on-campus-for-it-application-developer/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-7-on-campus-for-it-application-developer/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-10-experienced/"
+      ],
+      "statement_text": "You are given a string\ns\nrepresenting an\ninfix expression\n. Convert this infix expression to a postfix expression.\nInfix expression:\nThe expression of the form a\nop\nb. When an operator is in between every pair of operands.\nPostfix expression:\nThe expression of the form a b\nop\n. When an operator is followed for every pair of operands.\nNote:\nThe precedence order is as follows: (^) has the highest precedence and is evaluated from right to left, (* and /) come next with left to right associativity, and (+ and -) have the lowest precedence with left to right associativity.\nExamples :\nInput:\ns = \"a*(b+c)/d\"\nOutput:\nabc+*d/\nExplanation:\nThe expression is a*(b+c)/d. First, inside the brackets, b+c becomes bc+. Now the expression looks like a*(bc+)/d. Next, multiply a with (bc+), so it becomes abc+* . Finally, divide this result by d, so it becomes abc+*d/.\nInput:\ns = \"a+b*c+d\"\nOutput:\nabc*+d+\nExplanation:\nThe expression a+b*c+d is converted by first doing b*c -> bc*, then adding a -> abc*+, and finally adding d -> abc*+d+.\nInput:\ns = \"(a+b)*(c+d)\"\nOutput:\nab+cd+*\nExplanation:\nThe expression (a+b)*(c+d) is converted by first doing (a+b) -> ab+, then doing (c+d) -> cd+, and finally the expression ab+*cd+ becomes ab+cd+*.",
+      "full_text": "You are given a string\ns\nrepresenting an\ninfix expression\n. Convert this infix expression to a postfix expression.\nInfix expression:\nThe expression of the form a\nop\nb. When an operator is in between every pair of operands.\nPostfix expression:\nThe expression of the form a b\nop\n. When an operator is followed for every pair of operands.\nNote:\nThe precedence order is as follows: (^) has the highest precedence and is evaluated from right to left, (* and /) come next with left to right associativity, and (+ and -) have the lowest precedence with left to right associativity.\nExamples :\nInput:\ns = \"a*(b+c)/d\"\nOutput:\nabc+*d/\nExplanation:\nThe expression is a*(b+c)/d. First, inside the brackets, b+c becomes bc+. Now the expression looks like a*(bc+)/d. Next, multiply a with (bc+), so it becomes abc+* . Finally, divide this result by d, so it becomes abc+*d/.\nInput:\ns = \"a+b*c+d\"\nOutput:\nabc*+d+\nExplanation:\nThe expression a+b*c+d is converted by first doing b*c -> bc*, then adding a -> abc*+, and finally adding d -> abc*+d+.\nInput:\ns = \"(a+b)*(c+d)\"\nOutput:\nab+cd+*\nExplanation:\nThe expression (a+b)*(c+d) is converted by first doing (a+b) -> ab+, then doing (c+d) -> cd+, and finally the expression ab+*cd+ becomes ab+cd+*.\nConstraints:\n1 ≤ s.length ≤ 5*10\n3\ns[i] can be\nan operand (a–z, A–Z, 0–9), an operator (+, -, *, /, ^) or a parenthesis ((, ))",
+      "examples": [
+        "Input:\ns = \"a*(b+c)/d\"\nOutput:\nabc+*d/\nExplanation:\nThe expression is a*(b+c)/d. First, inside the brackets, b+c becomes bc+. Now the expression looks like a*(bc+)/d. Next, multiply a with (bc+), so it becomes abc+* . Finally, divide this result by d, so it becomes abc+*d/.",
+        "Input:\ns = \"a+b*c+d\"\nOutput:\nabc*+d+\nExplanation:\nThe expression a+b*c+d is converted by first doing b*c -> bc*, then adding a -> abc*+, and finally adding d -> abc*+d+.",
+        "Input:\ns = \"(a+b)*(c+d)\"\nOutput:\nab+cd+*\nExplanation:\nThe expression (a+b)*(c+d) is converted by first doing (a+b) -> ab+, then doing (c+d) -> cd+, and finally the expression ab+*cd+ becomes ab+cd+*."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.length ≤ 5*10\n3\ns[i] can be\nan operand (a–z, A–Z, 0–9), an operator (+, -, *, /, ^) or a parenthesis ((, ))",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a string <strong>s</strong> representing an <strong>infix expression</strong></span><span style=\"font-size: 14pt;\">. Convert this infix expression to a postfix expression.</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>Infix expression:</strong> The expression of the form a <strong>op</strong> b. When an operator is in between every pair of operands.</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>Postfix expression:</strong> The expression of the form a b <strong>op</strong>. When an operator is followed for every pair of operands.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;</span><span style=\"font-size: 18.6667px;\">The precedence order is as follows: (^) has the highest precedence and is evaluated from right to left, (* and /) come next with left to right associativity, and (+ and -) have the lowest precedence with left to right associativity.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"a*(b+c)/d\"\n<strong>Output:</strong> abc+*d/\n<strong>Explanation:</strong> The expression is a*(b+c)/d. First, inside the brackets, b+c becomes bc+. Now the expression looks like a*(bc+)/d. Next, multiply a with (bc+), so it becomes abc+* . Finally, divide this result by d, so it becomes abc+*d/.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"a+b*c+d\"\n<strong>Output:</strong> abc*+d+\n<strong>Explanation:</strong> The expression a+b*c+d is converted by first doing b*c -&gt; bc*, then adding a -&gt; abc*+, and finally adding d -&gt; abc*+d+.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"(a+b)*(c+d)\"\n<strong>Output:</strong> ab+cd+*<br /><strong>Explanation:</strong> The expression (a+b)*(c+d) is converted by first doing (a+b) -&gt; ab+, then doing (c+d) -&gt; cd+, and finally the expression ab+*cd+ becomes ab+cd+*. </span></pre>\n<p><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Constraints:</strong><br /><span style=\"font-size: 14pt;\">1 &le; s.length &le; 5*10<sup>3</sup></span><br /><span style=\"font-size: 18.6667px;\">s[i] can be </span></span><span style=\"font-size: 18.6667px;\">an operand (a&ndash;z, A&ndash;Z, 0&ndash;9), an operator (+, -, *, /, ^) or a parenthesis ((, ))</span></p>"
+    },
+    "qnum": 2276
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shapped-linked-lists/1",
+      "problem_name": "Intersection in Y Shaped Lists",
+      "slug": "intersection-point-in-y-shapped-linked-lists",
+      "difficulty": "Medium",
+      "accuracy": "44.67%",
+      "marks": 4,
+      "all_submissions": 324992,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head1= &!//!&head2 =&!//!&CommonList = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "D-E-Shaw",
+          "FactSet",
+          "MakeMyTrip",
+          "Visa",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "D-E-Shaw",
+        "FactSet",
+        "MakeMyTrip",
+        "Visa",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-a-function-to-get-the-intersection-point-of-two-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-5-rounds/"
+      ],
+      "statement_text": "You are given the heads of two non-empty singly linked lists,\nhead1\nand\nhead2\n, that intersect at a certain point. Return that\nNode\nwhere these two linked lists\nintersect\n.\nNote:\nIt is guaranteed that the intersected node always exists.\nIn the custom input you have to give input for CommonList which pointed at the end of both head1 and head2 to form a Y-shaped linked list.",
+      "full_text": "You are given the heads of two non-empty singly linked lists,\nhead1\nand\nhead2\n, that intersect at a certain point. Return that\nNode\nwhere these two linked lists\nintersect\n.\nNote:\nIt is guaranteed that the intersected node always exists.\nIn the custom input you have to give input for CommonList which pointed at the end of both head1 and head2 to form a Y-shaped linked list.\nExamples:\nInput:\nhead1: 10 -> 15 -> 30, head2: 3 -> 6 -> 9 -> 15 -> 30\nOutput:\n15\nExplanation:\nFrom the above image, it is clearly seen that the common part is 15 -> 30, whose starting point is 15.\nInput:\nhead1: 4 -> 1 -> 8 -> 5, head2: 5 -> 6 -> 1 -> 8 -> 5\nOutput:\n1\nExplanation:\nFrom the above image, it is clearly seen that the common part is 1 -> 8 -> 5, whose starting point is 1.\nConstraints:\n2 ≤ total number of nodes ≤ 2*10\n5\n-10\n4\n≤ node->data ≤ 10\n4",
+      "examples": [
+        "Input:\nhead1: 10 -> 15 -> 30, head2: 3 -> 6 -> 9 -> 15 -> 30\nOutput:\n15\nExplanation:\nFrom the above image, it is clearly seen that the common part is 15 -> 30, whose starting point is 15.",
+        "Input:\nhead1: 4 -> 1 -> 8 -> 5, head2: 5 -> 6 -> 1 -> 8 -> 5\nOutput:\n1\nExplanation:\nFrom the above image, it is clearly seen that the common part is 1 -> 8 -> 5, whose starting point is 1."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ total number of nodes ≤ 2*10\n5\n-10\n4\n≤ node->data ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given the heads of two non-empty singly linked lists, <strong>head1</strong> and <strong>head2</strong>, that intersect at a certain point. Return that <strong>Node </strong>where these two linked lists <strong>intersect</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong>&nbsp;</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18px;\">It is guaranteed that the intersected node always exists.</span></p>\n<h3><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18px;\">In the custom input you have to give input for CommonList which pointed at the end of both head1 and head2 to form a Y-shaped linked list.</span></h3>\n<p><strong style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Examples:</strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>head1: 10 -&gt; 15 -&gt; 30, head2: 3 -&gt; 6 -&gt; 9 -&gt; 15 -&gt; 30\n<strong>Output:</strong> 15\n<strong>Explanation: </strong>From the above image, it is clearly seen that the common part is 15 -&gt; 30, whose starting point is 15.<br />    <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/906399/Web/Other/blobid2_1756127894.webp\" width=\"473\" height=\"137\" /><br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>head1: 4 -&gt; 1 -&gt; 8 -&gt; 5, head2: 5 -&gt; 6 -&gt; 1 -&gt; 8 -&gt; 5<br /><strong>Output: </strong>1\n<strong>Explanation: </strong>From the above image, it is clearly seen that the common part is 1 -&gt; 8 -&gt; 5, whose starting point is 1.<br />    <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/906399/Web/Other/blobid0_1756127732.webp\" width=\"514\" height=\"149\" /></span></pre>\n<p><strong style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Constraints:<br /></strong><span style=\"font-size: 18px;\">2 &le; total number of nodes &le; 2*10<sup>5</sup><br />-10<sup>4</sup> &le; node-&gt;data &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2277
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/intersection-point-in-y-shaped-linked-lists--170645/1",
+      "problem_name": "Intersection Point in Y Shaped Linked Lists",
+      "slug": "intersection-point-in-y-shaped-linked-lists--170645",
+      "difficulty": "Medium",
+      "accuracy": "55.77%",
+      "marks": 4,
+      "all_submissions": 30519,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "D-E-Shaw",
+          "FactSet",
+          "MakeMyTrip",
+          "Visa",
+          "Goldman Sachs",
+          "MAQ Software",
+          "Adobe",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "D-E-Shaw",
+        "FactSet",
+        "MakeMyTrip",
+        "Visa",
+        "Goldman Sachs",
+        "MAQ Software",
+        "Adobe",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-a-function-to-get-the-intersection-point-of-two-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-10-on-campus/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-5-rounds/"
+      ],
+      "statement_text": "Given two singly linked lists\n,\nwrite a program to get the point where two linked lists intersect each other. If the linked list does not merge at any point, it should return NULL.",
+      "full_text": "Given two singly linked lists\n,\nwrite a program to get the point where two linked lists intersect each other. If the linked list does not merge at any point, it should return NULL.\nExamples:\nInput:\nLinkedList1: 3->6->9->common, LinkedList2: 10->common, common: 15->30->NULL\nOutput:\n15\nExplanation:\nInput:\nLinkedList1: 4->1->common, LinkedList2: 5->6->1->common, common: 8->4->5->NULL\nOutput:\n8\nExplanation:\nExpected Time Complexity:\nO(n+m)\nExpected Space\nComplexity\n:\nO(n)\nConstraints:\nLength of Both LinkedList before the intersection(if any) is greater than 0.\n1 ≤ no. of nodes in LinkedList1, LinkedList2 ≤ 10\n5\n-1000 ≤ node->data ≤ 1000\nChallenge\n: Try to solve the problem without using any extra space.",
+      "examples": [
+        "Input:\nLinkedList1: 3->6->9->common, LinkedList2: 10->common, common: 15->30->NULL\nOutput:\n15\nExplanation:",
+        "Input:\nLinkedList1: 4->1->common, LinkedList2: 5->6->1->common, common: 8->4->5->NULL\nOutput:\n8\nExplanation:"
+      ],
+      "constraints_text": "Constraints:\nLength of Both LinkedList before the intersection(if any) is greater than 0.\n1 ≤ no. of nodes in LinkedList1, LinkedList2 ≤ 10\n5\n-1000 ≤ node->data ≤ 1000\nChallenge\n: Try to solve the problem without using any extra space.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two singly linked lists<strong>, </strong>write a program to get the point where two linked lists intersect each other. If the linked list does not merge at any point, it should return NULL.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>LinkedList1: 3-&gt;6-&gt;9-&gt;common, LinkedList2: 10-&gt;common, common: 15-&gt;30-&gt;NULL\n<strong>Output: </strong>15\n<strong>Explanation:\n</strong></span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/713544/Web/Other/blobid1_1723204650.png\" width=\"443\" height=\"265\" /> </pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>LinkedList1: 4-&gt;1-&gt;common, LinkedList2: 5-&gt;6-&gt;1-&gt;common, common: 8-&gt;4-&gt;5-&gt;NULL\n<strong>Output: </strong>8\n<strong>Explanation: </strong></span>\n<span style=\"font-size: 18px;\"><strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/713544/Web/Other/blobid2_1723204735.png\" width=\"428\" height=\"322\" /> &nbsp;</strong></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n+m)<br /><strong>Expected Space&nbsp;</strong></span><strong style=\"font-size: 18px;\">Complexity</strong><strong style=\"font-size: 18px;\">:</strong><span style=\"font-size: 18px;\"> O(n)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 18px;\">Length of Both LinkedList before the intersection(if any) is greater than 0.<br />1 &le; no. of nodes in LinkedList1, LinkedList2 &le; 10<sup>5</sup><br />-1000 &le; node-&gt;data &le; 1000</span></p>\n<p><strong style=\"font-size: 18px;\">Challenge</strong><span style=\"font-size: 18px;\">: Try to solve the problem without using any extra space.</span></p>"
+    },
+    "qnum": 2278
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/kth-smallest-element5635/1",
+      "problem_name": "Kth Smallest",
+      "slug": "kth-smallest-element5635",
+      "difficulty": "Medium",
+      "accuracy": "35.17%",
+      "marks": 4,
+      "all_submissions": 745652,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = &!//!&k = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Hike",
+          "Adobe",
+          "Google",
+          "ABCO",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Hike",
+        "Adobe",
+        "Google",
+        "ABCO",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/kth-largest-element-in-an-array/",
+        "https://www.geeksforgeeks.org/kth-smallest-largest-element-in-unsorted-array-expected-linear-time/",
+        "https://www.geeksforgeeks.org/kth-smallest-largest-element-in-unsorted-array-worst-case-linear-time/",
+        "https://www.geeksforgeeks.org/kth-smallest-largest-element-in-unsorted-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/cisco-interview-experience-set-9-experienced/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-4-campus/",
+        "https://www.geeksforgeeks.org/abco-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-off-campus/"
+      ],
+      "statement_text": "Given an integer array\narr[]\nand an integer\nk\n, your task is to find and return the\nk\nth\nsmallest\nelement in the given array.\nNote:\nThe kth smallest element is determined based on the sorted order of the array.\nExamples :\nInput:\narr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4\nOutput:\n5\nExplanation:\n4th smallest element in the given array is 5.\nInput:\narr[] = [7, 10, 4, 3, 20, 15], k = 3\nOutput:\n7\nExplanation:\n3rd smallest element in the given array is 7.",
+      "full_text": "Given an integer array\narr[]\nand an integer\nk\n, your task is to find and return the\nk\nth\nsmallest\nelement in the given array.\nNote:\nThe kth smallest element is determined based on the sorted order of the array.\nExamples :\nInput:\narr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4\nOutput:\n5\nExplanation:\n4th smallest element in the given array is 5.\nInput:\narr[] = [7, 10, 4, 3, 20, 15], k = 3\nOutput:\n7\nExplanation:\n3rd smallest element in the given array is 7.\nConstraints:\n1\n≤\narr.size()\n≤\n10\n5\n1\n≤\narr[i]\n≤\n10\n5\n1\n≤\nk\n≤\narr.size()",
+      "examples": [
+        "Input:\narr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4\nOutput:\n5\nExplanation:\n4th smallest element in the given array is 5.",
+        "Input:\narr[] = [7, 10, 4, 3, 20, 15], k = 3\nOutput:\n7\nExplanation:\n3rd smallest element in the given array is 7."
+      ],
+      "constraints_text": "Constraints:\n1\n≤\narr.size()\n≤\n10\n5\n1\n≤\narr[i]\n≤\n10\n5\n1\n≤\nk\n≤\narr.size()",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an integer array <strong>arr[]</strong> and an integer&nbsp;<strong>k</strong>, your task is to find and return the <strong>k<sup>th</sup> smallest</strong> element in the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong data-start=\"482\" data-end=\"491\">Note:</strong> The kth smallest element is determined based on the sorted order of the array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4<br /><strong>Output:</strong> 5\n<strong>Explanation: </strong>4th smallest element in the given array is 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [7, 10, 4, 3, 20, 15], k = 3<span style=\"font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;\"><br /></span></span><span style=\"font-size: 14pt;\"><strong>Output:</strong> 7\n<strong>Explanation: </strong>3rd smallest element in the given array is 7.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span> arr.size() <span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le; </span>10<sup>5</sup><br />1 <span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span>&nbsp;arr[i]&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span> 10<sup>5</sup><sup><br /></sup>1&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span>&nbsp;k&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span>&nbsp;&nbsp;</span><span style=\"font-size: 18.6667px;\">arr.size()&nbsp;</span></p>"
+    },
+    "qnum": 2279
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/longest-common-subsequence-1587115620/1",
+      "problem_name": "Longest Common Subsequence",
+      "slug": "longest-common-subsequence-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "41.68%",
+      "marks": 4,
+      "all_submissions": 332851,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 =&!//!&s2 =",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Amazon",
+          "Microsoft",
+          "Citrix",
+          "MakeMyTrip"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Amazon",
+        "Microsoft",
+        "Citrix",
+        "MakeMyTrip"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/longest-common-subsequence-dp-4/",
+        "https://www.geeksforgeeks.org/space-optimized-solution-lcs/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-8-campus-mts-propel-program/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-7-on-campus/"
+      ],
+      "statement_text": "Given two strings\ns1\nand\ns2\n, return the length of their\nlongest common subsequence\n(LCS). If there is no common subsequence, return\n0\n.\nA subsequence is a sequence that can be derived from the given string by deleting some or no elements without changing the order of the remaining elements.\nFor example, \"ABE\" is a subsequence of \"ABCDE\".",
+      "full_text": "Given two strings\ns1\nand\ns2\n, return the length of their\nlongest common subsequence\n(LCS). If there is no common subsequence, return\n0\n.\nA subsequence is a sequence that can be derived from the given string by deleting some or no elements without changing the order of the remaining elements.\nFor example, \"ABE\" is a subsequence of \"ABCDE\".\nExamples:\nInput:\ns1 = \"ABCDGH\", s2 = \"AEDFHR\"\nOutput:\n3\nExplanation:\nThe longest common subsequence of \"ABCDGH\" and \"AEDFHR\" is \"ADH\", which has a length of 3.\nInput:\ns1 = \"ABC\", s2 = \"AC\"\nOutput:\n2\nExplanation:\nThe longest common subsequence of \"ABC\" and \"AC\" is \"AC\", which has a length of 2.\nInput:\ns1 = \"XYZW\", s2 = \"XYWZ\"\nOutput:\n3\nExplanation:\nThe longest common subsequences of \"XYZW\" and \"XYWZ\" are \"XYZ\" and \"XYW\", both of length 3.\nConstraints:\n1<= s1.size(), s2.size() <=10\n3\nBoth strings s1 and s2 contain only uppercase English letters.",
+      "examples": [
+        "Input:\ns1 = \"ABCDGH\", s2 = \"AEDFHR\"\nOutput:\n3\nExplanation:\nThe longest common subsequence of \"ABCDGH\" and \"AEDFHR\" is \"ADH\", which has a length of 3.",
+        "Input:\ns1 = \"ABC\", s2 = \"AC\"\nOutput:\n2\nExplanation:\nThe longest common subsequence of \"ABC\" and \"AC\" is \"AC\", which has a length of 2.",
+        "Input:\ns1 = \"XYZW\", s2 = \"XYWZ\"\nOutput:\n3\nExplanation:\nThe longest common subsequences of \"XYZW\" and \"XYWZ\" are \"XYZ\" and \"XYW\", both of length 3."
+      ],
+      "constraints_text": "Constraints:\n1<= s1.size(), s2.size() <=10\n3\nBoth strings s1 and s2 contain only uppercase English letters.",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given two strings <strong><code>s1</code></strong> and <strong><code>s2</code></strong>, return the length of their <strong>longest common subsequence </strong>(LCS). If there is no common subsequence, return <strong>0</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><em><span style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; color: #273239; font-family: Nunito, sans-serif; letter-spacing: 0.162px; text-align: justify; background-color: #f9f9f9;\"><span style=\"color: #273239; font-family: Nunito, sans-serif;\"><span style=\"letter-spacing: 0.162px;\">A subsequence is a sequence that can be derived from the given string by deleting some or no elements without changing the order of the remaining elements. </span></span><span style=\"color: #273239; font-family: Nunito, sans-serif;\"><span style=\"letter-spacing: 0.162px;\">For example, \"ABE\" is a subsequence of \"ABCDE\".</span></span></span></em></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s1 = \"ABCDGH\", s2 = \"AEDFHR\"\n<strong>Output: </strong>3<strong>\nExplanation: </strong>The longest common subsequence of \"ABCDGH\" and \"AEDFHR\" is \"ADH\", which has a length of 3.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s1 = \"ABC\", s2 = \"AC\"\n<strong>Output: </strong>2<strong>\nExplanation: </strong>The longest common subsequence of \"ABC\" and \"AC\" is \"AC\", which has a length of 2.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s1 = \"XYZW\", s2 = \"XYWZ\"\n<strong>Output: </strong>3<strong>\nExplanation: </strong>The longest common subsequences of \"XYZW\" and \"XYWZ\" are \"XYZ\" and \"XYW\", both of length 3.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1&lt;= s1.size(), s2.size() &lt;=10<sup>3<br /></sup>Both strings s1 and s2 contain only uppercase English letters.</span></p>"
+    },
+    "qnum": 2280
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-index-1587115620/1",
+      "problem_name": "Maximum Index",
+      "slug": "maximum-index-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "24.5%",
+      "marks": 4,
+      "all_submissions": 301699,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-set-1-for-mts-2-position/",
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-416-campus-internship/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-for-software-engineer/"
+      ],
+      "statement_text": "Given an array\narr\nof positive integers. You have to return the maximum of\nj - i\nsuch that\narr[i]\n<\narr[j]\nand\ni\n<\nj\n.",
+      "full_text": "Given an array\narr\nof positive integers. You have to return the maximum of\nj - i\nsuch that\narr[i]\n<\narr[j]\nand\ni\n<\nj\n.\nExamples:\nInput:\narr[] = [1, 10]\nOutput:\n1\nExplanation:\narr[0]\n<\narr[1] so (j-i) is 1-0 = 1.\nInput:\narr[] = [5, 4, 3]\nOutput:\n0\nExplanation:\nThere is no pair that satisfies the given condition.\nInput:\narr[] = [34, 8, 10, 3, 2, 80, 30, 33, 1]\nOutput:\n6\nExplanation:\nIn the given array arr[1] < arr[7] satisfying the required condition(arr[i]\n<\narr[j]) thus giving the maximum difference of j - i which is 6(7-1).\nConstraints:\n1 ≤ arr.size ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n9",
+      "examples": [
+        "Input:\narr[] = [1, 10]\nOutput:\n1\nExplanation:\narr[0]\n<\narr[1] so (j-i) is 1-0 = 1.",
+        "Input:\narr[] = [5, 4, 3]\nOutput:\n0\nExplanation:\nThere is no pair that satisfies the given condition.",
+        "Input:\narr[] = [34, 8, 10, 3, 2, 80, 30, 33, 1]\nOutput:\n6\nExplanation:\nIn the given array arr[1] < arr[7] satisfying the required condition(arr[i]\n<\narr[j]) thus giving the maximum difference of j - i which is 6(7-1)."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr</strong> of positive integers. You have to return the maximum of <strong>j - i</strong> such that <strong>arr[i] <u>&lt;</u> arr[j] </strong>and <strong>i <u>&lt;</u>&nbsp;j</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 10]\n<strong>Output: </strong>1<strong>\nExplanation: </strong>arr[0] <u style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">&lt;</u> arr[1] so (j-i) is 1-0 = 1.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 4, 3]\n<strong>Output: </strong>0<strong>\nExplanation:</strong> There is no pair that satisfies the given condition.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [34, 8, 10, 3, 2, 80, 30, 33, 1]\n<strong>Output: </strong>6<strong>\nExplanation: </strong>In the given array arr[1] &lt; arr[7] satisfying the required condition(arr[i] <u>&lt;</u> arr[j]) thus giving the maximum difference of j - i which is 6(7-1).\n</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size &le; 10<sup>5</sup><br />0 &le; arr[i] &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 2281
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-index3307/1",
+      "problem_name": "Maximum Index",
+      "slug": "maximum-index3307",
+      "difficulty": "Medium",
+      "accuracy": "13.46%",
+      "marks": 4,
+      "all_submissions": 218376,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Amazon",
+          "Snapdeal",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Amazon",
+        "Snapdeal",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-set-1-for-mts-2-position/"
+      ],
+      "statement_text": "Given an array,\narr[]\nof\nnon-negative integers. The task is to return the maximum of\nj - i (i<=j)\nsubjected to the constraint of\narr[i] <= arr[j]\n.",
+      "full_text": "Given an array,\narr[]\nof\nnon-negative integers. The task is to return the maximum of\nj - i (i<=j)\nsubjected to the constraint of\narr[i] <= arr[j]\n.\nExamples:\nInput:\narr[] = [34, 8, 10, 3, 2, 80, 30, 33, 1]\nOutput:\n6\nExplanation:\nIn the given array arr[1] < arr[7] satisfying the required condition (arr[i] <= arr[j]) thus giving the maximum difference of j - i which is 7-1 = 6.\nInput:\narr[] = [18, 17]\nOutput:\n0\nExplanation:\nWe can either take i and j as 0 and 0 or we cantake 1 and 1 both give the same result 0.\nInput:\narr[] = [10, 10, 10, 10]\nOutput:\n3\nExplanation:\nSince all elements are equal, any pair of indices will satisfy the condition arr[i] <= arr[j]. The maximum difference is between j = 3 and i = 0, resulting in j - i = 3.\nConstraints:\n1 ≤ arr.size() ≤ 10\n6\n0 ≤ arr[i] ≤ 10\n9",
+      "examples": [
+        "Input:\narr[] = [34, 8, 10, 3, 2, 80, 30, 33, 1]\nOutput:\n6\nExplanation:\nIn the given array arr[1] < arr[7] satisfying the required condition (arr[i] <= arr[j]) thus giving the maximum difference of j - i which is 7-1 = 6.",
+        "Input:\narr[] = [18, 17]\nOutput:\n0\nExplanation:\nWe can either take i and j as 0 and 0 or we cantake 1 and 1 both give the same result 0.",
+        "Input:\narr[] = [10, 10, 10, 10]\nOutput:\n3\nExplanation:\nSince all elements are equal, any pair of indices will satisfy the condition arr[i] <= arr[j]. The maximum difference is between j = 3 and i = 0, resulting in j - i = 3."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n6\n0 ≤ arr[i] ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array,<strong> arr[] </strong>of<strong> </strong>non-negative integers. The task is to return the maximum of <strong>j - i (i&lt;=j)</strong>&nbsp;subjected to the constraint of <strong>arr[i] &lt;= arr[j]</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [34, 8, 10, 3, 2, 80, 30, 33, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>6</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>In the given array arr[1] &lt; arr[7] satisfying the required condition (arr[i] &lt;= arr[j]) thus giving the maximum difference of j - i which is 7-1 = 6.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [18, 17]</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>0</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> We can either take i and j as 0 and 0 or we cantake 1 and 1 both give the same result 0.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [10, 10, 10, 10]</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>3</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> Since all elements are equal, any pair of indices will satisfy the condition arr[i] &lt;= arr[j]. The maximum difference is between j = 3 and i = 0, resulting in j - i = 3.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>6</sup><br />0 &le; arr[i] &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 2282
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-triplet-product--170647/1",
+      "problem_name": "Maximum Triplet product",
+      "slug": "maximum-triplet-product--170647",
+      "difficulty": "Medium",
+      "accuracy": "54.93%",
+      "marks": 4,
+      "all_submissions": 30508,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "VMWare"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Mathematical",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Mathematical",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-maximum-product-of-a-triplet-in-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-on-campus-3/"
+      ],
+      "statement_text": "Given an array\narr\nof size\nn\n, the task is to find the maximum triplet product in the array.\nExample 1:\nInput:\nn = 4\narr[] = {1, 2, 3, 5}\nOutput:\n30\nExplanation:\n5*3*2 gives 30. This is the maximum possible\ntriplet product in the array.\nExample 2:\nInput:\nn = 7\narr[] = {-3, -5, 1, 0, 8, 3, -2}\nOutput:\n120\nExplanation:\n-3*-5*8 gives 120. This is the maximum possible triplet product in the array.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmaxTripletProduct()\nwhich takes an integer n and an array arr and returns the maximum triplet product in the array.\nExpected Time Complexity:\nO(n)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given an array\narr\nof size\nn\n, the task is to find the maximum triplet product in the array.\nExample 1:\nInput:\nn = 4\narr[] = {1, 2, 3, 5}\nOutput:\n30\nExplanation:\n5*3*2 gives 30. This is the maximum possible\ntriplet product in the array.\nExample 2:\nInput:\nn = 7\narr[] = {-3, -5, 1, 0, 8, 3, -2}\nOutput:\n120\nExplanation:\n-3*-5*8 gives 120. This is the maximum possible triplet product in the array.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmaxTripletProduct()\nwhich takes an integer n and an array arr and returns the maximum triplet product in the array.\nExpected Time Complexity:\nO(n)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n3 ≤ N ≤ 5*10\n5\n-10\n6\n≤ A[i] ≤ 10\n6",
+      "examples": [
+        "Input:\nn = 4\narr[] = {1, 2, 3, 5}\nOutput:\n30\nExplanation:\n5*3*2 gives 30. This is the maximum possible\ntriplet product in the array.",
+        "Input:\nn = 7\narr[] = {-3, -5, 1, 0, 8, 3, -2}\nOutput:\n120\nExplanation:\n-3*-5*8 gives 120. This is the maximum possible triplet product in the array."
+      ],
+      "constraints_text": "Constraints:\n3 ≤ N ≤ 5*10\n5\n-10\n6\n≤ A[i] ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size:18px\">Given an array <strong>arr&nbsp;</strong>of size <strong>n</strong>, the task is to find the maximum triplet product in the array.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>n = 4\r\narr[] = {1, 2, 3, 5}\r\n<strong>Output:\r\n</strong>30\r\n<strong>Explanation:</strong>\r\n5*3*2 gives 30. This is the maximum possible\r\ntriplet product in the array.</span>\r\n</pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>n = 7\r\narr[] = {-3, -5, 1, 0, 8, 3, -2} <strong>\r\nOutput:\r\n</strong>120\r\n<strong>Explanation:</strong> \r\n-3*-5*8 gives 120. This is the maximum possible triplet product in the array.</span>\r\n</pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou don&#39;t need to read input or print anything. Your task is to complete the function&nbsp;<strong>maxTripletProduct()</strong>&nbsp;which takes an integer n&nbsp;and an array&nbsp;arr&nbsp;and returns the maximum triplet product in the array.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong>&nbsp;O(n)<br />\r\n<strong>Expected Auxiliary Space:</strong>&nbsp;O(1)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n3 &le; N &le; 5*10<sup>5</sup><br />\r\n-10<sup>6</sup>&nbsp;&le; A[i] &le; 10<sup>6</sup></span></p>\r\n"
+    },
+    "qnum": 2283
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-k-sorted-arrays/1",
+      "problem_name": "Merge k Sorted Arrays",
+      "slug": "merge-k-sorted-arrays",
+      "difficulty": "Medium",
+      "accuracy": "67.25%",
+      "marks": 4,
+      "all_submissions": 128198,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&m =&!//!&mat[][] =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Citrix"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Sorting",
+          "Heap",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Sorting",
+        "Heap",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Citrix"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-k-sorted-arrays/",
+        "https://www.geeksforgeeks.org/sort-numbers-stored-on-different-machines/"
+      ],
+      "interview_links": [
+        "httpss://www.geeksforgeeks.org/microsoft-interview-experience-set-151-sde-2-3-5-years-experience/"
+      ],
+      "statement_text": "You are given a 2D matrix\nmat[][]\nof size\nn x m\n.\nEach row in the matrix is sorted in\nnon-decreasing order\n. Your task is to\nmerge\nall the rows and return a single sorted array that contains all the elements of the matrix.\nExamples :\nInput:\nmat[][] = [[1, 3, 5, 7],\n[2, 4, 6, 8],\n[0, 9, 10, 11]]\nOutput:\n[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\nExplanation:\nMerging all elements from the 3 sorted arrays and sorting them results in: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].\nInput:\nmat[][] = [[1, 2, 3, 4],\n[2, 2, 3, 4],\n[5, 5, 6, 6],\n[7, 8, 9, 9]]\nOutput:\n[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9]\nExplanation:\nMerging all elements from the 4 sorted arrays and sorting\nthem results in:[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9]\nConstraints\n:\n1 ≤ n * m ≤ 10\n5\n1 ≤ mat[i][j] ≤ 10\n6",
+      "full_text": "You are given a 2D matrix\nmat[][]\nof size\nn x m\n.\nEach row in the matrix is sorted in\nnon-decreasing order\n. Your task is to\nmerge\nall the rows and return a single sorted array that contains all the elements of the matrix.\nExamples :\nInput:\nmat[][] = [[1, 3, 5, 7],\n[2, 4, 6, 8],\n[0, 9, 10, 11]]\nOutput:\n[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\nExplanation:\nMerging all elements from the 3 sorted arrays and sorting them results in: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].\nInput:\nmat[][] = [[1, 2, 3, 4],\n[2, 2, 3, 4],\n[5, 5, 6, 6],\n[7, 8, 9, 9]]\nOutput:\n[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9]\nExplanation:\nMerging all elements from the 4 sorted arrays and sorting\nthem results in:[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9]\nConstraints\n:\n1 ≤ n * m ≤ 10\n5\n1 ≤ mat[i][j] ≤ 10\n6",
+      "examples": [
+        "Input:\nmat[][] = [[1, 3, 5, 7],\n[2, 4, 6, 8],\n[0, 9, 10, 11]]\nOutput:\n[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]\nExplanation:\nMerging all elements from the 3 sorted arrays and sorting them results in: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].",
+        "Input:\nmat[][] = [[1, 2, 3, 4],\n[2, 2, 3, 4],\n[5, 5, 6, 6],\n[7, 8, 9, 9]]\nOutput:\n[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9]\nExplanation:\nMerging all elements from the 4 sorted arrays and sorting\nthem results in:[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9]"
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ n * m ≤ 10\n5\n1 ≤ mat[i][j] ≤ 10\n6",
+      "question_html": "<p class=\"MsoNormal\"><span style=\"font-size: 14pt;\">You are given a 2D matrix <strong>mat[][]</strong> of size <strong>n x m</strong>.<strong> </strong></span><span style=\"font-size: 14pt;\">Each row in the matrix is sorted in <strong>non-decreasing order</strong>. Your task is to <strong>merge </strong>all the rows and return a single sorted array that contains all the elements of the matrix.</span></p>\n<p class=\"MsoNormal\"><span style=\"font-size: 14pt;\"><strong>Examples :</strong> </span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>mat[][] = [[1, 3, 5, 7],<br /></span><span style=\"font-size: 18px;\">                [2, 4, 6, 8], <br /></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">                [0, 9, 10, 11]]</span><strong style=\"font-size: 18px;\"><br /></strong><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]</span><strong style=\"font-size: 18px;\">\nExplanation: </strong></span><span style=\"font-size: 18px;\">Merging all elements from the 3 sorted arrays and sorting them results in: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11].</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>mat[][] = [[1, 2, 3, 4], <br />                [2, 2, 3, 4],<br />                [5, 5, 6, 6],<br />                [7, 8, 9, 9]]<br /><strong>Output: </strong>[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9] <strong>\nExplanation: </strong>Merging all elements from the 4 sorted arrays and sorting </span><span style=\"font-size: 14pt;\">them results in:[1, 2, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 9, 9]</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints</strong>:<br />1 &le; n * m &le; 10<sup>5</sup><br />1 &le; mat[i][j] &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 2284
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-k-sorted-linked-lists/1",
+      "problem_name": "Merge K sorted linked lists",
+      "slug": "merge-k-sorted-linked-lists",
+      "difficulty": "Medium",
+      "accuracy": "57.01%",
+      "marks": 4,
+      "all_submissions": 124853,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&arr[] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Amazon",
+          "Microsoft",
+          "Oracle",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Heap",
+          "Data Structures",
+          "Merge Sort",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Heap",
+        "Data Structures",
+        "Merge Sort",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Amazon",
+        "Microsoft",
+        "Oracle",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-k-sorted-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-set-1-for-mts-2-position/"
+      ],
+      "statement_text": "Given an array\narr[]\nof\nn\nsorted linked lists\nof different sizes.\nYour task is to\nmerge\nall these lists into a single\nsorted\nlinked list and return the\nhead\nof the merged list.",
+      "full_text": "Given an array\narr[]\nof\nn\nsorted linked lists\nof different sizes.\nYour task is to\nmerge\nall these lists into a single\nsorted\nlinked list and return the\nhead\nof the merged list.\nExamples:\nInput:\nOutput:\n1 -> 2 -> 3 -> 4 -> 7 -> 8 -> 9\nExplanation:\nThe arr[] has 3 sorted linked list of size 3, 3, 1.\n1st list: 1 -> 3 -> 7\n2nd list: 2 -> 4 -> 8\n3rd list: 9\nThe merged list will be:\nInput:\nOutput:\n1 -> 3 -> 4 -> 5 -> 6 -> 8\nExplanation:\nThe arr[] has 3 sorted linked list of size 2, 1, 3.\n1st list: 1 -> 3\n2nd list: 8\n3rd list: 4 -> 5 -> 6\nThe merged list will be:\nConstraints\n1 ≤ total no. of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n3",
+      "examples": [
+        "Input:\nOutput:\n1 -> 2 -> 3 -> 4 -> 7 -> 8 -> 9\nExplanation:\nThe arr[] has 3 sorted linked list of size 3, 3, 1.\n1st list: 1 -> 3 -> 7\n2nd list: 2 -> 4 -> 8\n3rd list: 9\nThe merged list will be:",
+        "Input:\nOutput:\n1 -> 3 -> 4 -> 5 -> 6 -> 8\nExplanation:\nThe arr[] has 3 sorted linked list of size 2, 1, 3.\n1st list: 1 -> 3\n2nd list: 8\n3rd list: 4 -> 5 -> 6\nThe merged list will be:"
+      ],
+      "constraints_text": "Constraints\n1 ≤ total no. of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array&nbsp;<strong>arr[]&nbsp;</strong>of&nbsp;<strong>n</strong>&nbsp;<strong>sorted linked lists</strong>&nbsp;of different sizes.&nbsp;</span><span style=\"font-size: 18px;\">Your task is to&nbsp;<strong>merge&nbsp;</strong>all these lists into a single&nbsp;<strong>sorted</strong>&nbsp;linked list and return the&nbsp;<strong>head&nbsp;</strong>of the merged list.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><strong style=\"font-size: 18px;\">Input:<br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/908368/Web/Other/blobid0_1756363954.webp\" width=\"404\" height=\"180\" /></strong>\n<strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 7 -&gt; 8 -&gt; 9</span><strong style=\"font-size: 18px;\">\nExplanation: </strong><span style=\"font-size: 18px;\">The arr[] has 3 sorted linked list of size 3, 3, 1.<br />1st list: 1 -&gt; 3 -&gt; 7<br />2nd list: 2 -&gt; 4 -&gt; 8<br />3rd list: 9<br />The merged list will be: <br /></span>    <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700265/Web/Other/blobid2_1756115425.jpg\" width=\"595\" height=\"60\" /></pre>\n<pre><strong style=\"font-size: 18px;\">Input:<br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700265/Web/Other/blobid3_1756115435.jpg\" width=\"385\" height=\"147\" /><br /></strong><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">1 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; 6 -&gt; 8</span><strong style=\"font-size: 18px;\"><br /></strong><strong style=\"font-size: 18px;\">Explanation: </strong><span style=\"font-size: 18px;\">The arr[] has 3 sorted linked list of size 2, 1, 3.<br />1st list: 1 -&gt; 3<br />2nd list: 8<br />3rd list: 4 -&gt; 5 -&gt; 6<br />The merged list will be: <br /></span>    <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700265/Web/Other/blobid4_1756115445.jpg\" width=\"546\" height=\"63\" /></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints</strong><br />1 &le; total no. of nodes &le; 10<sup>5</sup><sup><br /></sup>1 &le; node-&gt;data &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 2285
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-a-pair-with-given-target-in-bst/1",
+      "problem_name": "Pair Sum in BST",
+      "slug": "find-a-pair-with-given-target-in-bst",
+      "difficulty": "Medium",
+      "accuracy": "44.02%",
+      "marks": 4,
+      "all_submissions": 86999,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root =&!//!&target =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-a-pair-with-given-sum-in-bst/",
+        "https://www.geeksforgeeks.org/find-pair-given-sum-bst/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-228-on-campus-for-internship/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-135-campus-sde/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-233-1-year-experienced-for-sde-1/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-269-1-year-experienced-for-sde-1/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-3/"
+      ],
+      "statement_text": "Given a Binary Search Tree(BST) and a target. Check whether there's a pair of Nodes in the BST with value summing up to the target.\n\nExamples:\n\nInput: root = [7, 3, 8, 2, 4, N, 9], target = 12\n\nOutput: True\nExplanation: In the binary tree above, there are two nodes (8 and 4) that add up to 12.\n\nInput: root = [9, 5, 10, 2, 6, N, 12], target = 23\n\nOutput: False\nExplanation: In the binary tree above, there are no such two nodes exists that add up to 23.\n\nConstraints:\n\n1 ≤ Number of Nodes ≤ 105\n1 ≤ target ≤ 106",
+      "full_text": "Given a Binary Search Tree(BST) and a target. Check whether there's a pair of Nodes in the BST with value summing up to the target.\n\nExamples:\n\nInput: root = [7, 3, 8, 2, 4, N, 9], target = 12\n\nOutput: True\nExplanation: In the binary tree above, there are two nodes (8 and 4) that add up to 12.\n\nInput: root = [9, 5, 10, 2, 6, N, 12], target = 23\n\nOutput: False\nExplanation: In the binary tree above, there are no such two nodes exists that add up to 23.\n\nConstraints:\n\n1 ≤ Number of Nodes ≤ 105\n1 ≤ target ≤ 106",
+      "examples": [
+        "Input:\nroot = [7, 3, 8, 2, 4, N, 9], target = 12\nOutput:\nTrue\nExplanation:\nIn the binary tree above, there are two nodes (8 and 4) that add up to 12.",
+        "Input:\nroot = [9, 5, 10, 2, 6, N, 12],\ntarget = 23\nOutput:\nFalse\nExplanation:\nIn the binary tree\nabove, there are no such two nodes exists that add up to 23."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ Number of Nodes ≤ 10\n5\n1 ≤ target ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a Binary Search Tree(BST) and a <strong>target</strong>. Check whether there's a pair of Nodes in the BST with value summing up to the target.&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre dir=\"ltr\"><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [7, 3, 8, 2, 4, N, 9], target = 12</span><br /><span style=\"font-size: 14pt;\">  &nbsp; &nbsp;  <img style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\" src=\"https://media.geeksforgeeks.org/wp-content/uploads/20240821183540/bst.webp\" srcset=\"https://media.geeksforgeeks.org/wp-content/uploads/20240821183540/bst.webp 245w,https://media.geeksforgeeks.org/wp-content/uploads/20240821183540/bst-100.webp 100w,https://media.geeksforgeeks.org/wp-content/uploads/20240821183540/bst-200.webp 200w\" alt=\"bst\" width=\"245\" height=\"199\" loading=\"auto\" /></span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>True</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> In the binary tree above, there are two nodes (8 and 4) that add up to 12.</span></pre>\n<pre dir=\"ltr\"><strong style=\"font-size: 18.6667px;\">Input: </strong><span style=\"font-size: 18.6667px;\">root = [9, 5, 10, 2, 6, N, 12],</span><strong style=\"font-size: 18.6667px;\"> </strong><span style=\"font-size: 18.6667px;\">target = 23</span><br />          <img style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\" src=\"https://media.geeksforgeeks.org/wp-content/uploads/20240821184007/bst-3.webp\" srcset=\"https://media.geeksforgeeks.org/wp-content/uploads/20240821184007/bst-3.webp 244w,https://media.geeksforgeeks.org/wp-content/uploads/20240821184007/bst-3-100.webp 100w,https://media.geeksforgeeks.org/wp-content/uploads/20240821184007/bst-3-200.webp 200w\" alt=\"bst-3\" width=\"244\" height=\"199\" loading=\"lazy\" /><br /><strong style=\"font-size: 18.6667px;\">Output:&nbsp;</strong><span style=\"font-size: 18.6667px;\">False</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> In the binary tree </span><span style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">above, there are no such two nodes exists that add up to 23.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span></p>\n<p><span style=\"font-size: 18px;\">1 &le; Number of Nodes &le; 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &le; target &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 2286
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/pair-sum-in-bst/1",
+      "problem_name": "Pair Sum in BST",
+      "slug": "pair-sum-in-bst",
+      "difficulty": "Medium",
+      "accuracy": "56.33%",
+      "marks": 4,
+      "all_submissions": 21577,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "VMWare"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/pair-with-a-given-sum-in-bst-set-2/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a BST and a number X. The task is to check if any pair exists in BST or not whose sum is equal to X.\n\nExample 1:\n\nInput:\n      8\n    /   \\\n   3     9\n  / \\\n 1   5\nX = 4\nOutput: 1\nExplanation: For the given input, there\nexist a pair whose sum is, i.e, (3,1).\n\nExample 2:\n\nInput:\n      0\n       \\\n        1\n         \\\n          3\n        /  \\\n       2    7\n             \\\n              8\nX = 6\nOutput: 0\nExplanation: For the given input , there\nexists no such pair whose sum is 6.\n\nYour Task:\n\n Just write your code for the boolean function findPair() to check if a pair with given sum X exists in BST or not. The function returns true or false. The printing is done by the driver's code.\n\nExpected Time Complexity: O(Number of Nodes in the BST)\n\nExpected Auxiliary Space: O(Number of Nodes in the BST).\n\nConstraints:\n\n1 <= Number of nodes <= 105\n\n1 <= Value of the nodes <= 105",
+      "full_text": "Given a BST and a number X. The task is to check if any pair exists in BST or not whose sum is equal to X.\n\nExample 1:\n\nInput:\n      8\n    /   \\\n   3     9\n  / \\\n 1   5\nX = 4\nOutput: 1\nExplanation: For the given input, there\nexist a pair whose sum is, i.e, (3,1).\n\nExample 2:\n\nInput:\n      0\n       \\\n        1\n         \\\n          3\n        /  \\\n       2    7\n             \\\n              8\nX = 6\nOutput: 0\nExplanation: For the given input , there\nexists no such pair whose sum is 6.\n\nYour Task:\n\n Just write your code for the boolean function findPair() to check if a pair with given sum X exists in BST or not. The function returns true or false. The printing is done by the driver's code.\n\nExpected Time Complexity: O(Number of Nodes in the BST)\n\nExpected Auxiliary Space: O(Number of Nodes in the BST).\n\nConstraints:\n\n1 <= Number of nodes <= 105\n\n1 <= Value of the nodes <= 105",
+      "examples": [
+        "Input:\n8\n/   \\\n3     9\n/ \\\n1   5\nX = 4\nOutput:\n1\nExplanation:\nFor the given input, there\nexist a pair whose sum is, i.e, (3,1).",
+        "Input:\n0\n\\\n1\n\\\n3\n/  \\\n2    7\n\\\n8\nX = 6\nOutput:\n0\nExplanation:\nFor the given input , there\nexists no such pair whose sum is 6."
+      ],
+      "constraints_text": "Constraints:\n1 <= Number of nodes <= 10\n5\n1 <= Value of the nodes <= 10\n5",
+      "question_html": "<p><span style=\"font-size:18px\">Given a&nbsp;BST and a number<strong> X</strong>. The task is to check if any pair exists in BST or not&nbsp;whose sum is equal to X.</span></p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>      8\r\n&nbsp;   /   \\\r\n&nbsp;  3     9\r\n&nbsp; / \\\r\n&nbsp;1   5\r\nX = 4\r\n<strong>Output: </strong>1<strong>\r\nExplanation: </strong>For the given input, there\r\nexist a pair whose sum is, i.e, (3,1).</span>\r\n</pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>      0\r\n&nbsp;      \\\r\n&nbsp;       1\r\n&nbsp;        \\ \r\n&nbsp;         3\r\n&nbsp;       /  \\\r\n&nbsp;      2    7\r\n&nbsp;            \\\r\n&nbsp;             8\r\nX = 6\r\n<strong>Output: </strong>0<strong>\r\nExplanation: </strong>For the given input , there\r\nexists no such pair whose sum is 6.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\n&nbsp;Just write your code for the boolean function <strong>findPair</strong>() to check if a pair with given sum X exists in BST or not. The function returns <strong>true </strong>or <strong>false</strong>.&nbsp;The printing is done by the driver&#39;s code.</span></p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity:&nbsp;</strong>O(Number of Nodes in the BST)<br />\r\n<strong>Expected Auxiliary Space:&nbsp;</strong>O(Number of Nodes in the BST).</span></p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &lt;= Number of nodes &lt;= 10<sup>5</sup><br />\r\n1 &lt;= Value of the nodes&nbsp;&lt;= 10<sup>5</sup></span></p>\r\n"
+    },
+    "qnum": 2287
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/quick-sort/1",
+      "problem_name": "Quick Sort",
+      "slug": "quick-sort",
+      "difficulty": "Medium",
+      "accuracy": "55.23%",
+      "marks": 4,
+      "all_submissions": 307604,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Hike",
+          "Ola Cabs",
+          "Goldman Sachs",
+          "Adobe",
+          "SAP Labs",
+          "Qualcomm",
+          "HSBC",
+          "Grofers",
+          "Target Corporation"
+        ],
+        "topic_tags": [
+          "Divide and Conquer",
+          "Sorting",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Divide and Conquer",
+        "Sorting",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Hike",
+        "Ola Cabs",
+        "Goldman Sachs",
+        "Adobe",
+        "SAP Labs",
+        "Qualcomm",
+        "HSBC",
+        "Grofers",
+        "Target Corporation"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/iterative-quick-sort/",
+        "https://www.geeksforgeeks.org/quick-sort-algorithm/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/"
+      ],
+      "statement_text": "Implement Quick Sort\n, a Divide and Conquer algorithm, to sort an array,\narr[]\nin ascending order.\nGiven an array\narr[]\n, with starting index\nlow\nand ending index\nhigh\n, complete the functions\npartition()\nand\nquickSort()\n.\nUse the\nlast element as the pivot\n, so that all elements\nless than or equal\nto the pivot come before it, and elements\ngreater than\nthe pivot follow it.\nNote:\nlow\nand\nhigh\nare inclusive.",
+      "full_text": "Implement Quick Sort\n, a Divide and Conquer algorithm, to sort an array,\narr[]\nin ascending order.\nGiven an array\narr[]\n, with starting index\nlow\nand ending index\nhigh\n, complete the functions\npartition()\nand\nquickSort()\n.\nUse the\nlast element as the pivot\n, so that all elements\nless than or equal\nto the pivot come before it, and elements\ngreater than\nthe pivot follow it.\nNote:\nlow\nand\nhigh\nare inclusive.\nExamples:\nInput:\narr[] = [4, 1, 3, 9, 7]\nOutput:\n[1, 3, 4, 7, 9]\nExplanation:\nAfter sorting, all elements are arranged in ascending order.\nInput:\narr[] = [2, 1, 6, 10, 4, 1, 3, 9, 7]\nOutput: [\n1, 1, 2, 3, 4, 6, 7, 9, 10]\nExplanation:\nDuplicate elements (1) are retained in sorted order.\nInput:\narr[] = [5, 5, 5, 5]\nOutput:\n[5, 5, 5, 5]\nExplanation:\nAll elements are identical, so the array remains unchanged.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [4, 1, 3, 9, 7]\nOutput:\n[1, 3, 4, 7, 9]\nExplanation:\nAfter sorting, all elements are arranged in ascending order.",
+        "Input:\narr[] = [2, 1, 6, 10, 4, 1, 3, 9, 7]\nOutput: [\n1, 1, 2, 3, 4, 6, 7, 9, 10]\nExplanation:\nDuplicate elements (1) are retained in sorted order.",
+        "Input:\narr[] = [5, 5, 5, 5]\nOutput:\n[5, 5, 5, 5]\nExplanation:\nAll elements are identical, so the array remains unchanged."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p data-start=\"166\" data-end=\"264\"><span style=\"font-size: 14pt;\"><strong>Implement Quick Sort</strong>, a Divide and Conquer algorithm, to sort an array, <strong><code data-start=\"237\" data-end=\"244\">arr[]</code></strong> in ascending order.<br /></span><span style=\"font-size: 14pt;\">Given an array <strong><code data-start=\"281\" data-end=\"288\">arr[]</code></strong>, with starting index <strong><code data-start=\"310\" data-end=\"315\">low</code> </strong>and ending index <strong><code data-start=\"333\" data-end=\"339\">high</code></strong>, complete the functions <strong><code data-start=\"364\" data-end=\"377\">partition()</code></strong> and <strong><code data-start=\"382\" data-end=\"395\">quickSort()</code></strong>.<br /></span><span style=\"font-size: 14pt;\">Use the <strong data-start=\"406\" data-end=\"435\">last element as the pivot</strong>, so that all elements <strong data-start=\"458\" data-end=\"493\">less than or equal </strong>to the pivot come before it, and elements <strong data-start=\"523\" data-end=\"549\">greater than </strong>the pivot follow it.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong data-start=\"564\" data-end=\"573\">Note: <code data-start=\"574\" data-end=\"579\">low</code></strong> and <strong><code data-start=\"584\" data-end=\"590\">high</code> </strong>are inclusive.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [4, 1, 3, 9, 7]\n<strong>Output: </strong>[1, 3, 4, 7, 9]<br /><strong>Explanation:</strong> After sorting, all elements are arranged in ascending order.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [2, 1, 6, 10, 4, 1, 3, 9, 7]\n<strong>Output: [</strong>1, 1, 2, 3, 4, 6, 7, 9, 10]<br /><strong>Explanation:</strong> Duplicate elements (1) are retained in sorted order.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 5, 5, 5]\n<strong>Output: </strong>[5, 5, 5, 5]<br /><strong>Explanation:</strong> All elements are identical, so the array remains unchanged.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2288
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/remove-loop-in-linked-list/1",
+      "problem_name": "Remove loop in Linked List",
+      "slug": "remove-loop-in-linked-list",
+      "difficulty": "Medium",
+      "accuracy": "27.66%",
+      "marks": 4,
+      "all_submissions": 552004,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head =&!//!&pos =",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Oracle",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Qualcomm",
+          "Kuliza",
+          "Netskope"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "two-pointer-algorithm",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "two-pointer-algorithm",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Oracle",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Qualcomm",
+        "Kuliza",
+        "Netskope"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/detect-and-remove-loop-in-a-linked-list/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-9-internship-rd/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/"
+      ],
+      "statement_text": "Given the\nhead\nof a singly linked list, the task is to\nremove a cycle\nif present. A cycle exists when a node's next pointer points back to a previous node, forming a loop. Internally, a variable\npos\ndenotes the index of the node where the cycle starts, but it is not passed as a parameter. The terminal will print\ntrue\nif a cycle is removed otherwise, it will print\nfalse.",
+      "full_text": "Given the\nhead\nof a singly linked list, the task is to\nremove a cycle\nif present. A cycle exists when a node's next pointer points back to a previous node, forming a loop. Internally, a variable\npos\ndenotes the index of the node where the cycle starts, but it is not passed as a parameter. The terminal will print\ntrue\nif a cycle is removed otherwise, it will print\nfalse.\nExamples:\nInput:\nhead =\n1 -> 3 -> 4, pos = 2\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed.\nInput:\nhead = 1 -> 8 -> 3 -> 4, pos = 0\nOutput:\ntrue\nExplanation:\nThe Linked list does not contains any loop.\nInput:\nhead =\n1 -> 2 -> 3 -> 4, pos = 1\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed.\nConstraints:\n1 ≤ size of linked list ≤ 10\n5",
+      "examples": [
+        "Input:\nhead =\n1 -> 3 -> 4, pos = 2\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed.",
+        "Input:\nhead = 1 -> 8 -> 3 -> 4, pos = 0\nOutput:\ntrue\nExplanation:\nThe Linked list does not contains any loop.",
+        "Input:\nhead =\n1 -> 2 -> 3 -> 4, pos = 1\nOutput:\ntrue\nExplanation:\nThe linked list looks like\nA loop is present in the list, and it is removed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ size of linked list ≤ 10\n5",
+      "question_html": "<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\">Given the<strong> head </strong>of a singly linked list, the task is to <strong>remove a cycle</strong> if present. A cycle exists when a node's next pointer points back to a previous node, forming a loop. Internally, a variable <strong>pos</strong> denotes the index of the node where the cycle starts, but it is not passed as a parameter. The terminal will print <strong>true</strong> if a cycle is removed otherwise, it will print <strong>false.</strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head =<strong> </strong>1 -&gt; 3 -&gt; 4, pos = 2\n<strong>Output: </strong>true<strong>\nExplanation: </strong>The linked list looks like<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700332/Web/Other/blobid0_1718609709.png\" width=\"403\" height=\"161\" /><br />A loop is present in the list, and it is removed.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = 1 -&gt; 8 -&gt; 3 -&gt; 4, pos = 0\n<strong>Output: </strong>true<strong>\nExplanation: <br /></strong><strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700332/Web/Other/blobid0_1718609876.png\" height=\"100\" /><br /></strong>The Linked list does not contains any loop. </span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head =<strong> </strong>1 -&gt; 2 -&gt; 3 -&gt; 4, pos = 1\n<strong>Output: </strong>true<strong>\nExplanation: </strong>The linked list looks like <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700332/Web/Other/blobid2_1718609744.png\" width=\"400\" height=\"160\" /><br />A loop is present in the list, and it is removed.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; size of linked list &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2289
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/second-smallest-number--170647/1",
+      "problem_name": "Second smallest number",
+      "slug": "second-smallest-number--170647",
+      "difficulty": "Medium",
+      "accuracy": "50.86%",
+      "marks": 4,
+      "all_submissions": 26461,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "VMWare"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-second-smallest-number-from-sum-of-digits-and-number-of-digits/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-on-campus-3/"
+      ],
+      "statement_text": "The task is to find the\nsecond\nsmallest number with a given sum of digits as\nS\nand the number of digits as\nD.\nNote : If it is not possible to return second smallest number than return \"-1\".\nExample 1:\nInput:\nS = 9\nD = 2\nOutput:\n27\nExplanation:\n18 is the smallest number possible with sum = 9\nand total digits = 2, Whereas the second\nsmallest is 27.\nExample 2:\nInput:\nS = 16\nD = 3\nOutput:\n178\nExplanation:\n169 is the smallest number possible with sum is\n16 and total digits = 3, Whereas the second\nsmallest is 178.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nsecondSmallest()\nwhich takes the two integers S and D respectively and returns a string which is the second smallest number if possible, else return \"-1\".\nExpected Time Complexity:\nO(D)\nExpected Space Complexity:\nO(1)",
+      "full_text": "The task is to find the\nsecond\nsmallest number with a given sum of digits as\nS\nand the number of digits as\nD.\nNote : If it is not possible to return second smallest number than return \"-1\".\nExample 1:\nInput:\nS = 9\nD = 2\nOutput:\n27\nExplanation:\n18 is the smallest number possible with sum = 9\nand total digits = 2, Whereas the second\nsmallest is 27.\nExample 2:\nInput:\nS = 16\nD = 3\nOutput:\n178\nExplanation:\n169 is the smallest number possible with sum is\n16 and total digits = 3, Whereas the second\nsmallest is 178.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nsecondSmallest()\nwhich takes the two integers S and D respectively and returns a string which is the second smallest number if possible, else return \"-1\".\nExpected Time Complexity:\nO(D)\nExpected Space Complexity:\nO(1)\nConstraints:\n1 ≤ S ≤ 10\n5\n1 ≤ D ≤ 10\n5",
+      "examples": [
+        "Input:\nS = 9\nD = 2\nOutput:\n27\nExplanation:\n18 is the smallest number possible with sum = 9\nand total digits = 2, Whereas the second\nsmallest is 27.",
+        "Input:\nS = 16\nD = 3\nOutput:\n178\nExplanation:\n169 is the smallest number possible with sum is\n16 and total digits = 3, Whereas the second\nsmallest is 178."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ S ≤ 10\n5\n1 ≤ D ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">The task is to find the <strong>second</strong> smallest number with a given&nbsp;sum of digits as&nbsp;<strong>S</strong>&nbsp;and the number of digits as&nbsp;<strong>D.</strong></span></p>\n<p>Note : If it is not possible to return second smallest number than return \"-1\".<br /><span style=\"font-size: 18px;\"><strong><br />Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nS = 9 \nD = 2\n<strong>Output:</strong>\n27\n<strong>Explanation:</strong>\n18 is the smallest number possible with sum = 9\nand total digits = 2, Whereas the second\nsmallest is 27.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nS = 16\nD = 3\n<strong>Output:</strong>\n178\n<strong>Explanation:</strong>\n169 is the smallest number possible with sum is\n16 and total digits = 3, Whereas the second\nsmallest is 178.</span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>secondSmallest()</strong> which takes the two integers S and D respectively and returns a string which is the second smallest number if possible, else return \"-1\".</span><br /><br /><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong>&nbsp;O(D)<br /><strong>Expected Space Complexity:</strong>&nbsp;O(1)</span><br /><br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; S&nbsp;&le; 10<sup>5</sup><br />1 &le; D&nbsp;&le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2290
+  },
+  {
+    "company": "VMWare",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/sieve-of-eratosthenes5242/1",
+      "problem_name": "Sieve of Eratosthenes",
+      "slug": "sieve-of-eratosthenes5242",
+      "difficulty": "Medium",
+      "accuracy": "47.43%",
+      "marks": 4,
+      "all_submissions": 75900,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "MAQ Software",
+          "SAP Labs"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "sieve",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "sieve",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "MAQ Software",
+        "SAP Labs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sieve-of-eratosthenes/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-5-on-campus-for-it-application-developer/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-6-on-campus-for-it-application-developer/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-7-on-campus-for-it-application-developer/"
+      ],
+      "statement_text": "Given a positive integer\nn\n, calculate and return all prime numbers less than or equal to\nn\nusing the\nSieve of Eratosthenes\nalgorithm.\nA\nprime number\nis a natural number greater than 1 that has no positive divisors other than 1 and itself.",
+      "full_text": "Given a positive integer\nn\n, calculate and return all prime numbers less than or equal to\nn\nusing the\nSieve of Eratosthenes\nalgorithm.\nA\nprime number\nis a natural number greater than 1 that has no positive divisors other than 1 and itself.\nExamples:\nInput:\nn = 10\nOutput:\n[2, 3, 5, 7]\nExplanation:\nPrime numbers less than equal to 10 are 2, 3, 5 and 7.\nInput:\nn = 35\nOutput:\n[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]\nExplanation:\nPrime numbers less than equal to 35 are 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 and 31.\nConstraints:\n1 ≤ n ≤ 10\n4",
+      "examples": [
+        "Input:\nn = 10\nOutput:\n[2, 3, 5, 7]\nExplanation:\nPrime numbers less than equal to 10 are 2, 3, 5 and 7.",
+        "Input:\nn = 35\nOutput:\n[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]\nExplanation:\nPrime numbers less than equal to 35 are 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 and 31."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10\n4",
+      "question_html": "<p data-start=\"24\" data-end=\"165\"><span style=\"font-size: 14pt;\">Given a positive integer <strong>n</strong>, calculate and return all prime numbers less than or equal to <strong>n</strong> using the <strong data-start=\"129\" data-end=\"154\">Sieve of Eratosthenes</strong> algorithm.<br /></span><span style=\"font-size: 14pt;\">A <strong data-start=\"169\" data-end=\"185\">prime number</strong> is a natural number greater than 1 that has no positive divisors other than 1 and itself.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">n = 10</span>\n<strong><span style=\"font-size: 18px;\">Output: </span></strong><span style=\"font-size: 18px;\">[2, 3, 5, 7]</span>\n<strong><span style=\"font-size: 18px;\">Explanation: </span></strong><span style=\"font-size: 18px;\">Prime numbers less than equal to 10 are 2, 3, 5 and 7.</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">n = 35</span>\n<span style=\"font-size: 18px;\"><strong>Output: </strong>[2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31]</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>Prime numbers less than equal to 35 are 2, 3, 5, 7, 11, 13, 17, 19, 23, 29 and 31.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; n &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2291
+  }
+]

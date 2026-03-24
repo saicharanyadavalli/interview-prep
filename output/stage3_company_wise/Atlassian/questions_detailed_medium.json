@@ -1,0 +1,219 @@
+[
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/majority-element-1587115620/1",
+      "problem_name": "Majority Element",
+      "slug": "majority-element-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "27.82%",
+      "marks": 4,
+      "all_submissions": 812753,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Google",
+          "Nagarro",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Greedy",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Greedy",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Google",
+        "Nagarro",
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/majority-element/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-187-for-sde1/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-set-86-on-campus/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-138-sde-1/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-155-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-set-24/"
+      ],
+      "statement_text": "Given an array\narr[]\n. Find the\nmajority element\nin the array. If no majority element exists, return\n-1\n.\nNote:\nA majority element in an array is an element that appears\nstrictly\nmore than\narr.size()/2\ntimes in the array.",
+      "full_text": "Given an array\narr[]\n. Find the\nmajority element\nin the array. If no majority element exists, return\n-1\n.\nNote:\nA majority element in an array is an element that appears\nstrictly\nmore than\narr.size()/2\ntimes in the array.\nExamples:\nInput:\narr[] = [1, 1, 2, 1, 3, 5, 1]\nOutput:\n1\nExplanation:\nSince, 1 is present more than 7/2 times, so it is the majority element.\nInput:\narr[] = [7]\nOutput:\n7\nExplanation:\nSince, 7 is single element and present more than 1/2 times, so it is the majority element.\nInput:\narr[] = [2, 13]\nOutput:\n-1\nExplanation:\nSince, no element is present more than 2/2 times, so there is no majority element.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 1, 2, 1, 3, 5, 1]\nOutput:\n1\nExplanation:\nSince, 1 is present more than 7/2 times, so it is the majority element.",
+        "Input:\narr[] = [7]\nOutput:\n7\nExplanation:\nSince, 7 is single element and present more than 1/2 times, so it is the majority element.",
+        "Input:\narr[] = [2, 13]\nOutput:\n-1\nExplanation:\nSince, no element is present more than 2/2 times, so there is no majority element."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[]</strong>. Find the <strong>majority element</strong> in the array. If no majority element exists, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> A majority element in an array is an element that appears <strong>strictly </strong>more than<strong> arr.size()/2 </strong>times in the array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 1, 2, 1, 3, 5, 1]\n<strong>Output: </strong>1<strong>\nExplanation: </strong>Since, 1 is present more than 7/2 times, so it is the majority element.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [7]\n<strong>Output: </strong>7<strong>\nExplanation: </strong>Since, 7 is single element and present more than 1/2 times, so it is the majority element.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [2, 13]\n<strong>Output: </strong>-1<strong>\nExplanation: </strong>Since, no element is present more than 2/2 times, so there is no majority element.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 833
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-platforms-1587115620/1",
+      "problem_name": "Minimum Platforms",
+      "slug": "minimum-platforms-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "26.84%",
+      "marks": 4,
+      "all_submissions": 625542,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =&!//!&dep[] =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Hike",
+          "Walmart",
+          "Adobe",
+          "Google",
+          "Boomerang Commerce",
+          "Zillious",
+          "Atlassian",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Greedy",
+          "Sorting",
+          "Binary Search",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Greedy",
+        "Sorting",
+        "Binary Search",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Hike",
+        "Walmart",
+        "Adobe",
+        "Google",
+        "Boomerang Commerce",
+        "Zillious",
+        "Atlassian",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-number-platforms-required-railwaybus-station/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-for-member-of-technical-staff-2/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-on-campus-for-internship/",
+        "https://www.geeksforgeeks.org/adobe-interview-questions-computer-scientist/",
+        "https://www.geeksforgeeks.org/atlassian-interview-experience-for-full-time-software-engineer-bangalore-on-campus/"
+      ],
+      "statement_text": "Given arrival\narr[]\nand departure\ndep[]\ntimes of trains on the same day, find the minimum number of platforms needed so that no train waits. A platform cannot serve two trains at the same time; if a train arrives before another departs, an extra platform is needed.\nNote:\nTime intervals are in the 24-hour format\n(\nHHMM)\n,\nwhere the first two characters represent hour (between 00 to 23 ) and the last two characters represent minutes (this will be <= 59 and >= 0).\nLeading zeros for hours less than 10 are optional (e.g., 0900 is the same as 900).",
+      "full_text": "Given arrival\narr[]\nand departure\ndep[]\ntimes of trains on the same day, find the minimum number of platforms needed so that no train waits. A platform cannot serve two trains at the same time; if a train arrives before another departs, an extra platform is needed.\nNote:\nTime intervals are in the 24-hour format\n(\nHHMM)\n,\nwhere the first two characters represent hour (between 00 to 23 ) and the last two characters represent minutes (this will be <= 59 and >= 0).\nLeading zeros for hours less than 10 are optional (e.g., 0900 is the same as 900).\nExamples:\nInput\n: arr[] = [900, 940, 950, 1100, 1500, 1800], dep[] = [910, 1200, 1120, 1130, 1900, 2000]\nOutput\n: 3\nExplanation\n: There are three trains during the time 9:40 to 12:00. So we need a minimum of 3 platforms.\nInput\n: arr[] = [900, 1235, 1100], dep[] = [1000, 1240, 1200]\nOutput\n: 1\nExplanation\n: All train times are mutually exclusive. So we need only one platform.\nInput\n: arr[] = [1000, 935, 1100], dep[] = [1200, 1240, 1130]\nOutput\n: 3\nExplanation\n: All 3 trains have to be there from 11:00 to 11:30\nConstraints:\n1 ≤ number of trains ≤ 10\n5\n0000 ≤ arr[i] ≤ dep[i] ≤ 2359",
+      "examples": [
+        "Input\n: arr[] = [900, 940, 950, 1100, 1500, 1800], dep[] = [910, 1200, 1120, 1130, 1900, 2000]\nOutput\n: 3\nExplanation\n: There are three trains during the time 9:40 to 12:00. So we need a minimum of 3 platforms.",
+        "Input\n: arr[] = [900, 1235, 1100], dep[] = [1000, 1240, 1200]\nOutput\n: 1\nExplanation\n: All train times are mutually exclusive. So we need only one platform.",
+        "Input\n: arr[] = [1000, 935, 1100], dep[] = [1200, 1240, 1130]\nOutput\n: 3\nExplanation\n: All 3 trains have to be there from 11:00 to 11:30"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of trains ≤ 10\n5\n0000 ≤ arr[i] ≤ dep[i] ≤ 2359",
+      "question_html": "<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\">Given arrival <strong>arr[] </strong>and departure <strong>dep[] </strong>times of trains on the same day, find the minimum number of platforms needed so that no train waits. A platform cannot serve two trains at the same time; if a train arrives before another departs, an extra platform is needed.</span></p>\n<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><strong><span style=\"box-sizing: border-box; color: #1e2229; background-color: #ffffff; font-family: 'Source Sans 3' !important;\">Note:</span></strong><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\"> Time intervals are in the 24-hour format <strong>(</strong></span><span style=\"box-sizing: border-box; font-weight: bolder; color: #1e2229; background-color: #ffffff; font-family: 'Source Sans 3' !important;\"><strong>HHMM)</strong> ,</span><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\"> where the first two characters represent hour (between 00 to 23 ) and the last two characters represent minutes (this will be &lt;= 59 and &gt;= 0).&nbsp;</span>Leading zeros for hours less than 10 are optional (e.g., 0900 is the same as 900).</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr[] = [900, 940, 950, 1100, 1500, 1800], dep[] = [910, 1200, 1120, 1130, 1900, 2000]\n<strong>Output</strong>: 3\n<strong>Explanation</strong>: There are three trains during the time 9:40 to 12:00. So we need a minimum of 3 platforms.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr[] = [900, 1235, 1100], dep[] = [1000, 1240, 1200]\n<strong>Output</strong>: 1\n<strong>Explanation</strong>: All train times are mutually exclusive. So we need only one platform.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr[] = [1000, 935, 1100], dep[] = [1200, 1240, 1130]\n<strong>Output</strong>: 3\n<strong>Explanation</strong>: All 3 trains have to be there from 11:00 to 11:30</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; number of trains &le; 10<sup>5</sup><br />0000 &le; arr[i] &le; dep[i] &le; 2359<br /></span></p>"
+    },
+    "qnum": 834
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/nearest-smaller-tower--170647/1",
+      "problem_name": "Nearest smaller tower",
+      "slug": "nearest-smaller-tower--170647",
+      "difficulty": "Medium",
+      "accuracy": "55.45%",
+      "marks": 4,
+      "all_submissions": 28955,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&arr[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Stack",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Stack",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/finding-nearest-shortest-tower-in-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/atlassian-interview-experience/"
+      ],
+      "statement_text": "Given an array where each element\narr[i]\nrepresents the height of the tower. Find for each tower, the nearest possible tower that is shorter than it. You can look left or right on both sides.\nNote :\nIf two smaller towers are at the same distance, pick the smallest tower.\nIf two towers have the same height then we choose the one with a smaller index.",
+      "full_text": "Given an array where each element\narr[i]\nrepresents the height of the tower. Find for each tower, the nearest possible tower that is shorter than it. You can look left or right on both sides.\nNote :\nIf two smaller towers are at the same distance, pick the smallest tower.\nIf two towers have the same height then we choose the one with a smaller index.\nExamples:\nInput:\narr[] = [1, 3, 2]\nOutput:\n[-1, 0, 0]\nExplanation:\nFor\n0th\nindex : no tower is smallest, so\n-1\n.\nFor\n1st\nindex : For 3, here 1 & 2 both are\nsmall & at a same distance, so we will pick 1,\nbeacuse it has smallest value, so\n0(index)\nFor\n2nd\nIndex : here 1 is smaller, so\n0(index)\nSo the final output will be which consistes\nindexes are [-1, 0, 0].\nInput:\narr[] = [4, 8, 3, 5, 3]\nOutput =\n[2, 2, -1, 2, -1]\nExplanation:\nFor\n0th\nindex : here 3 is the smaller, so\n2(index)\nFor\n1st\nindex : For 8, here 4 & 3 both are\nsmall & at a same distance, so we will pick 3, so\n2(index)\nFor\n2nd\nindex : no tower is smallest, so\n-1\n.\nFor\n3rd\nindex : For 5, here 3 & 3 both are\nsmall & at a same distance, so we will pick\n3\n(2nd Index) because it smaller Index, so\n2(index)\nFor\n4th\nindex : no tower is smallest, so\n-1\n.\nSo the final output will be which consistes\nIndexes are [2, 2, -1, 2, -1].\nConstraints:\n1 <= n<= 10\n5\n1 <= arr[i] <= 10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 3, 2]\nOutput:\n[-1, 0, 0]\nExplanation:\nFor\n0th\nindex : no tower is smallest, so\n-1\n.\nFor\n1st\nindex : For 3, here 1 & 2 both are\nsmall & at a same distance, so we will pick 1,\nbeacuse it has smallest value, so\n0(index)\nFor\n2nd\nIndex : here 1 is smaller, so\n0(index)\nSo the final output will be which consistes\nindexes are [-1, 0, 0].",
+        "Input:\narr[] = [4, 8, 3, 5, 3]\nOutput =\n[2, 2, -1, 2, -1]\nExplanation:\nFor\n0th\nindex : here 3 is the smaller, so\n2(index)\nFor\n1st\nindex : For 8, here 4 & 3 both are\nsmall & at a same distance, so we will pick 3, so\n2(index)\nFor\n2nd\nindex : no tower is smallest, so\n-1\n.\nFor\n3rd\nindex : For 5, here 3 & 3 both are\nsmall & at a same distance, so we will pick\n3\n(2nd Index) because it smaller Index, so\n2(index)\nFor\n4th\nindex : no tower is smallest, so\n-1\n.\nSo the final output will be which consistes\nIndexes are [2, 2, -1, 2, -1]."
+      ],
+      "constraints_text": "Constraints:\n1 <= n<= 10\n5\n1 <= arr[i] <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array where each element <strong>arr[i]</strong>&nbsp;represents the height of the tower. Find for each tower, the nearest possible tower that is shorter than it. You can look left or right on both sides.<br /><strong>Note :&nbsp;</strong></span></p>\n<ul>\n<li>\n<p><span style=\"font-size: 18px;\">If&nbsp;two smaller towers&nbsp;are at the same distance, pick the smallest tower.</span></p>\n</li>\n<li>\n<p><span style=\"font-size: 18px;\">If two towers have the same height then we choose the one with a smaller index.</span></p>\n</li>\n</ul>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 3, 2]</span>\n<span style=\"font-size: 18px;\"><strong>Output: </strong>[-1, 0, 0] </span>\n<strong><span style=\"font-size: 18px;\">Explanation:</span></strong>\n<span style=\"font-size: 18px;\">For <strong>0th</strong> index : no tower is smallest, so <strong>-1</strong>.\nFor <strong>1st</strong> index : For 3, here 1 &amp; 2 both are \nsmall &amp; at a same distance, so we will pick 1, \nbeacuse it has smallest value, so <strong>0(index)</strong>\nFor <strong>2nd</strong> Index : here 1 is smaller, so <strong>0(index)\n</strong></span><span style=\"font-size: 18px;\">So the final output will be which consistes \nindexes are [-1, 0, 0].</span>\n</pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">arr[] = [4, 8, 3, 5, 3]</span><strong><span style=\"font-size: 18px;\"><br />Output =</span></strong><span style=\"font-size: 18px;\"> [2, 2, -1, 2, -1]</span>\n<strong><span style=\"font-size: 18px;\">Explanation:</span></strong> \n<span style=\"font-size: 18px;\">For <strong>0th</strong> index : here 3 is the smaller, so <strong>2(index)</strong> \nFor <strong>1st</strong> index : For 8, here 4 &amp; 3 both are\nsmall &amp; at a same distance, so we will pick 3, so <strong>2(index)</strong>\nFor <strong>2nd</strong> index : no tower is smallest, so <strong>-1</strong>.\nFor <strong>3rd</strong> index : For 5, here 3 &amp; 3 both are\nsmall &amp; at a same distance, so we will pick \n<strong>3</strong>(2nd Index) because it smaller Index, so <strong>2(index)\n</strong>For <strong>4th</strong> index : no tower is smallest, so <strong>-1</strong>.</span>\n<span style=\"font-size: 18px;\">So the final output will be which consistes\nIndexes are [2, 2, -1, 2, -1].</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &lt;= n&lt;= 10<sup>5</sup><br />1 &lt;= arr[i]&nbsp;&lt;= 10<sup>5</sup></span></p>\n<p>&nbsp;</p>"
+    },
+    "qnum": 835
+  }
+]

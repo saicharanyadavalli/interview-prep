@@ -1,0 +1,175 @@
+"""Gemini AI service — prompt building and API calls.
+
+Ported from the existing backend/main.py and backend/prompt_builder.py
+in the original prototype.
+"""
+
+from __future__ import annotations
+
+import os
+from typing import Optional
+
+import google.generativeai as genai
+
+
+MODEL_NAME = "gemini-2.5-flash"
+
+# ---------------------------------------------------------------------------
+# Scope-checking keyword sets (from the original prototype)
+# ---------------------------------------------------------------------------
+
+DSA_KEYWORDS = {
+    "array", "string", "linked list", "stack", "queue", "tree", "graph",
+    "heap", "hash", "dynamic programming", "dp", "greedy", "recursion",
+    "backtracking", "binary search", "two pointer", "sliding window",
+    "complexity", "time complexity", "space complexity", "bfs", "dfs",
+    "sorting", "prefix sum", "bit", "trie", "union find", "disjoint set",
+    "topological", "segment tree", "test case", "test cases", "dry run",
+    "edge case", "corner case", "example", "intuition", "approach",
+}
+
+OUT_OF_SCOPE_KEYWORDS = {
+    "weather", "temperature", "cricket score", "football", "movie",
+    "song", "travel", "politics", "stock market", "bitcoin price",
+    "joke", "recipe", "news",
+}
+
+
+# ---------------------------------------------------------------------------
+# Helpers
+# ---------------------------------------------------------------------------
+
+def _get_api_key() -> str:
+    api_key = os.getenv("GEMINI_API_KEY", "").strip()
+    if not api_key:
+        raise RuntimeError("Missing GEMINI_API_KEY environment variable.")
+    return api_key
+
+
+def _is_dsa_related(text: str) -> bool:
+    lowered = text.strip().lower()
+    if not lowered:
+        return False
+    return any(kw in lowered for kw in DSA_KEYWORDS)
+
+
+def _is_clearly_out_of_scope(text: str) -> bool:
+    return any(kw in text.strip().lower() for kw in OUT_OF_SCOPE_KEYWORDS)
+
+
+def is_in_scope(interview_question: str, user_doubt: str) -> bool:
+    """Check whether a user doubt is related to DSA / the current question."""
+    if _is_clearly_out_of_scope(user_doubt):
+        return False
+    if _is_dsa_related(user_doubt):
+        return True
+
+    context_clues = (
+        "this question", "this problem", "above", "approach", "solution",
+        "hint", "test case", "test cases", "more examples", "dry run",
+        "edge case", "explain",
+    )
+    if any(token in user_doubt.lower() for token in context_clues):
+        return _is_dsa_related(interview_question)
+
+    return _is_dsa_related(interview_question)
+
+
+# ---------------------------------------------------------------------------
+# Prompt builder (from prompt_builder.py)
+# ---------------------------------------------------------------------------
+
+def _format_history(history: list[dict[str, str]] | None) -> str:
+    if not history:
+        return "(no prior conversation)"
+    lines = []
+    for item in history[-8:]:
+        role = str(item.get("role", "user")).strip().lower()
+        content = str(item.get("content", "")).strip()
+        if not content:
+            continue
+        speaker = "Assistant" if role == "assistant" else "User"
+        lines.append(f"{speaker}: {content}")
+    return "\n".join(lines) if lines else "(no prior conversation)"
+
+
+def build_prompt(
+    interview_question: str,
+    user_doubt: str,
+    conversation_history: list[dict[str, str]] | None = None,
+) -> str:
+    """Build the full Gemini prompt from user inputs."""
+    history_text = _format_history(conversation_history)
+    return f"""SYSTEM ROLE:
+You are an AI Interview Assistant helping software engineering candidates understand interview problems without directly giving the full solution unless explicitly requested.
+
+RULES:
+
+* Do NOT immediately give the full solution.
+* Provide hints instead of full answers when possible.
+* Explain concepts clearly.
+* If the user asks about complexity or algorithm intuition, explain step-by-step.
+* Encourage the candidate to think.
+* Only answer questions related to DSA and the given interview question context.
+* If the user asks something outside DSA or unrelated to the interview question, politely refuse and redirect them back to the current problem.
+
+INPUTS:
+Interview Question:
+{interview_question}
+
+User Doubt:
+{user_doubt}
+
+Conversation History:
+{history_text}
+
+OUTPUT STYLE:
+
+* Clear explanation
+* Bullet points when helpful
+* Hints instead of full answers
+* Concise and interview-friendly
+* Return plain text only.
+* Do not use markdown symbols like **, *, `, or headings.
+"""
+
+
+# ---------------------------------------------------------------------------
+# Gemini API call
+# ---------------------------------------------------------------------------
+
+def _extract_text(response: object) -> str:
+    """Extract plain text from Gemini response defensively."""
+    text_value: Optional[str] = getattr(response, "text", None)
+    if text_value and text_value.strip():
+        return text_value.strip()
+
+    candidates = getattr(response, "candidates", None) or []
+    for candidate in candidates:
+        content = getattr(candidate, "content", None)
+        parts = getattr(content, "parts", None) or []
+        chunks = []
+        for part in parts:
+            piece = getattr(part, "text", None)
+            if piece:
+                chunks.append(piece)
+        if chunks:
+            return "\n".join(chunks).strip()
+
+    return "I could not generate a response. Please try again."
+
+
+def ask_gemini(
+    interview_question: str,
+    user_doubt: str,
+    conversation_history: list[dict[str, str]] | None = None,
+) -> str:
+    """Send a prompt to Gemini and return the plain-text answer."""
+    api_key = _get_api_key()
+    genai.configure(api_key=api_key)
+
+    prompt = build_prompt(interview_question, user_doubt, conversation_history)
+
+    model = genai.GenerativeModel(MODEL_NAME)
+    response = model.generate_content(prompt)
+    return _extract_text(response)

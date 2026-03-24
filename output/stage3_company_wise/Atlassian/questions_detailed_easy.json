@@ -1,0 +1,182 @@
+[
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/root-to-leaf-path-sum/1",
+      "problem_name": "Root to leaf path sum",
+      "slug": "root-to-leaf-path-sum",
+      "difficulty": "Easy",
+      "accuracy": "40.79%",
+      "marks": 2,
+      "all_submissions": 135271,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] =&!//!&target",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "FactSet",
+          "Housing.com",
+          "Oracle",
+          "Goldman Sachs",
+          "Adobe",
+          "CouponDunia",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "FactSet",
+        "Housing.com",
+        "Oracle",
+        "Goldman Sachs",
+        "Adobe",
+        "CouponDunia",
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/root-to-leaf-path-sum-equal-to-a-given-number/"
+      ],
+      "interview_links": [
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-395-campus-internship/",
+        "https://www.geeksforgeeks.org/atlassian-interview-experience-on-campus-august-2020/"
+      ],
+      "statement_text": "Given a binary tree and an integer target, check whether there is a root-to-leaf path with its sum as target.\n\nExamples :\n\nInput: target = 2\n   1\n /   \\\n2     3\nOutput: false\nExplanation: There is no root to leaf path with sum 2.\n\nInput: target = 4\n   1\n /   \\\n2     3\nOutput: true\nExplanation: The sum of path from leaf node 3 to root 1 is 4.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ target ≤ 106",
+      "full_text": "Given a binary tree and an integer target, check whether there is a root-to-leaf path with its sum as target.\n\nExamples :\n\nInput: target = 2\n   1\n /   \\\n2     3\nOutput: false\nExplanation: There is no root to leaf path with sum 2.\n\nInput: target = 4\n   1\n /   \\\n2     3\nOutput: true\nExplanation: The sum of path from leaf node 3 to root 1 is 4.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ target ≤ 106",
+      "examples": [
+        "Input:\ntarget = 2\n1\n/   \\\n2     3\nOutput:\nfalse\nExplanation:\nThere is no root to leaf path with sum 2.",
+        "Input:\ntarget = 4\n1\n/   \\\n2     3\nOutput:\ntrue\nExplanation:\nThe sum of path from leaf node 3 to root 1 is 4."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n4\n1 ≤ target ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary <strong>tree </strong>and an integer <strong>target</strong>, check whether there is a root-to-leaf path with its sum as <strong>target</strong>.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples :</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>target = 2<strong><br /></strong>   1 \n /   \\\n2     3</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong> false</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>There is no root to leaf path with sum 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>target = 4<strong><br /></strong>   1\n /   \\\n2     3</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong> true</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>The sum of path from leaf node 3 to root 1 is 4.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>4</sup><br />1 &le; target &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 830
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621/1",
+      "problem_name": "Winner of an election",
+      "slug": "winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621",
+      "difficulty": "Easy",
+      "accuracy": "53.75%",
+      "marks": 2,
+      "all_submissions": 100156,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n&!//!&arr",
+        "datatype": "INTEGER&!//!&STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Adobe",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Adobe",
+        "Atlassian"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-winner-election-votes-represented-candidate-names/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/atlassian-interview-experience/"
+      ],
+      "statement_text": "Given an array of n names arr of candidates in an election, where each name is a string of lowercase characters. A candidate name in the array represents a vote casted to the candidate. Print the name of the candidate that received the maximum count of votes. If there is a draw between two candidates, then print lexicographically smaller name.\n\nExamples :\n\nInput: n = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\nOutput: john 4\nExplanation: john has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.\n\nInput: n = 3\narr[] = {andy,blake,clark}\nOutput: Andy 1\nExplanation: All the candidates get 1 votes each. We print andy as it is lexicographically smaller.\n\nYour Task:\nYou only need to complete the function winner() that takes an array of strings arr, and length of arr n as parameters and returns an array of string of length 2. First element of the array should be the name of the candidate and second element should be the number of votes that candidate got in string format.\n\nConstraints:\n1 <= n <= 105\n1 <= |arri| <= 105",
+      "full_text": "Given an array of n names arr of candidates in an election, where each name is a string of lowercase characters. A candidate name in the array represents a vote casted to the candidate. Print the name of the candidate that received the maximum count of votes. If there is a draw between two candidates, then print lexicographically smaller name.\n\nExamples :\n\nInput: n = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\nOutput: john 4\nExplanation: john has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.\n\nInput: n = 3\narr[] = {andy,blake,clark}\nOutput: Andy 1\nExplanation: All the candidates get 1 votes each. We print andy as it is lexicographically smaller.\n\nYour Task:\nYou only need to complete the function winner() that takes an array of strings arr, and length of arr n as parameters and returns an array of string of length 2. First element of the array should be the name of the candidate and second element should be the number of votes that candidate got in string format.\n\nConstraints:\n1 <= n <= 105\n1 <= |arri| <= 105",
+      "examples": [
+        "Input:\nn = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\nOutput:\njohn 4\nExplanation:\njohn has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.",
+        "Input:\nn = 3\narr[] = {andy,blake,clark}\nOutput:\nAndy 1\nExplanation:\nAll the candidates get 1 votes each. We print andy as it is lexicographically smaller."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 10\n5\n1 <= |arr\ni\n| <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of <em>n </em>names arr of candidates in an election, where each name is </span><span style=\"font-size: 18px;\">a string of lowercase characters</span><span style=\"font-size: 18px;\">. A candidate name in the array represents a vote casted to the candidate. Print the name of the candidate that received the maximum count of votes. If there is a draw between two candidates, then print <em>lexicographically </em>smaller name.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :<br /></strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 13\narr[] = {john,johnny,jackie,johnny,john,jackie,jamie,jamie,john,johnny,jamie,johnny,john}\n<strong>Output: </strong>john 4<strong>\nExplanation: </strong>john has 4 votes casted for him, but so does johnny. john is lexicographically smaller, so we print john and the votes he received.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3\narr[] = {andy,blake,clark}\n<strong>Output: </strong>Andy 1<strong>\nExplanation: </strong>All the candidates get 1 votes each. We print andy as it is lexicographically smaller.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You only need to complete the function&nbsp;<strong>winner()</strong>&nbsp;that takes an array of strings&nbsp;<strong>arr</strong>, and length of <strong>arr</strong>&nbsp;<strong>n</strong> as parameters and returns an <strong>array of string </strong>of <strong>length 2</strong>. First element of the array should be the <strong>name </strong>of the candidate and second element should be the <strong>number of votes </strong>that candidate got in <strong>string format</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= n&nbsp;&lt;= 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &lt;= |arr<sub>i</sub>| &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 831
+  },
+  {
+    "company": "Atlassian",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621--162858/1",
+      "problem_name": "Winner of an election",
+      "slug": "winner-of-an-election-where-votes-are-represented-as-candidate-names-1587115621--162858",
+      "difficulty": "Easy",
+      "accuracy": "74.71%",
+      "marks": 2,
+      "all_submissions": 636,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Adobe",
+          "Atlassian"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Adobe",
+        "Atlassian"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/atlassian-interview-experience/"
+      ],
+      "statement_text": "Given a lowercase string array arr[]. Each element in the array represents a vote cast for a candidate. Return the name of the candidate who received the maximum number of votes and the count of votes he received. In case of a tie between two or more candidates, return the lexicographically smallest name.\n\nNote: Return an array of strings, the winning candidate name as the first element and the vote count as the second element (typecast the count to string).\n\nExamples :\n\nInput: arr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\nOutput: [\"john\", \"4\"]\nExplanation: \"john\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.\n\nInput: n = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\nOutput: [\"Andy\", \"1\"]\nExplanation: All the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller.\n\nConstraints:\n1 <= arr.size() <= 105\n1 <= arr[i].size() <= 105",
+      "full_text": "Given a lowercase string array arr[]. Each element in the array represents a vote cast for a candidate. Return the name of the candidate who received the maximum number of votes and the count of votes he received. In case of a tie between two or more candidates, return the lexicographically smallest name.\n\nNote: Return an array of strings, the winning candidate name as the first element and the vote count as the second element (typecast the count to string).\n\nExamples :\n\nInput: arr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\nOutput: [\"john\", \"4\"]\nExplanation: \"john\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.\n\nInput: n = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\nOutput: [\"Andy\", \"1\"]\nExplanation: All the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller.\n\nConstraints:\n1 <= arr.size() <= 105\n1 <= arr[i].size() <= 105",
+      "examples": [
+        "Input:\narr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\nOutput:\n[\"john\", \"4\"]\nExplanation: \"\njohn\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.",
+        "Input:\nn = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\nOutput:\n[\n\"\nAndy\", \"1\"]\nExplanation:\nAll the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size() <= 10\n5\n1 <= arr[i].size() <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a lowercase string array <strong>arr</strong>[]. Each element in the array represents a vote cast for a candidate. Return the name of the candidate who received the maximum number of votes and the count of votes he received. In case of a tie between two or more candidates, return the <strong>lexicographically</strong> smallest name.<br /></span></p>\n<p><span style=\"font-size: 18px;\">Note: Return an array of strings, the winning candidate name as the first element and the vote count as the second element (typecast the count to string).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :<br /></strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [\"john\", \"johnny\", \"jackie\", \"johnny\", \"john\", \"jackie\", \"jamie\", \"jamie\", \"john\", \"johnny\", \"jamie\", \"johnny\", \"john\"]\n<strong>Output: </strong>[\"john\", \"4\"]<strong>\nExplanation: \"</strong>john\" has 4 votes casted for him, but so does \"johnny\". \"john\" is lexicographically smaller, so we print \"john\" and the votes he received.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3\narr[] = [\"andy\", \"blake\", \"clark\"]\n<strong>Output: </strong>[<strong>\"</strong>Andy\", \"1\"]<strong>\nExplanation: </strong>All the candidates get 1 votes each. We print \"andy\" as it is lexicographically smaller.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= arr.size() &lt;= 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &lt;= arr[i].size() &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 832
+  }
+]

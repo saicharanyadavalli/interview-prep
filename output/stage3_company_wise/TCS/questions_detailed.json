@@ -1,0 +1,965 @@
+[
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/binary-search-1587115620/1",
+      "problem_name": "Binary Search",
+      "slug": "binary-search-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "44.32%",
+      "marks": 2,
+      "all_submissions": 713385,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "k = &!//!&arr[] = ",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Oracle",
+          "Wipro",
+          "Linkedin",
+          "Qualcomm",
+          "TCS",
+          "Cognizant",
+          "Accenture"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Divide and Conquer",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Divide and Conquer",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Oracle",
+        "Wipro",
+        "Linkedin",
+        "Qualcomm",
+        "TCS",
+        "Cognizant",
+        "Accenture"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/binary-search-in-java/",
+        "https://www.geeksforgeeks.org/binary-search/",
+        "https://www.geeksforgeeks.org/cpp-binary-search/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/"
+      ],
+      "statement_text": "Given a sorted array\narr[]\nand an integer\nk\n, find the position(0-based indexing) at which k is present in the array using binary search. If k doesn't exist in arr[] return\n-1\n.\nNote:\nIf multiple occurrences are there, please return the smallest index.",
+      "full_text": "Given a sorted array\narr[]\nand an integer\nk\n, find the position(0-based indexing) at which k is present in the array using binary search. If k doesn't exist in arr[] return\n-1\n.\nNote:\nIf multiple occurrences are there, please return the smallest index.\nExamples:\nInput:\narr[] = [1, 2, 3, 4, 5], k = 4\nOutput:\n3\nExplanation:\n4 appears at index 3.\nInput:\narr[] = [11, 22, 33, 44, 55], k = 445\nOutput:\n-1\nExplanation:\n445 is not present.\nInput:\narr[] = [1, 1, 1, 1, 2], k = 1\nOutput:\n0\nExplanation:\n1 appears at index 0.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6\n1 ≤ k ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 4, 5], k = 4\nOutput:\n3\nExplanation:\n4 appears at index 3.",
+        "Input:\narr[] = [11, 22, 33, 44, 55], k = 445\nOutput:\n-1\nExplanation:\n445 is not present.",
+        "Input:\narr[] = [1, 1, 1, 1, 2], k = 1\nOutput:\n0\nExplanation:\n1 appears at index 0."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6\n1 ≤ k ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a sorted array <strong>arr[]</strong> and an integer <strong>k</strong>, find the position(0-based indexing) at which k is present in the array using binary search. If k doesn't exist in arr[] return <strong>-1</strong>.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> If multiple occurrences are there, please return the smallest index.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4, 5], k = 4\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> 4 appears at index 3.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [11, 22, 33, 44, 55], k = 445\n<strong>Output:</strong> -1\n<strong>Explanation:</strong> 445 is not present.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 1, 1, 1, 2], k = 1\n<strong>Output:</strong> 0\n<strong>Explanation:</strong> 1 appears at index 0.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5<br /></sup>1 &le; arr[i] &le; 10<sup>6<br /></sup>1 &le; k &le; 10<sup>6</sup></span></p>\n<div id=\"highlighter--hover-tools\" style=\"display: none;\">\n<div id=\"highlighter--hover-tools--container\">\n<div class=\"highlighter--icon highlighter--icon-copy\" title=\"Copy\">&nbsp;</div>\n<div class=\"highlighter--icon highlighter--icon-change-color\" title=\"Change Color\">&nbsp;</div>\n<div class=\"highlighter--icon highlighter--icon-delete\" title=\"Delete\">&nbsp;</div>\n</div>\n</div>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/check-if-the-door-is-open-or-closed2013/1",
+      "problem_name": "Check if the door is open or closed",
+      "slug": "check-if-the-door-is-open-or-closed2013",
+      "difficulty": "Basic",
+      "accuracy": "30.3%",
+      "marks": 1,
+      "all_submissions": 18608,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "TCS"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "TCS"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-door-open-closed/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given\nN\ndoors and\nN\npersons. The doors are numbered from 1 to\nN\nand persons are given id’s numbered from 1 to\nN\n. Each door can have only two statuses i.e. open (1) or closed (0) . Initially all the doors have status closed. Find the final status of all the doors, when all the persons have changed the status of the doors of which they are authorized. i.e. if status open then change the status to closed and vice versa. A person with id ‘i’ is authorized to change the status of door numbered ‘j’ if ‘j’ is a multiple of ‘i’.\nNote:\nA person has to change the current status of all the doors for which he is authorized exactly once.\nExample 1:\nInput:\nN =\n3\nOutput:\n1 0 0\nExplanation:\nInitiall status of rooms - 0 0 0.\nPerson with id 2 changes room 2 to open,\ni.e. (0 1 0). Person with id 1 changes\nroom 1, 2, 3 status (1 0 1).\nPerson with id 3 changes room 3\nstatus i.e. (1 0 0).\nExample 2:\nInput:\nN =\n2\nOutput:\n1 0\nExplanation:\nInitiall status of rooms - 0 0.\nPerson with id 2 changes room 2 to open,\ni.e. (0 1). Person with id 1 changes\nroom 1, 2 status (1 0).\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncheckDoorStatus()\nwhich takes an Integer N as input and returns an array as the answer.\nExpected Time Complexity:\nO(N*sqrt(N))\nExpected Auxiliary Space:\nO(N)",
+      "full_text": "Given\nN\ndoors and\nN\npersons. The doors are numbered from 1 to\nN\nand persons are given id’s numbered from 1 to\nN\n. Each door can have only two statuses i.e. open (1) or closed (0) . Initially all the doors have status closed. Find the final status of all the doors, when all the persons have changed the status of the doors of which they are authorized. i.e. if status open then change the status to closed and vice versa. A person with id ‘i’ is authorized to change the status of door numbered ‘j’ if ‘j’ is a multiple of ‘i’.\nNote:\nA person has to change the current status of all the doors for which he is authorized exactly once.\nExample 1:\nInput:\nN =\n3\nOutput:\n1 0 0\nExplanation:\nInitiall status of rooms - 0 0 0.\nPerson with id 2 changes room 2 to open,\ni.e. (0 1 0). Person with id 1 changes\nroom 1, 2, 3 status (1 0 1).\nPerson with id 3 changes room 3\nstatus i.e. (1 0 0).\nExample 2:\nInput:\nN =\n2\nOutput:\n1 0\nExplanation:\nInitiall status of rooms - 0 0.\nPerson with id 2 changes room 2 to open,\ni.e. (0 1). Person with id 1 changes\nroom 1, 2 status (1 0).\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncheckDoorStatus()\nwhich takes an Integer N as input and returns an array as the answer.\nExpected Time Complexity:\nO(N*sqrt(N))\nExpected Auxiliary Space:\nO(N)\nConstraints:\n1 <= N <= 10\n4",
+      "examples": [
+        "Input:\nN =\n3\nOutput:\n1 0 0\nExplanation:\nInitiall status of rooms - 0 0 0.\nPerson with id 2 changes room 2 to open,\ni.e. (0 1 0). Person with id 1 changes\nroom 1, 2, 3 status (1 0 1).\nPerson with id 3 changes room 3\nstatus i.e. (1 0 0).",
+        "Input:\nN =\n2\nOutput:\n1 0\nExplanation:\nInitiall status of rooms - 0 0.\nPerson with id 2 changes room 2 to open,\ni.e. (0 1). Person with id 1 changes\nroom 1, 2 status (1 0)."
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 10\n4",
+      "question_html": "<p><span style=\"font-size:18px\">Given <strong>N</strong> doors and <strong>N</strong> persons. The doors are numbered from 1 to <strong>N</strong> and persons are given id&rsquo;s numbered from 1 to <strong>N</strong>. Each door can have only two&nbsp;statuses i.e. open (1) or closed (0) . Initially all the doors have status closed. Find the final status of all the doors, when all the persons have changed&nbsp;the status of the doors of which they are authorized.&nbsp;i.e. if status open then change the status to closed and vice versa. A person with id &lsquo;i&rsquo; is authorized to change the status of door numbered &lsquo;j&rsquo; if &lsquo;j&rsquo; is a multiple of &lsquo;i&rsquo;.<br />\n<strong>Note:</strong> A person has to change the current status of all the doors for which he is authorized exactly once.</span></p>\n\n<p>&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span><span style=\"font-size:18px\"> </span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input:</strong></span>\n<span style=\"font-size:18px\"><strong>N = </strong>3\n<strong>Output:</strong></span>\n<span style=\"font-size:18px\">1 0 0 </span>\n<span style=\"font-size:18px\"><strong>Explanation:</strong></span>\n<span style=\"font-size:18px\">Initiall status of rooms - 0 0 0. \nPerson with id 2 changes room 2 to open,\ni.e. (0 1 0). Person with id 1 changes\nroom 1, 2, 3 status (1 0 1).\nPerson with id 3 changes room 3\nstatus i.e. (1 0 0).</span></pre>\n\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span><span style=\"font-size:18px\"> </span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input:</strong></span>\n<span style=\"font-size:18px\"><strong>N = </strong>2\n<strong>Output:</strong></span>\n<span style=\"font-size:18px\">1 0</span>\n<span style=\"font-size:18px\"><strong>Explanation:</strong></span>\n<span style=\"font-size:18px\">Initiall status of rooms - 0 0. \nPerson with id 2 changes room 2 to open,\ni.e. (0 1). Person with id 1 changes\nroom 1, 2 status (1 0).\n</span></pre>\n\n<p>&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\nYou don&#39;t need to read input or print anything. Your task is to complete the function <strong>checkDoorStatus()</strong> which takes an Integer N as input and returns an array as the answer.</span></p>\n\n<p>&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(N*sqrt(N))<br />\n<strong>Expected Auxiliary Space:</strong> O(N)</span></p>\n\n<p>&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Constraints:</strong></span><br />\n<span style=\"font-size:18px\">1 &lt;= N &lt;= 10<sup>4</sup></span></p>\n"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/extract-the-number-from-the-string3428/1",
+      "problem_name": "Extract the Number from the String",
+      "slug": "extract-the-number-from-the-string3428",
+      "difficulty": "Easy",
+      "accuracy": "12.06%",
+      "marks": 2,
+      "all_submissions": 68539,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "TCS"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Regular Expression",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Regular Expression",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "TCS"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/extract-all-integers-from-a-given-string/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a sentence containing several words and numbers. Find the largest number among them which does not contain 9.\nIf no such number exists, return -1.\nNote:\nNumbers and words are separated by spaces only. It is guaranteed that there are no leading zeroes in the answer.\nExamples :\nInput:\nsentence=\"This is alpha 5057 and 97\"\nOutput:\n5057\nExplanation:\n5057 is the only number that does not have a 9.\nInput:\nsentence=\"Another input 9007\"\nOutput:\n-1\nExplanation:\nSince there is no number that does not contain a 9,output is -1.\nExpected Time Complexity:\nO(n)\nExpected Auxillary Space:\nO(n)",
+      "full_text": "Given a sentence containing several words and numbers. Find the largest number among them which does not contain 9.\nIf no such number exists, return -1.\nNote:\nNumbers and words are separated by spaces only. It is guaranteed that there are no leading zeroes in the answer.\nExamples :\nInput:\nsentence=\"This is alpha 5057 and 97\"\nOutput:\n5057\nExplanation:\n5057 is the only number that does not have a 9.\nInput:\nsentence=\"Another input 9007\"\nOutput:\n-1\nExplanation:\nSince there is no number that does not contain a 9,output is -1.\nExpected Time Complexity:\nO(n)\nExpected Auxillary Space:\nO(n)\nConstraints:\n1<=n<=10\n6\n1<=answer<=10\n18\nn is the length of a given sentence.",
+      "examples": [
+        "Input:\nsentence=\"This is alpha 5057 and 97\"\nOutput:\n5057\nExplanation:\n5057 is the only number that does not have a 9.",
+        "Input:\nsentence=\"Another input 9007\"\nOutput:\n-1\nExplanation:\nSince there is no number that does not contain a 9,output is -1."
+      ],
+      "constraints_text": "Constraints:\n1<=n<=10\n6\n1<=answer<=10\n18\nn is the length of a given sentence.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a sentence containing several words and numbers. Find the largest number among them which does not contain 9.&nbsp;</span><span style=\"font-size: 18px;\">If no such number exists, return -1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Numbers and words are separated by spaces only. It is guaranteed that there are no leading zeroes in the answer.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>sentence=\"This is alpha 5057 and 97\"<strong><br /></strong><strong>Output: </strong>5057\n<strong>Explanation: </strong>5057 is the only number that does not have a 9.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>sentence=\"Another input 9007\"<strong><br /></strong><strong>Output: </strong>-1\n<strong>Explanation: </strong>Since there is no number that does not contain a 9,output is -1.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity: </strong>O(n)<br /><strong>Expected Auxillary Space: </strong>O(n)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&lt;=n&lt;=10<sup>6</sup><br />1&lt;=answer&lt;=10<sup>18</sup></span></p>\n<p><strong><span style=\"font-size: 18px;\"><sup>n is the length of a given sentence.</sup></span></strong></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/print-first-n-fibonacci-numbers1002/1",
+      "problem_name": "First n Fibonacci",
+      "slug": "print-first-n-fibonacci-numbers1002",
+      "difficulty": "Basic",
+      "accuracy": "29.92%",
+      "marks": 1,
+      "all_submissions": 275298,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Wipro",
+          "TCS",
+          "Accenture"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Wipro",
+        "TCS",
+        "Accenture"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/java-fibonacci-series/",
+        "https://www.geeksforgeeks.org/program-to-print-first-n-fibonacci-numbers/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a number\nn,\nreturn an array containing the first\nn\nFibonacci numbers.\nNote: The first two numbers of the series are 0 and 1.",
+      "full_text": "Given a number\nn,\nreturn an array containing the first\nn\nFibonacci numbers.\nNote: The first two numbers of the series are 0 and 1.\nExamples:\nInput:\nn = 5\nOutput:\n[0, 1, 1, 2, 3]\nInput:\nn = 7\nOutput:\n[0, 1, 1, 2, 3, 5, 8]\nInput\n: n = 2\nOutput\n: [0, 1]\nConstraints:\n1 <= n <= 30",
+      "examples": [
+        "Input:\nn = 5\nOutput:\n[0, 1, 1, 2, 3]",
+        "Input:\nn = 7\nOutput:\n[0, 1, 1, 2, 3, 5, 8]",
+        "Input\n: n = 2\nOutput\n: [0, 1]"
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 30",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a number <strong>n, </strong>return an array containing the first <strong>n</strong> Fibonacci numbers.<br /><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><strong><br /></strong>Note: The first two numbers of the series are 0 and 1.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 5\n<strong>Output: </strong>[0, 1, 1, 2, 3]\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 7\n<strong>Output: </strong>[0, 1, 1, 2, 3, 5, 8]</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: n = 2<br /><strong>Output</strong>: [0, 1]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">1 &lt;= n &lt;= 30</span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/gcd-of-two-numbers3459/1",
+      "problem_name": "GCD of two numbers",
+      "slug": "gcd-of-two-numbers3459",
+      "difficulty": "Basic",
+      "accuracy": "51.03%",
+      "marks": 1,
+      "all_submissions": 182406,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "a =&!//!&b =",
+        "datatype": "INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Accenture",
+          "TCS"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Accenture",
+        "TCS"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-find-gcd-or-hcf-of-two-numbers/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given two positive integers\na\nand\nb\n, find\nGCD\nof a and b.\nNote:\nDon't use the inbuilt gcd function",
+      "full_text": "Given two positive integers\na\nand\nb\n, find\nGCD\nof a and b.\nNote:\nDon't use the inbuilt gcd function\nExamples:\nInput:\na = 20, b = 28\nOutput:\n4\nExplanation:\nGCD of 20 and 28 is 4\nInput:\na = 60, b = 36\nOutput:\n12\nExplanation:\nGCD of 60 and 36 is 12\nConstraints:\n1 ≤ a, b ≤ 10\n9",
+      "examples": [
+        "Input:\na = 20, b = 28\nOutput:\n4\nExplanation:\nGCD of 20 and 28 is 4",
+        "Input:\na = 60, b = 36\nOutput:\n12\nExplanation:\nGCD of 60 and 36 is 12"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ a, b ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two positive integers <strong>a</strong> and <strong>b</strong>, find <strong><a href=\"https://www.geeksforgeeks.org/greatest-common-divisor-gcd/\">GCD</a> </strong>of a and b.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Don't use the inbuilt gcd function</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> a = 20, b = 28\n<strong>Output:</strong> 4\n<strong>Explanation:</strong> GCD of 20 and 28 is 4</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> a = 60, b = 36\n<strong>Output:</strong> 12\n<strong>Explanation:</strong> GCD of 60 and 36 is 12</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; a, b &le; 10<sup>9</sup></span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/linked-list-insertion-1587115620/1",
+      "problem_name": "Linked List End Insertion",
+      "slug": "linked-list-insertion-1587115620",
+      "difficulty": "Basic",
+      "accuracy": "43.96%",
+      "marks": 1,
+      "all_submissions": 394481,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head = &!//!&x = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Hike",
+          "Wipro",
+          "TCS"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Hike",
+        "Wipro",
+        "TCS"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/insert-node-at-the-end-of-a-linked-list/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given the\nhead\nof a Singly Linked List and a value\nx\n, insert that value\nx\nat the end of the LinkedList and return the\nhead\nof the modified Linked List.\nExamples :\nInput:\nx = 6,\nOutput:\n1 -> 2 -> 3 -> 4 -> 5 -> 6\nExplanation:\nWe can see that 6 is inserted at the end of the linkedlist\n.\nInput:\nx = 1,\nOutput:\n4 -> 5 -> 1\nExplanation:\nWe can see that 1 is inserted at the end of the linked list\n.",
+      "full_text": "You are given the\nhead\nof a Singly Linked List and a value\nx\n, insert that value\nx\nat the end of the LinkedList and return the\nhead\nof the modified Linked List.\nExamples :\nInput:\nx = 6,\nOutput:\n1 -> 2 -> 3 -> 4 -> 5 -> 6\nExplanation:\nWe can see that 6 is inserted at the end of the linkedlist\n.\nInput:\nx = 1,\nOutput:\n4 -> 5 -> 1\nExplanation:\nWe can see that 1 is inserted at the end of the linked list\n.\nConstraints:\n0 ≤ number of nodes ≤ 10\n5\n0 ≤ node->data , x ≤ 10\n3",
+      "examples": [
+        "Input:\nx = 6,\nOutput:\n1 -> 2 -> 3 -> 4 -> 5 -> 6\nExplanation:\nWe can see that 6 is inserted at the end of the linkedlist\n.",
+        "Input:\nx = 1,\nOutput:\n4 -> 5 -> 1\nExplanation:\nWe can see that 1 is inserted at the end of the linked list\n."
+      ],
+      "constraints_text": "Constraints:\n0 ≤ number of nodes ≤ 10\n5\n0 ≤ node->data , x ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given the <strong>head </strong>of a Singly Linked List and a value <strong>x</strong>, insert that value <strong>x </strong>at the end of the LinkedList and return the <strong>head </strong>of the modified Linked List.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>x = 6,<br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700525/Web/Other/blobid2_1755948542.webp\" width=\"489\" height=\"64\" /><br /><strong>Output: </strong>1 -&gt; 2 -&gt; 3 -&gt; 4 -&gt; 5 -&gt; 6<strong>\nExplanation: </strong>We can see that 6 is inserted at the end of the linkedlist<strong>.<br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700525/Web/Other/blobid3_1755948555.webp\" width=\"583\" height=\"67\" /></strong></span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>x = 1,<br />   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700525/Web/Other/blobid0_1755948331.webp\" width=\"301\" height=\"69\" /><br /></span><span style=\"font-size: 18px;\"><strong>Output: </strong>4 -&gt; 5 -&gt; 1<br /><strong>Explanation: </strong>We can see that 1 is inserted at the end of the linked list<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">.</span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><br />      <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700525/Web/Other/blobid1_1755948342.webp\" width=\"365\" height=\"66\" /></strong><strong><br /></strong></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />0 &le; number of nodes &le; 10<sup>5<br /></sup>0 &le; node-&gt;data , x &le; 10<sup>3</sup><sup><br /></sup></span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/max-consecutive-one/1",
+      "problem_name": "Max Consecutive Bit",
+      "slug": "max-consecutive-one",
+      "difficulty": "Easy",
+      "accuracy": "49.84%",
+      "marks": 2,
+      "all_submissions": 32226,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Accenture",
+          "TCS",
+          "Oracle",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Accenture",
+        "TCS",
+        "Oracle",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/maximum-consecutive-ones-or-zeros-in-a-binary-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[]\nconsisting of only\n0’s and 1’s\n, return\ncount\nof the maximum number of consecutive 1’s or 0’s present in the array.",
+      "full_text": "Given an array\narr[]\nconsisting of only\n0’s and 1’s\n, return\ncount\nof the maximum number of consecutive 1’s or 0’s present in the array.\nExamples:\nInput:\narr[] = [0, 1, 0, 1, 1, 1, 1]\nOutput:\n4\nExplanation:\nThe maximum number of consecutive 1’s in the array is 4 from index 3-6.\nInput:\narr[] = [0, 0, 1, 0, 1, 0]\nOutput:\n2\nExplanation:\nThe maximum number of consecutive 0’s in the array is 2 from index 0-1.\nInput:\narr[] = [0, 0, 0, 0]\nOutput:\n4\nExplanation:\nThe maximum number of consecutive 0’s in the array is 4.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 1",
+      "examples": [
+        "Input:\narr[] = [0, 1, 0, 1, 1, 1, 1]\nOutput:\n4\nExplanation:\nThe maximum number of consecutive 1’s in the array is 4 from index 3-6.",
+        "Input:\narr[] = [0, 0, 1, 0, 1, 0]\nOutput:\n2\nExplanation:\nThe maximum number of consecutive 0’s in the array is 2 from index 0-1.",
+        "Input:\narr[] = [0, 0, 0, 0]\nOutput:\n4\nExplanation:\nThe maximum number of consecutive 0’s in the array is 4."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 1",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array<strong> arr[] </strong>consisting of only <strong>0&rsquo;s and 1&rsquo;s</strong>, return <strong>count</strong> of the maximum number of consecutive 1&rsquo;s or 0&rsquo;s present in the array.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [0, 1, 0, 1, 1, 1, 1]<strong><br /></strong><strong>Output: </strong>4<strong><br /></strong><strong>Explanation: </strong>The maximum number of consecutive 1&rsquo;s in the array is 4 from index 3-6.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [0, 0, 1, 0, 1, 0]<strong><br /></strong><strong>Output: </strong>2<strong><br /></strong><strong>Explanation: </strong>The maximum number of consecutive 0&rsquo;s in the array is 2 from index 0-1.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [0, 0, 0, 0]<strong><br /></strong><strong>Output: </strong>4</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>The maximum number of consecutive 0&rsquo;s in the array is 4.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup><br />0 &le; arr[i] &le; 1</span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-volume-of-a-rectangular-box1500/1",
+      "problem_name": "Maximum Volume of a Rectangular Box",
+      "slug": "maximum-volume-of-a-rectangular-box1500",
+      "difficulty": "Easy",
+      "accuracy": "30.95%",
+      "marks": 2,
+      "all_submissions": 7191,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "TCS"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "TCS"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "John was given a task to make a rectangular box during his innovation competition. He was given with\nthe A cm of wire and B cm\n2\nof special paper. He had to use all the wire (for the 12 edges) and paper (for the 6 sides) to make the box. So what will be the maximum volume of that box?\nExample 1:\nInput:\nA =\n20,\nB =\n14\nOutput:\n3\nExplanation:\nThe maximum volumed Rectangular\nBox we can get is 3cm\n3\n.\nExample 2:\nInput:\nA =\n20,\nB =\n16\nOutput:\n4\nExplanation:\nThe maximum volumed Rectangular\nBox we can get is 4cm\n3\n.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ngetVol()\nwhich takes 2 Integers A, and B as input and returns the answer.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "John was given a task to make a rectangular box during his innovation competition. He was given with\nthe A cm of wire and B cm\n2\nof special paper. He had to use all the wire (for the 12 edges) and paper (for the 6 sides) to make the box. So what will be the maximum volume of that box?\nExample 1:\nInput:\nA =\n20,\nB =\n14\nOutput:\n3\nExplanation:\nThe maximum volumed Rectangular\nBox we can get is 3cm\n3\n.\nExample 2:\nInput:\nA =\n20,\nB =\n16\nOutput:\n4\nExplanation:\nThe maximum volumed Rectangular\nBox we can get is 4cm\n3\n.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ngetVol()\nwhich takes 2 Integers A, and B as input and returns the answer.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 <= A,B <= 10\n6",
+      "examples": [
+        "Input:\nA =\n20,\nB =\n14\nOutput:\n3\nExplanation:\nThe maximum volumed Rectangular\nBox we can get is 3cm\n3\n.",
+        "Input:\nA =\n20,\nB =\n16\nOutput:\n4\nExplanation:\nThe maximum volumed Rectangular\nBox we can get is 4cm\n3\n."
+      ],
+      "constraints_text": "Constraints:\n1 <= A,B <= 10\n6",
+      "question_html": "<p><span style=\"font-size:18px\">John was given a task to make a rectangular box during his innovation competition. He was given with<br />\r\nthe A cm of wire and B cm<sup>2</sup>&nbsp;of special paper. He had to use all the wire (for the 12 edges) and paper (for the 6 sides) to make the box. So what will be the maximum volume of that box?</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong></span>\r\n<span style=\"font-size:18px\"><strong>A = </strong>20, <strong>B = </strong>14</span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong></span>\r\n<span style=\"font-size:18px\">3</span>\r\n<span style=\"font-size:18px\"><strong>Explanation:</strong></span>\r\n<span style=\"font-size:18px\">The maximum volumed Rectangular\r\nBox we can get is 3cm<sup>3</sup>.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong></span>\r\n<span style=\"font-size:18px\"><strong>A = </strong>20, <strong>B = </strong>16</span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong></span>\r\n<span style=\"font-size:18px\">4</span>\r\n<span style=\"font-size:18px\"><strong>Explanation:</strong></span>\r\n<span style=\"font-size:18px\">The maximum volumed Rectangular\r\nBox we can get is 4cm<sup>3</sup>.</span></pre>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou don&#39;t need to read input or print anything. Your task is to complete the function <strong>getVol()</strong> which takes 2 Integers A, and B as input and returns the answer.</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(1)<br />\r\n<strong>Expected Auxiliary Space:</strong> O(1)</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints:</strong></span><br />\r\n<span style=\"font-size:18px\">1 &lt;= A,B &lt;= 10<sup>6</sup></span></p>\r\n"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/missing-number-in-array1416/1",
+      "problem_name": "Missing in Array",
+      "slug": "missing-number-in-array1416",
+      "difficulty": "Easy",
+      "accuracy": "29.59%",
+      "marks": 2,
+      "all_submissions": 1652558,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Ola Cabs",
+          "Payu",
+          "Visa",
+          "Intuit",
+          "Adobe",
+          "Cisco",
+          "Qualcomm",
+          "TCS",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Bit Magic",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Bit Magic",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Ola Cabs",
+        "Payu",
+        "Visa",
+        "Intuit",
+        "Adobe",
+        "Cisco",
+        "Qualcomm",
+        "TCS",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-missing-number/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-12/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "You are given an array\narr[]\nof size\nn - 1\nthat contains\ndistinct integers\nin the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with\none element missing\n. Your task is to identify and return the\nmissing element\n.",
+      "full_text": "You are given an array\narr[]\nof size\nn - 1\nthat contains\ndistinct integers\nin the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with\none element missing\n. Your task is to identify and return the\nmissing element\n.\nExamples:\nInput:\narr[] = [1, 2, 3, 5]\nOutput:\n4\nExplanation:\nAll the numbers from 1 to 5 are present except 4.\nInput:\narr[] = [8, 2, 4, 5, 3, 7, 1]\nOutput:\n6\nExplanation:\nAll the numbers from 1 to 8 are present except 6.\nInput:\narr[] = [1]\nOutput:\n2\nExplanation:\nOnly 1 is present so the missing element is 2.\nConstraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ arr.size() + 1",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 5]\nOutput:\n4\nExplanation:\nAll the numbers from 1 to 5 are present except 4.",
+        "Input:\narr[] = [8, 2, 4, 5, 3, 7, 1]\nOutput:\n6\nExplanation:\nAll the numbers from 1 to 8 are present except 6.",
+        "Input:\narr[] = [1]\nOutput:\n2\nExplanation:\nOnly 1 is present so the missing element is 2."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ arr.size() + 1",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array <strong>arr[]</strong> of size <strong>n - 1</strong> that contains<strong> distinct integers </strong>in the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with <strong>one element missing</strong>. Your task is to identify and return the <strong>missing element</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 5]\n<strong>Output: </strong>4\n<strong>Explanation: </strong>All the numbers from 1 to 5 are present except 4.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [8, 2, 4, 5, 3, 7, 1]\n<strong>Output:</strong> 6\n<strong>Explanation: </strong>All the numbers from 1 to 8 are present except 6.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1]\n<strong>Output: </strong>2\n<strong>Explanation: </strong>Only 1 is present so the missing element is 2.<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>6</sup><br />1 &le; arr[i] &le; arr.size() + 1</span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/number-of-open-doors1552/1",
+      "problem_name": "Number Of Open Doors",
+      "slug": "number-of-open-doors1552",
+      "difficulty": "Easy",
+      "accuracy": "36.15%",
+      "marks": 2,
+      "all_submissions": 61649,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n= ",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "TCS"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "TCS"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-door-open-closed/"
+      ],
+      "interview_links": [],
+      "statement_text": "Consider a long alley with a\nn\nnumber of doors on one side. All the doors are closed initially. You move to and fro in the alley changing the states of the doors as follows: you open a door that is already closed and you close a door that is already opened. You start at one end go on altering the state of the doors till you reach the other end and then you come back and start altering the states of the doors again.\nIn the first go, you alter the states of doors numbered 1, 2, 3, , n.\nIn the second go, you alter the states of doors numbered 2, 4, 6\nIn the third go, you alter the states of doors numbered 3, 6, 9\nYou continue this till the Nth go in which you alter the state of the door numbered N.\nYou have to find the number of open doors at the end of the procedure.\nExample :\nInput: n =\n2\nOutput:\n1\nExplanation:\nFollowing the sequence 4 times, we can see that only 1st door will remain open.\nInput: n =\n4\nOutput:\n2\nExplanation:\nFollowing the sequence 4 times, we can see that only 1st and 4th doors will remain open.",
+      "full_text": "Consider a long alley with a\nn\nnumber of doors on one side. All the doors are closed initially. You move to and fro in the alley changing the states of the doors as follows: you open a door that is already closed and you close a door that is already opened. You start at one end go on altering the state of the doors till you reach the other end and then you come back and start altering the states of the doors again.\nIn the first go, you alter the states of doors numbered 1, 2, 3, , n.\nIn the second go, you alter the states of doors numbered 2, 4, 6\nIn the third go, you alter the states of doors numbered 3, 6, 9\nYou continue this till the Nth go in which you alter the state of the door numbered N.\nYou have to find the number of open doors at the end of the procedure.\nExample :\nInput: n =\n2\nOutput:\n1\nExplanation:\nFollowing the sequence 4 times, we can see that only 1st door will remain open.\nInput: n =\n4\nOutput:\n2\nExplanation:\nFollowing the sequence 4 times, we can see that only 1st and 4th doors will remain open.\nConstraints:\n1 <= n <= 10\n9",
+      "examples": [
+        "Input: n =\n2\nOutput:\n1\nExplanation:\nFollowing the sequence 4 times, we can see that only 1st door will remain open.",
+        "Input: n =\n4\nOutput:\n2\nExplanation:\nFollowing the sequence 4 times, we can see that only 1st and 4th doors will remain open."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 10\n9",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-family: arial,helvetica,sans-serif;\">Consider a long alley with a <strong>n </strong>number of doors on one side. All the doors are closed initially. You move to and fro in the alley changing the states of the doors as follows: you open a door that is already closed and you close a door that is already opened. You start at one end go on altering the state of the doors till you reach the other end and then you come back and start altering the states of the doors again.</span><br /><span style=\"font-family: arial,helvetica,sans-serif;\">In the first go, you alter the states of doors numbered 1, 2, 3, , n.</span><br /><span style=\"font-family: arial,helvetica,sans-serif;\">In the second go, you alter the states of doors numbered 2, 4, 6</span><br /><span style=\"font-family: arial,helvetica,sans-serif;\">In the third go, you alter the states of doors numbered 3, 6, 9 </span><br /><span style=\"font-family: arial,helvetica,sans-serif;\">You continue this till the Nth go in which you alter the state of the door numbered N.</span><br /><span style=\"font-family: arial,helvetica,sans-serif;\">You have to find the number of open doors at the end of the procedure.</span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: n =</strong> 2</span>\n<span style=\"font-size: 18px;\"><strong><span style=\"font-size: 18px;\">Output:</span> </strong></span><span style=\"font-size: 18px;\">1</span>\n<span style=\"font-size: 18px;\"><strong><span style=\"font-size: 18px;\">Explanation:</span> </strong></span><span style=\"font-size: 18px;\">Following the sequence 4 times, we can see that only 1st door will remain open.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: n =</strong> 4</span>\n<span style=\"font-size: 18px;\"><strong><span style=\"font-size: 18px;\">Output:</span> </strong></span><span style=\"font-size: 18px;\">2</span>\n<span style=\"font-size: 18px;\"><strong><span style=\"font-size: 18px;\">Explanation:</span> </strong></span><span style=\"font-size: 18px;\">Following the sequence 4 times, we can see that only 1st and 4th doors will remain open.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &lt;= n &lt;= 10<sup>9</sup></span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-an-array/1",
+      "problem_name": "Reverse an Array",
+      "slug": "reverse-an-array",
+      "difficulty": "Easy",
+      "accuracy": "55.32%",
+      "marks": 2,
+      "all_submissions": 284228,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "TCS",
+          "Adobe",
+          "Google",
+          "Infosys",
+          "Capgemini",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Apple",
+          "Yahoo",
+          "PayPal",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "TCS",
+        "Adobe",
+        "Google",
+        "Infosys",
+        "Capgemini",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Apple",
+        "Yahoo",
+        "PayPal",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-reverse-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.",
+      "full_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.\nExamples:\nInput:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].\nInput\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].\nInput\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].",
+        "Input\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].",
+        "Input\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array of integers&nbsp;<strong>arr[]</strong>. You have to <strong>reverse</strong> the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:<span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito;\">&nbsp;</span></strong>Modify the array in place.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 4, 3, 2, 6, 5]\n<strong>Output: </strong>[5, 6, 2, 3, 4, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>The elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [4, 5, 2]\n<strong>Output: </strong>[2, 5, 4]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [1]\n<strong>Output: </strong>[1]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The array has only single element, hence the reversed array is same as the original.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup></span><br /><span style=\"font-size: 14pt;\">0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
+      "problem_name": "Stock Buy and Sell – Max one Transaction Allowed",
+      "slug": "buy-stock-2",
+      "difficulty": "Easy",
+      "accuracy": "49.33%",
+      "marks": 2,
+      "all_submissions": 140469,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "Intel",
+          "Infosys",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Yahoo",
+          "PayPal",
+          "Nvidia",
+          "Oracle",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "TCS",
+          "Adobe",
+          "Google",
+          "IBM",
+          "Accenture",
+          "Apple",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "Intel",
+        "Infosys",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Yahoo",
+        "PayPal",
+        "Nvidia",
+        "Oracle",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "TCS",
+        "Adobe",
+        "Google",
+        "IBM",
+        "Accenture",
+        "Apple",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-variations-of-stock-problems/",
+        "https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.",
+      "full_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.\nExamples:\nInput:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.\nInput:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.\nInput:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].\nConstraint:\n1\n≤\nprices.size()\n≤\n10\n5\n0\n≤\nprices[i]\n≤\n10\n4",
+      "examples": [
+        "Input:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.",
+        "Input:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.",
+        "Input:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1]."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given an array <strong>prices[]</strong> of non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when <strong>at most one </strong>transaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then <strong>return 0</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">Note: Stock must be bought before being sold.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 10, 1, 3, 6, 9, 2]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 8<br /></span><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> You can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 6, 4, 3, 1]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 0 <br /></span><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Here the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.<br /></span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>prices[] = [1, 3, 6, 9, 11]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 10 </span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Since the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraint:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices.size()&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;10</span><sup>5<br /></sup><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices[i] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> &nbsp;</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/majority-vote/1",
+      "problem_name": "Majority Element - More Than n/3",
+      "slug": "majority-vote",
+      "difficulty": "Medium",
+      "accuracy": "48.1%",
+      "marks": 4,
+      "all_submissions": 208588,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Salesforce",
+          "Accenture",
+          "Microsoft",
+          "TCS",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "Algorithms",
+          "Hash"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "Algorithms",
+        "Hash"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Salesforce",
+        "Accenture",
+        "Microsoft",
+        "TCS",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/candidates-with-majority-vote/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr\n[]\nconsisting of\nn\nintegers, the task is to find all the array elements which occurs more than floor(n/3) times.\nNote:\nThe returned array of majority elements should be sorted.",
+      "full_text": "Given an array\narr\n[]\nconsisting of\nn\nintegers, the task is to find all the array elements which occurs more than floor(n/3) times.\nNote:\nThe returned array of majority elements should be sorted.\nExamples:\nInput:\narr\n[] = [2, 2, 3, 1, 3, 2, 1, 1]\nOutput:\n[1, 2]\nExplanation:\nThe frequency of 1 and 2 is 3, which is more than floor n/3 (8/3 = 2).\nInput:\narr\n[] = [-5, 3, -5]\nOutput:\n[-5]\nExplanation:\nThe frequency of -5 is 2, which is more than floor n/3 (3/3 = 1).\nInput:\narr\n[] = [3, 2, 2, 4, 1, 4]\nOutput:\n[]\nExplanation:\nThere is no majority element.\nConstraint:\n1 ≤ arr.size() ≤ 10\n6\n-10\n5\n≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr\n[] = [2, 2, 3, 1, 3, 2, 1, 1]\nOutput:\n[1, 2]\nExplanation:\nThe frequency of 1 and 2 is 3, which is more than floor n/3 (8/3 = 2).",
+        "Input:\narr\n[] = [-5, 3, -5]\nOutput:\n[-5]\nExplanation:\nThe frequency of -5 is 2, which is more than floor n/3 (3/3 = 1).",
+        "Input:\narr\n[] = [3, 2, 2, 4, 1, 4]\nOutput:\n[]\nExplanation:\nThere is no majority element."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 14pt;\"><span class=\"cf0\">Given an array </span><strong><span class=\"cf0\">arr</span></strong><span class=\"cf0\"><strong>[]</strong> consisting of <strong>n</strong> integers, the task is to find all the array elements which occurs more than floor(n/3) times.</span></span></p>\n<p><span class=\"cf0\" style=\"font-size: 14pt;\"><strong>Note: </strong>The returned array of majority elements should be sorted.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong></span><span style=\"font-size: 14pt;\"><span class=\"cf0\">arr</span><span class=\"cf0\">[] = [2, 2, 3, 1, 3, 2, 1, 1]</span></span><span style=\"font-size: 18px;\">\n<strong>Output: </strong><span class=\"cf0\">[1, 2]</span>\n<strong>Explanation: </strong></span><span style=\"font-size: 14pt;\">The frequency of 1 and 2 is 3, which is more than floor n/3 (8/3 = 2).</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong> <span class=\"cf0\">arr</span><span class=\"cf0\">[] = [-5, 3, -5]</span>\n<strong>Output: </strong><span class=\"cf0\">[-5]</span><br /><strong>Explanation:<span style=\"font-size: 14pt;\"> </span></strong></span><span style=\"font-size: 14pt;\">The frequency of -5 is 2, which is more than floor n/3 (3/3 = 1).<br /></span></pre>\n<pre><strong><span style=\"font-size: 14pt;\">Input: </span></strong> <span style=\"font-size: 14pt;\"><span class=\"cf0\">arr</span><span class=\"cf0\">[] = [3, 2, 2, 4, 1, 4]</span></span><strong><span style=\"font-size: 14pt;\"><br />Output: </span></strong><span style=\"font-size: 14pt;\">[]</span><strong><span style=\"font-size: 14pt;\"><br />Explanation: </span></strong><span style=\"font-size: 14pt;\">There is no majority element.</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Constraint:</span></strong><br /><span style=\"font-size: 18px;\">1 &le; arr.size() &le; 10<sup>6</sup><br /></span><span style=\"font-size: 18px;\">-10<sup>5</sup> &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-tip-calculator2631/1",
+      "problem_name": "Maximum Tip Calculator",
+      "slug": "maximum-tip-calculator2631",
+      "difficulty": "Medium",
+      "accuracy": "16.39%",
+      "marks": 4,
+      "all_submissions": 86936,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "TCS"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "Algorithms",
+          "Sorting"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "Algorithms",
+        "Sorting"
+      ],
+      "company_tags": [
+        "Amazon",
+        "TCS"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/maximum-tip-calculator/"
+      ],
+      "interview_links": [],
+      "statement_text": "In a restaurant, two waiters,\nA\nand\nB\n, receive n orders per day, earning tips as per arrays\narr[i]\nand\nbrr[i]\nrespectively. If A takes the ith order, the tip is\narr[i]\nrupees; if B takes it, the tip is\nbrr[i]\nrupees.\nTo\nmaximize\ntotal tips, they must distribute the orders such that:\nA can handle at most\nx\norders\nB can handle at most\ny\norders\nGiven that\nx + y ≥ n\n, all orders can be managed by either A or B.\nReturn\nthe\nmaximum\npossible total tip after processing all the orders.\nExamples\nInput:\nn = 5, x = 3, y = 3, arr = {1, 2, 3, 4, 5}, brr = {5, 4, 3, 2, 1}\nOutput:\n21\nExplanation:\nPerson\nA\nwill serve the 3rd, 4th and 5th order while person\nB\nwill serve the rest so the total tip from A = 3+4+5 & B = 5 + 4 i.e. 21.\nInput:\nn = 8, x = 4, y = 4, arr = {1, 4, 3, 2, 7, 5, 9, 6}, brr = {1, 2, 3, 6, 5, 4, 9, 8}\nOutput:\n43\nExplanation:\nPerson A will serve 1st, 2nd, 5th and 6th order while Person B will serve the rest & the total tip will be 43.\nInput:\nn = 7, x = 3, y = 4, arr[] = {8, 7, 15, 19, 16, 16, 18}, brr[] = {1, 7, 15, 11, 12, 31, 9}\nOutput\n: 110\nExplanation:\nPerson A will serve orders 8,19,18 while person B will serve 7,15, 12 & 31.\nExpected Time Complexity:\nO(n*logn)\nExpected Auxiliary Space:\nO(n)",
+      "full_text": "In a restaurant, two waiters,\nA\nand\nB\n, receive n orders per day, earning tips as per arrays\narr[i]\nand\nbrr[i]\nrespectively. If A takes the ith order, the tip is\narr[i]\nrupees; if B takes it, the tip is\nbrr[i]\nrupees.\nTo\nmaximize\ntotal tips, they must distribute the orders such that:\nA can handle at most\nx\norders\nB can handle at most\ny\norders\nGiven that\nx + y ≥ n\n, all orders can be managed by either A or B.\nReturn\nthe\nmaximum\npossible total tip after processing all the orders.\nExamples\nInput:\nn = 5, x = 3, y = 3, arr = {1, 2, 3, 4, 5}, brr = {5, 4, 3, 2, 1}\nOutput:\n21\nExplanation:\nPerson\nA\nwill serve the 3rd, 4th and 5th order while person\nB\nwill serve the rest so the total tip from A = 3+4+5 & B = 5 + 4 i.e. 21.\nInput:\nn = 8, x = 4, y = 4, arr = {1, 4, 3, 2, 7, 5, 9, 6}, brr = {1, 2, 3, 6, 5, 4, 9, 8}\nOutput:\n43\nExplanation:\nPerson A will serve 1st, 2nd, 5th and 6th order while Person B will serve the rest & the total tip will be 43.\nInput:\nn = 7, x = 3, y = 4, arr[] = {8, 7, 15, 19, 16, 16, 18}, brr[] = {1, 7, 15, 11, 12, 31, 9}\nOutput\n: 110\nExplanation:\nPerson A will serve orders 8,19,18 while person B will serve 7,15, 12 & 31.\nExpected Time Complexity:\nO(n*logn)\nExpected Auxiliary Space:\nO(n)\nConstraints:\n1 ≤ n ≤ 10\n5\n1 ≤ x, y ≤ n\n1 ≤ arr[i], brr[i] ≤ 10\n9",
+      "examples": [
+        "Input:\nn = 5, x = 3, y = 3, arr = {1, 2, 3, 4, 5}, brr = {5, 4, 3, 2, 1}\nOutput:\n21\nExplanation:\nPerson\nA\nwill serve the 3rd, 4th and 5th order while person\nB\nwill serve the rest so the total tip from A = 3+4+5 & B = 5 + 4 i.e. 21.",
+        "Input:\nn = 8, x = 4, y = 4, arr = {1, 4, 3, 2, 7, 5, 9, 6}, brr = {1, 2, 3, 6, 5, 4, 9, 8}\nOutput:\n43\nExplanation:\nPerson A will serve 1st, 2nd, 5th and 6th order while Person B will serve the rest & the total tip will be 43.",
+        "Input:\nn = 7, x = 3, y = 4, arr[] = {8, 7, 15, 19, 16, 16, 18}, brr[] = {1, 7, 15, 11, 12, 31, 9}\nOutput\n: 110\nExplanation:\nPerson A will serve orders 8,19,18 while person B will serve 7,15, 12 & 31."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10\n5\n1 ≤ x, y ≤ n\n1 ≤ arr[i], brr[i] ≤ 10\n9",
+      "question_html": "<p dir=\"ltr\" style=\"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;\"><span style=\"font-size: 14pt; font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><span style=\"vertical-align: super;\">In a restaurant, two waiters, <strong>A</strong> and <strong>B</strong>, receive n orders per day, earning tips as per arrays <strong>arr[i]</strong> and <strong>brr[i]</strong> respectively. If A takes the ith order, the tip is <strong>arr[i]</strong> rupees; if B takes it, the tip is <strong>brr[i]</strong> rupees.</span></span></p>\n<p dir=\"ltr\" style=\"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;\"><span style=\"font-size: 14pt; font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><span style=\"vertical-align: super;\">To <strong>maximize </strong>total tips, they must distribute the orders such that:</span></span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\">A can handle at most <strong>x</strong> orders</span></li>\n<li><span style=\"font-size: 14pt;\">B can handle at most <strong>y </strong>orders</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; white-space-collapse: preserve;\">Given that <strong>x + y &ge; n</strong>, all orders can be managed by either A or B. </span><strong style=\"font-family: Arial, sans-serif; white-space-collapse: preserve;\">Return </strong><span style=\"font-family: Arial, sans-serif; white-space-collapse: preserve;\">the <strong>maximum </strong>possible total tip after processing all the orders.</span></span></p>\n<p><strong><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; white-space-collapse: preserve;\">Examples</span></span></strong></p>\n<pre dir=\"ltr\" style=\"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;\"><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Input: </span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">n = 5, x = 3, y = 3, arr = {1, 2, 3, 4, 5}, brr = {5, 4, 3, 2, 1}</span></span><br /><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Output:</span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> 21</span></span><br /><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Explanation:</span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> Person </span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">A</span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> will serve the 3rd, 4th and 5th order while person </span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">B</span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> will serve the rest so the total tip from A = 3+4+5 &amp; B = 5 + 4 i.e. 21. </span></span></pre>\n<p dir=\"ltr\" style=\"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;\">&nbsp;</p>\n<pre dir=\"ltr\" style=\"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;\"><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Input: </span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">n = 8, x = 4, y = 4, arr = {1, 4, 3, 2, 7, 5, 9, 6}, brr = {1, 2, 3, 6, 5, 4, 9, 8}</span></span><br /><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Output:</span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> 43</span></span><br /><span style=\"font-size: 14pt;\"><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Explanation:</span><span style=\"font-family: Arial, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> Person A will serve 1st, 2nd, 5th and 6th order while Person B will serve the rest &amp; the total tip will be 43.</span></span></pre>\n<p dir=\"ltr\" style=\"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;\">&nbsp;</p>\n<pre dir=\"ltr\" style=\"line-height: 1.38; margin-top: 0pt; margin-bottom: 0pt;\"><span style=\"font-size: 14pt;\"><span style=\"font-family: Nunito, sans-serif; color: #273239; background-color: #f9f9f9; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Input: </span><span style=\"font-family: Nunito, sans-serif; color: #273239; background-color: #f9f9f9; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">n = 7, x = 3, y = 4, arr[] = {8, 7, 15, 19, 16, 16, 18}, brr[] = {1, 7, 15, 11, 12, 31, 9}</span></span><br /><span style=\"font-size: 14pt;\"><span style=\"font-family: Nunito, sans-serif; color: #273239; background-color: #f9f9f9; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Output</span><span style=\"font-family: Nunito, sans-serif; color: #273239; background-color: #f9f9f9; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">: 110</span></span><br /><span style=\"font-size: 14pt;\"><span style=\"font-family: Nunito, sans-serif; color: #273239; background-color: #f9f9f9; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Explanation: </span><span style=\"font-family: Nunito, sans-serif; color: #273239; background-color: #f9f9f9; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Person A will serve orders 8,19,18 while person B will serve 7,15, 12 &amp; 31.</span></span></pre>\n<p dir=\"ltr\" style=\"line-height: 1.38; margin-top: 12pt; margin-bottom: 12pt;\"><span style=\"font-size: 14pt;\"><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Expected Time Complexity:</span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> O(n*logn)</span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><br /></span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Expected Auxiliary Space:</span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"> O(n)</span></span></p>\n<p dir=\"ltr\" style=\"line-height: 1.38; margin-top: 12pt; margin-bottom: 12pt;\"><span style=\"font-size: 14pt;\"><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">Constraints:</span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: bold; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><br /></span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">1 &le; n &le; 10</span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><span style=\"vertical-align: super;\">5</span></span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><span style=\"vertical-align: super;\"><br /></span></span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">1 &le; x, y &le; n</span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><br /></span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\">1 &le; arr[i], brr[i] &le; 10</span><span style=\"font-family: Roboto, sans-serif; color: #000000; background-color: transparent; font-weight: 400; font-style: normal; font-variant: normal; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;\"><span style=\"vertical-align: super;\">9</span></span></span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/min-add-to-make-parentheses-valid/1",
+      "problem_name": "Min Add to Make Parentheses Valid",
+      "slug": "min-add-to-make-parentheses-valid",
+      "difficulty": "Medium",
+      "accuracy": "57.97%",
+      "marks": 4,
+      "all_submissions": 16709,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "TCS",
+          "Adobe",
+          "IBM"
+        ],
+        "topic_tags": [
+          "Stack",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Stack",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "TCS",
+        "Adobe",
+        "IBM"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-number-of-parentheses-to-be-added-to-make-it-valid/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a string\ns\nconsisting only of the characters\n'('\nand\n')'\n. Your task is to determine the\nminimum\nnumber of parentheses (either '(' or ')') that must be inserted at any positions to make the string s a\nvalid parentheses string\n.\nA parentheses string is considered\nvalid\nif:\nEvery opening parenthesis '(' has a corresponding closing parenthesis ')'.\nEvery closing parenthesis ')' has a corresponding opening parenthesis '('.\nParentheses are properly nested.",
+      "full_text": "You are given a string\ns\nconsisting only of the characters\n'('\nand\n')'\n. Your task is to determine the\nminimum\nnumber of parentheses (either '(' or ')') that must be inserted at any positions to make the string s a\nvalid parentheses string\n.\nA parentheses string is considered\nvalid\nif:\nEvery opening parenthesis '(' has a corresponding closing parenthesis ')'.\nEvery closing parenthesis ')' has a corresponding opening parenthesis '('.\nParentheses are properly nested.\nExamples:\nInput:\ns = \"(()(\"\nOutput:\n2\nExplanation:\nThere are two unmatched '(' at the end, so we need to add two ')' to make the string valid.\nInput:\ns = \")))\"\nOutput:\n3\nExplanation:\nThree '(' need to be added at the start to make the string valid.\nInput:\ns = \")()()\"\nOutput:\n1\nExplanation:\nThe very first ')' is unmatched, so we need to add one '(' at the beginning.\nConstraints:\n1 ≤ s.size() ≤ 10\n5\ns[i] ∈ { '(' , ')' }",
+      "examples": [
+        "Input:\ns = \"(()(\"\nOutput:\n2\nExplanation:\nThere are two unmatched '(' at the end, so we need to add two ')' to make the string valid.",
+        "Input:\ns = \")))\"\nOutput:\n3\nExplanation:\nThree '(' need to be added at the start to make the string valid.",
+        "Input:\ns = \")()()\"\nOutput:\n1\nExplanation:\nThe very first ')' is unmatched, so we need to add one '(' at the beginning."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n5\ns[i] ∈ { '(' , ')' }",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">You are given a string <strong>s</strong> consisting&nbsp;only of the characters <strong>'('</strong> and <strong>')'</strong>. Your task is to determine the </span><strong style=\"font-size: 18.6667px;\">minimum</strong><span style=\"font-size: 18.6667px;\">&nbsp;number of parentheses (either '(' or ')') that must be inserted at any positions to make the string s a <strong>valid parentheses string</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">A parentheses string is considered <strong>valid </strong>if:<br /></span></p>\n<ol>\n<li><span style=\"font-size: 18.6667px;\">Every opening parenthesis '(' has a corresponding closing parenthesis ')'.</span></li>\n<li><span style=\"font-size: 18.6667px;\">Every closing parenthesis ')' has a corresponding opening parenthesis '('.</span></li>\n<li><span style=\"font-size: 18.6667px;\">Parentheses are properly nested.</span></li>\n</ol>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"(()(\"\n<strong>Output:</strong> 2\n<strong>Explanation:</strong> There are two unmatched '(' at the end, so we need to add two ')' to make the string valid.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \")))\"\n<strong>Output:</strong> 3\n<strong>Explanation: </strong>Three '(' need to be added at the start to make the string valid.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \")()()\"\n<strong>Output:</strong> 1 <br /><strong>Explanation: </strong>The very first ')' is unmatched, so we need to add one '(' at the beginning.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.size() &le; 10<sup>5</sup><br />s[i] &isin; { '(' , ')' }</span></p>"
+    }
+  },
+  {
+    "company": "TCS",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/set-matrix-zeroes/1",
+      "problem_name": "Set Matrix Zeros",
+      "slug": "set-matrix-zeroes",
+      "difficulty": "Medium",
+      "accuracy": "52.54%",
+      "marks": 4,
+      "all_submissions": 60311,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&m =&!//!&mat[][] =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Expedia",
+          "Amazon",
+          "Yahoo",
+          "TCS",
+          "Service Now",
+          "Google",
+          "Oracle",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Matrix"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Matrix"
+      ],
+      "company_tags": [
+        "Expedia",
+        "Amazon",
+        "Yahoo",
+        "TCS",
+        "Service Now",
+        "Google",
+        "Oracle",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/set-entire-matrix-row-and-column-as-zeroes/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a 2D matrix\nmat\n[][] of size\nn x m\n.\nThe task is to modify the matrix such that if\nmat[i][j]\nis 0, all the elements in the\ni\n-th row and\nj\n-th column are set to 0.",
+      "full_text": "You are given a 2D matrix\nmat\n[][] of size\nn x m\n.\nThe task is to modify the matrix such that if\nmat[i][j]\nis 0, all the elements in the\ni\n-th row and\nj\n-th column are set to 0.\nExamples:\nInput:\nOutput:\nExplanation:\nmat[1][1] = 0, so all elements in row 1 and column 1 are updated to zeroes.\nInput:\nOutput:\nExplanation:\nmat[0][0] and mat[0][3] are 0s, so all elements in row 0, column 0 and column 3 are updated to zeroes.\nConstraints:\n1 ≤ n,\nm\n≤ 500\n- 2\n31\n≤ mat[i][j] ≤ 2\n31\n- 1",
+      "examples": [
+        "Input:\nOutput:\nExplanation:\nmat[1][1] = 0, so all elements in row 1 and column 1 are updated to zeroes.",
+        "Input:\nOutput:\nExplanation:\nmat[0][0] and mat[0][3] are 0s, so all elements in row 0, column 0 and column 3 are updated to zeroes."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n,\nm\n≤ 500\n- 2\n31\n≤ mat[i][j] ≤ 2\n31\n- 1",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given a 2D matrix <strong>mat</strong>[][] of size </span><span style=\"font-size: 18px;\"><strong>n x m</strong>.&nbsp;</span><span style=\"font-size: 18px;\">The task is to modify the matrix such that if <strong>mat[i][j]</strong> is 0, all the elements in the&nbsp;</span><span style=\"font-size: 18px;\"><strong>i</strong>-th row and </span><span style=\"font-size: 18px;\"><strong>j</strong>-th column are set to 0.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\"><br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">&nbsp; &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/898467/Web/Other/blobid1_1751352682.jpg\" width=\"246\" height=\"197\" /></strong>\n</span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\"> <br />    <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/898467/Web/Other/blobid3_1751352733.jpg\" width=\"234\" height=\"187\" />\n</span><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> </span></span><span style=\"font-size: 18px;\">mat[1][1] = 0, so all elements in row 1 and column 1 are updated to zeroes.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: <br /></strong></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\"> &nbsp; &nbsp;<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/874880/Web/Other/blobid0_1753182969.jpg\" width=\"254\" height=\"166\" /><br /></span><strong style=\"font-size: 18px;\">Output:</strong><span style=\"font-size: 18px;\"> <br /> &nbsp; &nbsp;<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/874880/Web/Other/blobid1_1753183001.jpg\" width=\"254\" height=\"166\" /><br /></span></span><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> </span></span><span style=\"font-size: 18px;\">mat[0][0] and mat[0][3] are 0s, so all elements in row 0, column 0 and column 3 are updated to zeroes.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; n, </span><span style=\"font-size: 18px;\">m</span><span style=\"font-size: 18px;\"> &le; 500</span><sup><br /></sup><span style=\"font-size: 18px;\">- 2<sup>31</sup> &le; mat[i][j] &le; 2<sup>31</sup> - 1</span></p>"
+    }
+  }
+]

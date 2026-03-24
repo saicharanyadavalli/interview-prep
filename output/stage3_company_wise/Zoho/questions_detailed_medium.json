@@ -1,0 +1,2042 @@
+[
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/3-sum-closest/1",
+      "problem_name": "3 Sum Closest",
+      "slug": "3-sum-closest",
+      "difficulty": "Medium",
+      "accuracy": "49.69%",
+      "marks": 4,
+      "all_submissions": 27161,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = &!//!&target = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Adobe",
+          "Google",
+          "Zoho",
+          "Uber",
+          "Facebook",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Sorting",
+          "two-pointer-algorithm",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Sorting",
+        "two-pointer-algorithm",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Adobe",
+        "Google",
+        "Zoho",
+        "Uber",
+        "Facebook",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-a-triplet-in-an-array-whose-sum-is-closest-to-a-given-number/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[]\nand an integer\ntarget\n, the task is to find the sum of three integers in\narr[]\nsuch that the sum is closest to\ntarget\n.\nNote:\nIf multiple sums are closest to target, return the maximum one.",
+      "full_text": "Given an array\narr[]\nand an integer\ntarget\n, the task is to find the sum of three integers in\narr[]\nsuch that the sum is closest to\ntarget\n.\nNote:\nIf multiple sums are closest to target, return the maximum one.\nExamples:\nInput:\narr[] = [-1, 2, 2, 4], target = 4\nOutput:\n5\nExplanation:\nAll possible triplets\n[-1, 2, 2], sum = (-1) + 2 + 2 = 3\n[-1, 2, 4], sum = (-1) + 2 + 4 = 5\n[-1, 2, 4], sum = (-1) + 2 + 4 = 5\n[2, 2, 4], sum = 2 + 2 + 4 = 8\nTriplet [-1, 2, 2], [-1, 2, 4] and [-1, 2, 4] have sum closest to target, so return the maximum one, that is 5.\nInput:\narr[] = [1, 10, 4, 5], target = 10\nOutput:\n10\nExplanation:\nAll possible triplets\n[1, 10, 4], sum = (1 + 10 + 4) = 15\n[1, 10, 5], sum = (1 + 10 + 5) = 16\n[1, 4, 5], sum = (1 + 4 + 5) = 10\n[10, 4, 5], sum = (10 + 4 + 5) = 19\nTriplet [1, 4, 5] has sum = 10 which is closest to target.\nConstraints:\n3 ≤ arr.size() ≤ 10\n3\n-10\n3\n≤ arr[i] ≤ 10\n3\n-10\n4\n≤ target ≤ 10\n4",
+      "examples": [
+        "Input:\narr[] = [-1, 2, 2, 4], target = 4\nOutput:\n5\nExplanation:\nAll possible triplets\n[-1, 2, 2], sum = (-1) + 2 + 2 = 3\n[-1, 2, 4], sum = (-1) + 2 + 4 = 5\n[-1, 2, 4], sum = (-1) + 2 + 4 = 5\n[2, 2, 4], sum = 2 + 2 + 4 = 8\nTriplet [-1, 2, 2], [-1, 2, 4] and [-1, 2, 4] have sum closest to target, so return the maximum one, that is 5.",
+        "Input:\narr[] = [1, 10, 4, 5], target = 10\nOutput:\n10\nExplanation:\nAll possible triplets\n[1, 10, 4], sum = (1 + 10 + 4) = 15\n[1, 10, 5], sum = (1 + 10 + 5) = 16\n[1, 4, 5], sum = (1 + 4 + 5) = 10\n[10, 4, 5], sum = (10 + 4 + 5) = 19\nTriplet [1, 4, 5] has sum = 10 which is closest to target."
+      ],
+      "constraints_text": "Constraints:\n3 ≤ arr.size() ≤ 10\n3\n-10\n3\n≤ arr[i] ≤ 10\n3\n-10\n4\n≤ target ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array&nbsp;<strong>arr[]</strong>&nbsp;and an integer&nbsp;<strong>target</strong>, the task is to find the sum of three integers in&nbsp;<strong>arr[]</strong>&nbsp;such that the sum is closest to&nbsp;<strong>target</strong>.&nbsp;</span></p>\n<p><strong><span style=\"font-size: 18px;\">Note:</span></strong><span style=\"font-size: 18px;\"> If multiple sums are closest to target, return the maximum one.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [-1, 2, 2, 4], target = 4\n<strong>Output:</strong> 5\n<strong>Explanation:</strong> All possible triplets<br /></span><span style=\"font-size: 18px;\">[-1, 2, 2], sum = (-1) + 2 + 2 = 3\n[-1, 2, 4], sum = (-1) + 2 + 4 = 5\n[-1, 2, 4], sum = (-1) + 2 + 4 = 5\n[2, 2, 4], sum = 2 + 2 + 4 = 8\nTriplet [-1, 2, 2], [-1, 2, 4] and [-1, 2, 4] have sum closest to target, so return the maximum one, that is 5.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 10, 4, 5], target = 10\n<strong>Output:</strong> 10\n<strong>Explanation:</strong> All possible triplets<br /></span><span style=\"font-size: 18px;\">[1, 10, 4], sum = (1 + 10 + 4) = 15<br /></span><span style=\"font-size: 18px;\">[1, 10, 5], sum = (1 + 10 + 5) = 16<br /></span><span style=\"font-size: 18px;\">[1, 4, 5], sum = (1 + 4 + 5) = 10<br /></span><span style=\"font-size: 18px;\">[10, 4, 5], sum = (10 + 4 + 5) = 19&nbsp;<br /></span><span style=\"font-size: 18px;\">Triplet [1, 4, 5] has sum = 10 which is closest to target.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />3 &le; arr.size() &le; 10<sup>3</sup><br />-10<sup>3</sup>&nbsp;&le; arr[i] &le; 10<sup>3</sup><br />-10<sup>4</sup>&nbsp;&le; target &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2460
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/check-frequencies4211/1",
+      "problem_name": "Check if frequencies can be equal",
+      "slug": "check-frequencies4211",
+      "difficulty": "Medium",
+      "accuracy": "16.67%",
+      "marks": 4,
+      "all_submissions": 145429,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-frequency-of-all-characters-can-become-same-by-one-removal/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string\ns\nconsisting only lowercase alphabetic characters, check whether it is possible to remove\nat most one character\nsuch that the  frequency of each distinct character in the string becomes same. Return\ntrue\nif it is possible; otherwise, return\nfalse\n.",
+      "full_text": "Given a string\ns\nconsisting only lowercase alphabetic characters, check whether it is possible to remove\nat most one character\nsuch that the  frequency of each distinct character in the string becomes same. Return\ntrue\nif it is possible; otherwise, return\nfalse\n.\nExamples:\nInput:\ns = \"xyyz\"\nOutput:\ntrue\nExplanation:\nRemoving one 'y' will make frequency of each distinct character to be 1.\nInput:\ns = \"xyyzz\"\nOutput:\ntrue\nExplanation:\nRemoving one 'x' will make frequency of each distinct character to be 2.\nInput:\ns = \"xxxxyyzz\"\nOutput:\nfalse\nExplanation:\nFrequency can not be made same by removing at most one character.\nConstraints:\n1 ≤ s.size() ≤ 10\n5",
+      "examples": [
+        "Input:\ns = \"xyyz\"\nOutput:\ntrue\nExplanation:\nRemoving one 'y' will make frequency of each distinct character to be 1.",
+        "Input:\ns = \"xyyzz\"\nOutput:\ntrue\nExplanation:\nRemoving one 'x' will make frequency of each distinct character to be 2.",
+        "Input:\ns = \"xxxxyyzz\"\nOutput:\nfalse\nExplanation:\nFrequency can not be made same by removing at most one character."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string <strong>s</strong> consisting only lowercase alphabetic characters, check whether it is possible to remove <strong>at most one character</strong> such that the&nbsp; frequency of each distinct character in the string becomes same. Return <strong>true</strong> if it is possible; otherwise, return <strong>false</strong>.<br /></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"xyyz\"\n<strong>Output:</strong> true \n<strong>Explanation:</strong> Removing one 'y' will make frequency of each distinct character to be 1.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"xyyzz\"<br /><strong>Output: </strong>true\n<strong>Explanation:</strong> Removing one 'x' will make frequency of each distinct character to be 2.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"xxxxyyzz\"\n<strong>Output: </strong>false\n<strong>Explanation:</strong> Frequency can not be made same by removing at most one character.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.size() &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2461
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/coin-change2448/1",
+      "problem_name": "Coin Change (Count Ways)",
+      "slug": "coin-change2448",
+      "difficulty": "Medium",
+      "accuracy": "43.1%",
+      "marks": 4,
+      "all_submissions": 309570,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "coins [] =&!//!&sum =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Zoho"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Dynamic Programming",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Dynamic Programming",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Zoho"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/coin-change-dp-7/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-15-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-4-walk-in-drive/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1-on-campus-2019-2/"
+      ],
+      "statement_text": "Given an integer array\ncoins[ ]\nrepresenting different denominations of currency and an integer\nsum\n, find the number of ways you can make\nsum\nby using different combinations from coins[ ].\nNote:\nAssume that you have an\ninfinite\nsupply of each type of coin. Therefore, you can use any coin as many times as you want.\nAnswers are guaranteed to fit into a 32-bit integer.",
+      "full_text": "Given an integer array\ncoins[ ]\nrepresenting different denominations of currency and an integer\nsum\n, find the number of ways you can make\nsum\nby using different combinations from coins[ ].\nNote:\nAssume that you have an\ninfinite\nsupply of each type of coin. Therefore, you can use any coin as many times as you want.\nAnswers are guaranteed to fit into a 32-bit integer.\nExamples:\nInput:\ncoins[] = [1, 2, 3], sum = 4\nOutput:\n4\nExplanation\n: Four Possible ways are: [1, 1, 1, 1], [1, 1, 2], [2, 2], [1, 3].\nInput\n: coins[] = [2, 5, 3, 6], sum = 10\nOutput:\n5\nExplanation\n: Five Possible ways are: [2, 2, 2, 2, 2], [2, 2, 3, 3], [2, 2, 6], [2, 3, 5] and [5, 5].\nInput\n: coins[] = [5, 10], sum = 3\nOutput:\n0\nExplanation:\nSince all coin denominations are greater than sum, no combination can make the target sum.\nConstraints:\n1 <= sum <= 10\n3\n1 <= coins[i] <= 10\n4\n1 <= coins.size() <=\n10\n3",
+      "examples": [
+        "Input:\ncoins[] = [1, 2, 3], sum = 4\nOutput:\n4\nExplanation\n: Four Possible ways are: [1, 1, 1, 1], [1, 1, 2], [2, 2], [1, 3].",
+        "Input\n: coins[] = [2, 5, 3, 6], sum = 10\nOutput:\n5\nExplanation\n: Five Possible ways are: [2, 2, 2, 2, 2], [2, 2, 3, 3], [2, 2, 6], [2, 3, 5] and [5, 5].",
+        "Input\n: coins[] = [5, 10], sum = 3\nOutput:\n0\nExplanation:\nSince all coin denominations are greater than sum, no combination can make the target sum."
+      ],
+      "constraints_text": "Constraints:\n1 <= sum <= 10\n3\n1 <= coins[i] <= 10\n4\n1 <= coins.size() <=\n10\n3",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an integer&nbsp;array&nbsp;<strong>coins[ ]</strong><strong>&nbsp;</strong>representing different denominations of currency and an integer&nbsp;<strong>sum</strong>, find the number of ways you can make&nbsp;<strong>sum</strong>&nbsp;by using different combinations from coins[ ].&nbsp;<br /><strong>Note:</strong>&nbsp;Assume that you have an <strong>infinite</strong> supply of each type of coin. Therefore, you can use any coin as many times as you want.<br />Answers are guaranteed to fit into a 32-bit integer.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>coins[] = [1, 2, 3], sum = 4\n<strong>Output:</strong> 4\n<strong>Explanation</strong>: Four Possible ways are: [1, 1, 1, 1], [1, 1, 2], [2, 2], [1, 3].\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: coins[] = [2, 5, 3, 6], sum = 10\n<strong>Output:</strong> 5\n<strong>Explanation</strong>: Five Possible ways are: [2, 2, 2, 2, 2], [2, 2, 3, 3], [2, 2, 6], [2, 3, 5] and [5, 5].<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: coins[] = [5, 10], sum = 3\n<strong>Output:</strong> 0<br /><strong>Explanation:</strong> Since all coin denominations are greater than sum, no combination can make the target sum.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= sum &lt;= 10<sup>3</sup><br />1 &lt;= coins[i] &lt;= 10<sup>4</sup><sup><br /></sup></span><span style=\"font-size: 14pt;\">1 &lt;= coins.size() &lt;=&nbsp;</span><span style=\"font-size: 18.6667px;\">10</span><sup>3</sup></p>"
+    },
+    "qnum": 2462
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-the-string-in-grid0111/1",
+      "problem_name": "Find the string in grid",
+      "slug": "find-the-string-in-grid0111",
+      "difficulty": "Medium",
+      "accuracy": "22.88%",
+      "marks": 4,
+      "all_submissions": 83679,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "FactSet"
+        ],
+        "topic_tags": [
+          "Recursion",
+          "DFS",
+          "Matrix",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Recursion",
+        "DFS",
+        "Matrix",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "FactSet"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/search-a-word-in-a-2d-grid-of-characters/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/samsung-bangalore-internship-interview-experience-2018/",
+        "https://www.geeksforgeeks.org/samsung-research-institute-bangalore-srib-intern/"
+      ],
+      "statement_text": "Given a 2D grid of n*m of characters and a word, find all occurrences of given word in grid. A word can be matched in all 8 directions at any point. Word is said to be found in a direction if all characters match in this direction (not in zig-zag form). The 8 directions are, horizontally left, horizontally right, vertically up, vertically down, and 4 diagonal directions.\n\nNote: The returning list should be lexicographically smallest. If the word can be found in multiple directions starting from the same coordinates, the list should contain the coordinates only once.\n\nExample 1:\n\nInput:\ngrid = {{a,b,c},{d,r,f},{g,h,i}},\nword = \"abc\"\nOutput:\n{{0,0}}\nExplanation:\nFrom (0,0) we can find \"abc\" in horizontally right direction.\n\nExample 2:\n\nInput:\ngrid = {{a,b,a,b},{a,b,e,b},{e,b,e,b}}\nword = \"abe\"\nOutput:\n{{0,0},{0,2},{1,0}}\nExplanation:\nFrom (0,0) we can find \"abe\" in right-down diagonal.\nFrom (0,2) we can find \"abe\" in left-down diagonal.\nFrom (1,0) we can find \"abe\" in horizontally right direction.\n\nYour Task:\nYou don't need to read or print anything, Your task is to complete the function searchWord() which takes grid and word as input parameters and returns a list containing the positions from where the word originates in any direction. If there is no such position then returns an empty list.\n\nExpected Time Complexity: O(n*m*k) where k is constant\nExpected Space Complexity: O(1)\n\nConstraints:\n1 <= n <= m <= 50\n1 <= |word| <= 15",
+      "full_text": "Given a 2D grid of n*m of characters and a word, find all occurrences of given word in grid. A word can be matched in all 8 directions at any point. Word is said to be found in a direction if all characters match in this direction (not in zig-zag form). The 8 directions are, horizontally left, horizontally right, vertically up, vertically down, and 4 diagonal directions.\n\nNote: The returning list should be lexicographically smallest. If the word can be found in multiple directions starting from the same coordinates, the list should contain the coordinates only once.\n\nExample 1:\n\nInput:\ngrid = {{a,b,c},{d,r,f},{g,h,i}},\nword = \"abc\"\nOutput:\n{{0,0}}\nExplanation:\nFrom (0,0) we can find \"abc\" in horizontally right direction.\n\nExample 2:\n\nInput:\ngrid = {{a,b,a,b},{a,b,e,b},{e,b,e,b}}\nword = \"abe\"\nOutput:\n{{0,0},{0,2},{1,0}}\nExplanation:\nFrom (0,0) we can find \"abe\" in right-down diagonal.\nFrom (0,2) we can find \"abe\" in left-down diagonal.\nFrom (1,0) we can find \"abe\" in horizontally right direction.\n\nYour Task:\nYou don't need to read or print anything, Your task is to complete the function searchWord() which takes grid and word as input parameters and returns a list containing the positions from where the word originates in any direction. If there is no such position then returns an empty list.\n\nExpected Time Complexity: O(n*m*k) where k is constant\nExpected Space Complexity: O(1)\n\nConstraints:\n1 <= n <= m <= 50\n1 <= |word| <= 15",
+      "examples": [
+        "Input:\ngrid = {{a,b,c},{d,r,f},{g,h,i}},\nword = \"abc\"\nOutput:\n{{0,0}}\nExplanation:\nFrom (0,0) we can find \"abc\" in horizontally right direction.",
+        "Input:\ngrid = {{a,b,a,b},{a,b,e,b},{e,b,e,b}}\nword = \"abe\"\nOutput:\n{{0,0},{0,2},{1,0}}\nExplanation:\nFrom (0,0) we can find \"abe\" in right-down diagonal.\nFrom (0,2) we can find \"abe\" in left-down diagonal.\nFrom (1,0) we can find \"abe\" in horizontally right direction."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= m <= 50\n1 <= |word| <= 15",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a 2D grid&nbsp;of <strong>n</strong>*<strong>m</strong> of characters and a <strong>word</strong>, find all occurrences of given word in grid. A word can be matched in <strong>all 8 directions</strong> at any point. Word is said to be found in a direction if all characters match in this direction (not in zig-zag form). The 8 directions are, <strong>horizontally left</strong>, <strong>horizontally right</strong>, <strong>vertically up</strong>, <strong>vertically down</strong>, and <strong>4 diagonal directions</strong>.<br /><br /><strong>Note:</strong> The returning list should be <strong>lexicographically smallest</strong>. If the word can be found in multiple directions starting from the same coordinates, the list should contain the coordinates only once.&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong>grid = {{a,b,c},{d,r,f},{g,h,i}},\nword = \"abc\"\n<strong>Output: <br /></strong>{{0,0}}\n<strong>Explanation: <br /></strong>From (0,0) we can find \"abc\" in horizontally right direction.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: <br /></strong>grid = {{a,b,a,b},{a,b,e,b},{e,b,e,b}}\nword = \"abe\"\n<strong>Output: <br /></strong>{{0,0},{0,2},{1,0}}\n<strong>Explanation: <br /></strong>From (0,0) we can find \"abe\" in right-down diagonal. <br />From (0,2) we can find \"abe\" in left-down diagonal. <br />From (1,0) we can find \"abe\" in horizontally right direction.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anything, Your task is to complete the function&nbsp;<strong>searchWord()&nbsp;</strong>which takes grid and word as input parameters and returns a list containing the positions from where the word originates&nbsp;in any direction. If there is no such position then returns an&nbsp;empty&nbsp;list.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:&nbsp;</strong>O(n*m*k) where k is constant<br /><strong>Expected Space Complexity:&nbsp;</strong>O(1)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= n &lt;= m &lt;= 50<br />1 &lt;= |word| &lt;= 15</span></p>"
+    },
+    "qnum": 2463
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-number-formed-from-an-array1117/1",
+      "problem_name": "Form the Largest Number",
+      "slug": "largest-number-formed-from-an-array1117",
+      "difficulty": "Medium",
+      "accuracy": "37.82%",
+      "marks": 4,
+      "all_submissions": 205064,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "MakeMyTrip"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "Sorting"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "Sorting"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "MakeMyTrip"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-an-array-of-numbers-arrange-the-numbers-to-form-the-biggest-number/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-242-1-year-experience/",
+        "https://www.geeksforgeeks.org/one97paytm-interview-experience/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-13-experienced/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-11-developer-position/"
+      ],
+      "statement_text": "Given an array of integers\narr[]\nrepresenting\nnon-negative\nintegers, arrange them so that after\nconcatenating\nall of them in order, it results in the\nlargest\npossible\nnumber\n. Since the result may be very large, return it as a\nstring\n.",
+      "full_text": "Given an array of integers\narr[]\nrepresenting\nnon-negative\nintegers, arrange them so that after\nconcatenating\nall of them in order, it results in the\nlargest\npossible\nnumber\n. Since the result may be very large, return it as a\nstring\n.\nExamples:\nInput:\narr[] = [3, 30, 34, 5, 9]\nOutput:\n9534330\nExplanation:\nGiven numbers are [3, 30, 34, 5, 9], the arrangement [9, 5, 34, 3, 30] gives the largest value.\nInput:\narr[] = [54, 546, 548, 60]\nOutput:\n6054854654\nExplanation:\nGiven numbers are [54, 546, 548, 60], the arrangement [60, 548, 546, 54] gives the largest value.\nInput:\narr[] = [3, 4, 6, 5, 9]\nOutput:\n96543\nExplanation:\nGiven numbers are [3, 4, 6, 5, 9], the arrangement [9, 6, 5, 4, 3] gives the largest value.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [3, 30, 34, 5, 9]\nOutput:\n9534330\nExplanation:\nGiven numbers are [3, 30, 34, 5, 9], the arrangement [9, 5, 34, 3, 30] gives the largest value.",
+        "Input:\narr[] = [54, 546, 548, 60]\nOutput:\n6054854654\nExplanation:\nGiven numbers are [54, 546, 548, 60], the arrangement [60, 548, 546, 54] gives the largest value.",
+        "Input:\narr[] = [3, 4, 6, 5, 9]\nOutput:\n96543\nExplanation:\nGiven numbers are [3, 4, 6, 5, 9], the arrangement [9, 6, 5, 4, 3] gives the largest value."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array of integers&nbsp;<strong>arr[]</strong><strong>&nbsp;</strong>representing <strong>non-negative</strong> integers, arrange them so that after <strong>concatenating</strong> all of them in order, it results in the&nbsp;<strong>largest&nbsp;</strong>possible<strong>&nbsp;number</strong>. Since the result may be very large, return it as a <strong>string</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [3, 30, 34, 5, 9]\n<strong>Output: </strong>9534330\n<strong>Explanation:</strong> Given numbers are [3, 30, 34, 5, 9], the arrangement [9, 5, 34, 3, 30] gives the largest value.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [54, 546, 548, 60]\n<strong>Output:</strong> 6054854654\n<strong>Explanation:</strong> Given numbers are [54, 546, 548, 60], the arrangement [60, 548, 546, 54] gives the largest value.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [3, 4, 6, 5, 9]\n<strong>Output:</strong> 96543\n<strong>Explanation:</strong> Given numbers are [3, 4, 6, 5, 9], the arrangement [9, 6, 5, 4, 3] gives the largest value.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2464
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/circular-tour-1587115620/1",
+      "problem_name": "Gas Station",
+      "slug": "circular-tour-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "34.79%",
+      "marks": 4,
+      "all_submissions": 221093,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "gas[] = &!//!&cost[] = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Google"
+        ],
+        "topic_tags": [
+          "Data Structures",
+          "Algorithms",
+          "Greedy"
+        ]
+      },
+      "topic_tags": [
+        "Data Structures",
+        "Algorithms",
+        "Greedy"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-a-tour-that-visits-all-stations/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-set-76-on-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "There are n gas stations along a\ncircular tour\n. You are given two integer arrays\ngas[]\nand\ncost[]\n, where\ngas[i]\nis the amount of gas available at station\ni\nand\ncost[i]\nis the gas needed to travel from station\ni\nto station (\ni+1\n). You have a car with an unlimited gas tank and start with an empty tank at some station. Your task is to return the\nindex\nof the starting station if it is possible to travel once around the circular route in a clockwise direction without running out of gas at any station; otherwise, return\n-1\n.\nNote:\nIf a solution exists, it is guaranteed to be unique.",
+      "full_text": "There are n gas stations along a\ncircular tour\n. You are given two integer arrays\ngas[]\nand\ncost[]\n, where\ngas[i]\nis the amount of gas available at station\ni\nand\ncost[i]\nis the gas needed to travel from station\ni\nto station (\ni+1\n). You have a car with an unlimited gas tank and start with an empty tank at some station. Your task is to return the\nindex\nof the starting station if it is possible to travel once around the circular route in a clockwise direction without running out of gas at any station; otherwise, return\n-1\n.\nNote:\nIf a solution exists, it is guaranteed to be unique.\nExamples:\nInput:\ngas[] = [4, 5, 7, 4], cost[]= [6, 6, 3, 5]\nOutput:\n2\nExplanation:\nStart at gas station at index 2 and fill up with 7 units of gas. Your tank = 0 + 7 = 7\nTravel to station 3. Available gas = (7 – 3 + 4) = 8.\nTravel to station 0. Available gas = (8 – 5 + 4) = 7.\nTravel to station 1. Available gas = (7 – 6 + 5) = 6.\nReturn to station 2. Available gas = (6 – 6) = 0.\nInput:\ngas[] = [3, 9], cost[] = [7, 6]\nOutput: -\n1\nExplanation:\nThere is no gas station to start with such that you can complete the tour.\nConstraints:\n1 ≤ n ≤ 10\n6\n1 ≤ gas[i], cost[i] ≤ 10\n3",
+      "examples": [
+        "Input:\ngas[] = [4, 5, 7, 4], cost[]= [6, 6, 3, 5]\nOutput:\n2\nExplanation:\nStart at gas station at index 2 and fill up with 7 units of gas. Your tank = 0 + 7 = 7\nTravel to station 3. Available gas = (7 – 3 + 4) = 8.\nTravel to station 0. Available gas = (8 – 5 + 4) = 7.\nTravel to station 1. Available gas = (7 – 6 + 5) = 6.\nReturn to station 2. Available gas = (6 – 6) = 0.",
+        "Input:\ngas[] = [3, 9], cost[] = [7, 6]\nOutput: -\n1\nExplanation:\nThere is no gas station to start with such that you can complete the tour."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10\n6\n1 ≤ gas[i], cost[i] ≤ 10\n3",
+      "question_html": "<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\">There are n gas stations along a <strong>circular tour</strong>. You are given two integer arrays <strong>gas[]</strong> and <strong>cost[]</strong>, where <strong>gas[i]</strong> is the amount of gas available at station <strong>i</strong> and <strong>cost[i]</strong> is the gas needed to travel from station <strong>i</strong> to station (<strong>i+1</strong>). You have a car with an unlimited gas tank and start with an empty tank at some station. Your task is to return the <strong>index </strong>of the starting station if it is possible to travel once around the circular route in a clockwise direction without running out of gas at any station; otherwise, return <strong>-1</strong>.</span></p>\n<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><strong>Note: </strong>If a solution exists, it is guaranteed to be unique.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>gas[] = [4, 5, 7, 4], cost[]= [6, 6, 3, 5]\n<strong>Output: </strong>2<strong>\nExplanation: </strong>Start at gas station at index 2 and fill up with 7 units of gas. Your tank = 0 + 7 = 7<br />Travel to station 3. Available gas = (7 &ndash; 3 + 4) = 8.<br />Travel to station 0. Available gas = (8 &ndash; 5 + 4) = 7.<br />Travel to station 1. Available gas = (7 &ndash; 6 + 5) = 6.<br />Return to station 2. Available gas = (6 &ndash; 6) = 0.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>gas[] = [3, 9], cost[] = [7, 6]<br /><strong>Output: -</strong>1<strong>\nExplanation: </strong>There is no gas station to start with such that you can complete the tour.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; n &le; 10<sup>6<br /></sup>1 &le; gas[i], cost[i] &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 2465
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/sorted-insert-for-circular-linked-list/1",
+      "problem_name": "Insert in Sorted Circular Linked List",
+      "slug": "sorted-insert-for-circular-linked-list",
+      "difficulty": "Medium",
+      "accuracy": "25.56%",
+      "marks": 4,
+      "all_submissions": 142899,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head = &!//!&data = ",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft"
+        ],
+        "topic_tags": [
+          "circular-linked-list",
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "circular-linked-list",
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sorted-insert-for-circular-linked-list/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a sorted circular\nlinked list\n, the task is to\ninsert\na new node in this\ncircular\nlinked list so that it remains a\nsorted circular linked list\n.",
+      "full_text": "Given a sorted circular\nlinked list\n, the task is to\ninsert\na new node in this\ncircular\nlinked list so that it remains a\nsorted circular linked list\n.\nExamples:\nInput:\nhead = 1->2->4, data = 2\nOutput:\n1->2->2->4\nExplanation:\nWe can add 2 after the second node.\nInput:\nhead = 1->4->7->9, data = 5\nOutput:\n1->4->5->7->9\nExplanation:\nWe can add 5 after the second node.\nConstraints:\n2 <= number of nodes <= 10\n6\n0 <= node->data <= 10\n6\n0 <= data <= 10\n6",
+      "examples": [
+        "Input:\nhead = 1->2->4, data = 2\nOutput:\n1->2->2->4\nExplanation:\nWe can add 2 after the second node.",
+        "Input:\nhead = 1->4->7->9, data = 5\nOutput:\n1->4->5->7->9\nExplanation:\nWe can add 5 after the second node."
+      ],
+      "constraints_text": "Constraints:\n2 <= number of nodes <= 10\n6\n0 <= node->data <= 10\n6\n0 <= data <= 10\n6",
+      "question_html": "<p style=\"text-align: justify;\"><span style=\"font-size: 14pt;\">Given a sorted circular<strong> linked list</strong>, the task is to <strong>insert </strong>a new node in this <strong>circular </strong>linked list so that it remains a <strong>sorted circular linked list</strong>.</span></p>\n<p style=\"text-align: justify;\"><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre style=\"text-align: justify;\"><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = 1-&gt;2-&gt;4, data = 2\n<strong>Output: </strong>1-&gt;2-&gt;2-&gt;4<strong><br /></strong><strong>Explanation: </strong>We can add 2 after the second node.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700127/Web/Other/blobid0_1724411599.png\" width=\"397\" height=\"206\" /><br /></span></pre>\n<pre style=\"text-align: justify;\"><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = 1-&gt;4-&gt;7-&gt;9, data = 5\n<strong>Output: </strong>1-&gt;4-&gt;5-&gt;7-&gt;9<strong><br /></strong><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>We can add 5 after the second node.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700127/Web/Other/blobid1_1724411615.png\" width=\"433\" height=\"224\" /></span></pre>\n<p style=\"text-align: justify;\"><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Constraints:</strong><br /><span style=\"font-size: 14pt;\">2 &lt;= number of nodes &lt;= 10</span><sup style=\"font-size: 14pt;\">6</sup><br /><span style=\"font-size: 14pt;\">0 &lt;= node-&gt;data &lt;= 10</span><sup style=\"font-size: 14pt;\">6</sup><br /><span style=\"font-size: 18.6667px;\">0 &lt;= data &lt;= 10<sup>6</sup></span><br /></span></p>"
+    },
+    "qnum": 2466
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/number-to-words0335/1",
+      "problem_name": "Integer to Words",
+      "slug": "number-to-words0335",
+      "difficulty": "Medium",
+      "accuracy": "22.4%",
+      "marks": 4,
+      "all_submissions": 29436,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = ",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Oracle"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Oracle"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-convert-a-given-number-to-words-set-2/"
+      ],
+      "interview_links": [],
+      "statement_text": "Write a function to convert a given number\nn\ninto words.\nThe idea is to break down the number into\nInternational Number System\n, i.e., smaller groups of three digits\n(hundreds, tens, and ones),\nand convert each group into words.\nExamples :\nInput:\nn = 0\nOutput:\n\"Zero\"\nInput:\nn = 123\nOutput:\n\"One Hundred Twenty Three\"\nInput:\nn = 10245\nOutput:\n\"Ten Thousand Two Hundred Forty Five\"\nInput:\nn = 2147483647\nOutput:\n\"Two Billion One Hundred Forty Seven Million Four Hundred Eighty Three Thousand Six Hundred Forty Seven\"",
+      "full_text": "Write a function to convert a given number\nn\ninto words.\nThe idea is to break down the number into\nInternational Number System\n, i.e., smaller groups of three digits\n(hundreds, tens, and ones),\nand convert each group into words.\nExamples :\nInput:\nn = 0\nOutput:\n\"Zero\"\nInput:\nn = 123\nOutput:\n\"One Hundred Twenty Three\"\nInput:\nn = 10245\nOutput:\n\"Ten Thousand Two Hundred Forty Five\"\nInput:\nn = 2147483647\nOutput:\n\"Two Billion One Hundred Forty Seven Million Four Hundred Eighty Three Thousand Six Hundred Forty Seven\"\nConstraints:\n0 <= n <= 2\n31\n-1",
+      "examples": [
+        "Input:\nn = 0\nOutput:\n\"Zero\"",
+        "Input:\nn = 123\nOutput:\n\"One Hundred Twenty Three\"",
+        "Input:\nn = 10245\nOutput:\n\"Ten Thousand Two Hundred Forty Five\"",
+        "Input:\nn = 2147483647\nOutput:\n\"Two Billion One Hundred Forty Seven Million Four Hundred Eighty Three Thousand Six Hundred Forty Seven\""
+      ],
+      "constraints_text": "Constraints:\n0 <= n <= 2\n31\n-1",
+      "question_html": "<p><span style=\"font-size: 18px;\">Write a function to convert a given number <strong>n</strong> into words.</span></p>\n<blockquote>\n<p><span style=\"font-size: 18px;\"><span style=\"white-space: pre-wrap; box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; caret-color: #273239; color: #273239; font-family: Nunito, sans-serif; font-style: italic; letter-spacing: 0.162px;\">The idea is to break down the number into </span><strong style=\"white-space: pre-wrap; box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; caret-color: #273239; color: #273239; font-family: Nunito, sans-serif; font-style: italic; letter-spacing: 0.162px;\"><strong style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">International Number System</strong></strong><span style=\"white-space: pre-wrap; box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; caret-color: #273239; color: #273239; font-family: Nunito, sans-serif; font-style: italic; letter-spacing: 0.162px;\">, i.e., smaller groups of three digits</span><strong style=\"white-space: pre-wrap; box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; caret-color: #273239; color: #273239; font-family: Nunito, sans-serif; font-style: italic; letter-spacing: 0.162px;\"><strong style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"> (hundreds, tens, and ones), </strong></strong><span style=\"white-space: pre-wrap; box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; caret-color: #273239; color: #273239; font-family: Nunito, sans-serif; font-style: italic; letter-spacing: 0.162px;\">and convert each group into words.</span></span></p>\n</blockquote>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 0\n<strong>Output:</strong> \"Zero\"</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 123\n<strong>Output:</strong> \"One Hundred Twenty Three\"\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 10245\n<strong>Output:</strong> \"Ten Thousand Two Hundred Forty Five\"</span></pre>\n<pre><strong><span style=\"font-size: 18px;\">Input:</span></strong><span style=\"font-size: 18px;\"> n = 2147483647<br /><strong>Output: </strong>\"Two Billion One Hundred Forty Seven Million Four Hundred Eighty Three Thousand Six Hundred Forty Seven\"</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br /><span style=\"font-size: 14pt;\">0 &lt;= n &lt;= 2<sup>31</sup>-1</span></span></p>"
+    },
+    "qnum": 2467
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/kadanes-algorithm-1587115620/1",
+      "problem_name": "Kadane's Algorithm",
+      "slug": "kadanes-algorithm-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "36.28%",
+      "marks": 4,
+      "all_submissions": 1233921,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "24*7 Innovation Labs",
+          "Citrix",
+          "D-E-Shaw",
+          "FactSet",
+          "Hike",
+          "Housing.com",
+          "MetLife",
+          "Ola Cabs",
+          "Oracle",
+          "Payu",
+          "Teradata",
+          "Visa",
+          "Walmart",
+          "Adobe",
+          "Google",
+          "Arcesium"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Dynamic Programming",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Dynamic Programming",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "24*7 Innovation Labs",
+        "Citrix",
+        "D-E-Shaw",
+        "FactSet",
+        "Hike",
+        "Housing.com",
+        "MetLife",
+        "Ola Cabs",
+        "Oracle",
+        "Payu",
+        "Teradata",
+        "Visa",
+        "Walmart",
+        "Adobe",
+        "Google",
+        "Arcesium"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/largest-sum-contiguous-subarray/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/oracle-interview-experience-set-45-for-3-years-experienced/",
+        "https://www.geeksforgeeks.org/zoho-interview-experience-set-18-on-campus/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-10-ds/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-set-151-sde-2-3-5-years-experience/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-internship-4/",
+        "https://www.geeksforgeeks.org/adobe-shecodes-product-interview-experience-for-internship-2020/"
+      ],
+      "statement_text": "You are given an integer array\narr[].\nYou need to find the\nmaximum\nsum of a subarray (containing at least one element) in the array\narr[]\n.\nNote :\nA\nsubarray\nis a continuous part of an array.",
+      "full_text": "You are given an integer array\narr[].\nYou need to find the\nmaximum\nsum of a subarray (containing at least one element) in the array\narr[]\n.\nNote :\nA\nsubarray\nis a continuous part of an array.\nExamples:\nInput:\narr[] = [2, 3, -8, 7, -1, 2, 3]\nOutput:\n11\nExplanation:\nThe subarray [7, -1, 2, 3] has the largest sum 11.\nInput:\narr[] = [-2, -4]\nOutput:\n-2\nExplanation:\nThe subarray [-2] has the largest sum -2.\nInput:\narr[] = [5, 4, 1, 7, 8]\nOutput:\n25\nExplanation:\nThe subarray [5, 4, 1, 7, 8] has the largest sum 25.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n-\n10\n4\n≤\narr[i] ≤ 10\n4",
+      "examples": [
+        "Input:\narr[] = [2, 3, -8, 7, -1, 2, 3]\nOutput:\n11\nExplanation:\nThe subarray [7, -1, 2, 3] has the largest sum 11.",
+        "Input:\narr[] = [-2, -4]\nOutput:\n-2\nExplanation:\nThe subarray [-2] has the largest sum -2.",
+        "Input:\narr[] = [5, 4, 1, 7, 8]\nOutput:\n25\nExplanation:\nThe subarray [5, 4, 1, 7, 8] has the largest sum 25."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n-\n10\n4\n≤\narr[i] ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an integer array <strong>arr[].</strong> You need to find the <strong>maximum</strong> sum of a subarray (containing at least one element) in the array <strong>arr[]</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note : </strong><span style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; color: #273239; font-family: Nunito, sans-serif; letter-spacing: 0.162px; background-color: #ffffff;\">A&nbsp;</span><strong style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; color: #273239; font-family: Nunito, sans-serif; letter-spacing: 0.162px; background-color: #ffffff;\"><strong style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">subarray</strong></strong><span style=\"box-sizing: border-box; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline; color: #273239; font-family: Nunito, sans-serif; letter-spacing: 0.162px; background-color: #ffffff;\"> is a continuous part of an array.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [2, 3, -8, 7, -1, 2, 3]\n<strong>Output: </strong>11<strong>\nExplanation: </strong>The subarray [7, -1, 2, 3] has the largest sum 11.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [-2, -4]\n<strong>Output: </strong>-2<strong>\nExplanation: </strong>The subarray [-2] has the largest sum -2.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 4, 1, 7, 8]\n<strong>Output: </strong>25<strong>\nExplanation: </strong>The subarray [5, 4, 1, 7, 8] has the largest sum 25.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup><strong><br /></strong>-</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup> <span style=\"font-size: 14pt;\">&le;</span><span style=\"font-size: 14pt;\"> </span><span style=\"font-size: 14pt;\">arr[i] &le; 10</span><sup>4</sup></p>"
+    },
+    "qnum": 2468
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/longest-palindrome-in-a-string3411/1",
+      "problem_name": "Longest Palindrome in a String",
+      "slug": "longest-palindrome-in-a-string3411",
+      "difficulty": "Medium",
+      "accuracy": "23.2%",
+      "marks": 4,
+      "all_submissions": 345888,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "MakeMyTrip",
+          "Visa",
+          "Walmart",
+          "Google",
+          "Qualcomm",
+          "Groupon"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "palindrome",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "palindrome",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "MakeMyTrip",
+        "Visa",
+        "Walmart",
+        "Google",
+        "Qualcomm",
+        "Groupon"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/longest-palindromic-substring-using-dynamic-programming-2/",
+        "https://www.geeksforgeeks.org/longest-palindromic-substring/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-4-on-campus/",
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-412-sde-ii/",
+        "https://www.geeksforgeeks.org/samsung-research-institute-bangalore-srib-intern/"
+      ],
+      "statement_text": "Given a string s, your task is to find the longest palindromic substring within s.\n\nA substring is a contiguous sequence of characters within a string, defined as s[i...j] where 0 ≤ i ≤ j < len(s).\n\nA palindrome is a string that reads the same forward and backward. More formally, s is a palindrome if reverse(s) == s.\n\nNote: If there are multiple palindromic substrings with the same length, return the first occurrence of the longest palindromic substring from left to right.\n\nExamples :\n\nInput: s = “forgeeksskeegfor”\nOutput: “geeksskeeg”\nExplanation: There are several possible palindromic substrings like “kssk”, “ss”, “eeksskee” etc. But the substring “geeksskeeg” is the longest among all.\n\nInput: s = “Geeks”\nOutput: “ee”\nExplanation: \"ee\" is the longest palindromic substring of \"Geeks\".\n\nInput: s = “abc”\nOutput: “a”\nExplanation: \"a\", \"b\" and \"c\" are longest palindromic substrings of same length. So, the first occurrence is returned.\n\nConstraints:\n1 ≤ s.size() ≤ 103\ns consist of only lowercase English letters.",
+      "full_text": "Given a string s, your task is to find the longest palindromic substring within s.\n\nA substring is a contiguous sequence of characters within a string, defined as s[i...j] where 0 ≤ i ≤ j < len(s).\n\nA palindrome is a string that reads the same forward and backward. More formally, s is a palindrome if reverse(s) == s.\n\nNote: If there are multiple palindromic substrings with the same length, return the first occurrence of the longest palindromic substring from left to right.\n\nExamples :\n\nInput: s = “forgeeksskeegfor”\nOutput: “geeksskeeg”\nExplanation: There are several possible palindromic substrings like “kssk”, “ss”, “eeksskee” etc. But the substring “geeksskeeg” is the longest among all.\n\nInput: s = “Geeks”\nOutput: “ee”\nExplanation: \"ee\" is the longest palindromic substring of \"Geeks\".\n\nInput: s = “abc”\nOutput: “a”\nExplanation: \"a\", \"b\" and \"c\" are longest palindromic substrings of same length. So, the first occurrence is returned.\n\nConstraints:\n1 ≤ s.size() ≤ 103\ns consist of only lowercase English letters.",
+      "examples": [
+        "Input:\ns = “forgeeksskeegfor”\nOutput:\n“geeksskeeg”\nExplanation:\nThere are several possible palindromic substrings like “kssk”, “ss”, “eeksskee” etc. But the substring “geeksskeeg” is the longest among all.",
+        "Input:\ns = “Geeks”\nOutput:\n“ee”\nExplanation\n:\n\"ee\" is the longest palindromic substring of \"Geeks\".",
+        "Input:\ns = “abc”\nOutput:\n“a”\nExplanation\n: \"a\", \"b\" and \"c\" are longest palindromic substrings of same length. So,\nthe first occurrence is returned."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n3\ns consist of only lowercase English letters.",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string <strong><code>s</code></strong>, your task is to find the longest palindromic substring within <code>s</code>. </span></p>\n<blockquote>\n<p><span style=\"font-size: 14pt;\">A <strong>substring</strong> is a <strong>contiguous </strong>sequence of characters within a string, defined as <code>s[i...j]</code> where <code>0 &le; i &le; j &lt; len(s)</code>.</span></p>\n<p><span style=\"font-size: 14pt;\">A <strong>palindrome</strong> is a string that reads the <strong>same </strong>forward and backward. More formally, <code>s</code> is a palindrome if <code>reverse(s) == s</code>.</span></p>\n</blockquote>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> If there are multiple palindromic substrings with the same length, return the <strong>first occurrence</strong> of the longest palindromic substring from left to right.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18.6667px;\"><strong>Input: </strong>s = &ldquo;forgeeksskeegfor&rdquo; <strong>\nOutput: </strong>&ldquo;geeksskeeg&rdquo;<strong>\nExplanation: </strong>There are several possible palindromic substrings like &ldquo;kssk&rdquo;, &ldquo;ss&rdquo;, &ldquo;eeksskee&rdquo; etc. But the substring &ldquo;geeksskeeg&rdquo; is the longest among all.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Input: </strong>s = &ldquo;Geeks&rdquo; <strong>\nOutput: </strong>&ldquo;ee&rdquo;\n</span><strong style=\"font-size: 14pt;\">Explanation</strong><span style=\"font-size: 14pt;\">: <span style=\"background-color: #b4d7ff;\">\"ee\" is the longest palindromic substring of \"Geeks\".</span></span><span style=\"font-size: 14pt;\"> </span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Input: </strong>s = &ldquo;abc&rdquo; <strong>\nOutput: </strong>&ldquo;a&rdquo;\n</span><strong style=\"font-size: 14pt;\">Explanation</strong><span style=\"font-size: 14pt;\">: \"a\", \"b\" and \"c\" are longest palindromic substrings of same length. So,</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> the first occurrence is returned.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Constraints:</strong><br /><span style=\"font-size: 14pt;\">1 &le; s.size() &le; 10</span><sup><span style=\"font-size: 14pt;\">3</span><br /><span style=\"font-size: 14pt;\">s consist of only lowercase English letters.</span><br /></sup></span></p>"
+    },
+    "qnum": 2469
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/longest-palindrome-in-a-string1956/1",
+      "problem_name": "Longest Palindromic Substring",
+      "slug": "longest-palindrome-in-a-string1956",
+      "difficulty": "Medium",
+      "accuracy": "36.96%",
+      "marks": 4,
+      "all_submissions": 51955,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "MakeMyTrip",
+          "Visa",
+          "Walmart",
+          "Qualcomm",
+          "Groupon",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures",
+          "Dynamic Programming"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures",
+        "Dynamic Programming"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "MakeMyTrip",
+        "Visa",
+        "Walmart",
+        "Qualcomm",
+        "Groupon",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/longest-palindromic-substring/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-4-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-research-institute-bangalore-srib-intern/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-412-sde-ii/"
+      ],
+      "statement_text": "Given a string s, return the longest palindromic substring in s. If there are multiple answers, return the one that appears first in the given string s.\n\nNote: Substring is a contiguous sequence of characters within a string, i.e. s[ i . . . . j ] where 0 ≤ i ≤ j < len(s).\n\nExamples :\n\nInput: s = \"forgeeksskeegfor\"\nOutput: geeksskeeg\nExplanation: There are several possible palindromic substrings like \"kssk\", \"ss\", \"eeksskee\" etc. But the substring \"geeksskeeg\" is the longest among all.\n\nInput: s = \"abacac\"\nOutput: aba\nExplanation: The palindromic substrings \"aba\", \"aca\" and \"cac\" all have the same length. Since \"aba\" appears first, it is the answer.\n\nInput: s = \"geeks\"\nOutput: ee\nExplanation: The longest palindromic substring present in the given string is \"ee\".\n\nConstraints:\n1 ≤ |s| ≤ 103",
+      "full_text": "Given a string s, return the longest palindromic substring in s. If there are multiple answers, return the one that appears first in the given string s.\n\nNote: Substring is a contiguous sequence of characters within a string, i.e. s[ i . . . . j ] where 0 ≤ i ≤ j < len(s).\n\nExamples :\n\nInput: s = \"forgeeksskeegfor\"\nOutput: geeksskeeg\nExplanation: There are several possible palindromic substrings like \"kssk\", \"ss\", \"eeksskee\" etc. But the substring \"geeksskeeg\" is the longest among all.\n\nInput: s = \"abacac\"\nOutput: aba\nExplanation: The palindromic substrings \"aba\", \"aca\" and \"cac\" all have the same length. Since \"aba\" appears first, it is the answer.\n\nInput: s = \"geeks\"\nOutput: ee\nExplanation: The longest palindromic substring present in the given string is \"ee\".\n\nConstraints:\n1 ≤ |s| ≤ 103",
+      "examples": [
+        "Input:\ns = \"forgeeksskeegfor\"\nOutput:\ngeeksskeeg\nExplanation:\nThere are several possible palindromic substrings like \"kssk\", \"ss\", \"eeksskee\" etc. But the substring \"geeksskeeg\" is the longest among all.",
+        "Input:\ns = \"abacac\"\nOutput:\naba\nExplanation:\nThe palindromic substrings \"aba\", \"aca\" and \"cac\" all have the same length. Since \"aba\" appears first, it is the answer.",
+        "Input:\ns = \"geeks\"\nOutput:\nee\nExplanation:\nThe longest palindromic substring present in the given string is \"ee\"."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ |s| ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string&nbsp;<strong>s</strong>, return the&nbsp;<strong>longest palindromic substring</strong>&nbsp;in s. If there are multiple answers,&nbsp;</span><span style=\"font-size: 18.6667px;\">return the one that appears <strong>first</strong> in the given string<strong> s</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;Substring is a&nbsp;<strong>contiguous</strong>&nbsp;sequence of characters within a string, i.e. s[ i . . . . j ] where 0 &le; i &le; j &lt; len(s)<strong>.</strong></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"forgeeksskeegfor\"\n<strong>Output: </strong>geeksskeeg\n<strong>Explanation: </strong>There are several possible palindromic substrings like \"kssk\", \"ss\", \"eeksskee\" etc. But the substring \"geeksskeeg\" is the longest among all.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"abacac\"<strong>\nOutput: </strong>aba<strong>\nExplanation: </strong>The palindromic substrings \"aba\", \"aca\" and \"cac\" all have the same length. Since \"aba\" appears first, it is the answer.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"geeks\"\n<strong>Output: </strong>ee\n<strong>Explanation: </strong>The longest palindromic substring present in the given string is \"ee\".</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; |s| &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 2470
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/decode-the-pattern1138/1",
+      "problem_name": "Look and Say Pattern",
+      "slug": "decode-the-pattern1138",
+      "difficulty": "Medium",
+      "accuracy": "62.54%",
+      "marks": 4,
+      "all_submissions": 48720,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = ",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Strings",
+          "pattern-printing",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "pattern-printing",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/look-and-say-sequence/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an integer\nn\n. Return the\nnth\nrow of the following look-and-say pattern.\n1\n11\n21\n1211\n111221\nLook-and-Say Pattern:\nTo generate a member of the sequence from the previous member, read off the digits of the previous member, counting the number of digits in groups of the same digit. For example:\n1 is read off as \"one 1\" or 11.\n11 is read off as \"two 1s\" or 21.\n21 is read off as \"one 2, then one 1\" or 1211.\n1211 is read off as \"one 1, one 2, then two 1s\" or 111221.\n111221 is read off as \"three 1s, two 2s, then one 1\" or 312211.",
+      "full_text": "Given an integer\nn\n. Return the\nnth\nrow of the following look-and-say pattern.\n1\n11\n21\n1211\n111221\nLook-and-Say Pattern:\nTo generate a member of the sequence from the previous member, read off the digits of the previous member, counting the number of digits in groups of the same digit. For example:\n1 is read off as \"one 1\" or 11.\n11 is read off as \"two 1s\" or 21.\n21 is read off as \"one 2, then one 1\" or 1211.\n1211 is read off as \"one 1, one 2, then two 1s\" or 111221.\n111221 is read off as \"three 1s, two 2s, then one 1\" or 312211.\nExamples:\nInput:\nn = 5\nOutput:\n111221\nExplanation:\nThe 5\nth\nrow of the given pattern will be 111221.\nInput:\nn = 3\nOutput:\n21\nExplanation:\nThe 3\nrd\nrow of the given pattern will be 21.\nConstraints:\n1 ≤ n ≤ 30",
+      "examples": [
+        "Input:\nn = 5\nOutput:\n111221\nExplanation:\nThe 5\nth\nrow of the given pattern will be 111221.",
+        "Input:\nn = 3\nOutput:\n21\nExplanation:\nThe 3\nrd\nrow of the given pattern will be 21."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 30",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an integer <strong>n</strong>.&nbsp;Return&nbsp;the <strong>nth</strong> row of the following look-and-say pattern.<br />1<br />11<br />21<br />1211<br />111221<br /><strong>Look-and-Say Pattern:</strong></span></p>\n<p><span style=\"font-size: 18px;\">To generate a member of the sequence from the previous member, read off the digits of the previous member, counting the number of digits in groups of the same digit. For example:</span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">1 is read off as \"one 1\" or 11.</span></li>\n<li><span style=\"font-size: 18px;\">11 is read off as \"two 1s\" or 21.</span></li>\n<li><span style=\"font-size: 18px;\">21 is read off as \"one 2, then one 1\" or 1211.</span></li>\n<li><span style=\"font-size: 18px;\">1211 is read off as \"one 1, one 2, then two 1s\" or 111221.</span></li>\n<li><span style=\"font-size: 18px;\">111221 is read off as \"three 1s, two 2s, then one 1\" or 312211.</span></li>\n</ul>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 5\n<strong>Output:</strong> 111221\n<strong>Explanation: </strong>The 5<sup>th</sup> row of the given pattern will be 111221.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3\n<strong>Output:</strong> 21\n<strong>Explanation: </strong>The 3<sup>rd</sup> row of the given pattern will be 21.</span></pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; n &le; 30</span></p>"
+    },
+    "qnum": 2471
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-two-sorted-linked-lists/1",
+      "problem_name": "Merge two sorted linked lists",
+      "slug": "merge-two-sorted-linked-lists",
+      "difficulty": "Medium",
+      "accuracy": "62.91%",
+      "marks": 4,
+      "all_submissions": 207416,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head1 = &!//!&head2 = ",
+        "datatype": "LINKED_LIST_NODE&!//!&LINKED_LIST_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "FactSet",
+          "MakeMyTrip",
+          "Oracle",
+          "Brocade",
+          "Synopsys",
+          "OATS Systems",
+          "Belzabar",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "FactSet",
+        "MakeMyTrip",
+        "Oracle",
+        "Brocade",
+        "Synopsys",
+        "OATS Systems",
+        "Belzabar",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-two-sorted-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-set-2-campus/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-2-campus/",
+        "httpss://www.geeksforgeeks.org/microsoft-interview-experience-set-151-sde-2-3-5-years-experience/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-6-months-internship/"
+      ],
+      "statement_text": "Given the\nhead\nof two\nsorted linked lists\nconsisting of nodes respectively.\nMerge\nboth lists and return the\nhead\nof the\nsorted merged list\n.",
+      "full_text": "Given the\nhead\nof two\nsorted linked lists\nconsisting of nodes respectively.\nMerge\nboth lists and return the\nhead\nof the\nsorted merged list\n.\nExamples:\nInput:\nOutput:\n2 -> 3 -> 5 -> 10 -> 15 -> 20 -> 40\nExplanation:\nInput\n:\nOutput:\n1 -> 1 -> 2 -> 4\nExplanation:\nConstraints:\n1\n≤\nlist1.size, list2.size\n≤\n10\n3\n0\n≤\nnode->data\n≤\n10\n5",
+      "examples": [
+        "Input:\nOutput:\n2 -> 3 -> 5 -> 10 -> 15 -> 20 -> 40\nExplanation:",
+        "Input\n:\nOutput:\n1 -> 1 -> 2 -> 4\nExplanation:"
+      ],
+      "constraints_text": "Constraints:\n1\n≤\nlist1.size, list2.size\n≤\n10\n3\n0\n≤\nnode->data\n≤\n10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>head</strong> of two&nbsp;<strong>sorted linked lists&nbsp;</strong>consisting of nodes respectively. <strong>Merge</strong>&nbsp;both lists and return the&nbsp;<strong>head&nbsp;</strong>of the&nbsp;<strong>sorted merged list</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:<br /></strong>  <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid0_1755952530.webp\" width=\"437\" height=\"108\" /><br /><strong>Output: </strong>2 -&gt; 3 -&gt; 5 -&gt; 10 -&gt; 15 -&gt; 20 -&gt; 40<strong>\nExplanation:<br /></strong></span>   <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid1_1755952582.webp\" width=\"592\" height=\"60\" /></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>:<br />  <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid2_1755952649.webp\" width=\"320\" height=\"114\" /><br /><strong>Output: </strong>1 -&gt; 1 -&gt; 2 -&gt; 4<strong>\nExplanation:<br />  <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700176/Web/Other/blobid3_1755952660.webp\" width=\"433\" height=\"67\" /><br /></strong></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le; </span><span style=\"font-size: 18px;\">list1.size, list2.size</span><span style=\"font-size: 18px;\">&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le;</span><span style=\"font-size: 18px;\">&nbsp;10</span><sup>3<br /></sup><span style=\"font-size: 18px;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le; </span><span style=\"font-size: 18px;\">node-&gt;data&nbsp;</span><span style=\"background-color: #ffffff; color: #001d35; font-family: 'Google Sans', Arial, sans-serif; font-size: 18px;\">&le;</span><span style=\"font-size: 18px;\">&nbsp;10</span><sup>5</sup></p>"
+    },
+    "qnum": 2472
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/merge-two-sorted-arrays-1587115620/1",
+      "problem_name": "Merge Without Extra Space",
+      "slug": "merge-two-sorted-arrays-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "32.01%",
+      "marks": 4,
+      "all_submissions": 330349,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "a[] =&!//!&b[] =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Microsoft",
+          "Snapdeal",
+          "Goldman Sachs",
+          "Adobe",
+          "Linkedin",
+          "Amdocs",
+          "Brocade",
+          "Juniper Networks",
+          "Quikr",
+          "Synopsys"
+        ],
+        "topic_tags": [
+          "Sorting",
+          "Algorithms",
+          "Arrays",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Sorting",
+        "Algorithms",
+        "Arrays",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Microsoft",
+        "Snapdeal",
+        "Goldman Sachs",
+        "Adobe",
+        "Linkedin",
+        "Amdocs",
+        "Brocade",
+        "Juniper Networks",
+        "Quikr",
+        "Synopsys"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays-o1-extra-space/",
+        "https://www.geeksforgeeks.org/merge-two-sorted-arrays/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-2020-product-intern/"
+      ],
+      "statement_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.",
+      "full_text": "Given two sorted arrays\na[]\nand\nb[]\nof size\nn\nand\nm\nrespectively, the task is to merge them in sorted order without using any\nextra space\n. Modify\na[]\nso that it contains the first\nn\nelements and modify\nb[]\nso that it contains the last\nm\nelements.\nExamples:\nInput\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]\nInput\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].\nInput\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3].\nConstraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "examples": [
+        "Input\n: a[] = [2, 4, 7, 10], b[] = [2, 3]\nOutput\n: a[] = [2, 2, 3, 4], b[] = [7, 10]\nExplanation\n: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]",
+        "Input\n: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\nOutput\n: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\nExplanation\n: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].",
+        "Input\n: a[] = [0, 1], b[] = [2, 3]\nOutput\n: a[] = [0, 1], b[] = [2, 3]\nExplanation\n: After merging two sorted arrays we get [0, 1, 2, 3]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 10\n5\n0 ≤ a[i], b[i] ≤ 10\n7",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two sorted arrays <strong>a[]</strong> and <strong>b[] </strong>of size <strong>n </strong>and <strong>m </strong>respectively, the task is to merge them in sorted order without using any <strong>extra space</strong>. Modify <strong>a[]</strong> so that it contains the first <strong>n</strong> elements and modify <strong>b[]</strong> so that it contains the last <strong>m</strong> elements.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [2, 4, 7, 10], b[] = [2, 3]\n<strong>Output</strong>: a[] = [2, 2, 3, 4], b[] = [7, 10]\n<strong>Explanation</strong>: After merging the two non-decreasing arrays, we get, [2, 2, 3, 4, 7, 10]</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [1, 5, 9, 10, 15, 20], b[] = [2, 3, 8, 13]\n<strong>Output</strong>: a[] = [1, 2, 3, 5, 8, 9], b[] = [10, 13, 15, 20]\n<strong>Explanation</strong>: After merging two sorted arrays we get [1, 2, 3, 5, 8, 9, 10, 13, 15, 20].</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Output</strong>: a[] = [0, 1], b[] = [2, 3]\n<strong>Explanation</strong>: After merging two sorted arrays we get [0, 1, 2, 3].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; n, m &le; 10<sup>5</sup><br />0 &le; a[i], b[i] &le; 10<sup>7</sup></span></p>"
+    },
+    "qnum": 2473
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/number-of-paths0926/1",
+      "problem_name": "Number of paths",
+      "slug": "number-of-paths0926",
+      "difficulty": "Medium",
+      "accuracy": "67.64%",
+      "marks": 4,
+      "all_submissions": 126180,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "m &!//!&n",
+        "datatype": "INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Algorithms",
+          "Dynamic Programming"
+        ]
+      },
+      "topic_tags": [
+        "Algorithms",
+        "Dynamic Programming"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a grid of size\nm x n\n, the task is to determine the number of distinct paths from the\ntop-left corner\nto the\nbottom-right corner\n. At each step, one can either move\ndown\nor\nright\n.\nGiven the integers\nm\nand\nn\n, return the\nnumber of unique paths\nfrom the\ntop-left corner\nto the\nbottom-right corne\nr.\nNote:\nThe test cases are designed such that the answer will always fit within a 32-bit integer.",
+      "full_text": "Given a grid of size\nm x n\n, the task is to determine the number of distinct paths from the\ntop-left corner\nto the\nbottom-right corner\n. At each step, one can either move\ndown\nor\nright\n.\nGiven the integers\nm\nand\nn\n, return the\nnumber of unique paths\nfrom the\ntop-left corner\nto the\nbottom-right corne\nr.\nNote:\nThe test cases are designed such that the answer will always fit within a 32-bit integer.\nExamples:\nInput\n: m = 3, n = 3\nOutput:\n6\nExplanation\n: Let the given input 3*3 grid is filled as such:\nA B C\nD E F\nG H I\nThe possible unique paths which exists to reach 'I' from 'A' following above conditions are as follows: ABCFI, ABEHI, ADGHI, ADEFI, ADEHI, ABEFI.\nInput\n: m = 2, n = 3\nOutput\n: 3\nExplanation\n: Let the given input 2*3 grid is filled as such:\nA B C\nD E F\nThe possible unique paths which exists to reach 'F' from 'A' following above conditions are as follows: ABCF, ADEF and ABEF.\nInput\n: m = 1, n = 4\nOutput:\n1\nExplanation\n: Let the given input 1*4 grid is filled as such:\nA B C D\nThe only possible unique path is ABCD.\nConstraints:\n1 ≤ m ≤ 100\n1 ≤ n ≤ 100",
+      "examples": [
+        "Input\n: m = 3, n = 3\nOutput:\n6\nExplanation\n: Let the given input 3*3 grid is filled as such:\nA B C\nD E F\nG H I\nThe possible unique paths which exists to reach 'I' from 'A' following above conditions are as follows: ABCFI, ABEHI, ADGHI, ADEFI, ADEHI, ABEFI.",
+        "Input\n: m = 2, n = 3\nOutput\n: 3\nExplanation\n: Let the given input 2*3 grid is filled as such:\nA B C\nD E F\nThe possible unique paths which exists to reach 'F' from 'A' following above conditions are as follows: ABCF, ADEF and ABEF.",
+        "Input\n: m = 1, n = 4\nOutput:\n1\nExplanation\n: Let the given input 1*4 grid is filled as such:\nA B C D\nThe only possible unique path is ABCD."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ m ≤ 100\n1 ≤ n ≤ 100",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a grid of size&nbsp;<strong>m x n</strong>, the task is to determine the number of distinct paths from the&nbsp;<strong>top-left corner</strong>&nbsp;to the&nbsp;<strong>bottom-right corner</strong>. At each step, one can either move <strong>down</strong> or <strong>right</strong>.&nbsp;</span><span style=\"font-size: 18px;\">Given the integers <strong>m</strong> and <strong>n</strong>, return the <strong>number of unique paths</strong> from the <strong>top-left corner </strong>to the<strong> bottom-right corne</strong>r.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note: </strong>The test cases are designed such that the answer will always fit within a 32-bit integer.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: m = 3, n = 3\n<strong>Output:</strong>&nbsp;6\n<strong>Explanation</strong>: Let the given input 3*3 grid is filled as such:\nA B C\nD E F\nG H I\nThe possible unique paths which exists to reach 'I' from 'A' following above conditions are as follows: ABCFI, ABEHI, ADGHI, ADEFI, ADEHI, ABEFI.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: m = 2, n = 3\n<strong>Output</strong>: 3\n<strong>Explanation</strong>: Let the given input 2*3 grid is filled as such:\nA B C\nD E F\nThe possible unique paths which exists to reach 'F' from 'A' following above conditions are as follows: ABCF, ADEF and ABEF.\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: m = 1, n = 4\n<strong>Output:</strong> 1\n<strong>Explanation</strong>: Let the given input 1*4 grid is filled as such:<br />A B C D <br />The only possible unique path is ABCD.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; m &le; 100<br />1 &le; n &le;&nbsp;100</span></p>"
+    },
+    "qnum": 2474
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/overlapping-intervals--170633/1",
+      "problem_name": "Overlapping Intervals",
+      "slug": "overlapping-intervals--170633",
+      "difficulty": "Medium",
+      "accuracy": "57.41%",
+      "marks": 4,
+      "all_submissions": 128221,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&arr[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Google",
+          "Nutanix",
+          "Zoho"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Hash",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Hash",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Google",
+        "Nutanix",
+        "Zoho"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/merging-intervals/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nof Intervals\narr[][]\n, where\narr[i] = [start\ni\n, end\ni\n].\nThe task is to merge all of the\noverlapping Intervals\n.",
+      "full_text": "Given an array\nof Intervals\narr[][]\n, where\narr[i] = [start\ni\n, end\ni\n].\nThe task is to merge all of the\noverlapping Intervals\n.\nExamples:\nInput:\narr\n[][]\n= [[1, 3], [2, 4], [6, 8], [9, 10]]\nOutput:\n[[1, 4], [6, 8], [9, 10]]\nExplanation:\nIn the given intervals we have only two overlapping intervals here, [1, 3] and [2, 4] which on merging will become [1, 4]. Therefore we will return [[1, 4], [6, 8], [9, 10]].\nInput:\narr[][] = [[6, 8], [1, 9], [2, 4], [4, 7]]\nOutput:\n[[1, 9]]\nExplanation:\nIn the given intervals all the intervals overlap with the interval [1, 9]. Therefore we will return [1, 9].\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ start\ni\n≤ end\ni\n≤ 10\n6",
+      "examples": [
+        "Input:\narr\n[][]\n= [[1, 3], [2, 4], [6, 8], [9, 10]]\nOutput:\n[[1, 4], [6, 8], [9, 10]]\nExplanation:\nIn the given intervals we have only two overlapping intervals here, [1, 3] and [2, 4] which on merging will become [1, 4]. Therefore we will return [[1, 4], [6, 8], [9, 10]].",
+        "Input:\narr[][] = [[6, 8], [1, 9], [2, 4], [4, 7]]\nOutput:\n[[1, 9]]\nExplanation:\nIn the given intervals all the intervals overlap with the interval [1, 9]. Therefore we will return [1, 9]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ start\ni\n≤ end\ni\n≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array<strong>&nbsp;</strong>of Intervals <strong>arr[][]</strong>, where <strong>arr[i] = [start<sub>i</sub>, end<sub>i</sub>]. </strong>The task is to merge all of the <strong>overlapping Intervals</strong>.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">arr</span><span style=\"font-size: 18px;\">[][]</span><span style=\"font-size: 18px;\"> = [[1, 3], [2, 4], [6, 8], [9, 10]]\n<strong>Output: </strong>[[1, 4], [6, 8], [9, 10]]<strong>\nExplanation: </strong>In the given intervals we have only two overlapping intervals here, [1, 3] and [2, 4] which on merging will become [1, 4]. Therefore we will return [[1, 4], [6, 8], [9, 10]].</span>\n</pre>\n<pre><strong><span style=\"font-size: 18px;\">Input: </span></strong><span style=\"font-size: 18px;\">arr[][] = [[6, 8], [1, 9], [2, 4], [4, 7]]\n<strong>Output: </strong>[[1, 9]]<br /><strong>Explanation: </strong>In the given intervals all the intervals overlap with the interval [1, 9]. Therefore we will return [1, 9].<br /></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />0 &le; start<sub>i</sub> &le; end<sub>i</sub> &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 2475
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/permutations-of-a-given-string2041/1",
+      "problem_name": "Permutations of a String",
+      "slug": "permutations-of-a-given-string2041",
+      "difficulty": "Medium",
+      "accuracy": "34.65%",
+      "marks": 4,
+      "all_submissions": 338406,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Citrix",
+          "Walmart",
+          "MAQ Software",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Recursion",
+          "Backtracking",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Recursion",
+        "Backtracking",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Citrix",
+        "Walmart",
+        "MAQ Software",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-permutations-of-an-array-using-stl-in-c/",
+        "https://www.geeksforgeeks.org/permutations-of-a-given-string-using-stl/",
+        "https://www.geeksforgeeks.org/print-all-permutations-of-a-string-with-duplicates-allowed-in-input-string/",
+        "https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-16-on-campus-fteinternship/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-9-on-campus/"
+      ],
+      "statement_text": "Given a string\ns\n, which may contain duplicate characters, your task is to generate and return an array of all\nunique\npermutations of the string. You can return your answer in\nany\norder.",
+      "full_text": "Given a string\ns\n, which may contain duplicate characters, your task is to generate and return an array of all\nunique\npermutations of the string. You can return your answer in\nany\norder.\nExamples:\nInput:\ns = \"ABC\"\nOutput:\n[\"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\"]\nExplanation:\nGiven string ABC has 6 unique permutations.\nInput:\ns = \"ABSG\"\nOutput:\n[\"ABGS\", \"ABSG\", \"AGBS\", \"AGSB\", \"ASBG\", \"ASGB\", \"BAGS\", \"BASG\", \"BGAS\", \"BGSA\", \"BSAG\", \"BSGA\", \"GABS\", \"GASB\", \"GBAS\", \"GBSA\", \"GSAB\", \"GSBA\", \"SABG\", \"SAGB\", \"SBAG\", \"SBGA\", \"SGAB\", \"SGBA\"]\nExplanation:\nGiven string ABSG has 24 unique permutations.\nInput:\ns =\n\"AAA\"\nOutput:\n[\"AAA\"]\nExplanation:\nNo other unique permutations can be formed as all the characters are same.\nConstraints:\n1 <= s.size() <= 9\ns contains only Uppercase english alphabets",
+      "examples": [
+        "Input:\ns = \"ABC\"\nOutput:\n[\"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\"]\nExplanation:\nGiven string ABC has 6 unique permutations.",
+        "Input:\ns = \"ABSG\"\nOutput:\n[\"ABGS\", \"ABSG\", \"AGBS\", \"AGSB\", \"ASBG\", \"ASGB\", \"BAGS\", \"BASG\", \"BGAS\", \"BGSA\", \"BSAG\", \"BSGA\", \"GABS\", \"GASB\", \"GBAS\", \"GBSA\", \"GSAB\", \"GSBA\", \"SABG\", \"SAGB\", \"SBAG\", \"SBGA\", \"SGAB\", \"SGBA\"]\nExplanation:\nGiven string ABSG has 24 unique permutations.",
+        "Input:\ns =\n\"AAA\"\nOutput:\n[\"AAA\"]\nExplanation:\nNo other unique permutations can be formed as all the characters are same."
+      ],
+      "constraints_text": "Constraints:\n1 <= s.size() <= 9\ns contains only Uppercase english alphabets",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given a string <strong>s</strong>, which may contain duplicate characters, your task is to generate and return an array of all <strong>unique </strong>permutations of the string. You can return your answer in <strong>any </strong>order.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"ABC\"\n<strong>Output: </strong>[\"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\"]\n<strong>Explanation: </strong>Given string ABC has 6 unique permutations.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"ABSG\"\n<strong>Output: </strong>[\"ABGS\", \"ABSG\", \"AGBS\", \"AGSB\", \"ASBG\", \"ASGB\", \"BAGS\", \"BASG\", \"BGAS\", \"BGSA\", \"BSAG\", \"BSGA\", \"GABS\", \"GASB\", \"GBAS\", \"GBSA\", \"GSAB\", \"GSBA\", \"SABG\", \"SAGB\", \"SBAG\", \"SBGA\", \"SGAB\", \"SGBA\"]\n<strong>Explanation: </strong>Given string ABSG has 24 unique permutations.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s =<strong> </strong>\"AAA\"\n<strong>Output: </strong>[\"AAA\"]<br /></span><strong style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong><span style=\"font-family: -apple-system, system-ui, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;\"><span style=\"font-size: 18.6667px;\">No other unique permutations can be formed as all the characters are same.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= s.size() &lt;= 9<br />s contains only Uppercase english alphabets</span></p>"
+    },
+    "qnum": 2476
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/-rearrange-array-alternately-1587115620/1",
+      "problem_name": "Rearrange Array Alternately",
+      "slug": "-rearrange-array-alternately-1587115620",
+      "difficulty": "Medium",
+      "accuracy": "35.15%",
+      "marks": 4,
+      "all_submissions": 273747,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/rearrange-array-maximum-minimum-form-set-2-o1-extra-space/",
+        "https://www.geeksforgeeks.org/rearrange-array-maximum-minimum-form/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array of\npositive\nintegers. Your task is to rearrange the array elements alternatively i.e. first element should be the max value, the second should be the min value, the third should be the second max, the fourth should be the second min, and so on.\nNote:\nModify the original array itself. Do it without using any extra space. You do not have to return anything.",
+      "full_text": "Given an array of\npositive\nintegers. Your task is to rearrange the array elements alternatively i.e. first element should be the max value, the second should be the min value, the third should be the second max, the fourth should be the second min, and so on.\nNote:\nModify the original array itself. Do it without using any extra space. You do not have to return anything.\nExamples:\nInput:\narr[] = [1, 2, 3, 4, 5, 6]\nOutput:\n[6, 1, 5, 2, 4, 3]\nExplanation:\nMax element = 6, min = 1, second max = 5, second min = 2, and so on... The modified array is: [6, 1, 5, 2, 4, 3]\nInput:\narr[]= [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]\nOutput:\n[110, 10, 100, 20, 90, 30, 80, 40, 70, 50, 60]\nExplanation:\nMax element = 110, min = 10, second max = 100, second min = 20, and so on... Modified array is : [110, 10, 100, 20, 90, 30, 80, 40, 70, 50, 60]\nInput:\narr[]= [1]\nOutput:\n[1]\nConstraints:\n1 ≤ arr.size ≤ 10\n6\n1 ≤ arr[i] ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 4, 5, 6]\nOutput:\n[6, 1, 5, 2, 4, 3]\nExplanation:\nMax element = 6, min = 1, second max = 5, second min = 2, and so on... The modified array is: [6, 1, 5, 2, 4, 3]",
+        "Input:\narr[]= [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]\nOutput:\n[110, 10, 100, 20, 90, 30, 80, 40, 70, 50, 60]\nExplanation:\nMax element = 110, min = 10, second max = 100, second min = 20, and so on... Modified array is : [110, 10, 100, 20, 90, 30, 80, 40, 70, 50, 60]",
+        "Input:\narr[]= [1]\nOutput:\n[1]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size ≤ 10\n6\n1 ≤ arr[i] ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array of <strong>positive</strong> integers. Your task is to rearrange the array elements alternatively i.e. first element should be the max value, the second should be the min value, the third should be the second max, the fourth should be the second min, and so on.</span><br /><span style=\"font-size: 14pt;\"><strong>Note:&nbsp;</strong>Modify the original array itself. Do it without using any extra space. You do not have to return anything.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4, 5, 6]\n<strong>Output: </strong>[6, 1, 5, 2, 4, 3]<strong>\nExplanation: </strong>Max element = 6, min = 1, second max = 5, second min = 2, and so on... The modified array is: [6, 1, 5, 2, 4, 3]</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[]= [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 110]\n<strong>Output: </strong>[110, 10, 100, 20, 90, 30, 80, 40, 70, 50, 60]<strong>\nExplanation: </strong>Max element = 110, min = 10, second max = 100, second min = 20, and so on... Modified array is : [110, 10, 100, 20, 90, 30, 80, 40, 70, 50, 60]\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[]= [1]\n<strong>Output: </strong>[1]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">1 &le; arr.size &le; 10<sup>6</sup></span><br /><span style=\"font-size: 14pt;\">1 &le; arr[i] &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 2477
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/return-two-prime-numbers2509/1",
+      "problem_name": "Return two prime numbers",
+      "slug": "return-two-prime-numbers2509",
+      "difficulty": "Medium",
+      "accuracy": "58.64%",
+      "marks": 4,
+      "all_submissions": 33933,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Yahoo"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms",
+          "sieve"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms",
+        "sieve"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Yahoo"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-two-prime-numbers-with-given-sum/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/zoho-interview-experience-set-21-campus/"
+      ],
+      "statement_text": "Given an even number\nn\n(greater than 2), return two prime numbers whose sum will be equal to the given number. There are several combinations possible. Print only the pair whose minimum value is the smallest among all the minimum values of pairs and print the minimum element first.\nNOTE:\nA solution will always exist, read\nGoldbach's conjecture\n.\nExample 1:\nInput:\nn = 74\nOutput:\n3 71\nExplaination:\nThere are several possibilities\nlike 37 37. But the minimum value of this pair\nis 3 which is smallest among all possible\nminimum values of all the pairs.\nExample 2:\nInput:\nn = 4\nOutput:\n2 2\nExplaination:\nThis is the only possible\nprtitioning of 4.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nprimeDivision()\nwhich takes n as input parameter and returns the partition satisfying the condition.\nExpected Time Complexity:\nO(N*log(logN))\nExpected Auxiliary Space:\nO(N)",
+      "full_text": "Given an even number\nn\n(greater than 2), return two prime numbers whose sum will be equal to the given number. There are several combinations possible. Print only the pair whose minimum value is the smallest among all the minimum values of pairs and print the minimum element first.\nNOTE:\nA solution will always exist, read\nGoldbach's conjecture\n.\nExample 1:\nInput:\nn = 74\nOutput:\n3 71\nExplaination:\nThere are several possibilities\nlike 37 37. But the minimum value of this pair\nis 3 which is smallest among all possible\nminimum values of all the pairs.\nExample 2:\nInput:\nn = 4\nOutput:\n2 2\nExplaination:\nThis is the only possible\nprtitioning of 4.\nYour Task:\nYou do not need to read input or print anything. Your task is to complete the function\nprimeDivision()\nwhich takes n as input parameter and returns the partition satisfying the condition.\nExpected Time Complexity:\nO(N*log(logN))\nExpected Auxiliary Space:\nO(N)\nConstraints:\n4 ≤ n ≤ 10\n4",
+      "examples": [
+        "Input:\nn = 74\nOutput:\n3 71\nExplaination:\nThere are several possibilities\nlike 37 37. But the minimum value of this pair\nis 3 which is smallest among all possible\nminimum values of all the pairs.",
+        "Input:\nn = 4\nOutput:\n2 2\nExplaination:\nThis is the only possible\nprtitioning of 4."
+      ],
+      "constraints_text": "Constraints:\n4 ≤ n ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an even number <strong>n </strong>(greater than 2), return two prime numbers whose sum will be equal to the given number. There are several combinations possible. Print only the pair whose minimum value is the smallest among all the minimum values of pairs and print the minimum element first.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>NOTE:</strong>&nbsp;A solution will always exist,&nbsp;read&nbsp;<a href=\"https://en.wikipedia.org/wiki/Goldbach%27s_conjecture\" rel=\"nofollow\">Goldbach's conjecture</a>.</span><span style=\"font-size: 18px;\">&nbsp;</span></p>\n<p><strong><span style=\"font-size: 18px;\">Example 1:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> n = 74\n<strong>Output:</strong> 3 71\n<strong>Explaination:</strong> There are several possibilities \nlike 37 37. But the minimum value of this pair \nis 3 which is smallest among all possible \nminimum values of all the pairs.</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Example 2:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> n = 4\n<strong>Output:</strong> 2 2\n<strong>Explaination:</strong> This is the only possible \nprtitioning of 4.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You do not need to read input or print anything. Your task is to complete the function <strong>primeDivision()</strong> which takes n as input parameter and returns the partition satisfying the condition.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(N*log(logN))<br /><strong>Expected Auxiliary Space: </strong>O(N)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />4 &le; n &le; 10<sup>4</sup>&nbsp;&nbsp;</span></p>"
+    },
+    "qnum": 2478
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-each-word-in-a-given-string1001/1",
+      "problem_name": "Reverse each word in a given string",
+      "slug": "reverse-each-word-in-a-given-string1001",
+      "difficulty": "Medium",
+      "accuracy": "53.96%",
+      "marks": 4,
+      "all_submissions": 60844,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Payu",
+          "MAQ Software",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Stack",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Stack",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Payu",
+        "MAQ Software",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/reverse-individual-words/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-15-on-campus/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-265-on-campus-internship/",
+        "https://www.geeksforgeeks.org/zoho-interview-experience-set-14-on-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-6-recruitment-drive/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-set-98-on-campus-for-idc-2/"
+      ],
+      "statement_text": "You are given a string\ns\n. You need to reverse each word in it where the words are separated by spaces and return the modified string.\nNote:\nThe string may contain leading or trailing spaces, or multiple spaces between two words. The returned string should only have a\nsingle space\nseparating the words, and\nno extra spaces\nshould be included.",
+      "full_text": "You are given a string\ns\n. You need to reverse each word in it where the words are separated by spaces and return the modified string.\nNote:\nThe string may contain leading or trailing spaces, or multiple spaces between two words. The returned string should only have a\nsingle space\nseparating the words, and\nno extra spaces\nshould be included.\nExamples:\nInput:\ns = \" i like this program very much \"\nOutput:\n\"i ekil siht margorp yrev hcum\"\nExplanation\n: The words are reversed as follows:\n\"i\" -> \"i\",\"like\"->\"ekil\",\n\"this\"->\"siht\",\"program\" -> \"margorp\",\n\"very\" -> \"yrev\",\"much\" -> \"hcum\".\nInput\n: s = \" pqr mno \"\nOutput:\n\"rqp onm\"\nExplanation\n: The words are reversed as follows:\n\"pqr\" -> \"rqp\" ,\n\"mno\" -> \"onm\"\nInput\n: s = \"pqr\"\nOutput:\n\"rqp\"\nExplanation\n: The words are reversed as follows:\n\"pqr\" -> \"rqp\"\nConstraints:\n1 <= s.size() <= 10\n5\nstring\ns\ncontains only lowercase English alphabets and spaces",
+      "examples": [
+        "Input:\ns = \" i like this program very much \"\nOutput:\n\"i ekil siht margorp yrev hcum\"\nExplanation\n: The words are reversed as follows:\n\"i\" -> \"i\",\"like\"->\"ekil\",\n\"this\"->\"siht\",\"program\" -> \"margorp\",\n\"very\" -> \"yrev\",\"much\" -> \"hcum\".",
+        "Input\n: s = \" pqr mno \"\nOutput:\n\"rqp onm\"\nExplanation\n: The words are reversed as follows:\n\"pqr\" -> \"rqp\" ,\n\"mno\" -> \"onm\"",
+        "Input\n: s = \"pqr\"\nOutput:\n\"rqp\"\nExplanation\n: The words are reversed as follows:\n\"pqr\" -> \"rqp\""
+      ],
+      "constraints_text": "Constraints:\n1 <= s.size() <= 10\n5\nstring\ns\ncontains only lowercase English alphabets and spaces",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a string <strong>s</strong>. You need to reverse each word in it where the words are separated by spaces and return the modified string.</span></p>\n<p><span style=\"font-size: 14pt;\"><span style=\"box-sizing: border-box; font-weight: bolder; line-height: 1.7em; color: #1e2229; background-color: #ffffff; font-family: var(--gfg-font-secondary) !important;\">Note:&nbsp;</span><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\">The string may contain leading or trailing spaces, or multiple spaces between two words. The returned string should only have a&nbsp;</span><span style=\"box-sizing: border-box; font-weight: bolder; line-height: 1.7em; color: #1e2229; background-color: #ffffff; font-family: var(--gfg-font-secondary) !important;\">single space</span><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\">&nbsp;separating the words, and&nbsp;</span><span style=\"box-sizing: border-box; font-weight: bolder; line-height: 1.7em; color: #1e2229; background-color: #ffffff; font-family: var(--gfg-font-secondary) !important;\">no extra spaces</span><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\"> should be included.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \" i like this program very much \"\n<strong>Output: </strong>\"i ekil siht margorp yrev hcum\"\n<strong>Explanation</strong>: The words are reversed as follows:<br />\"i\" -&gt; \"i\",\"like\"-&gt;\"ekil\",\n\"this\"-&gt;\"siht\",\"program\" -&gt; \"margorp\",\n\"very\" -&gt; \"yrev\",\"much\" -&gt; \"hcum\".</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: s = \" pqr mno \"\n<strong>Output: </strong>\"rqp onm\"\n<strong>Explanation</strong>: The words are reversed as follows:<br />\"pqr\" -&gt; \"rqp\" ,\n\"mno\" -&gt; \"onm\"<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: s = \"pqr\"\n<strong>Output: </strong>\"rqp\"\n<strong>Explanation</strong>: The words are reversed as follows:</span><br /><span style=\"font-size: 14pt;\">\"pqr\" -&gt; \"rqp\"</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= s.size() &lt;= 10<sup>5<br /></sup><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\">string&nbsp;</span><span style=\"box-sizing: border-box; font-weight: bolder; line-height: 1.7em; color: #1e2229; background-color: #ffffff; font-family: var(--gfg-font-secondary) !important;\"><code style=\"box-sizing: border-box; line-height: 1.7em; font-family: var(--gfg-font-primary) !important; color: var(--text-color) !important; background-color: var(--background) !important;\">s</code></span><span style=\"color: #1e2229; font-family: Nunito; background-color: #ffffff;\">&nbsp;contains only lowercase English alphabets and spaces</span></span></p>"
+    },
+    "qnum": 2479
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/rotate-by-90-degree0356/1",
+      "problem_name": "Rotate by 90 degree",
+      "slug": "rotate-by-90-degree0356",
+      "difficulty": "Medium",
+      "accuracy": "66.8%",
+      "marks": 4,
+      "all_submissions": 69619,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&mat[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "D-E-Shaw"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "D-E-Shaw"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/rotate-a-matrix-by-90-degree-in-clockwise-direction-without-using-any-extra-space/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-set-102-on-campus-for-idc/",
+        "https://www.geeksforgeeks.org/samsung-r-d-interview-questions/",
+        "https://www.geeksforgeeks.org/samsung-rd-bangalore-freshers-full-timeinternship/"
+      ],
+      "statement_text": "Given a\nsquare\nmat[][]\n. The task is to rotate it by\n90 degrees in clockwise\ndirection without using any extra space.",
+      "full_text": "Given a\nsquare\nmat[][]\n. The task is to rotate it by\n90 degrees in clockwise\ndirection without using any extra space.\nExamples:\nInput:\nmat[][] = [[1 2 3], [4 5 6], [7 8 9]]\nOutput:\n7 4 1\n8 5 2\n9 6 3\nInput:\nmat[][] = [1 2], [3 4]\nOutput:\n3 1\n4 2\nInput:\nmat[][] = [[1]]\nOutput:\n1\nConstraints:\n1 ≤ mat.size() ≤ 1000\n1 <= mat[][] <= 100",
+      "examples": [
+        "Input:\nmat[][] = [[1 2 3], [4 5 6], [7 8 9]]\nOutput:\n7 4 1\n8 5 2\n9 6 3",
+        "Input:\nmat[][] = [1 2], [3 4]\nOutput:\n3 1\n4 2",
+        "Input:\nmat[][] = [[1]]\nOutput:\n1"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ mat.size() ≤ 1000\n1 <= mat[][] <= 100",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a<strong> </strong>square&nbsp;<strong>mat[][]</strong>. The task is to rotate it by<strong> 90 degrees in clockwise</strong> direction without using any extra space.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>mat[][] = [[1 2 3], [4 5 6], [7 8 9]]\n<strong>Output:</strong>\n7 4 1 <br />8 5 2<br />9 6 3</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>mat[][] = [1 2], [3 4]<br /><strong>Output:<br /></strong>3 1 <br />4 2<br /></span></pre>\n<pre><strong><span style=\"font-size: 14pt;\">Input: </span></strong><span style=\"font-size: 14pt;\">mat[][] = [[1]]<br /><strong>Output:<br /></strong></span><span style=\"font-size: 14pt;\">1</span></pre>\n<p><span style=\"font-size: 18px;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Constraints:<br /></strong></span><span style=\"font-size: 18px;\">1 &le; mat.size() &le; 1000<br /></span><span style=\"font-size: 18px;\">1 &lt;= mat[][] &lt;= 100</span></p>"
+    },
+    "qnum": 2480
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/snake-and-ladder-problem4816/1",
+      "problem_name": "Snake and Ladder Problem",
+      "slug": "snake-and-ladder-problem4816",
+      "difficulty": "Medium",
+      "accuracy": "34.65%",
+      "marks": 4,
+      "all_submissions": 58950,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "MAQ Software",
+          "Adobe",
+          "Nutanix",
+          "Belzabar"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "DFS",
+          "Graph",
+          "BFS",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "DFS",
+        "Graph",
+        "BFS",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "MAQ Software",
+        "Adobe",
+        "Nutanix",
+        "Belzabar"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/snake-ladder-problem-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-set-6/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-on-campus-internship/"
+      ],
+      "statement_text": "Given a 5x6 snakes and ladders board, find the minimum number of dice throws required to reach the destination or last cell (30th cell) from the source (1st cell).\n\nYou are given an integer N denoting the total number of snakes and ladders and an array arr[] of 2*N size where 2*i and (2*i + 1)th values denote the starting and ending point respectively of ith snake or ladder. The board looks like the following.\n\nNote: Assume that you have complete control over the 6 sided dice. No ladder starts from 1st cell.\n\n\n\nExample 1:\n\nInput:\nN = 8\narr[] = {3, 22, 5, 8, 11, 26, 20, 29,\n       17, 4, 19, 7, 27, 1, 21, 9}\nOutput: 3\nExplanation:\nThe given board is the board shown\nin the figure. For the above board\noutput will be 3.\na) For 1st throw get a 2.\nb) For 2nd throw get a 6.\nc) For 3rd throw get a 2.\n\nYour Task:\n\nYou do not need to read input or print anything. Your task is to complete the function minThrow() which takes N and arr as input parameters and returns the minimum number of throws required to reach the end of the game.\n\nExpected Time Complexity: O(N)\n\nExpected Auxiliary Space: O(N)\n\nConstraints:\n\n1 ≤ N ≤ 10\n\n1 ≤ arr[i] ≤ 30",
+      "full_text": "Given a 5x6 snakes and ladders board, find the minimum number of dice throws required to reach the destination or last cell (30th cell) from the source (1st cell).\n\nYou are given an integer N denoting the total number of snakes and ladders and an array arr[] of 2*N size where 2*i and (2*i + 1)th values denote the starting and ending point respectively of ith snake or ladder. The board looks like the following.\n\nNote: Assume that you have complete control over the 6 sided dice. No ladder starts from 1st cell.\n\n\n\nExample 1:\n\nInput:\nN = 8\narr[] = {3, 22, 5, 8, 11, 26, 20, 29,\n       17, 4, 19, 7, 27, 1, 21, 9}\nOutput: 3\nExplanation:\nThe given board is the board shown\nin the figure. For the above board\noutput will be 3.\na) For 1st throw get a 2.\nb) For 2nd throw get a 6.\nc) For 3rd throw get a 2.\n\nYour Task:\n\nYou do not need to read input or print anything. Your task is to complete the function minThrow() which takes N and arr as input parameters and returns the minimum number of throws required to reach the end of the game.\n\nExpected Time Complexity: O(N)\n\nExpected Auxiliary Space: O(N)\n\nConstraints:\n\n1 ≤ N ≤ 10\n\n1 ≤ arr[i] ≤ 30",
+      "examples": [
+        "Input:\nN = 8\narr[] = {3, 22, 5, 8, 11, 26, 20, 29,\n17, 4, 19, 7, 27, 1, 21, 9}\nOutput:\n3\nExplanation:\nThe given board is the board shown\nin the figure. For the above board\noutput will be 3.\na) For 1st throw get a 2.\nb) For 2nd throw get a 6.\nc) For 3rd throw get a 2."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 10\n1 ≤ arr[i] ≤ 30",
+      "question_html": "<p><span style=\"font-size:18px\">Given a <strong>5x6</strong>&nbsp;snakes and ladders board, find the minimum number of dice throws required to reach the destination or last cell (<strong>30<sup>th</sup></strong>&nbsp;cell) from the source (1st cell). </span></p>\r\n\r\n<p><span style=\"font-size:18px\">You are given an integer&nbsp;<strong>N </strong>denoting&nbsp;the&nbsp;total number of snakes and ladders&nbsp;and an array <strong>arr[]</strong>&nbsp;of <strong>2*N</strong> size where <strong>2*i</strong> and <strong>(2*i + 1)<sup>th</sup></strong>&nbsp;values denote the starting and ending point respectively of <strong>i<sup>th&nbsp;</sup></strong>snake or ladder. The&nbsp;board looks like the following.<br />\r\n<strong>Note:&nbsp;</strong>Assume that you have&nbsp;complete control over the 6 sided dice. No ladder starts from 1st cell.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<img alt=\"\" src=\"https://contribute.geeksforgeeks.org/wp-content/uploads/snake-and-ladders.jpg\" style=\"border-style:solid; border-width:4px; height:292px; width:436px\" /></span></p>\r\n\r\n<p><strong><span style=\"font-size:18px\">Example 1:</span></strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nN = 8\r\narr[] = {3, 22, 5, 8, 11, 26, 20, 29, \r\n&nbsp;      17, 4, 19, 7, 27, 1, 21, 9}\r\n<strong>Output: </strong>3\r\n<strong>Explanation:</strong>\r\nThe given board is the board shown\r\nin the figure. For the above board \r\noutput will be 3. \r\na) For 1st throw get a 2. \r\nb) For 2nd throw get a 6.\r\nc) For 3rd throw get a 2.</span></pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou do not need to read input or print anything. Your task is to complete the function <strong>minThrow()</strong> which takes <strong>N</strong> and <strong>arr</strong> as input parameters and returns the minimum number of throws required to reach the end of the game.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(N)<br />\r\n<strong>Expected Auxiliary Space:</strong> O(N)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &le; N &le; 10<br />\r\n1 &le; arr[i] &le; 30&nbsp;&nbsp;</span></p>\r\n"
+    },
+    "qnum": 2481
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/sort-in-specific-order2422/1",
+      "problem_name": "Sort in specific order",
+      "slug": "sort-in-specific-order2422",
+      "difficulty": "Medium",
+      "accuracy": "52.55%",
+      "marks": 4,
+      "all_submissions": 56299,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Microsoft"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Sorting",
+          "Data Structures",
+          "Algorithms",
+          "Numbers"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Sorting",
+        "Data Structures",
+        "Algorithms",
+        "Numbers"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Microsoft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sort-even-numbers-ascending-order-sort-odd-numbers-descending-order/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[]\nof positive integers. Your have to sort them so that the first part of the array contains\nodd numbers\nsorted in\ndescending order\n, and the rest of the portion contains\neven numbers\nsorted in\nascending order\n.",
+      "full_text": "Given an array\narr[]\nof positive integers. Your have to sort them so that the first part of the array contains\nodd numbers\nsorted in\ndescending order\n, and the rest of the portion contains\neven numbers\nsorted in\nascending order\n.\nExamples:\nInput:\narr[] = [1, 2, 3, 5, 4, 7, 10]\nOutput:\n[7, 5, 3, 1, 2, 4, 10]\nExplanation:\n7, 5, 3, 1 are odd numbers in descending order and 2, 4, 10 are even numbers in ascending order.\nInput:\narr[] = [0, 4, 5, 3, 7, 2, 1]\nOutput:\n[7, 5, 3, 1, 0, 2, 4]\nExplanation:\n7, 5, 3, 1 are odd numbers in descending order and 0, 2, 4 are even numbers in ascending order.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr\ni\n≤ 10\n9",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 5, 4, 7, 10]\nOutput:\n[7, 5, 3, 1, 2, 4, 10]\nExplanation:\n7, 5, 3, 1 are odd numbers in descending order and 2, 4, 10 are even numbers in ascending order.",
+        "Input:\narr[] = [0, 4, 5, 3, 7, 2, 1]\nOutput:\n[7, 5, 3, 1, 0, 2, 4]\nExplanation:\n7, 5, 3, 1 are odd numbers in descending order and 0, 2, 4 are even numbers in ascending order."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr\ni\n≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[]</strong> of positive integers. Your have to sort them so that the first part of the array contains <strong>odd numbers</strong> sorted in <strong>descending order</strong>, and the rest of the portion contains <strong>even numbers</strong> sorted in <strong>ascending order</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 2, 3, 5, 4, 7, 10]\n<strong>Output:</strong> [7, 5, 3, 1, 2, 4, 10]\n</span><strong><span style=\"font-size: 18px;\">Explanation: </span></strong><span style=\"font-size: 18px;\">7, 5, 3, 1 are odd numbers in descending order and 2, 4, 10 are even numbers in ascending order.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [0, 4, 5, 3, 7, 2, 1]</span>\n<span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[7, 5, 3, 1, 0, 2, 4]<br /><strong>Explanation: </strong>7, 5, 3, 1 are odd numbers in descending order and 0, 2, 4 are even numbers in ascending order.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 14pt;\">1 &le; arr.size() &le; 10<sup>5</sup><br />0 &le; arr<sub>i </sub>&le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 2482
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/spirally-traversing-a-matrix-1587115621/1",
+      "problem_name": "Spirally traversing a matrix",
+      "slug": "spirally-traversing-a-matrix-1587115621",
+      "difficulty": "Medium",
+      "accuracy": "35.2%",
+      "marks": 4,
+      "all_submissions": 344523,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&m = &!//!&mat = ",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Morgan Stanley",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "D-E-Shaw",
+          "MakeMyTrip",
+          "Oracle",
+          "MAQ Software",
+          "Adobe",
+          "nearbuy",
+          "Nagarro",
+          "BrowserStack",
+          "Salesforce",
+          "Zoho"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Matrix",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Matrix",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Morgan Stanley",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "D-E-Shaw",
+        "MakeMyTrip",
+        "Oracle",
+        "MAQ Software",
+        "Adobe",
+        "nearbuy",
+        "Nagarro",
+        "BrowserStack",
+        "Salesforce",
+        "Zoho"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-a-given-matrix-in-spiral-form/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-14-for-senior-android-developer/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-6-online-coding/",
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-for-sde-1-2/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/",
+        "https://www.geeksforgeeks.org/adobe-interview-questions-computer-scientist/"
+      ],
+      "statement_text": "You are given a rectangular matrix\nmat[][]\nof size\nn x m\n, and your task is to return an array while\ntraversing\nthe matrix in\nspiral\nform.",
+      "full_text": "You are given a rectangular matrix\nmat[][]\nof size\nn x m\n, and your task is to return an array while\ntraversing\nthe matrix in\nspiral\nform.\nExamples:\nInput\n: mat[][] = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]\nOutput\n: [1, 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5, 6, 7, 11, 10]\nExplanation\n:\nInput\n: mat[][] = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12], [13, 14, 15, 16, 17, 18]]\nOutput\n: [1, 2, 3, 4, 5, 6, 12, 18, 17, 16, 15, 14, 13, 7, 8, 9, 10, 11]\nExplanation\n: Applying same technique as shown above.\nInput\n: mat[][] = [[32, 44, 27, 23], [54, 28, 50, 62]]\nOutput\n: [32, 44, 27, 23, 62, 50, 28, 54]\nExplanation\n: Applying same technique as shown above, output will be [32, 44, 27, 23, 62, 50, 28, 54].\nConstraints:\n1 ≤ n, m ≤1000\n0 ≤ mat[i][j] ≤100",
+      "examples": [
+        "Input\n: mat[][] = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]\nOutput\n: [1, 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5, 6, 7, 11, 10]\nExplanation\n:",
+        "Input\n: mat[][] = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12], [13, 14, 15, 16, 17, 18]]\nOutput\n: [1, 2, 3, 4, 5, 6, 12, 18, 17, 16, 15, 14, 13, 7, 8, 9, 10, 11]\nExplanation\n: Applying same technique as shown above.",
+        "Input\n: mat[][] = [[32, 44, 27, 23], [54, 28, 50, 62]]\nOutput\n: [32, 44, 27, 23, 62, 50, 28, 54]\nExplanation\n: Applying same technique as shown above, output will be [32, 44, 27, 23, 62, 50, 28, 54]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤1000\n0 ≤ mat[i][j] ≤100",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a rectangular matrix <strong>mat[][]</strong> of size <strong>n x m</strong>, and your task is to return an array while <strong>traversing</strong>&nbsp;the matrix in <strong>spiral</strong> form.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[1, 2, 3, 4], [5, 6, 7, 8], [9, 10, 11, 12], [13, 14, 15, 16]]\n<strong>Output</strong>: [1, 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5, 6, 7, 11, 10]\n<strong>Explanation</strong>: <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701264/Web/Other/blobid1_1734498654.png\" width=\"456\" height=\"228\" /><br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[1, 2, 3, 4, 5, 6], [7, 8, 9, 10, 11, 12], [13, 14, 15, 16, 17, 18]]\n<strong>Output</strong>: [1, 2, 3, 4, 5, 6, 12, 18, 17, 16, 15, 14, 13, 7, 8, 9, 10, 11]\n<strong>Explanation</strong>: Applying same technique as shown above.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[32, 44, 27, 23], [54, 28, 50, 62]]\n<strong>Output</strong>: [32, 44, 27, 23, 62, 50, 28, 54]\n<strong>Explanation</strong>: Applying same technique as shown above, output will be [32, 44, 27, 23, 62, 50, 28, 54].</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; n, m &le;1000<br />0 &le; mat[i][j] &le;100</span></p>"
+    },
+    "qnum": 2483
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/sum-of-numbers-or-number1219/1",
+      "problem_name": "Sum of two large numbers",
+      "slug": "sum-of-numbers-or-number1219",
+      "difficulty": "Medium",
+      "accuracy": "22.58%",
+      "marks": 4,
+      "all_submissions": 143269,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 =&!//!&s2 =",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sum-two-large-numbers/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/microsoft-interview-experience-set-129-campus-internship/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-sde-1-fte-6-months-internship-amazewow/"
+      ],
+      "statement_text": "Given two strings denoting non-negative numbers s1 and s2. Calculate the sum of s1 and s2.",
+      "full_text": "Given two strings denoting non-negative numbers s1 and s2. Calculate the sum of s1 and s2.\nExamples:\nInput:\ns1 = \"25\", s2 = \"23\"\nOutput: \"\n48\"\nExplanation:\nThe sum of 25 and 23 is 48.\nInput:\ns1 = \"2500\", s2 = \"23\"\nOutput: \"\n2523\"\nExplanation:\nThe sum of 2500 and 23 is 2523.\nInput:\ns1 = \"2\", s2 = \"3\"\nOutput: \"\n5\"\nExplanation:\nThe sum of 2 and 3 is 5.\nConstraints:\n1 <= |s1|, |s2| <= 10\n5",
+      "examples": [
+        "Input:\ns1 = \"25\", s2 = \"23\"\nOutput: \"\n48\"\nExplanation:\nThe sum of 25 and 23 is 48.",
+        "Input:\ns1 = \"2500\", s2 = \"23\"\nOutput: \"\n2523\"\nExplanation:\nThe sum of 2500 and 23 is 2523.",
+        "Input:\ns1 = \"2\", s2 = \"3\"\nOutput: \"\n5\"\nExplanation:\nThe sum of 2 and 3 is 5."
+      ],
+      "constraints_text": "Constraints:\n1 <= |s1|, |s2| <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two strings denoting non-negative numbers s1 and s2. Calculate the sum of s1 and s2. </span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s1 = \"25\", s2 = \"23\"\n<strong>Output: \"</strong>48\"\n<strong>Explanation: </strong>The sum of 25 and 23 is 48.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s1 = \"2500\", s2 = \"23\"\n<strong>Output: \"</strong>2523\"\n<strong>Explanation: </strong>The sum of 2500 and 23 is 2523.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s1 = \"2\", s2 = \"3\"\n<strong>Output: \"</strong>5\"\n<strong>Explanation: </strong>The sum of 2 and 3 is 5.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= |s1|, |s2| &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2484
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/the-celebrity-problem/1",
+      "problem_name": "The Celebrity Problem",
+      "slug": "the-celebrity-problem",
+      "difficulty": "Medium",
+      "accuracy": "38.33%",
+      "marks": 4,
+      "all_submissions": 368717,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&mat[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Google",
+          "Fab.com",
+          "One97",
+          "United Health Group",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Stack",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Stack",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Google",
+        "Fab.com",
+        "One97",
+        "United Health Group",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/the-celebrity-problem/"
+      ],
+      "interview_links": [],
+      "statement_text": "A celebrity is a person who is known to all but\ndoes not know\nanyone at a party. A party is being organized by some people. A square matrix\nmat[][]\nof size n*n is used to represent people at the party such that if an element of row\ni\nand column\nj\nis\nset to 1\nit means\nith person knows jth person\n. You need to return the\nindex\nof the\ncelebrity\nin the party, if the celebrity does not exist, return\n-1\n.\nNote:\nFollow\n0-based\nindexing.",
+      "full_text": "A celebrity is a person who is known to all but\ndoes not know\nanyone at a party. A party is being organized by some people. A square matrix\nmat[][]\nof size n*n is used to represent people at the party such that if an element of row\ni\nand column\nj\nis\nset to 1\nit means\nith person knows jth person\n. You need to return the\nindex\nof the\ncelebrity\nin the party, if the celebrity does not exist, return\n-1\n.\nNote:\nFollow\n0-based\nindexing.\nExamples:\nInput:\nmat[][] = [[1, 1, 0],\n[0, 1, 0],\n[0, 1, 1]]\nOutput:\n1\nExplanation:\n0th and 2nd person both know 1st person and 1st person does not know anyone. Therefore, 1 is the celebrity person.\nInput:\nmat[][] = [[1, 1],\n[1, 1]]\nOutput:\n-1\nExplanation:\nSince both the people at the party know each other. Hence none of them is a celebrity person.\nInput:\nmat[][] = [[1]]\nOutput:\n0\nConstraints:\n1 ≤ mat.size() ≤ 1000\n0 ≤ mat[i][j] ≤ 1\nmat[i][i] = 1",
+      "examples": [
+        "Input:\nmat[][] = [[1, 1, 0],\n[0, 1, 0],\n[0, 1, 1]]\nOutput:\n1\nExplanation:\n0th and 2nd person both know 1st person and 1st person does not know anyone. Therefore, 1 is the celebrity person.",
+        "Input:\nmat[][] = [[1, 1],\n[1, 1]]\nOutput:\n-1\nExplanation:\nSince both the people at the party know each other. Hence none of them is a celebrity person.",
+        "Input:\nmat[][] = [[1]]\nOutput:\n0"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ mat.size() ≤ 1000\n0 ≤ mat[i][j] ≤ 1\nmat[i][i] = 1",
+      "question_html": "<p><span style=\"font-size: 14pt;\">A celebrity is a person who is known to all but&nbsp;<strong>does not know</strong>&nbsp;anyone at a party. A party is being organized by some people. A square matrix&nbsp;<strong>mat[][]&nbsp;</strong>of size n*n is used to represent people at the party such that if an element of row<strong> i </strong>and column<strong> j </strong>is<strong> set to 1</strong> it means <strong>ith person knows jth person</strong>.&nbsp;You need to return the <strong>index </strong>of the<strong> celebrity</strong> in the party, if the celebrity does not exist, return&nbsp;<strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;Follow <strong>0-based </strong>indexing.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>mat[][] = [[1, 1, 0],<br />                [0, 1, 0],<br />                [0, 1, 1]]\n<strong>Output:</strong> 1\n<strong>Explanation: </strong>0th and 2nd person both know 1st person and 1st person does not know anyone. Therefore, 1 is the celebrity person.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>mat[][] = [[1, 1], <br />                [1, 1]]\n<strong>Output:</strong> -1\n<strong>Explanation: </strong>Since both the people at the party know each other. Hence none of them is a celebrity person.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>mat[][] = [[1]]\n<strong>Output:</strong> 0</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; mat.size() &le; 1000<br />0 &le; mat[i][j] &le; 1<br />mat[i][i] = 1</span></p>"
+    },
+    "qnum": 2485
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/total-decoding-messages1235/1",
+      "problem_name": "Total Decoding Messages",
+      "slug": "total-decoding-messages1235",
+      "difficulty": "Medium",
+      "accuracy": "15.79%",
+      "marks": 4,
+      "all_submissions": 159317,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "digits = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "MakeMyTrip",
+          "Goldman Sachs",
+          "Nutanix",
+          "Linkedin",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "MakeMyTrip",
+        "Goldman Sachs",
+        "Nutanix",
+        "Linkedin",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-possible-decodings-given-digit-sequence/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-6-online-coding/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-17-for-sde-ii/"
+      ],
+      "statement_text": "A message containing letters\nA-Z\nis being encoded to numbers using the following mapping:\n'A' -> 1\n'B' -> 2\n...\n'Z' -> 26\nYou are given a string\ndigits\n. You have to determine the\ntotal number of ways\nthat message can be decoded.",
+      "full_text": "A message containing letters\nA-Z\nis being encoded to numbers using the following mapping:\n'A' -> 1\n'B' -> 2\n...\n'Z' -> 26\nYou are given a string\ndigits\n. You have to determine the\ntotal number of ways\nthat message can be decoded.\nExamples:\nInput:\ndigits\n= \"123\"\nOutput:\n3\nExplanation:\n\"123\" can be decoded as \"ABC\"(1, 2, 3), \"LC\"(12, 3) and \"AW\"(1, 23).\nInput:\ndigits\n= \"90\"\nOutput:\n0\nExplanation:\n\"90\" cannot be decoded, as it's an invalid string and we cannot decode '0'.\nInput:\ndigits = \"05\"\nOutput:\n0\nExplanation:\n\"05\" cannot be mapped to \"E\" because of the leading zero (\"5\" is different from \"05\"), the string is not a valid encoding message.\nConstraints:\n1 ≤ digits.size() ≤ 10\n3",
+      "examples": [
+        "Input:\ndigits\n= \"123\"\nOutput:\n3\nExplanation:\n\"123\" can be decoded as \"ABC\"(1, 2, 3), \"LC\"(12, 3) and \"AW\"(1, 23).",
+        "Input:\ndigits\n= \"90\"\nOutput:\n0\nExplanation:\n\"90\" cannot be decoded, as it's an invalid string and we cannot decode '0'.",
+        "Input:\ndigits = \"05\"\nOutput:\n0\nExplanation:\n\"05\" cannot be mapped to \"E\" because of the leading zero (\"5\" is different from \"05\"), the string is not a valid encoding message."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ digits.size() ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size: 14pt;\">A message containing letters<code>&nbsp;A-Z </code>is being encoded to numbers using the following mapping:</span></p>\n<div class=\"highlighter-rouge\">\n<blockquote>\n<p><span style=\"font-size: 14pt;\">'A' -&gt; 1 <br />'B' -&gt; 2 <br />... <br />'Z' -&gt; 26 </span></p>\n</blockquote>\n</div>\n<p><span style=\"font-size: 14pt;\">You are given a string <strong>digits</strong>. You have to determine the <strong>total number of ways</strong> that message can be decoded.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">digits </span>= \"123\"\n<strong>Output: </strong>3\n<strong>Explanation: </strong>\"123\" can be decoded as \"ABC\"(1, 2, 3), \"LC\"(12, 3) and \"AW\"(1, 23).\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">digits</span> = \"90\"</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>0\n<strong>Explanation: </strong>\"90\" cannot be decoded, as it's an invalid string and we cannot decode '0'.<sup><br /></sup></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>digits = \"05\"\n<strong>Output: </strong>0\n<strong>Explanation: </strong>\"05\" cannot be mapped to \"E\" because of the leading zero (\"5\" is different from \"05\"), the string is not a valid encoding message.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; digits.size() &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 2486
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/validate-an-ip-address-1587115621/1",
+      "problem_name": "Validate an IP Address",
+      "slug": "validate-an-ip-address-1587115621",
+      "difficulty": "Medium",
+      "accuracy": "11.22%",
+      "marks": 4,
+      "all_submissions": 306093,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-validate-an-ip-address/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a string\ns\nin the form of an IPv4 Address. Your task is to validate an\nIPv4 Address\n, if it is valid return\ntrue\notherwise return\nfalse\n.\nIPv4 addresses\nare canonically represented in dot-decimal notation, which consists of four decimal numbers, each ranging from 0 to 255, separated by dots, e.g., \"172.16.254.1\"\nA\nvalid IPv4 Address\nis of the form x1.x2.x3.x4 where\n0 <= (x1, x2, x3, x4) <= 255\n. Thus, we can write the generalized form of an IPv4 address as (0-255).(0-255).(0-255).(0-255)\nNote:\nHere we are considering numbers only from 0 to 255 and any additional\nleading zeroes\nwill be considered invalid.\nExamples :\nInput:\ns = \"222.111.111.111\"\nOutput:\ntrue\nExplanation:\nHere, the IPv4 address is as per the criteria mentioned and also all four decimal numbers lies in the mentioned range.\nInput:\ns\n= \"5555..555\"\nOutput:\nfalse\nExplanation: \"\n5555..555\" is not a valid IPv4 address, as the middle two portions are missing.\nInput:\ns\n= \"0.0.0.255\"\nOutput:\ntrue",
+      "full_text": "You are given a string\ns\nin the form of an IPv4 Address. Your task is to validate an\nIPv4 Address\n, if it is valid return\ntrue\notherwise return\nfalse\n.\nIPv4 addresses\nare canonically represented in dot-decimal notation, which consists of four decimal numbers, each ranging from 0 to 255, separated by dots, e.g., \"172.16.254.1\"\nA\nvalid IPv4 Address\nis of the form x1.x2.x3.x4 where\n0 <= (x1, x2, x3, x4) <= 255\n. Thus, we can write the generalized form of an IPv4 address as (0-255).(0-255).(0-255).(0-255)\nNote:\nHere we are considering numbers only from 0 to 255 and any additional\nleading zeroes\nwill be considered invalid.\nExamples :\nInput:\ns = \"222.111.111.111\"\nOutput:\ntrue\nExplanation:\nHere, the IPv4 address is as per the criteria mentioned and also all four decimal numbers lies in the mentioned range.\nInput:\ns\n= \"5555..555\"\nOutput:\nfalse\nExplanation: \"\n5555..555\" is not a valid IPv4 address, as the middle two portions are missing.\nInput:\ns\n= \"0.0.0.255\"\nOutput:\ntrue\nConstraints:\n1 ≤ |s| ≤ 15",
+      "examples": [
+        "Input:\ns = \"222.111.111.111\"\nOutput:\ntrue\nExplanation:\nHere, the IPv4 address is as per the criteria mentioned and also all four decimal numbers lies in the mentioned range.",
+        "Input:\ns\n= \"5555..555\"\nOutput:\nfalse\nExplanation: \"\n5555..555\" is not a valid IPv4 address, as the middle two portions are missing.",
+        "Input:\ns\n= \"0.0.0.255\"\nOutput:\ntrue"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ |s| ≤ 15",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a string <strong>s </strong>in the form of an IPv4 Address. Your task is to validate an <strong>IPv4 Address</strong>, if it is valid return <strong>true</strong> otherwise return <strong>false</strong>.</span></p>\n<blockquote>\n<p><span style=\"font-size: 14pt;\"><strong><a href=\"http://en.wikipedia.org/wiki/IP_address\">IPv4 addresses</a></strong> are canonically represented in dot-decimal notation, which consists of four decimal numbers, each ranging from 0 to 255, separated by dots, e.g., \"172.16.254.1\"</span></p>\n<p><span style=\"font-size: 14pt;\">A<strong> valid IPv4 Address</strong> is of the form x1.x2.x3.x4 where <strong>0 &lt;= (x1, x2, x3, x4) &lt;= 255</strong>. Thus, we can write the generalized form of an IPv4 address as (0-255).(0-255).(0-255).(0-255)</span></p>\n</blockquote>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> Here we are considering numbers only from 0 to 255 and any additional <strong>leading zeroes</strong> will be considered invalid.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"222.111.111.111\"\n<strong>Output: </strong>true\n<strong>Explanation:</strong> Here, the IPv4 address is as per the criteria mentioned and also all four decimal numbers lies in the mentioned range.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s<strong> </strong>= \"5555..555\"\n<strong>Output: </strong>false<strong>\nExplanation: \"</strong>5555..555\" is not a valid IPv4 address, as the middle two portions are missing.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s<strong> </strong>= \"0.0.0.255\"\n<strong>Output: </strong>true</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; |s| &le; 15</span></p>"
+    },
+    "qnum": 2487
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/wildcard-pattern-matching/1",
+      "problem_name": "Wildcard Pattern Matching",
+      "slug": "wildcard-pattern-matching",
+      "difficulty": "Medium",
+      "accuracy": "31.13%",
+      "marks": 4,
+      "all_submissions": 97649,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "pat =&!//!&txt =",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Ola Cabs",
+          "Walmart",
+          "Google",
+          "InMobi",
+          "United Health Group"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms",
+          "Recursion",
+          "Strings"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms",
+        "Recursion",
+        "Strings"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Ola Cabs",
+        "Walmart",
+        "Google",
+        "InMobi",
+        "United Health Group"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/wildcard-pattern-matching/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-9-off-campus/"
+      ],
+      "statement_text": "Given two strings\npat\nand\ntxt\nwhich may be of different sizes, You have to return\ntrue\nif the wildcard pattern i.e.\npat\n,\nmatches with\ntxt\nelse return\nfalse\n.\nThe wildcard pattern\npat\ncan include the characters '\n?\n' and '\n*\n'.\n'\n?\n' – matches any single character.\n'\n*\n' – matches any sequence of characters (including the empty sequence).\nNote:\nThe matching should cover the entire\ntxt\n(not partial\ntxt\n).",
+      "full_text": "Given two strings\npat\nand\ntxt\nwhich may be of different sizes, You have to return\ntrue\nif the wildcard pattern i.e.\npat\n,\nmatches with\ntxt\nelse return\nfalse\n.\nThe wildcard pattern\npat\ncan include the characters '\n?\n' and '\n*\n'.\n'\n?\n' – matches any single character.\n'\n*\n' – matches any sequence of characters (including the empty sequence).\nNote:\nThe matching should cover the entire\ntxt\n(not partial\ntxt\n).\nExamples:\nInput:\ntxt = \"abcde\", pat = \"a?c*\"\nOutput:\ntrue\nExplanation:\n'?' matches with 'b' and '*' matches with \"de\".\nInput:\ntxt = \"baaabab\", pat = \"a*ab\"\nOutput:\nfalse\nExplanation\n:\nThe pattern starts with a, but the text starts with b, so the pattern does not match the text.\nInput\n: txt = \"abc\", pat = \"*\"\nOutput:\ntrue\nExplanation\n: '*' matches with whole text \"abc\".\nConstraints:\n1\n≤\ntxt.size(), pat.size()\n≤ 1\n00",
+      "examples": [
+        "Input:\ntxt = \"abcde\", pat = \"a?c*\"\nOutput:\ntrue\nExplanation:\n'?' matches with 'b' and '*' matches with \"de\".",
+        "Input:\ntxt = \"baaabab\", pat = \"a*ab\"\nOutput:\nfalse\nExplanation\n:\nThe pattern starts with a, but the text starts with b, so the pattern does not match the text.",
+        "Input\n: txt = \"abc\", pat = \"*\"\nOutput:\ntrue\nExplanation\n: '*' matches with whole text \"abc\"."
+      ],
+      "constraints_text": "Constraints:\n1\n≤\ntxt.size(), pat.size()\n≤ 1\n00",
+      "question_html": "<p dir=\"ltr\"><span style=\"font-size: 14pt;\">Given two strings&nbsp;<strong><strong>pat&nbsp;</strong></strong>and&nbsp;<strong><strong>txt</strong></strong>&nbsp;which may be of different sizes, You have to return&nbsp;<strong><strong>true</strong></strong>&nbsp;if the wildcard pattern i.e.&nbsp;<strong><strong>pat</strong></strong>,<strong><strong>&nbsp;</strong></strong>matches&nbsp;with&nbsp;<strong><strong>txt</strong></strong>&nbsp;else return&nbsp;<strong><strong>false</strong></strong>.</span></p>\n<p dir=\"ltr\"><span style=\"font-size: 14pt;\">The wildcard pattern&nbsp;<strong><strong>pat</strong></strong>&nbsp;can include the characters '<strong><strong>?</strong></strong>' and '<strong><strong>*</strong></strong>'.</span></p>\n<ul>\n<li value=\"1\"><span style=\"font-size: 14pt;\">'<strong><strong>?</strong></strong>' &ndash; matches any single character.</span></li>\n<li value=\"2\"><span style=\"font-size: 14pt;\">'<strong><strong>*</strong></strong>' &ndash; matches any sequence of characters (including the empty sequence).</span></li>\n</ul>\n<p dir=\"ltr\"><span style=\"font-size: 14pt;\"><strong><strong>Note:&nbsp;</strong></strong>The matching should cover the entire&nbsp;<strong><strong>txt</strong></strong>&nbsp;(not partial&nbsp;<strong><strong>txt</strong></strong>).</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> txt = \"abcde\", pat = \"a?c*\"\n<strong>Output:</strong> true\n<strong>Explanation: </strong>'?' matches with 'b' and '*' matches with \"de\".\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> txt = \"baaabab\", pat = \"a*ab\"\n<strong>Output:</strong> false\n<strong>Explanation</strong>: </span><span style=\"font-size: 18.6667px;\">The pattern starts with a, but the text starts with b, so the pattern does not match the text.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: txt = \"abc\", pat = \"*\"\n<strong>Output:</strong> true\n<strong>Explanation</strong>: '*' matches with whole text \"abc\".</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1&nbsp;<span style=\"font-family: 'Helvetica Neue';\">&le;</span> txt.size(), pat.size()&nbsp;<span style=\"font-family: 'Helvetica Neue';\">&le; 1</span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">00</span></span></p>"
+    },
+    "qnum": 2488
+  },
+  {
+    "company": "Zoho",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-break1352/1",
+      "problem_name": "Word Break",
+      "slug": "word-break1352",
+      "difficulty": "Medium",
+      "accuracy": "40.86%",
+      "marks": 4,
+      "all_submissions": 167919,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = &!//!&dictionary[]",
+        "datatype": "STRING&!//!&STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Hike",
+          "Walmart",
+          "MAQ Software",
+          "Google",
+          "IBM"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Hike",
+        "Walmart",
+        "MAQ Software",
+        "Google",
+        "IBM"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-break-problem-dp-32/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-9-on-campus-for-se-1/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-7-off-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-6/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-22-for-sde-2/"
+      ],
+      "statement_text": "You are given a string\ns\nand a list\ndictionary[]\nof words. Your task is to determine whether the string\ns\ncan be formed by concatenating one or more words from the\ndictionary[]\n.\nNote\n: From\ndictionary[]\n, any word can be taken any number of times and in any order.\nExamples :\nInput:\ns\n= \"ilike\", dictionary[] = [\"i\", \"like\", \"gfg\"]\nOutput:\ntrue\nExplanation:\ns can be breakdown as \"i like\".\nInput\n:\ns\n= \"ilikegfg\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\nOutput:\ntrue\nExplanation\n: s can be breakdown as \"i like gfg\".\nInput\n:\ns\n= \"ilikemangoes\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\nOutput:\nfalse\nExplanation\n: s cannot be formed using dictionary[] words.\nConstraints\n:\n1 ≤ s.size() ≤ 3000\n1 ≤ dictionary.size() ≤ 1000\n1 ≤ dictionary[i].size() ≤ 100",
+      "full_text": "You are given a string\ns\nand a list\ndictionary[]\nof words. Your task is to determine whether the string\ns\ncan be formed by concatenating one or more words from the\ndictionary[]\n.\nNote\n: From\ndictionary[]\n, any word can be taken any number of times and in any order.\nExamples :\nInput:\ns\n= \"ilike\", dictionary[] = [\"i\", \"like\", \"gfg\"]\nOutput:\ntrue\nExplanation:\ns can be breakdown as \"i like\".\nInput\n:\ns\n= \"ilikegfg\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\nOutput:\ntrue\nExplanation\n: s can be breakdown as \"i like gfg\".\nInput\n:\ns\n= \"ilikemangoes\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\nOutput:\nfalse\nExplanation\n: s cannot be formed using dictionary[] words.\nConstraints\n:\n1 ≤ s.size() ≤ 3000\n1 ≤ dictionary.size() ≤ 1000\n1 ≤ dictionary[i].size() ≤ 100",
+      "examples": [
+        "Input:\ns\n= \"ilike\", dictionary[] = [\"i\", \"like\", \"gfg\"]\nOutput:\ntrue\nExplanation:\ns can be breakdown as \"i like\".",
+        "Input\n:\ns\n= \"ilikegfg\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\nOutput:\ntrue\nExplanation\n: s can be breakdown as \"i like gfg\".",
+        "Input\n:\ns\n= \"ilikemangoes\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\nOutput:\nfalse\nExplanation\n: s cannot be formed using dictionary[] words."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ s.size() ≤ 3000\n1 ≤ dictionary.size() ≤ 1000\n1 ≤ dictionary[i].size() ≤ 100",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a string <strong><code data-start=\"145\" data-end=\"148\">s</code></strong> and a list <strong><code data-start=\"160\" data-end=\"174\">dictionary[]</code></strong> of words. Your task is to determine whether the string <strong><code data-start=\"230\" data-end=\"233\">s</code></strong> can be formed by concatenating one or more words from the <strong><code data-start=\"292\" data-end=\"306\">dictionary[]</code></strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note</strong>: From&nbsp;<strong>dictionary[]</strong>, any word can be taken any number of times and in any order.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">s</span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">&nbsp;</strong>= \"ilike\", dictionary[] = [\"i\", \"like\", \"gfg\"]<br /><strong>Output: </strong>true\n<strong>Explanation: </strong>s can be breakdown as \"i like\".\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: <span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">s</span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">&nbsp;</strong>= \"ilikegfg\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\n<strong>Output: </strong>true\n<strong>Explanation</strong>: s can be breakdown as \"i like gfg\".</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: <span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">s</span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">&nbsp;</strong>= \"ilikemangoes\", dictionary[] = [\"i\", \"like\", \"man\", \"india\", \"gfg\"]\n<strong>Output: </strong>false\n<strong>Explanation</strong>: s cannot be formed using dictionary[] words.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &le; s.size() &le; 3000<br />1 &le; dictionary.size() &le; 1000<br />1 &le; dictionary[i].size() &le; 100</span></p>"
+    },
+    "qnum": 2489
+  }
+]

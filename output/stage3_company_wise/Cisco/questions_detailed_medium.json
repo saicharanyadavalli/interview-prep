@@ -1,0 +1,812 @@
+[
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/array-to-bst4443/1",
+      "problem_name": "Array to BST",
+      "slug": "array-to-bst4443",
+      "difficulty": "Medium",
+      "accuracy": "46.02%",
+      "marks": 4,
+      "all_submissions": 87668,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Snapdeal",
+          "Adobe",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Snapdeal",
+        "Adobe",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sorted-array-to-balanced-bst/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-9-internship-rd/"
+      ],
+      "statement_text": "Given a sorted array arr[]. Convert it into a Height Balanced Binary Search Tree (BST) and return the root of the BST.\n\nHeight-balanced BST means a binary tree in which the depth of the left subtree and the right subtree of every node never differ by more than 1.\n\nNote: You can return any BST, the driver code will check the BST, and print true if it is a Height-balanced BST else print false.\n\nExamples :\n\nInput: arr[] = [10, 20, 30]\nOutput: true\nExplanation: Only possible Height Balanced BST will be [20, 10, 30]\n\nInput: arr[] = [1, 5, 9, 14, 23, 27]\nOuput: true\nExplanation: One of the possible Height Balanced BST will be [9, 1, 23, N, 5, 14, 27]\n\nConstraints:\n1 ≤ arr.size() ≤ 1051 ≤ arr[i] ≤ 105",
+      "full_text": "Given a sorted array arr[]. Convert it into a Height Balanced Binary Search Tree (BST) and return the root of the BST.\n\nHeight-balanced BST means a binary tree in which the depth of the left subtree and the right subtree of every node never differ by more than 1.\n\nNote: You can return any BST, the driver code will check the BST, and print true if it is a Height-balanced BST else print false.\n\nExamples :\n\nInput: arr[] = [10, 20, 30]\nOutput: true\nExplanation: Only possible Height Balanced BST will be [20, 10, 30]\n\nInput: arr[] = [1, 5, 9, 14, 23, 27]\nOuput: true\nExplanation: One of the possible Height Balanced BST will be [9, 1, 23, N, 5, 14, 27]\n\nConstraints:\n1 ≤ arr.size() ≤ 1051 ≤ arr[i] ≤ 105",
+      "examples": [
+        "Input:\narr[] = [10, 20, 30]\nOutput:\ntrue\nExplanation:\nOnly possible Height Balanced BST will be [20, 10, 30]",
+        "Input:\narr[] = [1, 5, 9, 14, 23, 27]\nOuput:\ntrue\nExplanation:\nOne of the possible Height Balanced BST will be [9, 1, 23, N, 5, 14, 27]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a sorted array <strong>arr[]</strong>. Convert it into a <strong>Height Balanced</strong> Binary Search Tree (BST) and return the <strong>root </strong>of the BST.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Height-balanced</strong> BST means a binary tree in which the depth of the left subtree and the right subtree of every node never differ by more than 1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> You can return any BST, the driver code will check the BST, and print <strong>true</strong> if it is a Height-balanced BST else print&nbsp;<strong>false</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [10, 20, 30]\n<strong>Output:</strong> true\n<strong>Explanation:</strong> Only possible Height Balanced BST will be [20, 10, 30]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/913129/Web/Other/blobid0_1760179383.webp\" width=\"279\" height=\"165\" /></span> </pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 5, 9, 14, 23, 27]\n<strong>Ouput: </strong>true\n<strong>Explanation: </strong>One of the possible Height Balanced BST will be [9, 1, 23, N, 5, 14, 27]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/913129/Web/Other/blobid1_1760179420.webp\" width=\"276\" height=\"220\" /><br /></span></pre>\n<p><strong>Constraints:<br /></strong><span style=\"font-size: 18px;\"><span style=\"font-family: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">1 &le; arr.size() &le; 10</span><sup style=\"font-family: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">5</sup><br style=\"font-family: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\" /><span style=\"font-family: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">1 &le; arr[i] &le; 10</span><sup style=\"font-family: -apple-system, 'system-ui', 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\">5</sup></span></p>"
+    },
+    "qnum": 856
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/kth-largest-element-in-a-stream2220/1",
+      "problem_name": "Kth Largest in a Stream",
+      "slug": "kth-largest-element-in-a-stream2220",
+      "difficulty": "Medium",
+      "accuracy": "31.59%",
+      "marks": 4,
+      "all_submissions": 90245,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Hike",
+          "Walmart",
+          "Cisco",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Heap",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Heap",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Hike",
+        "Walmart",
+        "Cisco",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/kth-largest-element-in-a-stream/",
+        "https://www.geeksforgeeks.org/www.geeksforgeeks.org/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-set-8-sde-1/"
+      ],
+      "statement_text": "Given an input stream\narr[]\nof\nn\nintegers. Find the\nK\nth\nlargest element (not\nK\nth\nlargest unique element) after insertion of each element in the stream and if the\nK\nth\nlargest element doesn't exist, the answer will be -1 for that insertion.  return a list of size n after all insertions.\nExample 1:\nInput:\nk =\n4,\nn =\n6\narr[] =\n{1, 2, 3, 4, 5, 6}\nOutput:\n-1 -1 -1 1 2 3\nExplanation:\nk = 4\nFor 1, the 4th largest element doesn't\nexist so answer will be -1.\nFor 2, the 4th largest element doesn't\nexist so answer will be -1.\nFor 3, the 4th largest element doesn't\nexist so answer will be -1.\nFor 4, the 4th largest element is 1.\nFor 5, the 4th largest element is 2.\nfor 6, the 4th largest element is 3.\nExample 2:\nInput:\nk =\n1,\nn =\n2\narr[] =\n{3, 4}\nOutput:\n3 4\nExplanation:\nFor the 1st and 2nd element the 1st largest\nelement is itself.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nkthLargest()\nwhich takes 2 Integers k, and n and also an array arr[] of size n as input. A\nfter the insertion of each element find\nK\nth\nlargest element in the stream and if the\nK\nth\nelement doesn't exist, the answer will be -1 for that insertion.  return a list of size n after all insertions.\nExpected Time Complexity:\nO(nlogk)\nExpected Auxiliary Space:\nO(n)",
+      "full_text": "Given an input stream\narr[]\nof\nn\nintegers. Find the\nK\nth\nlargest element (not\nK\nth\nlargest unique element) after insertion of each element in the stream and if the\nK\nth\nlargest element doesn't exist, the answer will be -1 for that insertion.  return a list of size n after all insertions.\nExample 1:\nInput:\nk =\n4,\nn =\n6\narr[] =\n{1, 2, 3, 4, 5, 6}\nOutput:\n-1 -1 -1 1 2 3\nExplanation:\nk = 4\nFor 1, the 4th largest element doesn't\nexist so answer will be -1.\nFor 2, the 4th largest element doesn't\nexist so answer will be -1.\nFor 3, the 4th largest element doesn't\nexist so answer will be -1.\nFor 4, the 4th largest element is 1.\nFor 5, the 4th largest element is 2.\nfor 6, the 4th largest element is 3.\nExample 2:\nInput:\nk =\n1,\nn =\n2\narr[] =\n{3, 4}\nOutput:\n3 4\nExplanation:\nFor the 1st and 2nd element the 1st largest\nelement is itself.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nkthLargest()\nwhich takes 2 Integers k, and n and also an array arr[] of size n as input. A\nfter the insertion of each element find\nK\nth\nlargest element in the stream and if the\nK\nth\nelement doesn't exist, the answer will be -1 for that insertion.  return a list of size n after all insertions.\nExpected Time Complexity:\nO(nlogk)\nExpected Auxiliary Space:\nO(n)\nConstraints:\n1 ≤ k ≤ n ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\nk =\n4,\nn =\n6\narr[] =\n{1, 2, 3, 4, 5, 6}\nOutput:\n-1 -1 -1 1 2 3\nExplanation:\nk = 4\nFor 1, the 4th largest element doesn't\nexist so answer will be -1.\nFor 2, the 4th largest element doesn't\nexist so answer will be -1.\nFor 3, the 4th largest element doesn't\nexist so answer will be -1.\nFor 4, the 4th largest element is 1.\nFor 5, the 4th largest element is 2.\nfor 6, the 4th largest element is 3.",
+        "Input:\nk =\n1,\nn =\n2\narr[] =\n{3, 4}\nOutput:\n3 4\nExplanation:\nFor the 1st and 2nd element the 1st largest\nelement is itself."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ k ≤ n ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an input stream <strong>arr[] </strong>of <strong>n</strong> integers. Find the <strong>K</strong><sup>th</sup> largest element (not <strong>K</strong><sup>th</sup> largest unique element) after insertion of each element in the stream and if the <strong>K<sup>th</sup></strong> largest element doesn't exist, the answer will be -1 for that insertion.&nbsp; return a list of size n after all insertions.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong></span>\n<span style=\"font-size: 18px;\"><strong>k = </strong>4, <strong>n = </strong>6</span>\n<span style=\"font-size: 18px;\"><strong>arr[] = </strong>{1, 2, 3, 4, 5, 6}</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong></span>\n<span style=\"font-size: 18px;\">-1 -1 -1 1 2 3</span>\n<span style=\"font-size: 18px;\"><strong>Explanation:</strong></span>\n<span style=\"font-size: 18px;\">k = 4\nFor 1, the 4th largest element doesn't\nexist so answer will be -1.\nFor 2, the 4th largest element doesn't\nexist so answer will be -1.\nFor 3, the 4th largest element doesn't\nexist so answer will be -1.\nFor 4, the 4th largest element is 1.\nFor 5, the 4th largest element is 2.\nfor 6, the 4th largest element is 3.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong></span>\n<span style=\"font-size: 18px;\"><strong>k = </strong>1, <strong>n = </strong>2</span>\n<span style=\"font-size: 18px;\"><strong>arr[] = </strong>{3, 4}</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong></span>\n<span style=\"font-size: 18px;\">3 4 \n<strong>Explanation:</strong> \nFor the 1st and 2nd element the 1st largest \nelement is itself.</span></pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>kthLargest()</strong> which takes 2 Integers k, and n and also an array arr[] of size n as input. A</span><span style=\"font-size: 18px;\">fter the insertion of each element find <strong>K<sup>th</sup></strong> largest&nbsp;element in the stream and if the </span><strong style=\"font-size: 18px;\">K<sup>th</sup></strong><span style=\"font-size: 18px;\"> element doesn't exist, the answer will be -1 for that insertion.&nbsp; return a list of size n after all insertions.</span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(nlogk)<br /><strong>Expected Auxiliary Space:</strong> O(n)</span></p>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; k &le; n &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 857
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/kth-smallest-element5635/1",
+      "problem_name": "Kth Smallest",
+      "slug": "kth-smallest-element5635",
+      "difficulty": "Medium",
+      "accuracy": "35.17%",
+      "marks": 4,
+      "all_submissions": 745652,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = &!//!&k = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Hike",
+          "Adobe",
+          "Google",
+          "ABCO",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Hike",
+        "Adobe",
+        "Google",
+        "ABCO",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/kth-largest-element-in-an-array/",
+        "https://www.geeksforgeeks.org/kth-smallest-largest-element-in-unsorted-array-expected-linear-time/",
+        "https://www.geeksforgeeks.org/kth-smallest-largest-element-in-unsorted-array-worst-case-linear-time/",
+        "https://www.geeksforgeeks.org/kth-smallest-largest-element-in-unsorted-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/cisco-interview-experience-set-9-experienced/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-4-campus/",
+        "https://www.geeksforgeeks.org/abco-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-off-campus/"
+      ],
+      "statement_text": "Given an integer array\narr[]\nand an integer\nk\n, your task is to find and return the\nk\nth\nsmallest\nelement in the given array.\nNote:\nThe kth smallest element is determined based on the sorted order of the array.\nExamples :\nInput:\narr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4\nOutput:\n5\nExplanation:\n4th smallest element in the given array is 5.\nInput:\narr[] = [7, 10, 4, 3, 20, 15], k = 3\nOutput:\n7\nExplanation:\n3rd smallest element in the given array is 7.",
+      "full_text": "Given an integer array\narr[]\nand an integer\nk\n, your task is to find and return the\nk\nth\nsmallest\nelement in the given array.\nNote:\nThe kth smallest element is determined based on the sorted order of the array.\nExamples :\nInput:\narr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4\nOutput:\n5\nExplanation:\n4th smallest element in the given array is 5.\nInput:\narr[] = [7, 10, 4, 3, 20, 15], k = 3\nOutput:\n7\nExplanation:\n3rd smallest element in the given array is 7.\nConstraints:\n1\n≤\narr.size()\n≤\n10\n5\n1\n≤\narr[i]\n≤\n10\n5\n1\n≤\nk\n≤\narr.size()",
+      "examples": [
+        "Input:\narr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4\nOutput:\n5\nExplanation:\n4th smallest element in the given array is 5.",
+        "Input:\narr[] = [7, 10, 4, 3, 20, 15], k = 3\nOutput:\n7\nExplanation:\n3rd smallest element in the given array is 7."
+      ],
+      "constraints_text": "Constraints:\n1\n≤\narr.size()\n≤\n10\n5\n1\n≤\narr[i]\n≤\n10\n5\n1\n≤\nk\n≤\narr.size()",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an integer array <strong>arr[]</strong> and an integer&nbsp;<strong>k</strong>, your task is to find and return the <strong>k<sup>th</sup> smallest</strong> element in the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong data-start=\"482\" data-end=\"491\">Note:</strong> The kth smallest element is determined based on the sorted order of the array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [10, 5, 4, 3, 48, 6, 2, 33, 53, 10], k = 4<br /><strong>Output:</strong> 5\n<strong>Explanation: </strong>4th smallest element in the given array is 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [7, 10, 4, 3, 20, 15], k = 3<span style=\"font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;\"><br /></span></span><span style=\"font-size: 14pt;\"><strong>Output:</strong> 7\n<strong>Explanation: </strong>3rd smallest element in the given array is 7.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span> arr.size() <span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le; </span>10<sup>5</sup><br />1 <span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span>&nbsp;arr[i]&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span> 10<sup>5</sup><sup><br /></sup>1&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span>&nbsp;k&nbsp;<span style=\"color: #1e2229; font-family: Nunito; font-size: 17px; background-color: #ffffff;\">&le;</span>&nbsp;&nbsp;</span><span style=\"font-size: 18.6667px;\">arr.size()&nbsp;</span></p>"
+    },
+    "qnum": 858
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lowest-common-ancestor-in-a-binary-tree/1",
+      "problem_name": "LCA in Binary Tree",
+      "slug": "lowest-common-ancestor-in-a-binary-tree",
+      "difficulty": "Medium",
+      "accuracy": "52.85%",
+      "marks": 4,
+      "all_submissions": 210209,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root =&!//!&n1 =&!//!&n2 = ",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Payu",
+          "Google",
+          "Times Internet",
+          "Cisco",
+          "PayPal",
+          "Expedia",
+          "Twitter",
+          "American Express",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Payu",
+        "Google",
+        "Times Internet",
+        "Cisco",
+        "PayPal",
+        "Expedia",
+        "Twitter",
+        "American Express",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/lowest-common-ancestor-binary-tree-set-1/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-11-on-campus/",
+        "https://www.geeksforgeeks.org/american-express-interview-experience-set-2/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-17-for-sde-ii/"
+      ],
+      "statement_text": "Given the root of a binary tree with all unique values and two nodes value, n1 and n2. Your task is to find the lowest common ancestor of the given two nodes. Both node values are always present in the Binary Tree.\n\nNote: LCA is the first common ancestor of both the nodes n1 and n2 from bottom of tree.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], n1 = 4, n2 = 5\n\nOutput: 2\nExplanation: LCA of 4 and 5 is 2.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, 8], n1 = 7, n2 = 8\n\nOutput: 3\nExplanation: LCA of 7 and 8 is 3.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "full_text": "Given the root of a binary tree with all unique values and two nodes value, n1 and n2. Your task is to find the lowest common ancestor of the given two nodes. Both node values are always present in the Binary Tree.\n\nNote: LCA is the first common ancestor of both the nodes n1 and n2 from bottom of tree.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], n1 = 4, n2 = 5\n\nOutput: 2\nExplanation: LCA of 4 and 5 is 2.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, 8], n1 = 7, n2 = 8\n\nOutput: 3\nExplanation: LCA of 7 and 8 is 3.\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7], n1 = 4, n2 = 5\nOutput:\n2\nExplanation:\nLCA of 4 and 5 is 2.",
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, 8], n1 = 7, n2 = 8\nOutput:\n3\nExplanation:\nLCA of 7 and 8 is 3."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-family: arial,helvetica,sans-serif;\">Given the <strong>root</strong> of a binary tree with all <strong>unique</strong> values and two nodes value,&nbsp;<strong>n1</strong> and <strong>n2</strong>. Your task is to find the<strong>&nbsp;lowest common ancestor</strong> of the given two nodes. Both node values are always present in the Binary Tree.</span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> LCA is the first common ancestor of both the nodes <strong>n1</strong> and <strong>n2</strong> from bottom of tree.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [1, 2, 3, 4, 5, 6, 7], n1 = 4, n2 = 5&nbsp; &nbsp; \n<strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/912647/Web/Other/blobid0_1759124735.webp\" width=\"273\" height=\"171\" /><br />Output: </strong>2\n<strong>Explanation: </strong></span><span style=\"font-size: 18px;\">LCA of 4 and 5 is 2.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/912647/Web/Other/blobid1_1759124750.webp\" width=\"281\" height=\"176\" /><br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, 4, 5, 6, 7, N, N, N, N, 8], n1 = 7, n2 = 8\n</span><strong style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/912647/Web/Other/blobid2_1759125122.webp\" width=\"275\" height=\"229\" /><br />Output: </strong>3\n<strong style=\"font-size: 18px;\">Explanation: </strong><span style=\"font-size: 18px;\">LCA of 7 and 8 is 3.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/912647/Web/Other/blobid3_1759125137.webp\" width=\"279\" height=\"227\" /></span><strong style=\"font-size: 18px;\"> <br /></strong></span></pre>\n<p><span style=\"font-size: 18px;\"><span style=\"font-family: arial,helvetica,sans-serif;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>5</sup><br />1 &le; node-&gt;data &le; 10<sup>5</sup></span></span></p>"
+    },
+    "qnum": 859
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/level-order-traversal/1",
+      "problem_name": "Level order traversal",
+      "slug": "level-order-traversal",
+      "difficulty": "Medium",
+      "accuracy": "70.31%",
+      "marks": 4,
+      "all_submissions": 255514,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root =",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "D-E-Shaw",
+          "Ola Cabs",
+          "Payu",
+          "Adobe",
+          "Cisco",
+          "Qualcomm"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "D-E-Shaw",
+        "Ola Cabs",
+        "Payu",
+        "Adobe",
+        "Cisco",
+        "Qualcomm"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/level-order-tree-traversal/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-2-android-1-5-years/",
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-413-sdet-1-campus-internship/"
+      ],
+      "statement_text": "Given the root of a Binary Tree, your task is to return its Level Order Traversal.\n\nNote: A level order traversal is a breadth-first search (BFS) of the tree. It visits nodes level by level, starting from the root, and processes all nodes from left to right within each level before moving to the next.\n\nExamples:\n\nInput: root = [1, 2, 3]\n\nOutput: [[1], [2, 3]]\nExplanation: We start with the root node 1, so the first level of the traversal is [1]. Then we move to its children 2 and 3, which form the next level, giving the final output [[1], [2, 3]].\n\nInput: root = [10, 20, 30, 40, 50]\n\nOutput: [[10], [20, 30], [40, 50]]\nExplanation: We begin with the root node 10, which forms the first level as [10]. Its children 20 and 30 make up the second level, and their children 40 and 50 form the third level, resulting in [[10], [20, 30], [40, 50]].\n\nConstraints:\n1 ≤ number of nodes ≤ 3*104\n0 ≤ node->data ≤ 109",
+      "full_text": "Given the root of a Binary Tree, your task is to return its Level Order Traversal.\n\nNote: A level order traversal is a breadth-first search (BFS) of the tree. It visits nodes level by level, starting from the root, and processes all nodes from left to right within each level before moving to the next.\n\nExamples:\n\nInput: root = [1, 2, 3]\n\nOutput: [[1], [2, 3]]\nExplanation: We start with the root node 1, so the first level of the traversal is [1]. Then we move to its children 2 and 3, which form the next level, giving the final output [[1], [2, 3]].\n\nInput: root = [10, 20, 30, 40, 50]\n\nOutput: [[10], [20, 30], [40, 50]]\nExplanation: We begin with the root node 10, which forms the first level as [10]. Its children 20 and 30 make up the second level, and their children 40 and 50 form the third level, resulting in [[10], [20, 30], [40, 50]].\n\nConstraints:\n1 ≤ number of nodes ≤ 3*104\n0 ≤ node->data ≤ 109",
+      "examples": [
+        "Input:\nroot = [1, 2, 3]\nOutput:\n[[1], [2, 3]]\nExplanation:\nWe start with the root node 1, so the first level of the traversal is [1]. Then we move to its children 2 and 3, which form the next level, giving the final output [[1], [2, 3]].",
+        "Input:\nroot = [10, 20, 30, 40, 50]\nOutput:\n[[10], [20, 30], [40, 50]]\nExplanation:\nWe begin with the root node 10, which forms the first level as [10]. Its children 20 and 30 make up the second level, and their children 40 and 50 form the third level, resulting in [[10], [20, 30], [40, 50]]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 3*10\n4\n0 ≤ node->data ≤ 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\"><span style=\"font-size: 18px;\">Given the <strong>root </strong>of a Binary Tree, your task is to return its&nbsp;</span><strong style=\"font-size: 18px;\">Level Order Traversal</strong><span style=\"font-size: 18px;\">.</span></span></p>\n<p><strong><span style=\"font-size: 18.6667px;\">Note:&nbsp;</span></strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 14pt;\">A <strong>level order traversal</strong> is a breadth-first search (BFS) of the tree. It visits nodes level by level, starting from the root, and processes all nodes from left to right within each level before moving to the next.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [1, 2, 3]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700511/Web/Other/blobid0_1758799933.webp\" width=\"345\" height=\"213\" />\n<strong>Output: </strong>[[1], [2, 3]]<br /><strong>Explanation: </strong></span><span style=\"font-size: 18.6667px;\">We start with the root node 1, so the first level of the traversal is [1]. Then we move to its children 2 and 3, which form the next level, giving the final output [[1], [2, 3]].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> root = [10, 20, 30, 40, 50]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700511/Web/Other/blobid1_1758800199.webp\" width=\"312\" height=\"217\" />\n<strong>Output: </strong>[[10], [20, 30], [40, 50]]<br /><strong>Explanation: </strong></span><span style=\"font-size: 18.6667px;\">We begin with the root node 10, which forms the first level as [10]. Its children 20 and 30 make up the second level, and their children 40 and 50 form the third level, resulting in [[10], [20, 30], [40, 50]].</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 14pt;\">1 &le; number of nodes &le; 3*10<sup>4</sup><sup><br /></sup></span><span style=\"font-size: 14pt;\">0 &le; node-&gt;data &le; 10<sup>9</sup></span></p>"
+    },
+    "qnum": 860
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/longest-bitonic-subsequence0824/1",
+      "problem_name": "Longest Bitonic subsequence",
+      "slug": "longest-bitonic-subsequence0824",
+      "difficulty": "Medium",
+      "accuracy": "47.34%",
+      "marks": 4,
+      "all_submissions": 154056,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&arr[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Microsoft",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Microsoft",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/longest-bitonic-subsequence-dp-15/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/cisco-interview-experience-virtual-hiringon-campus-for-internship-2020-21/"
+      ],
+      "statement_text": "Given an array of positive integers. Find the\nmaximum\nlength of\nBitonic subsequence.\nA subsequence of array is called Bitonic if it is first strictly increasing, then strictly decreasing. R\neturn the maximum length of bitonic subsequence.\nNote\n: A strictly increasing or a\nstrictly\ndecreasing sequence should not be considered as a bitonic sequence\nExamples :\nInput:\nn = 5, nums[] = [1, 2, 5, 3, 2]\nOutput:\n5\nExplanation:\nThe sequence [1, 2, 5] is increasing and the sequence [3, 2] is decreasing so merging both we will get length 5.\nInput:\nn = 8, nums[] = [1, 11, 2, 10, 4, 5, 2, 1]\nOutput:\n6\nExplanation:\nThe bitonic sequence [1, 2, 10, 4, 2, 1] has length 6.\nInput:\nn = 3, nums[] = [10, 20, 30]\nOutput:\n0\nExplanation:\nThe decreasing or increasing part cannot be empty.\nInput:\nn = 3, nums[] = [10, 10, 10]\nOutput:\n0\nExplanation:\nNo strictly increasing or decreasing sequence exists.",
+      "full_text": "Given an array of positive integers. Find the\nmaximum\nlength of\nBitonic subsequence.\nA subsequence of array is called Bitonic if it is first strictly increasing, then strictly decreasing. R\neturn the maximum length of bitonic subsequence.\nNote\n: A strictly increasing or a\nstrictly\ndecreasing sequence should not be considered as a bitonic sequence\nExamples :\nInput:\nn = 5, nums[] = [1, 2, 5, 3, 2]\nOutput:\n5\nExplanation:\nThe sequence [1, 2, 5] is increasing and the sequence [3, 2] is decreasing so merging both we will get length 5.\nInput:\nn = 8, nums[] = [1, 11, 2, 10, 4, 5, 2, 1]\nOutput:\n6\nExplanation:\nThe bitonic sequence [1, 2, 10, 4, 2, 1] has length 6.\nInput:\nn = 3, nums[] = [10, 20, 30]\nOutput:\n0\nExplanation:\nThe decreasing or increasing part cannot be empty.\nInput:\nn = 3, nums[] = [10, 10, 10]\nOutput:\n0\nExplanation:\nNo strictly increasing or decreasing sequence exists.\nConstraints:\n1 ≤ length of array ≤ 10\n3\n1 ≤ arr[i] ≤ 10\n4",
+      "examples": [
+        "Input:\nn = 5, nums[] = [1, 2, 5, 3, 2]\nOutput:\n5\nExplanation:\nThe sequence [1, 2, 5] is increasing and the sequence [3, 2] is decreasing so merging both we will get length 5.",
+        "Input:\nn = 8, nums[] = [1, 11, 2, 10, 4, 5, 2, 1]\nOutput:\n6\nExplanation:\nThe bitonic sequence [1, 2, 10, 4, 2, 1] has length 6.",
+        "Input:\nn = 3, nums[] = [10, 20, 30]\nOutput:\n0\nExplanation:\nThe decreasing or increasing part cannot be empty.",
+        "Input:\nn = 3, nums[] = [10, 10, 10]\nOutput:\n0\nExplanation:\nNo strictly increasing or decreasing sequence exists."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ length of array ≤ 10\n3\n1 ≤ arr[i] ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of positive integers. Find&nbsp;the <strong>maximum</strong> length of <strong>Bitonic subsequence.&nbsp;</strong><br />A subsequence of array is called Bitonic if it is first strictly increasing, then strictly decreasing. R</span><span style=\"font-size: 18px;\">eturn the maximum length of bitonic subsequence.</span><br />&nbsp;<br /><span style=\"font-size: 14pt;\"><strong>Note</strong> : A strictly increasing or a <strong>strictly</strong> decreasing sequence should not be considered as a bitonic sequence</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 5, nums[] = [1, 2, 5, 3, 2]\n<strong>Output: </strong>5\n<strong>Explanation: </strong>The sequence [1, 2, 5] is increasing and the sequence [3, 2] is decreasing so merging both we will get length 5.\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 8, nums[] = [1, 11, 2, 10, 4, 5, 2, 1]\n<strong>Output: </strong>6\n<strong>Explanation: </strong>The bitonic sequence [1, 2, 10, 4, 2, 1] has length 6.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3, nums[] = [10, 20, 30]\n<strong>Output: </strong>0\n<strong>Explanation: </strong>The decreasing or increasing part cannot be empty.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3, nums[] = [10, 10, 10]\n<strong>Output: </strong>0\n<strong>Explanation: </strong>No strictly increasing or decreasing sequence exists.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le;&nbsp;length of array &le; 10<sup>3</sup><br />1 &le; arr[i] &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 861
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-spanning-tree/1",
+      "problem_name": "Minimum Spanning Tree",
+      "slug": "minimum-spanning-tree",
+      "difficulty": "Medium",
+      "accuracy": "47.82%",
+      "marks": 4,
+      "all_submissions": 196573,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "V =&!//!&E = &!//!&Edges[[u, v, w]] =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Graph",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Graph",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/prims-minimum-spanning-tree-mst-greedy-algo-5/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/samsung-interview-experience-through-co-cubes-2019/",
+        "https://www.geeksforgeeks.org/samsung-bangalore-sri-b-interview-experience/"
+      ],
+      "statement_text": "Given a weighted, undirected, and connected graph with V vertices and E edges, your task is to find the sum of the weights of the edges in the Minimum Spanning Tree (MST) of the graph. The graph is provided as a list of edges, where each edge is represented as [u, v, w], indicating an edge between vertex u and vertex v with edge weight w.\n\nInput: V = 3, E = 3, Edges = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\n\nOutput: 4\nExplanation:\n\nThe Spanning Tree resulting in a weight\nof 4 is shown above.\n\nInput: V = 2, E = 1, Edges = [[0 1 5]]\n\nOutput: 5\nExplanation: Only one Spanning Tree is possible which has a weight of 5.\n\nConstraints:\n2 ≤ V ≤ 1000\nV-1 ≤ E ≤ (V*(V-1))/2\n1 ≤ w ≤ 1000\nThe graph is connected and doesn't contain self-loops & multiple edges.",
+      "full_text": "Given a weighted, undirected, and connected graph with V vertices and E edges, your task is to find the sum of the weights of the edges in the Minimum Spanning Tree (MST) of the graph. The graph is provided as a list of edges, where each edge is represented as [u, v, w], indicating an edge between vertex u and vertex v with edge weight w.\n\nInput: V = 3, E = 3, Edges = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\n\nOutput: 4\nExplanation:\n\nThe Spanning Tree resulting in a weight\nof 4 is shown above.\n\nInput: V = 2, E = 1, Edges = [[0 1 5]]\n\nOutput: 5\nExplanation: Only one Spanning Tree is possible which has a weight of 5.\n\nConstraints:\n2 ≤ V ≤ 1000\nV-1 ≤ E ≤ (V*(V-1))/2\n1 ≤ w ≤ 1000\nThe graph is connected and doesn't contain self-loops & multiple edges.",
+      "examples": [
+        "Input:\nV = 3, E = 3, Edges = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\nOutput:\n4\nExplanation\n:\nThe Spanning Tree resulting in a weight\nof 4 is shown above.",
+        "Input:\nV = 2, E = 1, Edges = [[0 1 5]]\nOutput:\n5\nExplanation\n: Only one Spanning Tree is possible which has a weight of 5."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ V ≤ 1000\nV-1 ≤ E ≤ (V*(V-1))/2\n1 ≤ w ≤ 1000\nThe graph is connected and doesn't contain self-loops & multiple edges.",
+      "question_html": "<p><span style=\"font-family: arial, helvetica, sans-serif;\"><span style=\"font-size: 18.6667px;\">Given a weighted, undirected, and connected graph with V vertices and E edges, your task is to find the sum of the weights of the edges in the Minimum Spanning Tree (MST) of the graph. The graph is provided as a list of edges, where each edge is represented as [u, v, w], indicating an edge between vertex u and vertex v with edge weight w.</span></span></p>\n<pre><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong>Input: </strong>V = 3, E = 3, Edges = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700343/Web/Other/blobid1_1744376821.jpg\" width=\"229\" height=\"186\" /> <br /><strong>Output: </strong>4\n<strong>Explanation</strong>:\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700343/Web/Other/blobid2_1744376854.jpg\" width=\"237\" height=\"193\" /><br />The Spanning Tree resulting in a weight\nof 4 is shown above.</span></pre>\n<pre><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong style=\"white-space: normal;\">Input: </strong><span style=\"white-space: normal;\">V = 2, E = 1, Edges = [[0 1 5]]</span></span><br /><br /><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"> <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700343/Web/Other/blobid3_1744376890.jpg\" width=\"232\" height=\"189\" /></span><br /><br /><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong>Output: </strong>5 </span><br /><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong>Explanation</strong>: Only one Spanning Tree is possible which has a weight of 5.<br /></span></pre>\n<p><strong style=\"font-family: arial, helvetica, sans-serif; font-size: 14pt;\">Constraints:<br /></strong><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\">2 &le; V &le; 1000<br />V-1 &le; E &le; (V*(V-1))/2<br />1 &le; w &le; 1000<br />The graph is connected and doesn't contain self-loops &amp; multiple edges.</span></p>"
+    },
+    "qnum": 862
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-spanning-tree-kruskals-algorithm/1",
+      "problem_name": "Minimum Spanning Tree - Kruskal's Algorithm",
+      "slug": "minimum-spanning-tree-kruskals-algorithm",
+      "difficulty": "Medium",
+      "accuracy": "53.2%",
+      "marks": 4,
+      "all_submissions": 19984,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "V&!//!&E&!//!&edges[][]",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Cisco",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Flipkart"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Disjoint Set",
+          "Graph",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Disjoint Set",
+        "Graph",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Cisco",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Flipkart"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/kruskals-minimum-spanning-tree-algorithm-greedy-algo-2/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a weighted, undirected, and connected graph with V vertices and E edges, the task is to find the sum of the weights of the edges in the Minimum Spanning Tree (MST) of the graph using Kruskal's Algorithm. The graph is represented as an edge list edges[][], where edges[i] = [u, v, w] denotes an undirected edge between u and v with weight w.\n\nInput: V = 3, E = 3, edges[][] = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\n\nOutput: 4\nExplanation:\n\nThe Spanning Tree resulting in a weight of 4 is shown above.\n\nInput: V = 2, E = 1, edges = [[0, 1, 5]]\n\nOutput: 5\nExplanation: Only one Spanning Tree is possible which has a weight of 5.\n\nConstraints:\n2 ≤ V ≤ 1000\nV-1 ≤ E ≤ (V*(V-1))/2\n1 ≤ w ≤ 1000\nThe graph is connected and doesn't contain self-loops & multiple edges.",
+      "full_text": "Given a weighted, undirected, and connected graph with V vertices and E edges, the task is to find the sum of the weights of the edges in the Minimum Spanning Tree (MST) of the graph using Kruskal's Algorithm. The graph is represented as an edge list edges[][], where edges[i] = [u, v, w] denotes an undirected edge between u and v with weight w.\n\nInput: V = 3, E = 3, edges[][] = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\n\nOutput: 4\nExplanation:\n\nThe Spanning Tree resulting in a weight of 4 is shown above.\n\nInput: V = 2, E = 1, edges = [[0, 1, 5]]\n\nOutput: 5\nExplanation: Only one Spanning Tree is possible which has a weight of 5.\n\nConstraints:\n2 ≤ V ≤ 1000\nV-1 ≤ E ≤ (V*(V-1))/2\n1 ≤ w ≤ 1000\nThe graph is connected and doesn't contain self-loops & multiple edges.",
+      "examples": [
+        "Input:\nV = 3, E = 3, edges[][] = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\nOutput:\n4\nExplanation\n:\nThe Spanning Tree resulting in a weight of 4 is shown above.",
+        "Input:\nV = 2, E = 1, edges = [[0, 1, 5]]\nOutput:\n5\nExplanation\n: Only one Spanning Tree is possible which has a weight of 5."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ V ≤ 1000\nV-1 ≤ E ≤ (V*(V-1))/2\n1 ≤ w ≤ 1000\nThe graph is connected and doesn't contain self-loops & multiple edges.",
+      "question_html": "<p><span style=\"font-family: arial, helvetica, sans-serif;\"><span style=\"font-size: 18.6667px;\">Given a weighted, undirected, and connected graph with V vertices and E edges, the task is to find the sum of the weights of the edges in the <strong>Minimum Spanning Tree</strong> (MST) of the graph using <strong>Kruskal's Algorithm</strong>. The graph is represented as an edge list <strong>edges[][]</strong>, where edges[i] = [u, v, w] denotes an undirected edge between <strong>u</strong> and <strong>v </strong>with weight <strong>w</strong>.</span></span></p>\n<pre><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong>Input:</strong> V = 3, E = 3, edges[][] = [[0, 1, 5], [1, 2, 3], [0, 2, 1]]\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/888914/Web/Other/blobid0_1745301795.jpg\" width=\"279\" height=\"227\" /><br /><strong>Output: </strong>4\n<strong>Explanation</strong>:\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/888914/Web/Other/blobid1_1745301818.jpg\" width=\"287\" height=\"233\" /><br />The Spanning Tree resulting in a weight of 4 is shown above.</span></pre>\n<pre><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong style=\"white-space: normal;\">Input: </strong><span style=\"white-space: normal;\">V = 2, E = 1, edges = [[0, 1, 5]]</span></span><br /><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"> <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/888914/Web/Other/blobid2_1745301846.jpg\" width=\"279\" height=\"227\" /> </span><br /><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong>Output: </strong>5 </span><br /><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\"><strong>Explanation</strong>: Only one Spanning Tree is possible which has a weight of 5.<br /></span></pre>\n<p><strong style=\"font-family: arial, helvetica, sans-serif; font-size: 14pt;\">Constraints:<br /></strong><span style=\"font-size: 14pt; font-family: arial, helvetica, sans-serif;\">2 &le; V &le; 1000<br />V-1 &le; E &le; (V*(V-1))/2<br />1 &le; w &le; 1000<br />The graph is connected and doesn't contain self-loops &amp; multiple edges.</span></p>"
+    },
+    "qnum": 863
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/negative-weight-cycle3504/1",
+      "problem_name": "Negative weight cycle",
+      "slug": "negative-weight-cycle3504",
+      "difficulty": "Medium",
+      "accuracy": "41.9%",
+      "marks": 4,
+      "all_submissions": 76111,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Graph",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Graph",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/detect-negative-cycle-graph-bellman-ford/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a weighted directed graph with n nodes and m edges. Nodes are labeled from 0 to n-1, the task is to check if it contains a negative weight cycle or not.\nNote: edges[i] is defined as u, v and weight.\n\n\nExample 1:\n\nInput: n = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,-3}}\nOutput: 1\nExplanation: The graph contains negative weight\ncycle as 0->1->2->0 with weight -1,-2,-3.\n\nExample 2:\n\nInput: n = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,3}}\nOutput: 0\nExplanation: The graph does not contain any\nnegative weight cycle.\n\n\n\nYour Task:\nYou don't need to read or print anyhting. Your task is to complete the function isNegativeWeightCycle() which takes n and edges as input paramater and returns 1 if graph contains negative weight cycle otherwise returns 0.\n\n\nExpected Time Complexity: O(n*m)\nExpected Space Compelxity: O(n)\n\n\nConstraints:\n1 <= n <= 100\n0 <= m <= n*(n-1), where m is the total number of Edges in the directed graph.",
+      "full_text": "Given a weighted directed graph with n nodes and m edges. Nodes are labeled from 0 to n-1, the task is to check if it contains a negative weight cycle or not.\nNote: edges[i] is defined as u, v and weight.\n\n\nExample 1:\n\nInput: n = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,-3}}\nOutput: 1\nExplanation: The graph contains negative weight\ncycle as 0->1->2->0 with weight -1,-2,-3.\n\nExample 2:\n\nInput: n = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,3}}\nOutput: 0\nExplanation: The graph does not contain any\nnegative weight cycle.\n\n\n\nYour Task:\nYou don't need to read or print anyhting. Your task is to complete the function isNegativeWeightCycle() which takes n and edges as input paramater and returns 1 if graph contains negative weight cycle otherwise returns 0.\n\n\nExpected Time Complexity: O(n*m)\nExpected Space Compelxity: O(n)\n\n\nConstraints:\n1 <= n <= 100\n0 <= m <= n*(n-1), where m is the total number of Edges in the directed graph.",
+      "examples": [
+        "Input:\nn = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,-3}}\nOutput:\n1\nExplanation:\nThe graph contains negative weight\ncycle as 0->1->2->0 with weight -1,-2,-3.",
+        "Input:\nn = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,3}}\nOutput:\n0\nExplanation:\nThe graph does not contain any\nnegative weight cycle."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 100\n0 <= m <= n*(n-1)\n, where m is the total number of Edges in the directed graph.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a weighted directed graph with n nodes and m edges. Nodes are labeled from 0 to n-1, the task is to check if it contains a negative weight cycle or not.<br /><strong>Note:&nbsp;</strong>edges[i] is&nbsp;defined as u, v and weight.</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,-3}}\n<strong>Output: </strong>1\n<strong>Explanation: </strong>The graph contains negative weight\ncycle as 0-&gt;1-&gt;2-&gt;0 with weight -1,-2,-3.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>n = 3, edges = {{0,1,-1},{1,2,-2},\n{2,0,3}}\n<strong>Output: </strong>0\n<strong>Explanation: </strong>The graph does not contain any\nnegative weight cycle.</span>\n</pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anyhting. Your task is to complete the function&nbsp;<strong>isNegativeWeightCycle()&nbsp;</strong>which takes n and edges as input paramater and returns 1 if graph contains negative weight cycle otherwise returns 0.</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:&nbsp;</strong>O(n*m)<br /><strong>Expected Space Compelxity:&nbsp;</strong>O(n)</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= n &lt;= 100<br />0 &lt;= m &lt;= n*(n-1)</span><span style=\"font-size: 18px;\">, where m is the total number of Edges in the directed graph.</span></p>"
+    },
+    "qnum": 864
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/permutations-of-a-given-string2041/1",
+      "problem_name": "Permutations of a String",
+      "slug": "permutations-of-a-given-string2041",
+      "difficulty": "Medium",
+      "accuracy": "34.65%",
+      "marks": 4,
+      "all_submissions": 338406,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Citrix",
+          "Walmart",
+          "MAQ Software",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Recursion",
+          "Backtracking",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Recursion",
+        "Backtracking",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Citrix",
+        "Walmart",
+        "MAQ Software",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-permutations-of-an-array-using-stl-in-c/",
+        "https://www.geeksforgeeks.org/permutations-of-a-given-string-using-stl/",
+        "https://www.geeksforgeeks.org/print-all-permutations-of-a-string-with-duplicates-allowed-in-input-string/",
+        "https://www.geeksforgeeks.org/write-a-c-program-to-print-all-permutations-of-a-given-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-16-on-campus-fteinternship/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-9-on-campus/"
+      ],
+      "statement_text": "Given a string\ns\n, which may contain duplicate characters, your task is to generate and return an array of all\nunique\npermutations of the string. You can return your answer in\nany\norder.",
+      "full_text": "Given a string\ns\n, which may contain duplicate characters, your task is to generate and return an array of all\nunique\npermutations of the string. You can return your answer in\nany\norder.\nExamples:\nInput:\ns = \"ABC\"\nOutput:\n[\"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\"]\nExplanation:\nGiven string ABC has 6 unique permutations.\nInput:\ns = \"ABSG\"\nOutput:\n[\"ABGS\", \"ABSG\", \"AGBS\", \"AGSB\", \"ASBG\", \"ASGB\", \"BAGS\", \"BASG\", \"BGAS\", \"BGSA\", \"BSAG\", \"BSGA\", \"GABS\", \"GASB\", \"GBAS\", \"GBSA\", \"GSAB\", \"GSBA\", \"SABG\", \"SAGB\", \"SBAG\", \"SBGA\", \"SGAB\", \"SGBA\"]\nExplanation:\nGiven string ABSG has 24 unique permutations.\nInput:\ns =\n\"AAA\"\nOutput:\n[\"AAA\"]\nExplanation:\nNo other unique permutations can be formed as all the characters are same.\nConstraints:\n1 <= s.size() <= 9\ns contains only Uppercase english alphabets",
+      "examples": [
+        "Input:\ns = \"ABC\"\nOutput:\n[\"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\"]\nExplanation:\nGiven string ABC has 6 unique permutations.",
+        "Input:\ns = \"ABSG\"\nOutput:\n[\"ABGS\", \"ABSG\", \"AGBS\", \"AGSB\", \"ASBG\", \"ASGB\", \"BAGS\", \"BASG\", \"BGAS\", \"BGSA\", \"BSAG\", \"BSGA\", \"GABS\", \"GASB\", \"GBAS\", \"GBSA\", \"GSAB\", \"GSBA\", \"SABG\", \"SAGB\", \"SBAG\", \"SBGA\", \"SGAB\", \"SGBA\"]\nExplanation:\nGiven string ABSG has 24 unique permutations.",
+        "Input:\ns =\n\"AAA\"\nOutput:\n[\"AAA\"]\nExplanation:\nNo other unique permutations can be formed as all the characters are same."
+      ],
+      "constraints_text": "Constraints:\n1 <= s.size() <= 9\ns contains only Uppercase english alphabets",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given a string <strong>s</strong>, which may contain duplicate characters, your task is to generate and return an array of all <strong>unique </strong>permutations of the string. You can return your answer in <strong>any </strong>order.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"ABC\"\n<strong>Output: </strong>[\"ABC\", \"ACB\", \"BAC\", \"BCA\", \"CAB\", \"CBA\"]\n<strong>Explanation: </strong>Given string ABC has 6 unique permutations.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"ABSG\"\n<strong>Output: </strong>[\"ABGS\", \"ABSG\", \"AGBS\", \"AGSB\", \"ASBG\", \"ASGB\", \"BAGS\", \"BASG\", \"BGAS\", \"BGSA\", \"BSAG\", \"BSGA\", \"GABS\", \"GASB\", \"GBAS\", \"GBSA\", \"GSAB\", \"GSBA\", \"SABG\", \"SAGB\", \"SBAG\", \"SBGA\", \"SGAB\", \"SGBA\"]\n<strong>Explanation: </strong>Given string ABSG has 24 unique permutations.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s =<strong> </strong>\"AAA\"\n<strong>Output: </strong>[\"AAA\"]<br /></span><strong style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong><span style=\"font-family: -apple-system, system-ui, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;\"><span style=\"font-size: 18.6667px;\">No other unique permutations can be formed as all the characters are same.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= s.size() &lt;= 9<br />s contains only Uppercase english alphabets</span></p>"
+    },
+    "qnum": 865
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/stack-using-two-queues/1",
+      "problem_name": "Stack using Queue",
+      "slug": "stack-using-two-queues",
+      "difficulty": "Medium",
+      "accuracy": "51.4%",
+      "marks": 4,
+      "all_submissions": 163015,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "q =&!//!&queries[][] =",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "D-E-Shaw",
+          "Oracle",
+          "Adobe",
+          "Cisco",
+          "Grofers",
+          "CouponDunia",
+          "Kritikal Solutions"
+        ],
+        "topic_tags": [
+          "Stack",
+          "Queue",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Stack",
+        "Queue",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "D-E-Shaw",
+        "Oracle",
+        "Adobe",
+        "Cisco",
+        "Grofers",
+        "CouponDunia",
+        "Kritikal Solutions"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/implement-stack-using-queue/"
+      ],
+      "interview_links": [],
+      "statement_text": "Implement a\nStack\nusing Queue data structure, this stack has no fixed capacity and can grow dynamically until memory is available.\nThe Stack must support the following operations:\n(i)\npush(x):\nInsert an element x at the top of the stack.\n(ii)\npop():\nRemove the element from the top of the stack, if stack is empty do nothing.\n(iii)\ntop():\nReturn top element if not empty, else -1.\n(iv)\nsize()\n:\nReturn the number of elements currently in the stack.\nThere will be a sequence of queries\nqueries[][]\n. The queries are represented in numeric form:\n1 x : Call push(x)\n2: Call pop()\n3: Call top()\n4: Call size()\nYou just have to implement the functions\npush,\npop, top\nand\nsize.\nThe driver code will handle the input and output.",
+      "full_text": "Implement a\nStack\nusing Queue data structure, this stack has no fixed capacity and can grow dynamically until memory is available.\nThe Stack must support the following operations:\n(i)\npush(x):\nInsert an element x at the top of the stack.\n(ii)\npop():\nRemove the element from the top of the stack, if stack is empty do nothing.\n(iii)\ntop():\nReturn top element if not empty, else -1.\n(iv)\nsize()\n:\nReturn the number of elements currently in the stack.\nThere will be a sequence of queries\nqueries[][]\n. The queries are represented in numeric form:\n1 x : Call push(x)\n2: Call pop()\n3: Call top()\n4: Call size()\nYou just have to implement the functions\npush,\npop, top\nand\nsize.\nThe driver code will handle the input and output.\nExamples:\nInput:\nq = 6, queries[][] = [[1, 5], [1, 3], [1, 4], [3], [2], [4]]\nOutput:\n[4, 2]\nExplanation:\nQueries on queue are as follows:\npush(5): Insert 5 at the top of the stack.\npush(3): Insert 3 at the top of the stack.\npush(4): Insert 4 at the top of the stack.\ntop(): Return the top element i.e 4.\npop(): Remove the top element 4 from the stack.\nsize(): Stack contains 2 elements return 2.\nInput:\nq = 4, queries[][] = [[4], [3], [1, 10], [3]]\nOutput:\n[0, -1, 10]\nExplanation:\nQueries on queue are as follows:\nsize(): Stack contains 0 elements return 0.\ntop(): Stack is empty return -1.\npush(10): Insert 10 at the top of the stack.\ntop(): Return the top element i.e 10.\nConstraints:\n1 ≤ queries.size ≤ 100\n0 ≤ x\n≤ 10\n4",
+      "examples": [
+        "Input:\nq = 6, queries[][] = [[1, 5], [1, 3], [1, 4], [3], [2], [4]]\nOutput:\n[4, 2]\nExplanation:\nQueries on queue are as follows:\npush(5): Insert 5 at the top of the stack.\npush(3): Insert 3 at the top of the stack.\npush(4): Insert 4 at the top of the stack.\ntop(): Return the top element i.e 4.\npop(): Remove the top element 4 from the stack.\nsize(): Stack contains 2 elements return 2.",
+        "Input:\nq = 4, queries[][] = [[4], [3], [1, 10], [3]]\nOutput:\n[0, -1, 10]\nExplanation:\nQueries on queue are as follows:\nsize(): Stack contains 0 elements return 0.\ntop(): Stack is empty return -1.\npush(10): Insert 10 at the top of the stack.\ntop(): Return the top element i.e 10."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ queries.size ≤ 100\n0 ≤ x\n≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Implement a&nbsp;<strong>Stack&nbsp;</strong>using Queue data structure, this stack has no fixed capacity and can grow dynamically until memory is available.<br />The Stack must support the following operations:</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>(i)</strong><strong>&nbsp;push(x):</strong>&nbsp;Insert an element x at the top of the stack.<br /><strong>(ii)</strong>&nbsp;<strong>pop():</strong> Remove the element from the top of the stack, if stack is empty do nothing.</span><br /><span style=\"font-size: 14pt;\"><strong>(iii)</strong>&nbsp;<strong>top():</strong> Return top element if not empty, else -1.<br /><strong>(iv)</strong>&nbsp;<strong data-start=\"837\" data-end=\"847\">size()</strong><strong>:</strong>&nbsp;Return the number of elements currently in the stack.<br /></span></p>\n<p><span style=\"font-size: 14pt;\">There will be a sequence of queries&nbsp;<strong>queries[][]</strong>. The queries are represented in numeric form:<br /></span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\">1 x : Call push(x)</span></li>\n<li><span style=\"font-size: 14pt;\">2: Call pop()</span></li>\n<li><span style=\"font-size: 14pt;\">3: Call top()</span></li>\n<li><span style=\"font-size: 14pt;\">4: Call size()</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\">You just have to implement the functions&nbsp;<strong>push,&nbsp;</strong><strong>pop, top</strong><strong>&nbsp;</strong>and&nbsp;<strong>size.</strong>&nbsp;The driver code will handle the input and output.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>q = 6, queries[][] = [[1, 5], [1, 3], [1, 4], [3], [2], [4]]\n<strong>Output: </strong>[4, 2]<strong>\nExplanation: </strong>Queries on queue are as follows:<br />push(5): Insert 5 at the top of the stack.<br />push(3): Insert 3 at the top of the stack.<br />push(4): Insert 4 at the top of the stack.<br />top(): Return the top element i.e 4.<br />pop(): Remove the top element 4 from the stack.<br />size(): Stack contains 2 elements return 2.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>q = 4, queries[][] = [[4], [3], [1, 10], [3]]\n<strong>Output: </strong>[0, -1, 10]<strong>\nExplanation: </strong>Queries on queue are as follows:<br /></span><span style=\"font-size: 14pt;\">size(): Stack contains 0 elements return 0.<br />top(): Stack is empty return -1.<br />push(10): Insert 10 at the top of the stack.</span><br /><span style=\"font-size: 14pt;\">top(): Return the top element i.e 10.</span></pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; queries.size &le; 100<br style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18.6667px; white-space: normal;\" /><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18.6667px; white-space: normal;\">0 &le; x</span><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18.6667px; white-space: normal;\">&nbsp;</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 18.6667px; white-space: normal;\">&le; 10<sup>4</sup></span></span></p>"
+    },
+    "qnum": 866
+  },
+  {
+    "company": "Cisco",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/zigzag-tree-traversal/1",
+      "problem_name": "ZigZag Tree Traversal",
+      "slug": "zigzag-tree-traversal",
+      "difficulty": "Medium",
+      "accuracy": "54.05%",
+      "marks": 4,
+      "all_submissions": 192308,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "FactSet",
+          "Hike",
+          "Walmart",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Traversal",
+          "Tree",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Traversal",
+        "Tree",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "FactSet",
+        "Hike",
+        "Walmart",
+        "Cisco"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-24/"
+      ],
+      "statement_text": "Given the root of a binary tree. You have to find the zig-zag level order traversal of the binary tree.\nNote: In zig zag traversal we traverse the nodes from left to right for odd-numbered levels, and from right to left for even-numbered levels.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5, 6, 7]\n\nOutput: [1, 3, 2, 4, 5, 6, 7]\nExplanation:\nLevel 1 (left to right): [1]Level 2 (right to left): [3, 2]Level 3 (left to right): [4, 5, 6, 7]\nFinal result: [1, 3, 2, 4, 5, 6, 7]\n\nInput: root = [7, 9, 7, 8, 8, 6, N, 10, 9]\n\nOutput: [7, 7, 9, 8, 8, 6, 9, 10]\nExplanation:\nLevel 1 (left to right): [7]Level 2 (right to left): [7, 9]Level 3 (left to right): [8, 8, 6]Level 4 (right to left): [9, 10]\nFinal result: [7, 7, 9, 8, 8, 6, 9, 10]\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "full_text": "Given the root of a binary tree. You have to find the zig-zag level order traversal of the binary tree.\nNote: In zig zag traversal we traverse the nodes from left to right for odd-numbered levels, and from right to left for even-numbered levels.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5, 6, 7]\n\nOutput: [1, 3, 2, 4, 5, 6, 7]\nExplanation:\nLevel 1 (left to right): [1]Level 2 (right to left): [3, 2]Level 3 (left to right): [4, 5, 6, 7]\nFinal result: [1, 3, 2, 4, 5, 6, 7]\n\nInput: root = [7, 9, 7, 8, 8, 6, N, 10, 9]\n\nOutput: [7, 7, 9, 8, 8, 6, 9, 10]\nExplanation:\nLevel 1 (left to right): [7]Level 2 (right to left): [7, 9]Level 3 (left to right): [8, 8, 6]Level 4 (right to left): [9, 10]\nFinal result: [7, 7, 9, 8, 8, 6, 9, 10]\n\nConstraints:\n1 ≤ number of nodes ≤ 105\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7]\nOutput:\n[1, 3, 2, 4, 5, 6, 7]\nExplanation:\nLevel 1 (left to right): [1]\nLevel 2 (right to left): [3, 2]\nLevel 3 (left to right): [4, 5, 6, 7]\nFinal result: [1, 3, 2, 4, 5, 6, 7]",
+        "Input:\nroot = [7, 9, 7, 8, 8, 6, N, 10, 9]\nOutput:\n[7, 7, 9, 8, 8, 6, 9, 10]\nExplanation:\nLevel 1 (left to right): [7]\nLevel 2 (right to left): [7, 9]\nLevel 3 (left to right): [8, 8, 6]\nLevel 4 (right to left): [9, 10]\nFinal result: [7, 7, 9, 8, 8, 6, 9, 10]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n5\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root </strong>of a binary tree. You have to find the <strong>zig-zag </strong>level order traversal of the binary tree. <br /></span><span style=\"font-size: 18px;\"><strong>Note:<span style=\"font-size: 14pt;\"> </span></strong><span style=\"font-size: 14pt;\">In zig zag traversal we </span></span><span style=\"font-size: 18.6667px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">traverse the nodes from <strong>left to right </strong>for </span><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: 14pt;\">odd-numbered levels, and from <strong>right to left</strong> for even-numbered levels.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [1, 2, 3, 4, 5, 6, 7]<strong><br /> </strong></span><img style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\" src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/907336/Web/Other/blobid0_1754394121.webp\" width=\"274\" height=\"190\" /><strong style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> </strong><span style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">  &nbsp; &nbsp; &nbsp; </span><span style=\"font-size: 18px;\">\n<strong>Output: </strong>[1, 3, 2, 4, 5, 6, 7]<br /><strong>Explanation:<br /></strong></span><span style=\"font-size: 14pt;\">Level 1 (left to right): [1]</span><br data-start=\"549\" data-end=\"552\" /><span style=\"font-size: 14pt;\">Level 2 (right to left): [3, 2]</span><br data-start=\"585\" data-end=\"588\" /><span style=\"font-size: 14pt;\">Level 3 (left to right): [4, 5, 6, 7]<br /></span><span style=\"font-size: 14pt;\">Final result: [1, 3, 2, 4, 5, 6, 7]</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong></span><span style=\"font-size: 14pt;\">root = [7, 9, 7, 8, 8, 6, N, 10, 9]</span><br /><span style=\"font-size: 18px;\"><strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/907336/Web/Other/blobid2_1754394198.webp\" width=\"287\" height=\"252\" /> </strong>\n<strong>Output: </strong></span><span style=\"font-size: 18px;\">[7, 7, 9, 8, 8, 6, 9, 10] <br /><strong>Explanation:<br /></strong></span><span style=\"font-size: 14pt;\"><span style=\"font-size: 14pt;\">Level 1 (left to right): [7]<br data-start=\"819\" data-end=\"822\" />Level 2 (right to left): [7, 9]<br data-start=\"855\" data-end=\"858\" />Level 3 (left to right): [8, 8, 6]<br data-start=\"894\" data-end=\"897\" />Level 4 (right to left): [9, 10]<br />Final result: [7, 7, 9, 8, 8, 6, 9, 10]</span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong><strong>Constraints:</strong></strong><br />1 &le; number of nodes &le; 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1 &le; node-&gt;data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 867
+  }
+]

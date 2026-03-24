@@ -1,0 +1,293 @@
+[
+  {
+    "company": "Intuit",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/boolean-parenthesization5610/1",
+      "problem_name": "Boolean Parenthesization",
+      "slug": "boolean-parenthesization5610",
+      "difficulty": "Hard",
+      "accuracy": "20.15%",
+      "marks": 8,
+      "all_submissions": 150948,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Intuit",
+          "Linkedin"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Intuit",
+        "Linkedin"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/boolean-parenthesization-problem-dp-37/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/intuit-interview-experience-on-campus-2021/"
+      ],
+      "statement_text": "You are given a boolean expression\ns\ncontaining\n'T' ---> true\n'F' ---> false\nand following operators between symbols\n&   ---> boolean AND\n|   ---> boolean OR\n^   ---> boolean XOR\nCount the number of ways we can\nparenthesize\nthe expression so that the value of expression evaluates to\ntrue\n.\nNote: The answer is guaranteed to fit within a\n32-bit\ninteger.",
+      "full_text": "You are given a boolean expression\ns\ncontaining\n'T' ---> true\n'F' ---> false\nand following operators between symbols\n&   ---> boolean AND\n|   ---> boolean OR\n^   ---> boolean XOR\nCount the number of ways we can\nparenthesize\nthe expression so that the value of expression evaluates to\ntrue\n.\nNote: The answer is guaranteed to fit within a\n32-bit\ninteger.\nExamples:\nInput:\ns = \"T|T&F^T\"\nOutput:\n4\nExplaination:\nThe expression evaluates to true in 4 ways: ((T|T)&(F^T)), (T|(T&(F^T))), (((T|T)&F)^T) and (T|((T&F)^T)).\nInput:\ns = \"T^F|F\"\nOutput:\n2\nExplaination:\nThe expression evaluates to true in 2 ways: ((T^F)|F) and (T^(F|F)).\nConstraints:\n1 ≤ |s| ≤ 100",
+      "examples": [
+        "Input:\ns = \"T|T&F^T\"\nOutput:\n4\nExplaination:\nThe expression evaluates to true in 4 ways: ((T|T)&(F^T)), (T|(T&(F^T))), (((T|T)&F)^T) and (T|((T&F)^T)).",
+        "Input:\ns = \"T^F|F\"\nOutput:\n2\nExplaination:\nThe expression evaluates to true in 2 ways: ((T^F)|F) and (T^(F|F))."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ |s| ≤ 100",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given a boolean expression <strong>s&nbsp;</strong>containing<br />&nbsp;&nbsp;&nbsp; 'T' ---&gt; true<br />&nbsp;&nbsp;&nbsp; 'F' ---&gt; false&nbsp;<br />and following operators between symbols<br />&nbsp; &nbsp;&amp;&nbsp;&nbsp; ---&gt; boolean AND<br />&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; ---&gt; boolean OR<br />&nbsp; &nbsp;^&nbsp;&nbsp; ---&gt; boolean XOR<br />Count the number of ways we can <strong>parenthesize </strong>the expression so that the value of expression evaluates to <strong>true</strong>.</span></p>\n<p><span style=\"font-size: 18px;\">Note: The answer is guaranteed to fit within a <strong>32-bit</strong> integer.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> s = \"T|T&amp;F^T\"\n<strong>Output:</strong> 4\n<strong>Explaination:</strong> The expression evaluates to true in 4 ways: ((T|T)&amp;(F^T)), (T|(T&amp;(F^T))), (((T|T)&amp;F)^T) and (T|((T&amp;F)^T)).</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> s = \"T^F|F\"\n<strong>Output:</strong> 2\n<strong>Explaination:</strong> The expression evaluates to true in 2 ways: ((T^F)|F) and (T^(F|F)).</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; |s| &le; 100&nbsp;</span></p>"
+    },
+    "qnum": 1404
+  },
+  {
+    "company": "Intuit",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-lucky-permutations--170645/1",
+      "problem_name": "Count Lucky Permutations",
+      "slug": "count-lucky-permutations--170645",
+      "difficulty": "Hard",
+      "accuracy": "59.66%",
+      "marks": 8,
+      "all_submissions": 15057,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Intuit"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Graph",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Graph",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Intuit"
+      ],
+      "article_list": [],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-13-campus/"
+      ],
+      "statement_text": "You are given an array arr[ ] of integers having N elements and a non-weighted undirected graph having N nodes and M edges. The details of each edge in the graph is given to you in the form of list of list.\n\nYour task is to find the number of lucky permutations of the given array.\n\nAn array permutation is said to be lucky if for every node Vi  [1 <= i <= N-1] in the array there exists an edge between the nodes Vi and Vi+1 in the given graph.\n\nExample 1:\n\nInput:\nN = 3, M = 2\narr = {1, 2, 3}\ngraph = {{3, 1}, {1, 2}}\nOutput:\n2\nExplanation:\nAll possible permutations of the\narray are as follows-\n{1,2,3}: There is an edge between 1 and\n2 in the graph but not betwen 2 and 3.\n\n{2,1,3}: There is an edge between (2,1)\nand (1,3) in the graph.\n\n{3,1,2}: There is an edge between (3,1)\nand (1,2) in the graph.\n\nOut of the 3 possible permutations,\n2 are lucky. Therefore, answer is 2.\n\nExample 2:\n\nInput:\nN = 2, M = 1\narr = {1, 1}\ngraph = {{1, 2}}\nOutput :\n0\nExplanation:\nThere is no lucky permutation in the\ngiven graph.\n\nYour Task:\n\nYou don't need to read input or print anything. Your task is to complete the function luckyPermutations() which takes the two integers N and M, an array arr[ ] and a list of lists named graph of size M as input parameters and returns the count of lucky permutations.\n\nExpected Time Complexity: O(N2*2N)\n\nExpected Auxiliary Space: O(N*2N)\n\nConstraints:\n\n2 ≤ N ≤ 15\n\n1 ≤ M ≤ (N*(N-1))/2\n\n1 ≤  arr[i], graph[i][j] ≤ N\n\nThere are no self-loops and repeated edges in the graph.",
+      "full_text": "You are given an array arr[ ] of integers having N elements and a non-weighted undirected graph having N nodes and M edges. The details of each edge in the graph is given to you in the form of list of list.\n\nYour task is to find the number of lucky permutations of the given array.\n\nAn array permutation is said to be lucky if for every node Vi  [1 <= i <= N-1] in the array there exists an edge between the nodes Vi and Vi+1 in the given graph.\n\nExample 1:\n\nInput:\nN = 3, M = 2\narr = {1, 2, 3}\ngraph = {{3, 1}, {1, 2}}\nOutput:\n2\nExplanation:\nAll possible permutations of the\narray are as follows-\n{1,2,3}: There is an edge between 1 and\n2 in the graph but not betwen 2 and 3.\n\n{2,1,3}: There is an edge between (2,1)\nand (1,3) in the graph.\n\n{3,1,2}: There is an edge between (3,1)\nand (1,2) in the graph.\n\nOut of the 3 possible permutations,\n2 are lucky. Therefore, answer is 2.\n\nExample 2:\n\nInput:\nN = 2, M = 1\narr = {1, 1}\ngraph = {{1, 2}}\nOutput :\n0\nExplanation:\nThere is no lucky permutation in the\ngiven graph.\n\nYour Task:\n\nYou don't need to read input or print anything. Your task is to complete the function luckyPermutations() which takes the two integers N and M, an array arr[ ] and a list of lists named graph of size M as input parameters and returns the count of lucky permutations.\n\nExpected Time Complexity: O(N2*2N)\n\nExpected Auxiliary Space: O(N*2N)\n\nConstraints:\n\n2 ≤ N ≤ 15\n\n1 ≤ M ≤ (N*(N-1))/2\n\n1 ≤  arr[i], graph[i][j] ≤ N\n\nThere are no self-loops and repeated edges in the graph.",
+      "examples": [
+        "Input:\nN = 3, M = 2\narr = {1, 2, 3}\ngraph = {{3, 1}, {1, 2}}\nOutput:\n2\nExplanation:\nAll possible permutations of the\narray are as follows-\n{1,2,3}: There is an edge between 1 and\n2 in the graph but not betwen 2 and 3.\n{2,1,3}: There is an edge between (2,1)\nand (1,3) in the graph.\n{3,1,2}: There is an edge between (3,1)\nand (1,2) in the graph.\nOut of the 3 possible permutations,\n2 are lucky. Therefore, answer is 2.",
+        "Input:\nN = 2, M = 1\narr = {1, 1}\ngraph = {{1, 2}}\nOutput :\n0\nExplanation:\nThere is no lucky permutation in the\ngiven graph."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ N ≤ 15\n1 ≤ M ≤ (N*(N-1))/2\n1 ≤  arr[i], graph[i][j] ≤ N\nThere are no self-loops and repeated edges in the graph.",
+      "question_html": "<p><span style=\"font-size:18px\">You are given an array <strong>arr[ ]&nbsp;</strong>of integers having <strong>N&nbsp;</strong>elements and a non-weighted&nbsp;undirected graph having <strong>N</strong> nodes and&nbsp;<strong>M&nbsp;</strong>edges. The details of each edge in the graph is given to you in the form of list of list.&nbsp;<br />\r\nYour task is to find the number of lucky permutations of the&nbsp;given array.<strong>&nbsp;</strong></span></p>\r\n\r\n<blockquote>\r\n<p><span style=\"font-size:18px\">An array permutation is said to be lucky if for every node <strong>V<sub>i&nbsp; </sub>[1 &lt;= i &lt;= N-1]</strong> in the array there exists an edge between the nodes&nbsp;<strong>V</strong><sub><strong>i</strong>&nbsp;</sub>and <strong>V<sub>i+1&nbsp;</sub></strong>in the given graph.</span></p>\r\n</blockquote>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>N = 3, M = 2\r\narr = {1, 2, 3}\r\ngraph = {{3, 1}, {1, 2}}\r\n<strong>Output:\r\n</strong>2\r\n<strong>Explanation:\r\n</strong>All possible permutations of the \r\narray are as follows-\r\n{1,2,3}: There is an edge between 1 and \r\n2 in the graph but not betwen 2 and 3.\r\n\r\n{2,1,3}: There is an edge between (2,1)\r\nand (1,3) in the graph.\r\n\r\n{3,1,2}: There is an edge between (3,1)\r\nand (1,2) in the graph.\r\n\r\nOut of the 3 possible permutations, \r\n2 are lucky. Therefore, answer is 2.</span>\r\n\r\n</pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>N = 2, M = 1\r\narr = {1, 1}\r\ngraph = {{1, 2}}\r\n<strong>Output :</strong>\r\n0\r\n<strong>Explanation:</strong>\r\nThere is no lucky permutation in the \r\ngiven graph. \r\n</span></pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:&nbsp;&nbsp;</strong><br />\r\nYou don&#39;t need to read input or print anything. Your task is to complete the function <strong>luckyPermutations()</strong>&nbsp;which takes the two integers <strong>N </strong>and <strong>M,&nbsp;</strong>an array <strong>arr[ ]&nbsp;</strong>and a list of lists named <strong>graph&nbsp;</strong>of size <strong>M</strong>&nbsp;as input parameters and returns the count of lucky permutations.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(N<sup>2</sup>*2<sup>N</sup>)<br />\r\n<strong>Expected Auxiliary Space:</strong> O(N*2<sup>N</sup>)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n2 &le; N &le; 15<br />\r\n1 &le; M&nbsp;&le; (N*(N-1))/2<br />\r\n1&nbsp;&le;&nbsp; arr[i], graph[i][j] &le; N&nbsp;<br />\r\nThere are no self-loops and repeated edges in the graph.</span></p>\r\n"
+    },
+    "qnum": 1405
+  },
+  {
+    "company": "Intuit",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/making-a-large-island/1",
+      "problem_name": "Making A Large Island",
+      "slug": "making-a-large-island",
+      "difficulty": "Hard",
+      "accuracy": "52.36%",
+      "marks": 8,
+      "all_submissions": 42968,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n&!//!&grid[][]",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Intuit"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "DFS",
+          "BFS",
+          "union-find"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "DFS",
+        "BFS",
+        "union-find"
+      ],
+      "company_tags": [
+        "Intuit"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-length-largest-region-boolean-matrix/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given an n x n binary matrix grid[][]. You are allowed to change at most one 0 to 1. A group of connected 1s forms an island. Two 1s are connected if they share one of their sides with each other.\n\nReturn the size of the largest island in the grid after applying this operation.\n\nExamples:\n\nInput: grid[] = [[1,0],[0,1]]\nOutput: 3\nExplanation: Change any one 0 to 1 and connect two 1s, then we get an island with area = 3.\n\nInput: grid[] = [[1,1],[1,0]]\nOutput: 4\nExplanation: Change the only 0 to 1 and make the island bigger, then we get an island with area = 4.\n\nInput: grid[] = [[1,1],[1,1]]\nOutput: 4\nExplanation: Can't change any 0 to 1, only one island possible with area = 4.\n\nConstraints:\n\n1 <= n <= 500\n0 <= grid[i][j] <= 1",
+      "full_text": "You are given an n x n binary matrix grid[][]. You are allowed to change at most one 0 to 1. A group of connected 1s forms an island. Two 1s are connected if they share one of their sides with each other.\n\nReturn the size of the largest island in the grid after applying this operation.\n\nExamples:\n\nInput: grid[] = [[1,0],[0,1]]\nOutput: 3\nExplanation: Change any one 0 to 1 and connect two 1s, then we get an island with area = 3.\n\nInput: grid[] = [[1,1],[1,0]]\nOutput: 4\nExplanation: Change the only 0 to 1 and make the island bigger, then we get an island with area = 4.\n\nInput: grid[] = [[1,1],[1,1]]\nOutput: 4\nExplanation: Can't change any 0 to 1, only one island possible with area = 4.\n\nConstraints:\n\n1 <= n <= 500\n0 <= grid[i][j] <= 1",
+      "examples": [
+        "Input:\ngrid[] = [[1,0],[0,1]]\nOutput:\n3\nExplanation:\nChange any one 0 to 1 and connect two 1s, then we get an island with area = 3.",
+        "Input:\ngrid[] = [[1,1],[1,0]]\nOutput:\n4\nExplanation:\nChange the only 0 to 1 and make the island bigger, then we get an island with area = 4.",
+        "Input:\ngrid[] = [[1,1],[1,1]]\nOutput:\n4\nExplanation:\nCan't change any 0 to 1, only one island possible with area = 4."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 500\n0 <= grid[i][j] <= 1",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an<strong> n x n </strong>binary matrix<strong> grid[][]</strong>. You are allowed to change at most one<strong> 0</strong> to <strong>1</strong>.&nbsp;</span><span style=\"font-size: 18.6667px;\">A group of <strong>connected 1s</strong> forms an island. Two 1s are connected if they share one of their sides with each other.</span></p>\n<p><span style=\"font-size: 14pt;\">Return the size of the <strong>largest island</strong> in the grid after applying this operation.</span></p>\n<p><strong><span style=\"font-size: 14pt;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 14pt;\"><strong><span style=\"font-size: 14pt;\">Input: </span></strong><span style=\"font-size: 14pt;\">grid[] = [[1,0],[0,1]]</span><br /><strong><span style=\"font-size: 14pt;\">Output: </span></strong><span style=\"font-size: 14pt;\">3</span><br /><strong><span style=\"font-size: 14pt;\">Explanation: </span></strong><span style=\"font-size: 18.6667px;\">Change any one 0 to 1 and connect two 1s, then we get an island with area = 3.</span></span></pre>\n<pre><strong><span style=\"font-size: 14pt;\">Input: </span></strong><span style=\"font-size: 14pt;\">grid[] = [[1,1],[1,0]]</span><br /><strong><span style=\"font-size: 14pt;\">Output: </span></strong><span style=\"font-size: 14pt;\">4</span><br /><strong><span style=\"font-size: 14pt;\">Explanation: </span></strong><span style=\"font-size: 18.6667px;\">Change the only 0 to 1 and make the island bigger, then we get an island with area = 4.</span></pre>\n<pre><strong><span style=\"font-size: 14pt;\">Input: </span></strong><span style=\"font-size: 14pt;\">grid[] = [[1,1],[1,1]]</span><br /><strong><span style=\"font-size: 14pt;\">Output: </span></strong><span style=\"font-size: 14pt;\">4</span><br /><strong><span style=\"font-size: 14pt;\">Explanation: </span></strong><span style=\"font-size: 18.6667px;\">Can't change any 0 to 1, only one island possible with area = 4.</span></pre>\n<p><strong><span style=\"font-size: 18.6667px;\">Constraints:</span></strong></p>\n<p><span style=\"font-size: 18.6667px;\">1 &lt;= n &lt;= 500<br />0 &lt;= grid[i][j] &lt;= 1</span></p>"
+    },
+    "qnum": 1406
+  },
+  {
+    "company": "Intuit",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/max-rectangle/1",
+      "problem_name": "Max rectangle",
+      "slug": "max-rectangle",
+      "difficulty": "Hard",
+      "accuracy": "36.43%",
+      "marks": 8,
+      "all_submissions": 131197,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&m = &!//!&mat[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "MakeMyTrip",
+          "Directi",
+          "Intuit",
+          "Google"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Stack",
+          "Matrix",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Stack",
+        "Matrix",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "MakeMyTrip",
+        "Directi",
+        "Intuit",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/maximum-size-rectangle-binary-sub-matrix-1s/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-15-on-campus/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-11-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-bangalore-internship-experience-2018/"
+      ],
+      "statement_text": "You are given a 2D binary matrix\nmat[ ][ ]\n, where each cell contains either\n0\nor\n1\n. Your task is to find the\nmaximum area\nof a rectangle that can be formed using only\n1's\nwithin the matrix.",
+      "full_text": "You are given a 2D binary matrix\nmat[ ][ ]\n, where each cell contains either\n0\nor\n1\n. Your task is to find the\nmaximum area\nof a rectangle that can be formed using only\n1's\nwithin the matrix.\nExamples:\nInput:\nmat[][] = [[0, 1, 1, 0],\n[1, 1, 1, 1],\n[1, 1, 1, 1],\n[1, 1, 0, 0]]\nOutput:\n8\nExplanation:\nThe largest rectangle with only 1’s is from (1, 0) to (2, 3) which is\n[1, 1, 1, 1]\n[1, 1, 1, 1]\nand area is 4 * 2 = 8\n.\nInput:\nmat[][] = [[0, 1, 1],\n[1, 1, 1],\n[0, 1, 1]]\nOutput:\n6\nExplanation:\nThe largest rectangle with only 1’s is from (0, 1) to (2, 2) which is\n[1, 1]\n[1, 1]\n[1, 1]\nand area is 2 * 3 = 6.\nConstraints:\n1 ≤ mat.size(), mat[0].size() ≤1000\n0 ≤ mat[][] ≤1",
+      "examples": [
+        "Input:\nmat[][] = [[0, 1, 1, 0],\n[1, 1, 1, 1],\n[1, 1, 1, 1],\n[1, 1, 0, 0]]\nOutput:\n8\nExplanation:\nThe largest rectangle with only 1’s is from (1, 0) to (2, 3) which is\n[1, 1, 1, 1]\n[1, 1, 1, 1]\nand area is 4 * 2 = 8\n.",
+        "Input:\nmat[][] = [[0, 1, 1],\n[1, 1, 1],\n[0, 1, 1]]\nOutput:\n6\nExplanation:\nThe largest rectangle with only 1’s is from (0, 1) to (2, 2) which is\n[1, 1]\n[1, 1]\n[1, 1]\nand area is 2 * 3 = 6."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ mat.size(), mat[0].size() ≤1000\n0 ≤ mat[][] ≤1",
+      "question_html": "<p data-start=\"158\" data-end=\"378\"><span style=\"font-size: 14pt;\">You are given a 2D binary matrix <strong>mat[ ][ ]</strong>, where each cell contains either&nbsp;<strong>0</strong> or <strong>1</strong>. Your task is to find the <strong data-start=\"291\" data-end=\"322\">maximum area</strong> of a rectangle that can be formed using only <strong>1's</strong>&nbsp;within the matrix.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">mat[][] = [[0, 1, 1, 0],\n                [1, 1, 1, 1],\n                [1, 1, 1, 1],\n                [1, 1, 0, 0]]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">8</span><strong style=\"font-size: 18px;\">\nExplanation: </strong><span style=\"font-size: 18px;\">The largest rectangle with only 1&rsquo;s is from (1, 0) to (2, 3) which is\n[1, 1, 1, 1]\n[1, 1, 1, 1]\nand area is 4 * 2 = 8</span></span><span style=\"font-size: 18px;\">.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> mat[][] = [[0, 1, 1],\n                [1, 1, 1],\n                [0, 1, 1]]\n<strong>Output:</strong> 6\n<strong>Explanation:</strong> The largest rectangle with only 1&rsquo;s is from (0, 1) to (2, 2) which is\n[1, 1]\n[1, 1]\n[1, 1]<br />and area is 2 * 3 = 6.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; mat.size(), mat[0].size() &le;1000<br />0 &le; mat[][] &le;1<br /></span></p>"
+    },
+    "qnum": 1407
+  },
+  {
+    "company": "Intuit",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reorder-list/1",
+      "problem_name": "Reorder List",
+      "slug": "reorder-list",
+      "difficulty": "Hard",
+      "accuracy": "47.9%",
+      "marks": 8,
+      "all_submissions": 65408,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head[] =",
+        "datatype": "LINKED_LIST_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Intuit"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Intuit"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/rearrange-a-given-linked-list-in-place/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/intuit-interview-experience-for-swe-summer-internship/"
+      ],
+      "statement_text": "Given a singly linked list\n:\nA\n0\n→A\n1\n→...→A\nn-2\n→A\nn-1\n, reorder it to A\n0\n→A\nn-1\n→A\n1\n→A\nn-2\n→A\n2\n→A\nn-3\n→...\nFor example: Given 1->2->3->4->5 its reorder is 1->5->2->4->3.\nNote:\nTry to solve without using any auxiliary space.",
+      "full_text": "Given a singly linked list\n:\nA\n0\n→A\n1\n→...→A\nn-2\n→A\nn-1\n, reorder it to A\n0\n→A\nn-1\n→A\n1\n→A\nn-2\n→A\n2\n→A\nn-3\n→...\nFor example: Given 1->2->3->4->5 its reorder is 1->5->2->4->3.\nNote:\nTry to solve without using any auxiliary space.\nExamples:\nInput:\nLinkedList: 1->2->3\nOutput:\n1->3->2\nExplanation:\nHere n=3, so the correct order is\nA\n0\n→ A\n2\n→ A\n1\nInput:\nLinkedList:\n1->7->3->4\nOutput:\n1->4->7->3\nExplanation:\nHere n=4, so the correct order is\nA\n0\n→ A\n3\n→ A\n1\n→ A\n2\nConstraints:\n1 <= no. of nodes <= 10\n6\n0 <= node->data <= 10\n6",
+      "examples": [
+        "Input:\nLinkedList: 1->2->3\nOutput:\n1->3->2\nExplanation:\nHere n=3, so the correct order is\nA\n0\n→ A\n2\n→ A\n1",
+        "Input:\nLinkedList:\n1->7->3->4\nOutput:\n1->4->7->3\nExplanation:\nHere n=4, so the correct order is\nA\n0\n→ A\n3\n→ A\n1\n→ A\n2"
+      ],
+      "constraints_text": "Constraints:\n1 <= no. of nodes <= 10\n6\n0 <= node->data <= 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a singly linked list<em>: </em>A<sub>0 </sub>&rarr;A<sub>1</sub> &rarr;...&rarr;A<sub>n-2 </sub>&rarr;A<sub>n-1 </sub>, reorder it to A<sub>0</sub> &rarr;A<sub>n-1</sub> &rarr;A<sub>1</sub> &rarr;A<sub>n-2 </sub>&rarr;A<sub>2 </sub>&rarr;A<sub>n-3</sub> &rarr;...</span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 14pt;\">For example: Given 1-&gt;2-&gt;3-&gt;4-&gt;5 its reorder is 1-&gt;5-&gt;2-&gt;4-&gt;3.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Note:</strong> Try to solve without using any auxiliary space.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>LinkedList: 1-&gt;2-&gt;3\n<strong>Output: </strong>1-&gt;3-&gt;2\n<strong>Explanation: </strong>Here n=3, so the correct order is<em> </em>A<sub>0 </sub>&rarr; A<sub>2</sub> &rarr; A<sub>1</sub><em><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700138/Web/Other/blobid0_1722946913.png\" width=\"386\" height=\"182\" /></em></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong><span style=\"font-size: 14pt; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">LinkedList:</span> 1-&gt;7-&gt;3-&gt;4\n<strong>Output: </strong>1-&gt;4-&gt;7-&gt;3\n<strong>Explanation: </strong>Here n=4, so the correct order is<em> </em>A<sub>0</sub> &rarr; A<sub>3</sub> &rarr; A<sub>1</sub> &rarr; A<sub>2</sub> </span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">1 &lt;= no. of nodes &lt;= 10<sup>6</sup></span><br /><span style=\"font-size: 14pt;\">0 &lt;= node-&gt;data &lt;= 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1408
+  }
+]

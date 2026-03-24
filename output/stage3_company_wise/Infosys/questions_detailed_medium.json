@@ -1,0 +1,144 @@
+[
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1",
+      "problem_name": "Allocate Minimum Pages",
+      "slug": "allocate-minimum-number-of-pages0937",
+      "difficulty": "Medium",
+      "accuracy": "35.51%",
+      "marks": 4,
+      "all_submissions": 378566,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =&!//!&k = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Amazon",
+          "Microsoft",
+          "Google",
+          "Codenation",
+          "Uber",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Searching",
+          "Divide and Conquer",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Searching",
+        "Divide and Conquer",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Amazon",
+        "Microsoft",
+        "Google",
+        "Codenation",
+        "Uber",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/allocate-minimum-number-pages/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-on-campus-for-sde-1-5/"
+      ],
+      "statement_text": "Given an array\narr[]\nof integers, where each element\narr[i]\nrepresents the number of pages in the i-th book. You also have an integer\nk\nrepresenting the number of students. The task is to allocate books to each student such that:\nEach student receives atleast one book.\nEach student is assigned a contiguous sequence of books.\nNo book is assigned to more than one student.\nThe objective is to\nminimize the maximum number of pages\nassigned to any student. In other words, out of all possible allocations, find the arrangement where the student who receives the most pages still has the\nsmallest possible maximum\n.\nNote:\nIf it is not possible to allocate books to all students, return\n-1\n.",
+      "full_text": "Given an array\narr[]\nof integers, where each element\narr[i]\nrepresents the number of pages in the i-th book. You also have an integer\nk\nrepresenting the number of students. The task is to allocate books to each student such that:\nEach student receives atleast one book.\nEach student is assigned a contiguous sequence of books.\nNo book is assigned to more than one student.\nThe objective is to\nminimize the maximum number of pages\nassigned to any student. In other words, out of all possible allocations, find the arrangement where the student who receives the most pages still has the\nsmallest possible maximum\n.\nNote:\nIf it is not possible to allocate books to all students, return\n-1\n.\nExamples:\nInput:\narr[] = [12, 34, 67, 90], k = 2\nOutput:\n113\nExplanation:\nAllocation can be done in following ways:\n=> [12] and [34, 67, 90] Maximum Pages = 191\n=> [12, 34] and [67, 90] Maximum Pages = 157\n=> [12, 34, 67] and [90] Maximum Pages = 113.\nThe third combination has the minimum pages assigned to a student which is 113.\nInput:\narr[] = [15, 17, 20], k = 5\nOutput:\n-1\nExplanation:\nSince there are more students than total books, it's impossible to allocate a book to each student.\nConstraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i], k ≤ 10\n3",
+      "examples": [
+        "Input:\narr[] = [12, 34, 67, 90], k = 2\nOutput:\n113\nExplanation:\nAllocation can be done in following ways:\n=> [12] and [34, 67, 90] Maximum Pages = 191\n=> [12, 34] and [67, 90] Maximum Pages = 157\n=> [12, 34, 67] and [90] Maximum Pages = 113.\nThe third combination has the minimum pages assigned to a student which is 113.",
+        "Input:\narr[] = [15, 17, 20], k = 5\nOutput:\n-1\nExplanation:\nSince there are more students than total books, it's impossible to allocate a book to each student."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i], k ≤ 10\n3",
+      "question_html": "<p><span class=\"cf0\" style=\"font-size: 14pt;\">Given an array <strong>arr[] </strong>of integers, where each element <strong>arr[i]</strong> represents the number of pages in the i-th book. You also have an integer <strong>k</strong> representing the number of students. The task is to allocate books to each student such that:</span></p>\n<ul>\n<li><span class=\"cf0\" style=\"font-size: 14pt;\">Each student receives atleast one book.</span></li>\n<li><span class=\"cf0\" style=\"font-size: 14pt;\">Each student is assigned a contiguous sequence of books.</span></li>\n<li><span class=\"cf0\" style=\"font-size: 14pt;\">No book is assigned to more than one student.</span></li>\n</ul>\n<p class=\"pf0\"><span class=\"cf0\" style=\"font-size: 14pt;\">The objective is to <strong>minimize the maximum number of pages </strong>assigned to any student. In other words, out of all possible allocations, find the arrangement where the student who receives the most pages still has the <strong>smallest possible maximum</strong>.</span></p>\n<p class=\"pf0\"><span class=\"cf0\" style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;</span><span style=\"font-size: 18.6667px;\">If it is not possible to allocate books to all students, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [12, 34, 67, 90], k = 2\n<strong>Output: </strong>113\n<strong>Explanation: </strong>Allocation can be done in following ways:<br />=&gt; [12] and [34, 67, 90] Maximum Pages = 191<br />=&gt; [12, 34] and [67, 90] Maximum Pages = 157<br />=&gt; [12, 34, 67] and [90] Maximum Pages = 113.<br />The third combination has the minimum pages assigned to a student which is 113.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><span class=\"cf0\"><strong>Input:</strong> arr[] = [15, 17, 20], k = 5<br /></span><span class=\"cf0\"><strong>Output: </strong>-1<br /></span><span class=\"cf0\"><strong>Explanation: </strong></span>Since there are more students than total books, it's impossible to allocate a book to each student.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>6</sup><br />1 &le; arr[i], k &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 1375
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/next-permutation5226/1",
+      "problem_name": "Next Permutation",
+      "slug": "next-permutation5226",
+      "difficulty": "Medium",
+      "accuracy": "40.66%",
+      "marks": 4,
+      "all_submissions": 255657,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Hike",
+          "MakeMyTrip",
+          "Google",
+          "Qualcomm",
+          "Salesforce"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "permutation",
+          "constructive algo",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "permutation",
+        "constructive algo",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Hike",
+        "MakeMyTrip",
+        "Google",
+        "Qualcomm",
+        "Salesforce"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/next-permutation/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-7-off-campus/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-11-developer-position/",
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-413-sdet-1-campus-internship/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-sde-2/"
+      ],
+      "statement_text": "Given an array of integers arr[] representing a permutation, implement the next permutation that rearranges the numbers into the lexicographically next greater permutation. If no such permutation exists, rearrange the numbers into the lowest possible order (i.e., sorted in ascending order).\n\nNote:  A permutation of an array of integers refers to a specific arrangement of its elements in a sequence or linear order.\n\nExamples:\n\nInput: arr[] = [2, 4, 1, 7, 5, 0]\nOutput: [2, 4, 5, 0, 1, 7]\nExplanation: The next permutation of the given array is [2, 4, 5, 0, 1, 7].\n\nInput: arr[] = [3, 2, 1]\nOutput: [1, 2, 3]\nExplanation: As arr[] is the last permutation, the next permutation is the lowest one.\n\nInput: arr[] = [3, 4, 2, 5, 1]\nOutput: [3, 4, 5, 1, 2]\nExplanation: The next permutation of the given array is [3, 4, 5, 1, 2].\n\nConstraints:\n1 ≤ arr.size() ≤ 105\n0 ≤ arr[i] ≤ 105",
+      "full_text": "Given an array of integers arr[] representing a permutation, implement the next permutation that rearranges the numbers into the lexicographically next greater permutation. If no such permutation exists, rearrange the numbers into the lowest possible order (i.e., sorted in ascending order).\n\nNote:  A permutation of an array of integers refers to a specific arrangement of its elements in a sequence or linear order.\n\nExamples:\n\nInput: arr[] = [2, 4, 1, 7, 5, 0]\nOutput: [2, 4, 5, 0, 1, 7]\nExplanation: The next permutation of the given array is [2, 4, 5, 0, 1, 7].\n\nInput: arr[] = [3, 2, 1]\nOutput: [1, 2, 3]\nExplanation: As arr[] is the last permutation, the next permutation is the lowest one.\n\nInput: arr[] = [3, 4, 2, 5, 1]\nOutput: [3, 4, 5, 1, 2]\nExplanation: The next permutation of the given array is [3, 4, 5, 1, 2].\n\nConstraints:\n1 ≤ arr.size() ≤ 105\n0 ≤ arr[i] ≤ 105",
+      "examples": [
+        "Input:\narr[] = [2, 4, 1, 7, 5, 0]\nOutput:\n[2, 4, 5, 0, 1, 7]\nExplanation:\nThe next permutation of the given array is [2, 4, 5, 0, 1, 7].",
+        "Input:\narr[] = [3, 2, 1]\nOutput:\n[1, 2, 3]\nExplanation:\nAs arr[] is the last permutation, the next permutation is the lowest one.",
+        "Input:\narr[] = [3, 4, 2, 5, 1]\nOutput:\n[3, 4, 5, 1, 2]\nExplanation:\nThe next permutation of the given array is [3, 4, 5, 1, 2]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array of integers <strong>arr[]</strong> representing a permutation, implement the&nbsp;<strong>next permutation</strong>&nbsp;that rearranges the numbers into the <strong>lexicographically next greater permutation</strong>. If no such permutation exists, rearrange the numbers into the <strong>lowest</strong> possible order (i.e., sorted in ascending order).&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp; A permutation of an array of integers refers to a specific arrangement of its elements in a sequence or linear order.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [2, 4, 1, 7, 5, 0]\n<strong>Output:</strong> [2, 4, 5, 0, 1, 7]\n<strong>Explanation:</strong> The next permutation of the given array is [2, 4, 5, 0, 1, 7].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [3, 2, 1]\n<strong>Output:</strong> [1, 2, 3]\n<strong>Explanation:</strong> As arr[] is the last permutation, the next permutation is the lowest one.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [3, 4, 2, 5, 1]\n<strong>Output:</strong> [3, 4, 5, 1, 2]\n<strong>Explanation:</strong> The next permutation of the given array is [3, 4, 5, 1, 2].</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5<br /></sup>0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1376
+  }
+]

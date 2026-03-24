@@ -1,0 +1,117 @@
+[
+  {
+    "company": "Salesforce",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-number-of-days-between-two-given-dates5400/1",
+      "problem_name": "Find number of days between two given dates",
+      "slug": "find-number-of-days-between-two-given-dates5400",
+      "difficulty": "Basic",
+      "accuracy": "31.34%",
+      "marks": 1,
+      "all_submissions": 7156,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Salesforce"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Salesforce"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-number-of-days-between-two-given-dates/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given two dates, find the total number of days between them.\nNote:\nThe system follows\nGregorian calender\nfrom the beginning of time.\nExample 1:\nInput:\nd1 =\n10,\nm1 =\n2,\ny1 =\n2014\nd2 =\n10,\nm2 =\n3,\ny2 =\n2015\nOutput:\n393\nExplanation:\nBy counting manually, we find out there\nare 393 days between the two dates.\nExample 2:\nInput:\nd1 =\n10,\nm1 =\n2,\ny1 =\n2001\nd2 =\n10,\nm2 =\n2,\ny2 =\n2002\nOutput:\n365\nExplanation:\nBy counting manually, we find out there\nare 365 days between the two dates.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nnoOfDays()\nwhich takes Integers d1,m1,y1 for the first date and d2,m2,y2 as the second date as input and returns the answer.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given two dates, find the total number of days between them.\nNote:\nThe system follows\nGregorian calender\nfrom the beginning of time.\nExample 1:\nInput:\nd1 =\n10,\nm1 =\n2,\ny1 =\n2014\nd2 =\n10,\nm2 =\n3,\ny2 =\n2015\nOutput:\n393\nExplanation:\nBy counting manually, we find out there\nare 393 days between the two dates.\nExample 2:\nInput:\nd1 =\n10,\nm1 =\n2,\ny1 =\n2001\nd2 =\n10,\nm2 =\n2,\ny2 =\n2002\nOutput:\n365\nExplanation:\nBy counting manually, we find out there\nare 365 days between the two dates.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nnoOfDays()\nwhich takes Integers d1,m1,y1 for the first date and d2,m2,y2 as the second date as input and returns the answer.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 <= d1,d2 <= 31\n1 <= m1,m2 <= 12\n1 <= y1,y2 <= 3000",
+      "examples": [
+        "Input:\nd1 =\n10,\nm1 =\n2,\ny1 =\n2014\nd2 =\n10,\nm2 =\n3,\ny2 =\n2015\nOutput:\n393\nExplanation:\nBy counting manually, we find out there\nare 393 days between the two dates.",
+        "Input:\nd1 =\n10,\nm1 =\n2,\ny1 =\n2001\nd2 =\n10,\nm2 =\n2,\ny2 =\n2002\nOutput:\n365\nExplanation:\nBy counting manually, we find out there\nare 365 days between the two dates."
+      ],
+      "constraints_text": "Constraints:\n1 <= d1,d2 <= 31\n1 <= m1,m2 <= 12\n1 <= y1,y2 <= 3000",
+      "question_html": "<p><span style=\"font-size:18px\">Given two dates, find the total number of days between them.<br />\r\n<strong>Note: </strong>The system follows <a href=\"https://en.wikipedia.org/wiki/Gregorian_calendar#Adoption\">Gregorian calender</a> from the beginning of time.</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong></span>\r\n<span style=\"font-size:18px\"><strong>d1 = </strong>10, <strong>m1 = </strong>2, <strong>y1 = </strong>2014</span>\r\n<span style=\"font-size:18px\"><strong>d2 = </strong>10, <strong>m2 = </strong>3, <strong>y2 = </strong>2015</span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong></span>\r\n<span style=\"font-size:18px\">393</span>\r\n<span style=\"font-size:18px\"><strong>Explanation:</strong></span>\r\n<span style=\"font-size:18px\">By counting manually, we find out there\r\nare 393 days between the two dates.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong></span>\r\n<span style=\"font-size:18px\"><strong>d1 = </strong>10, <strong>m1 = </strong>2, <strong>y1 = </strong>2001</span>\r\n<span style=\"font-size:18px\"><strong>d2 = </strong>10, <strong>m2 = </strong>2, <strong>y2 = </strong>2002</span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong></span>\r\n<span style=\"font-size:18px\">365</span>\r\n<span style=\"font-size:18px\"><strong>Explanation:</strong></span>\r\n<span style=\"font-size:18px\">By counting manually, we find out there\r\nare 365 days between the two dates.</span></pre>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou don&#39;t need to read input or print anything. Your task is to complete the function <strong>noOfDays()</strong> which takes Integers d1,m1,y1 for the first date and d2,m2,y2 as the second date as input and returns the answer.</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(1)<br />\r\n<strong>Expected Auxiliary Space:</strong> O(1)</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints:</strong></span><br />\r\n<span style=\"font-size:18px\">1 &lt;= d1,d2 &lt;= 31<br />\r\n1 &lt;= m1,m2 &lt;= 12<br />\r\n1 &lt;= y1,y2 &lt;= 3000</span></p>\r\n"
+    },
+    "qnum": 2217
+  },
+  {
+    "company": "Salesforce",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-pairs-with-given-sum5022/1",
+      "problem_name": "Two sum -Pairs with 0 Sum",
+      "slug": "count-pairs-with-given-sum5022",
+      "difficulty": "Easy",
+      "accuracy": "31.49%",
+      "marks": 2,
+      "all_submissions": 530090,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "FactSet",
+          "Hike",
+          "MakeMyTrip",
+          "Goldman Sachs",
+          "Adobe",
+          "Salesforce"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Sorting",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Sorting",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "FactSet",
+        "Hike",
+        "MakeMyTrip",
+        "Goldman Sachs",
+        "Adobe",
+        "Salesforce"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/2-sum-find-all-pairs-with-zero-sum/",
+        "https://www.geeksforgeeks.org/given-an-array-arr-find-the-maximum-j-i-such-that-arrj-arri/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-for-software-engineer/"
+      ],
+      "statement_text": "Given an integer array\narr\n, return all the\nunique\npairs [arr[i], arr[j]] such that\ni != j\nand\narr[i] + arr[j] == 0.\nNote: The pairs must be returned in\nsorted\norder, the solution array\nshould also be\nsorted\n, and the answer must not contain any\nduplicate\npairs.",
+      "full_text": "Given an integer array\narr\n, return all the\nunique\npairs [arr[i], arr[j]] such that\ni != j\nand\narr[i] + arr[j] == 0.\nNote: The pairs must be returned in\nsorted\norder, the solution array\nshould also be\nsorted\n, and the answer must not contain any\nduplicate\npairs.\nExamples:\nInput:\narr = [-1, 0, 1, 2, -1, -4]\nOutput:\n[[-1, 1]]\nExplanation:\narr[0] + arr[2] = (-1)+ 1 = 0.\narr[2] + arr[4] = 1 + (-1) = 0.\nThe distinct pair are [-1,1].\nInput:\narr = [6, 1, 8, 0, 4, -9, -1, -10, -6, -5]\nOutput:\n[[-6, 6],[-1, 1]]\nExplanation:\nThe distinct pairs are [-1, 1] and [-6, 6].\nExpected Time Complexity:\nO(n log n)\nExpected Auxiliary Space:\nO(n).\nConstraints:\n3 <= arr.size <= 10\n5\n-10\n5\n<= arr[i] <= 10\n5",
+      "examples": [
+        "Input:\narr = [-1, 0, 1, 2, -1, -4]\nOutput:\n[[-1, 1]]\nExplanation:\narr[0] + arr[2] = (-1)+ 1 = 0.\narr[2] + arr[4] = 1 + (-1) = 0.\nThe distinct pair are [-1,1].",
+        "Input:\narr = [6, 1, 8, 0, 4, -9, -1, -10, -6, -5]\nOutput:\n[[-6, 6],[-1, 1]]\nExplanation:\nThe distinct pairs are [-1, 1] and [-6, 6]."
+      ],
+      "constraints_text": "Constraints:\n3 <= arr.size <= 10\n5\n-10\n5\n<= arr[i] <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an integer array&nbsp;<strong>arr</strong>, return all the&nbsp;<strong>unique&nbsp;</strong>pairs [arr[i], arr[j]] such that<strong>&nbsp;i != j </strong>and<strong> arr[i] + arr[j] == 0.</strong></span></p>\n<p><span style=\"font-size: 14pt;\">Note: The pairs must be returned in&nbsp;<strong>sorted&nbsp;</strong>order, the&nbsp;solution array<strong> </strong>should also be&nbsp;<strong>sorted</strong>, and the answer must not contain any&nbsp;<strong>duplicate&nbsp;</strong>pairs.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr = [-1, 0, 1, 2, -1, -4]\n<strong>Output: </strong>[[-1, 1]]<strong>\nExplanation: </strong>arr[0] + arr[2] = (-1)+ 1 = 0.\narr[2] + arr[4] = 1 + (-1) = 0.\nThe distinct pair are [-1,1].</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr = [6, 1, 8, 0, 4, -9, -1, -10, -6, -5]\n<strong>Output: </strong>[[-6, 6],[-1, 1]]<strong>\nExplanation: </strong>The distinct pairs are [-1, 1] and [-6, 6].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n log n)<br /><strong>Expected Auxiliary Space:</strong> O(n).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong>3 &lt;= arr.size &lt;= 10<sup>5</sup><br />-10<sup>5</sup> &lt;= arr[i] &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 2218
+  }
+]

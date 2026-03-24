@@ -1,0 +1,548 @@
+[
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/binary-search-1587115620/1",
+      "problem_name": "Binary Search",
+      "slug": "binary-search-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "44.32%",
+      "marks": 2,
+      "all_submissions": 713385,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "k = &!//!&arr[] = ",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Oracle",
+          "Wipro",
+          "Linkedin",
+          "Qualcomm",
+          "TCS",
+          "Cognizant",
+          "Accenture"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Divide and Conquer",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Divide and Conquer",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Oracle",
+        "Wipro",
+        "Linkedin",
+        "Qualcomm",
+        "TCS",
+        "Cognizant",
+        "Accenture"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/binary-search-in-java/",
+        "https://www.geeksforgeeks.org/binary-search/",
+        "https://www.geeksforgeeks.org/cpp-binary-search/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-9-experienced-linkedin-invite/"
+      ],
+      "statement_text": "Given a sorted array\narr[]\nand an integer\nk\n, find the position(0-based indexing) at which k is present in the array using binary search. If k doesn't exist in arr[] return\n-1\n.\nNote:\nIf multiple occurrences are there, please return the smallest index.",
+      "full_text": "Given a sorted array\narr[]\nand an integer\nk\n, find the position(0-based indexing) at which k is present in the array using binary search. If k doesn't exist in arr[] return\n-1\n.\nNote:\nIf multiple occurrences are there, please return the smallest index.\nExamples:\nInput:\narr[] = [1, 2, 3, 4, 5], k = 4\nOutput:\n3\nExplanation:\n4 appears at index 3.\nInput:\narr[] = [11, 22, 33, 44, 55], k = 445\nOutput:\n-1\nExplanation:\n445 is not present.\nInput:\narr[] = [1, 1, 1, 1, 2], k = 1\nOutput:\n0\nExplanation:\n1 appears at index 0.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6\n1 ≤ k ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 4, 5], k = 4\nOutput:\n3\nExplanation:\n4 appears at index 3.",
+        "Input:\narr[] = [11, 22, 33, 44, 55], k = 445\nOutput:\n-1\nExplanation:\n445 is not present.",
+        "Input:\narr[] = [1, 1, 1, 1, 2], k = 1\nOutput:\n0\nExplanation:\n1 appears at index 0."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6\n1 ≤ k ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a sorted array <strong>arr[]</strong> and an integer <strong>k</strong>, find the position(0-based indexing) at which k is present in the array using binary search. If k doesn't exist in arr[] return <strong>-1</strong>.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> If multiple occurrences are there, please return the smallest index.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4, 5], k = 4\n<strong>Output:</strong> 3\n<strong>Explanation:</strong> 4 appears at index 3.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [11, 22, 33, 44, 55], k = 445\n<strong>Output:</strong> -1\n<strong>Explanation:</strong> 445 is not present.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 1, 1, 1, 2], k = 1\n<strong>Output:</strong> 0\n<strong>Explanation:</strong> 1 appears at index 0.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5<br /></sup>1 &le; arr[i] &le; 10<sup>6<br /></sup>1 &le; k &le; 10<sup>6</sup></span></p>\n<div id=\"highlighter--hover-tools\" style=\"display: none;\">\n<div id=\"highlighter--hover-tools--container\">\n<div class=\"highlighter--icon highlighter--icon-copy\" title=\"Copy\">&nbsp;</div>\n<div class=\"highlighter--icon highlighter--icon-change-color\" title=\"Change Color\">&nbsp;</div>\n<div class=\"highlighter--icon highlighter--icon-delete\" title=\"Delete\">&nbsp;</div>\n</div>\n</div>"
+    }
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/print-first-n-fibonacci-numbers1002/1",
+      "problem_name": "First n Fibonacci",
+      "slug": "print-first-n-fibonacci-numbers1002",
+      "difficulty": "Basic",
+      "accuracy": "29.92%",
+      "marks": 1,
+      "all_submissions": 275298,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Wipro",
+          "TCS",
+          "Accenture"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Wipro",
+        "TCS",
+        "Accenture"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/java-fibonacci-series/",
+        "https://www.geeksforgeeks.org/program-to-print-first-n-fibonacci-numbers/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a number\nn,\nreturn an array containing the first\nn\nFibonacci numbers.\nNote: The first two numbers of the series are 0 and 1.",
+      "full_text": "Given a number\nn,\nreturn an array containing the first\nn\nFibonacci numbers.\nNote: The first two numbers of the series are 0 and 1.\nExamples:\nInput:\nn = 5\nOutput:\n[0, 1, 1, 2, 3]\nInput:\nn = 7\nOutput:\n[0, 1, 1, 2, 3, 5, 8]\nInput\n: n = 2\nOutput\n: [0, 1]\nConstraints:\n1 <= n <= 30",
+      "examples": [
+        "Input:\nn = 5\nOutput:\n[0, 1, 1, 2, 3]",
+        "Input:\nn = 7\nOutput:\n[0, 1, 1, 2, 3, 5, 8]",
+        "Input\n: n = 2\nOutput\n: [0, 1]"
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 30",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a number <strong>n, </strong>return an array containing the first <strong>n</strong> Fibonacci numbers.<br /><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"><strong><br /></strong>Note: The first two numbers of the series are 0 and 1.</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 5\n<strong>Output: </strong>[0, 1, 1, 2, 3]\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>n = 7\n<strong>Output: </strong>[0, 1, 1, 2, 3, 5, 8]</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: n = 2<br /><strong>Output</strong>: [0, 1]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">1 &lt;= n &lt;= 30</span></p>"
+    }
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-element-in-array4009/1",
+      "problem_name": "Largest in Array",
+      "slug": "largest-element-in-array4009",
+      "difficulty": "Basic",
+      "accuracy": "67.48%",
+      "marks": 1,
+      "all_submissions": 584674,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Oracle",
+          "Wipro",
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Oracle",
+        "Wipro",
+        "Morgan Stanley"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/java-program-for-program-to-find-largest-element-in-an-array/",
+        "https://www.geeksforgeeks.org/program-to-find-largest-element-in-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[].\nThe task is to find the largest element and return it.",
+      "full_text": "Given an array\narr[].\nThe task is to find the largest element and return it.\nExamples:\nInput:\narr[] = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.\nInput:\narr[] = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.\nInput:\narr[] = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest.\nConstraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "examples": [
+        "Input:\narr[] = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.",
+        "Input:\narr[] = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.",
+        "Input:\narr[] = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[].</strong><strong> </strong>The task is to find the largest element and return it.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 8, 7, 56, 90]\n<strong>Output: </strong>90\n<strong>Explanation: </strong>The largest element of the given array is 90.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [5, 5, 5, 5]\n<strong>Output: </strong>5\n<strong>Explanation: </strong>The largest element of the given array is 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [10]\n<strong>Output: </strong>10\n<strong>Explanation: </strong>There is only one element which is the largest.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &lt;= arr.size()&lt;= 10<sup>6</sup><br />0 &lt;= arr[i] &lt;= 10<sup>6</sup></span></p>"
+    }
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/largest-element-in-array4009--142158/1",
+      "problem_name": "Maximum Element in Array",
+      "slug": "largest-element-in-array4009--142158",
+      "difficulty": "Basic",
+      "accuracy": "68.97%",
+      "marks": 1,
+      "all_submissions": 9834,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Oracle",
+          "Wipro",
+          "Morgan Stanley"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Oracle",
+        "Wipro",
+        "Morgan Stanley"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[].\nThe task is to find the\nlargest\nelement and return it.",
+      "full_text": "Given an array\narr[].\nThe task is to find the\nlargest\nelement and return it.\nExamples:\nInput:\narr = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.\nInput:\narr = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.\nInput:\narr = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest.\nConstraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "examples": [
+        "Input:\narr = [1, 8, 7, 56, 90]\nOutput:\n90\nExplanation:\nThe largest element of the given array is 90.",
+        "Input:\narr = [5, 5, 5, 5]\nOutput:\n5\nExplanation:\nThe largest element of the given array is 5.",
+        "Input:\narr = [10]\nOutput:\n10\nExplanation:\nThere is only one element which is the largest."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size()<= 10\n6\n0 <= arr[i] <= 10\n6",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr[].</strong><strong> </strong>The task is to find the <strong>largest</strong> element and return it.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 8, 7, 56, 90]\n<strong>Output: </strong>90\n<strong>Explanation: </strong>The largest element of the given array is 90.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [5, 5, 5, 5]\n<strong>Output: </strong>5\n<strong>Explanation: </strong>The largest element of the given array is 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [10]\n<strong>Output: </strong>10\n<strong>Explanation: </strong>There is only one element which is the largest.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &lt;= arr.size()&lt;= 10<sup>6</sup><br />0 &lt;= arr[i] &lt;= 10<sup>6</sup></span></p>"
+    }
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-an-array/1",
+      "problem_name": "Reverse an Array",
+      "slug": "reverse-an-array",
+      "difficulty": "Easy",
+      "accuracy": "55.32%",
+      "marks": 2,
+      "all_submissions": 284228,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "TCS",
+          "Adobe",
+          "Google",
+          "Infosys",
+          "Capgemini",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Apple",
+          "Yahoo",
+          "PayPal",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "TCS",
+        "Adobe",
+        "Google",
+        "Infosys",
+        "Capgemini",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Apple",
+        "Yahoo",
+        "PayPal",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-reverse-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.",
+      "full_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.\nExamples:\nInput:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].\nInput\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].\nInput\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].",
+        "Input\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].",
+        "Input\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array of integers&nbsp;<strong>arr[]</strong>. You have to <strong>reverse</strong> the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:<span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito;\">&nbsp;</span></strong>Modify the array in place.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 4, 3, 2, 6, 5]\n<strong>Output: </strong>[5, 6, 2, 3, 4, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>The elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [4, 5, 2]\n<strong>Output: </strong>[2, 5, 4]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [1]\n<strong>Output: </strong>[1]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The array has only single element, hence the reversed array is same as the original.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup></span><br /><span style=\"font-size: 14pt;\">0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    }
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
+      "problem_name": "Stock Buy and Sell – Max one Transaction Allowed",
+      "slug": "buy-stock-2",
+      "difficulty": "Easy",
+      "accuracy": "49.33%",
+      "marks": 2,
+      "all_submissions": 140469,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "Intel",
+          "Infosys",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Yahoo",
+          "PayPal",
+          "Nvidia",
+          "Oracle",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "TCS",
+          "Adobe",
+          "Google",
+          "IBM",
+          "Accenture",
+          "Apple",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "Intel",
+        "Infosys",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Yahoo",
+        "PayPal",
+        "Nvidia",
+        "Oracle",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "TCS",
+        "Adobe",
+        "Google",
+        "IBM",
+        "Accenture",
+        "Apple",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-variations-of-stock-problems/",
+        "https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.",
+      "full_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.\nExamples:\nInput:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.\nInput:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.\nInput:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].\nConstraint:\n1\n≤\nprices.size()\n≤\n10\n5\n0\n≤\nprices[i]\n≤\n10\n4",
+      "examples": [
+        "Input:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.",
+        "Input:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.",
+        "Input:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1]."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given an array <strong>prices[]</strong> of non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when <strong>at most one </strong>transaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then <strong>return 0</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">Note: Stock must be bought before being sold.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 10, 1, 3, 6, 9, 2]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 8<br /></span><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> You can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 6, 4, 3, 1]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 0 <br /></span><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Here the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.<br /></span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>prices[] = [1, 3, 6, 9, 11]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 10 </span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Since the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraint:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices.size()&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;10</span><sup>5<br /></sup><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices[i] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> &nbsp;</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup></p>"
+    }
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/allocate-minimum-number-of-pages0937/1",
+      "problem_name": "Allocate Minimum Pages",
+      "slug": "allocate-minimum-number-of-pages0937",
+      "difficulty": "Medium",
+      "accuracy": "35.51%",
+      "marks": 4,
+      "all_submissions": 378566,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =&!//!&k = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Amazon",
+          "Microsoft",
+          "Google",
+          "Codenation",
+          "Uber",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Searching",
+          "Divide and Conquer",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Searching",
+        "Divide and Conquer",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Amazon",
+        "Microsoft",
+        "Google",
+        "Codenation",
+        "Uber",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/allocate-minimum-number-pages/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-on-campus-for-sde-1-5/"
+      ],
+      "statement_text": "Given an array\narr[]\nof integers, where each element\narr[i]\nrepresents the number of pages in the i-th book. You also have an integer\nk\nrepresenting the number of students. The task is to allocate books to each student such that:\nEach student receives atleast one book.\nEach student is assigned a contiguous sequence of books.\nNo book is assigned to more than one student.\nThe objective is to\nminimize the maximum number of pages\nassigned to any student. In other words, out of all possible allocations, find the arrangement where the student who receives the most pages still has the\nsmallest possible maximum\n.\nNote:\nIf it is not possible to allocate books to all students, return\n-1\n.",
+      "full_text": "Given an array\narr[]\nof integers, where each element\narr[i]\nrepresents the number of pages in the i-th book. You also have an integer\nk\nrepresenting the number of students. The task is to allocate books to each student such that:\nEach student receives atleast one book.\nEach student is assigned a contiguous sequence of books.\nNo book is assigned to more than one student.\nThe objective is to\nminimize the maximum number of pages\nassigned to any student. In other words, out of all possible allocations, find the arrangement where the student who receives the most pages still has the\nsmallest possible maximum\n.\nNote:\nIf it is not possible to allocate books to all students, return\n-1\n.\nExamples:\nInput:\narr[] = [12, 34, 67, 90], k = 2\nOutput:\n113\nExplanation:\nAllocation can be done in following ways:\n=> [12] and [34, 67, 90] Maximum Pages = 191\n=> [12, 34] and [67, 90] Maximum Pages = 157\n=> [12, 34, 67] and [90] Maximum Pages = 113.\nThe third combination has the minimum pages assigned to a student which is 113.\nInput:\narr[] = [15, 17, 20], k = 5\nOutput:\n-1\nExplanation:\nSince there are more students than total books, it's impossible to allocate a book to each student.\nConstraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i], k ≤ 10\n3",
+      "examples": [
+        "Input:\narr[] = [12, 34, 67, 90], k = 2\nOutput:\n113\nExplanation:\nAllocation can be done in following ways:\n=> [12] and [34, 67, 90] Maximum Pages = 191\n=> [12, 34] and [67, 90] Maximum Pages = 157\n=> [12, 34, 67] and [90] Maximum Pages = 113.\nThe third combination has the minimum pages assigned to a student which is 113.",
+        "Input:\narr[] = [15, 17, 20], k = 5\nOutput:\n-1\nExplanation:\nSince there are more students than total books, it's impossible to allocate a book to each student."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i], k ≤ 10\n3",
+      "question_html": "<p><span class=\"cf0\" style=\"font-size: 14pt;\">Given an array <strong>arr[] </strong>of integers, where each element <strong>arr[i]</strong> represents the number of pages in the i-th book. You also have an integer <strong>k</strong> representing the number of students. The task is to allocate books to each student such that:</span></p>\n<ul>\n<li><span class=\"cf0\" style=\"font-size: 14pt;\">Each student receives atleast one book.</span></li>\n<li><span class=\"cf0\" style=\"font-size: 14pt;\">Each student is assigned a contiguous sequence of books.</span></li>\n<li><span class=\"cf0\" style=\"font-size: 14pt;\">No book is assigned to more than one student.</span></li>\n</ul>\n<p class=\"pf0\"><span class=\"cf0\" style=\"font-size: 14pt;\">The objective is to <strong>minimize the maximum number of pages </strong>assigned to any student. In other words, out of all possible allocations, find the arrangement where the student who receives the most pages still has the <strong>smallest possible maximum</strong>.</span></p>\n<p class=\"pf0\"><span class=\"cf0\" style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;</span><span style=\"font-size: 18.6667px;\">If it is not possible to allocate books to all students, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [12, 34, 67, 90], k = 2\n<strong>Output: </strong>113\n<strong>Explanation: </strong>Allocation can be done in following ways:<br />=&gt; [12] and [34, 67, 90] Maximum Pages = 191<br />=&gt; [12, 34] and [67, 90] Maximum Pages = 157<br />=&gt; [12, 34, 67] and [90] Maximum Pages = 113.<br />The third combination has the minimum pages assigned to a student which is 113.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><span class=\"cf0\"><strong>Input:</strong> arr[] = [15, 17, 20], k = 5<br /></span><span class=\"cf0\"><strong>Output: </strong>-1<br /></span><span class=\"cf0\"><strong>Explanation: </strong></span>Since there are more students than total books, it's impossible to allocate a book to each student.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>6</sup><br />1 &le; arr[i], k &le; 10<sup>3</sup></span></p>"
+    }
+  },
+  {
+    "company": "Infosys",
+    "company_explore_url": "",
+    "stage2_difficulty": "Medium",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/next-permutation5226/1",
+      "problem_name": "Next Permutation",
+      "slug": "next-permutation5226",
+      "difficulty": "Medium",
+      "accuracy": "40.66%",
+      "marks": 4,
+      "all_submissions": 255657,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Infosys",
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Hike",
+          "MakeMyTrip",
+          "Google",
+          "Qualcomm",
+          "Salesforce"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "permutation",
+          "constructive algo",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "permutation",
+        "constructive algo",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Infosys",
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Hike",
+        "MakeMyTrip",
+        "Google",
+        "Qualcomm",
+        "Salesforce"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/next-permutation/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-7-off-campus/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-11-developer-position/",
+        "httpss://www.geeksforgeeks.org/amazon-interview-experience-set-413-sdet-1-campus-internship/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-sde-2/"
+      ],
+      "statement_text": "Given an array of integers arr[] representing a permutation, implement the next permutation that rearranges the numbers into the lexicographically next greater permutation. If no such permutation exists, rearrange the numbers into the lowest possible order (i.e., sorted in ascending order).\n\nNote:  A permutation of an array of integers refers to a specific arrangement of its elements in a sequence or linear order.\n\nExamples:\n\nInput: arr[] = [2, 4, 1, 7, 5, 0]\nOutput: [2, 4, 5, 0, 1, 7]\nExplanation: The next permutation of the given array is [2, 4, 5, 0, 1, 7].\n\nInput: arr[] = [3, 2, 1]\nOutput: [1, 2, 3]\nExplanation: As arr[] is the last permutation, the next permutation is the lowest one.\n\nInput: arr[] = [3, 4, 2, 5, 1]\nOutput: [3, 4, 5, 1, 2]\nExplanation: The next permutation of the given array is [3, 4, 5, 1, 2].\n\nConstraints:\n1 ≤ arr.size() ≤ 105\n0 ≤ arr[i] ≤ 105",
+      "full_text": "Given an array of integers arr[] representing a permutation, implement the next permutation that rearranges the numbers into the lexicographically next greater permutation. If no such permutation exists, rearrange the numbers into the lowest possible order (i.e., sorted in ascending order).\n\nNote:  A permutation of an array of integers refers to a specific arrangement of its elements in a sequence or linear order.\n\nExamples:\n\nInput: arr[] = [2, 4, 1, 7, 5, 0]\nOutput: [2, 4, 5, 0, 1, 7]\nExplanation: The next permutation of the given array is [2, 4, 5, 0, 1, 7].\n\nInput: arr[] = [3, 2, 1]\nOutput: [1, 2, 3]\nExplanation: As arr[] is the last permutation, the next permutation is the lowest one.\n\nInput: arr[] = [3, 4, 2, 5, 1]\nOutput: [3, 4, 5, 1, 2]\nExplanation: The next permutation of the given array is [3, 4, 5, 1, 2].\n\nConstraints:\n1 ≤ arr.size() ≤ 105\n0 ≤ arr[i] ≤ 105",
+      "examples": [
+        "Input:\narr[] = [2, 4, 1, 7, 5, 0]\nOutput:\n[2, 4, 5, 0, 1, 7]\nExplanation:\nThe next permutation of the given array is [2, 4, 5, 0, 1, 7].",
+        "Input:\narr[] = [3, 2, 1]\nOutput:\n[1, 2, 3]\nExplanation:\nAs arr[] is the last permutation, the next permutation is the lowest one.",
+        "Input:\narr[] = [3, 4, 2, 5, 1]\nOutput:\n[3, 4, 5, 1, 2]\nExplanation:\nThe next permutation of the given array is [3, 4, 5, 1, 2]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array of integers <strong>arr[]</strong> representing a permutation, implement the&nbsp;<strong>next permutation</strong>&nbsp;that rearranges the numbers into the <strong>lexicographically next greater permutation</strong>. If no such permutation exists, rearrange the numbers into the <strong>lowest</strong> possible order (i.e., sorted in ascending order).&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp; A permutation of an array of integers refers to a specific arrangement of its elements in a sequence or linear order.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [2, 4, 1, 7, 5, 0]\n<strong>Output:</strong> [2, 4, 5, 0, 1, 7]\n<strong>Explanation:</strong> The next permutation of the given array is [2, 4, 5, 0, 1, 7].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [3, 2, 1]\n<strong>Output:</strong> [1, 2, 3]\n<strong>Explanation:</strong> As arr[] is the last permutation, the next permutation is the lowest one.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [3, 4, 2, 5, 1]\n<strong>Output:</strong> [3, 4, 5, 1, 2]\n<strong>Explanation:</strong> The next permutation of the given array is [3, 4, 5, 1, 2].</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5<br /></sup>0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    }
+  }
+]

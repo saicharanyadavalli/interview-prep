@@ -1,0 +1,714 @@
+[
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/alien-dictionary/1",
+      "problem_name": "Alien Dictionary",
+      "slug": "alien-dictionary",
+      "difficulty": "Hard",
+      "accuracy": "47.81%",
+      "marks": 8,
+      "all_submissions": 231402,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "words[] = ",
+        "datatype": "STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Walmart",
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Sorting",
+          "Graph",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Sorting",
+        "Graph",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Walmart",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-sorted-dictionary-find-precedence-characters/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-9-off-campus/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-sde-1-6-months-internship-on-campus/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-2-sde-2/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-2/"
+      ],
+      "statement_text": "A new alien language uses the English alphabet, but the order of letters is unknown. You are given a list of words[] from the alien language’s dictionary, where the words are claimed to be sorted lexicographically according to the language’s rules.\n\nYour task is to determine the correct order of letters in this alien language based on the given words. If the order is valid, return a string containing the unique letters in lexicographically increasing order as per the new language's rules. If there are multiple valid orders, return any one of them.\n\nHowever, if the given arrangement of words is inconsistent with any possible letter ordering, return an empty string (\"\").\n\nA string a is lexicographically smaller than a string b if, at the first position where they differ, the character in a appears earlier in the alien language than the corresponding character in b. If all characters in the shorter word match the beginning of the longer word, the shorter word is considered smaller.\n\nNote: Your implementation will be tested using a driver code. It will print true if your returned order correctly follows the alien language’s lexicographic rules; otherwise, it will print false.\n\nExamples:\n\nInput: words[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"bdac\".\nThe pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' → 'd' → 'a' → 'c' is a valid ordering.\n\nInput: words[] = [\"caa\", \"aaa\", \"aab\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"cab\".\nThe pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.\nThe pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary.\nSo, 'c' → 'a' → 'b' is a valid ordering.\n\nInput: words[] = [\"ab\", \"cd\", \"ef\", \"ad\"]\nOutput: \"\"\nExplanation: No valid ordering of letters is possible.\nThe pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".\nThe pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules.\n\nConstraints:\n1 ≤ words.length ≤ 500\n1 ≤ words[i].length ≤ 100\nwords[i] consists only of lowercase English letters.",
+      "full_text": "A new alien language uses the English alphabet, but the order of letters is unknown. You are given a list of words[] from the alien language’s dictionary, where the words are claimed to be sorted lexicographically according to the language’s rules.\n\nYour task is to determine the correct order of letters in this alien language based on the given words. If the order is valid, return a string containing the unique letters in lexicographically increasing order as per the new language's rules. If there are multiple valid orders, return any one of them.\n\nHowever, if the given arrangement of words is inconsistent with any possible letter ordering, return an empty string (\"\").\n\nA string a is lexicographically smaller than a string b if, at the first position where they differ, the character in a appears earlier in the alien language than the corresponding character in b. If all characters in the shorter word match the beginning of the longer word, the shorter word is considered smaller.\n\nNote: Your implementation will be tested using a driver code. It will print true if your returned order correctly follows the alien language’s lexicographic rules; otherwise, it will print false.\n\nExamples:\n\nInput: words[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"bdac\".\nThe pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' → 'd' → 'a' → 'c' is a valid ordering.\n\nInput: words[] = [\"caa\", \"aaa\", \"aab\"]\nOutput: true\nExplanation: A possible corrct order of letters in the alien dictionary is \"cab\".\nThe pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.\nThe pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary.\nSo, 'c' → 'a' → 'b' is a valid ordering.\n\nInput: words[] = [\"ab\", \"cd\", \"ef\", \"ad\"]\nOutput: \"\"\nExplanation: No valid ordering of letters is possible.\nThe pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".\nThe pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules.\n\nConstraints:\n1 ≤ words.length ≤ 500\n1 ≤ words[i].length ≤ 100\nwords[i] consists only of lowercase English letters.",
+      "examples": [
+        "Input:\nwords[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]\nOutput:\ntrue\nExplanation:\nA possible corrct order of letters in the alien dictionary is \"bdac\".\nThe pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' → 'd' → 'a' → 'c' is a valid ordering.",
+        "Input:\nwords[] = [\"caa\", \"aaa\", \"aab\"]\nOutput:\ntrue\nExplanation:\nA possible corrct order of letters in the alien dictionary is \"cab\".\nThe pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.\nThe pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary.\nSo, 'c' → 'a' → 'b' is a valid ordering.",
+        "Input:\nwords[] = [\"ab\", \"cd\", \"ef\", \"ad\"]\nOutput:\n\"\"\nExplanation:\nNo valid ordering of letters is possible.\nThe pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".\nThe pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules."
+      ],
+      "constraints_text": "Constraints:\n1\n≤\nwords.length\n≤\n500\n1\n≤\nwords[i].length\n≤\n100\nwords[i] consists only of lowercase English letters.",
+      "question_html": "<p><span style=\"font-size: 14pt;\">A new alien language uses the English alphabet, but the order of letters is unknown. You are given a list of <strong>words[] </strong>from the alien language&rsquo;s dictionary, where the words are claimed to be <strong>sorted lexicographically</strong> according to the language&rsquo;s rules.</span></p>\n<p><span style=\"font-size: 14pt;\">Your task is to determine<strong> the correct order of letters</strong> in this alien language based on the given words. If the order is valid, return a string containing the unique letters in lexicographically increasing order as per the new language's rules. If there are multiple valid orders, return any one of them.</span></p>\n<p><span style=\"font-size: 14pt;\">However, if the given arrangement of words is inconsistent with any possible letter ordering, return an empty string<strong> (\"\")</strong>.</span></p>\n<blockquote>\n<p><span style=\"font-size: 14pt;\">A string <strong>a</strong> is lexicographically smaller than a string <strong>b</strong> if, at the first position where they differ, the character in <strong>a</strong> appears earlier in the alien language than the corresponding character in <strong>b</strong>. If all characters in the shorter word match the beginning of the longer word, the shorter word is considered smaller.</span></p>\n</blockquote>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> Your implementation will be tested using a driver code. It will print <strong>true </strong>if your returned order correctly follows the alien language&rsquo;s lexicographic rules; otherwise, it will print <strong>false</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> words[] = [\"baa\", \"abcd\", \"abca\", \"cab\", \"cad\"]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> true</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Explanation: </strong><span style=\"font-size: 14pt;\">A possible corrct order of letters in the alien dictionary is \"bdac\".<br /></span><span style=\"font-size: 18.6667px;\">The pair \"baa\" and \"abcd\" suggests 'b' appears before 'a' in the alien dictionary.\nThe pair \"abcd\" and \"abca\" suggests 'd' appears before 'a' in the alien dictionary.\nThe pair \"abca\" and \"cab\" suggests 'a' appears before 'c' in the alien dictionary.\nThe pair \"cab\" and \"cad\" suggests 'b' appears before 'd' in the alien dictionary.\nSo, 'b' &rarr; 'd' &rarr; 'a' &rarr; 'c' is a valid ordering.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>words[] = [\"caa\", \"aaa\", \"aab\"]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> true</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> A possible corrct order of letters in the alien dictionary is \"cab\".<br /></span><span style=\"font-size: 18.6667px;\">The pair \"caa\" and \"aaa\" suggests 'c' appears before 'a'.<br /></span></span><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\">The pair \"aaa\" and \"aab\" suggests 'a' appear before 'b' in the alien dictionary. <br />So, 'c' &rarr; 'a' &rarr; 'b' is a valid ordering.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> words[] = [\"ab\", \"cd\", \"ef\", \"ad\"]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> \"\"</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> No valid ordering of letters is possible.<br /></span><span style=\"font-size: 14pt;\">The pair \"ab\" and \"ef\" suggests \"a\" appears before \"e\".<br />The pair \"ef\" and \"ad\" suggests \"e\" appears before \"a\", which contradicts the ordering rules.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 14pt;\">1&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\"> words.length&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\">&nbsp;500<br /></span><span style=\"font-size: 14pt;\">1&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\"> words[i].length&nbsp;</span><span style=\"font-size: 18.6667px;\">&le;</span><span style=\"font-size: 14pt;\">&nbsp;100<br /></span><span style=\"font-size: 14pt;\">words[i] consists only of lowercase English letters.</span></p>"
+    },
+    "qnum": 2385
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1",
+      "problem_name": "Clone List with Next and Random",
+      "slug": "clone-a-linked-list-with-next-and-random-pointer",
+      "difficulty": "Hard",
+      "accuracy": "64.8%",
+      "marks": 8,
+      "all_submissions": 122561,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&head = ",
+        "datatype": "INTEGER&!//!&STRING_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "D-E-Shaw",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Walmart",
+          "Adobe",
+          "BankBazaar"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "D-E-Shaw",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Walmart",
+        "Adobe",
+        "BankBazaar"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/",
+        "https://www.geeksforgeeks.org/clone-linked-list-next-arbit-pointer-set-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/bankbazaar-com-interview-experience-set-7-senior-android-developer/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-2-android-1-5-years/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/"
+      ],
+      "statement_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.",
+      "full_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.\nExamples:\nInput:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.\nInput:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.\nInput:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.\nConstraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "examples": [
+        "Input:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.",
+        "Input:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.",
+        "Input:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a special linked list with&nbsp;<strong>n</strong>&nbsp;nodes where each node has two pointers a&nbsp;<strong>next pointer</strong>&nbsp;that points to the next node of the singly linked list, and a&nbsp;<strong>random pointer</strong>&nbsp;that points to the random node of the linked list.<br /></span></p>\n<p><span style=\"font-size: 14pt;\">Construct a&nbsp;<strong>copy</strong>&nbsp;of this linked list.&nbsp;The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state.&nbsp;None of the pointers in the new list should point to nodes in the original list.</span></p>\n<p><span style=\"font-size: 14pt;\">Return the&nbsp;<strong>head</strong>&nbsp;of the copied linked list.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>NOTE :&nbsp;</strong>Original linked list should remain unchanged.<br />Each node of the linked list is represented as a pair of [val, random_index] where:</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>val</strong> represents node.data.</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>random_index </strong>(1-based index) represents the index of the node that the random pointer of the current node points to, or <strong>NULL </strong>if it does not point to any node.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [3, 3], [5, NULL], [9, 3]] <br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid0_1756531264.jpg\" width=\"433\" height=\"147\" /><br /><strong>Output: </strong>[[1, 3], [3, 3], [5, NULL], [9, 3]]<strong>\nExplanation: </strong>\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5<strong> </strong>points to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<br /> &nbsp;<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid1_1756531275.jpg\" width=\"456\" height=\"133\" /><br /><strong>Output: </strong>[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<strong>\nExplanation: </strong>\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[7, NULL], [7, NULL]]<br /><strong>Output: </strong>head<strong> </strong>=<strong> </strong>[[7, NULL], [7, NULL]]<strong>\nExplanation: </strong>\nNode 7<strong> </strong>points to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &le; n &le; 100<br />0 &le; node-&gt;data &le; 1000</span></p>"
+    },
+    "qnum": 2386
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/fixed-two-nodes-of-a-bst/1",
+      "problem_name": "Fixing Two nodes of a BST",
+      "slug": "fixed-two-nodes-of-a-bst",
+      "difficulty": "Hard",
+      "accuracy": "53.68%",
+      "marks": 8,
+      "all_submissions": 73926,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root =",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Walmart",
+          "BankBazaar",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Walmart",
+        "BankBazaar",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-134-campus-sde/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-140-experienced-sde/",
+        "https://www.geeksforgeeks.org/bankbazaar-interview-experience-set-2/"
+      ],
+      "statement_text": "Given the root of a Binary search tree(BST), where exactly two nodes were swapped by mistake. Your task is to fix (or correct) the BST by swapping them back. Do not change the structure of the tree.\n\nNote: It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong. All changes must be reflected in the original Binary search tree(BST).\n\n\n\nExamples :\n\nInput: root = [10, 5, 8, 2, 20]\n\nOutput: 1\n\nExplanation: The nodes 20 and 8 were swapped.\n\nInput: root = [5, 10, 20, 2, 8]\n\nOutput: 1\n\nExplanation: The nodes 10 and 5 were swapped.\n\nConstraints:\n1 ≤ Number of nodes ≤ 103",
+      "full_text": "Given the root of a Binary search tree(BST), where exactly two nodes were swapped by mistake. Your task is to fix (or correct) the BST by swapping them back. Do not change the structure of the tree.\n\nNote: It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong. All changes must be reflected in the original Binary search tree(BST).\n\n\n\nExamples :\n\nInput: root = [10, 5, 8, 2, 20]\n\nOutput: 1\n\nExplanation: The nodes 20 and 8 were swapped.\n\nInput: root = [5, 10, 20, 2, 8]\n\nOutput: 1\n\nExplanation: The nodes 10 and 5 were swapped.\n\nConstraints:\n1 ≤ Number of nodes ≤ 103",
+      "examples": [
+        "Input:\nroot = [10, 5, 8, 2, 20]\nOutput:\n1\nExplanation:\nThe nodes 20 and 8 were swapped.",
+        "Input:\nroot = [5, 10, 20, 2, 8]\nOutput:\n1\nExplanation:\nThe nodes 10 and 5 were swapped."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ Number of nodes ≤ 10\n3",
+      "question_html": "<div>\n<div><span style=\"font-size: 18px;\">Given the&nbsp;<strong>root</strong>&nbsp;of a Binary search tree(BST), where&nbsp;<strong>exactly t</strong></span><span style=\"font-size: 18px;\"><strong>wo&nbsp;</strong>nodes were swapped by mistake. Your task is to fix (or correct) the BST by swapping them back. Do not change the structure of the tree.</span></div>\n<div><span style=\"font-size: 18px;\"><strong>Note:</strong> It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong. All changes must be reflected in the original Binary search tree(BST).</span></div>\n</div>\n<div>&nbsp;</div>\n<div><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></div>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [10, 5, 8, 2, 20]\n     <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886490/Web/Other/blobid0_1738654776.png\" alt=\"\" width=\"256\" height=\"236\" />\n<strong>Output: </strong>1<br /></span>       <img style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\" src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886490/Web/Other/blobid1_1738654776.png\" alt=\"\" width=\"255\" height=\"235\" /><br /><br /><span style=\"font-size: 18px;\"><strong>Explanation: </strong></span><span style=\"font-size: 18px;\">The nodes 20 and 8 were swapped.</span><span style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> </span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>root = [5, 10, 20, 2, 8]\n     <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886490/Web/Other/blobid2_1738654931.png\" alt=\"\" width=\"254\" height=\"226\" />\n<strong>Output: </strong>1 <br />     <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/886490/Web/Other/blobid3_1738654931.png\" alt=\"\" width=\"249\" height=\"228\" />\n<strong>Explanation:</strong> </span><span style=\"font-size: 18px;\">The nodes 10 and 5 were swapped.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 18px;\">1 &le; Number of nodes &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 2387
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/fixing-two-swapped-nodes-of-a-bst--170646/1",
+      "problem_name": "Fixing Two swapped nodes of a BST",
+      "slug": "fixing-two-swapped-nodes-of-a-bst--170646",
+      "difficulty": "Hard",
+      "accuracy": "71.76%",
+      "marks": 8,
+      "all_submissions": 19427,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Walmart",
+          "BankBazaar"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Walmart",
+        "BankBazaar"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/fix-two-swapped-nodes-of-bst/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-134-campus-sde/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-140-experienced-sde/",
+        "https://www.geeksforgeeks.org/bankbazaar-interview-experience-set-2/",
+        "https://www.geeksforgeeks.org/paytm-sde-interview-experience-on-campus-2020/"
+      ],
+      "statement_text": "Two of the nodes of a Binary Search Tree (BST) are swapped. Fix (or correct) the BST by swapping them back. Do not change the structure of the tree.\n\nNote: It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong.\n\n\n\nExample 1:\n\nInput:\n       10\n     /    \\\n    5      8\n   / \\\n  2   20\nOutput: 1\nExplanation:\n\nExample 2:\n\nInput:\n         11\n       /    \\\n      3      17\n       \\    /\n        4  10\nOutput: 1\nExplanation:\nBy swapping nodes 11 and 10, the BST\ncan be fixed.\n\nYour Task:\n\nYou don't need to take any input. Just complete the function correctBst() that takes root node as parameter. The function should return the root of corrected BST. BST will then be checked by driver code and 0 or 1 will be printed.\n\nExpected Time Complexity: O(Number of nodes)\n\nExpected Auxiliary Space: O(logN), N = number of nodes\n\n\n\nConstraints:\n\n1 <= Number of nodes <= 10^5",
+      "full_text": "Two of the nodes of a Binary Search Tree (BST) are swapped. Fix (or correct) the BST by swapping them back. Do not change the structure of the tree.\n\nNote: It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong.\n\n\n\nExample 1:\n\nInput:\n       10\n     /    \\\n    5      8\n   / \\\n  2   20\nOutput: 1\nExplanation:\n\nExample 2:\n\nInput:\n         11\n       /    \\\n      3      17\n       \\    /\n        4  10\nOutput: 1\nExplanation:\nBy swapping nodes 11 and 10, the BST\ncan be fixed.\n\nYour Task:\n\nYou don't need to take any input. Just complete the function correctBst() that takes root node as parameter. The function should return the root of corrected BST. BST will then be checked by driver code and 0 or 1 will be printed.\n\nExpected Time Complexity: O(Number of nodes)\n\nExpected Auxiliary Space: O(logN), N = number of nodes\n\n\n\nConstraints:\n\n1 <= Number of nodes <= 10^5",
+      "examples": [
+        "Input:\n10\n/    \\\n5      8\n/ \\\n2   20\nOutput:\n1\nExplanation:",
+        "Input:\n11\n/    \\\n3      17\n\\    /\n4  10\nOutput:\n1\nExplanation:\nBy swapping nodes 11 and 10, the BST\ncan be fixed."
+      ],
+      "constraints_text": "Constraints:\n1 <= Number of nodes <= 10^5",
+      "question_html": "<div><span style=\"font-size:18px\">Two of the nodes of a Binary Search Tree (BST) are swapped. Fix (or correct) the BST by swapping them back. Do not change the structure of the tree.</span></div>\r\n\r\n<div><span style=\"font-size:18px\"><strong>Note:</strong> It is guaranteed that the given input will form BST, except for 2 nodes that will be wrong.</span></div>\r\n\r\n<div>&nbsp;</div>\r\n\r\n<div><span style=\"font-size:18px\"><strong>Example 1:</strong></span></div>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n</strong>       10\r\n&nbsp;    /    \\\r\n&nbsp;   5      8\r\n&nbsp;  / \\\r\n&nbsp; 2   20\r\n<strong>Output: </strong>1<strong>\r\nExplanation:\r\n </strong><img alt=\"\" src=\"https://media.geeksforgeeks.org/wp-content/uploads/20190528095934/FixNodes.jpg\" style=\"height:252px; width:374px\" /></span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:\r\n&nbsp;        </strong>11\r\n&nbsp;      /    \\\r\n&nbsp;     3      17\r\n&nbsp;      \\    /\r\n&nbsp;       4  10\r\n<strong>Output: </strong>1 \r\n<strong>Explanation:</strong> \r\nBy swapping nodes 11 and 10, the BST \r\ncan be fixed.\r\n</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nYou don&#39;t need to take any input. Just complete the function <strong>correctBst()&nbsp;</strong>that takes root node as <strong>parameter</strong>. The function should return the root of corrected BST.&nbsp;BST will then be checked by driver code and 0 or 1 will be printed.</span></p>\r\n\r\n<div><span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong>&nbsp;O(Number of nodes)</span></div>\r\n\r\n<div><span style=\"font-size:18px\"><strong>Expected Auxiliary Space:&nbsp;</strong>O(logN), N = number of nodes</span></div>\r\n\r\n<div>&nbsp;</div>\r\n\r\n<div><span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &lt;= Number of nodes &lt;= 10^5</span></div>\r\n"
+    },
+    "qnum": 2388
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1",
+      "problem_name": "Linked List Group Reverse",
+      "slug": "reverse-a-linked-list-in-groups-of-given-size",
+      "difficulty": "Hard",
+      "accuracy": "57.08%",
+      "marks": 8,
+      "all_submissions": 272606,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head =&!//!&k =",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "SAP Labs"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "SAP Labs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/reverse-a-linked-list-in-groups-of-given-size-iterative-approach/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-13-on-campus-for-internship-and-fte/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-4-walk-in-drive/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-9/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-sde-1-2-years-experienced/"
+      ],
+      "statement_text": "You are given the\nhead\nof a Singly linked list. You have to\nreverse\nevery\nk\nnode in the linked list and return the head of the modified list.\nNote:\nIf the number of nodes is not a multiple of\nk\nthen the left-out nodes at the end, should be considered as a group and must be\nreversed\n.",
+      "full_text": "You are given the\nhead\nof a Singly linked list. You have to\nreverse\nevery\nk\nnode in the linked list and return the head of the modified list.\nNote:\nIf the number of nodes is not a multiple of\nk\nthen the left-out nodes at the end, should be considered as a group and must be\nreversed\n.\nExamples:\nInput:\nk = 2,\nOutput:\n2 -> 1 -> 4 -> 3 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 2.\nInput:\nk = 4,\nOutput:\n4 -> 3 -> 2 -> 1 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 4.\nConstraints:\n1 ≤ size of linked list ≤ 10\n5\n0 ≤ node->data ≤ 10\n6\n1 ≤ k ≤ size of linked list",
+      "examples": [
+        "Input:\nk = 2,\nOutput:\n2 -> 1 -> 4 -> 3 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 2.",
+        "Input:\nk = 4,\nOutput:\n4 -> 3 -> 2 -> 1 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 4."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ size of linked list ≤ 10\n5\n0 ≤ node->data ≤ 10\n6\n1 ≤ k ≤ size of linked list",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given the&nbsp;<strong>head</strong>&nbsp;of a Singly linked list. You have to&nbsp;<strong>reverse</strong>&nbsp;every&nbsp;<strong>k</strong>&nbsp;node in the linked list and return the head of the modified list.<br /></span><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;If the number of nodes is not a multiple of&nbsp;<strong>k</strong>&nbsp;then the left-out nodes at the end, should be considered as a group and must be&nbsp;<strong>reversed</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>k = 2,<br /> &nbsp; <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid1_1765779381.png\" width=\"460\" height=\"53\" /><br /><strong>Output: </strong>2 -&gt; 1 -&gt; 4 -&gt; 3 -&gt; 6 -&gt; 5<br /><strong>Explanation:</strong> Linked List is reversed in a group of size k = 2.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid3_1765779476.png\" width=\"451\" height=\"52\" /><br /><br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>k = 4, &nbsp; <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid2_1765779449.png\" width=\"443\" height=\"51\" /><br /><strong>Output: </strong>4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 6 -&gt; 5<br /><strong>Explanation: </strong>Linked List is reversed in a group of size k = 4.<br /><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid4_1765779498.png\" width=\"451\" height=\"52\" /></span></pre>\n<div><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span></div>\n<div><span style=\"font-size: 14pt;\">1 &le; size of linked list &le; 10<sup>5</sup></span></div>\n<div><span style=\"font-size: 14pt;\">0 &le; node-&gt;data &le; 10<sup>6</sup></span><br /><span style=\"font-size: 14pt;\">1 &le; k &le;&nbsp;size of linked list&nbsp;</span></div>"
+    },
+    "qnum": 2389
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/longest-repeating-and-non-overlapping-substring3421/1",
+      "problem_name": "Longest repeating and non-overlapping substring",
+      "slug": "longest-repeating-and-non-overlapping-substring3421",
+      "difficulty": "Hard",
+      "accuracy": "46.71%",
+      "marks": 8,
+      "all_submissions": 45922,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "MakeMyTrip",
+          "Walmart"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "MakeMyTrip",
+        "Walmart"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/longest-repeating-and-non-overlapping-substring/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-for-software-engineer/"
+      ],
+      "statement_text": "Given a string s, find the longest repeating non-overlapping substring in it. In other words find 2 identical substrings of maximum length which do not overlap. Return the longest non-overlapping substring. Return -1 if no such string exists.\n\nNote: Multiple Answers are possible but you have to return the substring whose first occurrence is earlier.\n\nFor Example: \"abhihiab\", here both \"ab\" and \"hi\" are possible answers. But you will have to return \"ab\" because its first occurrence appears before the first occurrence of \"hi\".\n\nExamples:\n\nInput: s = \"acdcdacdc\"\nOutput: \"acdc\"\nExplanation: The string \"acdc\" is the longest Substring of s which is repeating but not overlapping.\n\nInput: s = \"geeksforgeeks\"\nOutput: \"geeks\"\nExplanation: The string \"geeks\" is the longest subString of s which is repeating but not overlapping.\n\nInput: s = \"heheheh\"\nOutput: \"heh\"\nExplanation: The string \"heh\" is the longest Substring of s which is repeating but not overlapping.\n\nConstraints:\n1 <= s.size() <= 103\ns contains only lowercase English alphabets.",
+      "full_text": "Given a string s, find the longest repeating non-overlapping substring in it. In other words find 2 identical substrings of maximum length which do not overlap. Return the longest non-overlapping substring. Return -1 if no such string exists.\n\nNote: Multiple Answers are possible but you have to return the substring whose first occurrence is earlier.\n\nFor Example: \"abhihiab\", here both \"ab\" and \"hi\" are possible answers. But you will have to return \"ab\" because its first occurrence appears before the first occurrence of \"hi\".\n\nExamples:\n\nInput: s = \"acdcdacdc\"\nOutput: \"acdc\"\nExplanation: The string \"acdc\" is the longest Substring of s which is repeating but not overlapping.\n\nInput: s = \"geeksforgeeks\"\nOutput: \"geeks\"\nExplanation: The string \"geeks\" is the longest subString of s which is repeating but not overlapping.\n\nInput: s = \"heheheh\"\nOutput: \"heh\"\nExplanation: The string \"heh\" is the longest Substring of s which is repeating but not overlapping.\n\nConstraints:\n1 <= s.size() <= 103\ns contains only lowercase English alphabets.",
+      "examples": [
+        "Input:\ns =\n\"acdcdacdc\"\nOutput:\n\"acdc\"\nExplanation:\nThe string \"acdc\" is the longest Substring of s which is repeating but not overlapping.",
+        "Input:\ns = \"geeksforgeeks\"\nOutput:\n\"geeks\"\nExplanation:\nThe string \"geeks\" is the longest subString of s which is repeating but not overlapping.",
+        "Input:\ns =\n\"heheheh\"\nOutput:\n\"heh\"\nExplanation:\nThe string \"heh\" is the longest Substring of s which is repeating but not overlapping."
+      ],
+      "constraints_text": "Constraints:\n1 <= s.size() <= 10\n3\ns contains only lowercase English alphabets.",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string <strong>s</strong>, find the longest repeating non-overlapping substring in it. In other words find 2 identical substrings of maximum length which <strong>do not overlap</strong>. Return the longest non-overlapping substring. Return <strong>-1</strong>&nbsp;if no such string exists.</span></p>\n<p><span style=\"font-size: 14pt;\">Note:<strong> </strong>Multiple Answers are possible but you have to return the substring whose <strong>first occurrence</strong> is earlier.</span></p>\n<p><span style=\"font-size: 14pt;\">For Example: \"abhihiab\", here both <strong>\"ab\"</strong> and <strong>\"hi\"</strong> are possible answers. But you will have to return <strong>\"ab\"</strong> because its first occurrence appears before the first occurrence of \"hi\".</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong>&nbsp;s =<strong> </strong>\"acdcdacdc\"\n<strong>Output: </strong>\"acdc\"\n<strong>Explanation: </strong>The string \"acdc\" is the longest Substring of s which is repeating but not overlapping.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"geeksforgeeks\"<br /><strong>Output: </strong>\"geeks\"<br /><strong>Explanation: </strong>The string \"geeks\" is the longest subString of s which is repeating but not overlapping.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong>&nbsp;s =<strong> </strong>\"heheheh\"\n<strong>Output: </strong>\"heh\"\n<strong>Explanation: </strong>The string \"heh\" is the longest Substring of s which is repeating but not overlapping.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= s.size() &lt;= 10<sup>3</sup><br />s contains only lowercase English alphabets.</span></p>"
+    },
+    "qnum": 2390
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lru-cache/1",
+      "problem_name": "LRU Cache",
+      "slug": "lru-cache",
+      "difficulty": "Hard",
+      "accuracy": "18.44%",
+      "marks": 8,
+      "all_submissions": 192488,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "capacity =&!//!&Q =&!//!&Queries =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "Yahoo"
+        ],
+        "topic_tags": [
+          "doubly-linked-list",
+          "Hash",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "doubly-linked-list",
+        "Hash",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "Yahoo"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/design-a-data-structure-for-lru-cache/",
+        "https://www.geeksforgeeks.org/lru-cache-implementation-using-double-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-7-3-5-years-experienced/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-interview-questions/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-21/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.",
+      "full_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.\nExamples:\nInput:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.\nInput:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.\nConstraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "examples": [
+        "Input:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.",
+        "Input:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Design a data structure that works like a LRU Cache. Here&nbsp;<strong>cap</strong>&nbsp;denotes&nbsp;the capacity of the cache and&nbsp;<strong>Q</strong>&nbsp;denotes the number of queries. Query can be&nbsp;</span><span style=\"font-size: 18px;\">of two types:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>PUT</strong>&nbsp;<strong>x</strong>&nbsp;<strong>y</strong>: sets the value of the key&nbsp;<strong>x</strong>&nbsp;with value&nbsp;<strong>y</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>GET</strong>&nbsp;<strong>x</strong>: gets the value of key <strong>x</strong>&nbsp;if present else returns&nbsp;<strong>-1</strong>.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\">The LRUCache class has two methods&nbsp;<strong>get</strong>() and&nbsp;<strong>put</strong>() which are defined as follows.</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>get(key)</strong>: returns the value of the key if it&nbsp;already exists in the cache otherwise returns&nbsp;<strong>-1.</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>put(key, value)</strong>: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.</span></li>\n<li><span style=\"font-size: 18px;\">In the&nbsp;<strong>constructor</strong>&nbsp;of the class the capacity of the cache should be initialized.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\n<strong>Output: </strong>[2]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]<br /><strong>Output: </strong>[5, -1]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1-&gt;2, 2-&gt;3(the most recently used one is kept at the rightmost position)&nbsp;\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -&gt; 3, 1 -&gt; 5\n[\"PUT\", 4, 5] : 1 -&gt; 5, 4 -&gt; 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -&gt; 5, 6 -&gt; 7&nbsp;\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -&gt; 7, 4-&gt;5)\n[\"PUT\", 1, 2] : 4 -&gt; 5, 1 -&gt; 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; cap &le; 10<sup>3</sup><br />1 &le; Q &le; 10<sup>5</sup><br />1 &le; x, y &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2391
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/maximum-sum-rectangle2948/1",
+      "problem_name": "Maximum sum Rectangle",
+      "slug": "maximum-sum-rectangle2948",
+      "difficulty": "Hard",
+      "accuracy": "49.78%",
+      "marks": 8,
+      "all_submissions": 55350,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&m = &!//!&mat[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Samsung",
+          "D-E-Shaw",
+          "FactSet",
+          "Walmart"
+        ],
+        "topic_tags": [
+          "prefix-sum",
+          "Matrix",
+          "Kadane",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "prefix-sum",
+        "Matrix",
+        "Kadane",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Samsung",
+        "D-E-Shaw",
+        "FactSet",
+        "Walmart"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/maximum-sum-rectangle-in-a-2d-matrix-dp-27/"
+      ],
+      "interview_links": [
+        " http://www.geeksforgeeks.org/amazon-interview-experience-set-355-1-year-experienced/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-15-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-bangalore-internship-experience-2018/"
+      ],
+      "statement_text": "Given a 2D matrix\nmat[][]\nwith dimensions n×m. Find the maximum possible\nsum\nof any\nsubmatrix\nwithin the given matrix.",
+      "full_text": "Given a 2D matrix\nmat[][]\nwith dimensions n×m. Find the maximum possible\nsum\nof any\nsubmatrix\nwithin the given matrix.\nExamples:\nInput:\nmat[][] = [[1, 2, -1, -4, -20], [-8, -3, 4, 2, 1], [3, 8, 10, 1, 3], [-4, -1, 1, 7, -6]]\nOutput:\n29\nExplanation:\nThe matrix is as follows and the green rectangle denotes the maximum sum rectangle which is equal to 29.\nInput:\nmat[][] = [[-1, -2], [-3, -4]]\nOutput:\n-1\nExplanation:\nTaking only the first cell is the optimal choice.\nConstraints:\n1 ≤ n, m ≤ 300\n-1000 ≤ mat[i][j] ≤ 1000",
+      "examples": [
+        "Input:\nmat[][] = [[1, 2, -1, -4, -20], [-8, -3, 4, 2, 1], [3, 8, 10, 1, 3], [-4, -1, 1, 7, -6]]\nOutput:\n29\nExplanation:\nThe matrix is as follows and the green rectangle denotes the maximum sum rectangle which is equal to 29.",
+        "Input:\nmat[][] = [[-1, -2], [-3, -4]]\nOutput:\n-1\nExplanation:\nTaking only the first cell is the optimal choice."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n, m ≤ 300\n-1000 ≤ mat[i][j] ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a 2D matrix <strong>mat[][]</strong> with dimensions n&times;m. Find the maximum possible <strong>sum</strong> of any <strong>submatrix </strong>within the given matrix.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>mat[][] = [[1, 2, -1, -4, -20], [-8, -3, 4, 2, 1], [3, 8, 10, 1, 3], [-4, -1, 1, 7, -6]]\n<strong>Output: </strong>29\n<strong>Explanation: </strong>The matrix is as follows and the green rectangle denotes the maximum sum rectangle which is equal to 29.\n<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/899247/Web/Other/blobid0_1751695089.jpg\" width=\"364\" height=\"225\" /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>mat[][] = [[-1, -2], [-3, -4]]\n<strong>Output: </strong>-1\n<strong>Explanation: </strong>Taking only the first cell is the optimal choice.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; n, m &le; 300<br />-1000 &le; mat[i][j] &le; 1000</span></p>"
+    },
+    "qnum": 2392
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/nodes-at-given-distance-in-binary-tree/1",
+      "problem_name": "Nodes at given distance in binary tree",
+      "slug": "nodes-at-given-distance-in-binary-tree",
+      "difficulty": "Hard",
+      "accuracy": "32.36%",
+      "marks": 8,
+      "all_submissions": 88210,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] =&!//!&target =&!//!&k =",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Hike",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Hike",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/samsung-rnd-bangalore-interview-2018/"
+      ],
+      "statement_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "full_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5], target = 2, k = 2\nOutput:\n[3]\nExplanation:\nNodes at a distance 2 from the given node 2 is 3.",
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\nOutput:\n[1, 6, 7]\nExplanation:\nNodes at a distance 1 from the given target node 3 are 1, 6 & 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n6\n1 ≤  node->data ≤ 10\n9\n1 ≤ target ≤ 10\n9\n1 ≤ k ≤ 20",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.<br /><strong>Note</strong>: </span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">You have to return the list in sorted order.</span></li>\n<li><span style=\"font-size: 18px;\">The tree will <strong>not </strong>contain <strong>duplicate </strong>values.</span></li>\n</ul>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [1, 2, 3, 4, 5], target = 2, k = 2   \n</span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid0_1733895958.png\" width=\"317\" height=\"283\" />\n<span style=\"font-size: 18px;\"><strong>Output:</strong> [3]</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>Nodes at a distance 2 from the given node 2 is 3.</span>\n</pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid1_1733896181.png\" width=\"324\" height=\"289\" />\n</span><span style=\"font-size: 18px;\"><span style=\"font-size: 14pt;\"><strong>Output:</strong> [1, 6, 7]<br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation:</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> Nodes at a distance 1 from the given target node 3 are 1, 6 &amp; 7.</span></span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>6</sup><br />1 &le;&nbsp; node-&gt;data &le; 10<sup>9</sup><br />1 &le; target &le; 10<sup>9</sup><br />1 &le; k &le; 20</span></p>"
+    },
+    "qnum": 2393
+  },
+  {
+    "company": "Walmart",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/word-break-trie--141631/1",
+      "problem_name": "Word Break (Trie)",
+      "slug": "word-break-trie--141631",
+      "difficulty": "Hard",
+      "accuracy": "48.85%",
+      "marks": 8,
+      "all_submissions": 13984,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Amazon",
+          "Microsoft",
+          "Hike",
+          "Walmart",
+          "MAQ Software",
+          "Google",
+          "IBM"
+        ],
+        "topic_tags": [
+          "Trie",
+          "Advanced Data Structure"
+        ]
+      },
+      "topic_tags": [
+        "Trie",
+        "Advanced Data Structure"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Amazon",
+        "Microsoft",
+        "Hike",
+        "Walmart",
+        "MAQ Software",
+        "Google",
+        "IBM"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/word-break-problem-trie-solution/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/maq-software-interview-experience-set-9-on-campus-for-se-1/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-2-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-7-off-campus/"
+      ],
+      "statement_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "full_text": "Given a string A and a dictionary of n words B, find out if A can be segmented into a space-separated sequence of dictionary words.\n\nExample 1:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like\".\n\nExample 2:\n\nInput:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput: 1\nExplanation: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\".\n\nYour Task:\n\nComplete wordBreak() function which takes a string and list of strings as a parameter and returns 1 if it is possible to break words, else return 0. You don't need to read any input or print any output, it is done by driver code.\n\nExpected time complexity: O(n*l+|A|2) where l is the leght of longest string present in the dictionary and |A| is the length of string A\n\nExpected auxiliary space: O(|A| + k) , where k = sum of length of all strings present in B\n\n\n\nConstraints:\n\n1 <= N <= 12\n\n1 <= s <=1000 , where s = length of string A\n\n The length of each word is less than 15.",
+      "examples": [
+        "Input:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilike\"\nOutput:\n1\nExplanation:\nThe string can be segmented as\n\"i like\".",
+        "Input\n:\nn = 12\nB = { \"i\", \"like\", \"sam\", \"sung\", \"samsung\",\n\"mobile\",\"ice\",\"cream\", \"icecream\", \"man\",\n\"go\", \"mango\" }, A = \"ilikesamsung\"\nOutput:\n1\nExplanation\n: The string can be segmented as\n\"i like samsung\" or \"i like sam sung\"."
+      ],
+      "constraints_text": "Constraints\n:\n1 <= N <= 12\n1 <= s <=1000 , where s = length of string A\nThe length of each word is less than 15.",
+      "question_html": "<p><span style=\"font-size:18px\">Given a string <strong>A </strong>and a dictionary of n words <strong>B</strong>, find out if A&nbsp;can be segmented into a space-separated sequence of dictionary words.&nbsp;</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nn = 12\r\nB = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;,\r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilike&quot;\r\n<strong>Output:</strong> 1\r\n<strong>Explanation: </strong>The string can be segmented as\r\n&quot;i like&quot;.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input</strong>: </span>\r\n<span style=\"font-size:18px\">n = 12 </span>\r\n<span style=\"font-size:18px\">B = { &quot;i&quot;, &quot;like&quot;, &quot;sam&quot;, &quot;sung&quot;, &quot;samsung&quot;,\r\n&quot;mobile&quot;,&quot;ice&quot;,&quot;cream&quot;, &quot;icecream&quot;, &quot;man&quot;, \r\n&quot;go&quot;, &quot;mango&quot; }, A = &quot;ilikesamsung&quot; </span>\r\n<span style=\"font-size:18px\"><strong>Output:</strong> 1</span>\r\n<span style=\"font-size:18px\"><strong>Explanation</strong>: The string can be segmented as \r\n&quot;i like samsung&quot; or &quot;i like sam sung&quot;.</span>\r\n\r\n</pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Your Task:</strong><br />\r\nComplete&nbsp;<strong>wordBreak()</strong>&nbsp;function which takes a string and list of strings as a parameter&nbsp;and returns 1 if it is possible to break words, else return&nbsp;0. You don&#39;t need to read any input or print any output, it is done by driver code.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected time complexity:&nbsp;</strong>O(n*l+|A|<sup>2</sup>) where l is the leght of longest string present in the dictionary and |A| is the length of&nbsp;string A</span><br />\r\n<span style=\"font-size:18px\"><strong>Expected auxiliary space:</strong>&nbsp;O(|A| + k) , where k = sum of length of all strings present in B</span></p>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Constraints</strong>:<br />\r\n1 &lt;= N &lt;= 12<br />\r\n1 &lt;= s &lt;=1000 , where s =&nbsp;length of string A<br />\r\n&nbsp;The length of each word is less than 15.</span></p>\r\n\r\n<p>&nbsp;</p>\r\n"
+    },
+    "qnum": 2394
+  }
+]

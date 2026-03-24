@@ -1,0 +1,182 @@
+[
+  {
+    "company": "Accenture",
+    "question_count": 10,
+    "folder": "output/stage3_company_wise/Accenture"
+  },
+  {
+    "company": "Adobe",
+    "question_count": 163,
+    "folder": "output/stage3_company_wise/Adobe"
+  },
+  {
+    "company": "Amazon",
+    "question_count": 640,
+    "folder": "output/stage3_company_wise/Amazon"
+  },
+  {
+    "company": "Amdocs",
+    "question_count": 5,
+    "folder": "output/stage3_company_wise/Amdocs"
+  },
+  {
+    "company": "Apple",
+    "question_count": 11,
+    "folder": "output/stage3_company_wise/Apple"
+  },
+  {
+    "company": "Atlassian",
+    "question_count": 7,
+    "folder": "output/stage3_company_wise/Atlassian"
+  },
+  {
+    "company": "Cisco",
+    "question_count": 32,
+    "folder": "output/stage3_company_wise/Cisco"
+  },
+  {
+    "company": "Cognizant",
+    "question_count": 2,
+    "folder": "output/stage3_company_wise/Cognizant"
+  },
+  {
+    "company": "DE Shaw",
+    "question_count": 3,
+    "folder": "output/stage3_company_wise/DE Shaw"
+  },
+  {
+    "company": "Directi",
+    "question_count": 24,
+    "folder": "output/stage3_company_wise/Directi"
+  },
+  {
+    "company": "Facebook",
+    "question_count": 50,
+    "folder": "output/stage3_company_wise/Facebook"
+  },
+  {
+    "company": "Flipkart",
+    "question_count": 165,
+    "folder": "output/stage3_company_wise/Flipkart"
+  },
+  {
+    "company": "Goldman Sachs",
+    "question_count": 71,
+    "folder": "output/stage3_company_wise/Goldman Sachs"
+  },
+  {
+    "company": "Google",
+    "question_count": 174,
+    "folder": "output/stage3_company_wise/Google"
+  },
+  {
+    "company": "HCL",
+    "question_count": 2,
+    "folder": "output/stage3_company_wise/HCL"
+  },
+  {
+    "company": "IBM",
+    "question_count": 8,
+    "folder": "output/stage3_company_wise/IBM"
+  },
+  {
+    "company": "Infosys",
+    "question_count": 8,
+    "folder": "output/stage3_company_wise/Infosys"
+  },
+  {
+    "company": "Intuit",
+    "question_count": 32,
+    "folder": "output/stage3_company_wise/Intuit"
+  },
+  {
+    "company": "JUSPAY",
+    "question_count": 3,
+    "folder": "output/stage3_company_wise/JUSPAY"
+  },
+  {
+    "company": "MAQ Software",
+    "question_count": 42,
+    "folder": "output/stage3_company_wise/MAQ Software"
+  },
+  {
+    "company": "Microsoft",
+    "question_count": 435,
+    "folder": "output/stage3_company_wise/Microsoft"
+  },
+  {
+    "company": "Morgan Stanley",
+    "question_count": 73,
+    "folder": "output/stage3_company_wise/Morgan Stanley"
+  },
+  {
+    "company": "Nvidia",
+    "question_count": 5,
+    "folder": "output/stage3_company_wise/Nvidia"
+  },
+  {
+    "company": "Ola Cabs",
+    "question_count": 47,
+    "folder": "output/stage3_company_wise/Ola Cabs"
+  },
+  {
+    "company": "Oracle",
+    "question_count": 55,
+    "folder": "output/stage3_company_wise/Oracle"
+  },
+  {
+    "company": "Paytm",
+    "question_count": 73,
+    "folder": "output/stage3_company_wise/Paytm"
+  },
+  {
+    "company": "Qualcomm",
+    "question_count": 36,
+    "folder": "output/stage3_company_wise/Qualcomm"
+  },
+  {
+    "company": "Salesforce",
+    "question_count": 13,
+    "folder": "output/stage3_company_wise/Salesforce"
+  },
+  {
+    "company": "SAP Labs",
+    "question_count": 39,
+    "folder": "output/stage3_company_wise/SAP Labs"
+  },
+  {
+    "company": "Synopsys",
+    "question_count": 9,
+    "folder": "output/stage3_company_wise/Synopsys"
+  },
+  {
+    "company": "TCS",
+    "question_count": 16,
+    "folder": "output/stage3_company_wise/TCS"
+  },
+  {
+    "company": "Visa",
+    "question_count": 31,
+    "folder": "output/stage3_company_wise/Visa"
+  },
+  {
+    "company": "VMWare",
+    "question_count": 38,
+    "folder": "output/stage3_company_wise/VMWare"
+  },
+  {
+    "company": "Walmart",
+    "question_count": 71,
+    "folder": "output/stage3_company_wise/Walmart"
+  },
+  {
+    "company": "Wipro",
+    "question_count": 18,
+    "folder": "output/stage3_company_wise/Wipro"
+  },
+  {
+    "company": "Zoho",
+    "question_count": 81,
+    "folder": "output/stage3_company_wise/Zoho"
+  }
+]

@@ -1,0 +1,604 @@
+[
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/avl-tree-deletion/1",
+      "problem_name": "AVL Tree Deletion",
+      "slug": "avl-tree-deletion",
+      "difficulty": "Hard",
+      "accuracy": "47.98%",
+      "marks": 8,
+      "all_submissions": 41973,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Oracle",
+          "Oxigen Wallet"
+        ],
+        "topic_tags": [
+          "Tree",
+          "AVL-Tree",
+          "Data Structures",
+          "Advanced Data Structure"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "AVL-Tree",
+        "Data Structures",
+        "Advanced Data Structure"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Oracle",
+        "Oxigen Wallet"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/deletion-in-an-avl-tree/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an AVL tree and N values to be deleted from the tree. Write a function to delete a given value from the tree. All the N values which needs to be deleted are passed one by one as input data by driver code itself, you are asked to return the root of modified tree after deleting the value.\n\nExample 1:\n\nTree =\n        4\n      /   \\\n     2     6\n    / \\   / \\\n   1   3 5   7\n\nN = 4\nValues to be deleted = {4,1,3,6}\n\nInput: Value to be deleted = 4\nOutput:\n        5\n      /   \\\n     2     6\n    / \\     \\\n   1   3     7\n\nInput: Value to be deleted = 1\nOutput:\n        5\n      /   \\\n     2     6\n      \\     \\\n       3     7\n\nInput: Value to be deleted = 3\nOutput:\n        5\n      /   \\\n     2     6\n            \\\n             7\n\nInput: Value to be deleted = 6\nOutput:\n        5\n      /   \\\n     2     7\n\nYour Task:\nYou dont need to read input or print anything. Complete the function delelteNode() which takes the root of the tree and the value of the node to be deleted as input parameters and returns the root of the modified tree.\n\nNote: The tree will be checked after each deletion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all deletion are successful, inorder traversal of tree will be printed.\nIf every single node is deleted from tree, 'null' will be printed.\n\nExpected Time Complexity: O(height of tree)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 500",
+      "full_text": "Given an AVL tree and N values to be deleted from the tree. Write a function to delete a given value from the tree. All the N values which needs to be deleted are passed one by one as input data by driver code itself, you are asked to return the root of modified tree after deleting the value.\n\nExample 1:\n\nTree =\n        4\n      /   \\\n     2     6\n    / \\   / \\\n   1   3 5   7\n\nN = 4\nValues to be deleted = {4,1,3,6}\n\nInput: Value to be deleted = 4\nOutput:\n        5\n      /   \\\n     2     6\n    / \\     \\\n   1   3     7\n\nInput: Value to be deleted = 1\nOutput:\n        5\n      /   \\\n     2     6\n      \\     \\\n       3     7\n\nInput: Value to be deleted = 3\nOutput:\n        5\n      /   \\\n     2     6\n            \\\n             7\n\nInput: Value to be deleted = 6\nOutput:\n        5\n      /   \\\n     2     7\n\nYour Task:\nYou dont need to read input or print anything. Complete the function delelteNode() which takes the root of the tree and the value of the node to be deleted as input parameters and returns the root of the modified tree.\n\nNote: The tree will be checked after each deletion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all deletion are successful, inorder traversal of tree will be printed.\nIf every single node is deleted from tree, 'null' will be printed.\n\nExpected Time Complexity: O(height of tree)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 500",
+      "examples": [
+        "Example 1:\nTree =\n4\n/   \\\n2     6\n/ \\   / \\\n1   3 5   7\nN = 4\nValues to be deleted = {4,1,3,6}\nInput:\nValue to be deleted = 4\nOutput:\n5\n/   \\\n2     6\n/ \\     \\\n1   3     7\nInput:\nValue to be deleted = 1\nOutput:\n5\n/   \\\n2     6\n\\     \\\n3     7\nInput:\nValue to be deleted = 3\nOutput:\n5\n/   \\\n2     6\n\\\n7\nInput:\nValue to be deleted = 6\nOutput:\n5\n/   \\\n2     7"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 500",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an <strong>AVL tree</strong> and <strong>N</strong> values to be deleted from the tree. Write a function to delete a given value from the tree. All the <strong>N</strong> values which needs to be deleted are passed one by one as input <strong>data </strong>by driver code itself, you are asked to return the root of modified tree after deleting the value.</span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Example 1:\n</strong>\nTree = \n        4\n      /   \\\n     2     6\n    / \\   / \\  \n   1   3 5   7</span>\n\n<span style=\"font-size: 18px;\">N = 4\nValues to be deleted = {4,1,3,6}</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 4\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     6\n    / \\     \\  \n   1   3     7</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 1\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     6\n      \\     \\  \n       3     7</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 3\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     6\n            \\  \n             7</span>\n\n<span style=\"font-size: 18px;\"><strong>Input: </strong>Value to be deleted = 6\n<strong>Output:</strong>\n        5    \n      /   \\\n     2     7</span>\n\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task: &nbsp;</strong><br />You dont need to read input or print anything. Complete the function<strong> delelteNode()</strong> which takes the root of the tree and the value of the node to be deleted as input parameters and returns the root of the modified tree.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:&nbsp;</strong>The tree will be checked after each deletion.&nbsp;<br />If it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.<br />If instead all deletion are successful, inorder traversal of tree will be printed.<br />If every single node is deleted from tree, 'null' will be printed.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(height of tree)<br /><strong>Expected Auxiliary Space: </strong>O(height of tree)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N &le; 500</span></p>"
+    },
+    "qnum": 1953
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/avl-tree-insertion/1",
+      "problem_name": "AVL Tree Insertion",
+      "slug": "avl-tree-insertion",
+      "difficulty": "Hard",
+      "accuracy": "37.01%",
+      "marks": 8,
+      "all_submissions": 46347,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Oracle",
+          "Oxigen Wallet",
+          "Informatica",
+          "Citicorp"
+        ],
+        "topic_tags": [
+          "Binary Search Tree",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Binary Search Tree",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Oracle",
+        "Oxigen Wallet",
+        "Informatica",
+        "Citicorp"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/avl-tree-set-1-insertion/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an AVL tree and N values to be inserted in the tree. Write a function to insert elements into the given AVL tree.\n\nNote:\nThe tree will be checked after each insertion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all insertions are successful, inorder traversal of the tree will be printed.\n\nExample 1:\n\nInput:\nN = 3\nValues to be inserted = {5,1,4}\nOutput:\n1 4 5\nExplanation:\nValue to be inserted = 5\n    5\nValue to be inserted = 1\n    5\n   /\n  1\nValue to be inserted = 4\n  5                     4\n /    LR rotation        /  \\\n1    ----------->       1   5\n \\\n 4\nTherefore the inorder of the final tree will be 1, 4, 5.\n\nExample 2:\n\nInput:\nN = 7\nValues to be inserted = {21,26,30,9,4,14,28}\nOutput:\n4 9 14 21 26 28 30\nExplanation:\nValue to be inserted = 21\n    21\nValue to be inserted = 26\n    21\n     \\\n     26\nValue to be inserted = 30\n  21                        26\n   \\      LL rotation         /  \\\n   26    ----------->       21  30\n    \\\n     30\nValue to be inserted = 9\n    26\n   /  \\\n  21  30\n /\n9\nValue to be inserted = 4\n      26                          26\n     /  \\                          /  \\\n    21  30                      9   30\n   /          RR rotation        /  \\\n  9          ----------->       4  21\n /\n4\nValue to be inserted = 14\n      26                          21\n     /  \\                          /  \\\n    9   30                      9   26\n   / \\          LR rotation      /  \\    \\\n  4  21        ----------->    4  14  30\n     /\n    14\nValue to be inserted = 28\n      21                          21\n     /  \\                          /  \\\n    9   26                      9   28\n   / \\    \\     RL rotation       / \\    / \\\n  4  14   30   ----------->   4  14 26 30\n          /\n         28\nTherefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30.\n\nYour Task:\nYou don't need to read input or print anything. Complete the function insertToAVL() which takes the root of the tree and the value of the node to be inserted as input parameters and returns the root of the modified tree.\n\nExpected Time Complexity: O(log N)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 2000",
+      "full_text": "Given an AVL tree and N values to be inserted in the tree. Write a function to insert elements into the given AVL tree.\n\nNote:\nThe tree will be checked after each insertion.\nIf it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.\nIf instead all insertions are successful, inorder traversal of the tree will be printed.\n\nExample 1:\n\nInput:\nN = 3\nValues to be inserted = {5,1,4}\nOutput:\n1 4 5\nExplanation:\nValue to be inserted = 5\n    5\nValue to be inserted = 1\n    5\n   /\n  1\nValue to be inserted = 4\n  5                     4\n /    LR rotation        /  \\\n1    ----------->       1   5\n \\\n 4\nTherefore the inorder of the final tree will be 1, 4, 5.\n\nExample 2:\n\nInput:\nN = 7\nValues to be inserted = {21,26,30,9,4,14,28}\nOutput:\n4 9 14 21 26 28 30\nExplanation:\nValue to be inserted = 21\n    21\nValue to be inserted = 26\n    21\n     \\\n     26\nValue to be inserted = 30\n  21                        26\n   \\      LL rotation         /  \\\n   26    ----------->       21  30\n    \\\n     30\nValue to be inserted = 9\n    26\n   /  \\\n  21  30\n /\n9\nValue to be inserted = 4\n      26                          26\n     /  \\                          /  \\\n    21  30                      9   30\n   /          RR rotation        /  \\\n  9          ----------->       4  21\n /\n4\nValue to be inserted = 14\n      26                          21\n     /  \\                          /  \\\n    9   30                      9   26\n   / \\          LR rotation      /  \\    \\\n  4  21        ----------->    4  14  30\n     /\n    14\nValue to be inserted = 28\n      21                          21\n     /  \\                          /  \\\n    9   26                      9   28\n   / \\    \\     RL rotation       / \\    / \\\n  4  14   30   ----------->   4  14 26 30\n          /\n         28\nTherefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30.\n\nYour Task:\nYou don't need to read input or print anything. Complete the function insertToAVL() which takes the root of the tree and the value of the node to be inserted as input parameters and returns the root of the modified tree.\n\nExpected Time Complexity: O(log N)\nExpected Auxiliary Space: O(height of tree)\n\nConstraints:\n1 ≤ N ≤ 2000",
+      "examples": [
+        "Input:\nN = 3\nValues to be inserted = {5,1,4}\nOutput:\n1 4 5\nExplanation:\nValue to be inserted = 5\n5\nValue to be inserted = 1\n5\n/\n1\nValue to be inserted = 4\n5                     4\n/\nLR rotation\n/  \\\n1    ----------->       1   5\n\\\n4\nTherefore the inorder of the final tree will be 1, 4, 5.",
+        "Input:\nN = 7\nValues to be inserted = {21,26,30,9,4,14,28}\nOutput:\n4 9 14 21 26 28 30\nExplanation:\nValue to be inserted = 21\n21\nValue to be inserted = 26\n21\n\\\n26\nValue to be inserted = 30\n21                        26\n\\\nLL rotation\n/  \\\n26    ----------->       21  30\n\\\n30\nValue to be inserted = 9\n26\n/  \\\n21  30\n/\n9\nValue to be inserted = 4\n26                          26\n/  \\                          /  \\\n21  30                      9   30\n/\nRR rotation\n/  \\\n9          ----------->       4  21\n/\n4\nValue to be inserted = 14\n26                          21\n/  \\                          /  \\\n9   30                      9   26\n/ \\\nLR rotation\n/  \\    \\\n4  21        ----------->    4  14  30\n/\n14\nValue to be inserted = 28\n21                          21\n/  \\                          /  \\\n9   26                      9   28\n/ \\    \\\nRL rotation\n/ \\    / \\\n4  14   30   ----------->   4  14 26 30\n/\n28\nTherefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 2000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an AVL tree and N values to be inserted in the tree. Write a function to insert elements into the given&nbsp;<strong>AVL tree</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong><br />The tree will be checked after each insertion.&nbsp;<br />If it violates the properties of balanced BST, an error message will be printed followed by the inorder traversal of the tree at that moment.<br />If instead all insertions are successful, inorder traversal of the tree will be printed.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:<br /></strong>N = 3<strong><br /></strong>Values to be inserted = {5,1,4}<strong> </strong>\n<strong>Output:<br /></strong>1 4 5<br /><strong>Explanation:<br /></strong>Value to be inserted = 5<strong><br /></strong>    5\nValue to be inserted = 1\n    5\n   /\n  1\nValue to be inserted = 4\n  5                     4\n /    <strong>LR rotation</strong>        /  \\\n1    -----------&gt;       1   5\n&nbsp;\\\n&nbsp;4<br />Therefore the inorder of the final tree will be 1, 4, 5.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong><br />N = 7<strong><br /></strong>Values to be inserted = {21,26,30,9,4,14,28}<strong> </strong>\n<strong>Output:<br /></strong>4 9 14 21 26 28 30<br /><strong style=\"font-family: sans-serif;\">Explanation:</strong><br />Value to be inserted = 21<strong><br /></strong>    21\nValue to be inserted = 26\n    21\n     \\\n     26\nValue to be inserted = 30\n  21                        26\n   \\      <strong>LL rotation</strong>         /  \\\n   26    -----------&gt;       21  30\n    \\\n     30<br />Value to be inserted = 9<br />    26<br />   /  \\<br />  21  30<br /> /<br />9<br />Value to be inserted = 4<br />      26                          26<br />     /  \\                          /  \\<br />    21  30                      9   30<br />   /          <strong>RR rotation</strong>        /  \\<br />  9          -----------&gt;       4  21<br /> /<br />4<br />Value to be inserted = 14<br />      26                          21<br />     /  \\                          /  \\<br />    9   30                      9   26<br />   / \\          <strong>LR rotation</strong>      /  \\    \\<br />  4  21        -----------&gt;    4  14  30<br /> &nbsp; &nbsp; /<br />    14<br />Value to be inserted = 28<br />      21                          21<br />     /  \\                          /  \\<br />    9   26                      9   28<br />   / \\    \\     <strong>RL rotation</strong>       / \\    / \\<br />  4  14   30   -----------&gt;   4  14 26 30<br />          /<br />         28<br />Therefore the inorder of the final tree will be 4, 9, 14, 21, 26, 28, 30.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Your Task: &nbsp;</strong><br />You don't need to read input or print anything. Complete the function<strong>&nbsp;insertToAVL()</strong>&nbsp;which takes the root of the tree and the value of the node to be inserted as input parameters and returns the root of the modified tree.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Expected Time Complexity:</strong>&nbsp;O(log N)<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(height of tree)</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; N &le; 2000</span></p>"
+    },
+    "qnum": 1954
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/binary-tree-to-dll/1",
+      "problem_name": "Binary Tree to DLL",
+      "slug": "binary-tree-to-dll",
+      "difficulty": "Hard",
+      "accuracy": "53.36%",
+      "marks": 8,
+      "all_submissions": 168952,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[]",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Goldman Sachs",
+          "Salesforce"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Goldman Sachs",
+        "Salesforce"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/convert-binary-tree-to-doubly-linked-list-by-fixing-left-and-right-pointers/",
+        "https://www.geeksforgeeks.org/convert-binary-tree-to-doubly-linked-list-using-inorder-traversal/",
+        "https://www.geeksforgeeks.org/convert-given-binary-tree-to-doubly-linked-list-in-linear-time/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a root of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the same node structure. The left and right pointers in the binary tree nodes should be used as prev and next pointers respectively in the resulting DLL .The DLL should be formed by performing an inorder traversal of the binary tree (i.e., Left → Root → Right).The first node in the inorder traversal (i.e., the leftmost node) should become the head of the DLL. Return the head of the resulting DLL.\nNote: h is the tree's height, and this space is used implicitly for the recursion stack.\n\nExamples:\n\nInput: root = [1, 2, 3]\nOutput: [2, 1, 3]\n\nExplanation: DLL would be 2<=>1<=>3\n\nInput:  root = [10, 20, 30, 40, 60]\nOutput: [40, 20, 60, 10, 30]\n\nExplanation: DLL would be 40<=>20<=>60<=>10<=>30.\n\nConstraints:\n1 ≤ Number of nodes ≤ 105\n0 ≤ Data of a node ≤ 105",
+      "full_text": "Given a root of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the same node structure. The left and right pointers in the binary tree nodes should be used as prev and next pointers respectively in the resulting DLL .The DLL should be formed by performing an inorder traversal of the binary tree (i.e., Left → Root → Right).The first node in the inorder traversal (i.e., the leftmost node) should become the head of the DLL. Return the head of the resulting DLL.\nNote: h is the tree's height, and this space is used implicitly for the recursion stack.\n\nExamples:\n\nInput: root = [1, 2, 3]\nOutput: [2, 1, 3]\n\nExplanation: DLL would be 2<=>1<=>3\n\nInput:  root = [10, 20, 30, 40, 60]\nOutput: [40, 20, 60, 10, 30]\n\nExplanation: DLL would be 40<=>20<=>60<=>10<=>30.\n\nConstraints:\n1 ≤ Number of nodes ≤ 105\n0 ≤ Data of a node ≤ 105",
+      "examples": [
+        "Input:\nroot\n=\n[1, 2, 3]\nOutput:\n[2, 1, 3]\nExplanation:\nDLL would be 2<=>1<=>3",
+        "Input:\nroot = [10, 20, 30, 40, 60]\nOutput:\n[40, 20, 60, 10, 30]\nExplanation:\nDLL would be 40<=>20<=>60<=>10<=>30."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ Number of nodes ≤ 10\n5\n0 ≤ Data of a node ≤ 10\n5",
+      "question_html": "<p data-pm-slice=\"0 0 []\">G<span style=\"font-size: 14pt;\">iven a <strong>root</strong> of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the <strong>same node</strong> structure. The<strong> left </strong>and <strong>right</strong> pointers in the binary tree nodes should be used as <strong>prev</strong> and <strong>next</strong> pointers respectively in the resulting DLL .The DLL should be formed by performing an <strong>inorder</strong> traversal of the binary tree (i.e., Left &rarr; Root &rarr; Right).The <strong>first node </strong>in the inorder traversal (i.e., the leftmost node) should become the <strong>head</strong> of the DLL. Return the <strong>head</strong> of the resulting DLL.<br /></span><span style=\"font-size: 14pt;\"><strong>Note: </strong>h&nbsp;is the tree's height, and this space is used implicitly for the recursion stack.</span></p>\n<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid0_1763203392.webp\" width=\"333\" height=\"266\" /></span></p>\n<p><span style=\"font-size: 12pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 12pt;\"><strong>Input: </strong>root<strong> = </strong>[1, 2, 3]\n<strong>Output: </strong>[2, 1, 3] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid3_1768475771.jpg\" width=\"245\" height=\"243\" /><br /><strong>Explanation:</strong> DLL would be 2&lt;=&gt;1&lt;=&gt;3</span></pre>\n<pre><span style=\"font-size: 12pt;\"><strong>Input:  </strong>root = [10, 20, 30, 40, 60]\n<strong>Output:</strong> [40, 20, 60, 10, 30] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid2_1763203489.webp\" width=\"286\" height=\"225\" /><strong><br />Explanation: </strong>DLL would be 40&lt;=&gt;20&lt;=&gt;60&lt;=&gt;10&lt;=&gt;30.</span></pre>\n<p><span style=\"font-size: 12pt;\"><strong>Constraints:</strong><br />1 &le; Number of nodes &le; 10<sup>5</sup><br />0 &le; Data of a node &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1955
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/clone-a-linked-list-with-next-and-random-pointer/1",
+      "problem_name": "Clone List with Next and Random",
+      "slug": "clone-a-linked-list-with-next-and-random-pointer",
+      "difficulty": "Hard",
+      "accuracy": "64.8%",
+      "marks": 8,
+      "all_submissions": 122561,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&head = ",
+        "datatype": "INTEGER&!//!&STRING_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "D-E-Shaw",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Walmart",
+          "Adobe",
+          "BankBazaar"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "D-E-Shaw",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Walmart",
+        "Adobe",
+        "BankBazaar"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/a-linked-list-with-next-and-arbit-pointer/",
+        "https://www.geeksforgeeks.org/clone-linked-list-next-arbit-pointer-set-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/bankbazaar-com-interview-experience-set-7-senior-android-developer/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-2-android-1-5-years/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-8-on-campus/"
+      ],
+      "statement_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.",
+      "full_text": "You are given a special linked list with\nn\nnodes where each node has two pointers a\nnext pointer\nthat points to the next node of the singly linked list, and a\nrandom pointer\nthat points to the random node of the linked list.\nConstruct a\ncopy\nof this linked list. The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state. None of the pointers in the new list should point to nodes in the original list.\nReturn the\nhead\nof the copied linked list.\nNOTE :\nOriginal linked list should remain unchanged.\nEach node of the linked list is represented as a pair of [val, random_index] where:\nval\nrepresents node.data.\nrandom_index\n(1-based index) represents the index of the node that the random pointer of the current node points to, or\nNULL\nif it does not point to any node.\nExamples:\nInput:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.\nInput:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.\nInput:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.\nConstraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "examples": [
+        "Input:\nhead = [[1, 3], [3, 3], [5, NULL], [9, 3]]\nOutput:\n[[1, 3], [3, 3], [5, NULL], [9, 3]]\nExplanation:\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5\npoints to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.",
+        "Input:\nhead = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nOutput:\n[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]\nExplanation:\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.",
+        "Input:\nhead = [[7, NULL], [7, NULL]]\nOutput:\nhead\n=\n[[7, NULL], [7, NULL]]\nExplanation:\nNode 7\npoints to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ n ≤ 100\n0 ≤ node->data ≤ 1000",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a special linked list with&nbsp;<strong>n</strong>&nbsp;nodes where each node has two pointers a&nbsp;<strong>next pointer</strong>&nbsp;that points to the next node of the singly linked list, and a&nbsp;<strong>random pointer</strong>&nbsp;that points to the random node of the linked list.<br /></span></p>\n<p><span style=\"font-size: 14pt;\">Construct a&nbsp;<strong>copy</strong>&nbsp;of this linked list.&nbsp;The copy should consist of the same number of new nodes, where each new node has the value corresponding to its original node. Both the next and random pointer of the new nodes should point to new nodes in the copied list, such that it also represent the same list state.&nbsp;None of the pointers in the new list should point to nodes in the original list.</span></p>\n<p><span style=\"font-size: 14pt;\">Return the&nbsp;<strong>head</strong>&nbsp;of the copied linked list.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>NOTE :&nbsp;</strong>Original linked list should remain unchanged.<br />Each node of the linked list is represented as a pair of [val, random_index] where:</span></p>\n<ul>\n<li><span style=\"font-size: 14pt;\"><strong>val</strong> represents node.data.</span></li>\n<li><span style=\"font-size: 14pt;\"><strong>random_index </strong>(1-based index) represents the index of the node that the random pointer of the current node points to, or <strong>NULL </strong>if it does not point to any node.</span></li>\n</ul>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [3, 3], [5, NULL], [9, 3]] <br /> &nbsp; <img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid0_1756531264.jpg\" width=\"433\" height=\"147\" /><br /><strong>Output: </strong>[[1, 3], [3, 3], [5, NULL], [9, 3]]<strong>\nExplanation: </strong>\nNode 1 points to Node 3 as its NEXT and Node 5 as its RANDOM.\nNode 3 points to Node 5 as its NEXT and Node 5 as its RANDOM.\nNode 5<strong> </strong>points to Node 9 as its NEXT and NULL as its RANDOM.\nNode 9 points to NULL as its NEXT and Node 5 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<br /> &nbsp;<img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700186/Web/Other/blobid1_1756531275.jpg\" width=\"456\" height=\"133\" /><br /><strong>Output: </strong>[[1, 3], [2, 1], [3, 5], [4, 3], [5, 2]]<strong>\nExplanation: </strong>\nNode 1 points to Node 2 as its NEXT and Node 3 as its RANDOM.\nNode 2 points to Node 3 as its NEXT and Node 1 as its RANDOM.\nNode 3 points to Node 4 as its NEXT and Node 5 as its RANDOM.\nNode 4 points to Node 5 as its NEXT and Node 3 as its RANDOM.\nNode 5 points to NULL as its NEXT and Node 2 as its RANDOM.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>head = [[7, NULL], [7, NULL]]<br /><strong>Output: </strong>head<strong> </strong>=<strong> </strong>[[7, NULL], [7, NULL]]<strong>\nExplanation: </strong>\nNode 7<strong> </strong>points to Node 7 as its NEXT and NULL as its RANDOM.\nNode 7 points to NULL as its NEXT and NULL as its RANDOM.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &le; n &le; 100<br />0 &le; node-&gt;data &le; 1000</span></p>"
+    },
+    "qnum": 1956
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/convex-hull2138/1",
+      "problem_name": "Convex Hull",
+      "slug": "convex-hull2138",
+      "difficulty": "Hard",
+      "accuracy": "14.07%",
+      "marks": 8,
+      "all_submissions": 12649,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&points[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Samsung",
+          "Ola Cabs",
+          "Goldman Sachs",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Divide and Conquer",
+          "Geometric",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Divide and Conquer",
+        "Geometric",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Samsung",
+        "Ola Cabs",
+        "Goldman Sachs",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/quickhull-algorithm-convex-hull/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a 2D array\npoints[][]\n, where each element represents a point\n(x\ni\n, y\ni\n)\nin a\n2D plane\n. Your task is to find all the points that form the\nconvex hull\n— the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return\n-1\n.\nNote:\nConvex hull is the smallest\nconvex polygon\nthat contains a given set of points. It is the\nminimal boundary\nthat\nencloses\nall the points such that every line segment connecting any two points within the hull lies entirely\ninside\nor on the\nboundary\nof the polygon.\nYou can\nreturn\nthe points in any order, the driver code will print them in\nsorted order\nonly.",
+      "full_text": "You are given a 2D array\npoints[][]\n, where each element represents a point\n(x\ni\n, y\ni\n)\nin a\n2D plane\n. Your task is to find all the points that form the\nconvex hull\n— the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return\n-1\n.\nNote:\nConvex hull is the smallest\nconvex polygon\nthat contains a given set of points. It is the\nminimal boundary\nthat\nencloses\nall the points such that every line segment connecting any two points within the hull lies entirely\ninside\nor on the\nboundary\nof the polygon.\nYou can\nreturn\nthe points in any order, the driver code will print them in\nsorted order\nonly.\nExamples:\nInput:\npoints[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],\n[-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\nOutput:\n[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]\nExplanation:\nThe figure below shows the points of a convex polygon. These points define the boundary of the polygon.\nInput:\npoints[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\nOutput:\n[[-2, 1], [1, -2], [4, 4]]\nConstraints:\n1 <= points.size() <= 10\n4\n-10\n5\n<= x\ni\n, y\ni\n<= 10\n5",
+      "examples": [
+        "Input:\npoints[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],\n[-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\nOutput:\n[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]\nExplanation:\nThe figure below shows the points of a convex polygon. These points define the boundary of the polygon.",
+        "Input:\npoints[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\nOutput:\n[[-2, 1], [1, -2], [4, 4]]"
+      ],
+      "constraints_text": "Constraints:\n1 <= points.size() <= 10\n4\n-10\n5\n<= x\ni\n, y\ni\n<= 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a 2D array<strong> points[][]</strong>, where each element represents a point <strong>(x<sub>i</sub> , y<sub>i</sub>) </strong>in a <strong>2D plane</strong>. Your task is to find all the points that form the <strong>convex hull</strong> &mdash; the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> Convex hull is the smallest <strong>convex polygon</strong> that contains a given set of points. It is the <strong>minimal boundary</strong> that <strong>encloses</strong> all the points such that every line segment connecting any two points within the hull lies entirely <strong>inside </strong>or on the <strong>boundary</strong> of the polygon.</span></p>\n<p><span style=\"font-size: 14pt;\">You can <strong>return</strong> the points in any order, the driver code will print them in <strong>sorted order </strong>only.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>points[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],<br />                   [-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\n<strong>Output: </strong>[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]<br /><strong>Explanation:</strong> The figure below shows the points of a convex polygon. These points define the boundary of the polygon.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/893675/Web/Other/blobid0_1746091555.jpg\" width=\"410\" height=\"362\" /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>points[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\n<strong>Output: </strong>[[-2, 1], [1, -2], [4, 4]]<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= points.size() &lt;= 10<sup>4</sup><br />-10<sup>5</sup> &lt;= x<sub>i</sub> , y<sub>i</sub> &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1957
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/huffman-encoding3345/1",
+      "problem_name": "Huffman Encoding",
+      "slug": "huffman-encoding3345",
+      "difficulty": "Hard",
+      "accuracy": "32.4%",
+      "marks": 8,
+      "all_submissions": 45323,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "United Health Group"
+        ],
+        "topic_tags": [
+          "Heap",
+          "priority-queue",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Heap",
+        "priority-queue",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "United Health Group"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/huffman-coding-greedy-algo-3/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/amazon-interview-set-34/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-337-sde-1/",
+        "https://www.geeksforgeeks.org/uhgunited-health-group-interview-experience-set-4-on-campus/"
+      ],
+      "statement_text": "Given a string S of distinct character of size N and their corresponding frequency f[ ] i.e. character S[i] has f[i] frequency. Your task is to build the Huffman tree print all the huffman codes in preorder traversal of the tree.\nNote: While merging if two nodes have the same value, then the node which occurs at first will be taken on the left of Binary Tree and the other one to the right, otherwise Node with less value will be taken on the left of the subtree and other one to the right.\n\nExample 1:\n\nS = \"abcdef\"\nf[] = {5, 9, 12, 13, 16, 45}\nOutput:\n0 100 101 1100 1101 111\nExplanation:\n\nHuffmanCodes will be:\nf : 0\nc : 100\nd : 101\na : 1100\nb : 1101\ne : 111\nHence printing them in the PreOrder of Binary\nTree.\n\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function huffmanCodes() which takes the given string S, frequency array f[ ] and number of characters N as input parameters and returns a vector of strings containing all huffman codes in order of preorder traversal of the tree.\n\nExpected Time complexity: O(N * LogN)\nExpected Space complexity: O(N)\n\nConstraints:\n1 ≤ N ≤ 26",
+      "full_text": "Given a string S of distinct character of size N and their corresponding frequency f[ ] i.e. character S[i] has f[i] frequency. Your task is to build the Huffman tree print all the huffman codes in preorder traversal of the tree.\nNote: While merging if two nodes have the same value, then the node which occurs at first will be taken on the left of Binary Tree and the other one to the right, otherwise Node with less value will be taken on the left of the subtree and other one to the right.\n\nExample 1:\n\nS = \"abcdef\"\nf[] = {5, 9, 12, 13, 16, 45}\nOutput:\n0 100 101 1100 1101 111\nExplanation:\n\nHuffmanCodes will be:\nf : 0\nc : 100\nd : 101\na : 1100\nb : 1101\ne : 111\nHence printing them in the PreOrder of Binary\nTree.\n\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function huffmanCodes() which takes the given string S, frequency array f[ ] and number of characters N as input parameters and returns a vector of strings containing all huffman codes in order of preorder traversal of the tree.\n\nExpected Time complexity: O(N * LogN)\nExpected Space complexity: O(N)\n\nConstraints:\n1 ≤ N ≤ 26",
+      "examples": [
+        "S = \"abcdef\"\nf[] = {5, 9, 12, 13, 16, 45}\nOutput:\n0 100 101 1100 1101 111\nExplanation:\nHuffmanCodes will be:\nf : 0\nc : 100\nd : 101\na : 1100\nb : 1101\ne : 111\nHence printing them in the PreOrder of Binary\nTree."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 26",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string <strong>S</strong>&nbsp;of distinct character&nbsp;of size <strong>N</strong>&nbsp;and their corresponding frequency <strong>f[ ]</strong> i.e. character <strong>S[i]</strong> has<strong> f[i]</strong> frequency. Your task is to build&nbsp;the Huffman tree print all the huffman codes in preorder traversal&nbsp;of the tree.<br /><strong>Note: </strong>While merging if two nodes&nbsp;have the same value, then the node which occurs&nbsp;at first will be taken on the left of Binary Tree and the other one to the right, otherwise Node with less value will be taken on the left of the subtree and other one to the right.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\">S = \"abcdef\"\nf[] = {5, 9, 12, 13, 16, 45}\n<strong>Output: </strong>\n0 100 101 1100 1101 111\n<strong>Explanation:\n</strong></span><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/705885/Web/Other/blobid0_1753358055.webp\" width=\"372\" height=\"242\" /><br />HuffmanCodes will be:\nf : 0\nc : 100\nd : 101\na : 1100\nb : 1101\ne : 111\nHence printing them in the PreOrder of Binary \nTree.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anything. Your task is to complete the function&nbsp;<strong>huffmanCodes()&nbsp;</strong>which takes the given string <strong>S</strong>, frequency array <strong>f[ ]</strong>&nbsp;and number of characters <strong>N</strong> as input parameters and returns a vector of strings containing all huffman codes in order of preorder traversal&nbsp;of the tree.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time complexity: </strong>O(N * LogN)&nbsp;<br /><strong>Expected Space complexity:&nbsp;</strong>O(N)&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; N&nbsp;&le; 26</span></p>"
+    },
+    "qnum": 1958
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lru-cache/1",
+      "problem_name": "LRU Cache",
+      "slug": "lru-cache",
+      "difficulty": "Hard",
+      "accuracy": "18.44%",
+      "marks": 8,
+      "all_submissions": 192488,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "capacity =&!//!&Q =&!//!&Queries =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "Yahoo"
+        ],
+        "topic_tags": [
+          "doubly-linked-list",
+          "Hash",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "doubly-linked-list",
+        "Hash",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "Yahoo"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/design-a-data-structure-for-lru-cache/",
+        "https://www.geeksforgeeks.org/lru-cache-implementation-using-double-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-7-3-5-years-experienced/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-interview-questions/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-21/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.",
+      "full_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.\nExamples:\nInput:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.\nInput:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.\nConstraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "examples": [
+        "Input:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.",
+        "Input:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Design a data structure that works like a LRU Cache. Here&nbsp;<strong>cap</strong>&nbsp;denotes&nbsp;the capacity of the cache and&nbsp;<strong>Q</strong>&nbsp;denotes the number of queries. Query can be&nbsp;</span><span style=\"font-size: 18px;\">of two types:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>PUT</strong>&nbsp;<strong>x</strong>&nbsp;<strong>y</strong>: sets the value of the key&nbsp;<strong>x</strong>&nbsp;with value&nbsp;<strong>y</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>GET</strong>&nbsp;<strong>x</strong>: gets the value of key <strong>x</strong>&nbsp;if present else returns&nbsp;<strong>-1</strong>.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\">The LRUCache class has two methods&nbsp;<strong>get</strong>() and&nbsp;<strong>put</strong>() which are defined as follows.</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>get(key)</strong>: returns the value of the key if it&nbsp;already exists in the cache otherwise returns&nbsp;<strong>-1.</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>put(key, value)</strong>: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.</span></li>\n<li><span style=\"font-size: 18px;\">In the&nbsp;<strong>constructor</strong>&nbsp;of the class the capacity of the cache should be initialized.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\n<strong>Output: </strong>[2]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]<br /><strong>Output: </strong>[5, -1]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1-&gt;2, 2-&gt;3(the most recently used one is kept at the rightmost position)&nbsp;\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -&gt; 3, 1 -&gt; 5\n[\"PUT\", 4, 5] : 1 -&gt; 5, 4 -&gt; 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -&gt; 5, 6 -&gt; 7&nbsp;\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -&gt; 7, 4-&gt;5)\n[\"PUT\", 1, 2] : 4 -&gt; 5, 1 -&gt; 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; cap &le; 10<sup>3</sup><br />1 &le; Q &le; 10<sup>5</sup><br />1 &le; x, y &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1959
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/number-of-subsets-with-product-less-than-k/1",
+      "problem_name": "Number of subsets with product less than k",
+      "slug": "number-of-subsets-with-product-less-than-k",
+      "difficulty": "Hard",
+      "accuracy": "41.26%",
+      "marks": 8,
+      "all_submissions": 13209,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =&!//!&k =",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "subset",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "subset",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/number-subsets-product-less-k/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/morgan-stanley-interview-experience-for-internship-on-campus-2020/"
+      ],
+      "statement_text": "Given an array\narr\n. Find the number of non-empty subsets whose product of elements is less than or equal to a given integer\nk\n.",
+      "full_text": "Given an array\narr\n. Find the number of non-empty subsets whose product of elements is less than or equal to a given integer\nk\n.\nExamples:\nInput:\narr[] = [2, 4, 5, 3], k = 12\nOutput:\n8\nExplanation:\nAll possible subsets whose products are less than 12 are: (2), (4), (5), (3), (2, 4), (2, 5), (2, 3), (4, 3).\nInput:\narr[] = [9, 8, 3], k = 2\nOutput:\n0\nExplanation:\nThere is no subsets with product less than or equal to 2.\nInput:\narr[] = [9, 2, 2], k = 2\nOutput:\n2\nExplanation:\nAll possible subsets whose products are less than 12 are: (2), (2).\nConstraints:\n1 ≤ arr.size() ≤ 30\n1 ≤ arr[i] ≤ 10\n1 ≤ k ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [2, 4, 5, 3], k = 12\nOutput:\n8\nExplanation:\nAll possible subsets whose products are less than 12 are: (2), (4), (5), (3), (2, 4), (2, 5), (2, 3), (4, 3).",
+        "Input:\narr[] = [9, 8, 3], k = 2\nOutput:\n0\nExplanation:\nThere is no subsets with product less than or equal to 2.",
+        "Input:\narr[] = [9, 2, 2], k = 2\nOutput:\n2\nExplanation:\nAll possible subsets whose products are less than 12 are: (2), (2)."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 30\n1 ≤ arr[i] ≤ 10\n1 ≤ k ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr</strong>. Find the number of non-empty subsets whose product of elements is less than or equal to a given integer <strong>k</strong>. </span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [2, 4, 5, 3], k = 12\n<strong>Output: </strong>8\n<strong>Explanation: </strong>All possible subsets whose products are less than 12 are: (2), (4), (5), (3), (2, 4), (2, 5), (2, 3), (4, 3).</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [9, 8, 3], k = 2 \n<strong>Output: </strong>0</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>There is no subsets with product less than or equal to 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [9, 2, 2], k = 2 \n<strong>Output: </strong>2</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong></span><span style=\"font-size: 14pt;\">All possible subsets whose products are less than 12 are: (2), (2).</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 30<br />1 &le; arr[i] &le; 10<br />1 &le; k &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1960
+  },
+  {
+    "company": "Morgan Stanley",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-palindrome-sub-strings-of-a-string0652/1",
+      "problem_name": "Palindrome SubStrings",
+      "slug": "count-palindrome-sub-strings-of-a-string0652",
+      "difficulty": "Hard",
+      "accuracy": "45.8%",
+      "marks": 8,
+      "all_submissions": 59031,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Ola Cabs",
+          "SAP Labs",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Ola Cabs",
+        "SAP Labs",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-palindrome-sub-strings-string-set-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/"
+      ],
+      "statement_text": "Given a string s, count all palindromic sub-strings present in the string. The length of the palindromic sub-string must be greater than or equal to 2.\n\nNote: A substring is palindromic if it reads the same forwards and backwards.\n\nExamples:\n\nInput: s = \"abaab\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".\n\nInput: s = \"aaa\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".\n\nInput: s = \"abbaeae\"\nOutput: 4\nExplanation: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\".\n\nConstraints:\n2 ≤ s.size() ≤ 5 * 103\ns contains only lowercase english characters",
+      "full_text": "Given a string s, count all palindromic sub-strings present in the string. The length of the palindromic sub-string must be greater than or equal to 2.\n\nNote: A substring is palindromic if it reads the same forwards and backwards.\n\nExamples:\n\nInput: s = \"abaab\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".\n\nInput: s = \"aaa\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".\n\nInput: s = \"abbaeae\"\nOutput: 4\nExplanation: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\".\n\nConstraints:\n2 ≤ s.size() ≤ 5 * 103\ns contains only lowercase english characters",
+      "examples": [
+        "Input:\ns = \"abaab\"\nOutput:\n3\nExplanation\n: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".",
+        "Input:\ns = \"aaa\"\nOutput:\n3\nExplanation\n: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".",
+        "Input:\ns = \"abbaeae\"\nOutput:\n4\nExplanation\n: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\"."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ s.size() ≤ 5 * 10\n3\ns contains only lowercase english characters",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string <strong>s</strong>, count all palindromic sub-strings present in the string. The length of the <strong>palindromic sub-string</strong> must be greater than or equal to <strong>2</strong>.<br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Note:&nbsp;</span></strong><span style=\"font-size: 18px;\">A substring is palindromic if it reads the same forwards and backwards.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"abaab\"\n<strong>Output: </strong>3\n<strong>Explanation</strong>: All palindromic substrings (of length &gt; 1) are: \"aba\", \"aa\", \"baab\".<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"aaa\"\n<strong>Output: </strong>3\n<strong>Explanation</strong>: All palindromic substrings (of length &gt; 1) are: \"aa\", \"aa\", \"aaa\".</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">s = \"abbaeae\"\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">4\n</span><strong style=\"font-size: 18px;\">Explanation</strong><span style=\"font-size: 18px;\">: All palindromic substrings (of length &gt; 1) are: \"bb\", \"abba\", \"aea\", \"eae\".</span></span></pre>\n<p style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: medium; white-space: normal;\"><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br /></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18.6667px;\">2 &le; s.size() &le; 5 * 10</span><sup>3</sup><br /></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18.6667px;\">s contains only lowercase english characters</span></span></p>"
+    },
+    "qnum": 1961
+  }
+]

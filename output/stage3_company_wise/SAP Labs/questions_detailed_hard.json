@@ -1,0 +1,213 @@
+[
+  {
+    "company": "SAP Labs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/distinct-palindromic-substrings5141/1",
+      "problem_name": "Distinct palindromic substrings",
+      "slug": "distinct-palindromic-substrings5141",
+      "difficulty": "Hard",
+      "accuracy": "39.92%",
+      "marks": 8,
+      "all_submissions": 26482,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "MakeMyTrip",
+          "Ola Cabs",
+          "SAP Labs",
+          "Linkedin"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "palindrome",
+          "STL",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "palindrome",
+        "STL",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "MakeMyTrip",
+        "Ola Cabs",
+        "SAP Labs",
+        "Linkedin"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-number-distinct-palindromic-sub-strings-given-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-7-on-campus/"
+      ],
+      "statement_text": "Given a string s of lowercase English letters. The task is to find all the distinct continuous palindromic sub-strings which are present in the string s.\n\nNote: You can return the Palindromic sub-strings in any order but the driver code will print the result in sorted order.\n\nExamples:\n\nInput: s = \"abaaa\"\nOutput: [\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\nExplanation: All 5 distinct continuous palindromic sub-strings are listed above.\n\nInput: s = \"geek\"\nOutput: [\"e\", \"ee\", \"g\", \"k\"]\nExplanation: All 4 distinct continuous palindromic sub-strings are listed above.\n\nConstraints:\n1 ≤ s.length() ≤ 104",
+      "full_text": "Given a string s of lowercase English letters. The task is to find all the distinct continuous palindromic sub-strings which are present in the string s.\n\nNote: You can return the Palindromic sub-strings in any order but the driver code will print the result in sorted order.\n\nExamples:\n\nInput: s = \"abaaa\"\nOutput: [\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\nExplanation: All 5 distinct continuous palindromic sub-strings are listed above.\n\nInput: s = \"geek\"\nOutput: [\"e\", \"ee\", \"g\", \"k\"]\nExplanation: All 4 distinct continuous palindromic sub-strings are listed above.\n\nConstraints:\n1 ≤ s.length() ≤ 104",
+      "examples": [
+        "Input:\ns = \"abaaa\"\nOutput:\n[\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\nExplanation:\nAll 5 distinct continuous palindromic sub-strings are listed above.",
+        "Input:\ns = \"geek\"\nOutput:\n[\"e\", \"ee\", \"g\", \"k\"]\nExplanation:\nAll 4 distinct continuous palindromic sub-strings are listed above."
+      ],
+      "constraints_text": "Constraints\n:\n1 ≤ s.length() ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\">Given a string </span><strong style=\"font-size: 18px;\">s</strong><span style=\"font-size: 18px;\"> of lowercase English letters. The task is to find all the&nbsp;</span><strong style=\"font-size: 18px;\">distinct </strong><span style=\"font-size: 18px;\">continuous </span><strong style=\"font-size: 18px;\">palindromic sub-strings</strong><span style=\"font-size: 18px;\"> which are present in the string </span><strong style=\"font-size: 18px;\">s</strong><span style=\"font-size: 18px;\">.</span></span></p>\n<p><span style=\"font-size: 18px;\"><span style=\"font-size: 18px;\"><strong>Note:</strong> You can return the Palindromic sub-strings in any order but the driver code will print the result in <strong>sorted</strong> order.</span></span></p>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> s = \"abaaa\"\n<strong>Output:</strong> [\"a\", \"aa\", \"aaa\", \"aba\", \"b\"]\n<strong>Explanation:</strong> All 5 distinct continuous palindromic sub-strings are listed above.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"geek\"\n<strong>Output:</strong> [\"e\", \"ee\", \"g\", \"k\"]\n<strong>Explanation:</strong> All 4 distinct continuous palindromic sub-strings are listed above.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints</strong>:<br />1 &le; s.length() &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 2214
+  },
+  {
+    "company": "SAP Labs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1",
+      "problem_name": "Linked List Group Reverse",
+      "slug": "reverse-a-linked-list-in-groups-of-given-size",
+      "difficulty": "Hard",
+      "accuracy": "57.08%",
+      "marks": 8,
+      "all_submissions": 272606,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head =&!//!&k =",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "SAP Labs"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "SAP Labs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/reverse-a-linked-list-in-groups-of-given-size-iterative-approach/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-13-on-campus-for-internship-and-fte/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-4-walk-in-drive/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-9/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-sde-1-2-years-experienced/"
+      ],
+      "statement_text": "You are given the\nhead\nof a Singly linked list. You have to\nreverse\nevery\nk\nnode in the linked list and return the head of the modified list.\nNote:\nIf the number of nodes is not a multiple of\nk\nthen the left-out nodes at the end, should be considered as a group and must be\nreversed\n.",
+      "full_text": "You are given the\nhead\nof a Singly linked list. You have to\nreverse\nevery\nk\nnode in the linked list and return the head of the modified list.\nNote:\nIf the number of nodes is not a multiple of\nk\nthen the left-out nodes at the end, should be considered as a group and must be\nreversed\n.\nExamples:\nInput:\nk = 2,\nOutput:\n2 -> 1 -> 4 -> 3 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 2.\nInput:\nk = 4,\nOutput:\n4 -> 3 -> 2 -> 1 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 4.\nConstraints:\n1 ≤ size of linked list ≤ 10\n5\n0 ≤ node->data ≤ 10\n6\n1 ≤ k ≤ size of linked list",
+      "examples": [
+        "Input:\nk = 2,\nOutput:\n2 -> 1 -> 4 -> 3 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 2.",
+        "Input:\nk = 4,\nOutput:\n4 -> 3 -> 2 -> 1 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 4."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ size of linked list ≤ 10\n5\n0 ≤ node->data ≤ 10\n6\n1 ≤ k ≤ size of linked list",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given the&nbsp;<strong>head</strong>&nbsp;of a Singly linked list. You have to&nbsp;<strong>reverse</strong>&nbsp;every&nbsp;<strong>k</strong>&nbsp;node in the linked list and return the head of the modified list.<br /></span><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;If the number of nodes is not a multiple of&nbsp;<strong>k</strong>&nbsp;then the left-out nodes at the end, should be considered as a group and must be&nbsp;<strong>reversed</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>k = 2,<br /> &nbsp; <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid1_1765779381.png\" width=\"460\" height=\"53\" /><br /><strong>Output: </strong>2 -&gt; 1 -&gt; 4 -&gt; 3 -&gt; 6 -&gt; 5<br /><strong>Explanation:</strong> Linked List is reversed in a group of size k = 2.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid3_1765779476.png\" width=\"451\" height=\"52\" /><br /><br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>k = 4, &nbsp; <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid2_1765779449.png\" width=\"443\" height=\"51\" /><br /><strong>Output: </strong>4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 6 -&gt; 5<br /><strong>Explanation: </strong>Linked List is reversed in a group of size k = 4.<br /><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid4_1765779498.png\" width=\"451\" height=\"52\" /></span></pre>\n<div><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span></div>\n<div><span style=\"font-size: 14pt;\">1 &le; size of linked list &le; 10<sup>5</sup></span></div>\n<div><span style=\"font-size: 14pt;\">0 &le; node-&gt;data &le; 10<sup>6</sup></span><br /><span style=\"font-size: 14pt;\">1 &le; k &le;&nbsp;size of linked list&nbsp;</span></div>"
+    },
+    "qnum": 2215
+  },
+  {
+    "company": "SAP Labs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-palindrome-sub-strings-of-a-string0652/1",
+      "problem_name": "Palindrome SubStrings",
+      "slug": "count-palindrome-sub-strings-of-a-string0652",
+      "difficulty": "Hard",
+      "accuracy": "45.8%",
+      "marks": 8,
+      "all_submissions": 59031,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Amazon",
+          "Ola Cabs",
+          "SAP Labs",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Amazon",
+        "Ola Cabs",
+        "SAP Labs",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-palindrome-sub-strings-string-set-2/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/"
+      ],
+      "statement_text": "Given a string s, count all palindromic sub-strings present in the string. The length of the palindromic sub-string must be greater than or equal to 2.\n\nNote: A substring is palindromic if it reads the same forwards and backwards.\n\nExamples:\n\nInput: s = \"abaab\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".\n\nInput: s = \"aaa\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".\n\nInput: s = \"abbaeae\"\nOutput: 4\nExplanation: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\".\n\nConstraints:\n2 ≤ s.size() ≤ 5 * 103\ns contains only lowercase english characters",
+      "full_text": "Given a string s, count all palindromic sub-strings present in the string. The length of the palindromic sub-string must be greater than or equal to 2.\n\nNote: A substring is palindromic if it reads the same forwards and backwards.\n\nExamples:\n\nInput: s = \"abaab\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".\n\nInput: s = \"aaa\"\nOutput: 3\nExplanation: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".\n\nInput: s = \"abbaeae\"\nOutput: 4\nExplanation: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\".\n\nConstraints:\n2 ≤ s.size() ≤ 5 * 103\ns contains only lowercase english characters",
+      "examples": [
+        "Input:\ns = \"abaab\"\nOutput:\n3\nExplanation\n: All palindromic substrings (of length > 1) are: \"aba\", \"aa\", \"baab\".",
+        "Input:\ns = \"aaa\"\nOutput:\n3\nExplanation\n: All palindromic substrings (of length > 1) are: \"aa\", \"aa\", \"aaa\".",
+        "Input:\ns = \"abbaeae\"\nOutput:\n4\nExplanation\n: All palindromic substrings (of length > 1) are: \"bb\", \"abba\", \"aea\", \"eae\"."
+      ],
+      "constraints_text": "Constraints:\n2 ≤ s.size() ≤ 5 * 10\n3\ns contains only lowercase english characters",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string <strong>s</strong>, count all palindromic sub-strings present in the string. The length of the <strong>palindromic sub-string</strong> must be greater than or equal to <strong>2</strong>.<br /></span></p>\n<p><strong><span style=\"font-size: 18px;\">Note:&nbsp;</span></strong><span style=\"font-size: 18px;\">A substring is palindromic if it reads the same forwards and backwards.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"abaab\"\n<strong>Output: </strong>3\n<strong>Explanation</strong>: All palindromic substrings (of length &gt; 1) are: \"aba\", \"aa\", \"baab\".<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s = \"aaa\"\n<strong>Output: </strong>3\n<strong>Explanation</strong>: All palindromic substrings (of length &gt; 1) are: \"aa\", \"aa\", \"aaa\".</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">s = \"abbaeae\"\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">4\n</span><strong style=\"font-size: 18px;\">Explanation</strong><span style=\"font-size: 18px;\">: All palindromic substrings (of length &gt; 1) are: \"bb\", \"abba\", \"aea\", \"eae\".</span></span></pre>\n<p style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; font-size: medium; white-space: normal;\"><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br /></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18.6667px;\">2 &le; s.size() &le; 5 * 10</span><sup>3</sup><br /></span><span style=\"font-size: 18px;\"><span style=\"font-size: 18.6667px;\">s contains only lowercase english characters</span></span></p>"
+    },
+    "qnum": 2216
+  }
+]

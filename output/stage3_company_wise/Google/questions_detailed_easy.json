@@ -1,0 +1,1375 @@
+[
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/anagram-1587115620/1",
+      "problem_name": "Anagram",
+      "slug": "anagram-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "44.93%",
+      "marks": 2,
+      "all_submissions": 473224,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 = &!//!&s2 = ",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Directi",
+          "Adobe",
+          "Google",
+          "Nagarro",
+          "Media.net"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Sorting",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Sorting",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Directi",
+        "Adobe",
+        "Google",
+        "Nagarro",
+        "Media.net"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-whether-two-strings-are-anagram-of-each-other/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/directi-interview-experience-set-22-pool-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-19-sdet/"
+      ],
+      "statement_text": "Given two non-empty strings\ns1\nand\ns2\n, consisting only of lowercase English letters, determine whether they are\nanagrams\nof each other or not.\nTwo strings are considered\nanagrams\nif they contain the\nsame characters\nwith exactly the\nsame frequencies\n, regardless of their order.",
+      "full_text": "Given two non-empty strings\ns1\nand\ns2\n, consisting only of lowercase English letters, determine whether they are\nanagrams\nof each other or not.\nTwo strings are considered\nanagrams\nif they contain the\nsame characters\nwith exactly the\nsame frequencies\n, regardless of their order.\nExamples:\nInput:\ns1 = \"geeks\" s2 = \"kseeg\"\nOutput:\ntrue\nExplanation:\nBoth the string have same characters with same frequency. So, they are anagrams.\nInput:\ns1 = \"allergy\", s2 = \"allergyy\"\nOutput\n: false\nExplanation:\nAlthough the characters are mostly the same, s2 contains an extra 'y' character. Since the frequency of characters differs, the strings are not anagrams.\nInput:\ns1 = \"listen\", s2 = \"lists\"\nOutput:\nfalse\nExplanation:\nThe characters in the two strings are not the same — some are missing or extra. So, they are not anagrams.\nConstraints:\n1 ≤ s1.size(), s2.size() ≤ 10\n5\ns1, s2 consists of lowercase English letters.",
+      "examples": [
+        "Input:\ns1 = \"geeks\" s2 = \"kseeg\"\nOutput:\ntrue\nExplanation:\nBoth the string have same characters with same frequency. So, they are anagrams.",
+        "Input:\ns1 = \"allergy\", s2 = \"allergyy\"\nOutput\n: false\nExplanation:\nAlthough the characters are mostly the same, s2 contains an extra 'y' character. Since the frequency of characters differs, the strings are not anagrams.",
+        "Input:\ns1 = \"listen\", s2 = \"lists\"\nOutput:\nfalse\nExplanation:\nThe characters in the two strings are not the same — some are missing or extra. So, they are not anagrams."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s1.size(), s2.size() ≤ 10\n5\ns1, s2 consists of lowercase English letters.",
+      "question_html": "<p data-start=\"96\" data-end=\"235\"><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\">Given two non-empty strings <strong>s1 </strong>and <strong>s2</strong>, consisting only of lowercase English letters, determine whether they are <strong>anagrams </strong>of each other or not.<br /></span><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\"> </span><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\">Two strings are considered <strong>anagrams</strong> if they contain the <strong>same characters</strong> with exactly the <strong>same frequencies</strong>, regardless of their order.</span></p>\n<p><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\"><strong>Examples:</strong></span></p>\n<pre dir=\"ltr\"><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Input:</strong> s1 = \"geeks\" s2 = \"kseeg\"<br /><strong>Output:</strong> true <br /><strong>Explanation:</strong> Both the string have same characters with same frequency. So, they are anagrams.</span></pre>\n<pre dir=\"ltr\"><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Input:</strong> s1 = \"allergy\", s2 = \"allergyy\" <br /></span><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Output</strong>: false <br /><strong>Explanation:</strong> Although the characters are mostly the same, s2 contains an extra 'y' character. Since the frequency of characters differs, the strings are not anagrams. </span></pre>\n<pre dir=\"ltr\"><span style=\"font-size: 18.6667px; font-family: 'andale mono', monospace;\"><strong>Input:</strong> s1 = \"listen\", s2 = \"lists\" <br /><strong>Output:</strong> false <br /><strong>Explanation:</strong> The characters in the two strings are not the same &mdash; some are missing or extra. So, they are not anagrams.</span></pre>\n<p><span style=\"font-size: 14pt; font-family: 'andale mono', monospace;\"><strong style=\"font-family: 'andale mono', monospace; font-size: 14pt;\">Constraints:</strong><br /><span style=\"font-family: andale mono, monospace;\"><span style=\"font-size: 14pt;\">1 &le; s1.size(), s2.size() &le; 10</span></span><sup style=\"font-family: 'andale mono', monospace; font-size: 14pt;\">5</sup><br /><span style=\"font-family: andale mono, monospace;\"><span style=\"font-size: 18.6667px;\">s1, s2 consists of lowercase English letters.</span></span></span></p>"
+    },
+    "qnum": 1184
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/equilibrium-point-1587115620/1",
+      "problem_name": "Equilibrium Point",
+      "slug": "equilibrium-point-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "28.13%",
+      "marks": 2,
+      "all_submissions": 685815,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[]",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Adobe",
+          "Google",
+          "Facebook",
+          "Microsoft",
+          "Uber"
+        ],
+        "topic_tags": [
+          "prefix-sum",
+          "Arrays",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "prefix-sum",
+        "Arrays",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Adobe",
+        "Google",
+        "Facebook",
+        "Microsoft",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/equilibrium-index-of-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array of integers\narr[]\n,\nthe task is to find the first\nequilibrium point\nin the array.\nThe equilibrium point in an array is an index (0-based indexing) such that the sum of all elements before\nthat index is the same as the sum\nof elements after\nit.\nReturn -1 if no such point exists.",
+      "full_text": "Given an array of integers\narr[]\n,\nthe task is to find the first\nequilibrium point\nin the array.\nThe equilibrium point in an array is an index (0-based indexing) such that the sum of all elements before\nthat index is the same as the sum\nof elements after\nit.\nReturn -1 if no such point exists.\nExamples:\nInput:\narr[] = [1, 2, 0, 3]\nOutput:\n2\nExplanation:\nThe sum of left of index 2 is 1 + 2 = 3 and sum on right of index 2 is 3.\nInput:\narr[] = [1, 1, 1, 1]\nOutput:\n-1\nExplanation:\nThere is no equilibrium index in the array.\nInput:\narr[] = [-7, 1, 5, 2, -4, 3, 0]\nOutput:\n3\nExplanation:\nThe sum of left of index 3 is -7 + 1 + 5 = -1 and sum on right of index 3 is -4 + 3 + 0 = -1.\nConstraints:\n3 <= arr.size() <= 10\n5\n-10\n4\n<= arr[i] <= 10\n4",
+      "examples": [
+        "Input:\narr[] = [1, 2, 0, 3]\nOutput:\n2\nExplanation:\nThe sum of left of index 2 is 1 + 2 = 3 and sum on right of index 2 is 3.",
+        "Input:\narr[] = [1, 1, 1, 1]\nOutput:\n-1\nExplanation:\nThere is no equilibrium index in the array.",
+        "Input:\narr[] = [-7, 1, 5, 2, -4, 3, 0]\nOutput:\n3\nExplanation:\nThe sum of left of index 3 is -7 + 1 + 5 = -1 and sum on right of index 3 is -4 + 3 + 0 = -1."
+      ],
+      "constraints_text": "Constraints:\n3 <= arr.size() <= 10\n5\n-10\n4\n<= arr[i] <= 10\n4",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array of integers<strong> arr[]</strong>,<strong> </strong>the task is to find the first <strong>equilibrium point</strong>&nbsp;in the array.</span></p>\n<p><span style=\"font-size: 14pt;\">The equilibrium point in an array is an index (0-based indexing) such that the sum of all elements before<strong>&nbsp;</strong>that index is the&nbsp;same&nbsp;as the&nbsp;sum<strong>&nbsp;</strong>of elements&nbsp;after<strong>&nbsp;</strong>it.&nbsp;</span><span style=\"font-size: 14pt;\">Return -1 if no such point exists.&nbsp;</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 0, 3]<br /><strong>Output: </strong>2<strong> \nExplanation: </strong></span><span style=\"font-size: 18.6667px;\">The sum of left of index 2 is 1 + 2 = 3 and sum on right of index 2 is 3.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 1, 1, 1]<br /><strong>Output: </strong>-1<strong>\nExplanation: </strong>There is no equilibrium index in the array.<br /></span></pre>\n<pre style=\"text-wrap: wrap; color: #222222; background-color: #ffffff;\"><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [-7, 1, 5, 2, -4, 3, 0]</span><span style=\"color: #222222;\"><span style=\"text-wrap-mode: wrap;\"><br /></span></span><span style=\"font-size: 14pt;\"><strong>Output: </strong>3<strong>\nExplanation: </strong></span><span style=\"color: #222222;\"><span style=\"font-size: 18.6667px; text-wrap-mode: wrap;\">The sum of left of index 3 is -7 + 1 + 5 = -1 and sum on right of index 3 is -4 + 3 + 0 = -1.</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />3 &lt;= arr.size() &lt;= 10<sup>5</sup><br /><span style=\"font-size: 18.6667px;\">-10</span><sup>4</sup> &lt;= arr[i] &lt;= 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1185
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-the-frequency/1",
+      "problem_name": "Find the Frequency",
+      "slug": "find-the-frequency",
+      "difficulty": "Easy",
+      "accuracy": "77.19%",
+      "marks": 2,
+      "all_submissions": 93473,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr [] =&!//!&x = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Google"
+        ],
+        "topic_tags": [
+          "STL"
+        ]
+      },
+      "topic_tags": [
+        "STL"
+      ],
+      "company_tags": [
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-frequency-number-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\na\nrr\nof positive integers and an integer\nx\n. Return the\nfrequency\nof\nx\nin the array.\nExamples :\nInput:\narr = [1, 1, 1, 1, 1], x = 1\nOutput:\n5\nExplanation:\nFrequency of 1 is 5.\nInput:\narr = [1, 2, 3, 3, 2, 1], x=2\nOutput:\n2\nExplanation:\nFrequency of 2 is 2.",
+      "full_text": "Given an array\na\nrr\nof positive integers and an integer\nx\n. Return the\nfrequency\nof\nx\nin the array.\nExamples :\nInput:\narr = [1, 1, 1, 1, 1], x = 1\nOutput:\n5\nExplanation:\nFrequency of 1 is 5.\nInput:\narr = [1, 2, 3, 3, 2, 1], x=2\nOutput:\n2\nExplanation:\nFrequency of 2 is 2.\nConstraints:\n1 <= arr.size() <= 10\n5\n1 <= arr[i] <= 10\n5\n1 <= x <= 10\n5",
+      "examples": [
+        "Input:\narr = [1, 1, 1, 1, 1], x = 1\nOutput:\n5\nExplanation:\nFrequency of 1 is 5.",
+        "Input:\narr = [1, 2, 3, 3, 2, 1], x=2\nOutput:\n2\nExplanation:\nFrequency of 2 is 2."
+      ],
+      "constraints_text": "Constraints:\n1 <= arr.size() <= 10\n5\n1 <= arr[i] <= 10\n5\n1 <= x <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>a</strong><strong>rr</strong> of positive integers and an integer <strong>x</strong>. Return the <strong>frequency </strong>of&nbsp;<strong>x</strong> in the array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples : </strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 1, 1, 1, 1], x = 1\n<strong>Output: </strong>5\n<strong>Explanation: </strong>Frequency of 1 is 5.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 2, 3, 3, 2, 1], x=2\n<strong>Output: </strong>2\n<strong>Explanation: </strong>Frequency of 2 is 2.</span></pre>\n<p><strong><span style=\"font-size: 18px;\">Constraints:<br /></span></strong><span style=\"font-size: 18px;\">1 &lt;= arr.size() &lt;= 10<sup>5</sup><br /></span><span style=\"font-size: 18px;\">1 &lt;= arr[i] &lt;= 10<sup>5</sup><br /></span><span style=\"font-size: 18px;\">1 &lt;= x &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1186
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/frequency-game/1",
+      "problem_name": "Frequency Game",
+      "slug": "frequency-game",
+      "difficulty": "Easy",
+      "accuracy": "62.74%",
+      "marks": 2,
+      "all_submissions": 43750,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Google"
+        ],
+        "topic_tags": [
+          "Map",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Map",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Google"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Given\nan array\nA\nof size\nN\n. The elements of the array consist of positive integers. You have to find the largest element with minimum frequency.\nExample 1:\nInput:\n5\n2 2 5 50 1\nOutput:\n50\nExplanation :\nAll elements are having frequency 1 except 2.\n50 is the maximum element with minimum frequency.\nExample 2:\nInput:\n4\n3 3 5 5\nOutput:\n5\nExplanation:\nBoth 3 and 5 have the same frequency, so 5 should be returned.\nUser Task:\nYour task is to complete the provided function\nLargButMinFreq(A, n)\nwhich accepts array\nA\nand\nn\n. Hence you have to return the largest element with minimum frequency.\nExpected Time Complexity:\nO(N)\nExpected Space Complexity:\nO(N)",
+      "full_text": "Given\nan array\nA\nof size\nN\n. The elements of the array consist of positive integers. You have to find the largest element with minimum frequency.\nExample 1:\nInput:\n5\n2 2 5 50 1\nOutput:\n50\nExplanation :\nAll elements are having frequency 1 except 2.\n50 is the maximum element with minimum frequency.\nExample 2:\nInput:\n4\n3 3 5 5\nOutput:\n5\nExplanation:\nBoth 3 and 5 have the same frequency, so 5 should be returned.\nUser Task:\nYour task is to complete the provided function\nLargButMinFreq(A, n)\nwhich accepts array\nA\nand\nn\n. Hence you have to return the largest element with minimum frequency.\nExpected Time Complexity:\nO(N)\nExpected Space Complexity:\nO(N)\nConstraints:\n1 <= N <= 10\n5\n1 <= A[i] <= 10\n6",
+      "examples": [
+        "Input:\n5\n2 2 5 50 1\nOutput:\n50\nExplanation :\nAll elements are having frequency 1 except 2.\n50 is the maximum element with minimum frequency.",
+        "Input:\n4\n3 3 5 5\nOutput:\n5\nExplanation:\nBoth 3 and 5 have the same frequency, so 5 should be returned."
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 10\n5\n1 <= A[i] <= 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\"><span style=\"background-color: transparent; font-family: arial;\">Given </span></span><span style=\"font-size: 18px;\"><span style=\"background-color: transparent; font-family: arial;\">an array </span><strong>A</strong><span style=\"background-color: transparent; font-family: arial;\"> of size </span><strong>N</strong><span style=\"background-color: transparent; font-family: arial;\">. The elements of the array consist of positive integers. You have to find the largest element with minimum frequency. </span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>\n5\n2 2 5 50 1</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong>\n50</span>\n<span style=\"font-size: 18px;\"><strong>Explanation :\n</strong>All elements are having frequency 1 except 2.\n50 is the maximum element with minimum frequency.</span>\n</pre>\n<p><strong><span style=\"font-size: 18px;\">Example 2:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\n4\n3 3 5 5\n<strong>Output:</strong>\n5\n<strong>Explanation:</strong>\nBoth 3 and 5 have the same frequency, so 5 should be returned.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>User Task:</strong><br /><span style=\"background-color: transparent; font-family: arial;\">Your task is to complete the provided function </span><strong>LargButMinFreq(A, n)</strong><span style=\"background-color: transparent; font-family: arial;\"> which accepts array </span><strong>A</strong><span style=\"background-color: transparent; font-family: arial;\"> and </span><strong>n</strong><span style=\"background-color: transparent; font-family: arial;\">. Hence you have to return the largest element with minimum frequency.</span></span></p>\n<p><span style=\"font-size: 18px;\"><span style=\"background-color: transparent; font-family: arial;\"><strong>Expected Time Complexity:</strong> O(N)<br /><strong>Expected Space Complexity:</strong> O(N)</span></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;= 10<sup>5</sup><br />1 &lt;= A[i] &lt;= 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1187
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/generate-binary-string3642/1",
+      "problem_name": "Generate binary string",
+      "slug": "generate-binary-string3642",
+      "difficulty": "Easy",
+      "accuracy": "45.76%",
+      "marks": 2,
+      "all_submissions": 13007,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/generate-all-binary-strings-from-given-pattern/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string containing of 0, 1 and ? - a wildcard character, generate all distinct binary strings that can be formed by replacing each wildcard character by either 0 or 1.\n\nExample 1:\n\nInput: 1??0?101\nOutput: 10000101 10001101 10100101 10101101\n11000101 11001101 11100101 11101101\nExplanation:\nThere will be 8 such possible strings that\ncan be formed, they are 10000101, 10001101,\n10100101, 10101101, 11000101, 11001101,\n11100101 and 11101101.\n\nExample 2:\n\nInput: 10?\nOutput: 100 101\nExplanation: There are 2 such possible strings\nand they are 100 and 101.\n\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function generate_binary_string() which takes the given string as input parameter and returns a vector of strings containing all the possible strings that can be formed.\n\nNote : Strings should be printed in lexicographically increasing order.\n\nExpected Time complexity: O(2n)\nExpected Space complexity: O(n*2n)\n\nConstraints:\n1 ≤ length of string ≤ 30\nNote: Number of '?' in any string does not exceed 15.",
+      "full_text": "Given a string containing of 0, 1 and ? - a wildcard character, generate all distinct binary strings that can be formed by replacing each wildcard character by either 0 or 1.\n\nExample 1:\n\nInput: 1??0?101\nOutput: 10000101 10001101 10100101 10101101\n11000101 11001101 11100101 11101101\nExplanation:\nThere will be 8 such possible strings that\ncan be formed, they are 10000101, 10001101,\n10100101, 10101101, 11000101, 11001101,\n11100101 and 11101101.\n\nExample 2:\n\nInput: 10?\nOutput: 100 101\nExplanation: There are 2 such possible strings\nand they are 100 and 101.\n\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function generate_binary_string() which takes the given string as input parameter and returns a vector of strings containing all the possible strings that can be formed.\n\nNote : Strings should be printed in lexicographically increasing order.\n\nExpected Time complexity: O(2n)\nExpected Space complexity: O(n*2n)\n\nConstraints:\n1 ≤ length of string ≤ 30\nNote: Number of '?' in any string does not exceed 15.",
+      "examples": [
+        "Input:\n1??0?101\nOutput:\n10000101 10001101 10100101 10101101\n11000101 11001101 11100101 11101101\nExplanation:\nThere will be 8 such possible strings that\ncan be formed, they are 10000101, 10001101,\n10100101, 10101101, 11000101, 11001101,\n11100101 and 11101101.",
+        "Input:\n10?\nOutput:\n100 101\nExplanation:\nThere are 2 such possible strings\nand they are 100 and 101."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ length of string ≤ 30\nNote:\nNumber of '\n?\n' in any string does not exceed 15.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string containing of <strong>0</strong>, <strong>1</strong> and <strong>?</strong> - a wildcard character, generate all distinct&nbsp;<strong>binary strings</strong> that can be formed by replacing each wildcard character by either <strong>0</strong> or <strong>1</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>1??0?101\n<strong>Output: </strong>10000101 10001101 10100101 10101101 \n11000101 11001101 11100101 11101101\n<strong>Explanation:\n</strong>There will be 8 such possible strings that \ncan be formed, they are 10000101, 10001101, \n10100101, 10101101, 11000101, 11001101, \n11100101 and 11101101.\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>10?</span>\n<strong><span style=\"font-size: 18px;\">Output: </span></strong><span style=\"font-size: 18px;\">100 101</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>There are 2 such possible strings\nand they are 100 and 101.</span>\n</pre>\n<p><strong><span style=\"font-size: 18px;\">Your Task:</span></strong><br /><span style=\"font-size: 18px;\">You don't need to read or print anything. Your task is to complete the function&nbsp;<strong>generate_binary_string()&nbsp;</strong>which takes the given string as input parameter and returns a vector of strings containing all the possible strings that can be formed.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note :&nbsp;</strong>Strings should be printed in lexicographically&nbsp;increasing order.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time complexity: </strong>O(2<sup>n</sup>)</span><br /><span style=\"font-size: 18px;\"><strong>Expected Space complexity:&nbsp;</strong>O(n*2<sup>n</sup>)</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le;&nbsp;length of string &le; 30</span><br /><span style=\"font-size: 18px;\"><strong>Note:</strong>&nbsp;Number of '<strong>?</strong>' in&nbsp;any&nbsp;string does not exceed 15.</span></p>"
+    },
+    "qnum": 1188
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/isomorphic-strings-1587115620/1",
+      "problem_name": "Isomorphic Strings",
+      "slug": "isomorphic-strings-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "34.21%",
+      "marks": 2,
+      "all_submissions": 236328,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 =&!//!&s2 =",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures",
+          "Hash"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures",
+        "Hash"
+      ],
+      "company_tags": [
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-two-given-strings-are-isomorphic-to-each-other/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given two strings\ns1\nand\ns2\nconsisting of only lowercase English letters and of\nequal length\n, check if these two strings are\nisomorphic\nto each other.\nIf the characters in s1 can be changed to get s2, then two strings, s1 and s2 are isomorphic. A character must be completely swapped out for another character while maintaining the order of the characters. A character may map to itself, but no two characters may map to the same character.",
+      "full_text": "Given two strings\ns1\nand\ns2\nconsisting of only lowercase English letters and of\nequal length\n, check if these two strings are\nisomorphic\nto each other.\nIf the characters in s1 can be changed to get s2, then two strings, s1 and s2 are isomorphic. A character must be completely swapped out for another character while maintaining the order of the characters. A character may map to itself, but no two characters may map to the same character.\nExamples:\nInput:\ns1 = \"aab\", s2 = \"xxy\"\nOutput:\ntrue\nExplanation:\nEach character in s1 can be consistently mapped to a unique character in s2 (a → x, b → y).\nInput:\ns1 = \"aab\", s2 = \"xyz\"\nOutput:\nfalse\nExplanation:\nS\name character 'a' in s1 maps to two different characters 'x' and 'y' in s2.\nInput:\ns1 = \"abc\", s2 = \"xxz\"\nOutput:\nfalse\nExplanation:\nTwo different characters 'a' and 'b' in s1 maps with same character 'x' in s2.\nConstraints:\n1 ≤ s1.size() = s2.size() ≤ 10\n5",
+      "examples": [
+        "Input:\ns1 = \"aab\", s2 = \"xxy\"\nOutput:\ntrue\nExplanation:\nEach character in s1 can be consistently mapped to a unique character in s2 (a → x, b → y).",
+        "Input:\ns1 = \"aab\", s2 = \"xyz\"\nOutput:\nfalse\nExplanation:\nS\name character 'a' in s1 maps to two different characters 'x' and 'y' in s2.",
+        "Input:\ns1 = \"abc\", s2 = \"xxz\"\nOutput:\nfalse\nExplanation:\nTwo different characters 'a' and 'b' in s1 maps with same character 'x' in s2."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s1.size() = s2.size() ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given two strings <strong>s1</strong>&nbsp;and <strong>s2 </strong>consisting of only lowercase English letters and of <strong>equal length</strong>, check if these two strings are <strong>isomorphic </strong>to each other.<br /></span><span style=\"font-size: 14pt;\">If the characters in s1 can be changed to get s2, then two strings, s1 and s2 are isomorphic. A character must be completely swapped out for another character while maintaining the order of the characters. A character may map to itself, but no two characters may map to the same character.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s1 = \"aab\", s2 = \"xxy\"\n<strong>Output: </strong>true<strong>\nExplanation: </strong>Each character in s1 can be consistently mapped to a unique character in s2 (a &rarr; x, b &rarr; y).\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s1 = \"aab\", s2 = \"xyz\"\n<strong>Output: </strong>false<strong>\nExplanation: </strong>S</span><span style=\"font-size: 18.6667px;\">ame character 'a' in s1 maps to two different characters 'x' and 'y' in s2.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s1 = \"abc\", s2 = \"xxz\"\n<strong>Output: </strong>false<strong>\nExplanation: </strong>Two different characters 'a' and 'b' in s1 maps with same character 'x' in s2. </span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s1.size() = s2.size() &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1189
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/k-th-missing-element3635/1",
+      "problem_name": "K-th missing element",
+      "slug": "k-th-missing-element3635",
+      "difficulty": "Easy",
+      "accuracy": "31.53%",
+      "marks": 2,
+      "all_submissions": 37047,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Facebook",
+          "Apple",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Facebook",
+        "Apple",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/k-th-missing-element-in-sorted-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an increasing sequence\narr\n, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.",
+      "full_text": "Given an increasing sequence\narr\n, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.\nExample:\nInput:\narr[] = [1, 3, 4, 5, 7] and k = 2\nOutput:\n6\nExplanation:\nk = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.\nInput:\narr[] = [2, 3, 4, 5, 6, 8] and k = 1\nOutput:\n7\nExplanation:\nk = 1, the first missing number in the array is 7.\nExpected Time Complexity:\nO(n).\nExpected Auxiliary Space:\nO(1).\nConstraints:\n1 ≤  arr.size() ≤ 10\n6\n0 ≤  k, arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [1, 3, 4, 5, 7] and k = 2\nOutput:\n6\nExplanation:\nk = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.",
+        "Input:\narr[] = [2, 3, 4, 5, 6, 8] and k = 1\nOutput:\n7\nExplanation:\nk = 1, the first missing number in the array is 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤  arr.size() ≤ 10\n6\n0 ≤  k, arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an increasing sequence <strong>arr</strong>, we need to find the K-th smallest missing element, taking the first element of the array as the starting point in the increasing sequence. If there is no k-th missing element then output -1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [1, 3, 4, 5, 7] and k = 2\n<strong>Output:</strong> 6\n<strong>Explanation: </strong>k = 2, Missing numbers are 2 and 6. So 2nd missing number is 6.\n</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [2, 3, 4, 5, 6, 8] and k = 1<strong>\nOutput:</strong> 7<br /><strong>Explanation: </strong>k = 1, the first missing number in the array is 7.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:</strong> O(n).<br /><strong>Expected Auxiliary Space:</strong>&nbsp;O(1).</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:<br /></strong></span><span style=\"font-size: 18px;\">1 &le;&nbsp; arr.size() &le; 10<sup>6</sup><br />0 &le;&nbsp; k, arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1190
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/find-first-and-last-occurrence-of-x0849/1",
+      "problem_name": "Left most and right most index",
+      "slug": "find-first-and-last-occurrence-of-x0849",
+      "difficulty": "Easy",
+      "accuracy": "38.23%",
+      "marks": 2,
+      "all_submissions": 85194,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Binary Search",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Binary Search",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-first-and-last-positions-of-an-element-in-a-sorted-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a sorted array with possibly duplicate elements. The task is to find indexes of first and last occurrences of an element\nX\nin the given array.\nNote:\nIf the element is not present in the array\nreturn {-1,-1} as pair\n.\nExample 1:\nInput:\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 67, 123, 125}\nX = 5\nOutput:\n2 5\nExplanation:\nIndex of first occurrence of 5 is 2\nand index of last occurrence of 5 is 5.\nExample 2:\nInput:\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 7, 123, 125}\nX = 7\nOutput:\n6 6\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nindexes()\nwhich takes the array\nv[]\nand an integer\nX\nas inputs and returns  the first and last occurrence of the element\nX\n. If the element is not present in the array\nreturn {-1,-1} as pair\n.\nCan you solve the problem in expected time complexity?\nExpected Time Complexity:\nO(Log(N))\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a sorted array with possibly duplicate elements. The task is to find indexes of first and last occurrences of an element\nX\nin the given array.\nNote:\nIf the element is not present in the array\nreturn {-1,-1} as pair\n.\nExample 1:\nInput:\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 67, 123, 125}\nX = 5\nOutput:\n2 5\nExplanation:\nIndex of first occurrence of 5 is 2\nand index of last occurrence of 5 is 5.\nExample 2:\nInput:\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 7, 123, 125}\nX = 7\nOutput:\n6 6\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nindexes()\nwhich takes the array\nv[]\nand an integer\nX\nas inputs and returns  the first and last occurrence of the element\nX\n. If the element is not present in the array\nreturn {-1,-1} as pair\n.\nCan you solve the problem in expected time complexity?\nExpected Time Complexity:\nO(Log(N))\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 ≤ N ≤ 10\n5\n1 ≤ v[i], X ≤ 10\n18",
+      "examples": [
+        "Input:\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 67, 123, 125}\nX = 5\nOutput:\n2 5\nExplanation:\nIndex of first occurrence of 5 is 2\nand index of last occurrence of 5 is 5.",
+        "Input:\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 7, 123, 125}\nX = 7\nOutput:\n6 6"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ N ≤ 10\n5\n1 ≤ v[i], X ≤ 10\n18",
+      "question_html": "<p><span style=\"font-size:18px\">Given a sorted array with possibly duplicate elements. The task is to find indexes of first and last occurrences of an element <strong>X</strong> in the given array.</span></p>\n\n<p><strong><span style=\"font-size:18px\">Note: </span></strong><span style=\"font-size:18px\">If the element is not present in the array <strong>return {-1,-1} as pair</strong>.</span></p>\n\n<p>&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input:</strong>\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 67, 123, 125}\nX = 5</span>\n<span style=\"font-size:18px\"><strong>Output:</strong>\n2 5</span>\n<span style=\"font-size:18px\"><strong>Explanation:\n</strong>Index of first occurrence of 5 is 2\nand index of last occurrence of 5 is 5.</span></pre>\n\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input:</strong>\nN = 9\nv[] = {1, 3, 5, 5, 5, 5, 7, 123, 125}\nX = 7\n<strong>Output:</strong>\n6 6</span></pre>\n\n<p>&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Your Task:&nbsp;&nbsp;</strong><br />\nYou don&#39;t need to read input or print anything. Your task is to complete the function&nbsp;<strong>indexes()</strong>&nbsp;which takes the array <strong>v[]</strong><strong>&nbsp;</strong>and an integer <strong>X&nbsp;</strong>as inputs and returns &nbsp;the first and last occurrence of the element <strong>X</strong>. If the element is not present in the array <strong>return {-1,-1} as pair</strong>.<br />\n<br />\nCan you solve the problem in expected time complexity?</span></p>\n\n<p><br />\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(Log(N))<br />\n<strong>Expected Auxiliary Space:</strong> O(1)</span></p>\n\n<p><br />\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\n1 &le; N &le; 10<sup>5</sup><br />\n1 &le; v[i], X &le; 10<sup>18</sup></span></p>\n"
+    },
+    "qnum": 1191
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/license-key-formatting/1",
+      "problem_name": "License Key Formatting",
+      "slug": "license-key-formatting",
+      "difficulty": "Easy",
+      "accuracy": "42.72%",
+      "marks": 2,
+      "all_submissions": 29427,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/license-key-formatting/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string\nS\nthat consists of only alphanumeric characters and dashes.\nThe string is separated into\nN + 1\ngroups by\nN\ndashes. Also given an integer\nK\n.\nWe want to reformat the string\nS\n, such that each group contains exactly\nK\ncharacters, except for the first group, which could be shorter than\nK\nbut still must contain at least one character. Furthermore, there must be a dash inserted between two groups, and you should convert all lowercase letters to uppercase.\nReturn the reformatted string.\nExample 1:\nInput:\nS = \"5F3Z-2e-9-w\", K = 4\nOutput: \"\n5F3Z-2E9W\"\nExplanation:\nThe string\nS\nhas been split into two\nparts, each part has 4 characters. Note that two\nextra dashes are not needed and can be removed.\nExample 2:\nInput:\nS = \"2-5g-3-J\", K = 2\nOutput:\n\"2-5G-3J\"\nExplanation:\nThe string s has been split\ninto three parts, each part has 2 characters\nexcept the first part as it could\nbe shorter as mentioned above.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nReFormatString()\nwhich takes a string\nS\nand an integer\nK\nas input and returns the reformatted string.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)",
+      "full_text": "Given a string\nS\nthat consists of only alphanumeric characters and dashes.\nThe string is separated into\nN + 1\ngroups by\nN\ndashes. Also given an integer\nK\n.\nWe want to reformat the string\nS\n, such that each group contains exactly\nK\ncharacters, except for the first group, which could be shorter than\nK\nbut still must contain at least one character. Furthermore, there must be a dash inserted between two groups, and you should convert all lowercase letters to uppercase.\nReturn the reformatted string.\nExample 1:\nInput:\nS = \"5F3Z-2e-9-w\", K = 4\nOutput: \"\n5F3Z-2E9W\"\nExplanation:\nThe string\nS\nhas been split into two\nparts, each part has 4 characters. Note that two\nextra dashes are not needed and can be removed.\nExample 2:\nInput:\nS = \"2-5g-3-J\", K = 2\nOutput:\n\"2-5G-3J\"\nExplanation:\nThe string s has been split\ninto three parts, each part has 2 characters\nexcept the first part as it could\nbe shorter as mentioned above.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nReFormatString()\nwhich takes a string\nS\nand an integer\nK\nas input and returns the reformatted string.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)\nConstraints:\n1 ≤ S.length() ≤ 10\n5\n1 ≤ K ≤ 10\n4",
+      "examples": [
+        "Input:\nS = \"5F3Z-2e-9-w\", K = 4\nOutput: \"\n5F3Z-2E9W\"\nExplanation:\nThe string\nS\nhas been split into two\nparts, each part has 4 characters. Note that two\nextra dashes are not needed and can be removed.",
+        "Input:\nS = \"2-5g-3-J\", K = 2\nOutput:\n\"2-5G-3J\"\nExplanation:\nThe string s has been split\ninto three parts, each part has 2 characters\nexcept the first part as it could\nbe shorter as mentioned above."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ S.length() ≤ 10\n5\n1 ≤ K ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size:18px\">Given a string <strong>S</strong>&nbsp;that consists of only alphanumeric characters and dashes.<strong>&nbsp;</strong>The string is separated into&nbsp;<strong>N + 1</strong>&nbsp;groups by&nbsp;<strong>N</strong>&nbsp;dashes. Also given an integer&nbsp;<strong>K</strong>.&nbsp;</span></p>\r\n\r\n<p><span style=\"font-size:18px\">We want to reformat the string&nbsp;<strong>S</strong>,&nbsp;such that each group contains exactly&nbsp;<strong>K</strong>&nbsp;characters, except for the first group, which could be shorter than&nbsp;<strong>K</strong>&nbsp;but still must contain at least one character. Furthermore, there must be a dash inserted between two groups, and you should convert all lowercase letters to uppercase.</span></p>\r\n\r\n<p><span style=\"font-size:18px\">Return the reformatted string.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input: \r\n</strong>S = &quot;5F3Z-2e-9-w&quot;, K = 4\r\n<strong>Output: &quot;</strong>5F3Z-2E9W&quot;\r\n<strong>Explanation:&nbsp;</strong>The string <strong>S</strong>&nbsp;has been split into two\r\nparts, each part has 4 characters. Note that two\r\nextra dashes are not needed and can be removed.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nS = &quot;2-5g-3-J&quot;, K = 2\r\n<strong>Output: </strong>&quot;2-5G-3J&quot;\r\n<strong>Explanation:&nbsp;</strong>The string s has been split \r\ninto three parts, each part has 2 characters \r\nexcept the first part as it could\r\nbe shorter as mentioned above.\r\n</span></pre>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Your Task:&nbsp;&nbsp;</strong><br />\r\nYou don&#39;t need to read input or print anything. Your task is to complete the function <strong>ReFormatString()</strong>&nbsp;which takes a string&nbsp;<strong>S</strong><strong>&nbsp;</strong>and an integer <strong>K</strong>&nbsp;as input&nbsp;and returns the reformatted string.</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> O(N)<br />\r\n<strong>Expected Auxiliary Space:</strong> O(N)</span></p>\r\n\r\n<p><br />\r\n<span style=\"font-size:18px\"><strong>Constraints:</strong><br />\r\n1 &le; S.length() &le; 10<sup>5</sup></span><br />\r\n<span style=\"font-size:18px\">1 &le; K &le; 10<sup>4</sup></span></p>\r\n"
+    },
+    "qnum": 1192
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/longest-common-prefix-in-an-array5129/1",
+      "problem_name": "Longest Common Prefix of Strings",
+      "slug": "longest-common-prefix-in-an-array5129",
+      "difficulty": "Easy",
+      "accuracy": "29.52%",
+      "marks": 2,
+      "all_submissions": 319274,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr [] = ",
+        "datatype": "STRING_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "VMWare",
+          "Microsoft",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "VMWare",
+        "Microsoft",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/longest-common-prefix-using-word-by-word-matching/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array of strings\narr[].\nReturn the\nlongest common prefix\namong each and every strings present in the array.\nIf there's no prefix common in all the strings, return \"\".\nExamples :\nInput:\narr[] = [\"geeksforgeeks\", \"geeks\", \"geek\", \"geezer\"]\nOutput:\n\"gee\"\nExplanation\n: \"gee\" is the longest common prefix in all the given strings.\nInput\n: arr[] = [\"hello\", \"world\"]\nOutput:\n\"\"\nExplanation\n: There's no common prefix in the given strings.",
+      "full_text": "Given an array of strings\narr[].\nReturn the\nlongest common prefix\namong each and every strings present in the array.\nIf there's no prefix common in all the strings, return \"\".\nExamples :\nInput:\narr[] = [\"geeksforgeeks\", \"geeks\", \"geek\", \"geezer\"]\nOutput:\n\"gee\"\nExplanation\n: \"gee\" is the longest common prefix in all the given strings.\nInput\n: arr[] = [\"hello\", \"world\"]\nOutput:\n\"\"\nExplanation\n: There's no common prefix in the given strings.\nConstraints:\n1 ≤ |arr| ≤ 10\n3\n1 ≤ |arr[i]| ≤ 10\n3",
+      "examples": [
+        "Input:\narr[] = [\"geeksforgeeks\", \"geeks\", \"geek\", \"geezer\"]\nOutput:\n\"gee\"\nExplanation\n: \"gee\" is the longest common prefix in all the given strings.",
+        "Input\n: arr[] = [\"hello\", \"world\"]\nOutput:\n\"\"\nExplanation\n: There's no common prefix in the given strings."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ |arr| ≤ 10\n3\n1 ≤ |arr[i]| ≤ 10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array of strings <strong>arr[].</strong>&nbsp;Return the <strong>longest common prefix</strong> among each and every strings present in the array. </span><span style=\"font-size: 18px;\">If there's no prefix common in all the strings, return \"\".</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [\"geeksforgeeks\", \"geeks\", \"geek\", \"geezer\"]\n<strong>Output:</strong> \"gee\"\n<strong>Explanation</strong>: \"gee\" is the longest common prefix in all the given strings.<br /></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: arr[] = [\"hello\", \"world\"]\n<strong>Output:</strong> \"\"\n<strong>Explanation</strong>: There's no common prefix in the given strings.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; |arr| &le; 10<sup>3</sup><br />1 &le; |arr[i]| &le; 10<sup>3</sup></span></p>"
+    },
+    "qnum": 1193
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/meta-strings5713/1",
+      "problem_name": "Meta Strings",
+      "slug": "meta-strings5713",
+      "difficulty": "Easy",
+      "accuracy": "49.58%",
+      "marks": 2,
+      "all_submissions": 19021,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/meta-strings-check-two-strings-can-become-swap-one-string/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given two strings consisting of lowercase english alphabets, the task is to check whether these strings are meta strings or not. Meta strings are the strings which can be made equal by exactly one swap in any of the strings. Equal string are not considered here as Meta strings.\nExample 1:\nInput:\nS1 = \"geeks\", S2 = \"keegs\"\nOutput:\n1\nExplanation\n: We can swap the 0th and 3rd\ncharacter of S2 to make it equal to S1.\nExample 2:\nInput\n:\nS1 = \"geeks\", S2 = \"geeks\"\nOutput:\n0\nExplanation\n: Equal strings are not considered\nMeta strings.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmetaStrings()\nwhich takes the strings S1 and S2 as input and returns true if both the strings are meta strings, else it returns false.",
+      "full_text": "Given two strings consisting of lowercase english alphabets, the task is to check whether these strings are meta strings or not. Meta strings are the strings which can be made equal by exactly one swap in any of the strings. Equal string are not considered here as Meta strings.\nExample 1:\nInput:\nS1 = \"geeks\", S2 = \"keegs\"\nOutput:\n1\nExplanation\n: We can swap the 0th and 3rd\ncharacter of S2 to make it equal to S1.\nExample 2:\nInput\n:\nS1 = \"geeks\", S2 = \"geeks\"\nOutput:\n0\nExplanation\n: Equal strings are not considered\nMeta strings.\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\nmetaStrings()\nwhich takes the strings S1 and S2 as input and returns true if both the strings are meta strings, else it returns false.\nConstraints:\n1<=|S|<=10\n5",
+      "examples": [
+        "Input:\nS1 = \"geeks\", S2 = \"keegs\"\nOutput:\n1\nExplanation\n: We can swap the 0th and 3rd\ncharacter of S2 to make it equal to S1.",
+        "Input\n:\nS1 = \"geeks\", S2 = \"geeks\"\nOutput:\n0\nExplanation\n: Equal strings are not considered\nMeta strings."
+      ],
+      "constraints_text": "Constraints:\n1<=|S|<=10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two strings consisting of lowercase english alphabets, the task is to check whether these strings are meta strings or not. Meta strings are the strings which can be made equal by exactly one swap in any of the strings. Equal string are not considered here as Meta strings.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong>\nS1 = \"geeks\", S2 = \"keegs\"\n<strong>Output:</strong> 1\n<strong>Explanation</strong>: We can swap the 0th and 3rd\ncharacter of S2 to make it equal to S1.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: \nS1 = \"geeks\", S2 = \"geeks\"\n<strong>Output:</strong> 0\n<strong>Explanation</strong>: Equal strings are not considered\nMeta strings.</span>\n</pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>metaStrings()&nbsp;</strong>which takes the strings S1 and S2&nbsp;as input and returns true if both the strings are meta strings, else it returns false.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&lt;=|S|&lt;=10<sup>5</sup></span></p>\n<p>&nbsp;</p>"
+    },
+    "qnum": 1194
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-number-of-swaps--164524/1",
+      "problem_name": "Minimum number of swaps",
+      "slug": "minimum-number-of-swaps--164524",
+      "difficulty": "Easy",
+      "accuracy": "40.67%",
+      "marks": 2,
+      "all_submissions": 548,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 =&!//!&s2 =",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Google"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Strings"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Strings"
+      ],
+      "company_tags": [
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-number-of-swaps-to-make-two-binary-string-equal/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given two binary strings\ns1\nand\ns2\nof equal length, and the task is to find the\nminimum\nnumber\nof swaps required to make them identical. The only allowed operation is swapping characters between the two strings (i.e., you can swap\ns1[i]\nwith\ns2[j]\n, but not within the same string). If it is impossible to make the two strings equal through such swaps, return\n-1\n.",
+      "full_text": "You are given two binary strings\ns1\nand\ns2\nof equal length, and the task is to find the\nminimum\nnumber\nof swaps required to make them identical. The only allowed operation is swapping characters between the two strings (i.e., you can swap\ns1[i]\nwith\ns2[j]\n, but not within the same string). If it is impossible to make the two strings equal through such swaps, return\n-1\n.\nExamples:\nInput:\ns1 = \"1100\", s2 = \"1111\"\nOutput:\n1\nExplanation:\nSwap the character at index 2 of s1 with the character at index 3 of s2. After this swap both strings become \"1110\", so only 1 swap is needed.\nInput:\ns1 = \"00011\" , s2 = \"11001\"\nOutput:\n-1\nExplanation:\nIt is impossible to make both strings equal, so the answer is -1.\nConstraints:\n1 ≤ s1.size , s2.size() ≤ 10\n5",
+      "examples": [
+        "Input:\ns1 = \"1100\", s2 = \"1111\"\nOutput:\n1\nExplanation:\nSwap the character at index 2 of s1 with the character at index 3 of s2. After this swap both strings become \"1110\", so only 1 swap is needed.",
+        "Input:\ns1 = \"00011\" , s2 = \"11001\"\nOutput:\n-1\nExplanation:\nIt is impossible to make both strings equal, so the answer is -1."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s1.size , s2.size() ≤ 10\n5",
+      "question_html": "<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\">You are given two binary strings <strong>s1</strong> and <strong>s2</strong> of equal length, and the task is to find the <strong>minimum</strong> <strong>number </strong>of swaps required to make them identical. The only allowed operation is swapping characters between the two strings (i.e., you can swap <strong>s1[i]</strong> with<strong> s2[j]</strong>, but not within the same string). If it is impossible to make the two strings equal through such swaps, return <strong>-1</strong>.</span></p>\n<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><strong>Input:</strong> s1 = \"1100\", s2 = \"1111\"</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 1</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>Swap the character at index 2 of s1 with the character at index 3 of s2. After this swap both strings become \"1110\", so only 1 swap is needed.</span></pre>\n<pre data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><strong>Input: </strong>s1 = \"00011\" , s2 = \"11001\"</span><br /><span style=\"font-size: 14pt;\"><strong>Output: </strong>-1</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation:</strong> It is impossible to make both strings equal, so the answer is -1.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; s1.size , s2.size() &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1195
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/mirror-tree/1",
+      "problem_name": "Mirror Tree",
+      "slug": "mirror-tree",
+      "difficulty": "Easy",
+      "accuracy": "72.67%",
+      "marks": 2,
+      "all_submissions": 243937,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "SAP Labs",
+          "Myntra",
+          "Belzabar",
+          "eBay",
+          "PropTiger"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "SAP Labs",
+        "Myntra",
+        "Belzabar",
+        "eBay",
+        "PropTiger"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-an-efficient-c-function-to-convert-a-tree-into-its-mirror-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-4-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/"
+      ],
+      "statement_text": "Given the root of a binary tree, convert the binary tree to its Mirror tree.\n\nNote: Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.\n\nExamples:\n\nInput: root = [1, 2, 3, N, N, 4]\nOutput: [1, 3, 2, N, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nInput: root = [1, 2, 3, 4, 5]\nOutput: [1, 3, 2, N, N, 5, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 105",
+      "full_text": "Given the root of a binary tree, convert the binary tree to its Mirror tree.\n\nNote: Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.\n\nExamples:\n\nInput: root = [1, 2, 3, N, N, 4]\nOutput: [1, 3, 2, N, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nInput: root = [1, 2, 3, 4, 5]\nOutput: [1, 3, 2, N, N, 5, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, N, N, 4]\nOutput:\n[1, 3, 2, N, 4]\nExplanation:\nIn the inverted tree, every non-leaf node has its left and right child interchanged.",
+        "Input:\nroot = [1, 2, 3, 4, 5]\nOutput:\n[1, 3, 2, N, N, 5, 4]\nExplanation:\nIn the inverted tree, every non-leaf node has its left and right child interchanged."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n4\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root </strong>of a binary tree, convert the binary tree to its <strong>Mirror tree. </strong></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, N, N, 4]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[1, 3, 2, N, 4]</span><strong style=\"font-size: 18px;\">\nExplanation: </strong><span style=\"font-size: 18px;\"><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700155/Web/Other/blobid0_1736926809.png\" alt=\"\" width=\"523\" height=\"262\" /><br />In the inverted tree, every non-leaf node has its left and right child interchanged.</span></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, 4, 5]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[1, 3, 2, N, N, 5, 4]</span><strong style=\"font-size: 18px;\">\nExplanation:<br /></strong><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700155/Web/Other/blobid1_1736926809.png\" alt=\"\" width=\"525\" height=\"263\" /><br />In the inverted tree, every non-leaf node has its left and right child interchanged.</span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>4</sup><br />1 &le; node-&gt;data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1196
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/parenthesis-checker2744/1",
+      "problem_name": "Parenthesis Checker",
+      "slug": "parenthesis-checker2744",
+      "difficulty": "Easy",
+      "accuracy": "28.56%",
+      "marks": 2,
+      "all_submissions": 727640,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s =",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Snapdeal",
+          "Oracle",
+          "Walmart",
+          "Adobe",
+          "Google",
+          "Yatra.com"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Stack",
+          "STL",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Stack",
+        "STL",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Snapdeal",
+        "Oracle",
+        "Walmart",
+        "Adobe",
+        "Google",
+        "Yatra.com"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-for-balanced-parentheses-in-an-expression/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/oracle-interview-experience-set-45/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-set-3-for-senior-software-engineer/",
+        "https://www.geeksforgeeks.org/yatra-com-interview-experience-set-7/"
+      ],
+      "statement_text": "Given a string\ns\n, composed of different combinations of '(' , ')', '{', '}', '[', ']'. Determine whether the Expression is\nbalanced\nor not.\nAn expression is balanced if:\nEach opening bracket has a corresponding closing bracket of the same type.\nOpening brackets must be closed in the correct order.\nExamples :\nInput:\ns = \"[{()}]\"\nOutput:\ntrue\nExplanation:\nAll the brackets are well-formed.\nInput:\ns = \"[()()]{}\"\nOutput:\ntrue\nExplanation:\nAll the brackets are well-formed.\nInput:\ns = \"([]\"\nOutput:\nfalse\nExplanation:\nThe expression is not balanced as there is a missing ')' at the end.\nInput:\ns = \"([{]})\"\nOutput:\nfalse\nExplanation:\nThe expression is not balanced as there is a closing ']' before the closing '}'.",
+      "full_text": "Given a string\ns\n, composed of different combinations of '(' , ')', '{', '}', '[', ']'. Determine whether the Expression is\nbalanced\nor not.\nAn expression is balanced if:\nEach opening bracket has a corresponding closing bracket of the same type.\nOpening brackets must be closed in the correct order.\nExamples :\nInput:\ns = \"[{()}]\"\nOutput:\ntrue\nExplanation:\nAll the brackets are well-formed.\nInput:\ns = \"[()()]{}\"\nOutput:\ntrue\nExplanation:\nAll the brackets are well-formed.\nInput:\ns = \"([]\"\nOutput:\nfalse\nExplanation:\nThe expression is not balanced as there is a missing ')' at the end.\nInput:\ns = \"([{]})\"\nOutput:\nfalse\nExplanation:\nThe expression is not balanced as there is a closing ']' before the closing '}'.\nConstraints:\n1 ≤ s.size() ≤ 10\n6\ns[i] ∈ {'{', '}', '(', ')', '[', ']'}",
+      "examples": [
+        "Input:\ns = \"[{()}]\"\nOutput:\ntrue\nExplanation:\nAll the brackets are well-formed.",
+        "Input:\ns = \"[()()]{}\"\nOutput:\ntrue\nExplanation:\nAll the brackets are well-formed.",
+        "Input:\ns = \"([]\"\nOutput:\nfalse\nExplanation:\nThe expression is not balanced as there is a missing ')' at the end.",
+        "Input:\ns = \"([{]})\"\nOutput:\nfalse\nExplanation:\nThe expression is not balanced as there is a closing ']' before the closing '}'."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n6\ns[i] ∈ {'{', '}', '(', ')', '[', ']'}",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string <strong>s</strong>, composed of different combinations of '(' , ')', '{', '}', '[', ']'. Determine whether the Expression is <strong>balanced </strong>or not.<br />An expression is balanced if:</span></p>\n<ol>\n<li><span style=\"font-size: 14pt;\">Each opening bracket has a corresponding closing bracket of the same type.</span></li>\n<li><span style=\"font-size: 14pt;\">Opening brackets must be closed in the correct order.</span></li>\n</ol>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"[{()}]\"\n<strong>Output:</strong> true\n<strong>Explanation: </strong>All the brackets are well-formed.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"[()()]{}\"\n<strong>Output:</strong> true\n<strong>Explanation: </strong>All the brackets are well-formed.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"([]\"<br /><strong>Output: </strong>false<br /><strong>Explanation: </strong>The expression is not balanced as there is a missing ')' at the end.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> s = \"([{]})\"<br /><strong>Output: </strong>false<br /><strong>Explanation: </strong>The expression is not balanced as there is a closing ']' before the closing '}'.<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.size() &le; 10<sup>6<br /></sup>s[i] &isin; {'{', '}', '(', ')', '[', ']'}</span></p>"
+    },
+    "qnum": 1197
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/plus-one/1",
+      "problem_name": "Plus One",
+      "slug": "plus-one",
+      "difficulty": "Easy",
+      "accuracy": "28.75%",
+      "marks": 2,
+      "all_submissions": 82207,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Microsoft",
+          "Google"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "STL",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "STL",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Microsoft",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/adding-one-to-number-represented-as-array-of-digits/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a non-negative number represented as a list of digits, add 1 to the number (increment the number represented by the digits). The digits are stored such that the most significant digit is first element of array.\nExample 1:\nInput\n:\nN = 3\narr[] = {1, 2, 4}\nOutput\n:\n1 2 5\nExplanation\n:\n124+1 = 125, and so the Output\nExample 2:\nInput\n:\nN = 3\narr[] = {9,9,9}\nOutput\n:\n1 0 0 0\nExplanation\n:\n999+1 = 1000, and so the output\nYour Task:\nYou don't need to read input or print anything. You only need to complete the function\nincrement()\nthat takes an integer N, and an array arr of size N as input and returns a list of integers denoting the new number which we get after adding one to the number denoted by the array arr.\nExpected Time Complexity:\nO(N)\nExpected Auxilliary Space:\nO(1)",
+      "full_text": "Given a non-negative number represented as a list of digits, add 1 to the number (increment the number represented by the digits). The digits are stored such that the most significant digit is first element of array.\nExample 1:\nInput\n:\nN = 3\narr[] = {1, 2, 4}\nOutput\n:\n1 2 5\nExplanation\n:\n124+1 = 125, and so the Output\nExample 2:\nInput\n:\nN = 3\narr[] = {9,9,9}\nOutput\n:\n1 0 0 0\nExplanation\n:\n999+1 = 1000, and so the output\nYour Task:\nYou don't need to read input or print anything. You only need to complete the function\nincrement()\nthat takes an integer N, and an array arr of size N as input and returns a list of integers denoting the new number which we get after adding one to the number denoted by the array arr.\nExpected Time Complexity:\nO(N)\nExpected Auxilliary Space:\nO(1)\nConstraints:\n1 <= N <= 10\n5\n0 <= arr\ni\n<= 9",
+      "examples": [
+        "Input\n:\nN = 3\narr[] = {1, 2, 4}\nOutput\n:\n1 2 5\nExplanation\n:\n124+1 = 125, and so the Output",
+        "Input\n:\nN = 3\narr[] = {9,9,9}\nOutput\n:\n1 0 0 0\nExplanation\n:\n999+1 = 1000, and so the output"
+      ],
+      "constraints_text": "Constraints:\n1 <= N <= 10\n5\n0 <= arr\ni\n<= 9",
+      "question_html": "<p><span style=\"font-size:18px\">Given a non-negative number represented as a list of digits, add 1 to the number (increment the number represented by the digits). The digits are stored such that the most significant digit is first element of array. </span><br />\n&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Example 1:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input</strong>: \nN = 3\narr[] = {1, 2, 4}\n<strong>Output</strong>: \n1 2 5\n<strong>Explanation</strong>:\n124+1 = 125, and so the Output</span></pre>\n\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\n\n<pre>\n<span style=\"font-size:18px\"><strong>Input</strong>: \nN = 3\narr[] = {9,9,9}\n<strong>Output</strong>: \n1 0 0 0\n<strong>Explanation</strong>:\n999+1 = 1000, and so the output</span></pre>\n\n<p><br />\n<strong><span style=\"font-size:18px\">Your Task:</span></strong><br />\n<span style=\"font-size:18px\">You don&#39;t need to read input or print anything.&nbsp;You only need to complete the function<strong> increment()&nbsp;</strong>that takes an integer N, and an array arr of size N as input and returns a list of integers denoting the new number which we get after adding one to the number denoted by the array arr.</span></p>\n\n<p><br />\n<span style=\"font-size:18px\"><strong>Expected Time Complexity:</strong> &nbsp;O(N)<br />\n<strong>Expected Auxilliary Space:</strong> O(1)</span><br />\n&nbsp;</p>\n\n<p><span style=\"font-size:18px\"><strong>Constraints:</strong></span><br />\n<span style=\"font-size:18px\">1 &lt;= N &lt;= 10<sup>5</sup><br />\n0 &lt;= arr<sub>i</sub> &lt;= 9</span></p>\n"
+    },
+    "qnum": 1198
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/remove-b-and-ac-from-a-given-string4336/1",
+      "problem_name": "Remove b and ac from a given string",
+      "slug": "remove-b-and-ac-from-a-given-string4336",
+      "difficulty": "Easy",
+      "accuracy": "49.82%",
+      "marks": 2,
+      "all_submissions": 23845,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/remove-a-and-bc-from-a-given-string/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string, eliminate all “b” and “ac” in the string, replace them in-place and iterate over the string once.\nExample 1:\nInput:\nstr = \"aacbacc\"\nOutput:\nac\nExplanation:\nIterate once and remove\noccurrence of \"b\" and \"ac\"\nExample 2:\nInput:\nstr = \"aacb\"\nOutput:\na\nExplanation:\nIterate once and remove\noccurrence of \"b\" and \"ac\"\nYour task:\nYour task is to complete the function\nstringFilter\n()\nwhich takes a single string as input and modify the string as mentioned above. You need not take any input or print anything.\nExpected Time Complexity:\nO(|s|)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a string, eliminate all “b” and “ac” in the string, replace them in-place and iterate over the string once.\nExample 1:\nInput:\nstr = \"aacbacc\"\nOutput:\nac\nExplanation:\nIterate once and remove\noccurrence of \"b\" and \"ac\"\nExample 2:\nInput:\nstr = \"aacb\"\nOutput:\na\nExplanation:\nIterate once and remove\noccurrence of \"b\" and \"ac\"\nYour task:\nYour task is to complete the function\nstringFilter\n()\nwhich takes a single string as input and modify the string as mentioned above. You need not take any input or print anything.\nExpected Time Complexity:\nO(|s|)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 <= |S| <= 10\n5\nString contains lower case alphabets",
+      "examples": [
+        "Input:\nstr = \"aacbacc\"\nOutput:\nac\nExplanation:\nIterate once and remove\noccurrence of \"b\" and \"ac\"",
+        "Input:\nstr = \"aacb\"\nOutput:\na\nExplanation:\nIterate once and remove\noccurrence of \"b\" and \"ac\""
+      ],
+      "constraints_text": "Constraints:\n1 <= |S| <= 10\n5\nString contains lower case alphabets",
+      "question_html": "<p><span style=\"font-size: 20px;\">Given a string, eliminate all &ldquo;b&rdquo; and &ldquo;ac&rdquo; in the string,&nbsp;replace them in-place&nbsp;and&nbsp;iterate over the string once.</span></p>\n<p><strong><span style=\"font-size: 20px;\">Example 1:</span></strong></p>\n<pre><span style=\"font-size: 20px;\"><strong>Input:</strong> str = \"aacbacc\"\n<strong>Output:</strong> ac\n<strong>Explanation:</strong> Iterate once and remove\noccurrence of \"b\" and \"ac\"</span></pre>\n<p><strong><span style=\"font-size: 20px;\">Example 2:</span></strong></p>\n<pre><span style=\"font-size: 20px;\"><strong>Input:</strong> str = \"aacb\"\n<strong>Output:</strong> a\n<strong>Explanation:</strong> Iterate once and remove\noccurrence of \"b\" and \"ac\"</span></pre>\n<p><strong><span style=\"font-size: 20px;\">Your task:</span></strong><br /><span style=\"font-size: 20px;\">Your task is to complete the function&nbsp;</span><span style=\"font-size: 18px;\"><strong><code>stringFilter</code></strong></span><span style=\"font-size: 20px;\"><strong>()&nbsp;</strong>which takes a single string as input and modify the string as mentioned above. You need not take any input or print anything.</span><br />&nbsp;</p>\n<p><span style=\"font-size: 20px;\"><strong>Expected Time Complexity:&nbsp;</strong>O(|s|)<br /><strong>Expected Auxiliary Space:&nbsp;</strong>O(1)</span></p>\n<p><span style=\"font-size: 20px;\"><strong>Constraints:</strong><br />1 &lt;= |S| &lt;= 10<sup>5</sup></span><br /><span style=\"font-size: 18px;\">String contains lower case alphabets</span></p>"
+    },
+    "qnum": 1199
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/remove-duplicate-elements-from-sorted-array/1",
+      "problem_name": "Remove Duplicates Sorted Array",
+      "slug": "remove-duplicate-elements-from-sorted-array",
+      "difficulty": "Easy",
+      "accuracy": "38.18%",
+      "marks": 2,
+      "all_submissions": 360866,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Morgan Stanley",
+          "Microsoft",
+          "Samsung",
+          "Google",
+          "Wipro",
+          "Xome"
+        ],
+        "topic_tags": [
+          "two-pointer-algorithm",
+          "Arrays",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "two-pointer-algorithm",
+        "Arrays",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Morgan Stanley",
+        "Microsoft",
+        "Samsung",
+        "Google",
+        "Wipro",
+        "Xome"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/cpp-program-to-remove-duplicates-from-sorted-array/",
+        "https://www.geeksforgeeks.org/how-to-remove-duplicates-from-arraylist-in-java/",
+        "https://www.geeksforgeeks.org/remove-duplicates-sorted-array/",
+        "https://www.geeksforgeeks.org/remove-repeated-elements-from-arraylist-in-java/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a\nsorted array arr[]\ncontaining positive integers. Your task is to\nremove all duplicate elements\nfrom this array such that each element appears only once. Return an array containing these distinct elements in the same order as they appeared.\nExamples :\nInput:\narr[] = [2, 2, 2, 2, 2]\nOutput:\n[2]\nExplanation:\nAfter removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.\nInput:\narr[] = [1, 2, 4]\nOutput:\n[1, 2, 4]\nExplation:\nAs the array does not contain any duplicates so you should return [1, 2, 4].",
+      "full_text": "You are given a\nsorted array arr[]\ncontaining positive integers. Your task is to\nremove all duplicate elements\nfrom this array such that each element appears only once. Return an array containing these distinct elements in the same order as they appeared.\nExamples :\nInput:\narr[] = [2, 2, 2, 2, 2]\nOutput:\n[2]\nExplanation:\nAfter removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.\nInput:\narr[] = [1, 2, 4]\nOutput:\n[1, 2, 4]\nExplation:\nAs the array does not contain any duplicates so you should return [1, 2, 4].\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [2, 2, 2, 2, 2]\nOutput:\n[2]\nExplanation:\nAfter removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.",
+        "Input:\narr[] = [1, 2, 4]\nOutput:\n[1, 2, 4]\nExplation:\nAs the array does not contain any duplicates so you should return [1, 2, 4]."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n1 ≤ arr[i] ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given a <strong>sorted array arr[]</strong> containing positive integers. Your task is to <strong>remove all duplicate elements</strong> from this array such that each element appears only once. Return an array containing these distinct elements in the same order as they appeared.<br /></span><strong style=\"font-size: 18px;\">Examples :</strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [2, 2, 2, 2, 2]\n<strong>Output:</strong> [2]\n<strong>Explanation:</strong> After removing all the duplicates only one instance of 2 will remain i.e. [2] so modified array will contains 2 at first position and you should return array containing [2] after modifying the array.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 2, 4]\n<strong>Output:</strong> [1, 2, 4]<br /><strong>Explation:  </strong>As the array does not contain any duplicates so you should return [1, 2, 4].</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>5</sup><br />1 &le; arr[i] &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1200
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-an-array/1",
+      "problem_name": "Reverse an Array",
+      "slug": "reverse-an-array",
+      "difficulty": "Easy",
+      "accuracy": "55.32%",
+      "marks": 2,
+      "all_submissions": 284228,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "TCS",
+          "Adobe",
+          "Google",
+          "Infosys",
+          "Capgemini",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Apple",
+          "Yahoo",
+          "PayPal",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "TCS",
+        "Adobe",
+        "Google",
+        "Infosys",
+        "Capgemini",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Apple",
+        "Yahoo",
+        "PayPal",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/program-to-reverse-an-array/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.",
+      "full_text": "You are given an array of integers\narr[]\n. You have to\nreverse\nthe given array.\nNote:\nModify the array in place.\nExamples:\nInput:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].\nInput\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].\nInput\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original.\nConstraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr = [1, 4, 3, 2, 6, 5]\nOutput:\n[5, 6, 2, 3, 4, 1]\nExplanation:\nThe elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].",
+        "Input\n: arr = [4, 5, 2]\nOutput:\n[2, 5, 4]\nExplanation:\nThe elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].",
+        "Input\n: arr = [1]\nOutput:\n[1]\nExplanation:\nThe array has only single element, hence the reversed array is same as the original."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array of integers&nbsp;<strong>arr[]</strong>. You have to <strong>reverse</strong> the given array.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:<span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito;\">&nbsp;</span></strong>Modify the array in place.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr = [1, 4, 3, 2, 6, 5]\n<strong>Output: </strong>[5, 6, 2, 3, 4, 1]</span><br /><span style=\"font-size: 14pt;\"><strong>Explanation: </strong>The elements of the array are [1, 4, 3, 2, 6, 5]. After reversing the array, the first element goes to the last position, the second element goes to the second last position and so on. Hence, the answer is [5, 6, 2, 3, 4, 1].</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [4, 5, 2]\n<strong>Output: </strong>[2, 5, 4]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The elements of the array are [4, 5, 2]. The reversed array will be [2, 5, 4].<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: arr = [1]\n<strong>Output: </strong>[1]</span><br /><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation: </strong>The array has only single element, hence the reversed array is same as the original.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:<br /></strong>1 &le; arr.size() &le; 10<sup>5</sup></span><br /><span style=\"font-size: 14pt;\">0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1201
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/smallest-subarray-with-sum-greater-than-x5651/1",
+      "problem_name": "Smallest subarray with sum greater than x",
+      "slug": "smallest-subarray-with-sum-greater-than-x5651",
+      "difficulty": "Easy",
+      "accuracy": "37.07%",
+      "marks": 2,
+      "all_submissions": 156812,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "x =&!//!&arr[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Amazon",
+          "Goldman Sachs",
+          "Google",
+          "Facebook"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "sliding-window"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "sliding-window"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Amazon",
+        "Goldman Sachs",
+        "Google",
+        "Facebook"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-length-subarray-sum-greater-given-value/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given\na number\nx\nand an array of integers\narr\n, find the smallest subarray with sum greater than the given value. If such a subarray do not exist return 0 in that case.",
+      "full_text": "Given\na number\nx\nand an array of integers\narr\n, find the smallest subarray with sum greater than the given value. If such a subarray do not exist return 0 in that case.\nExamples:\nInput:\nx = 51, arr[] = [1, 4, 45, 6, 0, 19]\nOutput:\n3\nExplanation:\nMinimum length subarray is [4, 45, 6]\nInput:\nx = 100, arr[] = [1, 10, 5, 2, 7]\nOutput:\n0\nExplanation:\nNo subarray exist\nConstraints:\n1 ≤ arr.size, x ≤ 10\n5\n0 ≤ arr[] ≤ 10\n4",
+      "examples": [
+        "Input:\nx = 51, arr[] = [1, 4, 45, 6, 0, 19]\nOutput:\n3\nExplanation:\nMinimum length subarray is [4, 45, 6]",
+        "Input:\nx = 100, arr[] = [1, 10, 5, 2, 7]\nOutput:\n0\nExplanation:\nNo subarray exist"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size, x ≤ 10\n5\n0 ≤ arr[] ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given&nbsp;</span><span style=\"font-size: 18px;\">a number&nbsp;</span><strong style=\"font-size: 18px;\">x </strong><span style=\"font-size: 18px;\">and&nbsp;an array of integers </span><strong style=\"font-size: 18px;\">arr</strong><span style=\"font-size: 18px;\">, find the smallest subarray with sum greater than the given value. If such a subarray do not exist return 0 in that case.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>x = 51, arr[] = [1, 4, 45, 6, 0, 19]\n<strong>Output:</strong> 3\n<strong>Explanation: </strong>Minimum length subarray is [4, 45, 6]</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>x = 100, arr[] = [1, 10, 5, 2, 7]\n<strong>Output:</strong> 0\n<strong>Explanation: </strong>No subarray exist</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size, x &le; 10<sup>5</sup><br />0 &le; arr[] &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1202
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/buy-stock-2/1",
+      "problem_name": "Stock Buy and Sell – Max one Transaction Allowed",
+      "slug": "buy-stock-2",
+      "difficulty": "Easy",
+      "accuracy": "49.33%",
+      "marks": 2,
+      "all_submissions": 140469,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "prices[] = ",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Bloomberg",
+          "Facebook",
+          "Intel",
+          "Infosys",
+          "Zoho",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Yahoo",
+          "PayPal",
+          "Nvidia",
+          "Oracle",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "TCS",
+          "Adobe",
+          "Google",
+          "IBM",
+          "Accenture",
+          "Apple",
+          "Uber"
+        ],
+        "topic_tags": [
+          "Greedy",
+          "Arrays"
+        ]
+      },
+      "topic_tags": [
+        "Greedy",
+        "Arrays"
+      ],
+      "company_tags": [
+        "Bloomberg",
+        "Facebook",
+        "Intel",
+        "Infosys",
+        "Zoho",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Yahoo",
+        "PayPal",
+        "Nvidia",
+        "Oracle",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "TCS",
+        "Adobe",
+        "Google",
+        "IBM",
+        "Accenture",
+        "Apple",
+        "Uber"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/all-variations-of-stock-problems/",
+        "https://www.geeksforgeeks.org/best-time-to-buy-and-sell-stock/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.",
+      "full_text": "Given an array\nprices[]\nof non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when\nat most one\ntransaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then\nreturn 0\n.\nNote: Stock must be bought before being sold.\nExamples:\nInput:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.\nInput:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.\nInput:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].\nConstraint:\n1\n≤\nprices.size()\n≤\n10\n5\n0\n≤\nprices[i]\n≤\n10\n4",
+      "examples": [
+        "Input:\nprices[] = [7, 10, 1, 3, 6, 9, 2]\nOutput:\n8\nExplanation:\nYou can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.",
+        "Input:\nprices[] = [7, 6, 4, 3, 1]\nOutput:\n0\nExplanation\n:\nHere the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.",
+        "Input:\nprices[] = [1, 3, 6, 9, 11]\nOutput:\n10\nExplanation\n:\nSince the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1]."
+      ],
+      "constraints_text": "",
+      "question_html": "<p><span style=\"font-size: 18.6667px;\">Given an array <strong>prices[]</strong> of non-negative integers, representing the prices of the stocks on different days. The task is to find the maximum profit possible by buying and selling the stocks on different days when <strong>at most one </strong>transaction is allowed. Here one transaction means 1 buy + 1 Sell. If it is not possible to make a profit then <strong>return 0</strong>.</span></p>\n<p><span style=\"font-size: 18.6667px;\">Note: Stock must be bought before being sold.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 10, 1, 3, 6, 9, 2]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 8<br /></span><strong style=\"font-size: 14pt;\">Explanation:</strong><span style=\"font-size: 14pt;\"> You can buy the stock on day 2 at price = 1 and sell it on day 5 at price = 9. Hence, the profit is 8.</span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-size: 14pt;\">Input: </strong><span style=\"font-size: 14pt;\">prices[] = [7, 6, 4, 3, 1]<br /></span><strong style=\"font-size: 14pt;\">Output:</strong><span style=\"font-size: 14pt;\"> 0 <br /></span><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Here the prices are in decreasing order, hence if we buy any day then we cannot sell it at a greater price. Hence, the answer is 0.<br /></span></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>prices[] = [1, 3, 6, 9, 11]</span><br /><span style=\"font-size: 14pt;\"><strong>Output:</strong> 10 </span><br /><span style=\"font-size: 14pt;\"><span style=\"font-size: 18.6667px;\"><strong>Explanation</strong></span><strong style=\"font-size: 14pt;\">:</strong><span style=\"font-size: 14pt;\"> Since the array is sorted in increasing order, we can make maximum profit by buying at price[0] and selling at price[n-1].</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraint:</strong><br />1&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices.size()&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;10</span><sup>5<br /></sup><span style=\"font-size: 14pt;\">0&nbsp;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> </span><span style=\"font-size: 14pt;\">&nbsp;prices[i] </span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\">&le;</span><span style=\"background-color: #ffffff; color: #1e2229; font-family: Nunito; font-size: 17px;\"> &nbsp;</span><span style=\"font-size: 14pt;\">10</span><sup>4</sup></p>"
+    },
+    "qnum": 1203
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-of-strings-that-can-be-formed-using-a-b-and-c-under-given-constraints1135/1",
+      "problem_name": "String's Count",
+      "slug": "count-of-strings-that-can-be-formed-using-a-b-and-c-under-given-constraints1135",
+      "difficulty": "Easy",
+      "accuracy": "53.46%",
+      "marks": 2,
+      "all_submissions": 50025,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-strings-can-formed-using-b-c-given-constraints/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a length\nn\n, count the number of strings of length\nn\nthat can be made using\na\n,\nb\nand\nc\nwith at-most one\nb\nand two\nc\nallowed.\nExample 1:\nInput:\nn = 1\nOutput:\n3\nExplanation:\nPossible strings are: \"a\",\n\"b\" and \"c\"\nExample 2:\nInput:\nn = 3\nOutput:\n19\nExplanation:\nNumber of strings with 3\noccurrances of a: 1\n2-a and 1-b: 3\n2-a and 1-c: 3\n1-a, 1-b and 1-c: 6\n1-a and 2-c: 3\n1-b and 2-c: 3\nSo, total number of strings of length 3\nis 1 + 3 + 3 + 6 + 3 + 3 = 19\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncountStr\n()\nwhich takes the\nn\nas inputs and returns the\ntotal number\nof valid strings.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)",
+      "full_text": "Given a length\nn\n, count the number of strings of length\nn\nthat can be made using\na\n,\nb\nand\nc\nwith at-most one\nb\nand two\nc\nallowed.\nExample 1:\nInput:\nn = 1\nOutput:\n3\nExplanation:\nPossible strings are: \"a\",\n\"b\" and \"c\"\nExample 2:\nInput:\nn = 3\nOutput:\n19\nExplanation:\nNumber of strings with 3\noccurrances of a: 1\n2-a and 1-b: 3\n2-a and 1-c: 3\n1-a, 1-b and 1-c: 6\n1-a and 2-c: 3\n1-b and 2-c: 3\nSo, total number of strings of length 3\nis 1 + 3 + 3 + 6 + 3 + 3 = 19\nYour Task:\nYou don't need to read input or print anything. Your task is to complete the function\ncountStr\n()\nwhich takes the\nn\nas inputs and returns the\ntotal number\nof valid strings.\nExpected Time Complexity:\nO(1)\nExpected Auxiliary Space:\nO(1)\nConstraints:\n1 ≤ n ≤ 10\n5",
+      "examples": [
+        "Input:\nn = 1\nOutput:\n3\nExplanation:\nPossible strings are: \"a\",\n\"b\" and \"c\"",
+        "Input:\nn = 3\nOutput:\n19\nExplanation:\nNumber of strings with 3\noccurrances of a: 1\n2-a and 1-b: 3\n2-a and 1-c: 3\n1-a, 1-b and 1-c: 6\n1-a and 2-c: 3\n1-b and 2-c: 3\nSo, total number of strings of length 3\nis 1 + 3 + 3 + 6 + 3 + 3 = 19"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a length <strong>n</strong>, count the number of strings of length <strong>n</strong> that can be made using <strong>a</strong>, <strong>b</strong> and <strong>c</strong> with at-most one <strong>b</strong> and two <strong>c</strong>&nbsp;allowed.</span></p>\n<p><strong><span style=\"font-size: 18px;\">Example 1:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> n = 1</span>\n<span style=\"font-size: 18px;\"><strong>Output:</strong> 3\n<strong>Explanation:</strong> Possible strings are: \"a\",\n\"b\" and \"c\"</span>\n</pre>\n<p><strong><span style=\"font-size: 18px;\">Example 2:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> n = 3\n<strong>Output:</strong> 19\n<strong>Explanation:</strong> Number of strings with 3 \noccurrances of a: 1\n2-a and 1-b: 3\n2-a and 1-c: 3\n1-a, 1-b and 1-c: 6\n1-a and 2-c: 3\n1-b and 2-c: 3\nSo, total number of strings of length 3\nis 1 + 3 + 3 + 6 + 3 + 3 = 19\n</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:&nbsp;&nbsp;</strong><br />You don't need to read input or print anything. Your task is to complete the function&nbsp;<strong>countStr</strong><strong>()</strong>&nbsp;which takes the <strong>n</strong></span><span style=\"font-size: 18px;\"><strong> </strong>as inputs and returns the <strong>total number</strong> of valid strings.<br /><br /><strong>Expected Time Complexity:</strong>&nbsp;O(1)<br /><strong>Expected Auxiliary Space:</strong>&nbsp;O(1)<br /><br /><strong>Constraints:</strong><br />1 &le; n &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1204
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/key-pair5616/1",
+      "problem_name": "Two Sum - Pair with Given Sum",
+      "slug": "key-pair5616",
+      "difficulty": "Easy",
+      "accuracy": "30.61%",
+      "marks": 2,
+      "all_submissions": 461690,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "target = &!//!&arr[] =",
+        "datatype": "INTEGER&!//!&INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "FactSet",
+          "Hike",
+          "Adobe",
+          "Google",
+          "Wipro",
+          "SAP Labs",
+          "CarWale"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Hash",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Hash",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "FactSet",
+        "Hike",
+        "Adobe",
+        "Google",
+        "Wipro",
+        "SAP Labs",
+        "CarWale"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-pair-with-given-sum-exists-in-array/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-24/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-2020-internship-off-campus/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-5-rounds/"
+      ],
+      "statement_text": "Given an array\narr[]\nof integers and another integer\ntarget\n. Determine if there exist\ntwo distinct indices\nsuch that the\nsum\nof their elements is equal to the\ntarget.",
+      "full_text": "Given an array\narr[]\nof integers and another integer\ntarget\n. Determine if there exist\ntwo distinct indices\nsuch that the\nsum\nof their elements is equal to the\ntarget.\nExamples:\nInput:\narr[] = [0, -1, 2, -3, 1], target = -2\nOutput:\ntrue\nExplanation:\narr[3] + arr[4] = -3 + 1 = -2\nInput:\narr[] = [1, -2, 1, 0, 5], target = 0\nOutput:\nfalse\nExplanation:\nNone of the pair makes a sum of 0\nInput:\narr[] = [11], target = 11\nOutput:\nfalse\nExplanation:\nNo pair is possible as only one element is present in arr[]\nConstraints:\n1 ≤ arr.size ≤ 10\n5\n-10\n5\n≤ arr[i] ≤ 10\n5\n-2*10\n5\n≤ target ≤ 2*10\n5",
+      "examples": [
+        "Input:\narr[] = [0, -1, 2, -3, 1], target = -2\nOutput:\ntrue\nExplanation:\narr[3] + arr[4] = -3 + 1 = -2",
+        "Input:\narr[] = [1, -2, 1, 0, 5], target = 0\nOutput:\nfalse\nExplanation:\nNone of the pair makes a sum of 0",
+        "Input:\narr[] = [11], target = 11\nOutput:\nfalse\nExplanation:\nNo pair is possible as only one element is present in arr[]"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size ≤ 10\n5\n-10\n5\n≤ arr[i] ≤ 10\n5\n-2*10\n5\n≤ target ≤ 2*10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\"><span style=\"font-size: 14pt;\">Given an array </span><strong style=\"font-size: 14pt;\">arr[]</strong><span style=\"font-size: 14pt;\"> of integers and another integer </span><strong style=\"font-size: 14pt;\">target</strong><span style=\"font-size: 14pt;\">. Determine if there exist <strong>two distinct indices</strong> such that the <strong>sum</strong> of their elements is equal to the <strong>target.</strong></span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [0, -1, 2, -3, 1], target = -2\n<strong>Output: </strong>true\n<strong>Explanation:</strong> arr[3] + arr[4] = -3 + 1 = -2</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, -2, 1, 0, 5], target = 0\n<strong>Output:</strong> false\n<strong>Explanation:</strong> None of the pair makes a sum of 0<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [11], target = 11\n<strong>Output:</strong> false\n<strong>Explanation:</strong> No pair is possible as only one element is present in arr[]</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size &le; 10<sup>5</sup><br />-10<sup>5</sup> &le; arr[i] &le; 10<sup>5<br /></sup><span style=\"font-size: 18.6667px;\">-2*10<sup>5</sup> &le; target &le; 2*10</span><sup>5</sup></span></p>"
+    },
+    "qnum": 1205
+  },
+  {
+    "company": "Google",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/unique-frequencies-of-not/1",
+      "problem_name": "Unique Number of Occurrences",
+      "slug": "unique-frequencies-of-not",
+      "difficulty": "Easy",
+      "accuracy": "57.68%",
+      "marks": 2,
+      "all_submissions": 52294,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "PayPal",
+          "Bloomberg",
+          "Adobe",
+          "Google",
+          "Amazon",
+          "Apple"
+        ],
+        "topic_tags": [
+          "set",
+          "Sorting",
+          "Map"
+        ]
+      },
+      "topic_tags": [
+        "set",
+        "Sorting",
+        "Map"
+      ],
+      "company_tags": [
+        "PayPal",
+        "Bloomberg",
+        "Adobe",
+        "Google",
+        "Amazon",
+        "Apple"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/check-if-frequency-of-each-element-in-given-array-is-unique-or-not/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr\nof\nN\nintegers, the task is to check whether the frequency of the elements in the array is unique or not. Or in other words, there are no two\ndistinct\nnumbers in array with equal frequency. If all the frequency is unique then return\ntrue\n, else return\nfalse\n.\nExample 1:\nI\nnput:\nN = 5\narr = [1, 1, 2, 5, 5]\nOutput:\nfalse\nExplanation:\nThe array contains 2 (1’s), 1 (2’s) and 2 (5’s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.\nExample 2:\nInput:\nN = 10\narr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\nOutput:\ntrue\nExplanation:\nNumber of 1’s -> 1\nNumber of 2’s -> 4\nNumber of 5’s -> 2\nNumber of 10’s -> 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition.\nYour task:\nYou don't need to read input or print anything. Your task is to complete the function\nisFrequencyUnique()\nwhich take integer\nN\nand array\narr\nof size N as arguments, and returns a boolean.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)",
+      "full_text": "Given an array\narr\nof\nN\nintegers, the task is to check whether the frequency of the elements in the array is unique or not. Or in other words, there are no two\ndistinct\nnumbers in array with equal frequency. If all the frequency is unique then return\ntrue\n, else return\nfalse\n.\nExample 1:\nI\nnput:\nN = 5\narr = [1, 1, 2, 5, 5]\nOutput:\nfalse\nExplanation:\nThe array contains 2 (1’s), 1 (2’s) and 2 (5’s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.\nExample 2:\nInput:\nN = 10\narr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\nOutput:\ntrue\nExplanation:\nNumber of 1’s -> 1\nNumber of 2’s -> 4\nNumber of 5’s -> 2\nNumber of 10’s -> 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition.\nYour task:\nYou don't need to read input or print anything. Your task is to complete the function\nisFrequencyUnique()\nwhich take integer\nN\nand array\narr\nof size N as arguments, and returns a boolean.\nExpected Time Complexity:\nO(N)\nExpected Auxiliary Space:\nO(N)\nConstraints:\n1 <= N <=10\n5\n-10\n9\n<= arr[i] <= 10\n9",
+      "examples": [
+        "I\nnput:\nN = 5\narr = [1, 1, 2, 5, 5]\nOutput:\nfalse\nExplanation:\nThe array contains 2 (1’s), 1 (2’s) and 2 (5’s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.",
+        "Input:\nN = 10\narr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\nOutput:\ntrue\nExplanation:\nNumber of 1’s -> 1\nNumber of 2’s -> 4\nNumber of 5’s -> 2\nNumber of 10’s -> 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition."
+      ],
+      "constraints_text": "Constraints:\n1 <= N <=10\n5\n-10\n9\n<= arr[i] <= 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given an array <strong>arr</strong> of <strong>N</strong> integers, the task is to check whether the frequency of the elements in the array is unique or not. Or in other words, there are no two <strong>distinct</strong> numbers in array with equal frequency. If all the frequency is unique then return <strong>true</strong>, else return <strong>false</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>I</strong><strong>nput:</strong>\nN = 5<br />arr = [1, 1, 2, 5, 5]\n<strong>Output:</strong>\nfalse\n<strong>Explanation:<br /></strong>The array contains 2 (1&rsquo;s), 1 (2&rsquo;s) and 2 (5&rsquo;s), since the number of frequency of 1 and 5 are the same i.e. 2 times. Therefore, this array does not satisfy the condition.\n</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong>\nN = 10<br />arr = [2, 2, 5, 10, 1, 2, 10, 5, 10, 2]\n<strong>Output:</strong>\ntrue\n<strong>Explanation:</strong>\nNumber of 1&rsquo;s -&gt; 1\nNumber of 2&rsquo;s -&gt; 4\nNumber of 5&rsquo;s -&gt; 2\nNumber of 10&rsquo;s -&gt; 3.\nSince, the number of occurrences of elements present in the array is unique. Therefore, this array satisfy the condition.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Your task:</strong><br />You don't need to read input or print anything. Your task is to complete the function <strong>isFrequencyUnique()</strong> which take integer <strong>N</strong> and array <strong>arr</strong> of size N as arguments, and returns a boolean.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong style=\"font-size: 18px;\">Expected Time Complexity:</strong><span style=\"font-size: 18px;\">&nbsp;O(N)</span><br style=\"font-size: 18px;\" /><strong style=\"font-size: 18px;\">Expected Auxiliary Space:</strong><span style=\"font-size: 18px;\">&nbsp;O(N)</span></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= N &lt;=10<sup>5</sup><br />-10<sup>9</sup> &lt;= arr[i] &lt;= 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1206
+  }
+]

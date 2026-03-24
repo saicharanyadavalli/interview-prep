@@ -1,0 +1,1073 @@
+[
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/bfs-traversal-of-graph/1",
+      "problem_name": "BFS of graph",
+      "slug": "bfs-traversal-of-graph",
+      "difficulty": "Easy",
+      "accuracy": "44.09%",
+      "marks": 2,
+      "all_submissions": 548457,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "V = &!//!&adj[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Ola Cabs",
+          "Adobe",
+          "SAP Labs"
+        ],
+        "topic_tags": [
+          "Graph",
+          "BFS",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Graph",
+        "BFS",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Ola Cabs",
+        "Adobe",
+        "SAP Labs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/breadth-first-search-or-bfs-for-a-graph/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/adobe-interview-experience-set-48-campus/"
+      ],
+      "statement_text": "Given a connected undirected graph containing V vertices, represented by a 2-d adjacency list adj[][], where each adj[i] represents the list of vertices connected to vertex i. Perform a Breadth First Search (BFS) traversal starting from vertex 0, visiting vertices from left to right according to the given adjacency list, and return a list containing the BFS traversal of the graph.\n\nNote: Do traverse in the same order as they are in the given adjacency list.\n\nExamples:\n\nInput: adj[][] = [[2, 3, 1], [0], [0, 4], [0], [2]]\n\nOutput: [0, 2, 3, 1, 4]\nExplanation: Starting from 0, the BFS traversal will follow these steps:\nVisit 0 → Output: 0\nVisit 2 (first neighbor of 0) → Output: 0, 2\nVisit 3 (next neighbor of 0) → Output: 0, 2, 3\nVisit 1 (next neighbor of 0) → Output: 0, 2, 3, 1\nVisit 4 (neighbor of 2) → Final Output: 0, 2, 3, 1, 4\n\nInput: adj[][] = [[1, 2], [0, 2], [0, 1, 3, 4], [2], [2]]\n\nOutput: [0, 1, 2, 3, 4]\nExplanation: Starting from 0, the BFS traversal proceeds as follows:\nVisit 0 → Output: 0\nVisit 1 (the first neighbor of 0) → Output: 0, 1\nVisit 2 (the next neighbor of 0) → Output: 0, 1, 2\nVisit 3 (the first neighbor of 2 that hasn't been visited yet) → Output: 0, 1, 2, 3\nVisit 4 (the next neighbor of 2) → Final Output: 0, 1, 2, 3, 4\n\nConstraints:\n1 ≤ V = adj.size() ≤ 104\n0 ≤ adj[i][j] ≤ 104",
+      "full_text": "Given a connected undirected graph containing V vertices, represented by a 2-d adjacency list adj[][], where each adj[i] represents the list of vertices connected to vertex i. Perform a Breadth First Search (BFS) traversal starting from vertex 0, visiting vertices from left to right according to the given adjacency list, and return a list containing the BFS traversal of the graph.\n\nNote: Do traverse in the same order as they are in the given adjacency list.\n\nExamples:\n\nInput: adj[][] = [[2, 3, 1], [0], [0, 4], [0], [2]]\n\nOutput: [0, 2, 3, 1, 4]\nExplanation: Starting from 0, the BFS traversal will follow these steps:\nVisit 0 → Output: 0\nVisit 2 (first neighbor of 0) → Output: 0, 2\nVisit 3 (next neighbor of 0) → Output: 0, 2, 3\nVisit 1 (next neighbor of 0) → Output: 0, 2, 3, 1\nVisit 4 (neighbor of 2) → Final Output: 0, 2, 3, 1, 4\n\nInput: adj[][] = [[1, 2], [0, 2], [0, 1, 3, 4], [2], [2]]\n\nOutput: [0, 1, 2, 3, 4]\nExplanation: Starting from 0, the BFS traversal proceeds as follows:\nVisit 0 → Output: 0\nVisit 1 (the first neighbor of 0) → Output: 0, 1\nVisit 2 (the next neighbor of 0) → Output: 0, 1, 2\nVisit 3 (the first neighbor of 2 that hasn't been visited yet) → Output: 0, 1, 2, 3\nVisit 4 (the next neighbor of 2) → Final Output: 0, 1, 2, 3, 4\n\nConstraints:\n1 ≤ V = adj.size() ≤ 104\n0 ≤ adj[i][j] ≤ 104",
+      "examples": [
+        "Input:\nadj[][] = [[2, 3, 1], [0], [0, 4], [0], [2]]\nOutput:\n[0, 2, 3, 1, 4]\nExplanation:\nStarting from 0, the BFS traversal will follow these steps:\nVisit 0 → Output: 0\nVisit 2 (first neighbor of 0) → Output: 0, 2\nVisit 3 (next neighbor of 0) → Output: 0, 2, 3\nVisit 1 (next neighbor of 0) → Output: 0, 2, 3, 1\nVisit 4 (neighbor of 2) → Final Output: 0, 2, 3, 1, 4",
+        "Input:\nadj[][] = [[1, 2], [0, 2], [0, 1, 3, 4], [2], [2]]\nOutput:\n[0, 1, 2, 3, 4]\nExplanation:\nStarting from 0, the BFS traversal proceeds as follows:\nVisit 0 → Output: 0\nVisit 1 (the first neighbor of 0) → Output: 0, 1\nVisit 2 (the next neighbor of 0) → Output: 0, 1, 2\nVisit 3 (the first neighbor of 2 that hasn't been visited yet) → Output: 0, 1, 2, 3\nVisit 4 (the next neighbor of 2) → Final Output: 0, 1, 2, 3, 4"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ V = adj.size() ≤ 10\n4\n0 ≤ adj[i][j] ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a&nbsp;<strong>connected undirected graph</strong> containing<strong> V </strong>vertices, <span style=\"font-size: 14pt;\">represented by a 2-d&nbsp;</span>adjacency list&nbsp;<strong><code>adj[][]</code></strong>, where each&nbsp;<code>adj[i]</code>&nbsp;represents the list of vertices connected to vertex&nbsp;<code>i</code>. Perform a&nbsp;<strong>Breadth First Search (BFS)&nbsp;</strong>traversal&nbsp;starting from vertex&nbsp;<code>0</code>, visiting vertices from left to right according to the given adjacency list, and return a list containing the BFS traversal of the graph.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;Do traverse in the&nbsp;<strong>same order</strong>&nbsp;as they are in the given&nbsp;<strong>adjacency list</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>adj[][] = [[2, 3, 1], [0], [0, 4], [0], [2]]</span><br /><span style=\"font-size: 14pt;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700217/Web/Other/blobid0_1728648582.jpg\" width=\"301\" height=\"189\" /><br /><strong>Output:</strong> [0, 2, 3, 1, 4]<br /><strong>Explanation:</strong> Starting from 0, the BFS traversal will follow these steps: <br />Visit 0 &rarr; Output: 0 <br />Visit 2 (first neighbor of 0) &rarr; Output: 0, 2 <br />Visit 3 (next neighbor of 0) &rarr; Output: 0, 2, 3 <br />Visit 1 (next neighbor of 0) &rarr; Output: 0, 2, 3, 1<br />Visit 4 (neighbor of 2) &rarr; Final Output: 0, 2, 3, 1, 4</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Input: </strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">adj[][] = [[1, 2], [0, 2], [0, 1, 3, 4], [2], [2]]<br /></span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700217/Web/Other/blobid1_1728648604.jpg\" width=\"301\" height=\"189\" /><br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Output:</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> [0, 1, 2, 3, 4]<br /><strong>Explanation: </strong></span><span style=\"font-family: -apple-system, system-ui, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, sans-serif;\">Starting from 0, the BFS traversal proceeds as follows: <br />Visit 0 &rarr; Output: 0 <br />Visit 1 (the first neighbor of 0) &rarr; Output: 0, 1 <br />Visit 2 (the next neighbor of 0) &rarr; Output: 0, 1, 2 <br />Visit 3 (the first neighbor of 2 that hasn't been visited yet) &rarr; Output: 0, 1, 2, 3 <br />Visit 4 (the next neighbor of 2) &rarr; Final Output: 0, 1, 2, 3, 4</span></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Constraints:<br /></strong>1 &le; V = adj.size() &le; 10<sup>4<br /></sup>0 &le; adj[i][j] &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1967
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-all-possible-paths-from-top-left-to-bottom-right3011/1",
+      "problem_name": "Count all possible paths from top left to bottom right",
+      "slug": "count-all-possible-paths-from-top-left-to-bottom-right3011",
+      "difficulty": "Easy",
+      "accuracy": "30.82%",
+      "marks": 2,
+      "all_submissions": 89232,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "m = &!//!&n =",
+        "datatype": "INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Amazon",
+          "Ola Cabs",
+          "Walmart",
+          "Adobe",
+          "Linkedin",
+          "Cisco"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Combinatorial",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Combinatorial",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Amazon",
+        "Ola Cabs",
+        "Walmart",
+        "Adobe",
+        "Linkedin",
+        "Cisco"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/count-possible-paths-top-left-bottom-right-nxm-matrix/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-15/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-5-on-campus/",
+        "https://www.geeksforgeeks.org/walmart-lab-interview-experience-set-8-off-campus-3-years-experience/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-adobe-for-women/"
+      ],
+      "statement_text": "The task is to count all the possible paths from top left to bottom right of a\nm\nX\nn\nmatrix with the constraints that from each cell you can either move only to right or down.\nExamples :\nInput\n: m = 2, n = 2\nOutput:\n2\nExplanation\n: Two possible ways are RD and DR.\nInput:\nm = 3, n = 3\nOutput:\n6\nExplanation\n: Six possible ways are RRDD, DDRR, RDDR, DRRD, RDRD, DRDR.",
+      "full_text": "The task is to count all the possible paths from top left to bottom right of a\nm\nX\nn\nmatrix with the constraints that from each cell you can either move only to right or down.\nExamples :\nInput\n: m = 2, n = 2\nOutput:\n2\nExplanation\n: Two possible ways are RD and DR.\nInput:\nm = 3, n = 3\nOutput:\n6\nExplanation\n: Six possible ways are RRDD, DDRR, RDDR, DRRD, RDRD, DRDR.\nConstraints:\n1 <= m <= 17\n1 <= n <=17",
+      "examples": [
+        "Input\n: m = 2, n = 2\nOutput:\n2\nExplanation\n: Two possible ways are RD and DR.",
+        "Input:\nm = 3, n = 3\nOutput:\n6\nExplanation\n: Six possible ways are RRDD, DDRR, RDDR, DRRD, RDRD, DRDR."
+      ],
+      "constraints_text": "constraints that from each cell you can either move only to right or down.\nExamples :\nInput\n: m = 2, n = 2\nOutput:\n2\nExplanation\n: Two possible ways are RD and DR.\nInput:\nm = 3, n = 3\nOutput:\n6\nExplanation\n: Six possible ways are RRDD, DDRR, RDDR, DRRD, RDRD, DRDR.\nConstraints:\n1 <= m <= 17\n1 <= n <=17",
+      "question_html": "<p><span style=\"font-size: 18px;\">The task&nbsp;is to count all the possible paths from top left to bottom right of a <strong>m&nbsp;</strong>X&nbsp;<strong>n</strong> matrix with the constraints that&nbsp;from each cell you can either move only to right or down.</span><br /><br /><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: m = 2, n = 2\n<strong>Output:</strong>&nbsp;2&nbsp;\n<strong>Explanation</strong>: Two possible ways are RD and DR.  </span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>m = 3, n = 3\n<strong>Output:&nbsp;</strong>6\n<strong>Explanation</strong>: Six possible ways are RRDD, DDRR, RDDR, DRRD, RDRD, DRDR. </span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= m &lt;= 17<br />1 &lt;= n &lt;=17</span></p>"
+    },
+    "qnum": 1968
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-leaves-in-binary-tree/1",
+      "problem_name": "Count Leaves in Binary Tree",
+      "slug": "count-leaves-in-binary-tree",
+      "difficulty": "Basic",
+      "accuracy": "76.44%",
+      "marks": 1,
+      "all_submissions": 129532,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Samsung",
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Samsung",
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/iterative-program-count-leaf-nodes-binary-tree/",
+        "https://www.geeksforgeeks.org/write-a-c-program-to-get-count-of-leaf-nodes-in-a-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-2-android-1-5-years/",
+        "https://www.geeksforgeeks.org/samsung-r-d-banglore-intern-interview-experience/"
+      ],
+      "statement_text": "Given a Binary Tree of size n, You have to count leaves in it. For example, there are two leaves in the following tree\n\n\n\nExamples:\n\nInput:\nGiven Tree is\n\nOutput: 3\nExplanation: Three leaves are 3, 5 and 1.\n\nInput:\nGiven Tree is\n\nOutput: 4\nExplanation: Four leaves are 20, 40, 65 and 80.\n\nInput:\nGiven Tree is\n\nOutput: 3\nExplanation: Three leaves are 20, 27 and 40.\n\n Constraints:\n1<= number of nodes <= 105\n1<= node->data <= 105",
+      "full_text": "Given a Binary Tree of size n, You have to count leaves in it. For example, there are two leaves in the following tree\n\n\n\nExamples:\n\nInput:\nGiven Tree is\n\nOutput: 3\nExplanation: Three leaves are 3, 5 and 1.\n\nInput:\nGiven Tree is\n\nOutput: 4\nExplanation: Four leaves are 20, 40, 65 and 80.\n\nInput:\nGiven Tree is\n\nOutput: 3\nExplanation: Three leaves are 20, 27 and 40.\n\n Constraints:\n1<= number of nodes <= 105\n1<= node->data <= 105",
+      "examples": [
+        "Input:\nGiven Tree is\nOutput:\n3\nExplanation:\nThree leaves are 3, 5 and 1.",
+        "Input:\nGiven Tree is\nOutput:\n4\nExplanation:\nFour leaves are 20, 40, 65 and 80.",
+        "Input:\nGiven Tree is\nOutput:\n3\nExplanation:\nThree leaves are 20, 27 and 40."
+      ],
+      "constraints_text": "Constraints:\n1<= number of nodes <= 10\n5\n1<= node->data <= 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a Binary Tree of size <strong>n</strong>, You have to count leaves in it. For example, there are two leaves in the following&nbsp;tree</span></p>\n<p><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700145/Web/Other/blobid0_1752144188.webp\" width=\"198\" height=\"175\" /></span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input:</strong><span style=\"font-size: 18px;\">\nGiven Tree is &nbsp;<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700145/Web/Other/blobid1_1752145258.webp\" width=\"248\" height=\"222\" />\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">3\n</span><strong style=\"font-size: 18px;\">Explanation: </strong><span style=\"font-size: 18px;\">Three leaves are 3, 5 and 1.<br /></span></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input:<br /></strong><span style=\"font-size: 14pt;\">Given Tree is</span><strong style=\"font-size: 18px;\"><br /></strong><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700145/Web/Other/blobid2_1752145320.webp\" width=\"269\" height=\"238\" /><br /></span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">4\n</span><strong style=\"font-size: 18px;\">Explanation:</strong><span style=\"font-size: 18px;\"> Four leaves are 20, 40, 65 and 80.<br /></span></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input:</strong><span style=\"font-size: 18px;\">\nGiven Tree is &nbsp;<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700145/Web/Other/blobid3_1752145371.webp\" width=\"240\" height=\"212\" /><br /></span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">3\n</span><strong style=\"font-size: 18px;\">Explanation: </strong><span style=\"font-size: 18px;\">Three leaves are 20, 27 and 40.</span></span></pre>\n<p>&nbsp;<span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1&lt;= number of nodes &lt;= 10<sup>5<br /></sup></span><span style=\"font-size: 18px;\">1&lt;= node-&gt;data &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1969
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Basic",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/count-squares3649/1",
+      "problem_name": "Count Squares",
+      "slug": "count-squares3649",
+      "difficulty": "Basic",
+      "accuracy": "41.44%",
+      "marks": 1,
+      "all_submissions": 158365,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = ",
+        "datatype": "INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Accolite",
+          "Snapdeal",
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Accolite",
+        "Snapdeal",
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/square-root-of-an-integer/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-4-on-campus/"
+      ],
+      "statement_text": "Given a positive integer\nn\n, find the number of perfect squares that are less than\nn\nin the sample space of perfect squares. The sample space consists of all perfect squares starting from 1 (i.e., 1, 4, 9, 16, 25, …)\nExamples :\nInput:\nn\n=\n9\nOutput:\n2\nExplanation:\n1 and 4 are the only Perfect Squares less than 9. So, the Output is 2.\nInput:\nn\n=\n3\nOutput:\n1\nExplanation:\n1 is the only Perfect Square less than 3. So, the Output is 1.",
+      "full_text": "Given a positive integer\nn\n, find the number of perfect squares that are less than\nn\nin the sample space of perfect squares. The sample space consists of all perfect squares starting from 1 (i.e., 1, 4, 9, 16, 25, …)\nExamples :\nInput:\nn\n=\n9\nOutput:\n2\nExplanation:\n1 and 4 are the only Perfect Squares less than 9. So, the Output is 2.\nInput:\nn\n=\n3\nOutput:\n1\nExplanation:\n1 is the only Perfect Square less than 3. So, the Output is 1.\nConstraints:\n1 <= n <= 10\n8",
+      "examples": [
+        "Input:\nn\n=\n9\nOutput:\n2\nExplanation:\n1 and 4 are the only Perfect Squares less than 9. So, the Output is 2.",
+        "Input:\nn\n=\n3\nOutput:\n1\nExplanation:\n1 is the only Perfect Square less than 3. So, the Output is 1."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 10\n8",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a positive integer <strong>n</strong>, find the number of perfect squares that are less than <strong>n</strong> in the sample space of perfect squares. The sample space consists of all perfect squares starting from 1 (i.e., 1, 4, 9, 16, 25, &hellip;)</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> n<strong> = </strong>9\n<strong>Output: </strong>2\n<strong>Explanation: </strong>1 and 4 are the only Perfect Squares less than 9. So, the Output is 2.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> n<strong> = </strong>3\n<strong>Output: </strong>1\n<strong>Explanation: </strong>1 is the only Perfect Square less than 3. So, the Output is 1.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span><br /><span style=\"font-size: 14pt;\">1 &lt;= n &lt;= 10<sup>8</sup></span></p>"
+    },
+    "qnum": 1970
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/k-distance-from-root/1",
+      "problem_name": "K distance from root",
+      "slug": "k-distance-from-root",
+      "difficulty": "Easy",
+      "accuracy": "52.18%",
+      "marks": 2,
+      "all_submissions": 110110,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "k =&!//!&root[] =",
+        "datatype": "INTEGER&!//!&BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-nodes-at-k-distance-from-root/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/samsung-research-institute-bangalore-srib-intern/"
+      ],
+      "statement_text": "Given a binary tree having n nodes and an integer k. Print all nodes that are at distance k from the root (root is considered at distance 0 from itself). Nodes should be printed from left to right.\n\nExample 1:\n\nInput:\nk = 0\n      1\n    /   \\\n   3     2\nOutput: 1\nExplanation: 1 is the only node which is 0 distance from the root 1.\n\nExample 2:\n\nInput:\nk = 3\n        1\n       /\n      2\n       \\\n        1\n      /  \\\n     5    3\nOutput: 5 3\nExplanation:  5 and 3 are the nodes which are at distance 3 from the root 3.\nHere, returning 3 5 will be incorrect.\n\nYour Task:\nYou don't have to take input. Complete the function Kdistance() that accepts root node and k as parameters and returns the value of the nodes that are at a distance k from the root.\n\nConstraints:\n1 <= n <= 104\n0 <= k <= 30",
+      "full_text": "Given a binary tree having n nodes and an integer k. Print all nodes that are at distance k from the root (root is considered at distance 0 from itself). Nodes should be printed from left to right.\n\nExample 1:\n\nInput:\nk = 0\n      1\n    /   \\\n   3     2\nOutput: 1\nExplanation: 1 is the only node which is 0 distance from the root 1.\n\nExample 2:\n\nInput:\nk = 3\n        1\n       /\n      2\n       \\\n        1\n      /  \\\n     5    3\nOutput: 5 3\nExplanation:  5 and 3 are the nodes which are at distance 3 from the root 3.\nHere, returning 3 5 will be incorrect.\n\nYour Task:\nYou don't have to take input. Complete the function Kdistance() that accepts root node and k as parameters and returns the value of the nodes that are at a distance k from the root.\n\nConstraints:\n1 <= n <= 104\n0 <= k <= 30",
+      "examples": [
+        "Input:\nk = 0\n1\n/   \\\n3     2\nOutput:\n1\nExplanation:\n1 is the only node which is 0 distance from the root 1.",
+        "Input:\nk = 3\n1\n/\n2\n\\\n1\n/  \\\n5    3\nOutput:\n5 3\nExplanation:\n5 and 3 are the nodes which are at distance 3 from the root 3.\nHere, returning 3 5 will be\nincorrect\n."
+      ],
+      "constraints_text": "Constraints:\n1 <= n <= 10\n4\n0 <= k <= 30",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree having <strong>n</strong> nodes and an integer <strong>k</strong>. Print all nodes that are at distance k from the root (root is considered at distance 0 from itself). Nodes should be printed from <strong>left to right</strong>.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>k = 0\n&nbsp;     1\n&nbsp;   /   \\\n&nbsp;  3     2<strong>\nOutput: </strong>1<br /><strong>Explanation: </strong>1 is the only node which is 0 distance from the root 1.</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:\n</strong>k = 3\n&nbsp;       1\n&nbsp;      /\n&nbsp;     2\n&nbsp;      \\\n&nbsp;       1\n&nbsp;     /  \\\n&nbsp;    5    3<strong>\nOutput: </strong>5 3<br /></span><strong style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation:  </strong><span style=\"font-size: 18px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">5 and 3 are the nodes which are at distance 3 from the root 3.<br />Here, returning 3 5 will be <strong>incorrect</strong>.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't have to take input. Complete the function&nbsp;<strong>Kdistance()&nbsp;</strong>that accepts&nbsp;<strong>root</strong> node<strong>&nbsp;</strong>and&nbsp;<strong>k&nbsp;</strong>as parameters and returns<strong> </strong>the&nbsp;value<strong>&nbsp;</strong>of the&nbsp;nodes<strong>&nbsp;</strong>that are at a distance k from the root.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &lt;= n &lt;= 10<sup>4</sup></span><br /><span style=\"font-size: 18px;\">0 &lt;= k &lt;= 30</span></p>"
+    },
+    "qnum": 1971
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/left-view-of-binary-tree/1",
+      "problem_name": "Left View of Binary Tree",
+      "slug": "left-view-of-binary-tree",
+      "difficulty": "Easy",
+      "accuracy": "33.74%",
+      "marks": 2,
+      "all_submissions": 597070,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root =",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Adobe",
+          "Qualcomm",
+          "Twitter",
+          "Knowlarity",
+          "Open Solutions",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Adobe",
+        "Qualcomm",
+        "Twitter",
+        "Knowlarity",
+        "Open Solutions",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-left-view-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-12-1-5-years-experienced/",
+        "https://www.geeksforgeeks.org/qualcomm-interview-experience-set-8-experienced/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/samsung-rd-institute-noidasrin-internship-interview-experience/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-on-campus-virtual-experience/",
+        "https://www.geeksforgeeks.org/flipkart-interview-set-5-off-campus/",
+        "https://www.geeksforgeeks.org/flipkart-internship-interview-on-campus/"
+      ],
+      "statement_text": "Given the root of a binary tree. Your task is to return the left view of the binary tree. The left view of a binary tree is the set of nodes visible when the tree is viewed from the left side.\n\nNote: If the tree is empty, return an empty list.\n\nExamples :\n\nInput: root = [1, 2, 3, 4, 5, N, N]\n\nOutput:[1, 2, 4]\nExplanation: From the left side of the tree, only the nodes 1, 2, and 4 are visible.\n\nInput: root = [1, 2, 3, N, N, 4, N, N, 5, N, N]\n\nOutput: [1, 2, 4, 5]\nExplanation: From the left side of the tree, only the nodes 1, 2, 4, and 5 are visible.\n\nConstraints:\n0 ≤ number of nodes ≤ 105\n0 ≤ node -> data ≤ 105",
+      "full_text": "Given the root of a binary tree. Your task is to return the left view of the binary tree. The left view of a binary tree is the set of nodes visible when the tree is viewed from the left side.\n\nNote: If the tree is empty, return an empty list.\n\nExamples :\n\nInput: root = [1, 2, 3, 4, 5, N, N]\n\nOutput:[1, 2, 4]\nExplanation: From the left side of the tree, only the nodes 1, 2, and 4 are visible.\n\nInput: root = [1, 2, 3, N, N, 4, N, N, 5, N, N]\n\nOutput: [1, 2, 4, 5]\nExplanation: From the left side of the tree, only the nodes 1, 2, 4, and 5 are visible.\n\nConstraints:\n0 ≤ number of nodes ≤ 105\n0 ≤ node -> data ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5, N, N]\nOutput:\n[1, 2, 4]\nExplanation:\nFrom the left side of the tree, only the nodes 1, 2, and 4 are visible.",
+        "Input:\nroot = [1, 2, 3, N, N, 4, N, N, 5, N, N]\nOutput:\n[1, 2, 4, 5]\nExplanation:\nFrom the left side of the tree, only the nodes 1, 2, 4, and 5 are visible."
+      ],
+      "constraints_text": "Constraints:\n0 ≤ number of nodes ≤ 10\n5\n0 ≤ node -> data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given the <strong>root </strong>of a binary tree. Your task is to return the <strong>left view</strong> of the binary tree. The left view of a binary tree is the set of nodes visible when the tree is <strong>viewed</strong> from the <strong>left side</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> If the tree is empty, return an empty list.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3, 4, 5, N, N]\n<span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif; white-space: normal;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/876845/Web/Other/blobid0_1731456264.png\" width=\"298\" height=\"261\" /></span>\n<strong>Output:</strong>[1, 2, 4]<strong><br /></strong><strong>Explanation: </strong>From the left side of the tree, only the nodes 1, 2, and 4 are visible.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/876845/Web/Other/blobid1_1731456288.png\" width=\"285\" height=\"260\" /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3, N, N, 4, N, N, 5, N, N]<strong><br /></strong><strong><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/876845/Web/Other/blobid2_1731456332.png\" width=\"229\" height=\"273\" /></strong>\n<strong>Output: </strong>[1, 2, 4, 5]<br /><strong>Explanation: </strong>From the left side of the tree, only the nodes 1, 2, 4, and 5 are visible.<strong><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/876845/Web/Other/blobid3_1731456373.png\" width=\"241\" height=\"280\" /></strong></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />0 &le; number of nodes &le; 10<sup>5</sup><br />0 &le; node -&gt; data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1972
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/level-order-traversal-in-spiral-form/1",
+      "problem_name": "Level Order in Spiral",
+      "slug": "level-order-traversal-in-spiral-form",
+      "difficulty": "Easy",
+      "accuracy": "36.43%",
+      "marks": 2,
+      "all_submissions": 239862,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Hike",
+          "Housing.com",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Payu",
+          "Teradata",
+          "Walmart",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Recursion",
+          "Stack",
+          "Tree",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Recursion",
+        "Stack",
+        "Tree",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Hike",
+        "Housing.com",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Payu",
+        "Teradata",
+        "Walmart",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/level-order-traversal-in-spiral-form/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-24/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-set-47/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-set-357-1-5-years-experienced/",
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-12/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-13-on-campus-for-internship-and-fte/",
+        "https://www.geeksforgeeks.org/make-my-trip-interview-experience-on-campus/"
+      ],
+      "statement_text": "Given a root binary tree and the task is to find the spiral order traversal of the tree and return the list containing the elements.\nSpiral Order Traversal mean: Starting from level 0 for root node, for all the even levels we print the node's value from right to left and for all the odd levels we print the node's value from left to right.\n\nExamples:\n\nInput: root = [1, 3, 2]\n\nOutput: [1, 3, 2]\nExplanation: Start with root (1), print level 0 (right to left), then level 1 (left to right).\n\nInput: root = [10, 20, 30, 40, 60]\n\nOutput: [10, 20, 30, 60, 40]\nExplanation: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating.\n\nConstraints:\n1  ≤ number of nodes  ≤105\n0  ≤ node->data  ≤ 105",
+      "full_text": "Given a root binary tree and the task is to find the spiral order traversal of the tree and return the list containing the elements.\nSpiral Order Traversal mean: Starting from level 0 for root node, for all the even levels we print the node's value from right to left and for all the odd levels we print the node's value from left to right.\n\nExamples:\n\nInput: root = [1, 3, 2]\n\nOutput: [1, 3, 2]\nExplanation: Start with root (1), print level 0 (right to left), then level 1 (left to right).\n\nInput: root = [10, 20, 30, 40, 60]\n\nOutput: [10, 20, 30, 60, 40]\nExplanation: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating.\n\nConstraints:\n1  ≤ number of nodes  ≤105\n0  ≤ node->data  ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 3, 2]\nOutput:\n[1, 3, 2]\nExplanation\n: Start with root (1), print level 0 (right to left), then level 1 (left to right).",
+        "Input:\nroot = [10, 20, 30, 40, 60]\nOutput:\n[10, 20, 30, 60, 40]\nExplanation\n: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating."
+      ],
+      "constraints_text": "Constraints:\n1  ≤ number of nodes  ≤10\n5\n0  ≤ node->data  ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a <strong>root</strong> binary tree and the task is to find the <strong>spiral order traversal</strong> of the tree and return the list containing the elements.<br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Spiral Order Traversal mean:</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> Starting from level 0 for root node, for all the even levels we print the node's value from right to left and for all the odd levels we print the node's value from left to right.</span><br /></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 3, 2]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700201/Web/Other/blobid2_1746530526.webp\" width=\"186\" height=\"150\" /> <br /><strong>Output: </strong>[1, 3, 2]<br /><strong>Explanation</strong>: Start with root (1), print level 0 (right to left), then level 1 (left to right).</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [10, 20, 30, 40, 60]<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700201/Web/Other/blobid3_1746530612.webp\" width=\"207\" height=\"221\" /><br /><strong>Output: </strong>[10, 20, 30, 60, 40]<br /><strong>Explanation</strong>: Start with root (10), print level 0 (right to left), level 1 (left to right), and continue alternating.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &nbsp;&le; number of nodes &nbsp;&le;10<sup>5</sup><br />0 &nbsp;&le; node-&gt;data &nbsp;&le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1973
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/matrix-game-10229/1",
+      "problem_name": "Matrix Game - 1",
+      "slug": "matrix-game-10229",
+      "difficulty": "Easy",
+      "accuracy": "27.02%",
+      "marks": 2,
+      "all_submissions": 1883,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Matrix",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Matrix",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Ola Cabs"
+      ],
+      "article_list": [],
+      "interview_links": [],
+      "statement_text": "Given\nN\nand a\nN*N matrix\ncontaining 0’s and 1’s. Group all the row numbers (starting index 0) which are having 1’s at same position.\nExample 1:\nInput:\nN=4\nmatrix= [0010\n0100\n0010\n0000]\nOutput:\n0 1\nExplanation:\nIn the above test case, 1st and 3rd row have\nthe 1's at same column,i.e., 2(starting index\nfrom 0) so group first and third row. And print\nthe index of first row, i.e., 0 (starting index\nfrom 0).\nFor second row, as it is the only row with same\nindexing of 1's so print it's index , i.e., 1.\nFor forth row, 1 is not present in this row so\ndidn't print anything.\nExample 2:\nInput:\nN=1\nmatrix = [0]\nOutput:\n-1\nExplanation:\nThere is no row containing 1.\nYour task:\nYou don't need to read input or print anything. Your task is to complete the function\ngroupRows(),\nwhich takes  the\nmatrix\nand an integer\nN\nas input parameters and returns a list of row numbers after grouping. If there is no row containing 1, return\n-1\n.\nExpected Time Complexity:\nO(n*n)\nExpected Auxiliary Space:\nO(n*n)",
+      "full_text": "Given\nN\nand a\nN*N matrix\ncontaining 0’s and 1’s. Group all the row numbers (starting index 0) which are having 1’s at same position.\nExample 1:\nInput:\nN=4\nmatrix= [0010\n0100\n0010\n0000]\nOutput:\n0 1\nExplanation:\nIn the above test case, 1st and 3rd row have\nthe 1's at same column,i.e., 2(starting index\nfrom 0) so group first and third row. And print\nthe index of first row, i.e., 0 (starting index\nfrom 0).\nFor second row, as it is the only row with same\nindexing of 1's so print it's index , i.e., 1.\nFor forth row, 1 is not present in this row so\ndidn't print anything.\nExample 2:\nInput:\nN=1\nmatrix = [0]\nOutput:\n-1\nExplanation:\nThere is no row containing 1.\nYour task:\nYou don't need to read input or print anything. Your task is to complete the function\ngroupRows(),\nwhich takes  the\nmatrix\nand an integer\nN\nas input parameters and returns a list of row numbers after grouping. If there is no row containing 1, return\n-1\n.\nExpected Time Complexity:\nO(n*n)\nExpected Auxiliary Space:\nO(n*n)\nConstraints:\n1<=N<=20",
+      "examples": [
+        "Input:\nN=4\nmatrix= [0010\n0100\n0010\n0000]\nOutput:\n0 1\nExplanation:\nIn the above test case, 1st and 3rd row have\nthe 1's at same column,i.e., 2(starting index\nfrom 0) so group first and third row. And print\nthe index of first row, i.e., 0 (starting index\nfrom 0).\nFor second row, as it is the only row with same\nindexing of 1's so print it's index , i.e., 1.\nFor forth row, 1 is not present in this row so\ndidn't print anything.",
+        "Input:\nN=1\nmatrix = [0]\nOutput:\n-1\nExplanation:\nThere is no row containing 1."
+      ],
+      "constraints_text": "Constraints:\n1<=N<=20",
+      "question_html": "<p><span style=\"font-size:18px\">Given <strong>N</strong> and&nbsp;a <strong>N*N matrix</strong> containing 0&rsquo;s and 1&rsquo;s. Group all the row numbers (starting index 0) which are having 1&rsquo;s at same position.</span></p>\r\n\r\n<p><strong>Example 1:</strong></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nN=4\r\nmatrix= [0010</span>\r\n            <span style=\"font-size:18px\">0100</span>\r\n            <span style=\"font-size:18px\">0010</span>\r\n            <span style=\"font-size:18px\">0000]\r\n<strong>Output:</strong>\r\n0 1</span>\r\n<span style=\"font-size:18px\"><strong>Explanation:</strong></span>\r\n<span style=\"font-size:18px\">In the above test case, 1st and 3rd row have\r\nthe 1&#39;s at same column,i.e., 2(starting index \r\nfrom 0) so group first and third row. And print \r\nthe index of first row, i.e., 0 (starting index \r\nfrom 0).</span>\r\n<span style=\"font-size:18px\">For second row, as it is the only row with same \r\nindexing of 1&#39;s so print it&#39;s index , i.e., 1.</span>\r\n<span style=\"font-size:18px\">For forth row, 1 is not present in this row so \r\ndidn&#39;t print anything.</span></pre>\r\n\r\n<p><span style=\"font-size:18px\"><strong>Example 2:</strong></span></p>\r\n\r\n<pre>\r\n<span style=\"font-size:18px\"><strong>Input:</strong>\r\nN=1\r\nmatrix = [0]\r\n<strong>Output:</strong>\r\n-1\r\n<strong>Explanation:</strong>\r\nThere is no row containing 1.</span></pre>\r\n\r\n<p>&nbsp;</p>\r\n\r\n<div><strong><span style=\"font-size:18px\">Your task:</span></strong></div>\r\n\r\n<div><span style=\"font-size:18px\">You don&#39;t need to read input or print anything. Your task is to complete the function</span><strong><span style=\"font-size:18px\"> groupRows(), </span></strong><span style=\"font-size:18px\">which takes &nbsp;the <strong>matrix</strong>&nbsp;and an integer <strong>N</strong> as input parameters and returns a list of row numbers after grouping. If there is no row containing 1, return&nbsp;<strong>-1</strong>.</span></div>\r\n\r\n<div>&nbsp;</div>\r\n\r\n<div><span style=\"font-size:18px\"><strong>Expected Time Complexity: </strong>O(n*n)</span></div>\r\n\r\n<div><span style=\"font-size:18px\"><strong>Expected Auxiliary Space: </strong>O(n*n)</span></div>\r\n\r\n<div>&nbsp;</div>\r\n\r\n<div><strong><span style=\"font-size:18px\">Constraints:</span></strong></div>\r\n\r\n<div><span style=\"font-size:18px\">1&lt;=N&lt;=20</span></div>\r\n\r\n<div>&nbsp;</div>\r\n"
+    },
+    "qnum": 1974
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-indexed-character-1587115620/1",
+      "problem_name": "Minimum indexed character",
+      "slug": "minimum-indexed-character-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "54.06%",
+      "marks": 2,
+      "all_submissions": 96567,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 = &!//!&s2 = ",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "STL",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "STL",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-character-first-string-present-minimum-index-second-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-12/"
+      ],
+      "statement_text": "Given a string\ns1\nand another string\ns2\n. Find the minimum index of the character in\ns1\nthat is also present in\ns2\n. if no character common in both then return -1.\nExamples :\nInput:\ns1 = \"geeksforgeeks\", s2 = \"set\"\nOutput:\n1\nExplanation:\n'e' is the character which is present in given s1 \"geeksforgeeks\" and is also present in s2 \"set\". Minimum index of e is 1.\nInput:\ns1 = \"adcffaet\", s2 = \"onkl\"\nOutput:\n-1\nExplanation:\nThere are none of the characters which is common in s1 and s2.",
+      "full_text": "Given a string\ns1\nand another string\ns2\n. Find the minimum index of the character in\ns1\nthat is also present in\ns2\n. if no character common in both then return -1.\nExamples :\nInput:\ns1 = \"geeksforgeeks\", s2 = \"set\"\nOutput:\n1\nExplanation:\n'e' is the character which is present in given s1 \"geeksforgeeks\" and is also present in s2 \"set\". Minimum index of e is 1.\nInput:\ns1 = \"adcffaet\", s2 = \"onkl\"\nOutput:\n-1\nExplanation:\nThere are none of the characters which is common in s1 and s2.\nConstraints:\n1 ≤ s1.size(), s2.size() ≤ 10\n5\n'a' ≤ s1\ni\n, s2\ni\n≤ 'z'",
+      "examples": [
+        "Input:\ns1 = \"geeksforgeeks\", s2 = \"set\"\nOutput:\n1\nExplanation:\n'e' is the character which is present in given s1 \"geeksforgeeks\" and is also present in s2 \"set\". Minimum index of e is 1.",
+        "Input:\ns1 = \"adcffaet\", s2 = \"onkl\"\nOutput:\n-1\nExplanation:\nThere are none of the characters which is common in s1 and s2."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s1.size(), s2.size() ≤ 10\n5\n'a' ≤ s1\ni\n, s2\ni\n≤ 'z'",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string&nbsp;<strong>s1</strong>&nbsp;and another string&nbsp;<strong>s2</strong>. Find the minimum index of the character in <strong>s1 </strong>that is also present in&nbsp;<strong>s2</strong>. if no character common in both then return -1.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s1 = \"geeksforgeeks\", s2 = \"set\"\n<strong>Output: </strong>1<strong>\nExplanation: </strong>'e' is the character which is present in given s1 \"geeksforgeeks\" and is also present in s2 \"set\". Minimum index of e is 1. </span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s1 = \"adcffaet\", s2 = \"onkl\"\n<strong>Output: </strong>-1<strong>\nExplanation: </strong>There are none of the characters which is common in s1 and s2.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; s1.size(), s2.size() &le; 10<sup>5&nbsp;</sup><br />'a' &le; s1<sub>i</sub>, s2<sub>i</sub> &le; 'z'</span></p>"
+    },
+    "qnum": 1975
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-indexed-character0221/1",
+      "problem_name": "Minimum indexed character",
+      "slug": "minimum-indexed-character0221",
+      "difficulty": "Easy",
+      "accuracy": "47.5%",
+      "marks": 2,
+      "all_submissions": 26101,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "STL",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "STL",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-character-first-string-present-minimum-index-second-string/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-12/"
+      ],
+      "statement_text": "Given a string\nS\nand another string\npatt\n. Find the character in\npatt\nthat is present at the minimum index in\nS\n.\nExample 1:\nInput:\nS = \"zsyle\", patt = \"bjz\"\nOutput:\n\"z\"\nExample 2:\nInput:\nS = \"anskg\", patt = \"me\"\nOutput:\n\"$\"\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function\nprintMinIndexChar()\nwhich takes\nS\nand\npatt\nas input parameter and returns the character in\npatt\nthat is present at the minimum index in\nS\n. If not possible returns \"$\".\nExpected Time Complexity:\nO(max(|str|, |patt|))\nExpected Auxilary Space:\nO(K) where K <= 26",
+      "full_text": "Given a string\nS\nand another string\npatt\n. Find the character in\npatt\nthat is present at the minimum index in\nS\n.\nExample 1:\nInput:\nS = \"zsyle\", patt = \"bjz\"\nOutput:\n\"z\"\nExample 2:\nInput:\nS = \"anskg\", patt = \"me\"\nOutput:\n\"$\"\nYour Task:\nYou don't need to read or print anything. Your task is to complete the function\nprintMinIndexChar()\nwhich takes\nS\nand\npatt\nas input parameter and returns the character in\npatt\nthat is present at the minimum index in\nS\n. If not possible returns \"$\".\nExpected Time Complexity:\nO(max(|str|, |patt|))\nExpected Auxilary Space:\nO(K) where K <= 26\nConstraints:\n1 ≤ |S|, |patt| ≤ 10\n4",
+      "examples": [
+        "Input:\nS = \"zsyle\", patt = \"bjz\"\nOutput:\n\"z\"",
+        "Input:\nS = \"anskg\", patt = \"me\"\nOutput:\n\"$\""
+      ],
+      "constraints_text": "Constraints:\n1 ≤ |S|, |patt| ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a string <strong>S</strong>&nbsp;and another string&nbsp;<strong>patt</strong>. Find the character in&nbsp;<strong>patt</strong>&nbsp;that is present at the minimum index in <strong>S</strong>.</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>S = \"zsyle\", patt = \"bjz\"\n<strong>Output: </strong>\"z\"</span>\n</pre>\n<p><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>S = \"anskg\", patt = \"me\"\n<strong>Output: </strong>\"$\"</span>\n</pre>\n<p>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Your Task:</strong><br />You don't need to read or print anything. Your task is to complete the function&nbsp;<strong>printMinIndexChar()&nbsp;</strong>which takes <strong>S</strong>&nbsp;and <strong>patt&nbsp;</strong>as input parameter and returns the character in<strong> patt&nbsp;</strong>that is present at the minimum index in <strong>S</strong>. If not possible returns \"$\".</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Expected Time Complexity:&nbsp;</strong>O(max(|str|, |patt|))<br /><strong>Expected Auxilary Space:&nbsp;</strong>O(K) where K &lt;= 26</span><br />&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; |S|, |patt| &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1976
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/mirror-tree/1",
+      "problem_name": "Mirror Tree",
+      "slug": "mirror-tree",
+      "difficulty": "Easy",
+      "accuracy": "72.67%",
+      "marks": 2,
+      "all_submissions": 243937,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root = ",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Snapdeal",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "SAP Labs",
+          "Myntra",
+          "Belzabar",
+          "eBay",
+          "PropTiger"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Snapdeal",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "SAP Labs",
+        "Myntra",
+        "Belzabar",
+        "eBay",
+        "PropTiger"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/write-an-efficient-c-function-to-convert-a-tree-into-its-mirror-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-4-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-shecodes-software-engineer/"
+      ],
+      "statement_text": "Given the root of a binary tree, convert the binary tree to its Mirror tree.\n\nNote: Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.\n\nExamples:\n\nInput: root = [1, 2, 3, N, N, 4]\nOutput: [1, 3, 2, N, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nInput: root = [1, 2, 3, 4, 5]\nOutput: [1, 3, 2, N, N, 5, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 105",
+      "full_text": "Given the root of a binary tree, convert the binary tree to its Mirror tree.\n\nNote: Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.\n\nExamples:\n\nInput: root = [1, 2, 3, N, N, 4]\nOutput: [1, 3, 2, N, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nInput: root = [1, 2, 3, 4, 5]\nOutput: [1, 3, 2, N, N, 5, 4]\nExplanation:\n\nIn the inverted tree, every non-leaf node has its left and right child interchanged.\n\nConstraints:\n1 ≤ number of nodes ≤ 104\n1 ≤ node->data ≤ 105",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, N, N, 4]\nOutput:\n[1, 3, 2, N, 4]\nExplanation:\nIn the inverted tree, every non-leaf node has its left and right child interchanged.",
+        "Input:\nroot = [1, 2, 3, 4, 5]\nOutput:\n[1, 3, 2, N, N, 5, 4]\nExplanation:\nIn the inverted tree, every non-leaf node has its left and right child interchanged."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n4\n1 ≤ node->data ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given the <strong>root </strong>of a binary tree, convert the binary tree to its <strong>Mirror tree. </strong></span></p>\n<p><span style=\"font-size: 18px;\"><strong>Note:</strong> Mirror of a Binary Tree T is another Binary Tree M(T) with left and right children of all non-leaf nodes interchanged.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, N, N, 4]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[1, 3, 2, N, 4]</span><strong style=\"font-size: 18px;\">\nExplanation: </strong><span style=\"font-size: 18px;\"><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700155/Web/Other/blobid0_1736926809.png\" alt=\"\" width=\"523\" height=\"262\" /><br />In the inverted tree, every non-leaf node has its left and right child interchanged.</span></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">root = [1, 2, 3, 4, 5]\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">[1, 3, 2, N, N, 5, 4]</span><strong style=\"font-size: 18px;\">\nExplanation:<br /></strong><span style=\"font-size: 18px;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700155/Web/Other/blobid1_1736926809.png\" alt=\"\" width=\"525\" height=\"263\" /><br />In the inverted tree, every non-leaf node has its left and right child interchanged.</span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>4</sup><br />1 &le; node-&gt;data &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1977
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/missing-number-in-array1416/1",
+      "problem_name": "Missing in Array",
+      "slug": "missing-number-in-array1416",
+      "difficulty": "Easy",
+      "accuracy": "29.59%",
+      "marks": 2,
+      "all_submissions": 1652558,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "Ola Cabs",
+          "Payu",
+          "Visa",
+          "Intuit",
+          "Adobe",
+          "Cisco",
+          "Qualcomm",
+          "TCS",
+          "NPCI"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Searching",
+          "Bit Magic",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Searching",
+        "Bit Magic",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "Ola Cabs",
+        "Payu",
+        "Visa",
+        "Intuit",
+        "Adobe",
+        "Cisco",
+        "Qualcomm",
+        "TCS",
+        "NPCI"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/find-the-missing-number/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-12/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "You are given an array\narr[]\nof size\nn - 1\nthat contains\ndistinct integers\nin the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with\none element missing\n. Your task is to identify and return the\nmissing element\n.",
+      "full_text": "You are given an array\narr[]\nof size\nn - 1\nthat contains\ndistinct integers\nin the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with\none element missing\n. Your task is to identify and return the\nmissing element\n.\nExamples:\nInput:\narr[] = [1, 2, 3, 5]\nOutput:\n4\nExplanation:\nAll the numbers from 1 to 5 are present except 4.\nInput:\narr[] = [8, 2, 4, 5, 3, 7, 1]\nOutput:\n6\nExplanation:\nAll the numbers from 1 to 8 are present except 6.\nInput:\narr[] = [1]\nOutput:\n2\nExplanation:\nOnly 1 is present so the missing element is 2.\nConstraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ arr.size() + 1",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 5]\nOutput:\n4\nExplanation:\nAll the numbers from 1 to 5 are present except 4.",
+        "Input:\narr[] = [8, 2, 4, 5, 3, 7, 1]\nOutput:\n6\nExplanation:\nAll the numbers from 1 to 8 are present except 6.",
+        "Input:\narr[] = [1]\nOutput:\n2\nExplanation:\nOnly 1 is present so the missing element is 2."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n6\n1 ≤ arr[i] ≤ arr.size() + 1",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given an array <strong>arr[]</strong> of size <strong>n - 1</strong> that contains<strong> distinct integers </strong>in the range from 1 to n (inclusive). This array represents a permutation of the integers from 1 to n with <strong>one element missing</strong>. Your task is to identify and return the <strong>missing element</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1, 2, 3, 5]\n<strong>Output: </strong>4\n<strong>Explanation: </strong>All the numbers from 1 to 5 are present except 4.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [8, 2, 4, 5, 3, 7, 1]\n<strong>Output:</strong> 6\n<strong>Explanation: </strong>All the numbers from 1 to 8 are present except 6.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>arr[] = [1]\n<strong>Output: </strong>2\n<strong>Explanation: </strong>Only 1 is present so the missing element is 2.<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>6</sup><br />1 &le; arr[i] &le; arr.size() + 1</span></p>"
+    },
+    "qnum": 1978
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/non-repeating-character-1587115620/1",
+      "problem_name": "Non Repeating Character",
+      "slug": "non-repeating-character-1587115620",
+      "difficulty": "Easy",
+      "accuracy": "40.43%",
+      "marks": 2,
+      "all_submissions": 336922,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s = ",
+        "datatype": "STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "D-E-Shaw",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Payu",
+          "Teradata",
+          "Goldman Sachs",
+          "MAQ Software",
+          "InfoEdge",
+          "OATS Systems",
+          "Tejas Network"
+        ],
+        "topic_tags": [
+          "Hash",
+          "Strings",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Hash",
+        "Strings",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "D-E-Shaw",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Payu",
+        "Teradata",
+        "Goldman Sachs",
+        "MAQ Software",
+        "InfoEdge",
+        "OATS Systems",
+        "Tejas Network"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/given-a-string-find-its-first-non-repeating-character/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a string\ns\nconsisting of\nlowercase\nEnglish\nLetters. return the first non-repeating character in\ns\n.\nIf there is no non-repeating character, return\n'$'\n.",
+      "full_text": "Given a string\ns\nconsisting of\nlowercase\nEnglish\nLetters. return the first non-repeating character in\ns\n.\nIf there is no non-repeating character, return\n'$'\n.\nExamples:\nInput:\ns = \"geeksforgeeks\"\nOutput:\n'f'\nExplanation:\nIn the given string, 'f' is the first character in the string which does not repeat.\nInput:\ns = \"racecar\"\nOutput:\n'e'\nExplanation:\nIn the given string, 'e' is the only character in the string which does not repeat.\nInput:\ns = \"aabbccc\"\nOutput: '$'\nExplanation:\nAll the characters in the given string are repeating.\nConstraints:\n1 ≤ s.size() ≤ 10\n5",
+      "examples": [
+        "Input:\ns = \"geeksforgeeks\"\nOutput:\n'f'\nExplanation:\nIn the given string, 'f' is the first character in the string which does not repeat.",
+        "Input:\ns = \"racecar\"\nOutput:\n'e'\nExplanation:\nIn the given string, 'e' is the only character in the string which does not repeat.",
+        "Input:\ns = \"aabbccc\"\nOutput: '$'\nExplanation:\nAll the characters in the given string are repeating."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s.size() ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a string <strong>s</strong> consisting of <strong>lowercase </strong>English<strong> </strong>Letters. return the first non-repeating character in <strong>s</strong>. </span><span style=\"font-size: 14pt;\">If there is no non-repeating character, return <strong>'$'</strong>.<br /></span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>s = \"geeksforgeeks\"\n<strong>Output: </strong>'f'<strong>\nExplanation: </strong>In the given string, 'f' is the first character in the string which does not repeat.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-family: monospace; white-space: pre;\">Input: </strong>s = \"racecar\"<br /><strong>Output: </strong>'e'<br /><strong>Explanation: </strong>In the given string, 'e' is the only character in the string which does not repeat.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong style=\"font-family: monospace; white-space: pre;\">Input: </strong>s = \"aabbccc\"<br /><strong>Output: '$'</strong><br /><strong>Explanation: </strong>All the characters in the given string are repeating.</span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &le; s.size() &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1979
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/alone-in-couple5507/1",
+      "problem_name": "Party of Couples",
+      "slug": "alone-in-couple5507",
+      "difficulty": "Easy",
+      "accuracy": "50.5%",
+      "marks": 2,
+      "all_submissions": 85397,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Bit Magic",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Bit Magic",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/alone-in-couple/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/ola-interview-experience-set-11-internship/"
+      ],
+      "statement_text": "You are given an integer array\narr[]\nof size\nn,\nrepresenting n number of people in a party, each person is denoted by an integer. Couples are represented by the\nsame number\nie:\ntwo\npeople have the\nsame integer value\n, it means they are a\ncouple\n. Find out the\nonly\nsingle person\nin the party of couples.\nNote:\nIt is guarantee that there exist only one single person in the party.\nExamples :\nInput:\narr[] = [1, 2, 3, 2, 1]\nOutput:\n3\nExplaination:\nOnly the number 3 is single.\nInput:\narr[] = [1, 2, 3, 5, 3, 2, 1, 4, 5, 6, 6]\nOutput:\n4\nExplaination:\n4 is the only single.\nInput:\narr[] = [1, 1, 3, 3, 2]\nOutput:\n2",
+      "full_text": "You are given an integer array\narr[]\nof size\nn,\nrepresenting n number of people in a party, each person is denoted by an integer. Couples are represented by the\nsame number\nie:\ntwo\npeople have the\nsame integer value\n, it means they are a\ncouple\n. Find out the\nonly\nsingle person\nin the party of couples.\nNote:\nIt is guarantee that there exist only one single person in the party.\nExamples :\nInput:\narr[] = [1, 2, 3, 2, 1]\nOutput:\n3\nExplaination:\nOnly the number 3 is single.\nInput:\narr[] = [1, 2, 3, 5, 3, 2, 1, 4, 5, 6, 6]\nOutput:\n4\nExplaination:\n4 is the only single.\nInput:\narr[] = [1, 1, 3, 3, 2]\nOutput:\n2\nConstraints:\n1 ≤ arr.size() ≤ 10\n4\n1 ≤ arr[i] ≤ 10\n6",
+      "examples": [
+        "Input:\narr[] = [1, 2, 3, 2, 1]\nOutput:\n3\nExplaination:\nOnly the number 3 is single.",
+        "Input:\narr[] = [1, 2, 3, 5, 3, 2, 1, 4, 5, 6, 6]\nOutput:\n4\nExplaination:\n4 is the only single.",
+        "Input:\narr[] = [1, 1, 3, 3, 2]\nOutput:\n2"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 10\n4\n1 ≤ arr[i] ≤ 10\n6",
+      "question_html": "<p><span style=\"font-size: 18px;\">You are given an integer array <strong>arr[]</strong> of size <strong>n,</strong> representing n number of people in a party, each person is denoted by an integer. Couples are represented by the <strong>same number </strong>ie: <strong>two</strong> people have the <strong>same integer value</strong>, it means they are a <strong>couple</strong>. Find out the <strong>only</strong> <strong>single person</strong> in the party of couples.<br />Note:</span><strong><span style=\"font-size: 18px;\">&nbsp;</span></strong><span style=\"font-size: 18px;\">It is guarantee that there exist only one single person in the party.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [1, 2, 3, 2, 1]\n<strong>Output:</strong> 3\n<strong>Explaination:</strong> Only the number 3 is single.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [1, 2, 3, 5, 3, 2, 1, 4, 5, 6, 6] <br /><strong>Output: </strong>4 <br /><strong>Explaination:</strong> 4 is the only single.<br /></span></pre>\n<pre><strong>Input:</strong> arr[] = [1, 1, 3, 3, 2] <br /><strong>Output: </strong>2</pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 10<sup>4</sup><br />1 &le; arr[i] &le; 10<sup>6</sup></span></p>"
+    },
+    "qnum": 1980
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/search-in-a-matrix17201720/1",
+      "problem_name": "Search in a Row-Column Sorted",
+      "slug": "search-in-a-matrix17201720",
+      "difficulty": "Easy",
+      "accuracy": "41.62%",
+      "marks": 2,
+      "all_submissions": 200439,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&m =&!//!&mat[][] =&!//!&x =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&INTEGER_2D_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Oracle",
+          "Visa",
+          "Goldman Sachs",
+          "Directi",
+          "Adobe",
+          "SAP Labs",
+          "Groupon",
+          "InMobi",
+          "One97",
+          "Polycom",
+          "TinyOwl"
+        ],
+        "topic_tags": [
+          "Searching",
+          "Matrix",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Searching",
+        "Matrix",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Oracle",
+        "Visa",
+        "Goldman Sachs",
+        "Directi",
+        "Adobe",
+        "SAP Labs",
+        "Groupon",
+        "InMobi",
+        "One97",
+        "Polycom",
+        "TinyOwl"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/search-in-row-wise-and-column-wise-sorted-matrix/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-16-campus/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-8-hiring-drive-for-backend-engineer/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-for-internship/",
+        "https://www.geeksforgeeks.org/adobe-interview-experience-for-mts-1-2/"
+      ],
+      "statement_text": "Given a 2D integer matrix\nmat\n[][] of size\nn x m\n, where every row and column is sorted in increasing order and a number\nx\n,\nthe task is to find whether element\nx\nis present in the matrix.",
+      "full_text": "Given a 2D integer matrix\nmat\n[][] of size\nn x m\n, where every row and column is sorted in increasing order and a number\nx\n,\nthe task is to find whether element\nx\nis present in the matrix.\nExamples:\nInput\n: mat[][] = [[3, 30, 38],[20, 52, 54],[35, 60, 69]], x = 62\nOutput\n: false\nExplanation\n: 62 is not present in the matrix, so output is false.\nInput\n: mat[][] = [[18, 21, 27],[38, 55, 67]], x = 55\nOutput\n: true\nExplanation\n: 55 is present in the matrix.\nInput\n: mat[][] = [[1, 2, 3],[4, 5, 6],[7, 8, 9]], x = 3\nOutput\n: true\nExplanation\n: 3 is present in the matrix.\nConstraints\n:\n1 <= n, m <=1000\n1 <= mat[i][j] <= 10\n9\n1<= x <= 10\n9",
+      "examples": [
+        "Input\n: mat[][] = [[3, 30, 38],[20, 52, 54],[35, 60, 69]], x = 62\nOutput\n: false\nExplanation\n: 62 is not present in the matrix, so output is false.",
+        "Input\n: mat[][] = [[18, 21, 27],[38, 55, 67]], x = 55\nOutput\n: true\nExplanation\n: 55 is present in the matrix.",
+        "Input\n: mat[][] = [[1, 2, 3],[4, 5, 6],[7, 8, 9]], x = 3\nOutput\n: true\nExplanation\n: 3 is present in the matrix."
+      ],
+      "constraints_text": "Constraints\n:\n1 <= n, m <=1000\n1 <= mat[i][j] <= 10\n9\n1<= x <= 10\n9",
+      "question_html": "<p><span style=\"font-size: 14pt;\">Given a 2D integer matrix <strong>mat</strong>[][] of size <strong>n x m</strong>, where every row and column is sorted in increasing order and a number <strong>x</strong>,<strong> </strong>the task is to find whether element <strong>x</strong> is present in the matrix.</span></p>\n<p><strong><span style=\"font-size: 14pt;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[3, 30, 38],[20, 52, 54],[35, 60, 69]], x = 62\n<strong>Output</strong>: false\n<strong>Explanation</strong>: 62 is not present in the matrix, so output is false.<br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[18, 21, 27],[38, 55, 67]], x = 55\n<strong>Output</strong>: true\n<strong>Explanation</strong>: 55 is present in the matrix.</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input</strong>: mat[][] = [[1, 2, 3],[4, 5, 6],[7, 8, 9]], x = 3\n<strong>Output</strong>: true\n<strong>Explanation</strong>: 3 is present in the matrix.<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints</strong>:<br />1 &lt;= n, m &lt;=1000<br />1 &lt;= mat[i][j] &lt;= 10<sup>9 <br /></sup>1&lt;= x &lt;= 10<sup>9</sup></span></p>"
+    },
+    "qnum": 1981
+  },
+  {
+    "company": "Ola Cabs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Easy",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/pair-in-array-whose-sum-is-closest-to-x1124/1",
+      "problem_name": "Sum Pair closest to target",
+      "slug": "pair-in-array-whose-sum-is-closest-to-x1124",
+      "difficulty": "Easy",
+      "accuracy": "44.75%",
+      "marks": 2,
+      "all_submissions": 74831,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] = &!//!&target = ",
+        "datatype": "INTEGER_ARRAY&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Ola Cabs"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Ola Cabs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/2-sum-pair-sum-closest-to-target/",
+        "https://www.geeksforgeeks.org/given-sorted-array-number-x-find-pair-array-whose-sum-closest-x/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given an array\narr[]\nand a number\ntarget\n, find a pair of elements (a, b) in\narr[],\nwhere a ≤ b whose sum is closest to\ntarget.\nNote:\nReturn the pair in sorted order and if there are multiple such pairs return the pair with maximum absolute difference. If no such pair exists return an empty array.",
+      "full_text": "Given an array\narr[]\nand a number\ntarget\n, find a pair of elements (a, b) in\narr[],\nwhere a ≤ b whose sum is closest to\ntarget.\nNote:\nReturn the pair in sorted order and if there are multiple such pairs return the pair with maximum absolute difference. If no such pair exists return an empty array.\nExamples:\nInput:\narr[] = [10, 30, 20, 5], target = 25\nOutput:\n[5, 20]\nExplanation:\nAs 5 + 20 = 25 is closest to 25.\nInput:\narr[] = [5, 2, 7, 1, 4], target = 10\nOutput:\n[2, 7]\nExplanation:\nAs (4, 5), (2, 7) and (4, 7) both are closest to 10, but absolute difference of (4, 5) is 1, (2, 7) is 5 and (4, 7) is 3. Hence, [2, 7] has maximum absolute difference and closest to target.\nInput:\narr[] = [10], target = 10\nOutput:\n[]\nExplanation:\nAs the input array has only 1 element, return an empty array.\nConstraints:\n1 ≤ arr.size() ≤ 2*10\n5\n0 ≤ target ≤ 2*10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "examples": [
+        "Input:\narr[] = [10, 30, 20, 5], target = 25\nOutput:\n[5, 20]\nExplanation:\nAs 5 + 20 = 25 is closest to 25.",
+        "Input:\narr[] = [5, 2, 7, 1, 4], target = 10\nOutput:\n[2, 7]\nExplanation:\nAs (4, 5), (2, 7) and (4, 7) both are closest to 10, but absolute difference of (4, 5) is 1, (2, 7) is 5 and (4, 7) is 3. Hence, [2, 7] has maximum absolute difference and closest to target.",
+        "Input:\narr[] = [10], target = 10\nOutput:\n[]\nExplanation:\nAs the input array has only 1 element, return an empty array."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ arr.size() ≤ 2*10\n5\n0 ≤ target ≤ 2*10\n5\n0 ≤ arr[i] ≤ 10\n5",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr[]</strong> and a number <strong>target</strong>, find a pair of elements (a, b) in <strong>arr[],&nbsp;</strong>where a &le; b whose sum is closest to <strong>target.</strong><br /></span><strong><span style=\"font-size: 18px;\">Note:&nbsp;</span></strong><span style=\"font-size: 18px;\">Return the pair in sorted order and if there are multiple such pairs return the pair with maximum absolute difference. If no such pair exists return an empty array.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [10, 30, 20, 5], target = 25\n<strong>Output:</strong> [5, 20]\n<strong>Explanation:</strong> As 5 + 20 = 25 is closest to 25.\n</span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input:</strong> arr[] = [5, 2, 7, 1, 4], target = 10\n<strong>Output:</strong> [2, 7]\n<strong>Explanation:</strong> As (4, 5), (2, 7) and (4, 7) both are closest to 10, but absolute difference of (4, 5) is 1, (2, 7) is 5 and (4, 7) is 3. Hence, [2, 7] has maximum absolute difference and closest to target. </span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> arr[] = [10], target = 10\n<strong>Output:</strong> []\n<strong>Explanation:</strong> As the input array has only 1 element, return an empty array.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; arr.size() &le; 2*10<sup>5</sup><br />0 &le; target &le; 2*10<sup>5</sup><br />0 &le; arr[i] &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1982
+  }
+]

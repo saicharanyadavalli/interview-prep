@@ -1,0 +1,618 @@
+[
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/binary-tree-to-dll/1",
+      "problem_name": "Binary Tree to DLL",
+      "slug": "binary-tree-to-dll",
+      "difficulty": "Hard",
+      "accuracy": "53.36%",
+      "marks": 8,
+      "all_submissions": 168952,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[]",
+        "datatype": "BINARY_TREE_NODE"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Goldman Sachs",
+          "Salesforce"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Goldman Sachs",
+        "Salesforce"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/convert-binary-tree-to-doubly-linked-list-by-fixing-left-and-right-pointers/",
+        "https://www.geeksforgeeks.org/convert-binary-tree-to-doubly-linked-list-using-inorder-traversal/",
+        "https://www.geeksforgeeks.org/convert-given-binary-tree-to-doubly-linked-list-in-linear-time/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given a root of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the same node structure. The left and right pointers in the binary tree nodes should be used as prev and next pointers respectively in the resulting DLL .The DLL should be formed by performing an inorder traversal of the binary tree (i.e., Left → Root → Right).The first node in the inorder traversal (i.e., the leftmost node) should become the head of the DLL. Return the head of the resulting DLL.\nNote: h is the tree's height, and this space is used implicitly for the recursion stack.\n\nExamples:\n\nInput: root = [1, 2, 3]\nOutput: [2, 1, 3]\n\nExplanation: DLL would be 2<=>1<=>3\n\nInput:  root = [10, 20, 30, 40, 60]\nOutput: [40, 20, 60, 10, 30]\n\nExplanation: DLL would be 40<=>20<=>60<=>10<=>30.\n\nConstraints:\n1 ≤ Number of nodes ≤ 105\n0 ≤ Data of a node ≤ 105",
+      "full_text": "Given a root of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the same node structure. The left and right pointers in the binary tree nodes should be used as prev and next pointers respectively in the resulting DLL .The DLL should be formed by performing an inorder traversal of the binary tree (i.e., Left → Root → Right).The first node in the inorder traversal (i.e., the leftmost node) should become the head of the DLL. Return the head of the resulting DLL.\nNote: h is the tree's height, and this space is used implicitly for the recursion stack.\n\nExamples:\n\nInput: root = [1, 2, 3]\nOutput: [2, 1, 3]\n\nExplanation: DLL would be 2<=>1<=>3\n\nInput:  root = [10, 20, 30, 40, 60]\nOutput: [40, 20, 60, 10, 30]\n\nExplanation: DLL would be 40<=>20<=>60<=>10<=>30.\n\nConstraints:\n1 ≤ Number of nodes ≤ 105\n0 ≤ Data of a node ≤ 105",
+      "examples": [
+        "Input:\nroot\n=\n[1, 2, 3]\nOutput:\n[2, 1, 3]\nExplanation:\nDLL would be 2<=>1<=>3",
+        "Input:\nroot = [10, 20, 30, 40, 60]\nOutput:\n[40, 20, 60, 10, 30]\nExplanation:\nDLL would be 40<=>20<=>60<=>10<=>30."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ Number of nodes ≤ 10\n5\n0 ≤ Data of a node ≤ 10\n5",
+      "question_html": "<p data-pm-slice=\"0 0 []\">G<span style=\"font-size: 14pt;\">iven a <strong>root</strong> of binary tree (BT), convert it to a Doubly Linked List (DLL) in place using the <strong>same node</strong> structure. The<strong> left </strong>and <strong>right</strong> pointers in the binary tree nodes should be used as <strong>prev</strong> and <strong>next</strong> pointers respectively in the resulting DLL .The DLL should be formed by performing an <strong>inorder</strong> traversal of the binary tree (i.e., Left &rarr; Root &rarr; Right).The <strong>first node </strong>in the inorder traversal (i.e., the leftmost node) should become the <strong>head</strong> of the DLL. Return the <strong>head</strong> of the resulting DLL.<br /></span><span style=\"font-size: 14pt;\"><strong>Note: </strong>h&nbsp;is the tree's height, and this space is used implicitly for the recursion stack.</span></p>\n<p data-pm-slice=\"0 0 []\"><span style=\"font-size: 14pt;\"><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid0_1763203392.webp\" width=\"333\" height=\"266\" /></span></p>\n<p><span style=\"font-size: 12pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 12pt;\"><strong>Input: </strong>root<strong> = </strong>[1, 2, 3]\n<strong>Output: </strong>[2, 1, 3] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid3_1768475771.jpg\" width=\"245\" height=\"243\" /><br /><strong>Explanation:</strong> DLL would be 2&lt;=&gt;1&lt;=&gt;3</span></pre>\n<pre><span style=\"font-size: 12pt;\"><strong>Input:  </strong>root = [10, 20, 30, 40, 60]\n<strong>Output:</strong> [40, 20, 60, 10, 30] <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700144/Web/Other/blobid2_1763203489.webp\" width=\"286\" height=\"225\" /><strong><br />Explanation: </strong>DLL would be 40&lt;=&gt;20&lt;=&gt;60&lt;=&gt;10&lt;=&gt;30.</span></pre>\n<p><span style=\"font-size: 12pt;\"><strong>Constraints:</strong><br />1 &le; Number of nodes &le; 10<sup>5</sup><br />0 &le; Data of a node &le; 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1175
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/convex-hull2138/1",
+      "problem_name": "Convex Hull",
+      "slug": "convex-hull2138",
+      "difficulty": "Hard",
+      "accuracy": "14.07%",
+      "marks": 8,
+      "all_submissions": 12649,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n = &!//!&points[][] = ",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Morgan Stanley",
+          "Samsung",
+          "Ola Cabs",
+          "Goldman Sachs",
+          "Adobe"
+        ],
+        "topic_tags": [
+          "Mathematical",
+          "Divide and Conquer",
+          "Geometric",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Mathematical",
+        "Divide and Conquer",
+        "Geometric",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Morgan Stanley",
+        "Samsung",
+        "Ola Cabs",
+        "Goldman Sachs",
+        "Adobe"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/quickhull-algorithm-convex-hull/"
+      ],
+      "interview_links": [],
+      "statement_text": "You are given a 2D array\npoints[][]\n, where each element represents a point\n(x\ni\n, y\ni\n)\nin a\n2D plane\n. Your task is to find all the points that form the\nconvex hull\n— the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return\n-1\n.\nNote:\nConvex hull is the smallest\nconvex polygon\nthat contains a given set of points. It is the\nminimal boundary\nthat\nencloses\nall the points such that every line segment connecting any two points within the hull lies entirely\ninside\nor on the\nboundary\nof the polygon.\nYou can\nreturn\nthe points in any order, the driver code will print them in\nsorted order\nonly.",
+      "full_text": "You are given a 2D array\npoints[][]\n, where each element represents a point\n(x\ni\n, y\ni\n)\nin a\n2D plane\n. Your task is to find all the points that form the\nconvex hull\n— the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return\n-1\n.\nNote:\nConvex hull is the smallest\nconvex polygon\nthat contains a given set of points. It is the\nminimal boundary\nthat\nencloses\nall the points such that every line segment connecting any two points within the hull lies entirely\ninside\nor on the\nboundary\nof the polygon.\nYou can\nreturn\nthe points in any order, the driver code will print them in\nsorted order\nonly.\nExamples:\nInput:\npoints[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],\n[-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\nOutput:\n[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]\nExplanation:\nThe figure below shows the points of a convex polygon. These points define the boundary of the polygon.\nInput:\npoints[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\nOutput:\n[[-2, 1], [1, -2], [4, 4]]\nConstraints:\n1 <= points.size() <= 10\n4\n-10\n5\n<= x\ni\n, y\ni\n<= 10\n5",
+      "examples": [
+        "Input:\npoints[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],\n[-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\nOutput:\n[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]\nExplanation:\nThe figure below shows the points of a convex polygon. These points define the boundary of the polygon.",
+        "Input:\npoints[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\nOutput:\n[[-2, 1], [1, -2], [4, 4]]"
+      ],
+      "constraints_text": "Constraints:\n1 <= points.size() <= 10\n4\n-10\n5\n<= x\ni\n, y\ni\n<= 10\n5",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given a 2D array<strong> points[][]</strong>, where each element represents a point <strong>(x<sub>i</sub> , y<sub>i</sub>) </strong>in a <strong>2D plane</strong>. Your task is to find all the points that form the <strong>convex hull</strong> &mdash; the smallest convex polygon that encloses all the given points. If the given points are insufficient or do not form a valid convex polygon, return <strong>-1</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Note:</strong> Convex hull is the smallest <strong>convex polygon</strong> that contains a given set of points. It is the <strong>minimal boundary</strong> that <strong>encloses</strong> all the points such that every line segment connecting any two points within the hull lies entirely <strong>inside </strong>or on the <strong>boundary</strong> of the polygon.</span></p>\n<p><span style=\"font-size: 14pt;\">You can <strong>return</strong> the points in any order, the driver code will print them in <strong>sorted order </strong>only.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>points[][] = [[0, 0], [1, -4], [-1, -5], [-5, -3], [-3, -1],<br />                   [-1, -3], [-2, -2], [-1, -1], [-2, -1], [-1, 1]]\n<strong>Output: </strong>[[-5, -3], [-1, -5], [-1, 1], [0, 0], [1, -4]]<br /><strong>Explanation:</strong> The figure below shows the points of a convex polygon. These points define the boundary of the polygon.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/893675/Web/Other/blobid0_1746091555.jpg\" width=\"410\" height=\"362\" /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>points[][] = [[-2, 1], [4, 4], [1, -2], [1, 1], [2, 1]]\n<strong>Output: </strong>[[-2, 1], [1, -2], [4, 4]]<br /></span></pre>\n<p><span style=\"font-size: 14pt;\"><strong>Constraints:</strong><br />1 &lt;= points.size() &lt;= 10<sup>4</sup><br />-10<sup>5</sup> &lt;= x<sub>i</sub> , y<sub>i</sub> &lt;= 10<sup>5</sup></span></p>"
+    },
+    "qnum": 1176
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/edit-distance3702/1",
+      "problem_name": "Edit Distance",
+      "slug": "edit-distance3702",
+      "difficulty": "Hard",
+      "accuracy": "35.14%",
+      "marks": 8,
+      "all_submissions": 249449,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "s1 =&!//!&s2 =",
+        "datatype": "STRING&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Goldman Sachs",
+          "Google"
+        ],
+        "topic_tags": [
+          "Strings",
+          "Dynamic Programming",
+          "Data Structures",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Strings",
+        "Dynamic Programming",
+        "Data Structures",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Goldman Sachs",
+        "Google"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/edit-distance-dp-5/"
+      ],
+      "interview_links": [],
+      "statement_text": "Given two strings\ns1\nand\ns2.\nReturn the minimum number of operations required to convert\ns1\nto\ns2\n.\nThe possible operations are permitted:\nInsert\na character at any position of the string.\nRemove\nany character from the string.\nReplace\nany character from the string with any other character.",
+      "full_text": "Given two strings\ns1\nand\ns2.\nReturn the minimum number of operations required to convert\ns1\nto\ns2\n.\nThe possible operations are permitted:\nInsert\na character at any position of the string.\nRemove\nany character from the string.\nReplace\nany character from the string with any other character.\nExamples:\nInput:\ns1 = \"geek\", s2 = \"gesek\"\nOutput:\n1\nExplanation:\nOne operation is required, inserting 's' between two 'e' in s1.\nInput:\ns1 = \"gfg\", s2 = \"gfg\"\nOutput:\n0\nExplanation:\nBoth strings are same.\nInput:\ns1 = \"abcd\", s2 = \"bcfe\"\nOutput:\n3\nExplanation:\nWe can convert s1 into s2 by removing ‘a’, replacing ‘d’ with ‘f’ and inserting ‘e’ at the end.\nConstraints:\n1 ≤ s1.length(), s2.length() ≤\n10\n3\nBoth the strings are in lowercase.",
+      "examples": [
+        "Input:\ns1 = \"geek\", s2 = \"gesek\"\nOutput:\n1\nExplanation:\nOne operation is required, inserting 's' between two 'e' in s1.",
+        "Input:\ns1 = \"gfg\", s2 = \"gfg\"\nOutput:\n0\nExplanation:\nBoth strings are same.",
+        "Input:\ns1 = \"abcd\", s2 = \"bcfe\"\nOutput:\n3\nExplanation:\nWe can convert s1 into s2 by removing ‘a’, replacing ‘d’ with ‘f’ and inserting ‘e’ at the end."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ s1.length(), s2.length() ≤\n10\n3\nBoth the strings are in lowercase.",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given two strings <strong>s1</strong> and <strong>s2. </strong>Return the minimum number of operations required to convert <strong>s1 </strong>to <strong>s2</strong>.<br />The possible operations are permitted:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>Insert </strong>a character at any position of the string.</span></li>\n<li><span style=\"font-size: 18px;\"><strong>Remove </strong>any character from the string.</span></li>\n<li><span style=\"font-size: 18px;\"><strong>Replace </strong>any character from the string with any other character.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Examples:<br /></strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s1 = \"geek\", s2 = \"gesek\"\n<strong>Output:</strong>&nbsp;1\n<strong>Explanation: </strong>One operation is required, inserting 's' between two 'e' in s1.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong style=\"font-size: 18px;\">Input: </strong><span style=\"font-size: 18px;\">s1 = \"gfg\", s2 = \"gfg\"\n</span><strong style=\"font-size: 18px;\">Output: </strong><span style=\"font-size: 18px;\">0\n</span><strong style=\"font-size: 18px;\">Explanation: </strong><span style=\"font-size: 18px;\">Both strings are same.<br /></span></span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>s1 = \"abcd\", s2 = \"bcfe\"\n<strong>Output: </strong>3\n<strong>Explanation:</strong> </span><span style=\"font-size: 18px;\">We can convert s1 into s2 by removing &lsquo;a&rsquo;, replacing &lsquo;d&rsquo; with &lsquo;f&rsquo; and inserting &lsquo;e&rsquo; at the end. </span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; s1.length(), s2.length() &le; <span style=\"font-size: 18.6667px;\">10</span><sup>3</sup><br />Both the strings are in lowercase.</span></p>"
+    },
+    "qnum": 1177
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/reverse-a-linked-list-in-groups-of-given-size/1",
+      "problem_name": "Linked List Group Reverse",
+      "slug": "reverse-a-linked-list-in-groups-of-given-size",
+      "difficulty": "Hard",
+      "accuracy": "57.08%",
+      "marks": 8,
+      "all_submissions": 272606,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "head =&!//!&k =",
+        "datatype": "LINKED_LIST_NODE&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "VMWare",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "SAP Labs"
+        ],
+        "topic_tags": [
+          "Linked List",
+          "Data Structures",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Linked List",
+        "Data Structures",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Paytm",
+        "VMWare",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "SAP Labs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/reverse-a-linked-list-in-groups-of-given-size-iterative-approach/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-13-on-campus-for-internship-and-fte/",
+        "https://www.geeksforgeeks.org/vmware-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-4-walk-in-drive/",
+        "https://www.geeksforgeeks.org/paytm-interview-experience-set-9/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-4/",
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-for-sde-1-2-years-experienced/"
+      ],
+      "statement_text": "You are given the\nhead\nof a Singly linked list. You have to\nreverse\nevery\nk\nnode in the linked list and return the head of the modified list.\nNote:\nIf the number of nodes is not a multiple of\nk\nthen the left-out nodes at the end, should be considered as a group and must be\nreversed\n.",
+      "full_text": "You are given the\nhead\nof a Singly linked list. You have to\nreverse\nevery\nk\nnode in the linked list and return the head of the modified list.\nNote:\nIf the number of nodes is not a multiple of\nk\nthen the left-out nodes at the end, should be considered as a group and must be\nreversed\n.\nExamples:\nInput:\nk = 2,\nOutput:\n2 -> 1 -> 4 -> 3 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 2.\nInput:\nk = 4,\nOutput:\n4 -> 3 -> 2 -> 1 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 4.\nConstraints:\n1 ≤ size of linked list ≤ 10\n5\n0 ≤ node->data ≤ 10\n6\n1 ≤ k ≤ size of linked list",
+      "examples": [
+        "Input:\nk = 2,\nOutput:\n2 -> 1 -> 4 -> 3 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 2.",
+        "Input:\nk = 4,\nOutput:\n4 -> 3 -> 2 -> 1 -> 6 -> 5\nExplanation:\nLinked List is reversed in a group of size k = 4."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ size of linked list ≤ 10\n5\n0 ≤ node->data ≤ 10\n6\n1 ≤ k ≤ size of linked list",
+      "question_html": "<p><span style=\"font-size: 14pt;\">You are given the&nbsp;<strong>head</strong>&nbsp;of a Singly linked list. You have to&nbsp;<strong>reverse</strong>&nbsp;every&nbsp;<strong>k</strong>&nbsp;node in the linked list and return the head of the modified list.<br /></span><span style=\"font-size: 14pt;\"><strong>Note:</strong>&nbsp;If the number of nodes is not a multiple of&nbsp;<strong>k</strong>&nbsp;then the left-out nodes at the end, should be considered as a group and must be&nbsp;<strong>reversed</strong>.</span></p>\n<p><span style=\"font-size: 14pt;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>k = 2,<br /> &nbsp; <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid1_1765779381.png\" width=\"460\" height=\"53\" /><br /><strong>Output: </strong>2 -&gt; 1 -&gt; 4 -&gt; 3 -&gt; 6 -&gt; 5<br /><strong>Explanation:</strong> Linked List is reversed in a group of size k = 2.<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid3_1765779476.png\" width=\"451\" height=\"52\" /><br /><br /></span></pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>k = 4, &nbsp; <br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid2_1765779449.png\" width=\"443\" height=\"51\" /><br /><strong>Output: </strong>4 -&gt; 3 -&gt; 2 -&gt; 1 -&gt; 6 -&gt; 5<br /><strong>Explanation: </strong>Linked List is reversed in a group of size k = 4.<br /><br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700013/Web/Other/blobid4_1765779498.png\" width=\"451\" height=\"52\" /></span></pre>\n<div><span style=\"font-size: 14pt;\"><strong>Constraints:</strong></span></div>\n<div><span style=\"font-size: 14pt;\">1 &le; size of linked list &le; 10<sup>5</sup></span></div>\n<div><span style=\"font-size: 14pt;\">0 &le; node-&gt;data &le; 10<sup>6</sup></span><br /><span style=\"font-size: 14pt;\">1 &le; k &le;&nbsp;size of linked list&nbsp;</span></div>"
+    },
+    "qnum": 1178
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/lru-cache/1",
+      "problem_name": "LRU Cache",
+      "slug": "lru-cache",
+      "difficulty": "Hard",
+      "accuracy": "18.44%",
+      "marks": 8,
+      "all_submissions": 192488,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "capacity =&!//!&Q =&!//!&Queries =",
+        "datatype": "INTEGER&!//!&INTEGER&!//!&STRING"
+      },
+      "tags": {
+        "company_tags": [
+          "Paytm",
+          "Zoho",
+          "Flipkart",
+          "Morgan Stanley",
+          "Amazon",
+          "Microsoft",
+          "OYO Rooms",
+          "Samsung",
+          "Snapdeal",
+          "Hike",
+          "MakeMyTrip",
+          "Ola Cabs",
+          "Visa",
+          "Walmart",
+          "Goldman Sachs",
+          "Adobe",
+          "Google",
+          "Yahoo"
+        ],
+        "topic_tags": [
+          "doubly-linked-list",
+          "Hash",
+          "Design-Pattern",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "doubly-linked-list",
+        "Hash",
+        "Design-Pattern",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Paytm",
+        "Zoho",
+        "Flipkart",
+        "Morgan Stanley",
+        "Amazon",
+        "Microsoft",
+        "OYO Rooms",
+        "Samsung",
+        "Snapdeal",
+        "Hike",
+        "MakeMyTrip",
+        "Ola Cabs",
+        "Visa",
+        "Walmart",
+        "Goldman Sachs",
+        "Adobe",
+        "Google",
+        "Yahoo"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/design-a-data-structure-for-lru-cache/",
+        "https://www.geeksforgeeks.org/lru-cache-implementation-using-double-linked-lists/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-14-senior-android-developer/",
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/intuit-interview-experience-set-7-3-5-years-experienced/",
+        "https://www.geeksforgeeks.org/walmart-labs-interview-experience-set-3-on-campus/",
+        "https://www.geeksforgeeks.org/samsung-r-d-interview-questions/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-set-21/",
+        "https://www.geeksforgeeks.org/flipkart-interview-experience-for-sde-1/"
+      ],
+      "statement_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.",
+      "full_text": "Design a data structure that works like a LRU Cache. Here\ncap\ndenotes the capacity of the cache and\nQ\ndenotes the number of queries. Query can be\nof two types:\nPUT\nx\ny\n: sets the value of the key\nx\nwith value\ny\nGET\nx\n: gets the value of key\nx\nif present else returns\n-1\n.\nThe LRUCache class has two methods\nget\n() and\nput\n() which are defined as follows.\nget(key)\n: returns the value of the key if it already exists in the cache otherwise returns\n-1.\nput(key, value)\n: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.\nIn the\nconstructor\nof the class the capacity of the cache should be initialized.\nExamples:\nInput:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.\nInput:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.\nConstraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "examples": [
+        "Input:\ncap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\nOutput:\n[2]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.",
+        "Input:\ncap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]\nOutput:\n[5, -1]\nExplanation:\nCache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1->2, 2->3(the most recently used one is kept at the rightmost position)\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -> 3, 1 -> 5\n[\"PUT\", 4, 5] : 1 -> 5, 4 -> 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -> 5, 6 -> 7\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -> 7, 4->5)\n[\"PUT\", 1, 2] : 4 -> 5, 1 -> 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ cap ≤ 10\n3\n1 ≤ Q ≤ 10\n5\n1 ≤ x, y ≤ 10\n4",
+      "question_html": "<p><span style=\"font-size: 18px;\">Design a data structure that works like a LRU Cache. Here&nbsp;<strong>cap</strong>&nbsp;denotes&nbsp;the capacity of the cache and&nbsp;<strong>Q</strong>&nbsp;denotes the number of queries. Query can be&nbsp;</span><span style=\"font-size: 18px;\">of two types:</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>PUT</strong>&nbsp;<strong>x</strong>&nbsp;<strong>y</strong>: sets the value of the key&nbsp;<strong>x</strong>&nbsp;with value&nbsp;<strong>y</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>GET</strong>&nbsp;<strong>x</strong>: gets the value of key <strong>x</strong>&nbsp;if present else returns&nbsp;<strong>-1</strong>.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\">The LRUCache class has two methods&nbsp;<strong>get</strong>() and&nbsp;<strong>put</strong>() which are defined as follows.</span></p>\n<ol>\n<li><span style=\"font-size: 18px;\"><strong>get(key)</strong>: returns the value of the key if it&nbsp;already exists in the cache otherwise returns&nbsp;<strong>-1.</strong></span></li>\n<li><span style=\"font-size: 18px;\"><strong>put(key, value)</strong>: if the key is already present, update its value. If not present, add the key-value pair to the cache. If the cache reaches its capacity it should remove the least recently used item before inserting the new item.</span></li>\n<li><span style=\"font-size: 18px;\">In the&nbsp;<strong>constructor</strong>&nbsp;of the class the capacity of the cache should be initialized.</span></li>\n</ol>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 2, Queries = [[\"PUT\", 1, 2], [\"GET\", 1]]\n<strong>Output: </strong>[2]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the key-value pair (1, 2) in the cache,\n[\"GET\", 1] will print the value corresponding to Key 1, ie 2.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>cap = 2, Q = 8, Queries = [[\"PUT\", 1, 2], [\"PUT\", 2, 3], [\"PUT\", 1, 5], [\"PUT\", 4, 5], [\"PUT\", 6, 7], [\"GET\", 4], [\"PUT\", 1, 2], [\"GET\", 3]]<br /><strong>Output: </strong>[5, -1]<strong>\nExplanation: </strong>Cache Size = 2\n[\"PUT\", 1, 2] will insert the pair (1,2) in the cache.\n[\"PUT\", 2, 3] will insert the pair (2,3) in the cache: 1-&gt;2, 2-&gt;3(the most recently used one is kept at the rightmost position)&nbsp;\n[\"PUT\", 1, 5] will replace the value of 1 from 2 to 5 : 2 -&gt; 3, 1 -&gt; 5\n[\"PUT\", 4, 5] : 1 -&gt; 5, 4 -&gt; 5 (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"PUT\", 6, 7] : 4 -&gt; 5, 6 -&gt; 7&nbsp;\n[\"GET\", 4] : Prints 5 (The cache now looks like 6 -&gt; 7, 4-&gt;5)\n[\"PUT\", 1, 2] : 4 -&gt; 5, 1 -&gt; 2  (Cache size is 2, hence we delete the least recently used key-value pair)\n[\"GET\", 3] : No key value pair having key = 3. Hence, -1 is printed.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; cap &le; 10<sup>3</sup><br />1 &le; Q &le; 10<sup>5</sup><br />1 &le; x, y &le; 10<sup>4</sup></span></p>"
+    },
+    "qnum": 1179
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/minimum-cost-path3833/1",
+      "problem_name": "Minimum Cost Path",
+      "slug": "minimum-cost-path3833",
+      "difficulty": "Hard",
+      "accuracy": "26.99%",
+      "marks": 8,
+      "all_submissions": 130656,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "n =&!//!&grid[][] =",
+        "datatype": "INTEGER&!//!&INTEGER_2D_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "MakeMyTrip",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Graph",
+          "Data Structures",
+          "Algorithms",
+          "Dynamic Programming",
+          "Heap"
+        ]
+      },
+      "topic_tags": [
+        "Graph",
+        "Data Structures",
+        "Algorithms",
+        "Dynamic Programming",
+        "Heap"
+      ],
+      "company_tags": [
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "MakeMyTrip",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/minimum-cost-path-left-right-bottom-moves-allowed/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/makemytrip-interview-experience-set-2-campus/",
+        "https://www.geeksforgeeks.org/samsung-interview-experience-through-co-cubes-2019/"
+      ],
+      "statement_text": "Given a square grid of size N, each cell of which contains an integer cost that represents a cost to traverse through that cell, we need to find a path from the top left cell to the bottom right cell by which the total cost incurred is minimum.\nFrom the cell (i,j) we can go (i,j-1), (i, j+1), (i-1, j), (i+1, j).\n\nExamples :\n\nInput: grid = [[9,4,9,9],\n               [6,7,6,4],\n               [8,3,3,7],\n               [7,4,9,10]]\nOutput: 43\nExplanation: The minimum cost is-\n9 + 4 + 7 + 3 + 3 + 7 + 10 = 43.\n\nInput: grid = [[4,4],\n               [3,7]]\nOutput: 14\nExplanation: The minimum cost is- 4 + 3 + 7 = 14.\n\nConstraints:\n1 ≤ n ≤ 500\n1 ≤ cost of cells ≤ 500",
+      "full_text": "Given a square grid of size N, each cell of which contains an integer cost that represents a cost to traverse through that cell, we need to find a path from the top left cell to the bottom right cell by which the total cost incurred is minimum.\nFrom the cell (i,j) we can go (i,j-1), (i, j+1), (i-1, j), (i+1, j).\n\nExamples :\n\nInput: grid = [[9,4,9,9],\n               [6,7,6,4],\n               [8,3,3,7],\n               [7,4,9,10]]\nOutput: 43\nExplanation: The minimum cost is-\n9 + 4 + 7 + 3 + 3 + 7 + 10 = 43.\n\nInput: grid = [[4,4],\n               [3,7]]\nOutput: 14\nExplanation: The minimum cost is- 4 + 3 + 7 = 14.\n\nConstraints:\n1 ≤ n ≤ 500\n1 ≤ cost of cells ≤ 500",
+      "examples": [
+        "Input:\ngrid = [[9,4,9,9],\n[6,7,6,4],\n[8,3,3,7],\n[7,4,9,10]]\nOutput:\n43\nExplanation:\nThe minimum cost is-\n9 + 4 + 7 + 3 + 3 + 7 + 10 = 43.",
+        "Input:\ngrid = [[4,4],\n[3,7]]\nOutput:\n14\nExplanation:\nThe minimum cost is- 4 + 3 + 7 = 14.",
+        "Constraints:\n1 ≤ n ≤ 500\n1 ≤ cost of cells ≤ 500"
+      ],
+      "constraints_text": "Constraints:\n1 ≤ n ≤ 500\n1 ≤ cost of cells ≤ 500",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a square <strong>grid </strong>of size <strong>N</strong>, each cell of which contains an integer cost that represents a cost to traverse through that cell, we need to find a <strong>path</strong> from the <strong>top</strong> <strong>left</strong> cell to the <strong>bottom</strong> <strong>right</strong> cell by which the total cost incurred is <strong>minimum</strong>.<br />From the cell (i,j) we can go (i,j-1), (i, j+1), (i-1, j), (i+1, j). </span>&nbsp;</p>\n<p><span style=\"font-size: 18px;\"><strong>Examples :</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>grid = [[9,4,9,9],<br />               [6,7,6,4],<br />               [8,3,3,7],<br />               [7,4,9,10]]\n<strong>Output: </strong>43\n<strong>Explanation: </strong>The minimum cost is-\n9 + 4 + 7 + 3 + 3 + 7 + 10 = 43.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>grid = [[4,4],<br />               [3,7]]\n<strong>Output: </strong>14\n<strong>Explanation: </strong>The minimum cost is- 4 + 3 + 7 = 14.</span>\n</pre>\n<pre><strong><span style=\"font-size: 18px;\">Constraints:</span></strong><br /><span style=\"font-size: 18px;\">1 &le; n &le; 500<br />1 &le; cost of cells &le; 500</span></pre>"
+    },
+    "qnum": 1180
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/nodes-at-given-distance-in-binary-tree/1",
+      "problem_name": "Nodes at given distance in binary tree",
+      "slug": "nodes-at-given-distance-in-binary-tree",
+      "difficulty": "Hard",
+      "accuracy": "32.36%",
+      "marks": 8,
+      "all_submissions": 88210,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "root[] =&!//!&target =&!//!&k =",
+        "datatype": "BINARY_TREE_NODE&!//!&INTEGER&!//!&INTEGER"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Accolite",
+          "Amazon",
+          "Microsoft",
+          "Samsung",
+          "Hike",
+          "Ola Cabs",
+          "Walmart",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Tree",
+          "Data Structures"
+        ]
+      },
+      "topic_tags": [
+        "Tree",
+        "Data Structures"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Accolite",
+        "Amazon",
+        "Microsoft",
+        "Samsung",
+        "Hike",
+        "Ola Cabs",
+        "Walmart",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/print-nodes-distance-k-given-node-binary-tree/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/hike-interview-experience-set-5/",
+        "https://www.geeksforgeeks.org/ola-cabs-interview-experience-set-3/",
+        "https://www.geeksforgeeks.org/samsung-rnd-bangalore-interview-2018/"
+      ],
+      "statement_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "full_text": "Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.\nNote:\n\nYou have to return the list in sorted order.\n\nThe tree will not contain duplicate values.\n\nExamples:\n\nInput: root = [1, 2, 3, 4, 5], target = 2, k = 2\n\nOutput: [3]\nExplanation: Nodes at a distance 2 from the given node 2 is 3.\n\nInput: root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\n\nOutput: [1, 6, 7]\nExplanation: Nodes at a distance 1 from the given target node 3 are 1, 6 & 7.\n\nConstraints:\n1 ≤ number of nodes ≤ 106\n1 ≤  node->data ≤ 109\n1 ≤ target ≤ 109\n1 ≤ k ≤ 20",
+      "examples": [
+        "Input:\nroot = [1, 2, 3, 4, 5], target = 2, k = 2\nOutput:\n[3]\nExplanation:\nNodes at a distance 2 from the given node 2 is 3.",
+        "Input:\nroot = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1\nOutput:\n[1, 6, 7]\nExplanation:\nNodes at a distance 1 from the given target node 3 are 1, 6 & 7."
+      ],
+      "constraints_text": "Constraints:\n1 ≤ number of nodes ≤ 10\n6\n1 ≤  node->data ≤ 10\n9\n1 ≤ target ≤ 10\n9\n1 ≤ k ≤ 20",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given a binary tree, a target node in the binary tree, and an integer value k, find all the nodes that are at a distance k from the given target node. No parent pointers are available.<br /><strong>Note</strong>: </span></p>\n<ul>\n<li><span style=\"font-size: 18px;\">You have to return the list in sorted order.</span></li>\n<li><span style=\"font-size: 18px;\">The tree will <strong>not </strong>contain <strong>duplicate </strong>values.</span></li>\n</ul>\n<p><strong><span style=\"font-size: 18px;\">Examples:</span></strong></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input:</strong> root = [1, 2, 3, 4, 5], target = 2, k = 2   \n</span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid0_1733895958.png\" width=\"317\" height=\"283\" />\n<span style=\"font-size: 18px;\"><strong>Output:</strong> [3]</span>\n<span style=\"font-size: 18px;\"><strong>Explanation: </strong>Nodes at a distance 2 from the given node 2 is 3.</span>\n</pre>\n<pre><span style=\"font-size: 14pt;\"><strong>Input: </strong>root = [1, 2, 3, 4, 5, 6, 7], target = 3, k = 1<br /><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/700546/Web/Other/blobid1_1733896181.png\" width=\"324\" height=\"289\" />\n</span><span style=\"font-size: 18px;\"><span style=\"font-size: 14pt;\"><strong>Output:</strong> [1, 6, 7]<br /><strong style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\">Explanation:</strong><span style=\"font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;\"> Nodes at a distance 1 from the given target node 3 are 1, 6 &amp; 7.</span></span></span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 &le; number of nodes &le; 10<sup>6</sup><br />1 &le;&nbsp; node-&gt;data &le; 10<sup>9</sup><br />1 &le; target &le; 10<sup>9</sup><br />1 &le; k &le; 20</span></p>"
+    },
+    "qnum": 1181
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/number-formation3506/1",
+      "problem_name": "Number Formation",
+      "slug": "number-formation3506",
+      "difficulty": "Hard",
+      "accuracy": "46.1%",
+      "marks": 8,
+      "all_submissions": 17941,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {},
+      "tags": {
+        "company_tags": [
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Dynamic Programming",
+          "Algorithms"
+        ]
+      },
+      "topic_tags": [
+        "Dynamic Programming",
+        "Algorithms"
+      ],
+      "company_tags": [
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/sum-of-all-numbers-formed-having-4-atmost-x-times-5-atmost-y-times-and-6-atmost-z-times/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/goldman-sachs-interview-experience-set-20-campus-analyst-profile/?ref=rp"
+      ],
+      "statement_text": "Given three integers\nx, y,\nand\nz,\nthe task is to find the sum of all the numbers formed by\nhaving 4 at most x times, having 5 at most y times, and having 6 at most z times as a digit.\nNote:\nOutput the sum modulo 10\n9\n+7.\nExample 1:\nInput\n: X = 1, Y = 1, Z = 1\nOutput:\n3675\nExplanation\n: 4 + 5 + 6 + 45 + 54 + 56\n+ 65 + 46 + 64 + 456 + 465\n+ 546 + 564 + 645 + 654 = 3675\nExample 2:\nInput:\nX = 0, Y = 0, Z = 0\nOutput:\n0\nExplanation\n: No number can be formed\nYour Task:\nYou don't need to read input or print anything. Complete the function\ngetSum\n()\nwhich takes\nX, Y\nand\nZ\nas input parameters and returns the integer value\nExpected Time Complexity:\nO(\nX*Y*Z\n)\nExpected Auxiliary Space:\nO(\nX*Y*Z\n)",
+      "full_text": "Given three integers\nx, y,\nand\nz,\nthe task is to find the sum of all the numbers formed by\nhaving 4 at most x times, having 5 at most y times, and having 6 at most z times as a digit.\nNote:\nOutput the sum modulo 10\n9\n+7.\nExample 1:\nInput\n: X = 1, Y = 1, Z = 1\nOutput:\n3675\nExplanation\n: 4 + 5 + 6 + 45 + 54 + 56\n+ 65 + 46 + 64 + 456 + 465\n+ 546 + 564 + 645 + 654 = 3675\nExample 2:\nInput:\nX = 0, Y = 0, Z = 0\nOutput:\n0\nExplanation\n: No number can be formed\nYour Task:\nYou don't need to read input or print anything. Complete the function\ngetSum\n()\nwhich takes\nX, Y\nand\nZ\nas input parameters and returns the integer value\nExpected Time Complexity:\nO(\nX*Y*Z\n)\nExpected Auxiliary Space:\nO(\nX*Y*Z\n)\nConstraints:\n0 ≤\nX, Y, Z\n≤ 60",
+      "examples": [
+        "Input\n: X = 1, Y = 1, Z = 1\nOutput:\n3675\nExplanation\n: 4 + 5 + 6 + 45 + 54 + 56\n+ 65 + 46 + 64 + 456 + 465\n+ 546 + 564 + 645 + 654 = 3675",
+        "Input:\nX = 0, Y = 0, Z = 0\nOutput:\n0\nExplanation\n: No number can be formed"
+      ],
+      "constraints_text": "Constraints:\n0 ≤\nX, Y, Z\n≤ 60",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given three integers <strong>x, y,</strong> and <strong>z,</strong> the task is to find the sum of all the numbers formed by&nbsp;<br />having 4 at most x times, having 5 at most y times, and having 6 at most z times as a digit.</span></p>\n<p><span style=\"font-size: 20px;\"><strong>Note: </strong></span><span style=\"font-size: 18px;\">Output&nbsp;the sum modulo 10<sup>9</sup>+7.</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Example 1:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input</strong>: X = 1, Y = 1, Z = 1 \n<strong>Output:</strong> 3675</span>\n<span style=\"font-size: 18px;\"><strong>Explanation</strong>: 4 + 5 + 6 + 45 + 54 + 56 \n+ 65 + 46 + 64 + 456 + 465 \n+ 546 + 564 + 645 + 654 = 3675</span></pre>\n<div><span style=\"font-size: 18px;\"><strong>Example 2:</strong></span></div>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>X = 0, Y = 0, Z = 0\n<strong>Output: </strong>0\n<strong>Explanation</strong>: No number can be formed</span></pre>\n<p><br /><span style=\"font-size: 18px;\"><strong>Your Task:&nbsp;&nbsp;</strong><br />You don't need to read input or print anything. Complete the function <strong><code>getSum</code>()&nbsp;</strong>which takes <strong>X, Y</strong> and <strong>Z </strong>as input parameters and returns the integer value<br /><br /><strong>Expected Time Complexity:</strong> O(<strong>X*Y*Z</strong>)<br /><strong>Expected Auxiliary Space:</strong> O(<strong>X*Y*Z</strong>)<br /><br /><strong>Constraints:</strong><br />0 &le; <strong>X, Y, Z</strong> &le; 60</span></p>"
+    },
+    "qnum": 1182
+  },
+  {
+    "company": "Goldman Sachs",
+    "company_explore_url": "",
+    "stage2_difficulty": "Hard",
+    "problem_page": {
+      "problem_url": "https://www.geeksforgeeks.org/problems/trapping-rain-water-1587115621/1",
+      "problem_name": "Trapping Rain Water",
+      "slug": "trapping-rain-water-1587115621",
+      "difficulty": "Hard",
+      "accuracy": "33.14%",
+      "marks": 8,
+      "all_submissions": 510338,
+      "problem_type": "Function",
+      "visibility": "public",
+      "input_format": {
+        "arguments": "arr[] =",
+        "datatype": "INTEGER_ARRAY"
+      },
+      "tags": {
+        "company_tags": [
+          "Flipkart",
+          "Amazon",
+          "Microsoft",
+          "Google",
+          "Goldman Sachs"
+        ],
+        "topic_tags": [
+          "Arrays",
+          "Data Structures",
+          "Algorithms",
+          "Stack",
+          "two-pointer-algorithm"
+        ]
+      },
+      "topic_tags": [
+        "Arrays",
+        "Data Structures",
+        "Algorithms",
+        "Stack",
+        "two-pointer-algorithm"
+      ],
+      "company_tags": [
+        "Flipkart",
+        "Amazon",
+        "Microsoft",
+        "Google",
+        "Goldman Sachs"
+      ],
+      "article_list": [
+        "https://www.geeksforgeeks.org/trapping-rain-water/"
+      ],
+      "interview_links": [
+        "https://www.geeksforgeeks.org/payu-iinterview-on-campus/",
+        "https://www.geeksforgeeks.org/accolite-interview-experience-set-13-on-campus-for-internship-and-fte/",
+        "https://www.geeksforgeeks.org/amazon-interview-experience-219-on-campus/"
+      ],
+      "statement_text": "Given an array\narr[]\nwith non-negative integers representing the height of blocks. If the width of each block is 1, compute how much water can be trapped between the blocks during the rainy season.",
+      "full_text": "Given an array\narr[]\nwith non-negative integers representing the height of blocks. If the width of each block is 1, compute how much water can be trapped between the blocks during the rainy season.\nExamples:\nInput:\narr[] = [3, 0, 1, 0, 4, 0, 2]\nOutput:\n10\nExplanation:\nTotal water trapped = 0 + 3 + 2 + 3 + 0 + 2 + 0 = 10 units.\nInput:\narr[] = [3, 0, 2, 0, 4]\nOutput:\n7\nExplanation:\nTotal water trapped = 0 + 3 + 1 + 3 + 0 = 7 units.\nInput:\narr[] = [1, 2, 3, 4]\nOutput:\n0\nExplanation:\nWe cannot trap water as there is no height bound on both sides.\nInput:\narr[] = [2, 1, 5, 3, 1, 0, 4]\nOutput:\n9\nExplanation:\nTotal water trapped = 0 + 1 + 0 + 1 + 3 + 4 + 0 = 9 units.\nConstraints:\n1\n<\narr.size()\n<\n10\n5\n0\n<\narr[i]\n<\n10\n3",
+      "examples": [
+        "Input:\narr[] = [3, 0, 1, 0, 4, 0, 2]\nOutput:\n10\nExplanation:\nTotal water trapped = 0 + 3 + 2 + 3 + 0 + 2 + 0 = 10 units.",
+        "Input:\narr[] = [3, 0, 2, 0, 4]\nOutput:\n7\nExplanation:\nTotal water trapped = 0 + 3 + 1 + 3 + 0 = 7 units.",
+        "Input:\narr[] = [1, 2, 3, 4]\nOutput:\n0\nExplanation:\nWe cannot trap water as there is no height bound on both sides.",
+        "Input:\narr[] = [2, 1, 5, 3, 1, 0, 4]\nOutput:\n9\nExplanation:\nTotal water trapped = 0 + 1 + 0 + 1 + 3 + 4 + 0 = 9 units."
+      ],
+      "constraints_text": "Constraints:\n1\n<\narr.size()\n<\n10\n5\n0\n<\narr[i]\n<\n10\n3",
+      "question_html": "<p><span style=\"font-size: 18px;\">Given an array <strong>arr[] </strong>with non-negative integers representing the height of blocks. If the width of each block is 1, compute how much water can be trapped between the blocks during the rainy season.&nbsp;</span></p>\n<p><span style=\"font-size: 18px;\"><strong>Examples:</strong></span></p>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [3, 0, 1, 0, 4, 0, 2]\n<strong>Output: </strong>10<strong>\nExplanation: </strong>Total water trapped = 0 + 3 + 2 + 3 + 0 + 2 + 0 = 10 units.<br /></span><img src=\"https://media.geeksforgeeks.org/img-practice/prod/addEditProblem/701211/Web/Other/blobid0_1741784862.png\" alt=\"\" /></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [3, 0, 2, 0, 4]\n<strong>Output: </strong>7<strong>\nExplanation: </strong>Total water trapped = 0 + 3 + 1 + 3 + 0 = 7 units.</span>\n</pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [1, 2, 3, 4]\n<strong>Output: </strong>0<strong>\nExplanation: </strong>We cannot trap water as there is no height bound on both sides.</span></pre>\n<pre><span style=\"font-size: 18px;\"><strong>Input: </strong>arr[] = [2, 1, 5, 3, 1, 0, 4]\n<strong>Output: </strong>9<strong>\nExplanation: </strong>Total water trapped = 0 + 1 + 0 + 1 + 3 + 4 + 0 = 9 units.</span></pre>\n<p><span style=\"font-size: 18px;\"><strong>Constraints:</strong><br />1 <u>&lt;</u> arr.size() <u>&lt;</u> 10<sup>5</sup><br />0 <u>&lt;</u> arr[i] <u>&lt;</u> 10<sup>3</sup></span></p>"
+    },
+    "qnum": 1183
+  }
+]
