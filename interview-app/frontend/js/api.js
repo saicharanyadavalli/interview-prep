@@ -128,6 +128,7 @@ const API = {
   async getAllQuestionsCatalog(options = {}) {
     const params = new URLSearchParams();
     if (options.q) params.set("q", String(options.q));
+    if (options.solved) params.set("solved", String(options.solved));
     this._appendQuestionFilters(params, options.filters || {});
     if (Number.isFinite(Number(options.offset))) params.set("offset", String(Number(options.offset)));
     if (Number.isFinite(Number(options.limit))) params.set("limit", String(Number(options.limit)));

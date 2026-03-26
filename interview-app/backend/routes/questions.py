@@ -99,6 +99,40 @@ def _load_user_status_map(user_id: str, qnums: list[int]) -> dict[int, str]:
     return result
 
 
+def _load_solved_qnums(user_id: str) -> set[int]:
+    if not user_id:
+        return set()
+
+    supabase = get_supabase_client()
+    try:
+        try:
+            rows = (
+                supabase.table("user_progress")
+                .select("qnum,status,outcome")
+                .eq("user_id", user_id)
+                .execute()
+            ).data or []
+        except Exception:
+            rows = (
+                supabase.table("user_progress")
+                .select("qnum,status")
+                .eq("user_id", user_id)
+                .execute()
+            ).data or []
+    except Exception:
+        return set()
+
+    return {
+        int(row.get("qnum", 0) or 0)
+        for row in rows
+        if int(row.get("qnum", 0) or 0) > 0
+        and (
+            str(row.get("outcome", "")).strip().lower() == "solved"
+            or str(row.get("status", "")).strip().lower() in {"good", "strong"}
+        )
+    }
+
+
 def _condition_match(field_value: str | set[str], operator: str, expected: str) -> bool:
     if isinstance(field_value, set):
         contains = expected in field_value
@@ -313,6 +347,7 @@ def all_questions(
 @router.get("/catalog")
 def all_questions_catalog(
     q: Optional[str] = Query(None, description="Search by question/company/difficulty/tags"),
+    solved: str = Query("all", pattern="^(all|solved|unsolved)$"),
     status: Optional[str] = Query(None, description="Status filter, supports !value for is-not"),
     difficulty: Optional[str] = Query(None, description="Difficulty filter, supports !value for is-not"),
     company: Optional[str] = Query(None, description="Company filter, supports !value for is-not"),
@@ -324,7 +359,26 @@ def all_questions_catalog(
 ):
     """Return all questions across all companies and difficulties."""
     questions = get_all_questions_catalog()
-    filtered = _apply_catalog_search(questions, q)
+
+    if solved != "all" and not current_user:
+        raise HTTPException(status_code=401, detail="Authentication required for solved filter.")
+
+    solved_qnums: set[int] = set()
+    if current_user:
+        solved_qnums = _load_solved_qnums(current_user["id"])
+
+    enriched = []
+    for question_row in questions:
+        qnum = int(question_row.get("qnum", 0) or 0)
+        related_qnums = [int(v) for v in (question_row.get("related_qnums") or []) if int(v or 0) > 0]
+        candidate_qnums = related_qnums if related_qnums else ([qnum] if qnum > 0 else [])
+        item = dict(question_row)
+        is_solved = any(candidate in solved_qnums for candidate in candidate_qnums)
+        item["solved"] = 1 if is_solved else 0
+        item["solved_label"] = "Solved" if is_solved else "Not Solved"
+        enriched.append(item)
+
+    filtered = _apply_catalog_search(enriched, q)
 
     status_tokens = _parse_filter_tokens(status)
     if status_tokens and not current_user:
@@ -344,6 +398,11 @@ def all_questions_catalog(
         match_type=match,
         status_map=status_map,
     )
+
+    if solved == "solved":
+        filtered = [item for item in filtered if int(item.get("solved", 0) or 0) == 1]
+    elif solved == "unsolved":
+        filtered = [item for item in filtered if int(item.get("solved", 0) or 0) == 0]
 
     paginated = _apply_pagination(filtered, offset, limit)
     return {
@@ -369,34 +428,7 @@ def all_questions_catalog_user(
 ):
     """Return global catalog with DB-backed solved status for current user."""
     questions = get_all_questions_catalog()
-    supabase = get_supabase_client()
-
-    try:
-        try:
-            progress_rows = (
-                supabase.table("user_progress")
-                .select("qnum,status,outcome")
-                .eq("user_id", current_user["id"])
-                .execute()
-            ).data or []
-        except Exception:
-            progress_rows = (
-                supabase.table("user_progress")
-                .select("qnum,status")
-                .eq("user_id", current_user["id"])
-                .execute()
-            ).data or []
-        solved_qnums = {
-            int(r.get("qnum", 0))
-            for r in progress_rows
-            if int(r.get("qnum", 0) or 0) > 0
-            and (
-                str(r.get("outcome", "")).lower() == "solved"
-                or str(r.get("status", "")).lower() in {"good", "strong"}
-            )
-        }
-    except Exception:
-        solved_qnums = set()
+    solved_qnums = _load_solved_qnums(current_user["id"])
 
     enriched = []
     for question_row in questions:
@@ -410,6 +442,8 @@ def all_questions_catalog_user(
         enriched.append(item)
 
     filtered = _apply_catalog_search(enriched, q)
+    status_qnums = [int(row.get("qnum", 0) or 0) for row in filtered if int(row.get("qnum", 0) or 0) > 0]
+    status_map = _load_user_status_map(current_user["id"], status_qnums)
     filtered = _filter_questions_rows(
         filtered,
         status_tokens=_parse_filter_tokens(status),
@@ -417,10 +451,7 @@ def all_questions_catalog_user(
         topic_tokens=_parse_filter_tokens(topic),
         company_tokens=_parse_filter_tokens(company),
         match_type=match,
-        status_map=_load_user_status_map(
-            current_user["id"],
-            [int(row.get("qnum", 0) or 0) for row in progress_rows if int(row.get("qnum", 0) or 0) > 0],
-        ),
+        status_map=status_map,
     )
 
     if solved == "solved":

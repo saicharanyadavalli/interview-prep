@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let topicsHydrated = false;
   const PAGE_SIZE = 100;
   const UI_STATE_KEY = "questionsPageUiStateV1";
-  const PAGE_CACHE_KEY = "questionsPageListCacheV1";
+  const PAGE_CACHE_KEY = "questionsPageListCacheV2";
   const CACHE_TTL_MS = 15 * 60 * 1000;
 
   const listState = {
