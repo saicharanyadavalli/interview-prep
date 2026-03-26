@@ -165,6 +165,12 @@ def _dedupe_catalog_entries(rows: list[dict]) -> list[dict]:
         key = _catalog_identity(row)
         qnum = int(row.get("qnum", 0) or 0)
         companies = set(_normalize_companies(row.get("companies", []) or []))
+        company_tags = set(_normalize_companies(row.get("company_tags", []) or []))
+        topic_tags = {
+            str(value).strip().lower()
+            for value in (row.get("topic_tags", []) or [])
+            if str(value).strip()
+        }
         fallback_company = str(row.get("company", "")).strip()
         if fallback_company and not _is_unknown_company(fallback_company):
             companies.add(fallback_company)
@@ -173,11 +179,15 @@ def _dedupe_catalog_entries(rows: list[dict]) -> list[dict]:
         if existing is None:
             merged = dict(row)
             merged["companies"] = set(companies)
+            merged["company_tags"] = set(company_tags)
+            merged["topic_tags"] = set(topic_tags)
             merged["related_qnums"] = set([qnum] if qnum > 0 else [])
             grouped[key] = merged
             continue
 
         existing["companies"].update(companies)
+        existing["company_tags"].update(company_tags)
+        existing["topic_tags"].update(topic_tags)
         if qnum > 0:
             existing["related_qnums"].add(qnum)
 
@@ -202,6 +212,8 @@ def _dedupe_catalog_entries(rows: list[dict]) -> list[dict]:
         extra_company_count = max(0, company_count - 1)
 
         merged["companies"] = companies_sorted
+        merged["company_tags"] = sorted({str(v) for v in merged.get("company_tags", set()) if str(v).strip()})
+        merged["topic_tags"] = sorted({str(v) for v in merged.get("topic_tags", set()) if str(v).strip()})
         merged["company"] = primary_company
         merged["company_count"] = company_count
         merged["extra_company_count"] = extra_company_count

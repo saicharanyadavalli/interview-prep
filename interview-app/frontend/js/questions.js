@@ -42,6 +42,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     "Zoho",
   ];
 
+  const COMPANY_LABEL_BY_KEY = COMPANY_FILTER_OPTIONS.reduce((map, company) => {
+    map[String(company).trim().toLowerCase()] = String(company).trim();
+    return map;
+  }, {});
+
   const user = await initSidebar("questions", { requireLogin: true });
   if (!user) {
     return;
@@ -242,11 +247,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function createQuestionCard(q) {
+  function getIncludedCompanyFilterTokens() {
+    const filters = getFiltersPayload();
+    const tokens = Array.isArray(filters.company) ? filters.company : [];
+    return tokens
+      .map((token) => String(token || "").trim().toLowerCase())
+      .filter((token) => token && !token.startsWith("!"));
+  }
+
+  function getCompanyBadgeText(question, includedCompanyTokens) {
+    const fallback = String(question.company_display || question.company || "Unknown");
+    if (!includedCompanyTokens.length) {
+      return fallback;
+    }
+
+    const companyTagSet = new Set(
+      (Array.isArray(question.company_tags) ? question.company_tags : [])
+        .map((item) => String(item || "").trim().toLowerCase())
+        .filter(Boolean)
+    );
+
+    const matched = includedCompanyTokens.filter((token) => companyTagSet.has(token));
+    if (!matched.length) {
+      return fallback;
+    }
+
+    const firstLabel = COMPANY_LABEL_BY_KEY[matched[0]] || titleCase(matched[0]);
+    if (matched.length === 1) {
+      return firstLabel;
+    }
+
+    return `${firstLabel} +${matched.length - 1}`;
+  }
+
+  function createQuestionCard(q, includedCompanyTokens) {
     const solved = Number(q.solved || 0) === 1;
     const solvedLabel = solved ? "Solved" : "Not Solved";
     const difficulty = titleCase(String(q.difficulty || "Unknown"));
-    const company = String(q.company_display || q.company || "Unknown");
+    const company = getCompanyBadgeText(q, includedCompanyTokens);
 
     const card = document.createElement("div");
     card.className = "q-browse-item";
@@ -275,6 +313,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function appendRows(rows) {
     if (!questionsList) return;
+    const includedCompanyTokens = getIncludedCompanyFilterTokens();
 
     const status = document.getElementById("qListInlineStatus");
     if (status) status.remove();
@@ -290,7 +329,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
 
     rows.forEach((row) => {
-      questionsList.appendChild(createQuestionCard(row));
+      questionsList.appendChild(createQuestionCard(row, includedCompanyTokens));
     });
 
     if (listState.hasMore) {
