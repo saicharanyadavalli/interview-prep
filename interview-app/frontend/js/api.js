@@ -97,8 +97,8 @@ const API = {
     const response = await fetch(url, { ...options, headers });
 
     if (response.status === 401) {
-      if (!window.location.pathname.toLowerCase().endsWith("/login.html")) {
-        window.location.href = "login.html";
+      if (!window.location.pathname.toLowerCase().endsWith("/index.html")) {
+        window.location.href = "index.html";
       }
       throw new Error("Authentication required. Please sign in again.");
     }

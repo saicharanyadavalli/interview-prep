@@ -3,7 +3,7 @@
  *
  * Call `initSidebar(activePage, { requireLogin: false })` from each page.
  * activePage should be one of: "dashboard", "practice", "revisit", "progress", "questions"
- * If requireLogin is true, unauthenticated users are redirected to login.html.
+ * If requireLogin is true, unauthenticated users are redirected to index.html.
  */
 
 const NAV_ITEMS = [
@@ -137,7 +137,7 @@ async function initSidebar(activePage, options = {}) {
   // Login button
   if (loginBtn) {
     loginBtn.addEventListener("click", () => {
-      window.location.href = "login.html";
+      window.location.href = "index.html";
     });
   }
 

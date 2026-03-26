@@ -41,7 +41,7 @@ async function signInWithGoogle() {
 }
 
 /**
- * Sign out the current user and redirect to login.
+ * Sign out the current user and redirect to the entry page.
  */
 async function signOut() {
   const sb = getSupabase();
@@ -53,7 +53,7 @@ async function signOut() {
   } catch (_) {
     // Ignore storage errors.
   }
-  window.location.href = "login.html";
+  window.location.href = "index.html";
 }
 
 /**
@@ -78,14 +78,14 @@ async function getAccessToken() {
 }
 
 /**
- * Route guard — redirect to login.html if user is not authenticated.
+ * Route guard — redirect to index.html if user is not authenticated.
  * Call this at the top of every protected page.
  * Returns the user object if authenticated.
  */
 async function requireAuth() {
   const { session, user } = await getSession();
   if (!session || !user) {
-    window.location.href = "login.html";
+    window.location.href = "index.html";
     return null;
   }
   return user;
