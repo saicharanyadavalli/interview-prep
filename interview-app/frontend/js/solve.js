@@ -29,7 +29,6 @@ async function initSolvePage() {
   const statusText = document.getElementById("statusText");
   const qnumBadge = document.getElementById("qnumBadge");
   const qTitle = document.getElementById("qTitle");
-  const qCompany = document.getElementById("qCompany");
   const qDifficulty = document.getElementById("qDifficulty");
   const qProblemUrl = document.getElementById("qProblemUrl");
   const qStatement = document.getElementById("qStatement");
@@ -115,7 +114,6 @@ async function initSolvePage() {
 
     if (qnumBadge) qnumBadge.textContent = `#${q.qnum || 0}`;
     if (qTitle) qTitle.textContent = q.problem_name || "Untitled";
-    if (qCompany) qCompany.textContent = q.company || "Unknown Company";
     if (qDifficulty) qDifficulty.textContent = q.difficulty || "Unknown";
     if (qProblemUrl) {
       const url = q.problem_url || "#";
