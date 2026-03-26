@@ -3,6 +3,45 @@
  */
 
 document.addEventListener("DOMContentLoaded", async () => {
+  const COMPANY_FILTER_OPTIONS = [
+    "Accenture",
+    "Adobe",
+    "Amazon",
+    "Amdocs",
+    "Apple",
+    "Atlassian",
+    "Cisco",
+    "Cognizant",
+    "DE Shaw",
+    "Directi",
+    "Facebook",
+    "Flipkart",
+    "Goldman Sachs",
+    "Google",
+    "HCL",
+    "IBM",
+    "Infosys",
+    "Intuit",
+    "JUSPAY",
+    "MAQ Software",
+    "Microsoft",
+    "Morgan Stanley",
+    "Nvidia",
+    "Ola Cabs",
+    "Oracle",
+    "Paytm",
+    "Qualcomm",
+    "Salesforce",
+    "SAP Labs",
+    "Synopsys",
+    "TCS",
+    "Visa",
+    "VMWare",
+    "Walmart",
+    "Wipro",
+    "Zoho",
+  ];
+
   const user = await initSidebar("questions", { requireLogin: true });
   if (!user) {
     return;
@@ -23,7 +62,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   let filterDebounce = null;
   let scrollCacheDebounce = null;
   let topicsHydrated = false;
-  let companiesHydrated = false;
   const PAGE_SIZE = 100;
   const UI_STATE_KEY = "questionsPageUiStateV1";
   const PAGE_CACHE_KEY = "questionsPageListCacheV1";
@@ -72,19 +110,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     ? new FilterBuilder(filterBuilderRoot, {
         storageKey: "questionsPageFilterBuilderV2",
         persist: true,
+        companies: COMPANY_FILTER_OPTIONS,
       })
     : null;
-
-  if (filterBuilder) {
-    API.getCompanies()
-      .then((res) => {
-        const companies = Array.isArray(res && res.companies) ? res.companies : [];
-        filterBuilder.setCompanies(companies);
-      })
-      .catch(() => {
-        // Non-blocking: silently ignore if company list fails to load.
-      });
-  }
 
   function getFiltersPayload() {
     if (!filterBuilder) {
@@ -192,7 +220,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         questionsList.innerHTML = "";
       }
       hydrateTopicsFromRows(rows);
-      hydrateCompaniesFromRows(rows);
       appendRows(rows);
       updateCountBadge();
 
@@ -288,28 +315,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function hydrateCompaniesFromRows(rows) {
-    const discoveredCompanies = Array.from(
-      new Set(
-        rows
-          .flatMap((row) => {
-            const companies = Array.isArray(row.companies) ? row.companies : [];
-            const tags = Array.isArray(row.company_tags) ? row.company_tags : [];
-            const primary = row.company ? [row.company] : [];
-            const display = row.company_display ? [row.company_display] : [];
-            return [...companies, ...tags, ...primary, ...display];
-          })
-          .map((item) => String(item || "").trim().toLowerCase())
-          .filter(Boolean)
-      )
-    );
-
-    if (filterBuilder && discoveredCompanies.length && !companiesHydrated) {
-      companiesHydrated = true;
-      filterBuilder.setCompanies(discoveredCompanies);
-    }
-  }
-
   async function loadNextPage({ reset = false } = {}) {
     if (listState.isLoading) return;
 
@@ -346,7 +351,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       listState.rows = listState.rows.concat(rows);
 
       hydrateTopicsFromRows(rows);
-      hydrateCompaniesFromRows(rows);
       appendRows(rows);
       updateCountBadge();
       saveUiState();

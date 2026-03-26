@@ -4,6 +4,7 @@
  * Supported fields:
  * - status
  * - difficulty
+ * - company
  * - topic
  */
 
@@ -64,6 +65,20 @@
       this.storageKey = options.storageKey || "questionsFilterBuilderState";
       this.persist = options.persist !== false;
       this.onChange = typeof options.onChange === "function" ? options.onChange : function () {};
+
+      if (Array.isArray(this.options.companies) && !this.options.companyLabels) {
+        const labels = {};
+        this.options.companies.forEach((item) => {
+          const raw = String(item || "").trim();
+          const normalized = normalizeText(raw);
+          if (!normalized) return;
+          if (!labels[normalized]) {
+            labels[normalized] = raw;
+          }
+        });
+        this.options.companies = Object.keys(labels);
+        this.options.companyLabels = labels;
+      }
 
       this.state = {
         version: 3,
@@ -206,9 +221,20 @@
 
     setCompanies(companies) {
       if (!Array.isArray(companies)) return;
-      const normalized = Array.from(new Set(companies.map(normalizeText).filter(Boolean)));
+      const labels = {};
+      companies.forEach((item) => {
+        const raw = String(item || "").trim();
+        const normalized = normalizeText(raw);
+        if (!normalized) return;
+        if (!labels[normalized]) {
+          labels[normalized] = raw;
+        }
+      });
+
+      const normalized = Object.keys(labels);
       if (!normalized.length) return;
       this.options.companies = normalized;
+      this.options.companyLabels = labels;
       this._sanitizeState();
       this.renderFilters();
       this._emitChange();
@@ -281,7 +307,7 @@
         .join("");
 
       const valueOptions = this._getValuesForField(filter.field)
-        .map((value) => `<option value="${value}" ${filter.value === value ? "selected" : ""}>${this._toLabel(value)}</option>`)
+        .map((value) => `<option value="${value}" ${filter.value === value ? "selected" : ""}>${this._toLabelForField(filter.field, value)}</option>`)
         .join("");
 
       return `
@@ -306,6 +332,15 @@
         .filter(Boolean)
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
         .join(" ");
+    }
+
+    _toLabelForField(field, value) {
+      if (normalizeText(field) === "company") {
+        const labels = this.options.companyLabels || {};
+        const exact = labels[normalizeText(value)];
+        if (exact) return exact;
+      }
+      return this._toLabel(value);
     }
 
     _bindEvents() {

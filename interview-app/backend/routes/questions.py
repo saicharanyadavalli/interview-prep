@@ -141,12 +141,7 @@ def _filter_questions_rows(
         status_value = str(status_map.get(qnum, "")).strip().lower()
         difficulty_value = str(question.get("difficulty", "")).strip().lower()
         topic_set = _as_tag_set(question.get("topic_tags") or [])
-        company_set = _as_tag_set(
-            list(question.get("companies") or [])
-            + list(question.get("company_tags") or [])
-            + ([question.get("company", "")] if question.get("company") else [])
-            + ([question.get("company_display", "")] if question.get("company_display") else [])
-        )
+        company_set = _as_tag_set(question.get("company_tags") or [])
 
         checks: list[bool] = []
         for field, operator, expected in all_conditions:
