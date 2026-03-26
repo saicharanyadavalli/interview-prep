@@ -69,6 +69,7 @@ const API = {
 
     pushTokenized("status", filters.status);
     pushTokenized("difficulty", filters.difficulty);
+    pushTokenized("company", filters.company);
     pushTokenized("topic", filters.topic);
   },
 

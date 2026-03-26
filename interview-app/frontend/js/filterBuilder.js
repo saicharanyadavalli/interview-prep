@@ -39,6 +39,10 @@
       label: "Difficulty",
       values: ["easy", "medium", "hard"],
     },
+    company: {
+      label: "Company",
+      values: [],
+    },
     topic: {
       label: "Topics",
       values: DEFAULT_TOPIC_OPTIONS.slice(),
@@ -62,7 +66,7 @@
       this.onChange = typeof options.onChange === "function" ? options.onChange : function () {};
 
       this.state = {
-        version: 2,
+        version: 3,
         matchType: "all",
         filters: [],
       };
@@ -93,10 +97,23 @@
       return Array.from(unique);
     }
 
+    _getCompanyValues() {
+      const fromOptions = Array.isArray(this.options.companies)
+        ? this.options.companies.map(normalizeText).filter(Boolean)
+        : [];
+
+      const fallback = FIELD_DEFS.company.values;
+      const unique = new Set([...(fromOptions.length ? fromOptions : fallback)]);
+      return Array.from(unique);
+    }
+
     _getValuesForField(field) {
       const key = normalizeText(field);
       if (key === "topic") {
         return this._getTopicValues();
+      }
+      if (key === "company") {
+        return this._getCompanyValues();
       }
       return (FIELD_DEFS[key] && FIELD_DEFS[key].values) ? FIELD_DEFS[key].values.slice() : [];
     }
@@ -141,7 +158,7 @@
           && normalizeText(parsed.filters[0]?.value) === "strong";
 
         this.state = {
-          version: 2,
+          version: 3,
           matchType: parsed.matchType || "all",
           filters: legacyDefaultOnly ? [] : (Array.isArray(parsed.filters) ? parsed.filters : []),
         };
@@ -155,7 +172,7 @@
       if (!this.persist) return;
       try {
         localStorage.setItem(this.storageKey, JSON.stringify({
-          version: 2,
+          version: 3,
           matchType: this.state.matchType,
           filters: this.state.filters,
         }));
@@ -187,11 +204,22 @@
       this._emitChange();
     }
 
+    setCompanies(companies) {
+      if (!Array.isArray(companies)) return;
+      const normalized = Array.from(new Set(companies.map(normalizeText).filter(Boolean)));
+      if (!normalized.length) return;
+      this.options.companies = normalized;
+      this._sanitizeState();
+      this.renderFilters();
+      this._emitChange();
+    }
+
     getQueryObject() {
       const result = {
         match: this.state.matchType,
         status: [],
         difficulty: [],
+        company: [],
         topic: [],
       };
 

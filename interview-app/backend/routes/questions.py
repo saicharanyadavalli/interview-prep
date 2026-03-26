@@ -114,6 +114,7 @@ def _filter_questions_rows(
     status_tokens: list[tuple[str, str]],
     difficulty_tokens: list[tuple[str, str]],
     topic_tokens: list[tuple[str, str]],
+    company_tokens: list[tuple[str, str]],
     match_type: str,
     status_map: dict[int, str] | None = None,
 ) -> list[dict]:
@@ -123,11 +124,13 @@ def _filter_questions_rows(
     normalized_status_tokens = [(op, v) for op, v in status_tokens if v in _ALLOWED_STATUSES]
     normalized_difficulty_tokens = [(op, v) for op, v in difficulty_tokens if v in _ALLOWED_DIFFICULTIES]
     normalized_topic_tokens = [(op, v) for op, v in topic_tokens if v]
+    normalized_company_tokens = [(op, v) for op, v in company_tokens if v]
 
     all_conditions = []
     all_conditions.extend(("status", op, val) for op, val in normalized_status_tokens)
     all_conditions.extend(("difficulty", op, val) for op, val in normalized_difficulty_tokens)
     all_conditions.extend(("topic", op, val) for op, val in normalized_topic_tokens)
+    all_conditions.extend(("company", op, val) for op, val in normalized_company_tokens)
 
     if not all_conditions:
         return questions
@@ -138,6 +141,12 @@ def _filter_questions_rows(
         status_value = str(status_map.get(qnum, "")).strip().lower()
         difficulty_value = str(question.get("difficulty", "")).strip().lower()
         topic_set = _as_tag_set(question.get("topic_tags") or [])
+        company_set = _as_tag_set(
+            list(question.get("companies") or [])
+            + list(question.get("company_tags") or [])
+            + ([question.get("company", "")] if question.get("company") else [])
+            + ([question.get("company_display", "")] if question.get("company_display") else [])
+        )
 
         checks: list[bool] = []
         for field, operator, expected in all_conditions:
@@ -147,6 +156,8 @@ def _filter_questions_rows(
                 checks.append(_condition_match(difficulty_value, operator, expected))
             elif field == "topic":
                 checks.append(_condition_match(topic_set, operator, expected))
+            elif field == "company":
+                checks.append(_condition_match(company_set, operator, expected))
 
         if not checks:
             filtered.append(question)
@@ -220,6 +231,7 @@ def random_question(
             status_tokens=status_tokens,
             difficulty_tokens=[],
             topic_tokens=topic_tokens,
+            company_tokens=[],
             match_type=match,
             status_map=status_map,
         )
@@ -259,6 +271,7 @@ def recommend_question(
             status_tokens=_parse_filter_tokens(status),
             difficulty_tokens=[],
             topic_tokens=_parse_filter_tokens(topic),
+            company_tokens=[],
             match_type=match,
             status_map=_load_user_status_map(current_user["id"], [int(question.get("qnum", 0) or 0)]),
         )
@@ -294,6 +307,7 @@ def all_questions(
             status_tokens=status_tokens,
             difficulty_tokens=[],
             topic_tokens=topic_tokens,
+            company_tokens=[],
             match_type=match,
             status_map=status_map,
         )
@@ -306,6 +320,7 @@ def all_questions_catalog(
     q: Optional[str] = Query(None, description="Search by question/company/difficulty/tags"),
     status: Optional[str] = Query(None, description="Status filter, supports !value for is-not"),
     difficulty: Optional[str] = Query(None, description="Difficulty filter, supports !value for is-not"),
+    company: Optional[str] = Query(None, description="Company filter, supports !value for is-not"),
     topic: Optional[str] = Query(None, description="Topic filter, supports !value for is-not"),
     match: str = Query("all", pattern="^(all|any)$"),
     offset: int = Query(0, ge=0),
@@ -330,6 +345,7 @@ def all_questions_catalog(
         status_tokens=status_tokens,
         difficulty_tokens=_parse_filter_tokens(difficulty),
         topic_tokens=_parse_filter_tokens(topic),
+        company_tokens=_parse_filter_tokens(company),
         match_type=match,
         status_map=status_map,
     )
@@ -349,6 +365,7 @@ def all_questions_catalog_user(
     solved: str = Query("all", pattern="^(all|solved|unsolved)$"),
     status: Optional[str] = Query(None, description="Status filter, supports !value for is-not"),
     difficulty: Optional[str] = Query(None, description="Difficulty filter, supports !value for is-not"),
+    company: Optional[str] = Query(None, description="Company filter, supports !value for is-not"),
     topic: Optional[str] = Query(None, description="Topic filter, supports !value for is-not"),
     match: str = Query("all", pattern="^(all|any)$"),
     offset: int = Query(0, ge=0),
@@ -403,6 +420,7 @@ def all_questions_catalog_user(
         status_tokens=_parse_filter_tokens(status),
         difficulty_tokens=_parse_filter_tokens(difficulty),
         topic_tokens=_parse_filter_tokens(topic),
+        company_tokens=_parse_filter_tokens(company),
         match_type=match,
         status_map=_load_user_status_map(
             current_user["id"],
