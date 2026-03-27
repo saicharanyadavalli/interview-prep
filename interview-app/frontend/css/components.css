@@ -754,10 +754,13 @@ body[data-theme="dark"] .track-item {
   margin-bottom: 1.5rem;
 }
 
-.login-card .brand-icon {
-  font-size: 3rem;
+.login-card .brand-logo {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 1rem;
+  box-shadow: 0 12px 28px rgba(15, 118, 110, 0.24);
   margin-bottom: 0.75rem;
-  display: block;
+  display: inline-block;
 }
 
 .login-divider {
