@@ -68,15 +68,17 @@ function renderHistory(container, recent) {
     item.className = "track-item animate-slide";
     item.style.animationDelay = `${idx * 50}ms`;
 
-    const rawStatus = String(entry.status || "").toLowerCase();
+    const isSolved = Boolean(entry.is_solved);
+    const revisit = Boolean(entry.revisit);
     let color = "var(--muted)";
-    const statusEmoji = { strong: "✅", good: "✅", revisit: "🔄", skip: "❌" };
-    const emoji = statusEmoji[rawStatus] || "📌";
+    let emoji = "❌";
     let statusLabel = "Not Solved";
-    if (rawStatus === "revisit") {
-      statusLabel = "Solved + Revisit";
+    if (revisit) {
+      emoji = "🔄";
+      statusLabel = isSolved ? "Solved + Revisit" : "Revisit";
       color = "var(--amber)";
-    } else if (rawStatus === "good" || rawStatus === "strong") {
+    } else if (isSolved) {
+      emoji = "✅";
       statusLabel = "Solved";
       color = "var(--green)";
     }

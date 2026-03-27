@@ -3,33 +3,86 @@
 -- Run this entire script in the Supabase SQL Editor
 -- ============================================================
 
--- 1. User Progress Table (lean: only user_id + qnum + status)
+-- 1. User Progress Table (is_solved + revisit flag)
 CREATE TABLE IF NOT EXISTS user_progress (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id UUID NOT NULL,
   qnum INTEGER NOT NULL,
-  status TEXT NOT NULL CHECK (status IN ('strong', 'good', 'revisit', 'skip')),
+  is_solved BOOLEAN NOT NULL DEFAULT FALSE,
+  is_revisit BOOLEAN NOT NULL DEFAULT FALSE,
   updated_at TIMESTAMPTZ DEFAULT now(),
   UNIQUE(user_id, qnum)
 );
 
--- Progress model v2: separate solved/unsolved outcome from revisit flag.
+-- Ensure required columns exist for older tables.
 ALTER TABLE user_progress
-  ADD COLUMN IF NOT EXISTS outcome TEXT CHECK (outcome IN ('solved', 'unsolved'));
+  ADD COLUMN IF NOT EXISTS is_solved BOOLEAN;
 
 ALTER TABLE user_progress
   ADD COLUMN IF NOT EXISTS is_revisit BOOLEAN NOT NULL DEFAULT FALSE;
 
-UPDATE user_progress
-SET outcome = CASE
-  WHEN status IN ('good', 'strong') THEN 'solved'
-  ELSE 'unsolved'
-END
-WHERE outcome IS NULL;
+ALTER TABLE user_progress
+  ALTER COLUMN is_solved SET DEFAULT FALSE;
+
+-- Optional migration path from legacy outcome/status schemas.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'user_progress'
+      AND column_name = 'outcome'
+  ) THEN
+    EXECUTE $sql$
+      UPDATE user_progress
+      SET is_solved = CASE
+        WHEN outcome = 'solved' THEN TRUE
+        ELSE FALSE
+      END
+      WHERE is_solved IS NULL
+    $sql$;
+  END IF;
+END $$;
+
+-- Optional migration path from legacy status-based schema.
+DO $$
+BEGIN
+  IF EXISTS (
+    SELECT 1
+    FROM information_schema.columns
+    WHERE table_schema = 'public'
+      AND table_name = 'user_progress'
+      AND column_name = 'status'
+  ) THEN
+    EXECUTE $sql$
+      UPDATE user_progress
+      SET is_solved = CASE
+        WHEN status IN ('good', 'strong') THEN TRUE
+        ELSE FALSE
+      END
+      WHERE is_solved IS NULL
+    $sql$;
+
+    EXECUTE $sql$
+      UPDATE user_progress
+      SET is_revisit = TRUE
+      WHERE status = 'revisit' AND is_revisit = FALSE
+    $sql$;
+
+    EXECUTE 'ALTER TABLE user_progress DROP COLUMN status';
+  END IF;
+END $$;
+
+ALTER TABLE user_progress
+  DROP COLUMN IF EXISTS outcome;
 
 UPDATE user_progress
-SET is_revisit = TRUE
-WHERE status = 'revisit' AND is_revisit = FALSE;
+SET is_solved = FALSE
+WHERE is_solved IS NULL;
+
+ALTER TABLE user_progress
+  ALTER COLUMN is_solved SET NOT NULL;
 
 -- 2. Practice History Table (lean: only user_id + qnum)
 CREATE TABLE IF NOT EXISTS practice_history (
@@ -116,7 +169,8 @@ CREATE POLICY "Users can update own profile"
 CREATE INDEX IF NOT EXISTS idx_user_progress_user ON user_progress(user_id);
 CREATE INDEX IF NOT EXISTS idx_user_progress_qnum ON user_progress(qnum);
 CREATE INDEX IF NOT EXISTS idx_user_progress_user_revisit ON user_progress(user_id, is_revisit);
-CREATE INDEX IF NOT EXISTS idx_user_progress_user_outcome ON user_progress(user_id, outcome);
+DROP INDEX IF EXISTS idx_user_progress_user_outcome;
+CREATE INDEX IF NOT EXISTS idx_user_progress_user_solved ON user_progress(user_id, is_solved);
 CREATE INDEX IF NOT EXISTS idx_practice_history_user ON practice_history(user_id);
 CREATE INDEX IF NOT EXISTS idx_practice_history_time ON practice_history(practiced_at DESC);
 CREATE INDEX IF NOT EXISTS idx_user_comments_user_qnum ON user_comments(user_id, qnum);
@@ -164,13 +218,8 @@ CREATE TABLE IF NOT EXISTS question_bank_questions (
 ALTER TABLE question_bank_questions
   ADD COLUMN IF NOT EXISTS source_qnums INTEGER[] NOT NULL DEFAULT '{}'::int[];
 
-CREATE TABLE IF NOT EXISTS question_bank_companies (
-  qnum INTEGER NOT NULL REFERENCES question_bank_questions(qnum) ON DELETE CASCADE,
-  company TEXT NOT NULL,
-  difficulty TEXT NOT NULL CHECK (difficulty IN ('easy', 'medium', 'hard')),
-  created_at TIMESTAMPTZ DEFAULT now(),
-  PRIMARY KEY (qnum, company, difficulty)
-);
+-- Legacy table no longer used. Company filtering now relies on question_bank_questions.company_tags.
+DROP TABLE IF EXISTS question_bank_companies CASCADE;
 
 CREATE TABLE IF NOT EXISTS question_bank_qnum_aliases (
   source_qnum INTEGER PRIMARY KEY,
@@ -181,20 +230,14 @@ CREATE TABLE IF NOT EXISTS question_bank_qnum_aliases (
 CREATE INDEX IF NOT EXISTS idx_question_bank_questions_question_id ON question_bank_questions(question_id);
 CREATE INDEX IF NOT EXISTS idx_question_bank_questions_name ON question_bank_questions(problem_name);
 CREATE INDEX IF NOT EXISTS idx_question_bank_questions_difficulty ON question_bank_questions(difficulty);
-CREATE INDEX IF NOT EXISTS idx_question_bank_companies_company_diff ON question_bank_companies(company, difficulty);
-CREATE INDEX IF NOT EXISTS idx_question_bank_companies_qnum ON question_bank_companies(qnum);
 CREATE INDEX IF NOT EXISTS idx_question_bank_qnum_aliases_canonical ON question_bank_qnum_aliases(canonical_qnum);
 
 ALTER TABLE question_bank_questions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE question_bank_companies ENABLE ROW LEVEL SECURITY;
 ALTER TABLE question_bank_qnum_aliases ENABLE ROW LEVEL SECURITY;
 
 DROP POLICY IF EXISTS "Public read question bank questions" ON question_bank_questions;
 CREATE POLICY "Public read question bank questions"
   ON question_bank_questions FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Public read question bank companies" ON question_bank_companies;
-CREATE POLICY "Public read question bank companies"
-  ON question_bank_companies FOR SELECT USING (true);
 DROP POLICY IF EXISTS "Public read question bank qnum aliases" ON question_bank_qnum_aliases;
 CREATE POLICY "Public read question bank qnum aliases"
   ON question_bank_qnum_aliases FOR SELECT USING (true);
@@ -202,9 +245,6 @@ CREATE POLICY "Public read question bank qnum aliases"
 DROP POLICY IF EXISTS "Service role full access to question_bank_questions" ON question_bank_questions;
 CREATE POLICY "Service role full access to question_bank_questions"
   ON question_bank_questions FOR ALL USING (auth.role() = 'service_role');
-DROP POLICY IF EXISTS "Service role full access to question_bank_companies" ON question_bank_companies;
-CREATE POLICY "Service role full access to question_bank_companies"
-  ON question_bank_companies FOR ALL USING (auth.role() = 'service_role');
 DROP POLICY IF EXISTS "Service role full access to question_bank_qnum_aliases" ON question_bank_qnum_aliases;
 CREATE POLICY "Service role full access to question_bank_qnum_aliases"
   ON question_bank_qnum_aliases FOR ALL USING (auth.role() = 'service_role');

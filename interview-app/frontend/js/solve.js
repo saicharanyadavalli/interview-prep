@@ -7,7 +7,7 @@ const solveState = {
   userLoggedIn: false,
   chatHistory: [],
   chatInFlight: false,
-  progress: { outcome: null, revisit: false },
+  progress: { is_solved: null, revisit: false },
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -163,29 +163,17 @@ async function initSolvePage() {
   }
 
   function normalizeProgressState(data) {
-    const legacy = String(data?.status || "").toLowerCase();
-    let outcome = String(data?.outcome || "").toLowerCase();
+    const hasIsSolved = Object.prototype.hasOwnProperty.call(data || {}, "is_solved");
+    const isSolved = hasIsSolved
+      ? (data?.is_solved === null ? null : Boolean(data?.is_solved))
+      : null;
     let revisit = Boolean(data?.revisit);
 
-    if (!legacy && !outcome && !revisit) {
-      return { outcome: null, revisit: false };
+    if (isSolved === null && !revisit) {
+      return { is_solved: null, revisit: false };
     }
 
-    if (outcome !== "solved" && outcome !== "unsolved") {
-      if (legacy === "good" || legacy === "strong") {
-        outcome = "solved";
-      } else if (legacy === "skip" || legacy === "revisit") {
-        outcome = "unsolved";
-      } else {
-        outcome = null;
-      }
-    }
-
-    if (!data || data.revisit === undefined) {
-      revisit = legacy === "revisit";
-    }
-
-    return { outcome, revisit };
+    return { is_solved: isSolved, revisit };
   }
 
   function applyOutcomeSelection(progressState) {
@@ -193,9 +181,9 @@ async function initSolvePage() {
     const state = normalizeProgressState(progressState || {});
     solveState.progress = state;
 
-    if (state.outcome === "solved") {
+    if (state.is_solved === true) {
       markSolvedBtn?.classList.add("btn-feedback-selected");
-    } else if (state.outcome === "unsolved") {
+    } else if (state.is_solved === false) {
       markUnsolvedBtn?.classList.add("btn-feedback-selected");
     }
 
@@ -310,7 +298,7 @@ async function initSolvePage() {
     }
   }
 
-  async function markStatus(outcome, statusLabel) {
+  async function markStatus(isSolved, statusLabel) {
     const q = solveState.question;
     if (!q) return;
 
@@ -321,12 +309,12 @@ async function initSolvePage() {
 
     try {
       await API.updateProgress(q.qnum, {
-        outcome: outcome,
+        is_solved: isSolved,
         revisit: solveState.progress.revisit,
       });
       showToast(`Marked as ${statusLabel}.`, "success");
       setStatus(`Saved as ${statusLabel}.`);
-      applyOutcomeSelection({ outcome: outcome, revisit: solveState.progress.revisit });
+      applyOutcomeSelection({ is_solved: isSolved, revisit: solveState.progress.revisit });
     } catch (err) {
       showToast(`Failed to save progress: ${err.message}`, "error");
     }
@@ -342,14 +330,14 @@ async function initSolvePage() {
     }
 
     const nextRevisit = !solveState.progress.revisit;
-    const outcome = solveState.progress.outcome || "unsolved";
+    const isSolved = solveState.progress.is_solved ?? false;
 
     try {
       await API.updateProgress(q.qnum, {
-        outcome: outcome,
+        is_solved: isSolved,
         revisit: nextRevisit,
       });
-      applyOutcomeSelection({ outcome: outcome, revisit: nextRevisit });
+      applyOutcomeSelection({ is_solved: isSolved, revisit: nextRevisit });
       showToast(nextRevisit ? "Added to revisit queue." : "Removed from revisit queue.", "success");
       setStatus(nextRevisit ? "Saved to revisit queue." : "Removed from revisit queue.");
     } catch (err) {
@@ -368,12 +356,12 @@ async function initSolvePage() {
 
     try {
       await API.updateProgress(q.qnum, {
-        outcome: "unsolved",
+        is_solved: false,
         revisit: false,
       });
       showToast("Marked as not solved.", "success");
       setStatus("Saved as not solved.");
-      applyOutcomeSelection({ outcome: "unsolved", revisit: false });
+      applyOutcomeSelection({ is_solved: false, revisit: false });
     } catch (err) {
       showToast(`Failed to clear progress: ${err.message}`, "error");
     }
@@ -490,7 +478,7 @@ async function initSolvePage() {
       deleteNote(commentId);
     });
   }
-  if (markSolvedBtn) markSolvedBtn.addEventListener("click", () => markStatus("solved", "Solved"));
+  if (markSolvedBtn) markSolvedBtn.addEventListener("click", () => markStatus(true, "Solved"));
   if (markUnsolvedBtn) markUnsolvedBtn.addEventListener("click", clearProgress);
   if (markRevisitBtn) markRevisitBtn.addEventListener("click", toggleRevisit);
   if (sendDoubtBtn) sendDoubtBtn.addEventListener("click", askAssistant);

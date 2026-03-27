@@ -82,46 +82,43 @@ class AskResponse(BaseModel):
 # ---------- Progress ----------
 
 class ProgressUpdateRequest(BaseModel):
-    """Mark a question with a status. Uses qnum (question number)."""
+    """Update a question's progress state using is_solved/revisit. Uses qnum."""
     qnum: Optional[int] = Field(None, ge=1)
     question_id: Optional[str] = None
-    status: Optional[str] = Field(None, pattern="^(strong|good|revisit|skip)$")
-    outcome: Optional[str] = Field(None, pattern="^(solved|unsolved)$")
+    is_solved: Optional[bool] = None
     revisit: Optional[bool] = None
 
 
 class ProgressStats(BaseModel):
     """Aggregated progress stats for a user."""
     total_attempted: int = 0
-    strong_count: int = 0
-    good_count: int = 0
+    solved_count: int = 0
+    unsolved_count: int = 0
     revisit_count: int = 0
-    skip_count: int = 0
 
 
 class ProgressEntry(BaseModel):
-    """Single progress record — just qnum and status."""
+    """Single progress record with boolean solved/revisit state."""
     qnum: int
     question_id: str = ""
     question_title: str = ""
     company: str = ""
     difficulty: str = ""
-    status: str
+    is_solved: bool = False
+    revisit: bool = False
     updated_at: str = ""
 
 
 class UserProgressResponse(BaseModel):
-    """Full progress response — contains a qnum->status map and stats."""
+    """Full progress response — contains aggregate stats and recent entries."""
     stats: ProgressStats
-    progress_map: dict[int, str] = Field(default_factory=dict)
     recent: list[ProgressEntry] = Field(default_factory=list)
 
 
 class ProgressStatusResponse(BaseModel):
-    """Progress status for one question, or null when unset."""
+    """Progress state for one question, or null/false when unset."""
     qnum: int
-    status: Optional[str] = None
-    outcome: Optional[str] = None
+    is_solved: Optional[bool] = None
     revisit: bool = False
 
 

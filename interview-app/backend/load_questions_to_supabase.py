@@ -19,7 +19,6 @@ WORKSPACE_DIR = APP_DIR.parent
 OUTPUT_DIR = WORKSPACE_DIR / "output" / "stage3_company_wise"
 
 QUESTIONS_TABLE = "question_bank_questions"
-COMPANIES_TABLE = "question_bank_companies"
 ALIASES_TABLE = "question_bank_qnum_aliases"
 BATCH_SIZE = 500
 
@@ -92,7 +91,7 @@ def _chunks(items: list[dict[str, Any]], size: int):
         yield items[idx: idx + size]
 
 
-def _build_rows() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
+def _build_rows() -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
     if not OUTPUT_DIR.exists():
         raise FileNotFoundError(f"Question directory not found: {OUTPUT_DIR}")
 
@@ -140,13 +139,11 @@ def _build_rows() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict
                         "raw": item,
                         "source_qnums": set([qnum]),
                         "companies": set([company]),
-                        "associations": set([(company, normalized_diff)]),
                     }
                     continue
 
                 group["source_qnums"].add(qnum)
                 group["companies"].add(company)
-                group["associations"].add((company, normalized_diff))
                 group["topic_tags"].update(core.get("topic_tags", []) if isinstance(core.get("topic_tags", []), list) else [])
                 group["company_tags"].update(core.get("company_tags", []) if isinstance(core.get("company_tags", []), list) else [])
 
@@ -162,7 +159,6 @@ def _build_rows() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict
                         group["question_id"] = question_id
 
     question_rows: list[dict[str, Any]] = []
-    company_rows: list[dict[str, Any]] = []
     alias_rows: list[dict[str, Any]] = []
 
     sorted_groups = sorted(groups.values(), key=lambda g: min(g["source_qnums"]))
@@ -177,15 +173,6 @@ def _build_rows() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict
                 "source_qnum": src_qnum,
                 "canonical_qnum": canonical_qnum,
             })
-
-        for company, diff in sorted(group["associations"]):
-            company_rows.append(
-                {
-                    "qnum": canonical_qnum,
-                    "company": company,
-                    "difficulty": diff,
-                }
-            )
 
         question_rows.append(
             {
@@ -207,7 +194,7 @@ def _build_rows() -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict
             }
         )
 
-    return question_rows, company_rows, alias_rows
+    return question_rows, alias_rows
 
 
 def _upsert_batches(client: Any, table: str, rows: list[dict[str, Any]], conflict: str) -> None:
@@ -225,19 +212,16 @@ def main() -> None:
     url, key = _load_env()
     client = create_client(url, key)
 
-    question_rows, company_rows, alias_rows = _build_rows()
+    question_rows, alias_rows = _build_rows()
 
     if args.truncate:
         client.table(ALIASES_TABLE).delete().neq("source_qnum", 0).execute()
-        client.table(COMPANIES_TABLE).delete().neq("qnum", 0).execute()
         client.table(QUESTIONS_TABLE).delete().neq("qnum", 0).execute()
 
     _upsert_batches(client, QUESTIONS_TABLE, question_rows, "qnum")
-    _upsert_batches(client, COMPANIES_TABLE, company_rows, "qnum,company,difficulty")
     _upsert_batches(client, ALIASES_TABLE, alias_rows, "source_qnum")
 
     print(f"Loaded {len(question_rows)} questions into {QUESTIONS_TABLE}")
-    print(f"Loaded {len(company_rows)} company links into {COMPANIES_TABLE}")
     print(f"Loaded {len(alias_rows)} qnum aliases into {ALIASES_TABLE}")
     print(f"Merged duplicates: {max(0, len(alias_rows) - len(question_rows))}")
 

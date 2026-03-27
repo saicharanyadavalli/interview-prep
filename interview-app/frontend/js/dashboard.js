@@ -72,14 +72,15 @@ function renderRecentList(container, recent) {
   recent.slice(0, 8).forEach((entry) => {
     const item = document.createElement("div");
     item.className = "track-item";
-    const rawStatus = String(entry.status || "").toLowerCase();
+    const isSolved = Boolean(entry.is_solved);
+    const revisit = Boolean(entry.revisit);
     let statusLabel = "Not Solved";
     let color = "var(--muted)";
 
-    if (rawStatus === "revisit") {
-      statusLabel = "Solved + Revisit";
+    if (revisit) {
+      statusLabel = isSolved ? "Solved + Revisit" : "Revisit";
       color = "var(--amber)";
-    } else if (rawStatus === "good" || rawStatus === "strong") {
+    } else if (isSolved) {
       statusLabel = "Solved";
       color = "var(--green)";
     }

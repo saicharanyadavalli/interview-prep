@@ -15,7 +15,7 @@ const practiceState = {
   chatInFlight: false,
   chatHistory: [],
   lastQuestion: null,
-  progress: { outcome: null, revisit: false },
+  progress: { is_solved: null, revisit: false },
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -122,29 +122,17 @@ async function initPractice() {
   }
 
   function normalizeProgressState(data) {
-    const legacy = String(data?.status || "").toLowerCase();
-    let outcome = String(data?.outcome || "").toLowerCase();
+    const hasIsSolved = Object.prototype.hasOwnProperty.call(data || {}, "is_solved");
+    const isSolved = hasIsSolved
+      ? (data?.is_solved === null ? null : Boolean(data?.is_solved))
+      : null;
     let revisit = Boolean(data?.revisit);
 
-    if (!legacy && !outcome && !revisit) {
-      return { outcome: null, revisit: false };
+    if (isSolved === null && !revisit) {
+      return { is_solved: null, revisit: false };
     }
 
-    if (outcome !== "solved" && outcome !== "unsolved") {
-      if (legacy === "good" || legacy === "strong") {
-        outcome = "solved";
-      } else if (legacy === "skip" || legacy === "revisit") {
-        outcome = "unsolved";
-      } else {
-        outcome = null;
-      }
-    }
-
-    if (!data || data.revisit === undefined) {
-      revisit = legacy === "revisit";
-    }
-
-    return { outcome, revisit };
+    return { is_solved: isSolved, revisit };
   }
 
   function applyOutcomeSelection(progressState) {
@@ -152,9 +140,9 @@ async function initPractice() {
     const state = normalizeProgressState(progressState || {});
     practiceState.progress = state;
 
-    if (state.outcome === "solved") {
+    if (state.is_solved === true) {
       markSolvedBtn?.classList.add("btn-feedback-selected");
-    } else if (state.outcome === "unsolved") {
+    } else if (state.is_solved === false) {
       markUnsolvedBtn?.classList.add("btn-feedback-selected");
     }
 
@@ -429,7 +417,7 @@ async function initPractice() {
     setStatus("Reset to the first question.");
   }
 
-  async function markQuestion(outcome, statusLabel) {
+  async function markQuestion(isSolved, statusLabel) {
     const q = practiceState.lastQuestion;
     if (!q) {
       setStatus("Load a question first.");
@@ -443,12 +431,12 @@ async function initPractice() {
 
     try {
       await API.updateProgress(q.qnum || q.question_id, {
-        outcome: outcome,
+        is_solved: isSolved,
         revisit: practiceState.progress.revisit,
       });
       showToast(`Marked as ${statusLabel}.`, "success");
       setStatus(`Saved as ${statusLabel}.`);
-      applyOutcomeSelection({ outcome: outcome, revisit: practiceState.progress.revisit });
+      applyOutcomeSelection({ is_solved: isSolved, revisit: practiceState.progress.revisit });
     } catch (err) {
       showToast(`Failed to save progress: ${err.message}`, "error");
       setStatus(`Error: ${err.message}`);
@@ -468,14 +456,14 @@ async function initPractice() {
     }
 
     const nextRevisit = !practiceState.progress.revisit;
-    const outcome = practiceState.progress.outcome || "unsolved";
+    const isSolved = practiceState.progress.is_solved ?? false;
 
     try {
       await API.updateProgress(q.qnum || q.question_id, {
-        outcome: outcome,
+        is_solved: isSolved,
         revisit: nextRevisit,
       });
-      applyOutcomeSelection({ outcome: outcome, revisit: nextRevisit });
+      applyOutcomeSelection({ is_solved: isSolved, revisit: nextRevisit });
       showToast(nextRevisit ? "Added to revisit queue." : "Removed from revisit queue.", "success");
       setStatus(nextRevisit ? "Saved to revisit queue." : "Removed from revisit queue.");
     } catch (err) {
@@ -500,7 +488,7 @@ async function initPractice() {
       await API.clearProgress(q.qnum || 0);
       showToast("Marked as not solved.", "success");
       setStatus("Saved as not solved.");
-      applyOutcomeSelection({ outcome: "unsolved", revisit: false });
+      applyOutcomeSelection({ is_solved: false, revisit: false });
     } catch (err) {
       showToast(`Failed to clear progress: ${err.message}`, "error");
       setStatus(`Error: ${err.message}`);
@@ -662,7 +650,7 @@ async function initPractice() {
   if (surpriseBtn) surpriseBtn.addEventListener("click", () => guarded(surpriseCompany));
   if (copyBtn) copyBtn.addEventListener("click", () => guarded(copyLink));
 
-  if (markSolvedBtn) markSolvedBtn.addEventListener("click", () => guarded(() => markQuestion("solved", "Solved")));
+  if (markSolvedBtn) markSolvedBtn.addEventListener("click", () => guarded(() => markQuestion(true, "Solved")));
   if (markUnsolvedBtn) markUnsolvedBtn.addEventListener("click", () => guarded(clearQuestionProgress));
   if (markRevisitBtn) markRevisitBtn.addEventListener("click", () => guarded(toggleRevisitForQuestion));
 

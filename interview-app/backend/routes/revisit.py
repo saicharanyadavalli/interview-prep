@@ -28,19 +28,7 @@ def get_revisit_queue(user: dict = Depends(get_current_user)):
         )
         entries = result.data or []
     except Exception:
-        # Backward compatibility: pre-migration rows without is_revisit may only have status='revisit'.
-        try:
-            fallback = (
-                supabase.table("user_progress")
-                .select("*")
-                .eq("user_id", user["id"])
-                .eq("status", "revisit")
-                .order("updated_at", desc=True)
-                .execute()
-            )
-            entries = fallback.data or []
-        except Exception:
-            entries = []
+        entries = []
 
     items = [
         RevisitEntry(
@@ -59,13 +47,13 @@ def get_revisit_queue(user: dict = Depends(get_current_user)):
 
 @router.delete("/{qnum}")
 def remove_from_revisit(qnum: int, user: dict = Depends(get_current_user)):
-    """Remove a question from revisit while preserving solved/unsolved outcome."""
+    """Remove a question from revisit while preserving solved state."""
     supabase = get_supabase_client()
 
     try:
         current_rows = (
             supabase.table("user_progress")
-            .select("outcome,status")
+            .select("is_solved")
             .eq("user_id", user["id"])
             .eq("qnum", qnum)
             .limit(1)
@@ -73,22 +61,11 @@ def remove_from_revisit(qnum: int, user: dict = Depends(get_current_user)):
         ).data or []
 
         current = current_rows[0] if current_rows else {}
-        outcome = str(current.get("outcome") or "").lower().strip()
-        legacy_status = str(current.get("status") or "").lower().strip()
-        if outcome not in {"solved", "unsolved"}:
-            outcome = "solved" if legacy_status in {"good", "strong"} else "unsolved"
+        is_solved = bool(current.get("is_solved", False))
 
-        status = "good" if outcome == "solved" else "skip"
-
-        try:
-            supabase.table("user_progress").update(
-                {"is_revisit": False, "outcome": outcome, "status": status}
-            ).eq("user_id", user["id"]).eq("qnum", qnum).execute()
-        except Exception:
-            # Legacy schema fallback.
-            supabase.table("user_progress").update(
-                {"status": "skip"}
-            ).eq("user_id", user["id"]).eq("qnum", qnum).execute()
+        supabase.table("user_progress").update(
+            {"is_revisit": False, "is_solved": is_solved}
+        ).eq("user_id", user["id"]).eq("qnum", qnum).execute()
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 

@@ -67,7 +67,6 @@ const API = {
       appendValue("match", filters.match);
     }
 
-    pushTokenized("status", filters.status);
     pushTokenized("difficulty", filters.difficulty);
     pushTokenized("company", filters.company);
     pushTokenized("topic", filters.topic);
@@ -166,11 +165,9 @@ const API = {
 
   // ---- Progress ----
 
-  async updateProgress(questionRef, statusOrPayload) {
+  async updateProgress(questionRef, progressPayload) {
     const isNum = Number.isFinite(Number(questionRef)) && Number(questionRef) > 0;
-    const payload = typeof statusOrPayload === "string"
-      ? { status: statusOrPayload }
-      : { ...(statusOrPayload || {}) };
+    const payload = { ...(progressPayload || {}) };
 
     return this._fetch("/progress/update", {
       method: "POST",

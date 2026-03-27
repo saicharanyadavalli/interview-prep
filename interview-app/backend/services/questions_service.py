@@ -32,7 +32,6 @@ _qnum_to_summary: dict[int, dict] | None = None
 _catalog_cache: list[dict] | None = None
 
 _DB_QUESTIONS_TABLE = "question_bank_questions"
-_DB_COMPANIES_TABLE = "question_bank_companies"
 _DB_ALIASES_TABLE = "question_bank_qnum_aliases"
 _DB_PAGE_SIZE = 1000
 
@@ -289,22 +288,56 @@ def _db_fetch_question_rows_by_qnums(qnums: list[int]) -> dict[int, dict] | None
     return {int(row.get("qnum", 0) or 0): row for row in data}
 
 
-def _db_fetch_qnums_for_company_difficulty(company: str, difficulty: str) -> list[int] | None:
-    """Fetch qnums for a (company, difficulty) pair from Supabase."""
+def _db_fetch_questions_for_company_difficulty(company: str, difficulty: str) -> list[dict] | None:
+    """Fetch question rows for (company, difficulty) using company_tags in question table."""
+    normalized_company = str(company or "").strip().lower()
+    if not normalized_company:
+        return []
+
     try:
         supabase = get_supabase_client()
-        rows = (
-            supabase.table(_DB_COMPANIES_TABLE)
-            .select("qnum")
-            .eq("company", company)
-            .eq("difficulty", _normalize_difficulty(difficulty))
-            .order("qnum")
-            .execute()
-        ).data or []
     except Exception:
         return None
 
-    return [int(row.get("qnum", 0) or 0) for row in rows if int(row.get("qnum", 0) or 0) > 0]
+    rows: list[dict] = []
+    offset = 0
+    normalized_difficulty = _normalize_difficulty(difficulty)
+
+    try:
+        while True:
+            batch = (
+                supabase.table(_DB_QUESTIONS_TABLE)
+                .select(
+                    "qnum,question_id,problem_name,difficulty,problem_url,"
+                    "statement_text,constraints_text,examples,topic_tags,"
+                    "company_tags,raw,primary_company,companies,company_count,source_qnums"
+                )
+                .eq("difficulty", normalized_difficulty)
+                .order("qnum")
+                .range(offset, offset + _DB_PAGE_SIZE - 1)
+                .execute()
+            ).data or []
+
+            if not batch:
+                break
+
+            for row in batch:
+                tags = {
+                    str(value).strip().lower()
+                    for value in (row.get("company_tags") or [])
+                    if str(value).strip()
+                }
+                if normalized_company in tags:
+                    rows.append(row)
+
+            if len(batch) < _DB_PAGE_SIZE:
+                break
+
+            offset += _DB_PAGE_SIZE
+    except Exception:
+        return None
+
+    return rows
 
 
 def get_companies() -> list[str]:
@@ -313,16 +346,38 @@ def get_companies() -> list[str]:
     if _companies is not None:
         return _companies
 
-    # DB-first: pull distinct companies from the company mapping table.
+    # DB-first: pull distinct companies from company_tags in question rows.
     try:
         supabase = get_supabase_client()
-        rows = (
-            supabase.table(_DB_COMPANIES_TABLE)
-            .select("company")
-            .order("company")
-            .execute()
-        ).data or []
-        companies = sorted({str(row.get("company", "")).strip() for row in rows if str(row.get("company", "")).strip()})
+        rows: list[dict] = []
+        offset = 0
+        while True:
+            batch = (
+                supabase.table(_DB_QUESTIONS_TABLE)
+                .select("company_tags")
+                .order("qnum")
+                .range(offset, offset + _DB_PAGE_SIZE - 1)
+                .execute()
+            ).data or []
+
+            if not batch:
+                break
+
+            rows.extend(batch)
+
+            if len(batch) < _DB_PAGE_SIZE:
+                break
+
+            offset += _DB_PAGE_SIZE
+
+        companies = sorted(
+            {
+                str(company).strip()
+                for row in rows
+                for company in (row.get("company_tags") or [])
+                if str(company).strip() and not _is_unknown_company(str(company).strip())
+            }
+        )
         if companies:
             _companies = companies
             return _companies
@@ -453,13 +508,9 @@ def get_recommended_question(
 
 def get_all_questions(company: str, difficulty: str) -> list[dict]:
     """Return all questions for a company/difficulty pair, formatted."""
-    qnums = _db_fetch_qnums_for_company_difficulty(company, difficulty)
-    if qnums is not None:
-        rows_map = _db_fetch_question_rows_by_qnums(qnums)
-        if rows_map is not None:
-            db_rows = [rows_map[qnum] for qnum in qnums if qnum in rows_map]
-            if db_rows:
-                return [_format_db_question(row) for row in db_rows]
+    db_rows = _db_fetch_questions_for_company_difficulty(company, difficulty)
+    if db_rows is not None:
+        return [_format_db_question(row) for row in db_rows]
 
     questions = _load_questions(company, difficulty)
     return [_format_question(q) for q in questions]

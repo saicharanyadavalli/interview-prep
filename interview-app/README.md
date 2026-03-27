@@ -112,7 +112,8 @@ CREATE TABLE user_progress (
   question_title TEXT,
   company TEXT,
   difficulty TEXT,
-  status TEXT CHECK (status IN ('strong', 'good', 'revisit', 'skip')),
+    is_solved BOOLEAN NOT NULL DEFAULT FALSE,
+   is_revisit BOOLEAN NOT NULL DEFAULT FALSE,
   created_at TIMESTAMPTZ DEFAULT now(),
   updated_at TIMESTAMPTZ DEFAULT now(),
   UNIQUE(user_id, question_id)
@@ -228,7 +229,7 @@ To run fully database-native question queries, load the question bank into Supab
 
 1. Run the latest SQL in `supabase_setup.sql` to create:
    - `question_bank_questions`
-   - `question_bank_companies`
+   - `question_bank_qnum_aliases`
 2. From `interview-app/backend/`, run:
 
 ```bash
@@ -239,6 +240,7 @@ Notes:
 - `--truncate` clears old question bank rows before reload.
 - The script reads from `../output/stage3_company_wise` and writes to Supabase using `SUPABASE_SERVICE_KEY`.
 - Duplicate questions are merged into one canonical row, and the canonical qnum is the minimum qnum among duplicates.
+- Company-level filtering is performed from `question_bank_questions.company_tags`.
 - Source qnums are stored in `question_bank_questions.source_qnums`, and alias mappings are stored in `question_bank_qnum_aliases`.
 
 ---
@@ -287,7 +289,7 @@ After deploying the frontend, go to Supabase **Authentication → URL Configurat
 - **Difficulty filtering** — Easy, Medium, Hard
 - **No-repeat random questions** — Each question shown only once per session
 - **AI Interview Assistant** — Ask doubts, get hints (not full solutions) via Gemini
-- **Progress tracking** — Mark questions as Strong, Good, Revisit, or Skip
+- **Progress tracking** — Mark questions as Solved/Not Solved and optionally add to Revisit
 - **Revisit queue** — Save questions for later practice
 - **Dark/Light theme** — Toggle with sidebar button
 - **Responsive design** — Works on mobile with collapsible sidebar
@@ -307,7 +309,7 @@ After deploying the frontend, go to Supabase **Authentication → URL Configurat
 | GET    | `/questions/recommend`    | No   | Recommended question               |
 | GET    | `/questions/all`          | No   | All questions for company+diff     |
 | POST   | `/assistant/ask`          | No   | Ask AI assistant a doubt           |
-| POST   | `/progress/update`        | Yes  | Mark question status               |
+| POST   | `/progress/update`        | Yes  | Update question progress state     |
 | GET    | `/progress/user`          | Yes  | Get user progress + history        |
 | GET    | `/revisit`                | Yes  | Get revisit queue                  |
 | DELETE | `/revisit/{question_id}`  | Yes  | Remove from revisit queue          |
