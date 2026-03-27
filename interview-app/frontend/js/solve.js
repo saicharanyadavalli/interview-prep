@@ -236,7 +236,7 @@ async function initSolvePage() {
       const data = await API.getComments(q.qnum);
       const comments = data.comments || [];
       if (!comments.length) {
-        commentsList.innerHTML = '<p class="text-muted text-sm">No note yet.</p>';
+        commentsList.innerHTML = '<p class="text-muted text-sm">No comment is found.</p>';
         if (commentInput) commentInput.value = "";
         if (saveCommentBtn) saveCommentBtn.textContent = "Save Note";
         return;
@@ -248,6 +248,13 @@ async function initSolvePage() {
           <p class="comment-text">${escapeHtml(latest.comment_text)}</p>
           <div class="comment-meta">
             <span class="text-muted text-sm">Last updated ${formatDate(latest.created_at)}</span>
+            <button
+              type="button"
+              class="btn btn-danger btn-sm comment-delete-btn"
+              data-comment-id="${escapeHtml(String(latest.id || ""))}"
+            >
+              Delete
+            </button>
           </div>
         </div>
       `;
@@ -279,6 +286,27 @@ async function initSolvePage() {
       showToast("Note saved.", "success");
     } catch (err) {
       showToast(`Failed to save: ${err.message}`, "error");
+    }
+  }
+
+  async function deleteNote(commentId) {
+    if (!commentId) {
+      showToast("No comment to delete.", "warning");
+      return;
+    }
+
+    if (!solveState.userLoggedIn) {
+      showToast("Sign in to delete comment.", "warning");
+      return;
+    }
+
+    try {
+      await API.deleteComment(commentId);
+      if (commentInput) commentInput.value = "";
+      await loadNote();
+      showToast("Comment deleted.", "success");
+    } catch (err) {
+      showToast(`Failed to delete: ${err.message}`, "error");
     }
   }
 
@@ -452,6 +480,16 @@ async function initSolvePage() {
   }
 
   if (saveCommentBtn) saveCommentBtn.addEventListener("click", saveNote);
+  if (commentsList) {
+    commentsList.addEventListener("click", (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+      const button = target.closest(".comment-delete-btn");
+      if (!button) return;
+      const commentId = button.getAttribute("data-comment-id") || "";
+      deleteNote(commentId);
+    });
+  }
   if (markSolvedBtn) markSolvedBtn.addEventListener("click", () => markStatus("solved", "Solved"));
   if (markUnsolvedBtn) markUnsolvedBtn.addEventListener("click", clearProgress);
   if (markRevisitBtn) markRevisitBtn.addEventListener("click", toggleRevisit);

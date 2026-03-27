@@ -127,7 +127,6 @@ def update_my_profile(payload: ProfileUpdateRequest, current_user: dict = Depend
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
-
 @router.post("/avatar/upload")
 async def upload_profile_avatar(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     """Upload avatar image to Cloudinary and persist secure URL in user profile."""

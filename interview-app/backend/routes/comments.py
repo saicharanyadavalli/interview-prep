@@ -22,12 +22,6 @@ def add_comment(payload: CommentRequest, user: dict = Depends(get_current_user))
     if qnum is None and payload.question_id:
         qnum = find_qnum_by_question_id(payload.question_id)
 
-    if qnum is None:
-        raise HTTPException(
-            status_code=422,
-            detail="Provide either a valid qnum or a resolvable question_id.",
-        )
-
     try:
         existing = (
             supabase.table("user_comments")

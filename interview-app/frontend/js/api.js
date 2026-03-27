@@ -269,4 +269,10 @@ const API = {
   async getComments(qnum) {
     return this._fetch(`/comments/${encodeURIComponent(qnum)}`);
   },
+
+  async deleteComment(commentId) {
+    return this._fetch(`/comments/${encodeURIComponent(commentId)}`, {
+      method: "DELETE",
+    });
+  },
 };
