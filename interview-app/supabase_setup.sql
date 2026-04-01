@@ -1,250 +1,209 @@
+BEGIN;
+
 -- ============================================================
--- Interview Practice Platform -- Supabase Database Setup
--- Run this entire script in the Supabase SQL Editor
+-- SCHEMA + EXTENSIONS
+-- ============================================================
+SET search_path = public, auth, extensions;
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+-- ============================================================
+-- UTIL FUNCTIONS
+-- ============================================================
+CREATE OR REPLACE FUNCTION public.set_current_timestamp_updated_at()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  NEW.updated_at = now();
+  RETURN NEW;
+END;
+$$;
+
+-- ============================================================
+-- CORE TABLES
 -- ============================================================
 
--- 1. User Progress Table (is_solved + revisit flag)
-CREATE TABLE IF NOT EXISTS user_progress (
+CREATE TABLE public.user_profiles (
+  id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
+  email TEXT NOT NULL,
+  name TEXT NOT NULL DEFAULT '',
+  phone TEXT NOT NULL DEFAULT '',
+  avatar_url TEXT NOT NULL DEFAULT '',
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TABLE public.user_progress (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  qnum INTEGER NOT NULL,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  qnum INTEGER NOT NULL CHECK (qnum > 0),
   is_solved BOOLEAN NOT NULL DEFAULT FALSE,
   is_revisit BOOLEAN NOT NULL DEFAULT FALSE,
-  updated_at TIMESTAMPTZ DEFAULT now(),
-  UNIQUE(user_id, qnum)
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, qnum)
 );
 
--- Ensure required columns exist for older tables.
-ALTER TABLE user_progress
-  ADD COLUMN IF NOT EXISTS is_solved BOOLEAN;
-
-ALTER TABLE user_progress
-  ADD COLUMN IF NOT EXISTS is_revisit BOOLEAN NOT NULL DEFAULT FALSE;
-
-ALTER TABLE user_progress
-  ALTER COLUMN is_solved SET DEFAULT FALSE;
-
--- Optional migration path from legacy outcome/status schemas.
-DO $$
-BEGIN
-  IF EXISTS (
-    SELECT 1
-    FROM information_schema.columns
-    WHERE table_schema = 'public'
-      AND table_name = 'user_progress'
-      AND column_name = 'outcome'
-  ) THEN
-    EXECUTE $sql$
-      UPDATE user_progress
-      SET is_solved = CASE
-        WHEN outcome = 'solved' THEN TRUE
-        ELSE FALSE
-      END
-      WHERE is_solved IS NULL
-    $sql$;
-  END IF;
-END $$;
-
--- Optional migration path from legacy status-based schema.
-DO $$
-BEGIN
-  IF EXISTS (
-    SELECT 1
-    FROM information_schema.columns
-    WHERE table_schema = 'public'
-      AND table_name = 'user_progress'
-      AND column_name = 'status'
-  ) THEN
-    EXECUTE $sql$
-      UPDATE user_progress
-      SET is_solved = CASE
-        WHEN status IN ('good', 'strong') THEN TRUE
-        ELSE FALSE
-      END
-      WHERE is_solved IS NULL
-    $sql$;
-
-    EXECUTE $sql$
-      UPDATE user_progress
-      SET is_revisit = TRUE
-      WHERE status = 'revisit' AND is_revisit = FALSE
-    $sql$;
-
-    EXECUTE 'ALTER TABLE user_progress DROP COLUMN status';
-  END IF;
-END $$;
-
-ALTER TABLE user_progress
-  DROP COLUMN IF EXISTS outcome;
-
-UPDATE user_progress
-SET is_solved = FALSE
-WHERE is_solved IS NULL;
-
-ALTER TABLE user_progress
-  ALTER COLUMN is_solved SET NOT NULL;
-
--- 2. Practice History Table (lean: only user_id + qnum)
-CREATE TABLE IF NOT EXISTS practice_history (
+CREATE TABLE public.practice_history (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  qnum INTEGER NOT NULL,
-  practiced_at TIMESTAMPTZ DEFAULT now()
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  qnum INTEGER NOT NULL CHECK (qnum > 0),
+  practiced_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
--- 3. User Comments Table (lean: user_id + qnum + comment)
-CREATE TABLE IF NOT EXISTS user_comments (
+CREATE TABLE public.user_comments (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  user_id UUID NOT NULL,
-  qnum INTEGER NOT NULL,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  qnum INTEGER NOT NULL CHECK (qnum > 0),
   comment_text TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT now()
-);
-
--- 4. User Profile Table (editable profile fields)
-CREATE TABLE IF NOT EXISTS user_profiles (
-  id UUID PRIMARY KEY,
-  email TEXT NOT NULL,
-  name TEXT DEFAULT '',
-  phone TEXT DEFAULT '',
-  avatar_url TEXT DEFAULT '',
-  updated_at TIMESTAMPTZ DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
 -- ============================================================
--- Row Level Security
+-- QUESTION BANK
 -- ============================================================
-ALTER TABLE user_progress ENABLE ROW LEVEL SECURITY;
-ALTER TABLE practice_history ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_comments ENABLE ROW LEVEL SECURITY;
-ALTER TABLE user_profiles ENABLE ROW LEVEL SECURITY;
 
--- user_progress policies
-DROP POLICY IF EXISTS "Users can view own progress" ON user_progress;
-CREATE POLICY "Users can view own progress"
-  ON user_progress FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can insert own progress" ON user_progress;
-CREATE POLICY "Users can insert own progress"
-  ON user_progress FOR INSERT WITH CHECK (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can update own progress" ON user_progress;
-CREATE POLICY "Users can update own progress"
-  ON user_progress FOR UPDATE USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can delete own progress" ON user_progress;
-CREATE POLICY "Users can delete own progress"
-  ON user_progress FOR DELETE USING (auth.uid() = user_id);
-
--- practice_history policies
-DROP POLICY IF EXISTS "Users can view own history" ON practice_history;
-CREATE POLICY "Users can view own history"
-  ON practice_history FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can insert own history" ON practice_history;
-CREATE POLICY "Users can insert own history"
-  ON practice_history FOR INSERT WITH CHECK (auth.uid() = user_id);
-
--- user_comments policies
-DROP POLICY IF EXISTS "Users can view own comments" ON user_comments;
-CREATE POLICY "Users can view own comments"
-  ON user_comments FOR SELECT USING (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can insert own comments" ON user_comments;
-CREATE POLICY "Users can insert own comments"
-  ON user_comments FOR INSERT WITH CHECK (auth.uid() = user_id);
-DROP POLICY IF EXISTS "Users can delete own comments" ON user_comments;
-CREATE POLICY "Users can delete own comments"
-  ON user_comments FOR DELETE USING (auth.uid() = user_id);
-
--- user_profiles policies
-DROP POLICY IF EXISTS "Users can view own profile" ON user_profiles;
-CREATE POLICY "Users can view own profile"
-  ON user_profiles FOR SELECT USING (auth.uid() = id);
-DROP POLICY IF EXISTS "Users can insert own profile" ON user_profiles;
-CREATE POLICY "Users can insert own profile"
-  ON user_profiles FOR INSERT WITH CHECK (auth.uid() = id);
-DROP POLICY IF EXISTS "Users can update own profile" ON user_profiles;
-CREATE POLICY "Users can update own profile"
-  ON user_profiles FOR UPDATE USING (auth.uid() = id);
-
--- ============================================================
--- Indexes
--- ============================================================
-CREATE INDEX IF NOT EXISTS idx_user_progress_user ON user_progress(user_id);
-CREATE INDEX IF NOT EXISTS idx_user_progress_qnum ON user_progress(qnum);
-CREATE INDEX IF NOT EXISTS idx_user_progress_user_revisit ON user_progress(user_id, is_revisit);
-DROP INDEX IF EXISTS idx_user_progress_user_outcome;
-CREATE INDEX IF NOT EXISTS idx_user_progress_user_solved ON user_progress(user_id, is_solved);
-CREATE INDEX IF NOT EXISTS idx_practice_history_user ON practice_history(user_id);
-CREATE INDEX IF NOT EXISTS idx_practice_history_time ON practice_history(practiced_at DESC);
-CREATE INDEX IF NOT EXISTS idx_user_comments_user_qnum ON user_comments(user_id, qnum);
-CREATE INDEX IF NOT EXISTS idx_user_profiles_email ON user_profiles(email);
-
--- ============================================================
--- Service role bypass (for backend with service_role key)
--- ============================================================
-DROP POLICY IF EXISTS "Service role full access to user_progress" ON user_progress;
-CREATE POLICY "Service role full access to user_progress"
-  ON user_progress FOR ALL USING (auth.role() = 'service_role');
-DROP POLICY IF EXISTS "Service role full access to practice_history" ON practice_history;
-CREATE POLICY "Service role full access to practice_history"
-  ON practice_history FOR ALL USING (auth.role() = 'service_role');
-DROP POLICY IF EXISTS "Service role full access to user_comments" ON user_comments;
-CREATE POLICY "Service role full access to user_comments"
-  ON user_comments FOR ALL USING (auth.role() = 'service_role');
-DROP POLICY IF EXISTS "Service role full access to user_profiles" ON user_profiles;
-CREATE POLICY "Service role full access to user_profiles"
-  ON user_profiles FOR ALL USING (auth.role() = 'service_role');
-
--- ============================================================
--- Question Bank Tables (DB-native question catalog)
--- ============================================================
-CREATE TABLE IF NOT EXISTS question_bank_questions (
-  qnum INTEGER PRIMARY KEY,
+CREATE TABLE public.question_bank_questions (
+  qnum INTEGER PRIMARY KEY CHECK (qnum > 0),
   question_id TEXT NOT NULL,
   problem_name TEXT NOT NULL,
   difficulty TEXT NOT NULL,
-  problem_url TEXT DEFAULT '',
-  statement_text TEXT DEFAULT '',
-  constraints_text TEXT DEFAULT '',
+  problem_url TEXT NOT NULL DEFAULT '',
+  statement_text TEXT NOT NULL DEFAULT '',
+  constraints_text TEXT NOT NULL DEFAULT '',
   examples JSONB NOT NULL DEFAULT '[]'::jsonb,
   topic_tags TEXT[] NOT NULL DEFAULT '{}'::text[],
   company_tags TEXT[] NOT NULL DEFAULT '{}'::text[],
   raw JSONB NOT NULL DEFAULT '{}'::jsonb,
   primary_company TEXT NOT NULL,
   companies TEXT[] NOT NULL DEFAULT '{}'::text[],
-  company_count INTEGER NOT NULL DEFAULT 1,
+  company_count INTEGER NOT NULL DEFAULT 1 CHECK (company_count >= 1),
   source_qnums INTEGER[] NOT NULL DEFAULT '{}'::int[],
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-ALTER TABLE question_bank_questions
-  ADD COLUMN IF NOT EXISTS source_qnums INTEGER[] NOT NULL DEFAULT '{}'::int[];
-
--- Legacy table no longer used. Company filtering now relies on question_bank_questions.company_tags.
-DROP TABLE IF EXISTS question_bank_companies CASCADE;
-
-CREATE TABLE IF NOT EXISTS question_bank_qnum_aliases (
-  source_qnum INTEGER PRIMARY KEY,
-  canonical_qnum INTEGER NOT NULL REFERENCES question_bank_questions(qnum) ON DELETE CASCADE,
-  created_at TIMESTAMPTZ DEFAULT now()
+CREATE TABLE public.question_bank_qnum_aliases (
+  source_qnum INTEGER PRIMARY KEY CHECK (source_qnum > 0),
+  canonical_qnum INTEGER NOT NULL REFERENCES public.question_bank_questions(qnum) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE INDEX IF NOT EXISTS idx_question_bank_questions_question_id ON question_bank_questions(question_id);
-CREATE INDEX IF NOT EXISTS idx_question_bank_questions_name ON question_bank_questions(problem_name);
-CREATE INDEX IF NOT EXISTS idx_question_bank_questions_difficulty ON question_bank_questions(difficulty);
-CREATE INDEX IF NOT EXISTS idx_question_bank_qnum_aliases_canonical ON question_bank_qnum_aliases(canonical_qnum);
+-- ============================================================
+-- TRIGGERS
+-- ============================================================
 
-ALTER TABLE question_bank_questions ENABLE ROW LEVEL SECURITY;
-ALTER TABLE question_bank_qnum_aliases ENABLE ROW LEVEL SECURITY;
+CREATE TRIGGER trg_user_profiles_updated_at
+BEFORE UPDATE ON public.user_profiles
+FOR EACH ROW
+EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 
-DROP POLICY IF EXISTS "Public read question bank questions" ON question_bank_questions;
-CREATE POLICY "Public read question bank questions"
-  ON question_bank_questions FOR SELECT USING (true);
-DROP POLICY IF EXISTS "Public read question bank qnum aliases" ON question_bank_qnum_aliases;
-CREATE POLICY "Public read question bank qnum aliases"
-  ON question_bank_qnum_aliases FOR SELECT USING (true);
+CREATE TRIGGER trg_user_progress_updated_at
+BEFORE UPDATE ON public.user_progress
+FOR EACH ROW
+EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 
-DROP POLICY IF EXISTS "Service role full access to question_bank_questions" ON question_bank_questions;
-CREATE POLICY "Service role full access to question_bank_questions"
-  ON question_bank_questions FOR ALL USING (auth.role() = 'service_role');
-DROP POLICY IF EXISTS "Service role full access to question_bank_qnum_aliases" ON question_bank_qnum_aliases;
-CREATE POLICY "Service role full access to question_bank_qnum_aliases"
-  ON question_bank_qnum_aliases FOR ALL USING (auth.role() = 'service_role');
+CREATE TRIGGER trg_question_bank_updated_at
+BEFORE UPDATE ON public.question_bank_questions
+FOR EACH ROW
+EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+
+-- ============================================================
+-- INDEXES
+-- ============================================================
+
+-- user_progress
+CREATE INDEX idx_user_progress_user ON public.user_progress(user_id);
+CREATE INDEX idx_user_progress_qnum ON public.user_progress(qnum);
+CREATE INDEX idx_user_progress_user_solved ON public.user_progress(user_id, is_solved);
+CREATE INDEX idx_user_progress_user_revisit ON public.user_progress(user_id, is_revisit);
+
+-- practice_history
+CREATE INDEX idx_practice_history_user ON public.practice_history(user_id);
+CREATE INDEX idx_practice_history_time ON public.practice_history(practiced_at DESC);
+
+-- comments
+CREATE INDEX idx_user_comments_user_qnum ON public.user_comments(user_id, qnum);
+
+-- profiles
+CREATE INDEX idx_user_profiles_email ON public.user_profiles(email);
+
+-- question bank
+CREATE INDEX idx_qb_question_id ON public.question_bank_questions(question_id);
+CREATE INDEX idx_qb_name ON public.question_bank_questions(problem_name);
+CREATE INDEX idx_qb_difficulty ON public.question_bank_questions(difficulty);
+CREATE INDEX idx_qb_topic_tags ON public.question_bank_questions USING GIN (topic_tags);
+CREATE INDEX idx_qb_company_tags ON public.question_bank_questions USING GIN (company_tags);
+
+CREATE INDEX idx_qb_alias_canonical ON public.question_bank_qnum_aliases(canonical_qnum);
+
+-- ============================================================
+-- PRIVILEGES
+-- ============================================================
+
+GRANT USAGE ON SCHEMA public TO anon, authenticated;
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON
+  public.user_profiles,
+  public.user_progress,
+  public.practice_history,
+  public.user_comments
+TO authenticated;
+
+GRANT SELECT ON
+  public.question_bank_questions,
+  public.question_bank_qnum_aliases
+TO anon, authenticated;
+
+-- ============================================================
+-- ROW LEVEL SECURITY
+-- ============================================================
+
+ALTER TABLE public.user_profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_progress ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.practice_history ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.user_comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.question_bank_questions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.question_bank_qnum_aliases ENABLE ROW LEVEL SECURITY;
+
+-- user_profiles
+CREATE POLICY "profile_select" ON public.user_profiles
+FOR SELECT USING (auth.uid() = id);
+
+CREATE POLICY "profile_insert" ON public.user_profiles
+FOR INSERT WITH CHECK (auth.uid() = id);
+
+CREATE POLICY "profile_update" ON public.user_profiles
+FOR UPDATE USING (auth.uid() = id);
+
+-- user_progress
+CREATE POLICY "progress_select" ON public.user_progress
+FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "progress_insert" ON public.user_progress
+FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "progress_update" ON public.user_progress
+FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "progress_delete" ON public.user_progress
+FOR DELETE USING (auth.uid() = user_id);
+
+-- practice_history
+CREATE POLICY "history_select" ON public.practice_history
+FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "history_insert" ON public.practice_history
+FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+-- comments
+CREATE POLICY "comments_all" ON public.user_comments
+FOR ALL USING (auth.uid() = user_id);
+
+-- public read (question bank)
+CREATE POLICY "qb_read" ON public.question_bank_questions
+FOR SELECT USING (true);
+
+CREATE POLICY "qb_alias_read" ON public.question_bank_qnum_aliases
+FOR SELECT USING (true);
+
+COMMIT;
