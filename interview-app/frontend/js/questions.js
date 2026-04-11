@@ -492,7 +492,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function createQuestionCard(question) {
     const solved = Number(question.solved || 0) === 1;
-    const solvedLabel = solved ? "Solved" : "New";
+    const solvedPill = solved ? '<span class="pill pill-solved">Solved</span>' : "";
     const difficulty = titleCase(question.difficulty || "Unknown");
     const difficultyClass = `pill-difficulty-${normalizeToken(question.difficulty)}`;
     const company = getCompanyBadgeText(question);
@@ -509,7 +509,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <a class="q-browse-title q-open-link" href="solve.html?qnum=${encodeURIComponent(question.qnum || "")}">${escapeHtml(question.problem_name || "Untitled")}</a>
         </div>
         <div class="q-browse-right">
-          <span class="pill ${solved ? "pill-solved" : "pill-unsolved"}">${solvedLabel}</span>
+          ${solvedPill}
           <span class="pill ${difficultyClass}">${escapeHtml(difficulty)}</span>
           <span class="pill pill-company">${escapeHtml(company)}</span>
           <span class="pill pill-success">${successRate}%</span>
