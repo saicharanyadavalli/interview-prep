@@ -189,6 +189,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   let filterDebounce = null;
   let scrollCacheDebounce = null;
   let suggestionIndex = -1;
+  let topicsHydrated = false;
 
   const PAGE_SIZE = 100;
   const UI_STATE_KEY = "questionsPageUiStateV2";
@@ -394,7 +395,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       )
     );
 
-    if (discoveredTopics.length) {
+    if (discoveredTopics.length && !topicsHydrated) {
+      topicsHydrated = true;
       filterBuilder.setTopics(discoveredTopics);
     }
   }
