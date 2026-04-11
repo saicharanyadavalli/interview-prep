@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/components.css" />
   </head>
-  <body data-theme="dark">
+  <body data-theme="dark" class="questions-v2-page">
     <div class="bg-shape bg-shape-a"></div>
     <div class="bg-shape bg-shape-b"></div>
 
@@ -38,32 +38,63 @@
         </div>
       </aside>
 
-      <main class="main-content">
-        <div class="page-header">
-          <h1>📋 All Questions</h1>
+      <main class="main-content questions-main-content">
+        <header class="questions-v2-topbar section">
+          <h1>
+            <img class="brand-logo" src="assets/logo-mark.svg" alt="Interview Assistant logo" />
+            <span>Interview Assistant</span>
+            <span class="questions-v2-page-label">All Questions v2</span>
+          </h1>
           <div class="page-header-actions">
             <span id="totalCount" class="counter-badge">0</span>
           </div>
-        </div>
+        </header>
 
-        <!-- Search -->
-        <div class="form-row section questions-filters-row">
-          <div class="control-group">
-            <input id="searchInput" type="text" placeholder="🔍 Search by name, company, difficulty, or tag..." />
+        <section class="questions-v2-shell">
+          <div class="questions-v2-left">
+            <div class="questions-search-wrap section">
+              <span class="questions-search-icon" aria-hidden="true">⌕</span>
+              <input
+                id="searchInput"
+                type="text"
+                autocomplete="off"
+                placeholder="Search questions, companies, difficulty..."
+              />
+              <div id="searchSuggestions" class="questions-search-suggestions hidden" aria-live="polite"></div>
+            </div>
+
+            <section class="section" aria-label="Question filters">
+              <div id="filterBuilder"></div>
+            </section>
+
+            <section id="questionsScroller" class="questions-v2-list-scroller section" aria-label="Questions list">
+              <div id="questionsList" class="q-browse-list">
+                <div class="empty-state">
+                  <p class="empty-icon">📋</p>
+                  <p>Questions will load automatically.</p>
+                </div>
+              </div>
+            </section>
           </div>
-        </div>
 
-        <section class="section" aria-label="Question filters">
-          <div id="filterBuilder"></div>
+          <aside class="questions-v2-right" aria-label="Selected question details">
+            <article class="questions-v2-preview-card section">
+              <h2 id="selectedTitle">Select a question</h2>
+              <p id="selectedSummary" class="text-muted">Choose a question from the list to see details.</p>
+            </article>
+
+            <article class="questions-v2-meta-card section">
+              <p><strong>Success Rate:</strong> <span id="selectedSuccessRate">--</span></p>
+              <p><strong>Companies:</strong> <span id="selectedCompanies">--</span></p>
+
+              <div class="questions-v2-actions">
+                <button id="addToCustomBtn" class="btn btn-outline-neon" type="button">Add to Custom Folder</button>
+                <button id="addToRevisitBtn" class="btn btn-outline-neon" type="button">Add to Revisit Queue</button>
+                <a id="openSolveBtn" class="btn btn-primary" href="solve.html">Open Question</a>
+              </div>
+            </article>
+          </aside>
         </section>
-
-        <!-- Questions List -->
-        <div id="questionsList" class="q-browse-list">
-          <div class="empty-state">
-            <p class="empty-icon">📋</p>
-            <p>Questions will load automatically.</p>
-          </div>
-        </div>
       </main>
     </div>
 
