@@ -50,7 +50,10 @@
           <article class="card-flat progress-v3-rings-card">
             <div class="progress-v3-card-head">
               <h3>Difficulty Completion</h3>
-              <span id="attemptedBadge" class="counter-badge">0 Attempted</span>
+              <div class="progress-v3-head-tools">
+                <div id="difficultyScopeTabs" class="progress-v3-scope-tabs"></div>
+                <span id="attemptedBadge" class="counter-badge">0 / 0 Solved</span>
+              </div>
             </div>
             <div id="difficultyRings" class="progress-v3-rings-wrap">
               <p class="loading"><span class="loading-dot">⏳</span> Loading difficulty stats...</p>
@@ -111,6 +114,7 @@
     <script src="js/auth.js"></script>
     <script src="js/api.js"></script>
     <script src="js/sidebar.js"></script>
+    <script src="js/filterBuilder.js"></script>
     <script src="js/progress.js"></script>
   </body>
 </html>

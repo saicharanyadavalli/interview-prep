@@ -1418,13 +1418,13 @@ body.questions-v2-page .bg-shape {
 
 body.questions-v2-page .questions-main-content {
   max-width: none;
-  margin-left: 0;
+  margin-left: 260px;
   padding: 1rem 1.4rem 1.25rem;
 }
 
 body.questions-v2-page .sidebar {
-  transform: translateX(-100%);
-  box-shadow: 16px 0 34px rgba(2, 6, 23, 0.65);
+  transform: translateX(0);
+  box-shadow: none;
 }
 
 body.questions-v2-page .sidebar.open {
@@ -1432,7 +1432,7 @@ body.questions-v2-page .sidebar.open {
 }
 
 body.questions-v2-page .sidebar-toggle {
-  display: block;
+  display: none;
   top: 0.9rem;
   left: 0.9rem;
   background: rgba(15, 23, 42, 0.88);
@@ -1458,7 +1458,7 @@ body.questions-v2-page .questions-v2-topbar {
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.75rem 0.85rem 0.75rem 3.15rem;
+  padding: 0.75rem 0.85rem;
   border: 1px solid rgba(103, 232, 249, 0.22);
   border-radius: 12px;
   background: linear-gradient(105deg, rgba(15, 23, 42, 0.9), rgba(30, 41, 59, 0.78));
@@ -1851,7 +1851,29 @@ body.questions-v2-page #qListInlineStatus p {
 
 @media (max-width: 768px) {
   body.questions-v2-page .questions-main-content {
+    margin-left: 0;
     padding: 3.5rem 0.75rem 1rem;
+  }
+
+  body.questions-v2-page .sidebar {
+    transform: translateX(-100%);
+    box-shadow: 16px 0 34px rgba(2, 6, 23, 0.65);
+  }
+
+  body.questions-v2-page .sidebar.open {
+    transform: translateX(0);
+  }
+
+  body.questions-v2-page .sidebar-toggle {
+    display: block;
+  }
+
+  body.questions-v2-page .sidebar-overlay {
+    display: none;
+  }
+
+  body.questions-v2-page .sidebar-overlay.open {
+    display: block;
   }
 
   body.questions-v2-page .questions-v2-topbar {
@@ -1882,6 +1904,138 @@ body.questions-v2-page #qListInlineStatus p {
 
   body.questions-v2-page .questions-v2-list-scroller {
     max-height: none;
+  }
+}
+
+/* ---------- Global Mobile Refinements (320px-768px) ---------- */
+@media (max-width: 768px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  body.app-v2-theme .main-content {
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    padding: 3.6rem 0.85rem 1.15rem;
+  }
+
+  body.app-v2-theme .page-header {
+    padding: 0.72rem 0.78rem;
+    gap: 0.55rem;
+  }
+
+  body.app-v2-theme .page-header h1 {
+    font-size: clamp(1.12rem, 5.2vw, 1.42rem);
+    line-height: 1.2;
+  }
+
+  body.app-v2-theme .page-header-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  body.app-v2-theme .card,
+  body.app-v2-theme .card-flat,
+  body.app-v2-theme .question-card,
+  body.app-v2-theme .assistant-panel,
+  body.app-v2-theme .status-bar {
+    padding: 0.8rem;
+  }
+
+  body.app-v2-theme .stats-grid,
+  body.app-v2-theme .two-col,
+  body.app-v2-theme .details-grid,
+  body.app-v2-theme .progress-v3-top-grid,
+  body.app-v2-theme .progress-v3-history-grid,
+  body.app-v2-theme .revisit-v3-list,
+  body.app-v2-theme .revisit-v3-stats {
+    grid-template-columns: 1fr;
+  }
+
+  body.app-v2-theme .button-row {
+    gap: 0.45rem;
+  }
+
+  body.app-v2-theme .button-row .btn,
+  body.app-v2-theme .chat-actions .btn,
+  body.app-v2-theme .revisit-v3-actions .btn,
+  body.app-v2-theme .progress-v3-history-actions .btn {
+    min-height: 42px;
+  }
+
+  body.app-v2-theme .track-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  body.app-v2-theme .track-actions,
+  body.app-v2-theme .revisit-v3-actions,
+  body.app-v2-theme .progress-v3-history-actions {
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+  }
+
+  body.app-v2-theme .chat-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  body.app-v2-theme .comments-list,
+  body.app-v2-theme .track-list,
+  body.app-v2-theme .questions-v2-list-scroller,
+  body.app-v2-theme .progress-v3-topic-chips {
+    max-width: 100%;
+  }
+
+  body.app-v2-theme .q-browse-header {
+    align-items: flex-start;
+  }
+
+  body.app-v2-theme .q-browse-right {
+    justify-content: flex-start;
+  }
+
+  body.app-v2-theme .progress-v3-card-head,
+  body.app-v2-theme .progress-v3-topic-overview,
+  body.app-v2-theme .revisit-v3-item-head {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  body.app-v2-theme .progress-v3-head-tools {
+    width: 100%;
+    justify-content: flex-start;
+  }
+
+  body.app-v2-theme .progress-v3-scope-tabs {
+    flex-wrap: wrap;
+  }
+
+  body.app-v2-theme .progress-v3-heatmap {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 420px) {
+  body.app-v2-theme .main-content {
+    padding: 3.5rem 0.7rem 1rem;
+  }
+
+  body.app-v2-theme .q-browse-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  body.app-v2-theme .q-browse-right {
+    width: 100%;
+  }
+
+  body.app-v2-theme .progress-v3-topic-chip {
+    width: 100%;
+    justify-content: space-between;
   }
 }
 
@@ -1922,6 +2076,38 @@ body.progress-v3-page .progress-v3-card-head {
   margin-bottom: 0.7rem;
 }
 
+body.progress-v3-page .progress-v3-head-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+body.progress-v3-page .progress-v3-scope-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.32rem;
+}
+
+body.progress-v3-page .progress-v3-scope-tab {
+  border: 1px solid rgba(100, 116, 139, 0.72);
+  background: rgba(15, 23, 42, 0.75);
+  color: #cbd5e1;
+  font-size: 0.76rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.24rem 0.54rem;
+  cursor: pointer;
+}
+
+body.progress-v3-page .progress-v3-scope-tab.is-active {
+  border-color: rgba(34, 211, 238, 0.88);
+  color: #ecfeff;
+  background: rgba(8, 145, 178, 0.34);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.24);
+}
+
 body.progress-v3-page .progress-v3-card-head h3 {
   margin: 0;
   color: #e0f2fe;
@@ -1940,6 +2126,11 @@ body.progress-v3-page .progress-v3-ring-card {
   padding: 0.7rem;
   text-align: center;
   background: linear-gradient(160deg, rgba(30, 41, 59, 0.6), rgba(2, 6, 23, 0.55));
+}
+
+body.progress-v3-page .progress-v3-ring-card.is-muted {
+  opacity: 0.5;
+  filter: saturate(0.6);
 }
 
 body.progress-v3-page .progress-v3-ring {
@@ -2113,6 +2304,9 @@ body.progress-v3-page .progress-v3-topic-chips {
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
+  max-height: 176px;
+  overflow: auto;
+  padding-right: 0.15rem;
 }
 
 body.progress-v3-page .progress-v3-topic-chip {

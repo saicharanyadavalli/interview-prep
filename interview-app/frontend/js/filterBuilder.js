@@ -91,6 +91,8 @@
     "union-find"
   ];
 
+  window.FILTER_BUILDER_DEFAULT_TOPICS = DEFAULT_TOPIC_OPTIONS.slice();
+
   const FIELD_DEFS = {
     status: {
       label: "Status",

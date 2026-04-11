@@ -8,65 +8,107 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function loadProgress() {
-  const difficultyRings = document.getElementById("difficultyRings");
-  const consistencyHeatmap = document.getElementById("consistencyHeatmap");
-  const milestoneRow = document.getElementById("milestoneRow");
-  const historyList = document.getElementById("historyList");
-  const attemptedBadge = document.getElementById("attemptedBadge");
-  const goalFill = document.getElementById("goalFill");
-  const goalText = document.getElementById("goalText");
-  const topicChips = document.getElementById("topicChips");
-  const topicDetail = document.getElementById("topicDetail");
-  const topicInsightSummary = document.getElementById("topicInsightSummary");
+  const refs = {
+    difficultyRings: document.getElementById("difficultyRings"),
+    difficultyScopeTabs: document.getElementById("difficultyScopeTabs"),
+    consistencyHeatmap: document.getElementById("consistencyHeatmap"),
+    milestoneRow: document.getElementById("milestoneRow"),
+    historyList: document.getElementById("historyList"),
+    attemptedBadge: document.getElementById("attemptedBadge"),
+    goalFill: document.getElementById("goalFill"),
+    goalText: document.getElementById("goalText"),
+    topicChips: document.getElementById("topicChips"),
+    topicDetail: document.getElementById("topicDetail"),
+    topicInsightSummary: document.getElementById("topicInsightSummary"),
+  };
 
-  if (
-    !difficultyRings
-    || !consistencyHeatmap
-    || !milestoneRow
-    || !historyList
-    || !attemptedBadge
-    || !goalFill
-    || !goalText
-    || !topicChips
-    || !topicDetail
-    || !topicInsightSummary
-  ) {
+  if (Object.values(refs).some((value) => !value)) {
     return;
   }
 
-  difficultyRings.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading difficulty stats...</p>';
-  consistencyHeatmap.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading activity...</p>';
-  milestoneRow.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading milestones...</p>';
-  historyList.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading history...</p>';
-  topicChips.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading topics...</p>';
-  topicDetail.innerHTML = "";
+  refs.difficultyRings.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading difficulty stats...</p>';
+  refs.consistencyHeatmap.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading activity...</p>';
+  refs.milestoneRow.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading milestones...</p>';
+  refs.historyList.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading history...</p>';
+  refs.topicChips.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading topics...</p>';
+  refs.topicDetail.innerHTML = "";
 
   try {
     const data = await API.getUserProgress();
     const stats = data && data.stats ? data.stats : {};
     const recent = Array.isArray(data && data.recent) ? data.recent : [];
-    const topicBreakdown = Array.isArray(data && data.topic_breakdown) ? data.topic_breakdown : [];
+    const rawTopicBreakdown = Array.isArray(data && data.topic_breakdown) ? data.topic_breakdown : [];
 
-    const difficultyStats = deriveDifficultyStats(stats);
+    const allTopicData = buildAllTopicData(stats);
+    const topicBreakdown = mergeTopicBreakdownWithFallbackTopics(rawTopicBreakdown, getFilterBuilderTopics());
 
-    attemptedBadge.textContent = `${Number(stats.solved_total_questions || 0)} / ${Number(stats.total_questions || 0)} Solved`;
-    renderDifficultyRings(difficultyRings, difficultyStats);
-    renderConsistencyHeatmap(consistencyHeatmap, recent);
-    renderMilestones(milestoneRow, stats, difficultyStats, recent);
-    renderSolvedGoal(goalFill, goalText, Number(stats.solved_count || 0));
-    renderTopicInsights(topicChips, topicDetail, topicInsightSummary, topicBreakdown, difficultyStats, stats);
-    renderHistory(historyList, recent);
+    const state = {
+      activeTopicKey: "all",
+      activeScope: "all",
+      allTopicData,
+      topicBreakdown,
+    };
+
+    function getActiveTopicData() {
+      if (state.activeTopicKey === "all") {
+        return state.allTopicData;
+      }
+      return state.topicBreakdown.find((item) => normalizeTopicKey(item.topic_key) === state.activeTopicKey) || state.allTopicData;
+    }
+
+    function renderDifficultyArea() {
+      const activeTopic = getActiveTopicData();
+      const difficultyStats = deriveDifficultyStatsFromTopic(activeTopic);
+
+      renderDifficultyScopeTabs(refs.difficultyScopeTabs, state.activeScope, (scope) => {
+        state.activeScope = scope;
+        renderDifficultyArea();
+      });
+
+      renderDifficultyRings(refs.difficultyRings, difficultyStats, state.activeScope);
+      updateSolvedBadge(refs.attemptedBadge, activeTopic, state.activeScope);
+    }
+
+    function renderTopicArea() {
+      renderTopicInsights(
+        refs.topicChips,
+        refs.topicDetail,
+        refs.topicInsightSummary,
+        state.topicBreakdown,
+        state.allTopicData,
+        state.activeTopicKey,
+        (topicKey) => {
+          state.activeTopicKey = topicKey;
+          renderTopicArea();
+          renderDifficultyArea();
+        }
+      );
+    }
+
+    renderDifficultyArea();
+    renderConsistencyHeatmap(refs.consistencyHeatmap, recent);
+    renderMilestones(refs.milestoneRow, stats, deriveDifficultyStatsFromTopic(state.allTopicData), recent);
+    renderSolvedGoal(
+      refs.goalFill,
+      refs.goalText,
+      Number(state.allTopicData.solved_questions || 0),
+      Number(state.allTopicData.total_questions || 0)
+    );
+    renderTopicArea();
+    renderHistory(refs.historyList, recent);
   } catch (err) {
-    renderDifficultyRings(difficultyRings, {
+    renderDifficultyScopeTabs(refs.difficultyScopeTabs, "all", function () {});
+    renderDifficultyRings(refs.difficultyRings, {
       easy: { attempted: 0, solved: 0, percent: 0 },
       medium: { attempted: 0, solved: 0, percent: 0 },
       hard: { attempted: 0, solved: 0, percent: 0 },
-    });
-    renderConsistencyHeatmap(consistencyHeatmap, []);
-    renderMilestones(milestoneRow, {}, {}, []);
-    renderSolvedGoal(goalFill, goalText, 0);
-    renderTopicInsights(topicChips, topicDetail, topicInsightSummary, [], {}, {});
-    historyList.innerHTML = `
+    }, "all");
+    updateSolvedBadge(refs.attemptedBadge, buildAllTopicData({}), "all");
+    renderConsistencyHeatmap(refs.consistencyHeatmap, []);
+    renderMilestones(refs.milestoneRow, {}, {}, []);
+    renderSolvedGoal(refs.goalFill, refs.goalText, 0, 0);
+    renderTopicInsights(refs.topicChips, refs.topicDetail, refs.topicInsightSummary, [], buildAllTopicData({}), "all", function () {});
+    refs.historyList.innerHTML = `
       <div class="empty-state">
         <p class="empty-icon">📊</p>
         <p>No progress data yet.</p>
@@ -76,36 +118,163 @@ async function loadProgress() {
   }
 }
 
-function deriveDifficultyStats(stats) {
+function getFilterBuilderTopics() {
+  const raw = Array.isArray(window.FILTER_BUILDER_DEFAULT_TOPICS) ? window.FILTER_BUILDER_DEFAULT_TOPICS : [];
+  const seen = new Set();
+  const topics = [];
+
+  raw.forEach((topic) => {
+    const label = String(topic || "").trim();
+    const key = normalizeTopicKey(label);
+    if (!key || seen.has(key)) {
+      return;
+    }
+    seen.add(key);
+    topics.push({ topic_key: key, topic: label });
+  });
+
+  return topics;
+}
+
+function normalizeTopicKey(value) {
+  return String(value || "").trim().toLowerCase();
+}
+
+function mergeTopicBreakdownWithFallbackTopics(topicBreakdown, fallbackTopics) {
+  const map = new Map();
+
+  (Array.isArray(topicBreakdown) ? topicBreakdown : []).forEach((entry) => {
+    const key = normalizeTopicKey(entry && entry.topic_key ? entry.topic_key : entry && entry.topic);
+    if (!key) return;
+
+    map.set(key, {
+      topic_key: key,
+      topic: String((entry && entry.topic) || key),
+      total_questions: Number((entry && entry.total_questions) || 0),
+      solved_questions: Number((entry && entry.solved_questions) || 0),
+      easy_total_questions: Number((entry && entry.easy_total_questions) || 0),
+      medium_total_questions: Number((entry && entry.medium_total_questions) || 0),
+      hard_total_questions: Number((entry && entry.hard_total_questions) || 0),
+      easy_solved_questions: Number((entry && entry.easy_solved_questions) || 0),
+      medium_solved_questions: Number((entry && entry.medium_solved_questions) || 0),
+      hard_solved_questions: Number((entry && entry.hard_solved_questions) || 0),
+    });
+  });
+
+  (Array.isArray(fallbackTopics) ? fallbackTopics : []).forEach((entry) => {
+    const label = String(entry && entry.topic ? entry.topic : "").trim();
+    const key = normalizeTopicKey(entry && entry.topic_key ? entry.topic_key : label);
+    if (!key || map.has(key)) return;
+
+    map.set(key, {
+      topic_key: key,
+      topic: label || key,
+      total_questions: 0,
+      solved_questions: 0,
+      easy_total_questions: 0,
+      medium_total_questions: 0,
+      hard_total_questions: 0,
+      easy_solved_questions: 0,
+      medium_solved_questions: 0,
+      hard_solved_questions: 0,
+    });
+  });
+
+  return Array.from(map.values()).sort((a, b) => {
+    const totalDelta = Number(b.total_questions || 0) - Number(a.total_questions || 0);
+    if (totalDelta !== 0) return totalDelta;
+    return String(a.topic || "").localeCompare(String(b.topic || ""));
+  });
+}
+
+function buildAllTopicData(stats) {
   return {
-    easy: finalizeDifficultyStats(
-      Number(stats.easy_total_questions || 0),
-      Number(stats.easy_solved_total_questions || 0)
-    ),
-    medium: finalizeDifficultyStats(
-      Number(stats.medium_total_questions || 0),
-      Number(stats.medium_solved_total_questions || 0)
-    ),
-    hard: finalizeDifficultyStats(
-      Number(stats.hard_total_questions || 0),
-      Number(stats.hard_solved_total_questions || 0)
-    ),
+    topic_key: "all",
+    topic: "All topics",
+    total_questions: Number(stats.total_questions || 0),
+    solved_questions: Number(stats.solved_total_questions || 0),
+    easy_total_questions: Number(stats.easy_total_questions || 0),
+    medium_total_questions: Number(stats.medium_total_questions || 0),
+    hard_total_questions: Number(stats.hard_total_questions || 0),
+    easy_solved_questions: Number(stats.easy_solved_total_questions || 0),
+    medium_solved_questions: Number(stats.medium_solved_total_questions || 0),
+    hard_solved_questions: Number(stats.hard_solved_total_questions || 0),
   };
 }
 
-function finalizeDifficultyStats(attempted, solved) {
-  const safeAttempted = Math.max(0, Number(attempted || 0));
-  const safeSolved = Math.max(0, Number(solved || 0));
-  const denominator = Math.max(safeAttempted, safeSolved);
-  const percent = denominator > 0 ? Math.round((safeSolved / denominator) * 100) : 0;
+function deriveDifficultyStatsFromTopic(topicData) {
   return {
-    attempted: denominator,
-    solved: safeSolved,
+    easy: finalizeDifficultyStats(topicData && topicData.easy_total_questions, topicData && topicData.easy_solved_questions),
+    medium: finalizeDifficultyStats(topicData && topicData.medium_total_questions, topicData && topicData.medium_solved_questions),
+    hard: finalizeDifficultyStats(topicData && topicData.hard_total_questions, topicData && topicData.hard_solved_questions),
+  };
+}
+
+function finalizeDifficultyStats(totalValue, solvedValue) {
+  const total = Math.max(0, Number(totalValue || 0));
+  const solved = Math.max(0, Number(solvedValue || 0));
+  const percent = total > 0 ? Math.round((solved / total) * 100) : 0;
+
+  return {
+    attempted: total,
+    solved,
     percent,
   };
 }
 
-function renderDifficultyRings(container, stats) {
+function renderDifficultyScopeTabs(container, activeScope, onChange) {
+  if (!container) return;
+
+  const scopes = [
+    { key: "all", label: "All" },
+    { key: "easy", label: "Easy" },
+    { key: "medium", label: "Medium" },
+    { key: "hard", label: "Hard" },
+  ];
+
+  container.innerHTML = scopes
+    .map((scope) => `
+      <button type="button" class="progress-v3-scope-tab ${activeScope === scope.key ? "is-active" : ""}" data-scope="${scope.key}">
+        ${scope.label}
+      </button>
+    `)
+    .join("");
+
+  container.querySelectorAll(".progress-v3-scope-tab").forEach((button) => {
+    button.addEventListener("click", () => {
+      const scope = String(button.getAttribute("data-scope") || "all");
+      onChange(scope);
+    });
+  });
+}
+
+function updateSolvedBadge(badgeEl, topicData, scope) {
+  if (!badgeEl) return;
+
+  const data = topicData || buildAllTopicData({});
+
+  let solved = Number(data.solved_questions || 0);
+  let total = Number(data.total_questions || 0);
+  let suffix = "Solved";
+
+  if (scope === "easy") {
+    solved = Number(data.easy_solved_questions || 0);
+    total = Number(data.easy_total_questions || 0);
+    suffix = "Easy Solved";
+  } else if (scope === "medium") {
+    solved = Number(data.medium_solved_questions || 0);
+    total = Number(data.medium_total_questions || 0);
+    suffix = "Medium Solved";
+  } else if (scope === "hard") {
+    solved = Number(data.hard_solved_questions || 0);
+    total = Number(data.hard_total_questions || 0);
+    suffix = "Hard Solved";
+  }
+
+  badgeEl.textContent = `${solved} / ${total} ${suffix}`;
+}
+
+function renderDifficultyRings(container, stats, activeScope) {
   const ringConfigs = [
     { key: "easy", label: "Easy", className: "easy" },
     { key: "medium", label: "Medium", className: "medium" },
@@ -120,9 +289,10 @@ function renderDifficultyRings(container, stats) {
       const item = stats[config.key] || { attempted: 0, solved: 0, percent: 0 };
       const progress = Math.max(0, Math.min(100, Number(item.percent || 0))) / 100;
       const dashOffset = circumference * (1 - progress);
+      const isMuted = activeScope !== "all" && activeScope !== config.key;
 
       return `
-        <article class="progress-v3-ring-card ${config.className}">
+        <article class="progress-v3-ring-card ${config.className} ${isMuted ? "is-muted" : ""}">
           <div class="progress-v3-ring" role="img" aria-label="${config.label} solved ${item.solved} out of ${item.attempted}">
             <svg viewBox="0 0 140 140">
               <circle class="ring-bg" cx="70" cy="70" r="${radius}"></circle>
@@ -263,88 +433,57 @@ function calculateStreak(recent) {
   return streak;
 }
 
-function renderSolvedGoal(goalFill, goalText, solvedCount) {
-  const target = 100;
-  const progress = Math.max(0, Math.min(100, Math.round((Number(solvedCount || 0) / target) * 100)));
-  goalFill.style.width = `${progress}%`;
-  goalText.textContent = `${Number(solvedCount || 0)} / ${target}`;
+function renderSolvedGoal(goalFill, goalText, solvedCount, totalQuestions) {
+  const solved = Math.max(0, Number(solvedCount || 0));
+  const total = Math.max(0, Number(totalQuestions || 0));
+  const progress = total > 0 ? Math.round((solved / total) * 100) : 0;
+
+  goalFill.style.width = `${Math.max(0, Math.min(100, progress))}%`;
+  goalText.textContent = `${solved} / ${total}`;
 }
 
-function renderTopicInsights(chipsEl, detailEl, summaryEl, topicBreakdown, difficultyStats, stats) {
+function renderTopicInsights(chipsEl, detailEl, summaryEl, topicBreakdown, allTopicData, activeTopicKey, onTopicSelect) {
   if (!chipsEl || !detailEl || !summaryEl) return;
 
   const topics = Array.isArray(topicBreakdown) ? topicBreakdown : [];
-  const allTopicData = {
-    topic_key: "all",
-    topic: "All Topics",
-    total_questions: Number(stats.total_questions || 0),
-    solved_questions: Number(stats.solved_total_questions || 0),
-    easy_total_questions: Number(stats.easy_total_questions || 0),
-    medium_total_questions: Number(stats.medium_total_questions || 0),
-    hard_total_questions: Number(stats.hard_total_questions || 0),
-    easy_solved_questions: Number(stats.easy_solved_total_questions || 0),
-    medium_solved_questions: Number(stats.medium_solved_total_questions || 0),
-    hard_solved_questions: Number(stats.hard_solved_total_questions || 0),
-  };
+  const normalizedActiveKey = normalizeTopicKey(activeTopicKey || "all") || "all";
 
-  if (!topics.length) {
-    chipsEl.innerHTML = '<p class="text-sm text-muted">No topic metadata available yet.</p>';
-    detailEl.innerHTML = renderTopicDetailCard(allTopicData);
-    summaryEl.textContent = `All topics • ${allTopicData.solved_questions}/${allTopicData.total_questions} solved`;
-    return;
-  }
+  const activeTopic = normalizedActiveKey === "all"
+    ? allTopicData
+    : (topics.find((item) => normalizeTopicKey(item.topic_key) === normalizedActiveKey) || allTopicData);
 
-  let activeTopicKey = "all";
+  const allChip = `
+    <button type="button" class="progress-v3-topic-chip ${normalizedActiveKey === "all" ? "is-active" : ""}" data-topic-key="all">
+      All Topics
+      <span>${Number(allTopicData.solved_questions || 0)}/${Number(allTopicData.total_questions || 0)}</span>
+    </button>
+  `;
 
-  function getActiveTopic() {
-    if (activeTopicKey === "all") {
-      return allTopicData;
-    }
-    return topics.find((item) => String(item.topic_key || "") === activeTopicKey) || allTopicData;
-  }
+  const topicChips = topics
+    .map((topic) => {
+      const key = normalizeTopicKey(topic.topic_key);
+      const solved = Number(topic.solved_questions || 0);
+      const total = Number(topic.total_questions || 0);
+      return `
+        <button type="button" class="progress-v3-topic-chip ${normalizedActiveKey === key ? "is-active" : ""}" data-topic-key="${escapeAttr(key)}">
+          ${escapeHtml(topic.topic || "Untitled")}
+          <span>${solved}/${total}</span>
+        </button>
+      `;
+    })
+    .join("");
 
-  function renderChips() {
-    const allChip = `
-      <button type="button" class="progress-v3-topic-chip ${activeTopicKey === "all" ? "is-active" : ""}" data-topic-key="all">
-        All Topics
-      </button>
-    `;
+  chipsEl.innerHTML = allChip + topicChips;
 
-    const topicChips = topics
-      .map((topic) => {
-        const key = String(topic.topic_key || "");
-        const total = Number(topic.total_questions || 0);
-        const solved = Number(topic.solved_questions || 0);
-        return `
-          <button type="button" class="progress-v3-topic-chip ${activeTopicKey === key ? "is-active" : ""}" data-topic-key="${escapeAttr(key)}">
-            ${escapeHtml(topic.topic || "Untitled")}
-            <span>${solved}/${total}</span>
-          </button>
-        `;
-      })
-      .join("");
-
-    chipsEl.innerHTML = allChip + topicChips;
-
-    chipsEl.querySelectorAll(".progress-v3-topic-chip").forEach((button) => {
-      button.addEventListener("click", () => {
-        activeTopicKey = String(button.getAttribute("data-topic-key") || "all");
-        renderChips();
-        renderDetail();
-      });
+  chipsEl.querySelectorAll(".progress-v3-topic-chip").forEach((button) => {
+    button.addEventListener("click", () => {
+      const key = normalizeTopicKey(button.getAttribute("data-topic-key") || "all") || "all";
+      onTopicSelect(key);
     });
-  }
+  });
 
-  function renderDetail() {
-    const activeTopic = getActiveTopic();
-    const solved = Number(activeTopic.solved_questions || 0);
-    const total = Number(activeTopic.total_questions || 0);
-    summaryEl.textContent = `${activeTopic.topic} • ${solved}/${total} solved`;
-    detailEl.innerHTML = renderTopicDetailCard(activeTopic);
-  }
-
-  renderChips();
-  renderDetail();
+  summaryEl.textContent = `${activeTopic.topic} • ${Number(activeTopic.solved_questions || 0)}/${Number(activeTopic.total_questions || 0)} solved`;
+  detailEl.innerHTML = renderTopicDetailCard(activeTopic);
 }
 
 function renderTopicDetailCard(topicData) {
@@ -355,7 +494,7 @@ function renderTopicDetailCard(topicData) {
   return `
     <div class="progress-v3-topic-detail-card">
       <div class="progress-v3-topic-overview">
-        <p class="progress-v3-topic-title">${escapeHtml(topicData.topic || "All Topics")}</p>
+        <p class="progress-v3-topic-title">${escapeHtml(topicData.topic || "All topics")}</p>
         <p class="progress-v3-topic-overall">${Number(topicData.solved_questions || 0)} / ${Number(topicData.total_questions || 0)} solved</p>
       </div>
       <div class="progress-v3-topic-rows">
