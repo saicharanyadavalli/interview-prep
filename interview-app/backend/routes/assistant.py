@@ -18,7 +18,9 @@ def ask_assistant(payload: AskRequest):
     the full solution unless explicitly asked.
     """
     # Check if the doubt is related to DSA / the question
-    if not is_in_scope(payload.interview_question, payload.user_doubt):
+    history_dump = [m.model_dump() for m in payload.conversation_history]
+
+    if not is_in_scope(payload.interview_question, payload.user_doubt, history_dump):
         return AskResponse(
             answer=(
                 "I can only help with DSA interview topics related to the current question. "
@@ -30,7 +32,7 @@ def ask_assistant(payload: AskRequest):
         answer = ask_gemini(
             interview_question=payload.interview_question,
             user_doubt=payload.user_doubt,
-            conversation_history=[m.model_dump() for m in payload.conversation_history],
+            conversation_history=history_dump,
         )
     except RuntimeError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc

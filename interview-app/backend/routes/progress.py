@@ -174,7 +174,8 @@ def get_user_progress(user: dict = Depends(get_current_user)):
     medium_solved_total_questions = 0
     hard_solved_total_questions = 0
 
-    topic_map: dict[str, dict] = {}
+    solved_topic_keys: set[str] = set()
+    prepared_questions: list[dict] = []
 
     for question in catalog_rows:
         qnum = int(question.get("qnum", 0) or 0)
@@ -207,7 +208,28 @@ def get_user_progress(user: dict = Depends(get_current_user)):
         ]
         topic_pairs = {(tag.lower(), tag) for tag in topic_tags}
 
+        if is_solved_catalog:
+            solved_topic_keys.update({topic_key for topic_key, _ in topic_pairs})
+
+        prepared_questions.append(
+            {
+                "difficulty": difficulty,
+                "is_solved": is_solved_catalog,
+                "topic_pairs": topic_pairs,
+            }
+        )
+
+    topic_map: dict[str, dict] = {}
+
+    for question in prepared_questions:
+        difficulty = str(question.get("difficulty", "")).strip().lower()
+        is_solved_catalog = bool(question.get("is_solved", False))
+        topic_pairs = question.get("topic_pairs") or set()
+
         for topic_key, topic_label in topic_pairs:
+            if topic_key not in solved_topic_keys:
+                continue
+
             bucket = topic_map.setdefault(
                 topic_key,
                 {

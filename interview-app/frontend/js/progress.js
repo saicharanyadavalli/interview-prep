@@ -40,7 +40,7 @@ async function loadProgress() {
     const rawTopicBreakdown = Array.isArray(data && data.topic_breakdown) ? data.topic_breakdown : [];
 
     const allTopicData = buildAllTopicData(stats);
-    const topicBreakdown = mergeTopicBreakdownWithFallbackTopics(rawTopicBreakdown, getFilterBuilderTopics());
+    const topicBreakdown = mergeTopicBreakdownWithFilterTopics(rawTopicBreakdown, getFilterBuilderTopics());
 
     const state = {
       activeTopicKey: "all",
@@ -140,14 +140,14 @@ function normalizeTopicKey(value) {
   return String(value || "").trim().toLowerCase();
 }
 
-function mergeTopicBreakdownWithFallbackTopics(topicBreakdown, fallbackTopics) {
-  const map = new Map();
+function mergeTopicBreakdownWithFilterTopics(topicBreakdown, filterTopics) {
+  const backendMap = new Map();
 
   (Array.isArray(topicBreakdown) ? topicBreakdown : []).forEach((entry) => {
     const key = normalizeTopicKey(entry && entry.topic_key ? entry.topic_key : entry && entry.topic);
     if (!key) return;
 
-    map.set(key, {
+    backendMap.set(key, {
       topic_key: key,
       topic: String((entry && entry.topic) || key),
       total_questions: Number((entry && entry.total_questions) || 0),
@@ -161,30 +161,46 @@ function mergeTopicBreakdownWithFallbackTopics(topicBreakdown, fallbackTopics) {
     });
   });
 
-  (Array.isArray(fallbackTopics) ? fallbackTopics : []).forEach((entry) => {
-    const label = String(entry && entry.topic ? entry.topic : "").trim();
-    const key = normalizeTopicKey(entry && entry.topic_key ? entry.topic_key : label);
-    if (!key || map.has(key)) return;
-
-    map.set(key, {
-      topic_key: key,
-      topic: label || key,
-      total_questions: 0,
-      solved_questions: 0,
-      easy_total_questions: 0,
-      medium_total_questions: 0,
-      hard_total_questions: 0,
-      easy_solved_questions: 0,
-      medium_solved_questions: 0,
-      hard_solved_questions: 0,
+  const filterList = Array.isArray(filterTopics) ? filterTopics : [];
+  if (!filterList.length) {
+    return Array.from(backendMap.values()).sort((a, b) => {
+      const totalDelta = Number(b.total_questions || 0) - Number(a.total_questions || 0);
+      if (totalDelta !== 0) return totalDelta;
+      return String(a.topic || "").localeCompare(String(b.topic || ""));
     });
-  });
+  }
 
-  return Array.from(map.values()).sort((a, b) => {
-    const totalDelta = Number(b.total_questions || 0) - Number(a.total_questions || 0);
-    if (totalDelta !== 0) return totalDelta;
-    return String(a.topic || "").localeCompare(String(b.topic || ""));
-  });
+  const merged = filterList
+    .map((entry) => {
+      const label = String(entry && entry.topic ? entry.topic : "").trim();
+      const key = normalizeTopicKey(entry && entry.topic_key ? entry.topic_key : label);
+      if (!key) return null;
+
+      const backend = backendMap.get(key);
+      if (backend) {
+        return {
+          ...backend,
+          topic: label || backend.topic,
+        };
+      }
+
+      return {
+        topic_key: key,
+        topic: label || key,
+        total_questions: 0,
+        solved_questions: 0,
+        easy_total_questions: 0,
+        medium_total_questions: 0,
+        hard_total_questions: 0,
+        easy_solved_questions: 0,
+        medium_solved_questions: 0,
+        hard_solved_questions: 0,
+      };
+    })
+    .filter(Boolean)
+    .filter((item) => Number(item.total_questions || 0) > 0 || Number(item.solved_questions || 0) > 0);
+
+  return merged;
 }
 
 function buildAllTopicData(stats) {

@@ -7,6 +7,7 @@ in the original prototype.
 from __future__ import annotations
 
 import os
+import re
 from typing import Optional
 
 import google.generativeai as genai
@@ -34,6 +35,31 @@ OUT_OF_SCOPE_KEYWORDS = {
     "joke", "recipe", "news",
 }
 
+FOLLOW_UP_TOKENS = {
+    "why", "how", "what", "where", "when", "can", "could", "should",
+    "explain", "hint", "help", "stuck", "confused", "again", "detail",
+    "elaborate", "understand", "clarify", "logic", "step", "steps",
+    "approach", "solution", "complexity", "optimize", "dry run",
+    "edge case", "test case", "failing", "fails", "wrong", "error",
+}
+
+QUESTION_CONTEXT_CLUES = {
+    "this question", "this problem", "current question", "current problem",
+    "above question", "above problem", "my code", "my approach", "my solution",
+    "my logic", "where am i wrong", "what am i missing", "next step",
+    "give a hint", "can you explain", "explain this", "dry run", "edge case",
+    "test case", "time complexity", "space complexity", "runtime error",
+    "wrong answer", "tle", "optimize",
+}
+
+PROGRAMMING_CUES = {
+    "input", "output", "constraint", "constraints", "example", "examples",
+    "return", "function", "class", "array", "string", "integer", "int",
+    "linked list", "node", "matrix", "index", "indices", "loop", "pointer",
+    "recursion", "stack", "queue", "tree", "graph", "hash", "sort",
+    "binary", "search", "prefix", "suffix", "subarray", "substring",
+}
+
 
 # ---------------------------------------------------------------------------
 # Helpers
@@ -57,22 +83,81 @@ def _is_clearly_out_of_scope(text: str) -> bool:
     return any(kw in text.strip().lower() for kw in OUT_OF_SCOPE_KEYWORDS)
 
 
-def is_in_scope(interview_question: str, user_doubt: str) -> bool:
-    """Check whether a user doubt is related to DSA / the current question."""
-    if _is_clearly_out_of_scope(user_doubt):
+def _looks_like_programming_text(text: str) -> bool:
+    lowered = text.strip().lower()
+    if not lowered:
         return False
-    if _is_dsa_related(user_doubt):
+    if any(token in lowered for token in PROGRAMMING_CUES):
         return True
 
-    context_clues = (
-        "this question", "this problem", "above", "approach", "solution",
-        "hint", "test case", "test cases", "more examples", "dry run",
-        "edge case", "explain",
-    )
-    if any(token in user_doubt.lower() for token in context_clues):
-        return _is_dsa_related(interview_question)
+    # Typical coding notation and complexity forms.
+    code_markers = ("{", "}", "=>", "==", "!=", "<=", ">=", "[]", "()")
+    if any(marker in lowered for marker in code_markers):
+        return True
+    if re.search(r"\bo\s*\(", lowered):
+        return True
+    return False
 
-    return _is_dsa_related(interview_question)
+
+def _looks_like_question_follow_up(text: str) -> bool:
+    lowered = text.strip().lower()
+    if not lowered:
+        return False
+    if any(token in lowered for token in QUESTION_CONTEXT_CLUES):
+        return True
+
+    words = re.findall(r"[a-zA-Z']+", lowered)
+    if not words:
+        return False
+
+    # Short follow-up questions like "why?", "explain", "hint please".
+    short_follow_up = len(words) <= 8 and any(token in lowered for token in FOLLOW_UP_TOKENS)
+    return short_follow_up
+
+
+def _has_recent_dsa_context(conversation_history: list[dict[str, str]] | None) -> bool:
+    if not conversation_history:
+        return False
+    for item in conversation_history[-8:]:
+        content = str(item.get("content", "")).strip()
+        if not content:
+            continue
+        if _is_dsa_related(content) or _looks_like_programming_text(content):
+            return True
+    return False
+
+
+def is_in_scope(
+    interview_question: str,
+    user_doubt: str,
+    conversation_history: list[dict[str, str]] | None = None,
+) -> bool:
+    """Check whether a user doubt is related to DSA / the current question."""
+    doubt = user_doubt.strip()
+    question_text = interview_question.strip()
+
+    if not doubt:
+        return False
+
+    doubt_is_dsa = _is_dsa_related(doubt) or _looks_like_programming_text(doubt)
+    question_is_dsa = _is_dsa_related(question_text) or _looks_like_programming_text(question_text)
+
+    if doubt_is_dsa:
+        return True
+
+    # Keep a firm block only for clearly unrelated prompts.
+    if _is_clearly_out_of_scope(doubt) and not _looks_like_question_follow_up(doubt):
+        return False
+
+    if question_is_dsa and _looks_like_question_follow_up(doubt):
+        return True
+
+    # If the thread is already technical, allow terse follow-ups.
+    if question_is_dsa and _has_recent_dsa_context(conversation_history):
+        return True
+
+    # Default: if current question context is technical, allow the doubt unless clearly out of scope.
+    return question_is_dsa and not _is_clearly_out_of_scope(doubt)
 
 
 # ---------------------------------------------------------------------------
