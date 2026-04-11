@@ -12,10 +12,15 @@ from models.schemas import (
     ProgressStats,
     ProgressEntry,
     ProgressStatusResponse,
+    TopicProgressEntry,
 )
 from routes.auth import get_current_user
 from services.supabase_client import get_supabase_client
-from services.questions_service import find_qnum_by_question_id, get_question_summary_by_qnum
+from services.questions_service import (
+    find_qnum_by_question_id,
+    get_question_summary_by_qnum,
+    get_all_questions_catalog,
+)
 
 router = APIRouter(prefix="/progress", tags=["progress"])
 
@@ -151,6 +156,102 @@ def get_user_progress(user: dict = Depends(get_current_user)):
             if is_solved:
                 hard_solved += 1
 
+    solved_qnums = {
+        int(entry.get("qnum", 0) or 0)
+        for entry in entries
+        if bool(entry.get("is_solved", False)) and int(entry.get("qnum", 0) or 0) > 0
+    }
+
+    try:
+        catalog_rows = get_all_questions_catalog()
+    except Exception:
+        catalog_rows = []
+
+    easy_total_questions = 0
+    medium_total_questions = 0
+    hard_total_questions = 0
+    easy_solved_total_questions = 0
+    medium_solved_total_questions = 0
+    hard_solved_total_questions = 0
+
+    topic_map: dict[str, dict] = {}
+
+    for question in catalog_rows:
+        qnum = int(question.get("qnum", 0) or 0)
+        related_qnums = [
+            int(v)
+            for v in (question.get("related_qnums") or [])
+            if int(v or 0) > 0
+        ]
+        candidate_qnums = related_qnums if related_qnums else ([qnum] if qnum > 0 else [])
+        is_solved_catalog = any(candidate in solved_qnums for candidate in candidate_qnums)
+
+        difficulty = str(question.get("difficulty", "")).strip().lower()
+        if difficulty == "easy":
+            easy_total_questions += 1
+            if is_solved_catalog:
+                easy_solved_total_questions += 1
+        elif difficulty == "medium":
+            medium_total_questions += 1
+            if is_solved_catalog:
+                medium_solved_total_questions += 1
+        elif difficulty == "hard":
+            hard_total_questions += 1
+            if is_solved_catalog:
+                hard_solved_total_questions += 1
+
+        topic_tags = [
+            str(value).strip()
+            for value in (question.get("topic_tags") or [])
+            if str(value).strip()
+        ]
+        topic_pairs = {(tag.lower(), tag) for tag in topic_tags}
+
+        for topic_key, topic_label in topic_pairs:
+            bucket = topic_map.setdefault(
+                topic_key,
+                {
+                    "topic_key": topic_key,
+                    "topic": topic_label,
+                    "total_questions": 0,
+                    "solved_questions": 0,
+                    "easy_total_questions": 0,
+                    "medium_total_questions": 0,
+                    "hard_total_questions": 0,
+                    "easy_solved_questions": 0,
+                    "medium_solved_questions": 0,
+                    "hard_solved_questions": 0,
+                },
+            )
+
+            bucket["total_questions"] += 1
+            if is_solved_catalog:
+                bucket["solved_questions"] += 1
+
+            if difficulty == "easy":
+                bucket["easy_total_questions"] += 1
+                if is_solved_catalog:
+                    bucket["easy_solved_questions"] += 1
+            elif difficulty == "medium":
+                bucket["medium_total_questions"] += 1
+                if is_solved_catalog:
+                    bucket["medium_solved_questions"] += 1
+            elif difficulty == "hard":
+                bucket["hard_total_questions"] += 1
+                if is_solved_catalog:
+                    bucket["hard_solved_questions"] += 1
+
+    topic_breakdown = [
+        TopicProgressEntry(**topic_data)
+        for topic_data in sorted(
+            topic_map.values(),
+            key=lambda item: (-int(item.get("total_questions", 0)), str(item.get("topic", "")).lower()),
+        )
+    ]
+
+    total_questions = easy_total_questions + medium_total_questions + hard_total_questions
+    solved_total_questions = easy_solved_total_questions + medium_solved_total_questions + hard_solved_total_questions
+
     # Calculate stats
     stats = ProgressStats(
         total_attempted=len(entries),
@@ -167,6 +268,14 @@ def get_user_progress(user: dict = Depends(get_current_user)):
         easy_solved=easy_solved,
         medium_solved=medium_solved,
         hard_solved=hard_solved,
+        total_questions=total_questions,
+        solved_total_questions=solved_total_questions,
+        easy_total_questions=easy_total_questions,
+        medium_total_questions=medium_total_questions,
+        hard_total_questions=hard_total_questions,
+        easy_solved_total_questions=easy_solved_total_questions,
+        medium_solved_total_questions=medium_solved_total_questions,
+        hard_solved_total_questions=hard_solved_total_questions,
     )
 
     # Recent entries (last 20)
@@ -187,7 +296,7 @@ def get_user_progress(user: dict = Depends(get_current_user)):
             )
         )
 
-    return UserProgressResponse(stats=stats, recent=recent)
+    return UserProgressResponse(stats=stats, recent=recent, topic_breakdown=topic_breakdown)
 
 
 @router.get("/status/{qnum}", response_model=ProgressStatusResponse)

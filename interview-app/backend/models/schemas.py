@@ -101,6 +101,28 @@ class ProgressStats(BaseModel):
     easy_solved: int = 0
     medium_solved: int = 0
     hard_solved: int = 0
+    total_questions: int = 0
+    solved_total_questions: int = 0
+    easy_total_questions: int = 0
+    medium_total_questions: int = 0
+    hard_total_questions: int = 0
+    easy_solved_total_questions: int = 0
+    medium_solved_total_questions: int = 0
+    hard_solved_total_questions: int = 0
+
+
+class TopicProgressEntry(BaseModel):
+    """Per-topic totals and solved counters across the question bank."""
+    topic_key: str
+    topic: str
+    total_questions: int = 0
+    solved_questions: int = 0
+    easy_total_questions: int = 0
+    medium_total_questions: int = 0
+    hard_total_questions: int = 0
+    easy_solved_questions: int = 0
+    medium_solved_questions: int = 0
+    hard_solved_questions: int = 0
 
 
 class ProgressEntry(BaseModel):
@@ -119,6 +141,7 @@ class UserProgressResponse(BaseModel):
     """Full progress response — contains aggregate stats and recent entries."""
     stats: ProgressStats
     recent: list[ProgressEntry] = Field(default_factory=list)
+    topic_breakdown: list[TopicProgressEntry] = Field(default_factory=list)
 
 
 class ProgressStatusResponse(BaseModel):

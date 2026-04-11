@@ -2109,6 +2109,108 @@ body.progress-v3-page .progress-v3-goal-meta {
   font-size: 0.88rem;
 }
 
+body.progress-v3-page .progress-v3-topic-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+body.progress-v3-page .progress-v3-topic-chip {
+  border: 1px solid rgba(100, 116, 139, 0.72);
+  border-radius: 10px;
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(2, 6, 23, 0.88));
+  color: #e2e8f0;
+  padding: 0.36rem 0.62rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.36rem;
+  cursor: pointer;
+}
+
+body.progress-v3-page .progress-v3-topic-chip span {
+  color: #93c5fd;
+  font-size: 0.78rem;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+body.progress-v3-page .progress-v3-topic-chip.is-active {
+  border-color: rgba(34, 211, 238, 0.88);
+  box-shadow: 0 0 12px rgba(34, 211, 238, 0.28);
+  background: linear-gradient(135deg, rgba(8, 145, 178, 0.28), rgba(15, 23, 42, 0.9));
+}
+
+body.progress-v3-page .progress-v3-topic-detail {
+  margin-top: 0.7rem;
+}
+
+body.progress-v3-page .progress-v3-topic-detail-card {
+  border: 1px solid rgba(71, 85, 105, 0.72);
+  border-radius: 12px;
+  padding: 0.72rem;
+  background: linear-gradient(160deg, rgba(30, 41, 59, 0.66), rgba(2, 6, 23, 0.72));
+}
+
+body.progress-v3-page .progress-v3-topic-overview {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0.45rem;
+}
+
+body.progress-v3-page .progress-v3-topic-title {
+  margin: 0;
+  color: #f8fafc;
+  font-weight: 700;
+}
+
+body.progress-v3-page .progress-v3-topic-overall {
+  margin: 0;
+  color: #93c5fd;
+  font-size: 0.88rem;
+}
+
+body.progress-v3-page .progress-v3-topic-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+}
+
+body.progress-v3-page .progress-v3-topic-row-head {
+  display: flex;
+  justify-content: space-between;
+  color: #dbeafe;
+  font-size: 0.84rem;
+}
+
+body.progress-v3-page .progress-v3-topic-row-bar {
+  height: 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(71, 85, 105, 0.74);
+  background: rgba(15, 23, 42, 0.8);
+  overflow: hidden;
+}
+
+body.progress-v3-page .progress-v3-topic-row-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+}
+
+body.progress-v3-page .progress-v3-topic-row.easy .progress-v3-topic-row-bar span {
+  background: linear-gradient(120deg, rgba(45, 212, 191, 0.85), rgba(20, 184, 166, 0.92));
+}
+
+body.progress-v3-page .progress-v3-topic-row.medium .progress-v3-topic-row-bar span {
+  background: linear-gradient(120deg, rgba(251, 191, 36, 0.86), rgba(245, 158, 11, 0.92));
+}
+
+body.progress-v3-page .progress-v3-topic-row.hard .progress-v3-topic-row-bar span {
+  background: linear-gradient(120deg, rgba(251, 113, 133, 0.86), rgba(244, 63, 94, 0.92));
+}
+
 body.progress-v3-page .progress-v3-history-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));

@@ -15,8 +15,22 @@ async function loadProgress() {
   const attemptedBadge = document.getElementById("attemptedBadge");
   const goalFill = document.getElementById("goalFill");
   const goalText = document.getElementById("goalText");
+  const topicChips = document.getElementById("topicChips");
+  const topicDetail = document.getElementById("topicDetail");
+  const topicInsightSummary = document.getElementById("topicInsightSummary");
 
-  if (!difficultyRings || !consistencyHeatmap || !milestoneRow || !historyList || !attemptedBadge || !goalFill || !goalText) {
+  if (
+    !difficultyRings
+    || !consistencyHeatmap
+    || !milestoneRow
+    || !historyList
+    || !attemptedBadge
+    || !goalFill
+    || !goalText
+    || !topicChips
+    || !topicDetail
+    || !topicInsightSummary
+  ) {
     return;
   }
 
@@ -24,19 +38,23 @@ async function loadProgress() {
   consistencyHeatmap.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading activity...</p>';
   milestoneRow.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading milestones...</p>';
   historyList.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading history...</p>';
+  topicChips.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading topics...</p>';
+  topicDetail.innerHTML = "";
 
   try {
     const data = await API.getUserProgress();
     const stats = data && data.stats ? data.stats : {};
     const recent = Array.isArray(data && data.recent) ? data.recent : [];
+    const topicBreakdown = Array.isArray(data && data.topic_breakdown) ? data.topic_breakdown : [];
 
-    const difficultyStats = deriveDifficultyStats(stats, recent);
+    const difficultyStats = deriveDifficultyStats(stats);
 
-    attemptedBadge.textContent = `${Number(stats.total_attempted || 0)} Attempted`;
+    attemptedBadge.textContent = `${Number(stats.solved_total_questions || 0)} / ${Number(stats.total_questions || 0)} Solved`;
     renderDifficultyRings(difficultyRings, difficultyStats);
     renderConsistencyHeatmap(consistencyHeatmap, recent);
     renderMilestones(milestoneRow, stats, difficultyStats, recent);
     renderSolvedGoal(goalFill, goalText, Number(stats.solved_count || 0));
+    renderTopicInsights(topicChips, topicDetail, topicInsightSummary, topicBreakdown, difficultyStats, stats);
     renderHistory(historyList, recent);
   } catch (err) {
     renderDifficultyRings(difficultyRings, {
@@ -47,6 +65,7 @@ async function loadProgress() {
     renderConsistencyHeatmap(consistencyHeatmap, []);
     renderMilestones(milestoneRow, {}, {}, []);
     renderSolvedGoal(goalFill, goalText, 0);
+    renderTopicInsights(topicChips, topicDetail, topicInsightSummary, [], {}, {});
     historyList.innerHTML = `
       <div class="empty-state">
         <p class="empty-icon">📊</p>
@@ -57,38 +76,20 @@ async function loadProgress() {
   }
 }
 
-function deriveDifficultyStats(stats, recent) {
-  const attempted = {
-    easy: Number(stats.easy_attempted || 0),
-    medium: Number(stats.medium_attempted || 0),
-    hard: Number(stats.hard_attempted || 0),
-  };
-
-  const solved = {
-    easy: Number(stats.easy_solved || 0),
-    medium: Number(stats.medium_solved || 0),
-    hard: Number(stats.hard_solved || 0),
-  };
-
-  const hasBreakdown = Object.values(attempted).some((value) => value > 0) || Object.values(solved).some((value) => value > 0);
-
-  if (!hasBreakdown) {
-    (Array.isArray(recent) ? recent : []).forEach((entry) => {
-      const difficulty = normalizeDifficulty(entry && entry.difficulty);
-      if (!Object.prototype.hasOwnProperty.call(attempted, difficulty)) {
-        return;
-      }
-      attempted[difficulty] += 1;
-      if (Boolean(entry && entry.is_solved)) {
-        solved[difficulty] += 1;
-      }
-    });
-  }
-
+function deriveDifficultyStats(stats) {
   return {
-    easy: finalizeDifficultyStats(attempted.easy, solved.easy),
-    medium: finalizeDifficultyStats(attempted.medium, solved.medium),
-    hard: finalizeDifficultyStats(attempted.hard, solved.hard),
+    easy: finalizeDifficultyStats(
+      Number(stats.easy_total_questions || 0),
+      Number(stats.easy_solved_total_questions || 0)
+    ),
+    medium: finalizeDifficultyStats(
+      Number(stats.medium_total_questions || 0),
+      Number(stats.medium_solved_total_questions || 0)
+    ),
+    hard: finalizeDifficultyStats(
+      Number(stats.hard_total_questions || 0),
+      Number(stats.hard_solved_total_questions || 0)
+    ),
   };
 }
 
@@ -269,6 +270,119 @@ function renderSolvedGoal(goalFill, goalText, solvedCount) {
   goalText.textContent = `${Number(solvedCount || 0)} / ${target}`;
 }
 
+function renderTopicInsights(chipsEl, detailEl, summaryEl, topicBreakdown, difficultyStats, stats) {
+  if (!chipsEl || !detailEl || !summaryEl) return;
+
+  const topics = Array.isArray(topicBreakdown) ? topicBreakdown : [];
+  const allTopicData = {
+    topic_key: "all",
+    topic: "All Topics",
+    total_questions: Number(stats.total_questions || 0),
+    solved_questions: Number(stats.solved_total_questions || 0),
+    easy_total_questions: Number(stats.easy_total_questions || 0),
+    medium_total_questions: Number(stats.medium_total_questions || 0),
+    hard_total_questions: Number(stats.hard_total_questions || 0),
+    easy_solved_questions: Number(stats.easy_solved_total_questions || 0),
+    medium_solved_questions: Number(stats.medium_solved_total_questions || 0),
+    hard_solved_questions: Number(stats.hard_solved_total_questions || 0),
+  };
+
+  if (!topics.length) {
+    chipsEl.innerHTML = '<p class="text-sm text-muted">No topic metadata available yet.</p>';
+    detailEl.innerHTML = renderTopicDetailCard(allTopicData);
+    summaryEl.textContent = `All topics • ${allTopicData.solved_questions}/${allTopicData.total_questions} solved`;
+    return;
+  }
+
+  let activeTopicKey = "all";
+
+  function getActiveTopic() {
+    if (activeTopicKey === "all") {
+      return allTopicData;
+    }
+    return topics.find((item) => String(item.topic_key || "") === activeTopicKey) || allTopicData;
+  }
+
+  function renderChips() {
+    const allChip = `
+      <button type="button" class="progress-v3-topic-chip ${activeTopicKey === "all" ? "is-active" : ""}" data-topic-key="all">
+        All Topics
+      </button>
+    `;
+
+    const topicChips = topics
+      .map((topic) => {
+        const key = String(topic.topic_key || "");
+        const total = Number(topic.total_questions || 0);
+        const solved = Number(topic.solved_questions || 0);
+        return `
+          <button type="button" class="progress-v3-topic-chip ${activeTopicKey === key ? "is-active" : ""}" data-topic-key="${escapeAttr(key)}">
+            ${escapeHtml(topic.topic || "Untitled")}
+            <span>${solved}/${total}</span>
+          </button>
+        `;
+      })
+      .join("");
+
+    chipsEl.innerHTML = allChip + topicChips;
+
+    chipsEl.querySelectorAll(".progress-v3-topic-chip").forEach((button) => {
+      button.addEventListener("click", () => {
+        activeTopicKey = String(button.getAttribute("data-topic-key") || "all");
+        renderChips();
+        renderDetail();
+      });
+    });
+  }
+
+  function renderDetail() {
+    const activeTopic = getActiveTopic();
+    const solved = Number(activeTopic.solved_questions || 0);
+    const total = Number(activeTopic.total_questions || 0);
+    summaryEl.textContent = `${activeTopic.topic} • ${solved}/${total} solved`;
+    detailEl.innerHTML = renderTopicDetailCard(activeTopic);
+  }
+
+  renderChips();
+  renderDetail();
+}
+
+function renderTopicDetailCard(topicData) {
+  const easyRow = buildTopicDifficultyRow("Easy", topicData.easy_solved_questions, topicData.easy_total_questions, "easy");
+  const mediumRow = buildTopicDifficultyRow("Medium", topicData.medium_solved_questions, topicData.medium_total_questions, "medium");
+  const hardRow = buildTopicDifficultyRow("Hard", topicData.hard_solved_questions, topicData.hard_total_questions, "hard");
+
+  return `
+    <div class="progress-v3-topic-detail-card">
+      <div class="progress-v3-topic-overview">
+        <p class="progress-v3-topic-title">${escapeHtml(topicData.topic || "All Topics")}</p>
+        <p class="progress-v3-topic-overall">${Number(topicData.solved_questions || 0)} / ${Number(topicData.total_questions || 0)} solved</p>
+      </div>
+      <div class="progress-v3-topic-rows">
+        ${easyRow}
+        ${mediumRow}
+        ${hardRow}
+      </div>
+    </div>
+  `;
+}
+
+function buildTopicDifficultyRow(label, solvedValue, totalValue, className) {
+  const solved = Number(solvedValue || 0);
+  const total = Number(totalValue || 0);
+  const percent = total > 0 ? Math.round((solved / total) * 100) : 0;
+
+  return `
+    <div class="progress-v3-topic-row ${className}">
+      <div class="progress-v3-topic-row-head">
+        <span>${label}</span>
+        <span>${solved}/${total} • ${percent}%</span>
+      </div>
+      <div class="progress-v3-topic-row-bar"><span style="width:${percent}%"></span></div>
+    </div>
+  `;
+}
+
 function renderHistory(container, recent) {
   if (!Array.isArray(recent) || !recent.length) {
     container.innerHTML = `
@@ -353,4 +467,8 @@ function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = text || "";
   return div.innerHTML;
+}
+
+function escapeAttr(text) {
+  return String(text || "").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 }
