@@ -1884,3 +1884,434 @@ body.questions-v2-page #qListInlineStatus p {
     max-height: none;
   }
 }
+
+/* ---------- Progress V3 ---------- */
+body.progress-v3-page .progress-v3-main {
+  padding-bottom: 1.8rem;
+}
+
+body.progress-v3-page .progress-v3-header {
+  margin-bottom: 1rem;
+}
+
+body.progress-v3-page .progress-v3-subtitle {
+  margin: 0.35rem 0 0;
+}
+
+body.progress-v3-page .progress-v3-top-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 0.9rem;
+}
+
+body.progress-v3-page .progress-v3-rings-card,
+body.progress-v3-page .progress-v3-consistency-card,
+body.progress-v3-page .progress-v3-milestones,
+body.progress-v3-page .progress-v3-history-card,
+body.revisit-v3-page .revisit-v3-item {
+  border: 1px solid rgba(56, 189, 248, 0.26);
+  background: radial-gradient(circle at 14% 10%, rgba(14, 116, 144, 0.22), rgba(15, 23, 42, 0.88) 45%, rgba(2, 6, 23, 0.9));
+  box-shadow: 0 10px 28px rgba(2, 6, 23, 0.42), inset 0 1px 0 rgba(147, 197, 253, 0.08);
+}
+
+body.progress-v3-page .progress-v3-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.7rem;
+}
+
+body.progress-v3-page .progress-v3-card-head h3 {
+  margin: 0;
+  color: #e0f2fe;
+  font-size: 1.14rem;
+}
+
+body.progress-v3-page .progress-v3-rings-wrap {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+body.progress-v3-page .progress-v3-ring-card {
+  border: 1px solid rgba(100, 116, 139, 0.58);
+  border-radius: 14px;
+  padding: 0.7rem;
+  text-align: center;
+  background: linear-gradient(160deg, rgba(30, 41, 59, 0.6), rgba(2, 6, 23, 0.55));
+}
+
+body.progress-v3-page .progress-v3-ring {
+  width: min(170px, 100%);
+  margin: 0 auto;
+  position: relative;
+}
+
+body.progress-v3-page .progress-v3-ring svg {
+  width: 100%;
+  height: auto;
+  transform: rotate(-90deg);
+}
+
+body.progress-v3-page .progress-v3-ring .ring-bg,
+body.progress-v3-page .progress-v3-ring .ring-fill {
+  fill: none;
+  stroke-width: 10;
+}
+
+body.progress-v3-page .progress-v3-ring .ring-bg {
+  stroke: rgba(51, 65, 85, 0.95);
+}
+
+body.progress-v3-page .progress-v3-ring .ring-fill {
+  transition: stroke-dashoffset 480ms ease;
+  stroke-linecap: round;
+}
+
+body.progress-v3-page .progress-v3-ring-card.easy .ring-fill {
+  stroke: #2dd4bf;
+  filter: drop-shadow(0 0 6px rgba(45, 212, 191, 0.55));
+}
+
+body.progress-v3-page .progress-v3-ring-card.medium .ring-fill {
+  stroke: #f59e0b;
+  filter: drop-shadow(0 0 6px rgba(245, 158, 11, 0.55));
+}
+
+body.progress-v3-page .progress-v3-ring-card.hard .ring-fill {
+  stroke: #fb7185;
+  filter: drop-shadow(0 0 6px rgba(251, 113, 133, 0.56));
+}
+
+body.progress-v3-page .progress-v3-ring-center {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+body.progress-v3-page .progress-v3-ring-value {
+  margin: 0;
+  font-size: 2rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #e2e8f0;
+}
+
+body.progress-v3-page .progress-v3-ring-unit {
+  margin: 0;
+  color: #93c5fd;
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+body.progress-v3-page .progress-v3-ring-title {
+  margin: 0.2rem 0 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f8fafc;
+}
+
+body.progress-v3-page .progress-v3-ring-meta {
+  margin: 0.2rem 0 0;
+  font-size: 0.84rem;
+  color: #93c5fd;
+}
+
+body.progress-v3-page .progress-v3-heatmap {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 0.35rem;
+  margin-top: 0.2rem;
+}
+
+body.progress-v3-page .progress-v3-heat-cell {
+  aspect-ratio: 1;
+  border-radius: 6px;
+  border: 1px solid rgba(71, 85, 105, 0.7);
+  background: rgba(15, 23, 42, 0.88);
+}
+
+body.progress-v3-page .progress-v3-heat-cell.intensity-1 {
+  background: rgba(34, 211, 238, 0.38);
+}
+
+body.progress-v3-page .progress-v3-heat-cell.intensity-2 {
+  background: rgba(74, 222, 128, 0.48);
+}
+
+body.progress-v3-page .progress-v3-heat-cell.intensity-3 {
+  background: rgba(34, 197, 94, 0.68);
+}
+
+body.progress-v3-page .progress-v3-heat-cell.intensity-4 {
+  background: rgba(16, 185, 129, 0.88);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.42);
+}
+
+body.progress-v3-page .progress-v3-heatmap-foot {
+  margin-top: 0.62rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.6rem;
+  color: #93c5fd;
+  font-size: 0.84rem;
+}
+
+body.progress-v3-page .progress-v3-milestone-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(120px, 1fr));
+  gap: 0.55rem;
+}
+
+body.progress-v3-page .progress-v3-milestone {
+  border: 1px solid rgba(100, 116, 139, 0.62);
+  border-radius: 12px;
+  padding: 0.62rem;
+  background: linear-gradient(145deg, rgba(30, 41, 59, 0.56), rgba(2, 6, 23, 0.6));
+}
+
+body.progress-v3-page .progress-v3-milestone.is-unlocked {
+  border-color: rgba(103, 232, 249, 0.82);
+  box-shadow: 0 0 14px rgba(34, 211, 238, 0.32);
+}
+
+body.progress-v3-page .progress-v3-milestone-label {
+  margin: 0;
+  color: #e2e8f0;
+  font-weight: 700;
+  font-size: 0.86rem;
+}
+
+body.progress-v3-page .progress-v3-milestone-sub {
+  margin: 0.22rem 0 0;
+  color: #93c5fd;
+  font-size: 0.79rem;
+}
+
+body.progress-v3-page .progress-v3-goal-block {
+  margin-top: 0.72rem;
+}
+
+body.progress-v3-page .progress-v3-goal-wrap {
+  height: 14px;
+}
+
+body.progress-v3-page .progress-v3-goal-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.48rem;
+  color: #93c5fd;
+  font-size: 0.88rem;
+}
+
+body.progress-v3-page .progress-v3-history-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+body.progress-v3-page .progress-v3-history-card {
+  border-radius: 14px;
+  padding: 0.84rem;
+}
+
+body.progress-v3-page .progress-v3-history-card.diff-easy {
+  border-color: rgba(45, 212, 191, 0.58);
+}
+
+body.progress-v3-page .progress-v3-history-card.diff-medium {
+  border-color: rgba(245, 158, 11, 0.58);
+}
+
+body.progress-v3-page .progress-v3-history-card.diff-hard {
+  border-color: rgba(251, 113, 133, 0.58);
+}
+
+body.progress-v3-page .progress-v3-history-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+body.progress-v3-page .progress-v3-history-head h4 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.15rem;
+}
+
+body.progress-v3-page .progress-v3-diff-pill.easy {
+  border-color: rgba(45, 212, 191, 0.7);
+  color: #99f6e4;
+}
+
+body.progress-v3-page .progress-v3-diff-pill.medium {
+  border-color: rgba(245, 158, 11, 0.72);
+  color: #fcd34d;
+}
+
+body.progress-v3-page .progress-v3-diff-pill.hard {
+  border-color: rgba(251, 113, 133, 0.72);
+  color: #fda4af;
+}
+
+body.progress-v3-page .progress-v3-history-meta {
+  margin: 0.35rem 0 0;
+  color: #93c5fd;
+  font-size: 0.86rem;
+}
+
+body.progress-v3-page .progress-v3-history-status {
+  margin: 0.52rem 0 0;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+body.progress-v3-page .progress-v3-history-status.solved {
+  color: #86efac;
+}
+
+body.progress-v3-page .progress-v3-history-status.revisit {
+  color: #fcd34d;
+}
+
+body.progress-v3-page .progress-v3-history-status.not-solved {
+  color: #fca5a5;
+}
+
+body.progress-v3-page .progress-v3-history-actions {
+  margin-top: 0.65rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+/* ---------- Revisit V3 ---------- */
+body.revisit-v3-page .revisit-v3-main {
+  padding-bottom: 1.8rem;
+}
+
+body.revisit-v3-page .revisit-v3-header {
+  margin-bottom: 0.8rem;
+}
+
+body.revisit-v3-page .revisit-v3-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+body.revisit-v3-page .revisit-v3-list-card {
+  padding: 0.85rem;
+}
+
+body.revisit-v3-page .revisit-v3-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+body.revisit-v3-page .revisit-v3-item {
+  border-radius: 14px;
+  padding: 0.8rem;
+}
+
+body.revisit-v3-page .revisit-v3-item.diff-easy {
+  border-color: rgba(45, 212, 191, 0.55);
+}
+
+body.revisit-v3-page .revisit-v3-item.diff-medium {
+  border-color: rgba(245, 158, 11, 0.56);
+}
+
+body.revisit-v3-page .revisit-v3-item.diff-hard {
+  border-color: rgba(251, 113, 133, 0.56);
+}
+
+body.revisit-v3-page .revisit-v3-item-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+body.revisit-v3-page .revisit-v3-item-head h3 {
+  margin: 0;
+  color: #f8fafc;
+  font-size: 1.1rem;
+}
+
+body.revisit-v3-page .revisit-v3-diff-pill.easy {
+  color: #99f6e4;
+  border-color: rgba(45, 212, 191, 0.72);
+}
+
+body.revisit-v3-page .revisit-v3-diff-pill.medium {
+  color: #fcd34d;
+  border-color: rgba(245, 158, 11, 0.72);
+}
+
+body.revisit-v3-page .revisit-v3-diff-pill.hard {
+  color: #fda4af;
+  border-color: rgba(251, 113, 133, 0.72);
+}
+
+body.revisit-v3-page .revisit-v3-item-meta {
+  margin: 0.42rem 0 0;
+  color: #93c5fd;
+  font-size: 0.85rem;
+}
+
+body.revisit-v3-page .revisit-v3-actions {
+  margin-top: 0.75rem;
+  display: flex;
+  gap: 0.45rem;
+  justify-content: flex-end;
+}
+
+@media (max-width: 1200px) {
+  body.progress-v3-page .progress-v3-top-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.progress-v3-page .progress-v3-milestone-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  body.revisit-v3-page .revisit-v3-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  body.progress-v3-page .progress-v3-rings-wrap {
+    grid-template-columns: 1fr;
+  }
+
+  body.progress-v3-page .progress-v3-history-grid {
+    grid-template-columns: 1fr;
+  }
+
+  body.revisit-v3-page .revisit-v3-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  body.progress-v3-page .progress-v3-milestone-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  body.revisit-v3-page .revisit-v3-stats,
+  body.progress-v3-page .progress-v3-milestone-row {
+    grid-template-columns: 1fr;
+  }
+
+  body.progress-v3-page .progress-v3-heatmap {
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+}

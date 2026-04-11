@@ -116,6 +116,41 @@ def get_user_progress(user: dict = Depends(get_current_user)):
     except Exception:
         entries = []
 
+    summary_cache: dict[int, dict] = {}
+
+    def _get_summary(qnum: int) -> dict:
+        safe_qnum = int(qnum or 0)
+        if safe_qnum <= 0:
+            return {}
+        if safe_qnum not in summary_cache:
+            summary_cache[safe_qnum] = get_question_summary_by_qnum(safe_qnum)
+        return summary_cache[safe_qnum]
+
+    easy_attempted = 0
+    medium_attempted = 0
+    hard_attempted = 0
+    easy_solved = 0
+    medium_solved = 0
+    hard_solved = 0
+
+    for entry in entries:
+        qnum = int(entry.get("qnum", 0) or 0)
+        difficulty = str(_get_summary(qnum).get("difficulty", "")).strip().lower()
+        is_solved = bool(entry.get("is_solved", False))
+
+        if difficulty == "easy":
+            easy_attempted += 1
+            if is_solved:
+                easy_solved += 1
+        elif difficulty == "medium":
+            medium_attempted += 1
+            if is_solved:
+                medium_solved += 1
+        elif difficulty == "hard":
+            hard_attempted += 1
+            if is_solved:
+                hard_solved += 1
+
     # Calculate stats
     stats = ProgressStats(
         total_attempted=len(entries),
@@ -126,22 +161,31 @@ def get_user_progress(user: dict = Depends(get_current_user)):
             for e in entries
             if bool(e.get("is_revisit", False))
         ),
+        easy_attempted=easy_attempted,
+        medium_attempted=medium_attempted,
+        hard_attempted=hard_attempted,
+        easy_solved=easy_solved,
+        medium_solved=medium_solved,
+        hard_solved=hard_solved,
     )
 
     # Recent entries (last 20)
-    recent = [
-        ProgressEntry(
-            qnum=e.get("qnum", 0),
-            question_id=get_question_summary_by_qnum(e.get("qnum", 0)).get("question_id", ""),
-            question_title=get_question_summary_by_qnum(e.get("qnum", 0)).get("question_title", f"Question #{e.get('qnum', 0)}"),
-            company=get_question_summary_by_qnum(e.get("qnum", 0)).get("company", ""),
-            difficulty=get_question_summary_by_qnum(e.get("qnum", 0)).get("difficulty", ""),
-            is_solved=bool(e.get("is_solved", False)),
-            revisit=bool(e.get("is_revisit", False)),
-            updated_at=e.get("updated_at", ""),
+    recent: list[ProgressEntry] = []
+    for entry in entries[:20]:
+        qnum = int(entry.get("qnum", 0) or 0)
+        summary = _get_summary(qnum)
+        recent.append(
+            ProgressEntry(
+                qnum=qnum,
+                question_id=summary.get("question_id", ""),
+                question_title=summary.get("question_title", f"Question #{qnum}"),
+                company=summary.get("company", ""),
+                difficulty=summary.get("difficulty", ""),
+                is_solved=bool(entry.get("is_solved", False)),
+                revisit=bool(entry.get("is_revisit", False)),
+                updated_at=entry.get("updated_at", ""),
+            )
         )
-        for e in entries[:20]
-    ]
 
     return UserProgressResponse(stats=stats, recent=recent)
 

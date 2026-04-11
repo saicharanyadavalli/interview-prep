@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/components.css" />
   </head>
-  <body data-theme="dark" class="app-v2-theme">
+  <body data-theme="dark" class="app-v2-theme progress-v3-page">
     <div class="bg-shape bg-shape-a"></div>
     <div class="bg-shape bg-shape-b"></div>
 
@@ -38,24 +38,60 @@
         </div>
       </aside>
 
-      <main class="main-content">
-        <div class="page-header">
-          <h1>📈 Progress</h1>
+      <main class="main-content progress-v3-main">
+        <div class="page-header progress-v3-header">
+          <div>
+            <h1>📈 Immersive Progress Analytics</h1>
+            <p class="card-subtitle progress-v3-subtitle">Track difficulty-wise completion, consistency, and momentum.</p>
+          </div>
         </div>
 
-        <section class="section">
-          <h3 class="section-title">Overview</h3>
-          <div id="statsGrid" class="stats-grid">
-            <p class="loading"><span class="loading-dot">⏳</span> Loading...</p>
+        <section class="progress-v3-top-grid section">
+          <article class="card-flat progress-v3-rings-card">
+            <div class="progress-v3-card-head">
+              <h3>Difficulty Completion</h3>
+              <span id="attemptedBadge" class="counter-badge">0 Attempted</span>
+            </div>
+            <div id="difficultyRings" class="progress-v3-rings-wrap">
+              <p class="loading"><span class="loading-dot">⏳</span> Loading difficulty stats...</p>
+            </div>
+          </article>
+
+          <article class="card-flat progress-v3-consistency-card">
+            <div class="progress-v3-card-head">
+              <h3>Practice Consistency</h3>
+            </div>
+            <div id="consistencyHeatmap" class="progress-v3-heatmap" aria-label="Last 30 days activity"></div>
+            <div class="progress-v3-heatmap-foot">
+              <span>Past 30 days</span>
+              <span class="text-sm">More activity → brighter cells</span>
+            </div>
+          </article>
+        </section>
+
+        <section class="card-flat progress-v3-milestones section">
+          <div class="progress-v3-card-head">
+            <h3>Milestones</h3>
+          </div>
+          <div id="milestoneRow" class="progress-v3-milestone-row">
+            <p class="loading"><span class="loading-dot">⏳</span> Loading milestones...</p>
+          </div>
+
+          <div class="progress-v3-goal-block">
+            <div class="progress-wrap progress-v3-goal-wrap">
+              <div id="goalFill" class="progress-fill"></div>
+            </div>
+            <div class="progress-v3-goal-meta">
+              <span>Solved Goal</span>
+              <span id="goalText">0 / 100</span>
+            </div>
           </div>
         </section>
 
         <section class="section">
           <h3 class="section-title">📝 Practice History</h3>
-          <div class="card-flat">
-            <div id="historyList" class="track-list">
-              <p class="loading"><span class="loading-dot">⏳</span> Loading history...</p>
-            </div>
+          <div id="historyList" class="progress-v3-history-grid">
+            <p class="loading"><span class="loading-dot">⏳</span> Loading history...</p>
           </div>
         </section>
       </main>

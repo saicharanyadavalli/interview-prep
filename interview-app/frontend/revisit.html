@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/components.css" />
   </head>
-  <body data-theme="dark" class="app-v2-theme">
+  <body data-theme="dark" class="app-v2-theme revisit-v3-page">
     <div class="bg-shape bg-shape-a"></div>
     <div class="bg-shape bg-shape-b"></div>
 
@@ -38,17 +38,38 @@
         </div>
       </aside>
 
-      <main class="main-content">
-        <div class="page-header">
-          <h1>🔄 Revisit Queue</h1>
+      <main class="main-content revisit-v3-main">
+        <div class="page-header revisit-v3-header">
+          <div>
+            <h1>🔄 Revisit Queue</h1>
+            <p class="card-subtitle">Questions you flagged for another attempt. Keep this queue lean and focused.</p>
+          </div>
           <div class="page-header-actions">
             <span id="revisitCount" class="counter-badge">0</span>
           </div>
         </div>
 
-        <section class="card-flat">
-          <p class="card-subtitle">Questions you marked for revisit. Practice them again or remove from the queue.</p>
-          <div id="revisitList" class="track-list">
+        <section class="revisit-v3-stats section">
+          <article class="stat-card attempted">
+            <p class="stat-label">Queue Size</p>
+            <p id="revisitTotalStat" class="stat-value">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Easy</p>
+            <p id="revisitEasyStat" class="stat-value">0</p>
+          </article>
+          <article class="stat-card">
+            <p class="stat-label">Medium</p>
+            <p id="revisitMediumStat" class="stat-value">0</p>
+          </article>
+          <article class="stat-card revisit">
+            <p class="stat-label">Hard</p>
+            <p id="revisitHardStat" class="stat-value">0</p>
+          </article>
+        </section>
+
+        <section class="card-flat revisit-v3-list-card">
+          <div id="revisitList" class="revisit-v3-list">
             <p class="loading"><span class="loading-dot">⏳</span> Loading...</p>
           </div>
         </section>
