@@ -42,6 +42,23 @@ async function initSidebar(activePage, options = {}) {
 
   if (!sidebar) return;
 
+  document.body.classList.add("has-collapsible-sidebar");
+
+  const setSidebarOpen = (isOpen) => {
+    const open = Boolean(isOpen);
+    sidebar.classList.toggle("open", open);
+    if (overlay) {
+      overlay.classList.toggle("open", open);
+    }
+    if (toggle) {
+      toggle.setAttribute("aria-expanded", open ? "true" : "false");
+      toggle.setAttribute("aria-label", open ? "Close menu" : "Open menu");
+    }
+  };
+
+  // Keep the drawer collapsed by default and open it only on explicit user action.
+  setSidebarOpen(false);
+
   // Build nav links
   const navContainer = sidebar.querySelector(".sidebar-nav");
   if (navContainer) {
@@ -145,16 +162,27 @@ async function initSidebar(activePage, options = {}) {
   // Mobile sidebar toggle
   if (toggle) {
     toggle.addEventListener("click", () => {
-      sidebar.classList.toggle("open");
-      if (overlay) overlay.classList.toggle("open");
+      const currentlyOpen = sidebar.classList.contains("open");
+      setSidebarOpen(!currentlyOpen);
     });
   }
   if (overlay) {
     overlay.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-      overlay.classList.remove("open");
+      setSidebarOpen(false);
     });
   }
+
+  if (navContainer) {
+    navContainer.querySelectorAll(".sidebar-link").forEach((link) => {
+      link.addEventListener("click", () => setSidebarOpen(false));
+    });
+  }
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      setSidebarOpen(false);
+    }
+  });
 
   // Load saved theme
   const savedTheme = localStorage.getItem("theme") || "dark";

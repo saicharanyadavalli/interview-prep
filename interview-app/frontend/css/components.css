@@ -1666,13 +1666,13 @@ body.questions-v2-page .bg-shape {
 
 body.questions-v2-page .questions-main-content {
   max-width: none;
-  margin-left: 260px;
-  padding: 1rem 1.4rem 1.25rem;
+  margin-left: 0;
+  padding: 3.8rem 1.4rem 1.25rem;
 }
 
 body.questions-v2-page .sidebar {
-  transform: translateX(0);
-  box-shadow: none;
+  transform: translateX(-100%);
+  box-shadow: 16px 0 34px rgba(2, 6, 23, 0.65);
 }
 
 body.questions-v2-page .sidebar.open {
@@ -1680,7 +1680,7 @@ body.questions-v2-page .sidebar.open {
 }
 
 body.questions-v2-page .sidebar-toggle {
-  display: none;
+  display: block;
   top: 0.9rem;
   left: 0.9rem;
   background: rgba(15, 23, 42, 0.88);
@@ -2100,7 +2100,7 @@ body.questions-v2-page #qListInlineStatus p {
 @media (max-width: 768px) {
   body.questions-v2-page .questions-main-content {
     margin-left: 0;
-    padding: 3.5rem 0.75rem 1rem;
+    padding: 3.8rem 0.75rem 1rem;
   }
 
   body.questions-v2-page .sidebar {

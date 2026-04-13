@@ -259,6 +259,37 @@ img {
   max-width: 1100px;
 }
 
+/* ---------- Collapsible Sidebar Drawer ---------- */
+body.has-collapsible-sidebar .sidebar {
+  transform: translateX(-100%);
+  box-shadow: 16px 0 34px rgba(2, 6, 23, 0.48);
+}
+
+body.has-collapsible-sidebar .sidebar.open {
+  transform: translateX(0);
+}
+
+body.has-collapsible-sidebar .sidebar-toggle {
+  display: block;
+}
+
+body.has-collapsible-sidebar .sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: var(--overlay);
+  z-index: 90;
+}
+
+body.has-collapsible-sidebar .sidebar-overlay.open {
+  display: block;
+}
+
+body.has-collapsible-sidebar .main-content {
+  margin-left: 0;
+  padding-top: 3.6rem;
+}
+
 /* ---------- Page Header ---------- */
 .page-header {
   display: flex;

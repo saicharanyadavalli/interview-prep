@@ -8,6 +8,163 @@
 // Supabase client singleton (initialized once)
 let _supabase = null;
 
+const AUTH_ACTIVITY_KEY = "ipp_auth_last_activity_ts_v1";
+const DEFAULT_IDLE_TIMEOUT_MS = 60 * 60 * 1000;
+const DEFAULT_ACTIVITY_PING_MS = 30 * 1000;
+
+let _idleMonitorStarted = false;
+let _lastActivityWriteTs = 0;
+let _idleSignOutInProgress = false;
+
+function getIdleTimeoutMs() {
+  const value = Number(CONFIG?.AUTH_IDLE_TIMEOUT_MS);
+  return Number.isFinite(value) && value > 0 ? value : DEFAULT_IDLE_TIMEOUT_MS;
+}
+
+function getActivityPingMs() {
+  const value = Number(CONFIG?.AUTH_ACTIVITY_PING_MS);
+  return Number.isFinite(value) && value > 0 ? value : DEFAULT_ACTIVITY_PING_MS;
+}
+
+function getStoredLastActivityTs() {
+  try {
+    const raw = localStorage.getItem(AUTH_ACTIVITY_KEY);
+    const value = Number(raw);
+    return Number.isFinite(value) && value > 0 ? value : 0;
+  } catch (_) {
+    return 0;
+  }
+}
+
+function setStoredLastActivityTs(ts) {
+  try {
+    localStorage.setItem(AUTH_ACTIVITY_KEY, String(ts));
+  } catch (_) {
+    // Ignore localStorage failures.
+  }
+}
+
+function markUserActivity(force = false) {
+  const now = Date.now();
+  if (!force && now - _lastActivityWriteTs < getActivityPingMs()) {
+    return;
+  }
+  _lastActivityWriteTs = now;
+  setStoredLastActivityTs(now);
+}
+
+function clearLocalSessionState() {
+  try {
+    localStorage.removeItem("ipp_profile_cache_v1");
+  } catch (_) {
+    // Ignore storage errors.
+  }
+  try {
+    localStorage.removeItem(AUTH_ACTIVITY_KEY);
+  } catch (_) {
+    // Ignore storage errors.
+  }
+}
+
+function isSignInPage() {
+  const path = (window.location.pathname || "").toLowerCase();
+  return path === "/" || path.endsWith("/index.html");
+}
+
+function ensureLastActivitySeeded() {
+  const stored = getStoredLastActivityTs();
+  if (stored > 0) return stored;
+  const now = Date.now();
+  _lastActivityWriteTs = now;
+  setStoredLastActivityTs(now);
+  return now;
+}
+
+async function signOutDueToIdle(sb) {
+  if (_idleSignOutInProgress) return;
+  _idleSignOutInProgress = true;
+  try {
+    await sb.auth.signOut({ scope: "local" });
+  } catch (_) {
+    try {
+      await sb.auth.signOut();
+    } catch (__){
+      // Ignore sign-out failures and still clear local state.
+    }
+  }
+
+  clearLocalSessionState();
+
+  if (!isSignInPage()) {
+    window.location.href = "index.html?session_expired=1";
+  }
+
+  _idleSignOutInProgress = false;
+}
+
+async function enforceIdleTimeoutWithSession(sb, session) {
+  if (!session || _idleSignOutInProgress) return false;
+
+  const lastActivityTs = ensureLastActivitySeeded();
+  const idleForMs = Date.now() - lastActivityTs;
+  if (idleForMs < getIdleTimeoutMs()) return false;
+
+  await signOutDueToIdle(sb);
+  return true;
+}
+
+function startIdleSessionMonitor() {
+  if (_idleMonitorStarted) return;
+  _idleMonitorStarted = true;
+
+  const sb = getSupabase();
+  if (!sb) return;
+
+  const onActivity = () => {
+    if (document.visibilityState === "hidden") return;
+    markUserActivity(false);
+  };
+
+  ["click", "keydown", "mousedown", "touchstart", "scroll", "mousemove"].forEach((eventName) => {
+    window.addEventListener(eventName, onActivity, { passive: true });
+  });
+
+  document.addEventListener("visibilitychange", async () => {
+    if (document.visibilityState !== "visible") return;
+    const { data } = await sb.auth.getSession();
+    const timedOut = await enforceIdleTimeoutWithSession(sb, data?.session || null);
+    if (!timedOut) {
+      markUserActivity(true);
+    }
+  });
+
+  window.addEventListener("focus", async () => {
+    const { data } = await sb.auth.getSession();
+    const timedOut = await enforceIdleTimeoutWithSession(sb, data?.session || null);
+    if (!timedOut) {
+      markUserActivity(true);
+    }
+  });
+
+  sb.auth.onAuthStateChange((event) => {
+    if (event === "SIGNED_IN" || event === "USER_UPDATED") {
+      markUserActivity(true);
+      return;
+    }
+    if (event === "SIGNED_OUT") {
+      clearLocalSessionState();
+    }
+  });
+
+  const checkEveryMs = Math.min(60 * 1000, Math.max(15 * 1000, Math.floor(getIdleTimeoutMs() / 6)));
+  window.setInterval(async () => {
+    const { data } = await sb.auth.getSession();
+    await enforceIdleTimeoutWithSession(sb, data?.session || null);
+  }, checkEveryMs);
+
+  markUserActivity(true);
+}
+
 function getSupabase() {
   if (_supabase) return _supabase;
   if (typeof CONFIG === "undefined") {
@@ -15,7 +172,13 @@ function getSupabase() {
     return null;
   }
   // supabase-js is loaded from CDN and exposes window.supabase
-  _supabase = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY);
+  _supabase = supabase.createClient(CONFIG.SUPABASE_URL, CONFIG.SUPABASE_ANON_KEY, {
+    auth: {
+      autoRefreshToken: true,
+      persistSession: true,
+      detectSessionInUrl: true,
+    },
+  });
   return _supabase;
 }
 
@@ -48,11 +211,7 @@ async function signOut() {
   if (!sb) return;
 
   await sb.auth.signOut();
-  try {
-    localStorage.removeItem("ipp_profile_cache_v1");
-  } catch (_) {
-    // Ignore storage errors.
-  }
+  clearLocalSessionState();
   window.location.href = "index.html";
 }
 
@@ -64,7 +223,13 @@ async function getSession() {
   if (!sb) return { session: null, user: null };
 
   const { data } = await sb.auth.getSession();
-  const session = data?.session || null;
+  let session = data?.session || null;
+  if (session) {
+    const timedOut = await enforceIdleTimeoutWithSession(sb, session);
+    if (timedOut) {
+      session = null;
+    }
+  }
   const user = session?.user || null;
   return { session, user };
 }
@@ -136,3 +301,5 @@ async function syncSessionWithBackend(accessToken) {
     // Non-blocking sync failure; UI auth still relies on Supabase session.
   }
 }
+
+startIdleSessionMonitor();

@@ -6,4 +6,8 @@ const CONFIG = {
   // Supabase project credentials (public / anon key — safe for frontend)
   SUPABASE_URL: "https://armfnjzilchguppytyvm.supabase.co",
   SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFybWZuanppbGNoZ3VwcHl0eXZtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzM3NzY2MzgsImV4cCI6MjA4OTM1MjYzOH0.W7Q-MN00eeaIQZEHfkagMVX592nu8D6yGsh9e_uHctc",
+
+  // Session management (client-side inactivity timeout)
+  AUTH_IDLE_TIMEOUT_MS: 60 * 60 * 1000,
+  AUTH_ACTIVITY_PING_MS: 30 * 1000,
 };

@@ -8,6 +8,124 @@
 
 const API = {
   _PROFILE_CACHE_KEY: "ipp_profile_cache_v1",
+  _SYSTEM_DESIGN_PROGRESS_CACHE_KEY: "ipp_system_design_progress_v1",
+  _SYSTEM_DESIGN_STEP_COUNT: 30,
+  _SYSTEM_DESIGN_QNUM_BASE: 900000,
+
+  _extractApiStatusCode(error) {
+    const message = String((error && error.message) || "");
+    const match = message.match(/^API\s+(\d+):/i);
+    return match ? Number(match[1]) : null;
+  },
+
+  _isApiNotFound(error) {
+    return this._extractApiStatusCode(error) === 404;
+  },
+
+  _stepToSystemDesignQnum(stepNo) {
+    return this._SYSTEM_DESIGN_QNUM_BASE + Number(stepNo || 0);
+  },
+
+  _readSystemDesignProgressCache() {
+    try {
+      const raw = localStorage.getItem(this._SYSTEM_DESIGN_PROGRESS_CACHE_KEY);
+      if (!raw) return {};
+      const parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return {};
+      const data = parsed.data && typeof parsed.data === "object" ? parsed.data : {};
+      return data;
+    } catch (_) {
+      return {};
+    }
+  },
+
+  _writeSystemDesignProgressCache(data) {
+    try {
+      localStorage.setItem(
+        this._SYSTEM_DESIGN_PROGRESS_CACHE_KEY,
+        JSON.stringify({ ts: Date.now(), data: data || {} })
+      );
+    } catch (_) {
+      // Ignore storage quota issues.
+    }
+  },
+
+  _cacheSystemDesignProgressResponse(response) {
+    if (!response || !Array.isArray(response.steps)) return;
+    const map = {};
+    response.steps.forEach((step) => {
+      const stepNo = Number(step && step.step_no);
+      if (!Number.isFinite(stepNo) || stepNo <= 0) return;
+      map[String(stepNo)] = {
+        completed: Boolean(step.completed),
+        updated_at: step.updated_at || null,
+      };
+    });
+    this._writeSystemDesignProgressCache(map);
+  },
+
+  _buildSystemDesignProgressFromMap(progressMap = {}) {
+    const steps = [];
+    let completedSteps = 0;
+
+    for (let stepNo = 1; stepNo <= this._SYSTEM_DESIGN_STEP_COUNT; stepNo += 1) {
+      const entry = progressMap[String(stepNo)] || {};
+      const completed = Boolean(entry.completed);
+      if (completed) completedSteps += 1;
+
+      steps.push({
+        step_no: stepNo,
+        title: `Step ${stepNo}`,
+        completed,
+        updated_at: entry.updated_at || null,
+      });
+    }
+
+    return {
+      total_steps: this._SYSTEM_DESIGN_STEP_COUNT,
+      completed_steps: completedSteps,
+      completion_percent: Math.round((completedSteps / this._SYSTEM_DESIGN_STEP_COUNT) * 100),
+      steps,
+      source: "legacy-fallback",
+    };
+  },
+
+  async _loadLegacySystemDesignProgressMap() {
+    const cached = this._readSystemDesignProgressCache();
+    const nextMap = { ...cached };
+
+    const statuses = await Promise.all(
+      Array.from({ length: this._SYSTEM_DESIGN_STEP_COUNT }, async (_, index) => {
+        const stepNo = index + 1;
+        const qnum = this._stepToSystemDesignQnum(stepNo);
+        try {
+          const status = await this.getProgressStatus(qnum);
+          return { stepNo, status };
+        } catch (_) {
+          return null;
+        }
+      })
+    );
+
+    let hasRemoteData = false;
+    statuses.forEach((item) => {
+      if (!item || !item.status) return;
+      const rawSolved = item.status.is_solved;
+      if (rawSolved === null || rawSolved === undefined) return;
+
+      hasRemoteData = true;
+      nextMap[String(item.stepNo)] = {
+        completed: rawSolved === true,
+        updated_at: new Date().toISOString(),
+      };
+    });
+
+    if (hasRemoteData) {
+      this._writeSystemDesignProgressCache(nextMap);
+    }
+
+    return nextMap;
+  },
 
   getCachedProfile(maxAgeMs = 24 * 60 * 60 * 1000) {
     try {
@@ -184,17 +302,72 @@ const API = {
   },
 
   async getSystemDesignProgress() {
-    return this._fetch("/system-design/progress");
+    try {
+      const response = await this._fetch("/system-design/progress");
+      this._cacheSystemDesignProgressResponse(response);
+      return response;
+    } catch (error) {
+      if (!this._isApiNotFound(error)) {
+        throw error;
+      }
+
+      const fallbackMap = await this._loadLegacySystemDesignProgressMap();
+      return this._buildSystemDesignProgressFromMap(fallbackMap);
+    }
   },
 
   async updateSystemDesignProgress(stepNo, completed) {
-    return this._fetch("/system-design/progress", {
-      method: "POST",
-      body: JSON.stringify({
-        step_no: Number(stepNo),
+    const numericStepNo = Number(stepNo);
+    if (!Number.isFinite(numericStepNo) || numericStepNo < 1 || numericStepNo > this._SYSTEM_DESIGN_STEP_COUNT) {
+      throw new Error(`Invalid step number: ${stepNo}`);
+    }
+
+    const safeStepNo = Math.round(numericStepNo);
+    const payload = {
+      step_no: safeStepNo,
+      completed: Boolean(completed),
+    };
+
+    try {
+      const response = await this._fetch("/system-design/progress", {
+        method: "POST",
+        body: JSON.stringify(payload),
+      });
+
+      const cache = this._readSystemDesignProgressCache();
+      cache[String(safeStepNo)] = {
         completed: Boolean(completed),
-      }),
-    });
+        updated_at: response && response.updated_at ? response.updated_at : new Date().toISOString(),
+      };
+      this._writeSystemDesignProgressCache(cache);
+
+      return response;
+    } catch (error) {
+      if (!this._isApiNotFound(error)) {
+        throw error;
+      }
+
+      const qnum = this._stepToSystemDesignQnum(safeStepNo);
+      await this.updateProgress(qnum, {
+        is_solved: Boolean(completed),
+        revisit: false,
+      });
+
+      const cache = this._readSystemDesignProgressCache();
+      const now = new Date().toISOString();
+      cache[String(safeStepNo)] = {
+        completed: Boolean(completed),
+        updated_at: now,
+      };
+      this._writeSystemDesignProgressCache(cache);
+
+      return {
+        step_no: safeStepNo,
+        title: `Step ${safeStepNo}`,
+        completed: Boolean(completed),
+        updated_at: now,
+      };
+    }
   },
 
   async getProgressStatus(qnum) {

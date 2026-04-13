@@ -87,6 +87,16 @@ This creates only the current required tables:
 https://<your-project-ref>.supabase.co/auth/v1/callback
 ```
 
+### 4.1 Configure Session And Token Expiry (1 Hour)
+
+To keep auth sessions limited to 1 hour and align token lifetime:
+
+1. In Supabase Dashboard, open Authentication -> Settings.
+2. Set JWT expiry to 3600 seconds.
+3. Save changes.
+
+This project also applies a frontend idle timeout and signs users out after 1 hour of inactivity.
+
 ### 5. Create Environment File
 
 Create a .env file at project root (same level as supabase_setup.sql):
