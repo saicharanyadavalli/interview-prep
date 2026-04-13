@@ -20,10 +20,13 @@ async function loadDashboardData() {
   const statsGrid = document.getElementById("statsGrid");
   const recentList = document.getElementById("recentList");
   const revisitPreview = document.getElementById("revisitPreview");
+  const systemDesignFill = document.getElementById("dashboardSystemDesignFill");
+  const systemDesignText = document.getElementById("dashboardSystemDesignText");
 
-  const [progressResult, revisitResult] = await Promise.allSettled([
+  const [progressResult, revisitResult, systemDesignResult] = await Promise.allSettled([
     API.getUserProgress(),
     API.getRevisitQueue(),
+    API.getSystemDesignProgress(),
   ]);
 
   if (progressResult.status === "fulfilled") {
@@ -45,6 +48,11 @@ async function loadDashboardData() {
       revisitPreview.innerHTML = '<p class="track-empty">No revisit questions yet.</p>';
     }
   }
+
+  const systemDesign = systemDesignResult && systemDesignResult.status === "fulfilled"
+    ? systemDesignResult.value
+    : null;
+  renderSystemDesignProgress(systemDesignFill, systemDesignText, systemDesign);
 }
 
 function renderStats(container, stats) {
@@ -125,6 +133,17 @@ function renderRevisitPreview(container, items) {
     more.textContent = `View all ${items.length} items →`;
     container.appendChild(more);
   }
+}
+
+function renderSystemDesignProgress(fillEl, textEl, data) {
+  if (!fillEl || !textEl) return;
+
+  const total = Number((data && data.total_steps) || 30);
+  const completed = Number((data && data.completed_steps) || 0);
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+  fillEl.style.width = `${Math.max(0, Math.min(100, percent))}%`;
+  textEl.textContent = `${completed} / ${total} completed`;
 }
 
 function escapeHtml(text) {

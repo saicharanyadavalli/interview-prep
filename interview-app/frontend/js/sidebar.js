@@ -2,12 +2,13 @@
  * sidebar.js — Renders the sidebar navigation and handles mobile toggle.
  *
  * Call `initSidebar(activePage, { requireLogin: false })` from each page.
- * activePage should be one of: "dashboard", "practice", "revisit", "progress", "questions"
+ * activePage should be one of: "dashboard", "system-design", "practice", "revisit", "progress", "questions", "profile"
  * If requireLogin is true, unauthenticated users are redirected to index.html.
  */
 
 const NAV_ITEMS = [
   { id: "dashboard",  label: "Dashboard",       icon: "📊", href: "dashboard.html" },
+  { id: "system-design", label: "System Design", icon: "🧠", href: "system-design.html" },
   { id: "questions",  label: "All Questions",   icon: "📋", href: "questions.html" },
   { id: "profile",    label: "Profile",         icon: "👤", href: "profile.html"   },
   { id: "revisit",    label: "Revisit Queue",   icon: "🔄", href: "revisit.html"   },

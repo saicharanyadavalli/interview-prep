@@ -151,6 +151,28 @@ class ProgressStatusResponse(BaseModel):
     revisit: bool = False
 
 
+class SystemDesignStepProgress(BaseModel):
+    """Progress state for one system design lesson step."""
+    step_no: int = Field(..., ge=1)
+    title: str = ""
+    completed: bool = False
+    updated_at: Optional[str] = None
+
+
+class SystemDesignProgressResponse(BaseModel):
+    """System design learning-track summary and per-step statuses."""
+    total_steps: int = 0
+    completed_steps: int = 0
+    completion_percent: int = 0
+    steps: list[SystemDesignStepProgress] = Field(default_factory=list)
+
+
+class SystemDesignProgressUpdateRequest(BaseModel):
+    """Update payload for a single system design lesson step."""
+    step_no: int = Field(..., ge=1)
+    completed: bool
+
+
 # ---------- Revisit ----------
 
 class RevisitEntry(BaseModel):

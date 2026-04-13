@@ -20,6 +20,9 @@ async function loadProgress() {
     topicChips: document.getElementById("topicChips"),
     topicDetail: document.getElementById("topicDetail"),
     topicInsightSummary: document.getElementById("topicInsightSummary"),
+    sdCourseProgressFill: document.getElementById("sdCourseProgressFill"),
+    sdCourseProgressText: document.getElementById("sdCourseProgressText"),
+    sdCourseProgressPercent: document.getElementById("sdCourseProgressPercent"),
   };
 
   if (Object.values(refs).some((value) => !value)) {
@@ -116,6 +119,31 @@ async function loadProgress() {
       </div>
     `;
   }
+
+  await renderSystemDesignCourseTracking(refs);
+}
+
+async function renderSystemDesignCourseTracking(refs) {
+  if (!refs.sdCourseProgressFill || !refs.sdCourseProgressText || !refs.sdCourseProgressPercent) {
+    return;
+  }
+
+  let completed = 0;
+  let total = 30;
+
+  try {
+    const data = await API.getSystemDesignProgress();
+    completed = Number((data && data.completed_steps) || 0);
+    total = Number((data && data.total_steps) || 30);
+  } catch (_) {
+    completed = 0;
+    total = 30;
+  }
+
+  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  refs.sdCourseProgressFill.style.width = `${Math.max(0, Math.min(100, percent))}%`;
+  refs.sdCourseProgressText.textContent = `${completed} / ${total} completed`;
+  refs.sdCourseProgressPercent.textContent = `${percent}%`;
 }
 
 function getFilterBuilderTopics() {

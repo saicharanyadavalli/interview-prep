@@ -30,6 +30,7 @@ from routes.progress import router as progress_router
 from routes.revisit import router as revisit_router
 from routes.comments import router as comments_router
 from routes.profile import router as profile_router
+from routes.system_design import router as system_design_router
 
 
 app = FastAPI(
@@ -56,6 +57,7 @@ app.include_router(progress_router)
 app.include_router(revisit_router)
 app.include_router(comments_router)
 app.include_router(profile_router)
+app.include_router(system_design_router)
 
 
 @app.get("/")

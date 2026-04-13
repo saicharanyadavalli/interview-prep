@@ -183,6 +183,20 @@ const API = {
     return this._fetch("/progress/user");
   },
 
+  async getSystemDesignProgress() {
+    return this._fetch("/system-design/progress");
+  },
+
+  async updateSystemDesignProgress(stepNo, completed) {
+    return this._fetch("/system-design/progress", {
+      method: "POST",
+      body: JSON.stringify({
+        step_no: Number(stepNo),
+        completed: Boolean(completed),
+      }),
+    });
+  },
+
   async getProgressStatus(qnum) {
     return this._fetch(`/progress/status/${encodeURIComponent(qnum)}`);
   },

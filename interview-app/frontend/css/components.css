@@ -383,6 +383,254 @@ body[data-theme="dark"] .progress-wrap {
   gap: 0.5rem;
 }
 
+/* ---------- System Design Course ---------- */
+.system-design-main {
+  max-width: 1360px;
+}
+
+.system-design-progress-wrap {
+  margin-top: 0.35rem;
+}
+
+.system-design-layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.system-design-steps-panel {
+  position: sticky;
+  top: 1rem;
+  max-height: calc(100vh - 150px);
+  overflow: auto;
+}
+
+.system-design-steps-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.system-design-steps-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.system-design-step-btn {
+  width: 100%;
+  text-align: left;
+  border: 1px solid var(--line);
+  background: var(--surface-chip);
+  color: var(--ink);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem;
+  cursor: pointer;
+  transition: transform 120ms ease, border-color 120ms ease, background 120ms ease;
+  display: grid;
+  gap: 0.2rem;
+}
+
+.system-design-step-btn:hover {
+  transform: translateY(-1px);
+  border-color: var(--teal);
+}
+
+.system-design-step-btn.is-active {
+  border-color: var(--teal);
+  background: var(--teal-soft);
+}
+
+.system-design-step-index {
+  font-size: 0.76rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+}
+
+.system-design-step-title {
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
+.system-design-step-status {
+  font-size: 0.78rem;
+  font-weight: 600;
+}
+
+.system-design-step-status.done {
+  color: var(--green);
+}
+
+.system-design-step-status.pending {
+  color: var(--amber);
+}
+
+.system-design-content-panel {
+  min-height: 65vh;
+}
+
+.system-design-content-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.8rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 0.75rem;
+}
+
+.system-design-content-head h2 {
+  font-size: 1.25rem;
+}
+
+.system-design-chapter-content {
+  border-top: 1px solid var(--line);
+  padding-top: 1rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.system-design-lesson-frame {
+  width: 100%;
+  min-height: 72vh;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: #fff;
+}
+
+.system-design-chapter-content h1,
+.system-design-chapter-content h2,
+.system-design-chapter-content h3,
+.system-design-chapter-content h4 {
+  margin-top: 0.85rem;
+}
+
+.system-design-chapter-content p,
+.system-design-chapter-content li {
+  color: var(--ink);
+  line-height: 1.64;
+}
+
+.system-design-chapter-content ul,
+.system-design-chapter-content ol {
+  padding-left: 1.25rem;
+  display: grid;
+  gap: 0.4rem;
+}
+
+.system-design-chapter-content pre {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  padding: 0.7rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.system-design-chapter-content img {
+  display: block;
+  width: auto;
+  max-width: min(100%, 980px);
+  height: auto;
+  margin-inline: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--paper);
+  padding: 0.35rem;
+}
+
+.system-design-chapter-content figure {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.system-design-chapter-content figcaption {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.system-design-inline-lesson {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.system-design-inline-lesson table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.65rem 0;
+  background: var(--paper);
+}
+
+.system-design-inline-lesson th,
+.system-design-inline-lesson td {
+  border: 1px solid var(--line);
+  padding: 0.5rem 0.65rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.system-design-inline-lesson th {
+  background: var(--surface-soft);
+  font-weight: 700;
+}
+
+.system-design-inline-lesson a {
+  color: var(--teal);
+  word-break: break-word;
+}
+
+.system-design-inline-lesson blockquote {
+  margin: 0.6rem 0;
+  padding: 0.45rem 0.75rem;
+  border-left: 3px solid var(--teal);
+  background: var(--surface-soft);
+}
+
+.dashboard-track-card {
+  margin-top: 1rem;
+}
+
+.dashboard-track-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+}
+
+.dashboard-track-progress {
+  margin-top: 0.55rem;
+}
+
+.progress-v3-system-design {
+  margin-top: 0.5rem;
+}
+
+.progress-v3-system-design-meta {
+  margin-top: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--muted);
+  font-size: 0.86rem;
+}
+
+@media (max-width: 1000px) {
+  .system-design-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .system-design-steps-panel {
+    position: static;
+    max-height: none;
+  }
+}
+
 /* ---------- Counter Badge ---------- */
 .counter-badge {
   font-family: 'JetBrains Mono', monospace;
