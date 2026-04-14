@@ -39,16 +39,36 @@ async function initSidebar(activePage, options = {}) {
   const sidebar = document.getElementById("sidebar");
   const toggle = document.getElementById("sidebarToggle");
   const overlay = document.getElementById("sidebarOverlay");
+  const themeBtn = document.getElementById("themeToggleBtn");
+  const COLLAPSIBLE_BREAKPOINT = 1024;
 
   if (!sidebar) return;
 
-  document.body.classList.add("has-collapsible-sidebar");
+  let isCollapsibleMode = false;
+  let mobileSidebarOpen = false;
+  let lastCollapsibleMode = null;
+
+  const normalizeTheme = (theme) => (theme === "light" ? "light" : "dark");
+
+  const applyTheme = (theme) => {
+    const nextTheme = normalizeTheme(theme);
+    document.body.setAttribute("data-theme", nextTheme);
+    if (themeBtn) {
+      const darkActive = nextTheme === "dark";
+      themeBtn.textContent = darkActive ? "☀️" : "🌙";
+      themeBtn.setAttribute("title", darkActive ? "Switch to light mode" : "Switch to dark mode");
+      themeBtn.setAttribute("aria-label", darkActive ? "Switch to light mode" : "Switch to dark mode");
+      themeBtn.setAttribute("aria-pressed", darkActive ? "true" : "false");
+    }
+  };
 
   const setSidebarOpen = (isOpen) => {
-    const open = Boolean(isOpen);
+    // Keep sidebar pinned open on larger screens and drawer-style on smaller screens.
+    const open = isCollapsibleMode ? Boolean(isOpen) : true;
+    mobileSidebarOpen = open;
     sidebar.classList.toggle("open", open);
     if (overlay) {
-      overlay.classList.toggle("open", open);
+      overlay.classList.toggle("open", isCollapsibleMode && open);
     }
     if (toggle) {
       toggle.setAttribute("aria-expanded", open ? "true" : "false");
@@ -56,8 +76,67 @@ async function initSidebar(activePage, options = {}) {
     }
   };
 
-  // Keep the drawer collapsed by default and open it only on explicit user action.
-  setSidebarOpen(false);
+  const applySidebarMode = () => {
+    const nextCollapsibleMode = window.innerWidth <= COLLAPSIBLE_BREAKPOINT;
+    if (lastCollapsibleMode !== nextCollapsibleMode && nextCollapsibleMode) {
+      mobileSidebarOpen = false;
+    }
+    isCollapsibleMode = nextCollapsibleMode;
+    lastCollapsibleMode = nextCollapsibleMode;
+    document.body.classList.toggle("has-collapsible-sidebar", isCollapsibleMode);
+    setSidebarOpen(isCollapsibleMode ? mobileSidebarOpen : true);
+  };
+
+  // Bind core interactions before async auth/profile calls so toggle always works.
+  if (toggle && !toggle.dataset.sidebarBound) {
+    toggle.dataset.sidebarBound = "1";
+    toggle.addEventListener("click", () => {
+      if (!isCollapsibleMode) return;
+      const currentlyOpen = sidebar.classList.contains("open");
+      setSidebarOpen(!currentlyOpen);
+    });
+  }
+  if (overlay && !overlay.dataset.sidebarBound) {
+    overlay.dataset.sidebarBound = "1";
+    overlay.addEventListener("click", () => {
+      setSidebarOpen(false);
+    });
+  }
+  if (!document.body.dataset.sidebarEscBound) {
+    document.body.dataset.sidebarEscBound = "1";
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") {
+        setSidebarOpen(false);
+      }
+    });
+  }
+  if (!window.__ippSidebarResizeBound) {
+    window.__ippSidebarResizeBound = true;
+    window.addEventListener("resize", () => {
+      applySidebarMode();
+    });
+  }
+
+  // Load and apply saved theme immediately for visible mode consistency.
+  const savedTheme = normalizeTheme(localStorage.getItem("theme") || document.body.getAttribute("data-theme") || "dark");
+  applyTheme(savedTheme);
+
+  if (themeBtn && !themeBtn.dataset.themeBound) {
+    themeBtn.dataset.themeBound = "1";
+    themeBtn.addEventListener("click", () => {
+      const current = normalizeTheme(document.body.getAttribute("data-theme"));
+      const next = current === "dark" ? "light" : "dark";
+      applyTheme(next);
+      localStorage.setItem("theme", next);
+    });
+  }
+
+  applySidebarMode();
+
+  // Keep drawer closed by default in collapsible mode.
+  if (isCollapsibleMode) {
+    setSidebarOpen(false);
+  }
 
   // Build nav links
   const navContainer = sidebar.querySelector(".sidebar-nav");
@@ -74,10 +153,14 @@ async function initSidebar(activePage, options = {}) {
 
   // Auth — either hard redirect or soft fill
   let user = null;
-  if (requireLogin) {
-    user = await requireAuth();
-  } else {
-    user = await tryGetUser();
+  try {
+    if (requireLogin) {
+      user = await requireAuth();
+    } else {
+      user = await tryGetUser();
+    }
+  } catch (_) {
+    user = null;
   }
 
   const avatarEl = sidebar.querySelector(".sidebar-avatar");
@@ -135,18 +218,6 @@ async function initSidebar(activePage, options = {}) {
     if (loginBtn) loginBtn.classList.remove("hidden");
   }
 
-  // Theme toggle
-  const themeBtn = document.getElementById("themeToggleBtn");
-  if (themeBtn) {
-    themeBtn.addEventListener("click", () => {
-      const current = document.body.getAttribute("data-theme");
-      const next = current === "dark" ? "light" : "dark";
-      document.body.setAttribute("data-theme", next);
-      themeBtn.textContent = next === "dark" ? "☀️" : "🌙";
-      localStorage.setItem("theme", next);
-    });
-  }
-
   // Sign out
   if (signOutBtn) {
     signOutBtn.addEventListener("click", () => signOut());
@@ -159,36 +230,14 @@ async function initSidebar(activePage, options = {}) {
     });
   }
 
-  // Mobile sidebar toggle
-  if (toggle) {
-    toggle.addEventListener("click", () => {
-      const currentlyOpen = sidebar.classList.contains("open");
-      setSidebarOpen(!currentlyOpen);
-    });
-  }
-  if (overlay) {
-    overlay.addEventListener("click", () => {
-      setSidebarOpen(false);
-    });
-  }
-
   if (navContainer) {
     navContainer.querySelectorAll(".sidebar-link").forEach((link) => {
-      link.addEventListener("click", () => setSidebarOpen(false));
+      link.addEventListener("click", () => {
+        if (isCollapsibleMode) {
+          setSidebarOpen(false);
+        }
+      });
     });
-  }
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") {
-      setSidebarOpen(false);
-    }
-  });
-
-  // Load saved theme
-  const savedTheme = localStorage.getItem("theme") || "dark";
-  document.body.setAttribute("data-theme", savedTheme);
-  if (themeBtn) {
-    themeBtn.textContent = savedTheme === "dark" ? "☀️" : "🌙";
   }
 
   return user;
