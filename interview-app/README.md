@@ -68,9 +68,7 @@ cd interview-app
 2. Paste all contents of supabase_setup.sql.
 3. Run it once.
 
-This is the single complete bootstrap script and includes the latest schema updates.
-
-It creates the current required tables:
+This creates only the current required tables:
 1. users
 2. user_profiles
 3. user_progress

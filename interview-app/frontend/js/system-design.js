@@ -2,12 +2,11 @@
  * system-design.js - System Design Course page logic.
  */
 
-const SYSTEM_DESIGN_LOCAL_TICKS_KEY = "ipp_system_design_local_ticks_v1";
-
 const systemDesignState = {
   steps: [],
   progressByStep: new Map(),
-  saveInFlightByStep: new Set(),
+  activeStepNo: null,
+  renderRequestId: 0,
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -16,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const { session } = await getSession();
   if (session) {
-    syncSessionWithBackend(session.access_token);
+    await syncSessionWithBackend(session.access_token);
   }
 
   await loadSystemDesignCoursePage();
@@ -25,6 +24,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function loadSystemDesignCoursePage() {
   const refs = {
     stepsList: document.getElementById("systemDesignSteps"),
+    chapterTitle: document.getElementById("sdChapterTitle"),
+    chapterMeta: document.getElementById("sdChapterMeta"),
+    chapterContent: document.getElementById("sdChapterContent"),
+    sourceLink: document.getElementById("sdSourceLink"),
+    toggleCompleteBtn: document.getElementById("sdToggleCompleteBtn"),
     completionBadge: document.getElementById("sdCompletionBadge"),
     completedPill: document.getElementById("sdCompletedPill"),
     progressFill: document.getElementById("sdProgressFill"),
@@ -36,7 +40,10 @@ async function loadSystemDesignCoursePage() {
   }
 
   try {
-    const indexRes = await fetch("assets/system-design/course-index.json", { cache: "no-store" });
+    const [indexRes, progressRes] = await Promise.all([
+      fetch("assets/system-design/course-index.json"),
+      API.getSystemDesignProgress(),
+    ]);
 
     if (!indexRes.ok) {
       throw new Error(`Failed to load course index (${indexRes.status})`);
@@ -45,9 +52,18 @@ async function loadSystemDesignCoursePage() {
     const indexData = await indexRes.json();
     const steps = Array.isArray(indexData && indexData.steps) ? indexData.steps : [];
     systemDesignState.steps = steps;
-    systemDesignState.progressByStep = readLocalTickMap(steps);
+
+    const progressSteps = Array.isArray(progressRes && progressRes.steps) ? progressRes.steps : [];
+    systemDesignState.progressByStep = new Map(progressSteps.map((item) => [Number(item.step_no), Boolean(item.completed)]));
 
     renderStepsList(refs);
+
+    const firstIncomplete = steps.find((step) => !systemDesignState.progressByStep.get(Number(step.step_no || 0)));
+    const initialStep = firstIncomplete || steps[0] || null;
+    if (initialStep) {
+      await openStep(initialStep, refs);
+      renderStepsList(refs);
+    }
   } catch (error) {
     refs.stepsList.innerHTML = `
       <div class="empty-state">
@@ -79,111 +95,173 @@ function renderStepsList(refs) {
     .map((step) => {
       const stepNo = Number(step.step_no || 0);
       const completedStep = Boolean(systemDesignState.progressByStep.get(stepNo));
-      const isSaving = systemDesignState.saveInFlightByStep.has(stepNo);
-      const title = escapeHtml(step.title || `Step ${stepNo}`);
-      const htmlPath = String(step.local_html || "").trim();
-      const hasLessonPath = Boolean(htmlPath);
-      const href = hasLessonPath ? escapeAttribute(encodeURI(htmlPath)) : "#";
-
+      const active = stepNo === Number(systemDesignState.activeStepNo || 0);
       return `
-        <article class="system-design-step-row ${completedStep ? "is-complete" : ""}">
-          <div class="system-design-step-main">
-            <span class="system-design-step-index">Step ${stepNo}</span>
-            ${hasLessonPath
-              ? `<a class="system-design-step-link" href="${href}">${title}</a>`
-              : `<span class="system-design-step-link is-disabled">${title}</span>`}
-            <span class="system-design-step-status ${completedStep ? "done" : "pending"}">${isSaving ? "Saving..." : completedStep ? "Completed" : "Pending"}</span>
-          </div>
-          <div class="system-design-step-actions">
-            <a class="btn btn-sm ${hasLessonPath ? "" : "is-disabled"}" href="${href}" ${hasLessonPath ? "" : "aria-disabled=\"true\" tabindex=\"-1\""}>Open HTML</a>
-            <label class="system-design-step-check">
-              <input class="sd-step-checkbox" type="checkbox" data-step-no="${stepNo}" ${completedStep ? "checked" : ""} ${isSaving ? "disabled" : ""} />
-              <span>Done</span>
-            </label>
-          </div>
-        </article>
+        <button type="button" class="system-design-step-btn ${active ? "is-active" : ""}" data-step-no="${stepNo}">
+          <span class="system-design-step-index">Step ${stepNo}</span>
+          <span class="system-design-step-title">${escapeHtml(step.title || `Step ${stepNo}`)}</span>
+          <span class="system-design-step-status ${completedStep ? "done" : "pending"}">${completedStep ? "Completed" : "Pending"}</span>
+        </button>
       `;
     })
     .join("");
 
-  refs.stepsList.querySelectorAll(".sd-step-checkbox").forEach((checkbox) => {
-    checkbox.addEventListener("change", () => {
-      const stepNo = Number(checkbox.getAttribute("data-step-no") || 0);
-      if (!stepNo) return;
+  refs.stepsList.querySelectorAll(".system-design-step-btn").forEach((button) => {
+    button.addEventListener("click", () => {
+      const stepNo = Number(button.getAttribute("data-step-no") || 0);
+      const step = systemDesignState.steps.find((item) => Number(item.step_no || 0) === stepNo);
+      if (!step) return;
 
-      toggleCompletedStep(stepNo, checkbox.checked, refs).catch(() => {
-        renderStepsList(refs);
-      });
+      openStep(step, refs)
+        .then(() => {
+          renderStepsList(refs);
+        })
+        .catch(() => {
+          renderStepsList(refs);
+        });
     });
   });
 }
 
-async function toggleCompletedStep(stepNo, completed, refs) {
-  if (systemDesignState.saveInFlightByStep.has(stepNo)) {
-    return;
+async function openStep(step, refs) {
+  const stepNo = Number(step.step_no || 0);
+  if (!stepNo) return;
+
+  systemDesignState.activeStepNo = stepNo;
+  const requestId = ++systemDesignState.renderRequestId;
+
+  const title = String(step.title || `Step ${stepNo}`).trim();
+  const htmlPath = String(step.local_html || "").trim();
+  const sourceUrl = String(step.source_url || "").trim();
+
+  refs.chapterTitle.textContent = `Step ${stepNo}: ${title}`;
+  refs.chapterMeta.textContent = htmlPath ? "Loading chapter content..." : "Chapter file path unavailable.";
+
+  refs.sourceLink.href = sourceUrl || "#";
+  refs.sourceLink.style.pointerEvents = sourceUrl ? "auto" : "none";
+  refs.sourceLink.style.opacity = sourceUrl ? "1" : "0.5";
+
+  if (!htmlPath) {
+    refs.chapterContent.innerHTML = '<p class="text-muted">No chapter path found for this step.</p>';
+  } else {
+    refs.chapterContent.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading chapter...</p>';
+    await renderLessonContent(htmlPath, title, refs, requestId);
   }
 
-  const previous = Boolean(systemDesignState.progressByStep.get(stepNo));
-  systemDesignState.saveInFlightByStep.add(stepNo);
-  systemDesignState.progressByStep.set(stepNo, completed);
-  persistLocalTickMap();
-  renderStepsList(refs);
+  const isCompleted = Boolean(systemDesignState.progressByStep.get(stepNo));
+  refs.toggleCompleteBtn.disabled = false;
+  refs.toggleCompleteBtn.textContent = isCompleted ? "Mark Incomplete" : "Mark Complete";
 
-  try {
-    await API.updateSystemDesignProgress(stepNo, completed);
-  } catch (error) {
-    systemDesignState.progressByStep.set(stepNo, previous);
-    persistLocalTickMap();
-    alert(`Failed to update progress: ${error.message}`);
-  } finally {
-    systemDesignState.saveInFlightByStep.delete(stepNo);
-    renderStepsList(refs);
-  }
+  refs.toggleCompleteBtn.onclick = async () => {
+    const current = Boolean(systemDesignState.progressByStep.get(stepNo));
+    const next = !current;
+
+    refs.toggleCompleteBtn.disabled = true;
+    try {
+      await API.updateSystemDesignProgress(stepNo, next);
+      systemDesignState.progressByStep.set(stepNo, next);
+      refs.toggleCompleteBtn.textContent = next ? "Mark Incomplete" : "Mark Complete";
+    } catch (error) {
+      alert(`Failed to update progress: ${error.message}`);
+    } finally {
+      refs.toggleCompleteBtn.disabled = false;
+      renderStepsList(refs);
+    }
+  };
 }
 
-function readLocalTickMap(steps) {
-  let raw = {};
-
+async function renderLessonContent(htmlPath, title, refs, requestId) {
   try {
-    const text = localStorage.getItem(SYSTEM_DESIGN_LOCAL_TICKS_KEY);
-    raw = text ? JSON.parse(text) : {};
-  } catch (_) {
-    raw = {};
-  }
+    const response = await fetch(htmlPath, { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`Failed to load chapter file (${response.status})`);
+    }
 
-  const map = new Map();
-  (Array.isArray(steps) ? steps : []).forEach((step) => {
-    const stepNo = Number(step && step.step_no);
-    if (!Number.isFinite(stepNo) || stepNo <= 0) {
+    const html = await response.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, "text/html");
+    const sourceArticle = doc.querySelector("article.system-design-chapter-content") || doc.querySelector("article") || doc.body;
+    if (!sourceArticle) {
+      throw new Error("No chapter content found in lesson file");
+    }
+
+    const lessonNode = sourceArticle.cloneNode(true);
+    normalizeLessonNodeUrls(lessonNode, htmlPath);
+    lessonNode.querySelectorAll("script").forEach((scriptNode) => scriptNode.remove());
+    lessonNode.classList.remove("system-design-chapter-content");
+    lessonNode.classList.add("system-design-inline-lesson");
+
+    if (requestId !== systemDesignState.renderRequestId) {
       return;
     }
-    map.set(stepNo, Boolean(raw[String(stepNo)]));
-  });
 
-  return map;
+    refs.chapterContent.innerHTML = "";
+    refs.chapterContent.appendChild(lessonNode);
+    refs.chapterMeta.textContent = "Integrated chapter view loaded.";
+  } catch (error) {
+    if (requestId !== systemDesignState.renderRequestId) {
+      return;
+    }
+
+    refs.chapterContent.innerHTML = `<iframe class="system-design-lesson-frame" src="${encodeURI(htmlPath)}" title="${escapeHtml(title)}" loading="lazy"></iframe>`;
+    refs.chapterMeta.textContent = "Embedded chapter view loaded.";
+  }
 }
 
-function persistLocalTickMap() {
-  const payload = {};
-  systemDesignState.progressByStep.forEach((completed, stepNo) => {
-    if (completed) {
-      payload[String(stepNo)] = true;
+function normalizeLessonNodeUrls(rootNode, lessonPath) {
+  const baseUrl = new URL(lessonPath, window.location.href);
+
+  rootNode.querySelectorAll("img[src], source[src], iframe[src], a[href]").forEach((node) => {
+    const attr = node.hasAttribute("href") ? "href" : "src";
+    const value = node.getAttribute(attr);
+    if (!value || isExternalResource(value)) {
+      return;
     }
+
+    const absolute = new URL(value, baseUrl);
+    node.setAttribute(attr, `${absolute.pathname}${absolute.search}${absolute.hash}`);
   });
 
-  try {
-    localStorage.setItem(SYSTEM_DESIGN_LOCAL_TICKS_KEY, JSON.stringify(payload));
-  } catch (_) {
-    // Ignore local storage write failures.
-  }
+  rootNode.querySelectorAll("source[srcset], img[srcset]").forEach((node) => {
+    const srcset = node.getAttribute("srcset");
+    if (!srcset) return;
+
+    const normalized = srcset
+      .split(",")
+      .map((entry) => entry.trim())
+      .filter(Boolean)
+      .map((entry) => {
+        const parts = entry.split(/\s+/);
+        const resource = parts[0];
+        if (!resource || isExternalResource(resource)) {
+          return entry;
+        }
+
+        const absolute = new URL(resource, baseUrl);
+        const resolved = `${absolute.pathname}${absolute.search}${absolute.hash}`;
+        return [resolved, ...parts.slice(1)].join(" ").trim();
+      })
+      .join(", ");
+
+    node.setAttribute("srcset", normalized);
+  });
+}
+
+function isExternalResource(value) {
+  const text = String(value || "").trim().toLowerCase();
+  return (
+    text.startsWith("http://") ||
+    text.startsWith("https://") ||
+    text.startsWith("data:") ||
+    text.startsWith("blob:") ||
+    text.startsWith("mailto:") ||
+    text.startsWith("tel:") ||
+    text.startsWith("javascript:")
+  );
 }
 
 function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = String(text || "");
   return div.innerHTML;
-}
-
-function escapeAttribute(value) {
-  return escapeHtml(value).replace(/"/g, "&quot;");
 }

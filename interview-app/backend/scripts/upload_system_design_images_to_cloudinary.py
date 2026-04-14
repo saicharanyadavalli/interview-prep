@@ -36,11 +36,6 @@ REPORT_PATH = ORDERED_IMAGES_ROOT / "cloudinary-upload-report.json"
 IMG_TAG_RE = re.compile(r"<img\b[^>]*>", flags=re.IGNORECASE)
 SRC_ATTR_RE = re.compile(r"\bsrc\s*=\s*(['\"])(.*?)\1", flags=re.IGNORECASE | re.DOTALL)
 STRIP_ATTR_RE = re.compile(r"\s(?:srcset|sizes)\s*=\s*(\".*?\"|'.*?')", flags=re.IGNORECASE | re.DOTALL)
-ALT_ATTR_RE = re.compile(r"\balt\s*=\s*(['\"])(.*?)\1", flags=re.IGNORECASE | re.DOTALL)
-STEP_IMAGE_KEY_RE = re.compile(
-    r"/(step-\d{2}/[^/?#]+\.(?:png|jpg|jpeg|webp|gif|svg))$",
-    flags=re.IGNORECASE,
-)
 
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".webp", ".gif", ".svg"}
 
@@ -148,51 +143,17 @@ def upload_images(base_folder: str) -> tuple[dict[str, str], list[dict[str, str]
 
 def extract_ordered_image_key(src: str) -> str | None:
     parsed = urlparse(src)
-    if parsed.scheme in {"data", "blob"}:
+    if parsed.scheme in {"http", "https", "data", "blob"}:
         return None
 
-    path_source = parsed.path if parsed.scheme in {"http", "https"} else src
-    path = path_source.replace("\\", "/")
+    path = parsed.path.replace("\\", "/")
     marker = "assets/system-design/ordered-images/"
     index = path.find(marker)
-    if index >= 0:
-        relative = path[index + len(marker) :].strip("/")
-        return relative or None
+    if index < 0:
+        return None
 
-    cloud_match = STEP_IMAGE_KEY_RE.search(path)
-    if cloud_match:
-        return cloud_match.group(1)
-
-    return None
-
-
-def build_short_alt(key: str | None) -> str:
-    if not key:
-        return "System design illustration"
-
-    stem = Path(key).stem
-    stem = re.sub(r"^\d+-", "", stem)
-    stem = re.sub(r"-[A-Z0-9]{6,}$", "", stem)
-    text = stem.replace("-", " ").strip()
-
-    if not text:
-        return "System design illustration"
-
-    return text.capitalize()
-
-
-def normalize_img_alt(tag: str, key: str | None) -> tuple[str, bool]:
-    short_alt = build_short_alt(key)
-    alt_match = ALT_ATTR_RE.search(tag)
-    if not alt_match:
-        return tag.replace("<img", f'<img alt="{short_alt}"', 1), True
-
-    current_alt = alt_match.group(2).strip()
-    if len(current_alt) <= 160:
-        return tag, False
-
-    updated = ALT_ATTR_RE.sub(f'alt="{short_alt}"', tag, count=1)
-    return updated, True
+    relative = path[index + len(marker) :].strip("/")
+    return relative or None
 
 
 def rewrite_lessons_to_cloudinary(mapping: dict[str, str]) -> int:
@@ -209,32 +170,19 @@ def rewrite_lessons_to_cloudinary(mapping: dict[str, str]) -> int:
 
             src_match = SRC_ATTR_RE.search(tag_no_srcset)
             if not src_match:
-                normalized_tag, alt_changed = normalize_img_alt(tag_no_srcset, None)
-                if alt_changed:
-                    changed = True
-                return normalized_tag
+                return tag_no_srcset
 
             old_src = src_match.group(2).strip()
             key = extract_ordered_image_key(old_src)
             if not key:
-                normalized_tag, alt_changed = normalize_img_alt(tag_no_srcset, None)
-                if alt_changed:
-                    changed = True
-                return normalized_tag
+                return tag_no_srcset
 
             cloud_url = mapping.get(key)
             if not cloud_url:
-                normalized_tag, alt_changed = normalize_img_alt(tag_no_srcset, key)
-                if alt_changed:
-                    changed = True
-                return normalized_tag
+                return tag_no_srcset
 
             changed = True
-            updated_tag = SRC_ATTR_RE.sub(f'src="{cloud_url}"', tag_no_srcset, count=1)
-            normalized_tag, alt_changed = normalize_img_alt(updated_tag, key)
-            if alt_changed:
-                changed = True
-            return normalized_tag
+            return SRC_ATTR_RE.sub(f'src="{cloud_url}"', tag_no_srcset, count=1)
 
         rewritten_html = IMG_TAG_RE.sub(replace_img, html)
         if changed:

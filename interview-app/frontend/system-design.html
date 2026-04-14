@@ -47,21 +47,45 @@
         </div>
 
         <section class="card-flat section">
-          <p class="card-subtitle">All chapter HTML pages are listed below. Open any chapter directly, and tick Done to update your progress.</p>
+          <p class="card-subtitle">Follow all 30 chapters in order, mark completion per step, and continue from where you left off.</p>
           <div class="progress-wrap system-design-progress-wrap">
             <div id="sdProgressFill" class="progress-fill"></div>
           </div>
-          <p id="sdProgressText" class="text-sm text-muted" style="margin-top:0.55rem;">0% complete</p>
+          <p id="sdProgressText" class="text-sm text-muted" style="margin-top:0.55rem;">Loading progress...</p>
         </section>
 
-        <section class="card-flat section system-design-list-panel">
-          <div class="system-design-steps-head">
-            <h3>📚 Chapters</h3>
-            <span id="sdCompletedPill" class="pill">0 completed</span>
-          </div>
-          <div id="systemDesignSteps" class="system-design-steps-list">
-            <p class="loading"><span class="loading-dot">⏳</span> Loading chapters...</p>
-          </div>
+        <section class="system-design-layout section">
+          <aside class="card-flat system-design-steps-panel">
+            <div class="system-design-steps-head">
+              <h3>📚 Chapters</h3>
+              <span id="sdCompletedPill" class="pill">0 completed</span>
+            </div>
+            <div id="systemDesignSteps" class="system-design-steps-list">
+              <p class="loading"><span class="loading-dot">⏳</span> Loading chapters...</p>
+            </div>
+          </aside>
+
+          <article class="card-flat system-design-content-panel">
+            <div class="system-design-content-head">
+              <div>
+                <h2 id="sdChapterTitle">Select a chapter</h2>
+                <p id="sdChapterMeta" class="text-sm text-muted">Choose a step from the left panel to start learning.</p>
+              </div>
+              <div class="button-row">
+                <a id="sdSourceLink" class="btn btn-sm" href="#" target="_blank" rel="noopener noreferrer">Open Source</a>
+                <button id="sdToggleCompleteBtn" class="btn btn-sm btn-primary" type="button" disabled>
+                  Mark Complete
+                </button>
+              </div>
+            </div>
+
+            <div id="sdChapterContent" class="system-design-chapter-content">
+              <div class="empty-state">
+                <p class="empty-icon">🧩</p>
+                <p>Chapter content will appear here.</p>
+              </div>
+            </div>
+          </article>
         </section>
       </main>
     </div>
