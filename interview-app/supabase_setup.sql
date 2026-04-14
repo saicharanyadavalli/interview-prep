@@ -30,7 +30,16 @@ CREATE TABLE public.user_profiles (
   name TEXT NOT NULL DEFAULT '',
   phone TEXT NOT NULL DEFAULT '',
   avatar_url TEXT NOT NULL DEFAULT '',
-  updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+  system_design_completed_steps INTEGER[] NOT NULL DEFAULT '{}'::int[],
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  CONSTRAINT user_profiles_system_design_steps_range_chk
+    CHECK (
+      system_design_completed_steps <@ ARRAY[
+        1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+        11, 12, 13, 14, 15, 16, 17, 18, 19, 20,
+        21, 22, 23, 24, 25, 26, 27, 28, 29, 30
+      ]::int[]
+    )
 );
 
 CREATE TABLE public.user_progress (
@@ -57,6 +66,25 @@ CREATE TABLE public.user_comments (
   comment_text TEXT NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- Backfill from legacy user_progress rows reserved for system design (qnum 900001..900030).
+-- Existing non-empty arrays are preserved to avoid overwriting newer data.
+WITH solved_steps AS (
+  SELECT
+    up.user_id AS profile_id,
+    ARRAY_AGG(DISTINCT (up.qnum - 900000) ORDER BY (up.qnum - 900000)) AS completed_steps
+  FROM public.user_progress AS up
+  WHERE up.is_solved = TRUE
+    AND up.qnum BETWEEN 900001 AND 900030
+  GROUP BY up.user_id
+)
+UPDATE public.user_profiles AS p
+SET
+  system_design_completed_steps = COALESCE(s.completed_steps, '{}'::int[]),
+  updated_at = now()
+FROM solved_steps AS s
+WHERE p.id = s.profile_id
+  AND COALESCE(array_length(p.system_design_completed_steps, 1), 0) = 0;
 
 -- ============================================================
 -- QUESTION BANK
