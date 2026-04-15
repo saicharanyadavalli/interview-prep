@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design A News Feed System | System Design Course</title>
     <meta name="description" content="System Design lesson 12: Design A News Feed System" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg" />
     <link rel="stylesheet" href="../../css/global.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <style>
@@ -68,14 +69,14 @@
           <p class="text-sm text-muted">System Design lesson 12 of 30</p>
         </header>
         <article class="system-design-chapter-content">
-<header><strong class="style_chapter__grtAe">12</strong><h1>Design A News Feed System</h1></header><p>In this chapter, you are asked to design a news feed system. What is news feed? According to the Facebook help page, “News feed is the constantly updating list of stories in the middle of your home page. News Feed includes status updates, photos, videos, links, app activity, and likes from people, pages, and groups that you follow on Facebook” [1]. This is a popular interview question. Similar questions commonly asked are to: design Facebook news feed, Instagram feed, Twitter timeline, etc.</p>
+<header><strong class="style_chapter__grtAe">12</strong><h1>Design A News Feed System</h1></header><p>In this chapter, you are asked to design a news feed system. What is news feed? According to the Facebook help page, â€œNews feed is the constantly updating list of stories in the middle of your home page. News Feed includes status updates, photos, videos, links, app activity, and likes from people, pages, and groups that you follow on Facebookâ€ [1]. This is a popular interview question. Similar questions commonly asked are to: design Facebook news feed, Instagram feed, Twitter timeline, etc.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a mobile phone screen displaying a news feed or similar content aggregator.  The screen shows three distinct news items, each vertically stacked and separated by dashed lines. Each item consists of a light-blue square (likely representing an app icon or source logo), a short headline in dark gray text, and a body of text in dark gray.  The second news item uniquely includes a light-green rectangular video player with a central white play button icon, suggesting multimedia content integration.  No URLs or specific parameters are visible; the information flow is implied as a unidirectional presentation of data from the application to the user, with no user interaction depicted in the image itself. The overall layout is clean and simple, suggesting a focus on content readability within a mobile context." width="164" height="321" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110860/interview-prep/system-design/step-12/001-figure-11-1-UFCYN5DT.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 1</figcaption></div></figure>
 <h2 id="step-1---understand-the-problem-and-establish-design-scope">Step 1 - Understand the problem and establish design scope</h2>
 <p>The first set of clarification questions are to understand what the interviewer has in mind when she asks you to design a news feed system. At the very least, you should figure out what features to support. Here is an example of candidate-interviewer interaction:</p>
 <p><strong>Candidate</strong>: Is this a mobile app? Or a web app? Or both?<br>
 <strong>Interviewer</strong>: Both</p>
 <p><strong>Candidate</strong>: What are the important features?<br>
-<strong>Interview:</strong> A user can publish a post and see her friends’ posts on the news feed page.</p>
+<strong>Interview:</strong> A user can publish a post and see her friendsâ€™ posts on the news feed page.</p>
 <p><strong>Candidate</strong>: Is the news feed sorted by reverse chronological order or any particular order such as topic scores? For instance, posts from your close friends have higher scores.<br>
 <strong>Interviewer</strong>: To keep things simple, let us assume the feed is sorted by reverse chronological order.</p>
 <p><strong>Candidate</strong>: How many friends can a user have?<br>
@@ -90,10 +91,10 @@
 <p>The design is divided into two flows: feed publishing and news feed building.</p>
 <ul>
 <li>
-<p>Feed publishing: when a user publishes a post, corresponding data is written into cache and database. A post is populated to her friends’ news feed.</p>
+<p>Feed publishing: when a user publishes a post, corresponding data is written into cache and database. A post is populated to her friendsâ€™ news feed.</p>
 </li>
 <li>
-<p>Newsfeed building: for simplicity, let us assume the news feed is built by aggregating friends’ posts in reverse chronological order.</p>
+<p>Newsfeed building: for simplicity, let us assume the news feed is built by aggregating friendsâ€™ posts in reverse chronological order.</p>
 </li>
 </ul>
 <h3 id="newsfeed-apis">Newsfeed APIs</h3>
@@ -122,7 +123,7 @@
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system architecture diagram illustrating the flow of a user request for a news feed.  A user, accessing via either a web browser or mobile app, initiates a request that first resolves through a DNS server. This request, containing parameters like `v1/me/feed?content=Hello&amp;auth_token={auth_token}`, is then directed to a load balancer which distributes the traffic across multiple web servers.  These web servers communicate with three distinct services: a Post Service, a Fanout Service, and a Notification Service. The Post Service retrieves data from a Post Cache, which in turn accesses a Post DB if necessary.  The Fanout Service interacts with a News Feed Cache to provide the news feed content.  The Notification Service is shown but its interaction with other components isn&#39;t explicitly detailed.  The diagram highlights the use of caching mechanisms (Post Cache and News Feed Cache) to improve performance by storing frequently accessed data closer to the web servers.  The overall architecture demonstrates a client-server model with load balancing and caching strategies for efficient request handling." loading="lazy" width="500" height="803" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110862/interview-prep/system-design/step-12/002-figure-11-2-DHBRUF3G.png" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 2</figcaption></div></figure>
 <ul>
 <li>
-<p>User: a user can view news feeds on a browser or mobile app. A user makes a post with content “Hello” through API:</p>
+<p>User: a user can view news feeds on a browser or mobile app. A user makes a post with content â€œHelloâ€ through API:</p>
 <p>/v1/me/feed?content=Hello&amp;auth_token={auth_token}</p>
 </li>
 <li>
@@ -135,7 +136,7 @@
 <p>Post service: persist post in the database and cache.</p>
 </li>
 <li>
-<p>Fanout service: push new content to friends’ news feed. Newsfeed data is stored in the cache for fast retrieval.</p>
+<p>Fanout service: push new content to friendsâ€™ news feed. Newsfeed data is stored in the cache for fast retrieval.</p>
 </li>
 <li>
 <p>Notification service: inform friends that new content is available and send out push notifications.</p>
@@ -170,7 +171,7 @@
 <p>Besides communicating with clients, web servers enforce authentication and rate-limiting. Only users signed in with valid <em>auth_token</em> are allowed to make posts. The system limits the number of posts a user can make within a certain period, vital to prevent spam and abusive content.</p>
 <h4 id="fanout-service">Fanout service</h4>
 <p>Fanout is the process of delivering a post to all friends. Two types of fanout models are: fanout on write (also called push model) and fanout on read (also called pull model). Both models have pros and cons. We explain their workflows and explore the best approach to support our system.</p>
-<p><strong>Fanout on write.</strong> With this approach, news feed is pre-computed during write time. A new post is delivered to friends’ cache immediately after it is published.</p>
+<p><strong>Fanout on write.</strong> With this approach, news feed is pre-computed during write time. A new post is delivered to friendsâ€™ cache immediately after it is published.</p>
 <p>Pros:</p>
 <ul>
 <li>
@@ -222,7 +223,7 @@
 <p>2. The load balancer redistributes requests to web servers.</p>
 <p>3. Web servers call the news feed service to fetch news feeds.</p>
 <p>4. News feed service gets a list post IDs from the news feed cache.</p>
-<p>5. A user’s news feed is more than just a list of feed IDs. It contains username, profile picture, post content, post image, etc. Thus, the news feed service fetches the complete user and post objects from caches (user cache and post cache) to construct the fully hydrated news feed.</p>
+<p>5. A userâ€™s news feed is more than just a list of feed IDs. It contains username, profile picture, post content, post image, etc. Thus, the news feed service fetches the complete user and post objects from caches (user cache and post cache) to construct the fully hydrated news feed.</p>
 <p>6. The fully hydrated news feed is returned in JSON format back to the client for rendering.</p>
 <h3 id="cache-architecture">Cache architecture</h3>
 <p>Cache is extremely important for a news feed system. We divide the cache tier into 5 layers as shown in Figure 8.</p>
@@ -297,3 +298,4 @@
     </main>
   </body>
 </html>
+

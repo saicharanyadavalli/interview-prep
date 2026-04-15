@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design A URL Shortener | System Design Course</title>
     <meta name="description" content="System Design lesson 9: Design A URL Shortener" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg" />
     <link rel="stylesheet" href="../../css/global.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <style>
@@ -143,8 +144,8 @@
 <p>The detailed communication between clients and servers is shown in Figure 2.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified URL redirection system.  A &#39;Client&#39; (represented by a smartphone icon) initiates the process by visiting a short URL: `https://tinyurl.com/qtj5opu`. This request is sent to a &#39;tinyurl server,&#39; which then responds with a 301 status code (indicating a permanent redirect) and the &#39;location&#39; of the long URL: `https://www.amazon.com/dp/B017V4NTFA?pLink=63eaef76-979c-4d&amp;ref=adblp13nvvxx_0_2_im`.  The client then automatically follows this redirect, sending a new request to the &#39;Amazon server&#39; to visit the long URL.  The diagram uses arrows to show the flow of requests and responses between the client, the tinyurl server, and the Amazon server.  The text labels clearly indicate the URLs involved and the HTTP status code of the redirect." loading="lazy" width="500" height="509" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110813/interview-prep/system-design/step-09/002-figure-8-2-KMMJ65HT.png" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 2</figcaption></div></figure>
 <p>One thing worth discussing here is 301 redirect vs 302 redirect.</p>
-<p><strong>301 redirect</strong>. A 301 redirect shows that the requested URL is “permanently” moved to the long URL. Since it is permanently redirected, the browser caches the response, and subsequent requests for the same URL will not be sent to the URL shortening service. Instead, requests are redirected to the long URL server directly.</p>
-<p><strong>302 redirect</strong>. A 302 redirect means that the URL is “temporarily” moved to the long URL, meaning that subsequent requests for the same URL will be sent to the URL shortening service first. Then, they are redirected to the long URL server.</p>
+<p><strong>301 redirect</strong>. A 301 redirect shows that the requested URL is â€œpermanentlyâ€ moved to the long URL. Since it is permanently redirected, the browser caches the response, and subsequent requests for the same URL will not be sent to the URL shortening service. Instead, requests are redirected to the long URL server directly.</p>
+<p><strong>302 redirect</strong>. A 302 redirect means that the URL is â€œtemporarilyâ€ moved to the long URL, meaning that subsequent requests for the same URL will be sent to the URL shortening service first. Then, they are redirected to the long URL server.</p>
 <p>Each redirection method has its pros and cons. If the priority is to reduce the server load, using 301 redirect makes sense as only the first request of the same URL is sent to URL shortening servers. However, if analytics is important, 302 redirect is a better choice as it can track click rate and source of the click more easily.</p>
 <p>The most intuitive way to implement URL redirecting is to use hash tables. Assuming the hash table stores <em>&lt;shortURL, longURL&gt;</em> pairs, URL redirecting can be implemented by the following:</p>
 <ul>
@@ -157,7 +158,7 @@
 </ul>
 <h3 id="url-shortening">URL shortening</h3>
 <p>Let us assume the short URL looks like this: <code>www.tinyurl.com/{hashValue}</code>. To support the URL shortening use case, we must find a hash function <em>fx</em> that maps a long URL to the *hashValue*, as shown in Figure 3.</p>
-<figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified URL shortening system.  A rectangular box labeled &#39;longURL&#39; containing the text &#39;longURL&#39; represents the original, lengthy URL.  An arrow points from this box to a second rectangular box containing the mathematical function symbol &#39;ƒ(x)&#39;, representing a hashing function. This function takes the &#39;longURL&#39; as input.  Below the &#39;ƒ(x)&#39; box, a downward-pointing arrow labeled &#39;hash&#39; connects it to a third rectangular box, which displays a shortened URL: &#39;https://tinyurl.com/qtj5opu&#39;.  The text &#39;Viewer does not support full SVG&#39; is present below the shortened URL box, indicating a limitation of the image display, not the system itself.  The overall diagram illustrates the process of inputting a long URL, applying a hashing function (ƒ(x)) to generate a short hash, and then using that hash to create a shortened, accessible URL." loading="lazy" width="301" height="231" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110814/interview-prep/system-design/step-09/003-figure-8-3-YHOCRGSP.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 3</figcaption></div></figure>
+<figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified URL shortening system.  A rectangular box labeled &#39;longURL&#39; containing the text &#39;longURL&#39; represents the original, lengthy URL.  An arrow points from this box to a second rectangular box containing the mathematical function symbol &#39;Æ’(x)&#39;, representing a hashing function. This function takes the &#39;longURL&#39; as input.  Below the &#39;Æ’(x)&#39; box, a downward-pointing arrow labeled &#39;hash&#39; connects it to a third rectangular box, which displays a shortened URL: &#39;https://tinyurl.com/qtj5opu&#39;.  The text &#39;Viewer does not support full SVG&#39; is present below the shortened URL box, indicating a limitation of the image display, not the system itself.  The overall diagram illustrates the process of inputting a long URL, applying a hashing function (Æ’(x)) to generate a short hash, and then using that hash to create a shortened, accessible URL." loading="lazy" width="301" height="231" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110814/interview-prep/system-design/step-09/003-figure-8-3-YHOCRGSP.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 3</figcaption></div></figure>
 <p>The hash function must satisfy the following requirements:</p>
 <ul>
 <li>
@@ -176,11 +177,11 @@
 <h3 id="hash-function">Hash function</h3>
 <p>Hash function is used to hash a long URL to a short URL, also known as <em>hashValue</em>.</p>
 <h4 id="hash-value-length">Hash value length</h4>
-<p>The <em>hashValue</em> consists of characters from [0-9, a-z, A-Z], containing 10 + 26 + 26 = 62 possible characters. To figure out the length of <em>hashValue</em>, find the smallest <em>n</em> such that <em>62^n ≥ 365 billion</em>. The system must support up to 365 billion URLs based on the back of the envelope estimation. Table 1 shows the length of <em>hashValue</em> and the corresponding maximal number of URLs it can support.</p>
+<p>The <em>hashValue</em> consists of characters from [0-9, a-z, A-Z], containing 10 + 26 + 26 = 62 possible characters. To figure out the length of <em>hashValue</em>, find the smallest <em>n</em> such that <em>62^n â‰¥ 365 billion</em>. The system must support up to 365 billion URLs based on the back of the envelope estimation. Table 1 shows the length of <em>hashValue</em> and the corresponding maximal number of URLs it can support.</p>
 <table><thead><tr><th><strong>n</strong></th><th><strong>Maximal number of URLs</strong></th></tr></thead><tbody><tr><td>1</td><td>62^1 = 62</td></tr><tr><td>2</td><td>62^2 = 3,844</td></tr><tr><td>3</td><td>62^3 = 238,328</td></tr><tr><td>4</td><td>62^ 4 = 14,776,336</td></tr><tr><td>5</td><td>62^5 = 916,132,832</td></tr><tr><td>6</td><td>62^6 = 56,800,235,584</td></tr><tr><td><strong>7</strong></td><td><strong>62^7 = 3,521,614,606,208 = ~3.5 trillion</strong></td></tr><tr><td>8</td><td>62^8 = 218,340,105,584,896</td></tr></tbody></table>
 <p class="tableCaption">Table 1</p>
 <p>When <em>n = 7, 62 ^ n = ~3.5 trillion</em>, 3.5 trillion is more than enough to hold 365 billion URLs, so the length of <em>hashValue</em> is 7.</p>
-<p>We will explore two types of hash functions for a URL shortener. The first one is “hash + collision resolution”, and the second one is “base 62 conversion.” Let us look at them one by one.</p>
+<p>We will explore two types of hash functions for a URL shortener. The first one is â€œhash + collision resolutionâ€, and the second one is â€œbase 62 conversion.â€ Let us look at them one by one.</p>
 <h4 id="hash--collision-resolution">Hash + collision resolution</h4>
 <p>To shorten a long URL, we should implement a hash function that hashes a long URL to a 7-character string. A straightforward solution is to use well-known hash functions like CRC32, MD5, or SHA-1. The following table compares the hash results after applying different hash functions on this URL:<br>
 <code>https://en.wikipedia.org/wiki/Systems_design</code></p>
@@ -194,7 +195,7 @@
 <p>Base conversion is another approach commonly used for URL shorteners. Base conversion helps to convert the same number between its different number representation systems. Base 62 conversion is used as there are 62 possible characters for <em>hashValue</em>. Let us use an example to explain how the conversion works: convert 11157<sub>10</sub> to base 62 representation (11157<sub>10</sub> represents 11157 in a base 10 system).</p>
 <ul>
 <li>
-<p>From its name, base 62 is a way of using 62 characters for encoding. The mappings are: <em>0-0, ..., 9-9, 10-a, 11-b, ..., 35-z, 36-A, ..., 61-Z, where</em> ‘a’ stands for 10, ‘Z’ stands for 61, etc.</p>
+<p>From its name, base 62 is a way of using 62 characters for encoding. The mappings are: <em>0-0, ..., 9-9, 10-a, 11-b, ..., 35-z, 36-A, ..., 61-Z, where</em> â€˜aâ€™ stands for 10, â€˜Zâ€™ stands for 61, etc.</p>
 </li>
 <li>
 <p>11157<sub>10</sub>&nbsp;= 2 x 62<sup>2</sup>&nbsp;+ 55 x 62<sup>1</sup> + 59 x 62<sup>0</sup>&nbsp;=&nbsp;[2, 55, 59] -&gt; [2, T, X] in base 62 representation. Figure 6 shows the conversation process.</p>
@@ -206,7 +207,7 @@
 </ul>
 <h4 id="comparison-of-the-two-approaches">Comparison of the two approaches</h4>
 <p>Table 3 shows the differences of the two approaches.</p>
-<div class="table-wrap" style="--table-min-width: 500px;"><table><thead><tr><th><strong>Hash + collision resolution</strong></th><th><strong>Base 62 conversion</strong></th></tr></thead><tbody><tr><td>Fixed short URL length.</td><td>Short URL length is not fixed. It goes up with the ID.</td></tr><tr><td>Does not need a unique ID generator.</td><td>This option depends on a unique ID generator.</td></tr><tr><td>Collision is possible and needs to be resolved.</td><td>Collision is not possible because ID is unique.</td></tr><tr><td>It’s not possible to figure out the next available short URL because it doesn’t depend on ID.</td><td>It is easy to figure out what is the next available short URL if ID increments by 1 for a new entry. This can be a security concern.</td></tr></tbody></table></div>
+<div class="table-wrap" style="--table-min-width: 500px;"><table><thead><tr><th><strong>Hash + collision resolution</strong></th><th><strong>Base 62 conversion</strong></th></tr></thead><tbody><tr><td>Fixed short URL length.</td><td>Short URL length is not fixed. It goes up with the ID.</td></tr><tr><td>Does not need a unique ID generator.</td><td>This option depends on a unique ID generator.</td></tr><tr><td>Collision is possible and needs to be resolved.</td><td>Collision is not possible because ID is unique.</td></tr><tr><td>Itâ€™s not possible to figure out the next available short URL because it doesnâ€™t depend on ID.</td><td>It is easy to figure out what is the next available short URL if ID increments by 1 for a new entry. This can be a security concern.</td></tr></tbody></table></div>
 <p class="tableCaption">Table 3</p>
 <h3 id="url-shortening-deep-dive">URL shortening deep dive</h3>
 <p>As one of the core pieces of the system, we want the URL shortening flow to be logically simple and functional. Base 62 conversion is used in our design. We build the following diagram (Figure 7) to demonstrate the flow.</p>
@@ -240,7 +241,7 @@
 <p>Unique ID generator returns ID: 2009215674938.</p>
 </li>
 <li>
-<p>Convert the ID to shortURL using the base 62 conversion. ID (2009215674938) is converted to “zn9edcu”.</p>
+<p>Convert the ID to shortURL using the base 62 conversion. ID (2009215674938) is converted to â€œzn9edcuâ€.</p>
 </li>
 <li>
 <p>Save ID, shortURL, and longURL to the database as shown in Table 4.</p>
@@ -248,7 +249,7 @@
 </ul>
 <div class="table-wrap" style="--table-min-width: 650px;"><table><thead><tr><th>id</th><th>shortURL</th><th>longURL</th></tr></thead><tbody><tr><td>2009215674938</td><td>zn9edcu</td><td><code>https://en.wikipedia.org/wiki/Systems_design</code></td></tr></tbody></table></div>
 <p class="tableCaption">Table 4</p>
-<p>The distributed unique ID generator is worth mentioning. Its primary function is to generate globally unique IDs, which are used for creating shortURLs. In a highly distributed environment, implementing a unique ID generator is challenging. Luckily, we have already discussed a few solutions in the “Design A Unique ID Generator in Distributed Systems” chapter. You can refer back to it to refresh your memory.</p>
+<p>The distributed unique ID generator is worth mentioning. Its primary function is to generate globally unique IDs, which are used for creating shortURLs. In a highly distributed environment, implementing a unique ID generator is challenging. Luckily, we have already discussed a few solutions in the â€œDesign A Unique ID Generator in Distributed Systemsâ€ chapter. You can refer back to it to refresh your memory.</p>
 <h3 id="url-redirecting-deep-dive">URL redirecting deep dive</h3>
 <p>Figure 8 shows the detailed design of the URL redirecting. As there are more reads than writes, <em>&lt;shortURL, longURL&gt;</em> mapping is stored in a cache to improve performance.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified system architecture diagram illustrating a user&#39;s request for a shortened URL and its resolution.  A user (represented by icons of a laptop and a mobile phone) initiates a GET request (1) to the shortened URL &#39;https://tinyurl.com/zn9edcu&#39;. This request is directed to a load balancer (2), which distributes the traffic across multiple web servers. The web servers then return the long URL &#39;https://en.wikipedia.org/wiki/Systems_design&#39; (5) to the user.  The web servers are connected to a cache (3) for faster access to frequently requested data and a database (4) for persistent storage of information.  The numbered arrows (1-5) indicate the flow of the request and response, showing the interaction between the user, load balancer, web servers, cache, and database." loading="lazy" width="700" height="264" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110822/interview-prep/system-design/step-09/008-figure-8-8-VBPJ6PXY.png" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 8</figcaption></div></figure>
@@ -275,7 +276,7 @@
 <p>If there is extra time at the end of the interview, here are a few additional talking points.</p>
 <ul>
 <li>
-<p>Rate limiter: A potential security problem we could face is that malicious users send an overwhelmingly large number of URL shortening requests. Rate limiter helps to filter out requests based on IP address or other filtering rules. If you want to refresh your memory about rate limiting, refer to the “Design a rate limiter” chapter.</p>
+<p>Rate limiter: A potential security problem we could face is that malicious users send an overwhelmingly large number of URL shortening requests. Rate limiter helps to filter out requests based on IP address or other filtering rules. If you want to refresh your memory about rate limiting, refer to the â€œDesign a rate limiterâ€ chapter.</p>
 </li>
 <li>
 <p>Web server scaling: Since the web tier is stateless, it is easy to scale the web tier by adding or removing web servers.</p>
@@ -287,7 +288,7 @@
 <p>Analytics: Data is increasingly important for business success. Integrating an analytics solution to the URL shortener could help to answer important questions like how many people click on a link? When do they click the link? etc.</p>
 </li>
 <li>
-<p>Availability, consistency, and reliability. These concepts are at the core of any large system’s success. We discussed them in detail in the "Scale From Zero To Millions Of Users" chapter, please refresh your memory on these topics.</p>
+<p>Availability, consistency, and reliability. These concepts are at the core of any large systemâ€™s success. We discussed them in detail in the "Scale From Zero To Millions Of Users" chapter, please refresh your memory on these topics.</p>
 </li>
 </ul>
 <p>Congratulations on getting this far! Now give yourself a pat on the back. Good job!</p>
@@ -299,3 +300,4 @@
     </main>
   </body>
 </html>
+

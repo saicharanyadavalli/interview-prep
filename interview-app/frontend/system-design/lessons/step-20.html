@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Distributed Message Queue | System Design Course</title>
     <meta name="description" content="System Design lesson 20: Distributed Message Queue" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg" />
     <link rel="stylesheet" href="../../css/global.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <style>
@@ -80,7 +81,7 @@
 <p>Increased availability. If one part of the system goes offline, the other components can continue to interact with the queue.</p>
 </li>
 <li>
-<p>Better performance. Message queues make asynchronous communication easy. Producers can add messages to a queue without waiting for the response and consumers consume messages whenever they are available. They don’t need to wait for each other.</p>
+<p>Better performance. Message queues make asynchronous communication easy. Producers can add messages to a queue without waiting for the response and consumers consume messages whenever they are available. They donâ€™t need to wait for each other.</p>
 </li>
 </ul>
 <p>Figure 1 shows some of the most popular distributed message queues on the market.</p>
@@ -90,22 +91,22 @@
 <p>In this chapter, we will design a distributed message queue with <strong>additional features, such as long data retention, repeated consumption of messages, etc</strong>., that are typically only available on event streaming platforms. These additional features make the design more complicated. Throughout the chapter, we will highlight places where the design could be simplified if the focus of your interview centers around the more traditional distributed message queues.</p>
 <h2 id="step-1---understand-the-problem-and-establish-design-scope">Step 1 - Understand the Problem and Establish Design Scope</h2>
 <p>In a nutshell, the basic functionality of a message queue is straightforward: producers send messages to a queue, and consumers consume messages from it. Beyond this basic functionality, there are other considerations including performance, message delivery semantics, data retention, etc. The following set of questions will help clarify requirements and narrow down the scope.</p>
-<p><strong>Candidate</strong>: What’s the format and average size of messages? Is it text only? Is multimedia allowed?<br>
+<p><strong>Candidate</strong>: Whatâ€™s the format and average size of messages? Is it text only? Is multimedia allowed?<br>
 <strong>Interviewer</strong>: Text messages only. Messages are generally measured in the range of kilobytes (KBs).</p>
 <p><strong>Candidate</strong>: Can messages be repeatedly consumed?<br>
 <strong>Interviewer</strong>: Yes, messages can be repeatedly consumed by different consumers. Note that this is an added feature. A traditional distributed message queue does not retain a message once it has been successfully delivered to a consumer. Therefore, a message cannot be repeatedly consumed in a traditional message queue.</p>
 <p><strong>Candidate</strong>: Are messages consumed in the same order they were produced?<br>
 <strong>Interviewer</strong>: Yes, messages should be consumed in the same order they were produced. Note that this is an added feature. A traditional distributed message queue does not usually guarantee delivery orders.</p>
 <p><strong>Candidate</strong>: Does data need to be persisted and what is the data retention?<br>
-<strong>Interviewer</strong>: Yes, let’s assume data retention is two weeks. This is an added feature. A traditional distributed message queue does not retain messages.</p>
+<strong>Interviewer</strong>: Yes, letâ€™s assume data retention is two weeks. This is an added feature. A traditional distributed message queue does not retain messages.</p>
 <p><strong>Candidate</strong>: How many producers and consumers are we going to support?<br>
 <strong>Interviewer</strong>: The more the better.</p>
-<p><strong>Candidate</strong>: What’s the data delivery semantic we need to support? For example, at-most-once, at-least-once, and exactly once.<br>
+<p><strong>Candidate</strong>: Whatâ€™s the data delivery semantic we need to support? For example, at-most-once, at-least-once, and exactly once.<br>
 <strong>Interviewer</strong>: We definitely want to support at-least-once. Ideally, we should support all of them and make them configurable.</p>
 
-<p><strong>Candidate</strong>: What’s the target throughput and end-to-end latency?<br>
+<p><strong>Candidate</strong>: Whatâ€™s the target throughput and end-to-end latency?<br>
 <strong>Interviewer</strong>: It should support high throughput for use cases like log aggregation. It should also support low latency delivery for more traditional message queue use cases.</p>
-<p>With the above conversation, let’s assume we have the following functional requirements:</p>
+<p>With the above conversation, letâ€™s assume we have the following functional requirements:</p>
 <ul>
 <li>
 <p>Producers send messages to a message queue.</p>
@@ -144,7 +145,7 @@
 <h3 id="adjustments-for-traditional-message-queues">Adjustments for traditional message queues</h3>
 <p>Traditional message queues like RabbitMQ do not have as strong a retention requirement as event streaming platforms. Traditional queues retain messages in memory just long enough for them to be consumed. They provide on-disk overflow capacity [1] which is several orders of magnitude smaller than the capacity required for event streaming platforms. Traditional message queues do not typically maintain message ordering. The messages can be consumed in a different order than they were produced. These differences greatly simplify the design which we will discuss where appropriate.</p>
 <h2 id="step-2---propose-high-level-design-and-get-buy-in">Step 2 - Propose High-Level Design and Get Buy-In</h2>
-<p>First, let’s discuss the basic functionalities of a message queue.</p>
+<p>First, letâ€™s discuss the basic functionalities of a message queue.</p>
 <p>Figure 2 shows the key components of a message queue and the simplified interactions between these components.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified producer-consumer architecture using a message queue.  A rectangular box labeled &#39;Producer&#39; is connected via a solid arrow labeled &#39;a. produce&#39; to a central rectangular box labeled &#39;Message queue,&#39; which is depicted as a series of smaller, equally-sized rectangles representing individual message slots.  From the &#39;Message queue,&#39; a solid arrow labeled &#39;b2. consume&#39; points to a rectangular box labeled &#39;Consumer,&#39; indicating the consumption of messages.  Additionally, a dashed arrow labeled &#39;b1. subscribe&#39; points from the &#39;Consumer&#39; box to the &#39;Message queue,&#39; illustrating the Consumer&#39;s subscription to the queue to receive messages.  The overall flow shows the Producer adding messages (&#39;produce&#39;) to the queue, and the Consumer subscribing to and consuming (&#39;consume&#39;) messages from the queue." loading="lazy" width="750" height="74" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111160/interview-prep/system-design/step-20/002-figure-2-key-components-in-a-message-queue-EVGQ4EYZ.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 2 Key components in a message queue</figcaption></div></figure>
 <ul>
@@ -169,7 +170,7 @@
 <p>Once the consumer acknowledges that a message is consumed, it is removed from the queue. There is no data retention in the point-to-point model. In contrast, our design includes a persistence layer that keeps the messages for two weeks, which allows messages to be repeatedly consumed.</p>
 <p>While our design could simulate a point-to-point model, its capabilities map more naturally to the publish-subscribe model.</p>
 <h4 id="publish-subscribe">Publish-subscribe</h4>
-<p>First, let’s introduce a new concept, the topic. Topics are the categories used to organize messages. Each topic has a name that is unique across the entire message queue service. Messages are sent to and read from a specific topic.</p>
+<p>First, letâ€™s introduce a new concept, the topic. Topics are the categories used to organize messages. Each topic has a name that is unique across the entire message queue service. Messages are sent to and read from a specific topic.</p>
 <p>In the publish-subscribe model, a message is sent to a topic and received by the consumers subscribing to this topic. As shown in Figure 4, message A is consumed by both consumer 1 and consumer 2.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simple message queue system.  A rectangular box labeled &#39;Producer&#39; sends a message, denoted by a vertical rectangle labeled &#39;Message A,&#39; to a central rectangular box labeled &#39;Message Queue.&#39; This queue is depicted as containing multiple vertical rectangles representing individual message slots.  From the message queue, two arrows extend to separate rectangular boxes labeled &#39;Consumer 1&#39; and &#39;Consumer 2,&#39; respectively. Each arrow carries a copy of &#39;Message A,&#39; indicating that both consumers receive the same message.  The overall architecture illustrates a publish-subscribe pattern where a producer publishes a message to a queue, and multiple consumers subscribe to the queue to receive the message.  The diagram shows a one-to-many message delivery pattern, with the producer sending one message that is then consumed by multiple consumers independently." loading="lazy" width="711" height="240" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111163/interview-prep/system-design/step-20/004-figure-4-publish-subscribe-model-HKA6TRGS.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 4 Publish-subscribe model</figcaption></div></figure>
 <p>Our distributed message queue supports both models. The publish-subscribe model is implemented by <strong>topics</strong>, and the point-to-point model can be simulated by the concept of the <strong>consumer group</strong>, which will be introduced in the consumer group section.</p>
@@ -178,7 +179,7 @@
 <p>One approach to solve this problem is called <strong>partition (sharding)</strong>. As Figure 5 shows, we divide a topic into partitions and deliver messages evenly across partitions. Think of a partition as a small subset of the messages for a topic. Partitions are evenly distributed across the servers in the message queue cluster. These servers that hold partitions are called <strong>brokers</strong>. The distribution of partitions among brokers is the key element to support high scalability. We can scale the topic capacity by expanding the number of partitions.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a schematic illustrating message partitioning in a message queue system.  On the left, a single entity labeled &#39;Topic-A&#39; is depicted as a rectangular box containing eight smaller, equally sized rectangular boxes representing individual messages. A large right-pointing arrow indicates the transformation of this single topic into a partitioned structure. On the right, &#39;Topic-A&#39; is again labeled, but this time it&#39;s represented as a larger rectangle divided into two sections labeled &#39;Partition-1&#39; and &#39;Partition-2&#39;.  Each partition contains several smaller rectangular boxes, representing messages, distributed across the partitions.  Partition-1 contains three messages, and Partition-2 contains three messages. The overall diagram shows how a single topic&#39;s messages (&#39;Topic-A&#39;) are distributed across multiple partitions (&#39;Partition-1&#39; and &#39;Partition-2&#39;) for improved scalability and parallel processing within a message queue or similar system." loading="lazy" width="590" height="87" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111166/interview-prep/system-design/step-20/005-figure-5-partitions-53G6JYSP.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 5 Partitions</figcaption></div></figure>
 <p>Each topic partition operates in the form of a queue with the FIFO (first in, first out) mechanism. This means we can keep the order of messages inside a partition. The position of a message in the partition is called an <strong>offset</strong>.</p>
-<p>When a message is sent by a producer, it is actually sent to one of the partitions for the topic. Each message has an optional message key (for example, a user’s ID), and all messages for the same message key are sent to the same partition. If the message key is absent, the message is randomly sent to one of the partitions.</p>
+<p>When a message is sent by a producer, it is actually sent to one of the partitions for the topic. Each message has an optional message key (for example, a userâ€™s ID), and all messages for the same message key are sent to the same partition. If the message key is absent, the message is randomly sent to one of the partitions.</p>
 <p>When a consumer subscribes to a topic, it pulls data from one or more of these partitions. When there are multiple consumers subscribing to a topic, each consumer is responsible for a subset of the partitions for the topic. The consumers form a <strong>consumer group</strong> for a topic.</p>
 <p>The message queue cluster with brokers and partitions is represented in Figure 6.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified architecture of a message broker system.  On the left, a stack of rectangles labeled &#39;Producers&#39; represents multiple producer entities.  A single arrow labeled &#39;a. produce&#39; extends from the Producers to a central stack of rectangles labeled &#39;Brokers.&#39; The Brokers are depicted as a cluster of smaller rectangles arranged in a grid, symbolizing multiple broker instances.  Data flows from the Producers to the Brokers via the &#39;produce&#39; action. On the right, another stack of rectangles labeled &#39;Consumers&#39; represents multiple consumer entities.  Two arrows connect the Brokers to the Consumers.  The top arrow, labeled &#39;b1. subscribe&#39;, indicates that Consumers subscribe to topics or queues within the Brokers. The bottom arrow, labeled &#39;b2. consume&#39;, shows Consumers retrieving messages from the Brokers through a &#39;consume&#39; action.  The overall diagram illustrates a publish-subscribe pattern where Producers publish messages to the Brokers, and Consumers subscribe to and consume these messages." loading="lazy" width="750" height="132" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111167/interview-prep/system-design/step-20/006-figure-6-message-queue-cluster-B3TAY3V2.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 6 Message queue cluster</figcaption></div></figure>
@@ -261,13 +262,13 @@
 </li>
 </ul>
 <h3 id="data-storage">Data storage</h3>
-<p>Now let’s explore the options to persist messages in more detail. In order to find the best choice, let’s consider the traffic pattern of a message queue.</p>
+<p>Now letâ€™s explore the options to persist messages in more detail. In order to find the best choice, letâ€™s consider the traffic pattern of a message queue.</p>
 <ul>
 <li>
 <p>Write-heavy, read-heavy.</p>
 </li>
 <li>
-<p>No update or delete operations. As a side note, a traditional message queue does not persist messages unless the queue falls behind, in which case there will be “delete” operations when the queue catches up. What we are talking about here is the persistence of a data streaming platform.</p>
+<p>No update or delete operations. As a side note, a traditional message queue does not persist messages unless the queue falls behind, in which case there will be â€œdeleteâ€ operations when the queue catches up. What we are talking about here is the persistence of a data streaming platform.</p>
 </li>
 <li>
 <p>Predominantly sequential read/write access.</p>
@@ -291,7 +292,7 @@
 <p>As shown in Figure 9, a new message is appended to the tail of a partition, with a monotonically increasing offset. The easiest option is to use the line number of the log file as the offset. However, a file cannot grow infinitely, so it is a good idea to divide it into segments.</p>
 <p>With segments, new messages are appended only to the active segment file. When the active segment reaches a certain size, a new active segment is created to receive new messages, and the currently active segment becomes inactive, like the rest of the non-active segments. Non-active segments only serve read requests. Old non-active segment files can be truncated if they exceed the retention or capacity limit.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a single partition (Partition-1) of a topic (Topic-A) in a message queue system, likely Kafka.  The partition is depicted as a linear sequence of 16 numbered segments (0-15), visually representing storage locations for records.  A downward-pointing arrow labeled &#39;1st record&#39; indicates the initial record&#39;s insertion into segment 0.  A second downward-pointing arrow labeled &#39;Next record written&#39; shows the subsequent record being written into segment 15.  Dashed lines labeled &#39;segment-1&#39; and &#39;segment-2&#39; delineate two logical segments within the partition, suggesting a potential mechanism for managing data within the partition, perhaps for compaction or other optimization strategies.  The numbers within each segment represent their sequential order within the partition.  The overall structure illustrates the sequential writing of records into a partitioned topic, with the potential for logical segmentation within the partition for efficient management." loading="lazy" width="750" height="199" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111174/interview-prep/system-design/step-20/009-figure-9-append-new-messages-7IQA6BDN.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 9 Append new messages</figcaption></div></figure>
-<p>Segment files of the same partition are organized in a folder named “Partition-{:partition_id}”. The structure is shown in Figure 10.</p>
+<p>Segment files of the same partition are organized in a folder named â€œPartition-{:partition_id}â€. The structure is shown in Figure 10.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a conceptual diagram illustrating data partitioning within a system labeled &#39;Topic-A&#39;.  The diagram shows Topic-A divided into two partitions, &#39;Partition-1&#39; and &#39;Partition-2&#39;. Each partition contains multiple data segments represented as rectangular boxes with curled corners, suggesting files or data chunks.  Partition-1 includes segments labeled &#39;segment-1&#39;, &#39;segment-3&#39;, and an ellipsis (...) indicating additional, unspecified segments.  Similarly, Partition-2 contains &#39;segment-1&#39;, &#39;segment-2&#39;, and an ellipsis (...) representing further segments.  The arrangement visually depicts a data distribution strategy where similar segments (&#39;segment-1&#39;, &#39;segment-2&#39;, &#39;segment-3&#39;) are present in both partitions, implying potential redundancy or replication for fault tolerance or performance reasons.  There are no explicit connections or data flows shown between the partitions; the diagram focuses solely on the structure of the data partitioning itself." loading="lazy" width="500" height="173" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111176/interview-prep/system-design/step-20/010-figure-10-data-segment-file-distribution-in-topic-partitions-TZBXX5CG.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 10 Data segment file distribution in topic partitions</figcaption></div></figure>
 <p><strong>A note on disk performance</strong></p>
 <p>To meet the high data retention requirement, our design relies heavily on disk drives to hold a large amount of data. There is a common misconception that rotational disks are slow, but this is really only the case for random access. For our workload, as long as we design our on-disk data structure to take advantage of the sequential access pattern, the modern disk drives in a RAID configuration (i.e., with disks striped together for higher performance) could comfortably achieve several hundred MB/sec of read and write speed. This is more than enough for our needs, and the cost structure is favorable.</p>
@@ -307,7 +308,7 @@
 <p>With a proper mapping algorithm, if the number of partitions changes, messages can still be evenly sent to all the partitions.</p>
 <h4 id="message-value">Message value</h4>
 <p>The message value is the payload of a message. It can be plain text or a compressed binary block.</p>
-<table><thead><tr><th><strong>Reminder</strong></th></tr></thead><tbody><tr><td>The key and value of a message are different from the key-value pair in a key-value (KV) store. In the KV store, keys are unique, and we can find the value by key. In a message, keys do not need to be unique. Sometimes they are not even mandatory, and we don’t need to find a value by key.</td></tr></tbody></table>
+<table><thead><tr><th><strong>Reminder</strong></th></tr></thead><tbody><tr><td>The key and value of a message are different from the key-value pair in a key-value (KV) store. In the KV store, keys are unique, and we can find the value by key. In a message, keys do not need to be unique. Sometimes they are not even mandatory, and we donâ€™t need to find a value by key.</td></tr></tbody></table>
 <h3 id=""></h3>
 <h4 id="other-fields-of-a-message">Other fields of a message</h4>
 <ul>
@@ -343,9 +344,9 @@
 </li>
 </ul>
 <p>There is a tradeoff between throughput and latency. If the system is deployed as a traditional message queue where latency might be more important, the system could be tuned to use a smaller batch size. Disk performance will suffer a little bit in this use case. If tuned for throughput, there might need to be a higher number of partitions per topic, to make up for the slower sequential disk write throughput.</p>
-<p>So far, we’ve covered the main disk storage subsystem and its associated on-disk data structure. Now, let’s switch gears and discuss the producer and consumer flows. Then we will come back and finish the deep dive into the rest of the message queue.</p>
+<p>So far, weâ€™ve covered the main disk storage subsystem and its associated on-disk data structure. Now, letâ€™s switch gears and discuss the producer and consumer flows. Then we will come back and finish the deep dive into the rest of the message queue.</p>
 <h3 id="producer-flow">Producer flow</h3>
-<p>If a producer wants to send messages to a partition, which broker should it connect to? The first option is to introduce a routing layer. All messages sent to the routing layer are routed to the “correct” broker. If the brokers are replicated, the “correct” broker is the leader replica. We will cover replication later.</p>
+<p>If a producer wants to send messages to a partition, which broker should it connect to? The first option is to introduce a routing layer. All messages sent to the routing layer are routed to the â€œcorrectâ€ broker. If the brokers are replicated, the â€œcorrectâ€ broker is the leader replica. We will cover replication later.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified architecture of a message queue system, likely Apache Kafka.  A &#39;Producer&#39; component generates messages. These messages are then sent to a &#39;Routing&#39; component, which determines their destination based on a topic and partitioning strategy.  The routing component uses solid and dashed arrows to indicate message flow, suggesting different routing mechanisms or potential message ordering guarantees. The messages are then distributed across two &#39;Broker&#39; instances (Broker-1 and Broker-2). Each broker stores a partition of &#39;Topic-A&#39;, indicated by the vertical bars representing individual partitions within each broker.  The solid arrows show the primary routing path, while the dashed arrows might represent alternative paths or acknowledgements.  The text labels clearly identify each component and the topic and partition information.  The system demonstrates message distribution across multiple brokers for scalability and fault tolerance." loading="lazy" width="500" height="354" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111178/interview-prep/system-design/step-20/011-figure-11-routing-layer-LA4CPIQY.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 11 Routing layer</figcaption></div></figure>
 <p>As shown in Figure 11, the producer tries to send messages to partition 1 of topic A.</p>
 <ol>
@@ -359,17 +360,17 @@
 <p>The leader replica receives the message and follower replicas pull data from the leader.</p>
 </li>
 <li>
-<p>When “enough” replicas have synchronized the message, the leader commits the data (persisted on disk), which means the data can be consumed. Then it responds to the producer.</p>
+<p>When â€œenoughâ€ replicas have synchronized the message, the leader commits the data (persisted on disk), which means the data can be consumed. Then it responds to the producer.</p>
 </li>
 </ol>
-<p>You might be wondering why we need both leader and follower replicas. The reason is fault tolerance. We dive deep into this process in the “In-sync replicas” section.</p>
+<p>You might be wondering why we need both leader and follower replicas. The reason is fault tolerance. We dive deep into this process in the â€œIn-sync replicasâ€ section.</p>
 <p>This approach works, but it has a few drawbacks:</p>
 <ul>
 <li>
 <p>A new routing layer means additional network latency caused by overhead and additional network hops.</p>
 </li>
 <li>
-<p>Request batching is one of the big drivers of efficiency. This design doesn’t take that into consideration.</p>
+<p>Request batching is one of the big drivers of efficiency. This design doesnâ€™t take that into consideration.</p>
 </li>
 </ul>
 <p>Figure 12 shows the improved design.</p>
@@ -417,7 +418,7 @@
 <p>If the rate of consumption falls below the rate of production, we can scale out the consumers, or simply catch up when it can.</p>
 </li>
 <li>
-<p>The pull model is more suitable for batch processing. In the push model, the broker has no knowledge of whether consumers will be able to process messages immediately. If the broker sends one message at a time to the consumer and the consumer is backed up, new messages will end up waiting in the buffer. A pull model pulls all available messages after the consumer’s current position in the log (or up to the configurable max size). It is suitable for aggressive batching of data.</p>
+<p>The pull model is more suitable for batch processing. In the push model, the broker has no knowledge of whether consumers will be able to process messages immediately. If the broker sends one message at a time to the consumer and the consumer is backed up, new messages will end up waiting in the buffer. A pull model pulls all available messages after the consumerâ€™s current position in the log (or up to the configurable max size). It is suitable for aggressive batching of data.</p>
 </li>
 </ul>
 <p>Cons:</p>
@@ -443,8 +444,8 @@
 </ol>
 <h3 id="consumer-rebalancing">Consumer rebalancing</h3>
 <p>Consumer rebalancing decides which consumer is responsible for which subset of partitions. The process could occur when a consumer joins, when a consumer leaves, when a consumer crashes, or when partitions are adjusted.</p>
-<p>When consumer rebalancing occurs, the coordinator plays an important role. Let’s first take a look at what a coordinator is. The coordinator is one of the brokers responsible for communicating with consumers to achieve consumer rebalancing. The coordinator receives heartbeat from consumers and manages their offset on the partitions.</p>
-<p>Let’s use an example to understand how the coordinator and the consumers work together.</p>
+<p>When consumer rebalancing occurs, the coordinator plays an important role. Letâ€™s first take a look at what a coordinator is. The coordinator is one of the brokers responsible for communicating with consumers to achieve consumer rebalancing. The coordinator receives heartbeat from consumers and manages their offset on the partitions.</p>
+<p>Letâ€™s use an example to understand how the coordinator and the consumers work together.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system architecture diagram illustrating consumer groups and brokers in a message queue system, likely Kafka.  Four consumers are depicted, labeled &#39;Consumer-1,&#39; &#39;Consumer-2,&#39; &#39;Consumer-3,&#39; and &#39;Consumer-4,&#39; each belonging to a group indicated by &#39;Group-1&#39; or &#39;Group-2.&#39;  Consumers &#39;Consumer-1,&#39; &#39;Consumer-2,&#39; and &#39;Consumer-3&#39; are all members of &#39;Group-1&#39; and connect to a single &#39;Broker-1,&#39; which is labeled as the &#39;(Coordinator of Group-1).&#39;  Similarly, &#39;Consumer-4&#39; belongs to &#39;Group-2&#39; and connects to a separate &#39;Broker-2,&#39; labeled &#39;(Coordinator of Group-2).&#39;  Arrows indicate the unidirectional flow of messages from each consumer to its respective broker.  The diagram showcases a scenario where multiple consumers within the same group share the workload from a broker, demonstrating the concept of consumer groups and their coordination within a message broker system." loading="lazy" width="750" height="259" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111187/interview-prep/system-design/step-20/016-figure-16-coordinator-of-consumer-groups-NBLTTJF7.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 16 Coordinator of consumer groups</figcaption></div></figure>
 <ul>
 <li>
@@ -459,7 +460,7 @@
 </ul>
 <p>In a distributed system, consumers might encounter all sorts of issues including network issues, crashes, restarts, etc. From the coordinator's perspective, they will no longer have heartbeats. When this happens, the coordinator will trigger a rebalance process to re-dispatch the partitions as illustrated in Figure 17.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a before-and-after diagram illustrating message consumption in a message queue system.  On the left, a message queue (represented as a grid of messages) is shown with multiple consumers (Consumer-1 through Consumer-4) within a single consumer group.  Each consumer receives messages directly from the queue, with some consumers receiving multiple messages.  A large arrow indicates a transformation. On the right, the same message queue is depicted, but now the consumers are distributed differently.  The consumers are still within the same consumer group, but the message distribution is more balanced.  Each consumer receives a subset of the messages, suggesting a load balancing mechanism or a change in the message consumption strategy within the consumer group.  The dashed lines around the consumer groups highlight that they are logical groupings, not physical entities.  The overall diagram shows how a message queue can distribute messages to multiple consumers, and how the distribution can be optimized for better load balancing." loading="lazy" width="704" height="205" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111189/interview-prep/system-design/step-20/017-figure-17-consumer-rebalance-TXRF6U5L.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 17 Consumer rebalance</figcaption></div></figure>
-<p>Let’s simulate a few rebalance scenarios. Assume there are 2 consumers in the group, and 4 partitions in the subscribed topic. Figure 18 shows the flow when a new consumer B joins the group.</p>
+<p>Letâ€™s simulate a few rebalance scenarios. Assume there are 2 consumers in the group, and 4 partitions in the subscribed topic. Figure 18 shows the flow when a new consumer B joins the group.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a sequence diagram illustrating a consumer group rebalancing process in a distributed system.  Three entities are involved: Consumer A, Consumer B, and a Coordinator.  The interaction begins with Consumer A sending a heartbeat (1a) to the Coordinator, which acknowledges it (1b).  Consumer B then joins the group (2).  Consumer A sends another heartbeat (3a), but the Coordinator responds with a rebalance request (3b), prompting Consumer A to rejoin (4a).  Consumer A successfully rejoins as a follower (4b).  Simultaneously, Consumer B joins and becomes the leader (4b).  Consumer A then waits for the leader to dispatch partitions (5), after which the Coordinator sends partition assignments: partitions 1 and 3 to Consumer A (6), and partitions 2 and 4 to Consumer B (6).  The diagram shows the message flow between the consumers and the coordinator, highlighting the steps involved in group membership and partition assignment, including error handling and rebalancing." loading="lazy" width="702" height="426" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111191/interview-prep/system-design/step-20/018-figure-18-new-consumer-joins-RTLIWBQS.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 18 New consumer joins</figcaption></div></figure>
 <ol>
 <li>
@@ -469,7 +470,7 @@
 <p>Consumer B sends a request to join the group.</p>
 </li>
 <li>
-<p>The coordinator knows it’s time to rebalance, so it notifies all the consumers in the group in a passive way. When A’s heartbeat is received by the coordinator, it asks A to rejoin the group.</p>
+<p>The coordinator knows itâ€™s time to rebalance, so it notifies all the consumers in the group in a passive way. When Aâ€™s heartbeat is received by the coordinator, it asks A to rejoin the group.</p>
 </li>
 <li>
 <p>Once all the consumers have rejoined the group, the coordinator chooses one of them as the leader and informs all the consumers about the election result.</p>
@@ -491,7 +492,7 @@
 <p>Consumer A needs to be shut down, so it requests to leave the group.</p>
 </li>
 <li>
-<p>The coordinator knows it’s time to rebalance. When B’s heartbeat is received by the coordinator, it asks B to rejoin the group.</p>
+<p>The coordinator knows itâ€™s time to rebalance. When Bâ€™s heartbeat is received by the coordinator, it asks B to rejoin the group.</p>
 </li>
 <li>
 <p>The remaining steps are the same as the ones shown in Figure 18.</p>
@@ -504,7 +505,7 @@
 <p>Consumer A and B keep heartbeats with the coordinator.</p>
 </li>
 <li>
-<p>Consumer A crashes, so there is no heartbeat sent from consumer A to the coordinator. Since the coordinator doesn’t get any heartbeat signal within a specified amount of time from consumer A, it marks the consumer as dead.</p>
+<p>Consumer A crashes, so there is no heartbeat sent from consumer A to the coordinator. Since the coordinator doesnâ€™t get any heartbeat signal within a specified amount of time from consumer A, it marks the consumer as dead.</p>
 </li>
 <li>
 <p>The coordinator triggers the rebalance process.</p>
@@ -513,7 +514,7 @@
 <p>The following steps are the same as the ones in the previous scenario.</p>
 </li>
 </ol>
-<p>Now that we finished the detour on producer and consumer flows, let’s come back and finish the deep dive on the rest of the message queue broker.</p>
+<p>Now that we finished the detour on producer and consumer flows, letâ€™s come back and finish the deep dive on the rest of the message queue broker.</p>
 <h3 id="state-storage">State storage</h3>
 <p>In the message queue broker, the state storage stores:</p>
 <ul>
@@ -549,7 +550,7 @@
 <p>By reading previous sections, you probably have already sensed that Zookeeper is very helpful for designing a distributed message queue. If you are not familiar with it, Zookeeper is an essential service for distributed systems offering a hierarchical key-value store. It is commonly used to provide a distributed configuration service, synchronization service, and naming registry [2].</p>
 <p>ZooKeeper is used to simplify our design as shown in Figure 22.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified architecture diagram of a message broker system, likely Kafka, utilizing ZooKeeper for coordination.  The diagram shows three main components:  &#39;Producers,&#39; represented as a stack of rectangles, send messages to &#39;Brokers,&#39; also depicted as a stack of rectangles containing a dashed-line box labeled &#39;Data Storage&#39; with several smaller rectangles inside, symbolizing partitions.  The Brokers then forward messages to &#39;Consumers (Consumer Groups),&#39; another stack of rectangles.  Above the Brokers is &#39;ZooKeeper,&#39; a rectangular box divided into three sections: &#39;Metadata Storage&#39; (containing a database symbol), &#39;State Storage&#39; (containing a document symbol), and &#39;Coordination service.&#39;  Double-headed arrows connect the Brokers and ZooKeeper, indicating bidirectional communication for metadata and state management.  Single-headed arrows connect Producers to Brokers and Brokers to Consumers, showing the unidirectional flow of messages." loading="lazy" width="750" height="305" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111200/interview-prep/system-design/step-20/022-figure-22-zookeeper-UZGQ22ZY.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 22 Zookeeper</figcaption></div></figure>
-<p>Let’s briefly go over the change.</p>
+<p>Letâ€™s briefly go over the change.</p>
 <ul>
 <li>
 <p>Metadata and state storage are moved to Zookeeper.</p>
@@ -564,7 +565,7 @@
 <h3 id="replication">Replication</h3>
 <p>In distributed systems, hardware issues are common and cannot be ignored. Data gets lost when a disk is damaged or fails permanently. Replication is the classic solution to achieve high availability.</p>
 <p>As in Figure 23, each partition has 3 replicas, distributed across different broker nodes.</p>
-<p>For each partition, the highlighted replicas are the leaders and the others are followers. Producers only send messages to the leader replica. The follower replicas keep pulling new messages from the leader. Once messages are synchronized to enough replicas, the leader returns an acknowledgment to the producer. We will go into detail about how to define “enough” in the In-sync Replicas section below.</p>
+<p>For each partition, the highlighted replicas are the leaders and the others are followers. Producers only send messages to the leader replica. The follower replicas keep pulling new messages from the leader. Once messages are synchronized to enough replicas, the leader returns an acknowledgment to the producer. We will go into detail about how to define â€œenoughâ€ in the In-sync Replicas section below.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified depiction of a message broker system, likely Apache Kafka, showing data distribution across multiple brokers.  Four brokers (Broker-1, Broker-2, Broker-3, Broker-4) are displayed, each containing partitions of two topics: Topic-A and Topic-B. Each topic is further divided into partitions (Partition-1 and Partition-2).  A producer is shown sending messages, indicated by curved arrows, to specific partitions.  The light green shading highlights the partitions receiving messages from the producer in this instance.  The producer sends data to Topic-A Partition-1 on Broker-1, Topic-A Partition-2 on Broker-2, and Topic-A Partition-1 on Broker-3.  The remaining partitions are shown empty, implying they haven&#39;t received data from this producer.  The arrangement demonstrates the distribution of data across multiple brokers for fault tolerance and scalability, with each broker holding a subset of the overall data." loading="lazy" width="750" height="226" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111202/interview-prep/system-design/step-20/023-figure-23-replication-7QLW3XIH.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 23 Replication</figcaption></div></figure>
 <p>The distribution of replicas for each partition is called a replica distribution plan. For example, the replica distribution plan in Figure 23 can be described as:</p>
 <ul>
@@ -579,11 +580,11 @@
 </li>
 </ul>
 <p>Who makes the replica distribution plan? It works as follows; with the help of the coordination service, one of the broker nodes is elected as the leader. It generates the replica distribution plan and persists the plan in metadata storage. All the brokers now can work according to the plan.</p>
-<p>If you are interested in knowing more about replications, check out “Chapter 5. Replication” of the book “Design Data-Intensive Applications” [9].</p>
+<p>If you are interested in knowing more about replications, check out â€œChapter 5. Replicationâ€ of the book â€œDesign Data-Intensive Applicationsâ€ [9].</p>
 <h4 id="in-sync-replicas">In-sync replicas</h4>
 <p>We mentioned that messages are persisted in multiple partitions to avoid single node failure, and each partition has multiple replicas. Messages are only written to the leader, and followers synchronize data from the leader. One problem we need to solve is keeping them in sync.</p>
-<p>In-sync replicas (ISR) refer to replicas that are “in-sync” with the leader. The definition of “in-sync” depends on the topic configuration. For example, if the value of replica.lag.max.messages is 4, it means that as long as the follower is behind the leader by no more than 3 messages, it will not be removed from ISR [10]. The leader is an ISR by default.</p>
-<p>Let’s use an example as shown in Figure 24 to show how ISR works.</p>
+<p>In-sync replicas (ISR) refer to replicas that are â€œin-syncâ€ with the leader. The definition of â€œin-syncâ€ depends on the topic configuration. For example, if the value of replica.lag.max.messages is 4, it means that as long as the follower is behind the leader by no more than 3 messages, it will not be removed from ISR [10]. The leader is an ISR by default.</p>
+<p>Letâ€™s use an example as shown in Figure 24 to show how ISR works.</p>
 <ul>
 <li>
 <p>The committed offset in the leader replica is 13. Two new messages are written to the leader, but not committed yet. Committed offset means that all messages before and at this offset are already synchronized to all the replicas in ISR.</p>
@@ -596,8 +597,8 @@
 </li>
 </ul>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system of four replicas in a distributed log architecture.  Replica-1 is designated as the leader and contains log entries numbered 10 through 15, with entries 14 and 15 highlighted in yellow to indicate they are the latest entries.  The committed offset is labeled as 13, signifying that entries up to 13 have been durably stored.  Replica-1 sends log entries to followers via &#39;fetch&#39; operations.  Replica-2 and Replica-3 are followers that have received entries up to 14 and 13 respectively, shown by the numbers within their respective boxes.  A dashed line indicates that Replica-4 is lagging behind, having only received entries up to 11, labeled as &#39;not caught up&#39;.  The In-Sync Replicas (ISR) set, listed at the bottom, includes replica-1, replica-2, and replica-3, indicating these are the followers considered up-to-date and actively participating in the consensus process.  The arrows show the direction of data flow from the leader to the followers." loading="lazy" width="500" height="379" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111204/interview-prep/system-design/step-20/024-figure-24-how-isr-works-QVUWXQ6W.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 24 How ISR works</figcaption></div></figure>
-<p>Why do we need ISR? The reason is that ISR reflects the trade-off between performance and durability. If producers don’t want to lose any messages, the safest way to do that is to ensure all replicas are already in sync before sending an acknowledgment. But a slow replica will cause the whole partition to become slow or unavailable.</p>
-<p>Now that we’ve discussed ISR, let’s take a look at acknowledgment settings. Producers can choose to receive acknowledgments until the <em>K</em> number of ISRs has received the message, where <em>K</em> is configurable.</p>
+<p>Why do we need ISR? The reason is that ISR reflects the trade-off between performance and durability. If producers donâ€™t want to lose any messages, the safest way to do that is to ensure all replicas are already in sync before sending an acknowledgment. But a slow replica will cause the whole partition to become slow or unavailable.</p>
+<p>Now that weâ€™ve discussed ISR, letâ€™s take a look at acknowledgment settings. Producers can choose to receive acknowledgments until the <em>K</em> number of ISRs has received the message, where <em>K</em> is configurable.</p>
 <p><strong>ACK=all</strong></p>
 <p>Figure 25 illustrates the case with ACK=all. With ACK=all, the producer gets an ACK when all ISRs have received the message. This means it takes a longer time to send a message because we need to wait for the slowest ISR, but it gives the strongest message durability.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified Kafka architecture illustrating a producer writing data to a replicated topic.  A &#39;Producer&#39; sends data (labeled &#39;1. produce&#39;) to a &#39;leader&#39; replica (replica-2) residing on &#39;Broker-2&#39;. This leader replica is highlighted in light green to indicate its active role.  The leader then replicates the data to a follower replica (replica-1) on &#39;Broker-1&#39; (labeled &#39;2. fetch&#39; and &#39;3. synced&#39;).  A dashed line indicates that the data is also sent to the leader, but an acknowledgement (&#39;4. ack&#39;) is returned to the producer only after successful replication to the ISR (In-Sync Replicas), which in this case includes replica-1 and replica-2, as specified by &#39;ISR: {replica-1, replica-2}, ack=all&#39;.  A third replica (replica-3) on &#39;Broker-3&#39; is shown as a follower but is labeled &#39;not caught up&#39;, indicating it hasn&#39;t yet received the data.  The diagram visually depicts the data flow and synchronization process within a Kafka cluster, highlighting the roles of producers, brokers, and replicas in ensuring data durability and availability." loading="lazy" width="691" height="337" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111205/interview-prep/system-design/step-20/025-figure-25-ack-all-O4UUVPX5.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 25 ack=all</figcaption></div></figure>
@@ -608,7 +609,7 @@
 <p>The producer keeps sending messages to the leader without waiting for any acknowledgment, and it never retries. This method provides the lowest latency at the cost of potential message loss. This setting might be good for use cases like collecting metrics or logging data since data volume is high and occasional data loss is acceptable.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified Kafka architecture depicting a producer sending messages and three brokers (Broker-1, Broker-2, Broker-3) hosting replicas of partitions.  A producer sends a message with `produce without ack`, meaning it doesn&#39;t wait for confirmation. The message is directed to `replica-2`, which is designated as the leader.  `replica-1` on `Broker-1` is a follower and receives data from `replica-2` via a `synced` connection.  `replica-3` on `Broker-3` is also a follower, but it&#39;s labeled &#39;not caught up,&#39; indicating it hasn&#39;t yet received the message. The `ISR` (In-Sync Replica set) is defined as `{replica-1, replica-2}` with `ack=0`, signifying that only the leader needs to receive the message for successful production.  The diagram shows the data flow from the producer to the leader replica and the subsequent replication to the follower replicas within the ISR." loading="lazy" width="691" height="337" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111210/interview-prep/system-design/step-20/027-figure-27-ack-0-KMQEZDTJ.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 27 ack=0</figcaption></div></figure>
 <p>Configurable ACK allows us to trade durability for performance.</p>
-<p>Now let’s look at the consumer side. The easiest setup is to let consumers connect to a leader replica to consume messages.</p>
+<p>Now letâ€™s look at the consumer side. The easiest setup is to let consumers connect to a leader replica to consume messages.</p>
 <p>You might be wondering if the leader replica would be overwhelmed by this design and why messages are not read from ISRs. The reasons are:</p>
 <ul>
 <li>
@@ -627,7 +628,7 @@
 <p>In some scenarios, reading from the leader replica might not be the best option. For example, if a consumer is located in a different data center from the leader replica, the read performance suffers. In this case, it is worthwhile to enable consumers to read from the closest ISRs. Interested readers can check out the reference material about this [11].</p>
 <p>ISR is very important. How does it determine if a replica is ISR or not? Usually, the leader for every partition tracks the ISR list by computing the lag of every replica from itself. If you are interested in detailed algorithms, you can find the implementations in reference materials [12] [13].</p>
 <h3 id="scalability">Scalability</h3>
-<p>By now we have made great progress designing the distributed message queue system. In the next step, let’s evaluate the scalability of different system components:</p>
+<p>By now we have made great progress designing the distributed message queue system. In the next step, letâ€™s evaluate the scalability of different system components:</p>
 <ul>
 <li>
 <p>Producers</p>
@@ -643,13 +644,13 @@
 </li>
 </ul>
 <p><strong>Producer</strong></p>
-<p>The producer is conceptually much simpler than the consumer because it doesn’t need group coordination. The scalability of producers can easily be achieved by adding or removing producer instances.</p>
+<p>The producer is conceptually much simpler than the consumer because it doesnâ€™t need group coordination. The scalability of producers can easily be achieved by adding or removing producer instances.</p>
 <p><strong>Consumer</strong></p>
 <p>Consumer groups are isolated from each other, so it is easy to add or remove a consumer group. Inside a consumer group, the rebalancing mechanism helps to handle the cases where a consumer gets added or removed, or when it crashes. With consumer groups and the rebalance mechanism, the scalability and fault tolerance of consumers can be achieved.</p>
 <p><strong>Broker</strong></p>
-<p>Before discussing scalability on the broker side, let’s first consider the failure recovery of brokers.</p>
+<p>Before discussing scalability on the broker side, letâ€™s first consider the failure recovery of brokers.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system demonstrating partition reassignment in a distributed message broker system, likely Kafka.  Initially, four brokers (Broker-1 through Broker-4) host partitions of two topics, Topic-A and Topic-B.  Topic-A is partitioned into two partitions (Partition-1 and Partition-2), and Topic-B has one partition (Partition-1).  The initial distribution shows Broker-1 hosting Topic-A Partition-1 and Topic-B Partition-1; Broker-2 hosting Topic-A Partition-2; Broker-3 hosting Topic-A Partition-1, Topic-A Partition-2, and Topic-B Partition-1; and Broker-4 hosting Topic-A Partition-2 and Topic-B Partition-1.  A downward-pointing arrow indicates a reassignment process.  After the first reassignment, Broker-3 is marked with a red &#39;X&#39;, suggesting a failure.  The subsequent reassignment shows Broker-3&#39;s partitions redistributed among the remaining brokers.  Specifically, Broker-1 now hosts Topic-A Partition-1 and Topic-B Partition-1, Broker-2 hosts Topic-A Partition-2, and Broker-4 now hosts Topic-A Partition-1, Topic-A Partition-2, and Topic-B Partition-1.  The partitions are visually represented by rectangles, with the topic and partition number labeled above each.  The brokers are labeled below their respective partitions.  The color-coding (light green and yellow) in the final state likely indicates the movement of partitions during the rebalancing process." loading="lazy" width="750" height="688" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111211/interview-prep/system-design/step-20/028-figure-28-broker-node-crashes-AVEQQUXB.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 28 Broker node crashes</figcaption></div></figure>
-<p>Let’s use an example in Figure 28 to explain how failure recovery works.</p>
+<p>Letâ€™s use an example in Figure 28 to explain how failure recovery works.</p>
 <ol>
 <li>
 <p>Assume there are 4 brokers and the partition (replica) distribution plan is shown below:</p>
@@ -706,11 +707,11 @@
 <p>If all replicas of a partition are in the same broker node, then we cannot tolerate the failure of this node. It is also a waste of resources to replicate data in the same node. Therefore, replicas should not be in the same node.</p>
 </li>
 <li>
-<p>If all the replicas of a partition crash, the data for that partition is lost forever. When choosing the number of replicas and replica locations, there’s a trade-off between data safety, resource cost, and latency. It is safer to distribute replicas across data centers, but this will incur much more latency and cost, to synchronize data between replicas. As a workaround, data mirroring can help to copy data across data centers, but this is out of scope. The reference material [14] covers this topic.</p>
+<p>If all the replicas of a partition crash, the data for that partition is lost forever. When choosing the number of replicas and replica locations, thereâ€™s a trade-off between data safety, resource cost, and latency. It is safer to distribute replicas across data centers, but this will incur much more latency and cost, to synchronize data between replicas. As a workaround, data mirroring can help to copy data across data centers, but this is out of scope. The reference material [14] covers this topic.</p>
 </li>
 </ul>
-<p>Now let’s get back to discussing the scalability of brokers. The simplest solution would be to redistribute the replicas when broker nodes are added or removed.</p>
-<p>However, there is a better approach. The broker controller can temporarily allow more replicas in the system than the number of replicas in the config file. When the newly added broker catches up, we can remove the ones that are no longer needed. Let’s use an example as shown in Figure 29 to understand the approach.</p>
+<p>Now letâ€™s get back to discussing the scalability of brokers. The simplest solution would be to redistribute the replicas when broker nodes are added or removed.</p>
+<p>However, there is a better approach. The broker controller can temporarily allow more replicas in the system than the number of replicas in the config file. When the newly added broker catches up, we can remove the ones that are no longer needed. Letâ€™s use an example as shown in Figure 29 to understand the approach.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a three-stage process illustrating data partitioning and replication in a distributed system, specifically focusing on a topic named &#39;Topic-A&#39; divided into two partitions (&#39;Partition-1&#39; and &#39;Partition-2&#39;).  Initially, three brokers (Broker-1, Broker-2, Broker-3) each hold a portion of the data. Broker-1 holds &#39;Partition-2&#39; of Topic-A, while Broker-2 and Broker-3 each hold &#39;Partition-1&#39; and &#39;Partition-2&#39;.  A fourth broker (Broker-4) is then added, and &#39;Partition-2&#39; is redistributed across Brokers 2, 3, and 4 for redundancy.  Finally, after Broker-4&#39;s replica catches up, the redundant copy of &#39;Partition-2&#39; on Broker-1 is removed, resulting in a balanced distribution of &#39;Topic-A&#39; across the four brokers.  Each broker is depicted as a box containing the partitions it holds, represented by rows of rectangles; shaded rectangles indicate the presence of data.  Arrows indicate the progression through the stages." loading="lazy" width="750" height="530" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111214/interview-prep/system-design/step-20/029-figure-29-add-new-broker-node-M6LJQ27W.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 29 Add new broker node</figcaption></div></figure>
 <ol>
 <li>
@@ -726,11 +727,11 @@
 <p>By following this process, data loss while adding brokers can be avoided. A similar process can be applied to remove brokers safely.</p>
 <p><strong>Partition</strong></p>
 <p>For various operational reasons, such as scaling the topic, throughput tuning, balancing availability/ throughput, etc., we may change the number of partitions. When the number of partitions changes, the producer will be notified after it communicates with any broker, and the consumer will trigger consumer rebalancing. Therefore, it is safe for both the producer and consumer.</p>
-<p>Now let’s consider the data storage layer when the number of partitions changes. As in Figure 30, we have added a partition to the topic.</p>
+<p>Now letâ€™s consider the data storage layer when the number of partitions changes. As in Figure 30, we have added a partition to the topic.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified depiction of message distribution across partitions in a message queue system before and after the arrival of new messages.  Before the arrival, two partitions (partition-1 and partition-2) are shown, each containing several light-green rectangles representing persisted messages. A legend at the top indicates that these light-green rectangles represent &#39;Persisted messages&#39;.  After the arrival of new messages (indicated by a large right-pointing arrow), the same two partitions (partition-1 and partition-2) now contain the original persisted messages (light-green rectangles) plus additional light-yellow rectangles representing &#39;New messages&#39; as defined in the legend.  A new partition (partition-3) has also appeared, containing only new messages (light-yellow rectangles).  The arrangement visually demonstrates how new messages are added to existing partitions and may also lead to the creation of new partitions to handle the increased message load." loading="lazy" width="500" height="246" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111215/interview-prep/system-design/step-20/030-figure-30-partition-increase-GHEZJURI.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 30 Partition increase</figcaption></div></figure>
 <ul>
 <li>
-<p>Persisted messages are still in the old partitions, so there’s no data migration.</p>
+<p>Persisted messages are still in the old partitions, so thereâ€™s no data migration.</p>
 </li>
 <li>
 <p>After the new partition (partition-3) is added, new messages will be persisted in all 3 partitions.</p>
@@ -752,7 +753,7 @@
 </li>
 </ul>
 <h3 id="data-delivery-semantics">Data delivery semantics</h3>
-<p>Now that we understand the different components of a distributed message queue, let’s discuss different delivery semantics: at-most once, at-least once, and exactly once.</p>
+<p>Now that we understand the different components of a distributed message queue, letâ€™s discuss different delivery semantics: at-most once, at-least once, and exactly once.</p>
 <h4 id="at-most-once">At-most once</h4>
 <p>As the name suggests, at-most once means a message will be delivered not more than once. Messages may be lost but are not redelivered. This is how at-most once delivery works at the high level.</p>
 <ul>
@@ -766,24 +767,24 @@
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified producer-consumer architecture using a message queue.  The diagram shows three rectangular boxes representing a &#39;Producer&#39;, a &#39;Message queue&#39;, and a &#39;Consumer&#39;.  The &#39;Producer&#39; box is connected to the &#39;Message queue&#39; box by a directed arrow labeled &#39;may lose msg&#39;, indicating that messages sent from the producer might be lost during transmission. The &#39;Message queue&#39; is depicted as a series of seven small, vertically aligned rectangles, symbolizing individual messages stored within the queue.  The &#39;Message queue&#39; is then connected to the &#39;Consumer&#39; box by another directed arrow, also labeled &#39;may lose msg&#39;, signifying the possibility of message loss during retrieval from the queue by the consumer.  The overall flow is unidirectional, from the Producer, through the Message queue, to the Consumer, with the potential for message loss at both the production and consumption stages." loading="lazy" width="750" height="74" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111220/interview-prep/system-design/step-20/032-figure-32-at-most-once-K2T4LCNS.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 32 At-most once</figcaption></div></figure>
 <p>It is suitable for use cases like monitoring metrics, where a small amount of data loss is acceptable.</p>
 <h4 id="at-least-once">At-least once</h4>
-<p>With this data delivery semantic, it’s acceptable to deliver a message more than once, but no message should be lost. Here is how it works at a high level.</p>
+<p>With this data delivery semantic, itâ€™s acceptable to deliver a message more than once, but no message should be lost. Here is how it works at a high level.</p>
 <ul>
 <li>
 <p>Producer sends a message synchronously or asynchronously with a response callback, setting ack=1 or ack=all, to make sure messages are delivered to the broker. If the message delivery fails or timeouts, the producer will keep retrying.</p>
 </li>
 <li>
-<p>Consumer fetches the message and commits the offset only after the data is successfully processed. If the consumer fails to process the message, it will re-consume the message so there won’t be data loss. On the other hand, if a consumer processes the message but fails to commit the offset to the broker, the message will be re-consumed when the consumer restarts, resulting in duplicates.</p>
+<p>Consumer fetches the message and commits the offset only after the data is successfully processed. If the consumer fails to process the message, it will re-consume the message so there wonâ€™t be data loss. On the other hand, if a consumer processes the message but fails to commit the offset to the broker, the message will be re-consumed when the consumer restarts, resulting in duplicates.</p>
 </li>
 <li>
 <p>A message might be delivered more than once to the brokers and consumers.</p>
 </li>
 </ul>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified architecture diagram illustrating a message queue system.  Three rectangular boxes are arranged horizontally. The leftmost box is labeled &#39;Producer,&#39; the central box is labeled &#39;Message queue&#39; and contains seven smaller, equally-spaced rectangles representing individual messages within the queue, and the rightmost box is labeled &#39;Consumer.&#39;  Arrows indicate the flow of information.  Two arrows connect the &#39;Producer&#39; to the &#39;Message queue,&#39; signifying that the Producer sends messages to the queue.  Below these arrows, the text &#39;may have duplicate&#39; indicates that the Producer might send duplicate messages. Similarly, three arrows connect the &#39;Message queue&#39; to the &#39;Consumer,&#39; showing that the Consumer receives messages from the queue.  The text &#39;may have duplicate&#39; below these arrows signifies that the Consumer might receive duplicate messages.  The overall diagram depicts a common producer-consumer pattern using a message queue as an intermediary, highlighting the possibility of message duplication." loading="lazy" width="750" height="74" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111223/interview-prep/system-design/step-20/033-figure-33-at-least-once-RET6CWUQ.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 33 At-least once</figcaption></div></figure>
-<p>Use cases: With at-least once, messages won’t be lost but the same message might be delivered multiple times. While not ideal from a user perspective, at-least once delivery semantics are usually good enough for use cases where data duplication is not a big issue or deduplication is possible on the consumer side. For example, with a unique key in each message, a message can be rejected when writing duplicate data to the database.</p>
+<p>Use cases: With at-least once, messages wonâ€™t be lost but the same message might be delivered multiple times. While not ideal from a user perspective, at-least once delivery semantics are usually good enough for use cases where data duplication is not a big issue or deduplication is possible on the consumer side. For example, with a unique key in each message, a message can be rejected when writing duplicate data to the database.</p>
 <h4 id="exactly-once">Exactly once</h4>
-<p>Exactly once is the most difficult delivery semantic to implement. It is friendly to users, but it has a high cost for the system’s performance and complexity.</p>
+<p>Exactly once is the most difficult delivery semantic to implement. It is friendly to users, but it has a high cost for the systemâ€™s performance and complexity.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified architecture diagram illustrating a message queue system.  The diagram shows three main components arranged linearly: a &#39;Producer&#39; on the left, a &#39;Message queue&#39; in the center, and a &#39;Consumer&#39; on the right.  The Producer is connected to the Message queue with a directed arrow labeled &#39;guaranteed once,&#39; indicating that messages are sent from the Producer to the queue with a single delivery guarantee. The Message queue is depicted as a series of seven boxes representing message slots. The Message queue is then connected to the Consumer with another directed arrow also labeled &#39;guaranteed once,&#39; signifying that messages are delivered from the queue to the Consumer with the same single delivery guarantee.  The overall flow shows data moving from the Producer, through the Message queue, and finally to the Consumer, ensuring at least one delivery of each message." loading="lazy" width="750" height="74" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111224/interview-prep/system-design/step-20/034-figure-34-exactly-once-TVG4DWIJ.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 34 Exactly once</figcaption></div></figure>
-<p>Use cases: Financial-related use cases (payment, trading, accounting, etc.). Exactly once is especially important when duplication is not acceptable and the downstream service or third party doesn’t support idempotency.</p>
+<p>Use cases: Financial-related use cases (payment, trading, accounting, etc.). Exactly once is especially important when duplication is not acceptable and the downstream service or third party doesnâ€™t support idempotency.</p>
 <h3 id="advanced-features">Advanced features</h3>
 <p>In this section, we talk briefly about some advanced features, such as message filtering, delayed messages, and scheduled messages.</p>
 <h4 id="message-filtering">Message filtering</h4>
@@ -808,7 +809,7 @@
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified message queue system.  A &#39;Broker&#39; component is depicted as a horizontal array of eight numbered message queues (1-8). Each queue contains colored rectangular shapes representing messages, with different colors likely indicating different message tags or categories.  The Broker outputs messages to a &#39;Tag filter&#39; component, a dashed-line box indicating a filtering process.  A &#39;Consumer&#39; component is shown receiving messages.  The Consumer initiates communication by sending a &#39;subscribe with tags&#39; request to the Broker, specifying the tags of interest.  The Tag filter processes the messages from the Broker, selecting only those matching the tags specified by the Consumer&#39;s subscription. Finally, the filtered messages are sent from the Tag filter to the Consumer via a &#39;fetch messages&#39; connection." loading="lazy" width="696" height="126" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111226/interview-prep/system-design/step-20/035-figure-35-message-filtering-by-tags-KGQRK6OD.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 35 Message filtering by tags</figcaption></div></figure>
 <h4 id="delayed-messages--scheduled-messages">Delayed messages &amp; Scheduled messages</h4>
 <p>Sometimes you want to delay the delivery of messages to a consumer for a specified period of time. For example, an order should be closed if not paid within 30 minutes after the order is created. A delayed verification message (check if the payment is completed) is sent immediately but is delivered to the consumer 30 minutes later. When the consumer receives the message, it checks the payment status. If the payment is not completed, the order will be closed. Otherwise, the message will be ignored.</p>
-<p>Different from sending instant messages, we can send delayed messages to temporary storage on the broker side instead of to the topics immediately, and then deliver them to the topics when time’s up. The high-level design for this is shown in Figure 36.</p>
+<p>Different from sending instant messages, we can send delayed messages to temporary storage on the broker side instead of to the topics immediately, and then deliver them to the topics when timeâ€™s up. The high-level design for this is shown in Figure 36.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="The image represents a simplified message queue system.  A &#39;Producer&#39; component sends messages.  These messages are categorized into two types: &#39;instant messages&#39; and &#39;delayed messages&#39;.  &#39;Instant messages&#39; are directly sent to a &#39;Broker&#39; component, represented as a light green rectangle containing several vertical bars symbolizing individual messages.  &#39;Delayed messages&#39; are first sent to a &#39;Temporary storage&#39; component, depicted as a pale yellow rectangle with a dashed border, where they are held until a specified time.  The text &#39;deliver when time&#39;s up&#39; indicates the condition for transferring messages from &#39;Temporary storage&#39; to the &#39;Broker&#39;.  The entire &#39;Temporary storage&#39; and &#39;Broker&#39; components are contained within a larger box labeled &#39;Broker&#39;, suggesting that the temporary storage is a part of the broker&#39;s functionality.  The arrows indicate the direction of message flow." loading="lazy" width="423" height="305" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776111228/interview-prep/system-design/step-20/036-figure-36-delayed-messages-DVK62AVT.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 36 Delayed messages</figcaption></div></figure>
 <p>Core components of the system include the temporary storage and the timing function.</p>
 <ul>
@@ -819,7 +820,7 @@
 <p>The timing function is out of scope, but here are 2 popular solutions:</p>
 <ul>
 <li>
-<p>Dedicated delay queues with predefined delay levels [16]. For example, RocketMQ doesn’t support delayed messages with arbitrary time precision, but delayed messages with specific levels are supported. Message delay levels are 1s, 5s, 10s, 30s, 1m, 2m, 3m, 4m, 6m, 8m, 9m, 10m, 20m, 30m, 1h, and 2h.</p>
+<p>Dedicated delay queues with predefined delay levels [16]. For example, RocketMQ doesnâ€™t support delayed messages with arbitrary time precision, but delayed messages with specific levels are supported. Message delay levels are 1s, 5s, 10s, 30s, 1m, 2m, 3m, 4m, 6m, 8m, 9m, 10m, 20m, 30m, 1h, and 2h.</p>
 </li>
 <li>
 <p>Hierarchical time wheel [17].</p>
@@ -869,7 +870,7 @@
 <a href="https://kafka.apache.org/20/documentation.html#consumerconfigs" target="_blank" rel="noopener noreferrer"><u>https://kafka.apache.org/20/documentation.html#consumerconfigs</u></a></p>
 <p>[8] Kafka No Longer Requires ZooKeeper:<br>
 <a href="https://towardsdatascience.com/kafka-no-longer-requires-zookeeper-ebfbf3862104" target="_blank" rel="noopener noreferrer"><u>https://towardsdatascience.com/kafka-no-longer-requires-zookeeper-ebfbf3862104</u></a></p>
-<p>[9] Martin Kleppmann. (2017). ‘Replication’ in <em>Designing Data-Intensive Applications</em>. O'Reilly Media. pp. 151-197</p>
+<p>[9] Martin Kleppmann. (2017). â€˜Replicationâ€™ in <em>Designing Data-Intensive Applications</em>. O'Reilly Media. pp. 151-197</p>
 <p>[10] ISR in Apache Kafka:<br>
 <a href="https://www.cloudkarafka.com/docs/dictionary.html" target="_blank" rel="noopener noreferrer"><u>https://www.cloudkarafka.com/docs/dictionary.html</u></a></p>
 <p>[11] Apache Kafka allow consumers fetch from closest replica:<br>
@@ -888,7 +889,7 @@
 <section data-footnotes="true" class="footnotes"><h2 class="sr-only" id="footnote-label">Footnotes</h2>
 <ol>
 <li id="user-content-fn-1">
-<p>The distribution of replicas for each partition is called a replica distribution plan <a data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref" href="https://bytebytego.com/courses/system-design-interview/distributed-message-queue#user-content-fnref-1">↩</a></p>
+<p>The distribution of replicas for each partition is called a replica distribution plan <a data-footnote-backref="" aria-label="Back to reference 1" class="data-footnote-backref" href="https://bytebytego.com/courses/system-design-interview/distributed-message-queue#user-content-fnref-1">â†©</a></p>
 </li>
 </ol>
 </section>
@@ -897,3 +898,4 @@
     </main>
   </body>
 </html>
+

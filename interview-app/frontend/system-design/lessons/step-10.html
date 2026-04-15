@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design A Web Crawler | System Design Course</title>
     <meta name="description" content="System Design lesson 10: Design A Web Crawler" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg" />
     <link rel="stylesheet" href="../../css/global.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <style>
@@ -138,7 +139,7 @@
 <p>Assume the average web page size is 500k.</p>
 </li>
 <li>
-<p>1-billion-page x 500k = 500 TB storage per month. If you are unclear about digital storage units, go through “Power of 2” section in the "Back-of-the-envelope Estimation" chapter again.</p>
+<p>1-billion-page x 500k = 500 TB storage per month. If you are unclear about digital storage units, go through â€œPower of 2â€ section in the "Back-of-the-envelope Estimation" chapter again.</p>
 </li>
 <li>
 <p>Assuming data are stored for five years, 500 TB * 12 months * 5 years = 30 PB. A 30 PB storage is needed to store five-year content.</p>
@@ -149,7 +150,7 @@
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a web crawler system architecture.  The process begins with a set of `seed URLs`, which are fed into a `URL Frontier`.  The `URL Frontier` passes URLs one by one to an `HTML Downloader`, which retrieves the HTML content of each URL after resolving the domain name via a `DNS Resolver`. The downloaded HTML is then sent to a `Content Parser`.  The parsed content is checked against a `Content Seen?` component, which consults a database labeled `Content St..` (presumably Content Storage).  If the content is new, a `Link Extractor` pulls out all URLs from the parsed content. These extracted URLs are then passed through a `URL Filter` before being checked against a `URL Seen?` component, which interacts with a `URL Storag..` (presumably URL Storage) database.  URLs deemed new are then fed back into the `URL Frontier`, creating a cycle of crawling and processing new web pages.  The entire system is designed to systematically explore and process web pages, storing both visited URLs and content." loading="lazy" width="700" height="509" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110824/interview-prep/system-design/step-10/002-figure-9-2-U6DZBW26.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 2</figcaption></div></figure>
 <p>First, we explore each design component to understand their functionalities. Then, we examine the crawler workflow step-by-step.</p>
 <p><strong>Seed URLs</strong></p>
-<p>A web crawler uses seed URLs as a starting point for the crawl process. For example, to crawl all web pages from a university’s website, an intuitive way to select seed URLs is to use the university’s domain name.</p>
+<p>A web crawler uses seed URLs as a starting point for the crawl process. For example, to crawl all web pages from a universityâ€™s website, an intuitive way to select seed URLs is to use the universityâ€™s domain name.</p>
 <p>To crawl the entire web, we need to be creative in selecting seed URLs. A good seed URL serves as a good starting point that a crawler can utilize to traverse as many links as possible. The general strategy is to divide the entire URL space into smaller ones. The first proposed approach is based on locality as different countries may have different popular websites. Another way is to choose seed URLs based on topics; for example, we can divide URL space into shopping, sports, healthcare, etc. Seed URL selection is an open-ended question. You are not expected to give the perfect answer. Just think out loud.</p>
 <p><strong>URL Frontier</strong></p>
 <p>Most modern web crawlers split the crawl state into two: to be downloaded and already downloaded. The component that stores URLs to be downloaded is called the URL Frontier. You can refer to this as a First-in-First-out (FIFO) queue. For detailed information about the URL Frontier, refer to the deep dive.</p>
@@ -160,7 +161,7 @@
 <p><strong>Content Parser</strong></p>
 <p>After a web page is downloaded, it must be parsed and validated because malformed web pages could provoke problems and waste storage space. Implementing a content parser in a crawl server will slow down the crawling process. Thus, the content parser is a separate component.</p>
 <p><strong>Content Seen?</strong></p>
-<p>Online research [6] reveals that 29% of the web pages are duplicated contents, which may cause the same content to be stored multiple times. We introduce the “Content Seen?” data structure to eliminate data redundancy and shorten processing time. It helps to detect new content previously stored in the system. To compare two HTML documents, we can compare them character by character. However, this method is slow and time-consuming, especially when billions of web pages are involved. An efficient way to accomplish this task is to compare the hash values of the two web pages [7].</p>
+<p>Online research [6] reveals that 29% of the web pages are duplicated contents, which may cause the same content to be stored multiple times. We introduce the â€œContent Seen?â€ data structure to eliminate data redundancy and shorten processing time. It helps to detect new content previously stored in the system. To compare two HTML documents, we can compare them character by character. However, this method is slow and time-consuming, especially when billions of web pages are involved. An efficient way to accomplish this task is to compare the hash values of the two web pages [7].</p>
 <p><strong>Content Storage</strong></p>
 <p>It is a storage system for storing HTML content. The choice of storage system depends on factors such as data type, data size, access frequency, life span, etc. Both disk and memory are used.</p>
 <ul>
@@ -172,13 +173,13 @@
 </li>
 </ul>
 <p><strong>URL Extractor</strong></p>
-<p>URL Extractor parses and extracts links from HTML pages. Figure 3 shows an example of a link extraction process. Relative paths are converted to absolute URLs by adding the <code>“https://en.wikipedia.org”</code> prefix.</p>
+<p>URL Extractor parses and extracts links from HTML pages. Figure 3 shows an example of a link extraction process. Relative paths are converted to absolute URLs by adding the <code>â€œhttps://en.wikipedia.orgâ€</code> prefix.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified illustration of web page link extraction.  The top portion shows a snippet of HTML code defining a webpage&#39;s structure.  This code includes a `&lt;head&gt;` section containing metadata like character set and title (&#39;Wikipedia, the free encyclopedia&#39;), and a `&lt;body&gt;` section containing an unordered list (`&lt;ul&gt;`) of four list items (`&lt;li&gt;`). Each list item contains a hyperlink (`&lt;a&gt;`) with an `href` attribute specifying a relative URL (e.g., &#39;/wiki/Cong_Weixi&#39;) and a `title` attribute providing descriptive text.  The text within each `&lt;a&gt;` tag represents the displayed link text (e.g., &#39;Cong Weixi&#39;). A downward arrow indicates a processing step. The bottom portion shows a rectangular box labeled &#39;Extracted Links:&#39; containing a partially displayed URL (&#39;https://en.wikipedia.org/wiki/Cong_Weixi...&#39;) representing the fully qualified URLs generated from the relative URLs in the HTML code by prepending the base URL of the Wikipedia website.  The text &#39;Viewer does not support full SVG 1.1&#39; suggests the image is a simplified representation of a more complex process, possibly involving SVG elements not fully rendered." loading="lazy" width="700" height="362" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110827/interview-prep/system-design/step-10/003-figure-9-3-NSRQJPYK.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 3</figcaption></div></figure>
 <p><strong>URL Filter</strong></p>
-<p>The URL filter excludes certain content types, file extensions, error links and URLs in “blacklisted” sites.</p>
+<p>The URL filter excludes certain content types, file extensions, error links and URLs in â€œblacklistedâ€ sites.</p>
 <p><strong>URL Seen?</strong></p>
-<p>“URL Seen?” is a data structure that keeps track of URLs that are visited before or already in the Frontier. “URL Seen?” helps to avoid adding the same URL multiple times as this can increase server load and cause potential infinite loops.</p>
-<p>Bloom filter and hash table are common techniques to implement the “URL Seen?” component. We will not cover the detailed implementation of the bloom filter and hash table here. For more information, refer to the reference materials [4] [8].</p>
+<p>â€œURL Seen?â€ is a data structure that keeps track of URLs that are visited before or already in the Frontier. â€œURL Seen?â€ helps to avoid adding the same URL multiple times as this can increase server load and cause potential infinite loops.</p>
+<p>Bloom filter and hash table are common techniques to implement the â€œURL Seen?â€ component. We will not cover the detailed implementation of the bloom filter and hash table here. For more information, refer to the reference materials [4] [8].</p>
 <p><strong>URL Storage</strong></p>
 <p>URL Storage stores already visited URLs.</p>
 <p>So far, we have discussed every system component. Next, we put them together to explain the workflow.</p>
@@ -189,8 +190,8 @@
 <p>Step 2: HTML Downloader fetches a list of URLs from URL Frontier.</p>
 <p>Step 3: HTML Downloader gets IP addresses of URLs from DNS resolver and starts downloading.</p>
 <p>Step 4: Content Parser parses HTML pages and checks if pages are malformed.</p>
-<p>Step 5: After content is parsed and validated, it is passed to the “Content Seen?” component.</p>
-<p>Step 6: “Content Seen” component checks if a HTML page is already in the storage.</p>
+<p>Step 5: After content is parsed and validated, it is passed to the â€œContent Seen?â€ component.</p>
+<p>Step 6: â€œContent Seenâ€ component checks if a HTML page is already in the storage.</p>
 <ul>
 <li>
 <p>If it is in the storage, this means the same content in a different URL has already been processed. In this case, the HTML page is discarded.</p>
@@ -201,8 +202,8 @@
 </ul>
 <p>Step 7: Link extractor extracts links from HTML pages.</p>
 <p>Step 8: Extracted links are passed to the URL filter.</p>
-<p>Step 9: After links are filtered, they are passed to the “URL Seen?” component.</p>
-<p>Step 10: “URL Seen” component checks if a URL is already in the storage, if yes, it is processed before, and nothing needs to be done.</p>
+<p>Step 9: After links are filtered, they are passed to the â€œURL Seen?â€ component.</p>
+<p>Step 10: â€œURL Seenâ€ component checks if a URL is already in the storage, if yes, it is processed before, and nothing needs to be done.</p>
 <p>Step 11: If a URL has not been processed before, it is added to the URL Frontier.</p>
 <h2 id="step-3---design-deep-dive">Step 3 - Design deep dive</h2>
 <p>Up until now, we have discussed the high-level design. Next, we will discuss the most important building components and techniques in depth:</p>
@@ -230,7 +231,7 @@
 <p>You can think of the web as a directed graph where web pages serve as nodes and hyperlinks (URLs) as edges. The crawl process can be seen as traversing a directed graph from one web page to others. Two common graph traversal algorithms are DFS and BFS. However, DFS is usually not a good choice because the depth of DFS can be very deep.</p>
 <p>BFS is commonly used by web crawlers and is implemented by a first-in-first-out (FIFO) queue. In a FIFO queue, URLs are dequeued in the order they are enqueued. However, this implementation has two problems:</p>
 <ul>
-<li>Most links from the same web page are linked back to the same host. In Figure 5, all the links in wikipedia.com are internal links, making the crawler busy processing URLs from the same host (wikipedia.com). When the crawler tries to download web pages in parallel, Wikipedia servers will be flooded with requests. This is considered as “impolite”.</li>
+<li>Most links from the same web page are linked back to the same host. In Figure 5, all the links in wikipedia.com are internal links, making the crawler busy processing URLs from the same host (wikipedia.com). When the crawler tries to download web pages in parallel, Wikipedia servers will be flooded with requests. This is considered as â€œimpoliteâ€.</li>
 </ul>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a hierarchical structure depicting the organization of web pages within a website, likely Wikipedia.  The root node is &#39;wikipedia.com,&#39; representing the main website domain.  From this root, several branches extend to represent different main pages, labeled &#39;wikipedia.com/page1,&#39; &#39;wikipedia.com/page2,&#39; and &#39;wikipedia.com/pageN,&#39; indicating a variable number of main pages. Each of these main pages further branches into sub-pages, exemplified by &#39;wikipedia.com/page1/1,&#39; &#39;wikipedia.com/page1/2,&#39; &#39;wikipedia.com/page2/1,&#39; &#39;wikipedia.com/page2/2,&#39; &#39;wikipedia.com/pageN/1,&#39; &#39;wikipedia.com/pageN/2,&#39; and &#39;wikipedia.com/pageN/N.&#39;  The ellipses (...) indicate that this pattern continues for an unspecified number of main pages and sub-pages under each main page.  The arrows show the directional relationship, indicating that accessing &#39;wikipedia.com&#39; leads to the main pages, and accessing a main page leads to its respective sub-pages.  The structure visually demonstrates a tree-like organization of web pages within a domain, illustrating how a website can be structured with multiple levels of pages." loading="lazy" width="600" height="480" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110831/interview-prep/system-design/step-10/005-figure-9-5-65ZDPY5L.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 5</figcaption></div></figure>
 <ul>
@@ -239,12 +240,12 @@
 <h3 id="url-frontier">URL frontier</h3>
 <p>URL frontier helps to address these problems. A URL frontier is a data structure that stores URLs to be downloaded. The URL frontier is an important component to ensure politeness, URL prioritization, and freshness. A few noteworthy papers on URL frontier are mentioned in the reference materials [5] [9]. The findings from these papers are as follows:</p>
 <h4 id="politeness">Politeness</h4>
-<p>Generally, a web crawler should avoid sending too many requests to the same hosting server within a short period. Sending too many requests is considered as “impolite” or even treated as denial-of-service (DOS) attack. For example, without any constraint, the crawler can send thousands of requests every second to the same website. This can overwhelm the web servers.</p>
+<p>Generally, a web crawler should avoid sending too many requests to the same hosting server within a short period. Sending too many requests is considered as â€œimpoliteâ€ or even treated as denial-of-service (DOS) attack. For example, without any constraint, the crawler can send thousands of requests every second to the same website. This can overwhelm the web servers.</p>
 <p>The general idea of enforcing politeness is to download one page at a time from the same host. A delay can be added between two download tasks. The politeness constraint is implemented by maintain a mapping from website hostnames to download (worker) threads. Each downloader thread has a separate FIFO queue and only downloads URLs obtained from that queue. Figure 6 shows the design that manages politeness.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system architecture diagram for task distribution.  A &#39;Queue router&#39; component sits at the top, distributing tasks to multiple queues labeled &#39;b1&#39;, &#39;b2&#39;, and &#39;bn&#39;, representing different task types or priorities.  These queues are depicted as vertical rectangles.  The &#39;Queue router&#39; also sends information to a &#39;Mapping Table&#39; (represented as a database icon), suggesting a lookup or mapping function.  Each queue (&#39;b1&#39;, &#39;b2&#39;, &#39;bn&#39;) feeds into a &#39;Queue selector&#39;, which in turn distributes tasks to multiple &#39;Worker threads&#39; (labeled &#39;Worker thread 1&#39;, &#39;Worker thread 2&#39;, and &#39;Worker thread N&#39;), represented as rectangles with green bars inside, signifying parallel processing.  The ellipses (...) indicate that there are multiple queues and worker threads beyond those explicitly shown.  Arrows depict the flow of tasks or information between components." loading="lazy" width="500" height="478" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110833/interview-prep/system-design/step-10/006-figure-9-6-4NQUTTWR.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 6</figcaption></div></figure>
 <ul>
 <li>
-<p>Queue router: It ensures that each queue (b1, b2, … bn) only contains URLs from the same host.</p>
+<p>Queue router: It ensures that each queue (b1, b2, â€¦ bn) only contains URLs from the same host.</p>
 </li>
 <li>
 <p>Mapping table: It maps each host to a queue.</p>
@@ -264,8 +265,8 @@
 </li>
 </ul>
 <h4 id="priority">Priority</h4>
-<p>A random post from a discussion forum about Apple products carries very different weight than posts on the Apple home page. Even though they both have the “Apple” keyword, it is sensible for a crawler to crawl the Apple home page first.</p>
-<p>We prioritize URLs based on usefulness, which can be measured by PageRank [10], website traffic, update frequency, etc. “Prioritizer” is the component that handles URL prioritization. Refer to the reference materials [5] [10] for in-depth information about this concept.</p>
+<p>A random post from a discussion forum about Apple products carries very different weight than posts on the Apple home page. Even though they both have the â€œAppleâ€ keyword, it is sensible for a crawler to crawl the Apple home page first.</p>
+<p>We prioritize URLs based on usefulness, which can be measured by PageRank [10], website traffic, update frequency, etc. â€œPrioritizerâ€ is the component that handles URL prioritization. Refer to the reference materials [5] [10] for in-depth information about this concept.</p>
 <p>Figure 7 shows the design that manages URL priority.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system for processing URLs.  A stream of `input URLs` enters a `Prioritizer` component, which then distributes these URLs to multiple queues labeled `f1`, `f2`, ..., `fn`.  These queues are represented as vertically stacked rectangles, suggesting they hold multiple URLs.  The `Prioritizer` determines which queue each incoming URL should be assigned to based on some prioritization logic (not specified in the diagram).  After processing in their respective queues, the URLs from all queues are fed into a `Queue selector` component. This component selects URLs from the various queues, likely based on some selection criteria (again, not detailed), and outputs a stream of `output URLs`.  The ellipsis (...) indicates that there are more queues between `f2` and `fn` than are explicitly shown.  The overall flow is top-down, with URLs entering at the top and exiting at the bottom." loading="lazy" width="500" height="502" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110834/interview-prep/system-design/step-10/007-figure-9-7-H7KUNVWF.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 7</figcaption></div></figure>
 <ul>
@@ -293,7 +294,7 @@
 <p>Web pages are constantly being added, deleted, and edited. A web crawler must periodically recrawl downloaded pages to keep our data set fresh. Recrawl all the URLs is time-consuming and resource intensive. Few strategies to optimize freshness are listed as follows:</p>
 <ul>
 <li>
-<p>Recrawl based on web pages’ update history.</p>
+<p>Recrawl based on web pagesâ€™ update history.</p>
 </li>
 <li>
 <p>Prioritize URLs and recrawl important pages first and more frequently.</p>
@@ -378,7 +379,7 @@ Disallow: /gp/aw/cr/
 <p>Horizontal scaling: For large scale crawl, hundreds or even thousands of servers are needed to perform download tasks. The key is to keep servers stateless.</p>
 </li>
 <li>
-<p>Availability, consistency, and reliability: These concepts are at the core of any large system’s success.</p>
+<p>Availability, consistency, and reliability: These concepts are at the core of any large systemâ€™s success.</p>
 </li>
 <li>
 <p>Analytics: Collecting and analyzing data are important parts of any system because data is key ingredient for fine-tuning.</p>
@@ -394,16 +395,17 @@ Disallow: /gp/aw/cr/
 <a href="http://infolab.stanford.edu/~olston/publications/crawling_survey.pdf" target="_blank" rel="noopener noreferrer"><u>http://infolab.stanford.edu/~olston/publications/crawling_survey.pdf</u></a></p>
 <p>[6] 29% Of Sites Face Duplicate Content Issues: <a href="https://tinyurl.com/y6tmh55y" target="_blank" rel="noopener noreferrer"><u>https://tinyurl.com/y6tmh55y</u></a></p>
 <p>[7] Rabin M.O., et al. Fingerprinting by random polynomials Center for Research in Computing Techn., Aiken Computation Laboratory, Univ. (1981)</p>
-<p>[8] B. H. Bloom, “Space/time trade-offs in hash coding with allowable errors,” Communications of the ACM, vol. 13, no. 7, pp. 422–426, 1970.</p>
+<p>[8] B. H. Bloom, â€œSpace/time trade-offs in hash coding with allowable errors,â€ Communications of the ACM, vol. 13, no. 7, pp. 422â€“426, 1970.</p>
 <p>[9] Donald J. Patterson, Web Crawling:</p>
 <p><a href="https://www.ics.uci.edu/~lopes/teaching/cs221W12/slides/Lecture05.pdf" target="_blank" rel="noopener noreferrer"><u>https://www.ics.uci.edu/~lopes/teaching/cs221W12/slides/Lecture05.pdf</u></a></p>
-<p>[10] L. Page, S. Brin, R. Motwani, and T. Winograd, “The PageRank citation ranking: Bringing order to the web,” Technical Report, Stanford University, 1998.</p>
+<p>[10] L. Page, S. Brin, R. Motwani, and T. Winograd, â€œThe PageRank citation ranking: Bringing order to the web,â€ Technical Report, Stanford University, 1998.</p>
 <p>[11] Burton Bloom. Space/time trade-offs in hash coding with allowable errors. Communications of the ACM, 13(7), pages 422--426, July 1970.</p>
 <p>[12] Google Dynamic Rendering: <a href="https://developers.google.com/search/docs/guides/dynamic-rendering" target="_blank" rel="noopener noreferrer"><u>https://developers.google.com/search/docs/guides/dynamic-rendering</u></a></p>
-<p>[13] T. Urvoy, T. Lavergne, and P. Filoche, “Tracking web spam with hidden style similarity,” in Proceedings of the 2nd International Workshop on Adversarial Information Retrieval on the Web, 2006.</p>
-<p>[14] H.-T. Lee, D. Leonard, X. Wang, and D. Loguinov, “IRLbot: Scaling to 6 billion pages and beyond,” in Proceedings of the 17th International World Wide Web Conference, 2008.</p>
+<p>[13] T. Urvoy, T. Lavergne, and P. Filoche, â€œTracking web spam with hidden style similarity,â€ in Proceedings of the 2nd International Workshop on Adversarial Information Retrieval on the Web, 2006.</p>
+<p>[14] H.-T. Lee, D. Leonard, X. Wang, and D. Loguinov, â€œIRLbot: Scaling to 6 billion pages and beyond,â€ in Proceedings of the 17th International World Wide Web Conference, 2008.</p>
         </article>
       </section>
     </main>
   </body>
 </html>
+

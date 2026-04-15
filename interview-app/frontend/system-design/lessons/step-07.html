@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design A Key-value Store | System Design Course</title>
     <meta name="description" content="System Design lesson 7: Design A Key-value Store" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg" />
     <link rel="stylesheet" href="../../css/global.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <style>
@@ -68,11 +69,11 @@
           <p class="text-sm text-muted">System Design lesson 7 of 30</p>
         </header>
         <article class="system-design-chapter-content">
-<header><strong class="style_chapter__grtAe">07</strong><h1>Design A Key-value Store</h1></header><p>A key-value store, also referred to as a key-value database, is a non-relational database. Each unique identifier is stored as a key with its associated value. This data pairing is known as a “key-value” pair.</p>
+<header><strong class="style_chapter__grtAe">07</strong><h1>Design A Key-value Store</h1></header><p>A key-value store, also referred to as a key-value database, is a non-relational database. Each unique identifier is stored as a key with its associated value. This data pairing is known as a â€œkey-valueâ€ pair.</p>
 <p>In a key-value pair, the key must be unique, and the value associated with the key can be accessed through the key. Keys can be plain text or hashed values. For performance reasons, a short key works better. What do keys look like? Here are a few examples:</p>
 <ul>
 <li>
-<p>Plain text key: “last_logged_in_at”</p>
+<p>Plain text key: â€œlast_logged_in_atâ€</p>
 </li>
 <li>
 <p>Hashed key: 253DDEC4</p>
@@ -83,8 +84,8 @@
 <table><thead><tr><th><strong>key</strong></th><th><strong>value</strong></th></tr></thead><tbody><tr><td>145</td><td>john</td></tr><tr><td>147</td><td>bob</td></tr><tr><td>160</td><td>julia</td></tr></tbody></table>
 <p class="tableCaption">Table 1</p>
 <p>In this chapter, you are asked to design a key-value store that supports the following operations:</p>
-<p>- put(key, value) // insert “value” associated with “key”</p>
-<p>- get(key) // get “value” associated with “key”</p>
+<p>- put(key, value) // insert â€œvalueâ€ associated with â€œkeyâ€</p>
+<p>- get(key) // get â€œvalueâ€ associated with â€œkeyâ€</p>
 <h2 id="understand-the-problem-and-establish-design-scope">Understand the problem and establish design scope</h2>
 <p>There is no perfect design. Each design achieves a specific balance regarding the tradeoffs of the read, write, and memory usage. Another tradeoff has to be made was between consistency and availability. In this chapter, we design a key-value store that comprises of the following characteristics:</p>
 <ul>
@@ -189,7 +190,7 @@
 <p>Consistent hashing discussed in the previous chapter is a great technique to solve these problems. Let us revisit how consistent hashing works at a high-level.</p>
 <ul>
 <li>
-<p>First, servers are placed on a hash ring. In Figure 4, eight servers, represented by <em>s0, s1, …, s7</em>, are placed on the hash ring.</p>
+<p>First, servers are placed on a hash ring. In Figure 4, eight servers, represented by <em>s0, s1, â€¦, s7</em>, are placed on the hash ring.</p>
 </li>
 <li>
 <p>Next, a key is hashed onto the same ring, and it is stored on the first server encountered while moving in the clockwise direction. For instance, <em>key0</em> is stored in <em>s1</em> using this logic.</p>
@@ -236,13 +237,13 @@
 <p>Strong consistency is usually achieved by forcing a replica not to accept new reads/writes until every replica has agreed on current write. This approach is not ideal for highly available systems because it could block new operations. Dynamo and Cassandra adopt eventual consistency, which is our recommended consistency model for our key-value store. From concurrent writes, eventual consistency allows inconsistent values to enter the system and force the client to read the values to reconcile. The next section explains how reconciliation works with versioning.</p>
 <h3 id="inconsistency-resolution-versioning">Inconsistency resolution: versioning</h3>
 <p>Replication gives high availability but causes inconsistencies among replicas. Versioning and vector locks are used to solve inconsistency problems. Versioning means treating each data modification as a new immutable version of data. Before we talk about versioning, let us use an example to explain how inconsistency happens:</p>
-<p>As shown in Figure 7, both replica nodes <em>n1</em> and <em>n2</em> have the same value. Let us call this value the original <em>value. Server 1</em> and <em>server 2</em> get the same value for <em>get(“name”)</em> operation.</p>
+<p>As shown in Figure 7, both replica nodes <em>n1</em> and <em>n2</em> have the same value. Let us call this value the original <em>value. Server 1</em> and <em>server 2</em> get the same value for <em>get(â€œnameâ€)</em> operation.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified system architecture diagram illustrating data retrieval from two separate servers (server 1 and server 2) accessing a database.  Each server, depicted as a green rectangle labeled &#39;server 1&#39; and &#39;server 2&#39; respectively, sends a request &#39;get(&#39;name&#39;)&#39; to a database instance.  The databases, represented as blue cylinders labeled &#39;n1&#39; and &#39;n2&#39;, each contain a single entry &#39;name: john&#39;.  Upon receiving the request, each database instance returns the value &#39;john&#39; to the corresponding server.  The arrows indicate the direction of data flow, showing the request traveling from the server to the database and the response traveling back to the server.  The diagram visually demonstrates a redundant system where both servers can independently retrieve the same data (&#39;john&#39;) from their respective database instances." loading="lazy" width="450" height="263" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110765/interview-prep/system-design/step-07/007-figure-6-7-MX7NGSSF.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 7</figcaption></div></figure>
-<p>Next, <em>server 1</em> changes the name to “johnSanFrancisco”, and <em>server 2</em> changes the name to “johnNewYork” as shown in Figure 8. These two changes are performed simultaneously. Now, we have conflicting values, called versions <em>v1</em> and <em>v2</em>.</p>
+<p>Next, <em>server 1</em> changes the name to â€œjohnSanFranciscoâ€, and <em>server 2</em> changes the name to â€œjohnNewYorkâ€ as shown in Figure 8. These two changes are performed simultaneously. Now, we have conflicting values, called versions <em>v1</em> and <em>v2</em>.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified system architecture diagram illustrating data insertion into two separate databases.  Two servers, labeled &#39;server 1&#39; and &#39;server 2,&#39; are depicted as green rectangles.  Each server sends data to a distinct database represented as blue cylinders labeled &#39;n1&#39; and &#39;n2&#39; respectively.  Server 1 sends a &#39;put&#39; request with the key-value pair (&#39;name&#39;, &#39;johnSanFrancisco&#39;) to database n1, which then stores the data as indicated by &#39;name: johnSanFrancisco&#39; next to n1. Similarly, server 2 sends a &#39;put&#39; request with the key-value pair (&#39;name&#39;, &#39;johnNewYork&#39;) to database n2, resulting in the storage of &#39;name: johnNewYork&#39; within n2.  The arrows indicate the direction of data flow from the servers to their respective databases.  There is a vertical line connecting n1 and n2, suggesting a potential relationship or connection between the two databases, although the nature of this connection is not explicitly defined in the diagram." loading="lazy" width="500" height="227" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110767/interview-prep/system-design/step-07/008-figure-6-8-WXAQYDBT.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 8</figcaption></div></figure>
 <p>In this example, the original value could be ignored because the modifications were based on it. However, there is no clear way to resolve the conflict of the last two versions. To resolve this issue, we need a versioning system that can detect conflicts and reconcile conflicts. A vector clock is a common technique to solve this problem. Let us examine how vector clocks work.</p>
 <p>A vector clock is a <em>[server, version]</em> pair associated with a data item. It can be used to check if one version precedes, succeeds, or in conflict with others.</p>
-<p>Assume a vector clock is represented by <em>D([S1, v1], [S2, v2], …, [Sn, vn])</em>, where <em>D</em> is a data item, <em>v1</em> is a version counter, and <em>s1</em> is a server number, etc. If data item <em>D</em> is written to server <em>Si</em>, the system must perform one of the following tasks.</p>
+<p>Assume a vector clock is represented by <em>D([S1, v1], [S2, v2], â€¦, [Sn, vn])</em>, where <em>D</em> is a data item, <em>v1</em> is a version counter, and <em>s1</em> is a server number, etc. If data item <em>D</em> is written to server <em>Si</em>, the system must perform one of the following tasks.</p>
 <ul>
 <li>
 <p>Increment <em>vi</em> if <em>[Si, vi]</em> exists.</p>
@@ -283,7 +284,7 @@
 <p>Once nodes receive heartbeats, membership list is updated to the latest info.</p>
 </li>
 </ul>
-<p>•If the heartbeat has not increased for more than predefined periods, the member is considered as offline.</p>
+<p>â€¢If the heartbeat has not increased for more than predefined periods, the member is considered as offline.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system diagram showing a membership list and a ring topology network.  The top-left shows a partial membership list labeled &#39;s0&#39;s membership list,&#39; displaying a sample entry: &#39;Member IDHeartbeat counterTime01023212:00:0111022412:00:102990811:58:0231...&#39;.  The main part of the image depicts a ring network with five nodes labeled s0, s1, s2, s3, and s5.  Nodes are represented as circles, connected by a gray arc forming the ring.  Directed blue arrows indicate communication flow.  A dashed blue line connects s0 to s2, labeled &#39;detected s2 is down,&#39; indicating that s0 has detected a failure in s2.  Solid blue arrows show directed connections from s0 to s1, s0 to s3, s3 to s4, s3 to s5, and s4 to s3.  Node s2 is visually part of the ring but has no incoming or outgoing connections shown.  The bottom-right corner displays a message: &#39;Viewer does not support full SVG 1.1&#39;." loading="lazy" width="700" height="298" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110773/interview-prep/system-design/step-07/011-figure-6-11-SHKPJFQN.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 11</figcaption></div></figure>
 <p>As shown in Figure 11:</p>
 <ul>
@@ -291,20 +292,20 @@
 <p>Node <em>s0</em> maintains a node membership list shown on the left side.</p>
 </li>
 <li>
-<p>Node <em>s0</em> notices that node s2’s (member ID = 2) heartbeat counter has not increased for a long time.</p>
+<p>Node <em>s0</em> notices that node s2â€™s (member ID = 2) heartbeat counter has not increased for a long time.</p>
 </li>
 <li>
-<p>Node <em>s0</em> sends heartbeats that include <em>s2</em>’s info to a set of random nodes. Once other nodes confirm that <em>s2</em>’s heartbeat counter has not been updated for a long time, node <em>s2</em> is marked down, and this information is propagated to other nodes.</p>
+<p>Node <em>s0</em> sends heartbeats that include <em>s2</em>â€™s info to a set of random nodes. Once other nodes confirm that <em>s2</em>â€™s heartbeat counter has not been updated for a long time, node <em>s2</em> is marked down, and this information is propagated to other nodes.</p>
 </li>
 </ul>
 <h4 id="handling-temporary-failures">Handling temporary failures</h4>
 <p>After failures have been detected through the gossip protocol, the system needs to deploy certain mechanisms to ensure availability. In the strict quorum approach, read and write operations could be blocked as illustrated in the quorum consensus section.</p>
-<p>A technique called “sloppy quorum” [4] is used to improve availability. Instead of enforcing the quorum requirement, the system chooses the first <em>W</em> healthy servers for writes and first <em>R</em> healthy servers for reads on the hash ring. Offline servers are ignored.</p>
+<p>A technique called â€œsloppy quorumâ€ [4] is used to improve availability. Instead of enforcing the quorum requirement, the system chooses the first <em>W</em> healthy servers for writes and first <em>R</em> healthy servers for reads on the hash ring. Offline servers are ignored.</p>
 <p>If a server is unavailable due to network or server failures, another server will process requests temporarily. When the down server is up, changes will be pushed back to achieve data consistency. This process is called hinted handoff. Since <em>s2</em> is unavailable in Figure 12, reads and writes will be handled by <em>s3</em> temporarily. When <em>s2</em> comes back online, <em>s3</em> will hand the data back to <em>s2</em>.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified distributed system architecture, likely for a key-value store, depicted as a circular arrangement of four nodes: s0, s1, s2, and s3, all interconnected and communicating with a central &#39;coordinator&#39;.  Solid arrows indicate the flow of data, specifically `put(key1, val1)` operations, representing the insertion of a key-value pair.  These data flows originate from the coordinator and are directed towards s0 and s1, with each receiving node sending back an &#39;ACK&#39; acknowledgment to the coordinator along a separate arrow.  A dashed arrow shows a `put(key1, val1)` operation from the coordinator to s2, suggesting a less reliable or different communication method.  Node s3 is shown connected to the circle but without any explicit data flow depicted. The nodes s0, s1, s2, and s3 are likely replicas or shards of the data store, and the coordinator manages data distribution and consistency. The text &#39;Viewer does not support full SVG 1.1&#39; indicates a limitation of the rendering software used to display the diagram." loading="lazy" width="381" height="361" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110775/interview-prep/system-design/step-07/012-figure-6-12-TCHVLATH.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 12</figcaption></div></figure>
 <h4 id="handling-permanent-failures">Handling permanent failures</h4>
 <p>Hinted handoff is used to handle temporary failures. What if a replica is permanently unavailable? To handle such a situation, we implement an anti-entropy protocol to keep replicas in sync. Anti-entropy involves comparing each piece of data on replicas and updating each replica to the newest version. A Merkle tree is used for inconsistency detection and minimizing the amount of data transferred.</p>
-<p>Quoted from Wikipedia [7]: “A hash tree or Merkle tree is a tree in which every non-leaf node is labeled with the hash of the labels or values (in case of leaves) of its child nodes. Hash trees allow efficient and secure verification of the contents of large data structures”.</p>
+<p>Quoted from Wikipedia [7]: â€œA hash tree or Merkle tree is a tree in which every non-leaf node is labeled with the hash of the labels or values (in case of leaves) of its child nodes. Hash trees allow efficient and secure verification of the contents of large data structuresâ€.</p>
 <p>Assuming key space is from 1 to 12, the following steps show how to build a Merkle tree. Highlighted boxes indicate inconsistency.</p>
 <p>Step 1: Divide key space into buckets (4 in our example) as shown in Figure 13. A bucket is used as the root level node to maintain a limited depth of the tree.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified diagram illustrating data partitioning across two servers, labeled &#39;server 1&#39; and &#39;server 2&#39;.  Each server is depicted as a rounded rectangle containing several vertical rectangular blocks representing data partitions.  Server 1 shows partitions labeled &#39;1...&#39;, &#39;...&#39;, &#39;7...&#39;, and &#39;10...&#39;, indicating a range of data stored within each partition.  Similarly, server 2 displays partitions with the same labels &#39;1...&#39;, &#39;...&#39;, &#39;7...&#39;, and &#39;10...&#39;, suggesting a replication or distribution strategy. The ellipses (&#39;...&#39;) within the labels imply that each partition contains multiple data entries, not just the numbers shown.  There are no explicit connections drawn between the servers, implying that data access might be handled independently or through a separate, unillustrated mechanism. The bottom text &#39;Viewer does not support full SVG 1.1&#39; indicates a technical limitation in rendering the original diagram, not a part of the system&#39;s design." loading="lazy" width="451" height="160" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110778/interview-prep/system-design/step-07/013-figure-6-13-2LCEPIWQ.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 13</figcaption></div></figure>
@@ -369,7 +370,7 @@
 <p>[1] Amazon DynamoDB: <a href="https://aws.amazon.com/dynamodb/" target="_blank" rel="noopener noreferrer"><u>https://aws.amazon.com/dynamodb/</u></a></p>
 <p>[2] memcached: <a href="https://memcached.org/" target="_blank" rel="noopener noreferrer"><u>https://memcached.org/</u></a></p>
 <p>[3] Redis: <a href="https://redis.io/" target="_blank" rel="noopener noreferrer"><u>https://redis.io/</u></a></p>
-<p>[4] Dynamo: Amazon’s Highly Available Key-value Store:<br>
+<p>[4] Dynamo: Amazonâ€™s Highly Available Key-value Store:<br>
 <a href="https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf" target="_blank" rel="noopener noreferrer"><u>https://www.allthingsdistributed.com/files/amazon-dynamo-sosp2007.pdf</u></a></p>
 <p>[5] Cassandra: <a href="https://cassandra.apache.org/" target="_blank" rel="noopener noreferrer"><u>https://cassandra.apache.org/</u></a></p>
 <p>[6] Bigtable: A Distributed Storage System for Structured Data:<br>
@@ -383,3 +384,4 @@
     </main>
   </body>
 </html>
+

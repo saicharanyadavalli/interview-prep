@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design A Rate Limiter | System Design Course</title>
     <meta name="description" content="System Design lesson 5: Design A Rate Limiter" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg" />
     <link rel="stylesheet" href="../../css/global.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <style>
@@ -89,7 +90,7 @@
 <p>Reduce cost. Limiting excess requests means fewer servers and allocating more resources to high priority APIs. Rate limiting is extremely important for companies that use paid third party APIs. For example, you are charged on a per-call basis for the following external APIs: check credit, make a payment, retrieve health records, etc. Limiting the number of calls is essential to reduce costs.</p>
 </li>
 <li>
-<p>Prevent servers from being overloaded. To reduce server load, a rate limiter is used to filter out excess requests caused by bots or users’ misbehavior.</p>
+<p>Prevent servers from being overloaded. To reduce server load, a rate limiter is used to filter out excess requests caused by bots or usersâ€™ misbehavior.</p>
 </li>
 </ul>
 <h2 id="step-1---understand-the-problem-and-establish-design-scope">Step 1 - Understand the problem and establish design scope</h2>
@@ -147,7 +148,7 @@
 <p>Let us use an example in Figure 3 to illustrate how rate limiting works in this design. Assume our API allows 2 requests per second, and a client sends 3 requests to the server within a second. The first two requests are routed to API servers. However, the rate limiter middleware throttles the third request and returns a HTTP status code 429. The HTTP 429 response status code indicates a user has sent too many requests.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system architecture diagram illustrating rate limiting in an API.  A light-blue rounded rectangle labeled &#39;Client&#39; contains icons representing a laptop and a mobile phone, signifying multiple client devices.  Multiple solid blue arrows emanate from the Client, representing requests, and point towards a tall, dark-grey rectangle labeled &#39;Rate limiter.&#39;  Some requests successfully pass through the Rate limiter, indicated by the continuation of the arrows to a dashed light-blue rounded rectangle labeled &#39;API Servers,&#39; which depicts three vertically stacked green server icons.  However, one request is blocked by the Rate limiter, shown by a red &#39;X&#39; and a dashed red arrow pointing back to the Client with the label &#39;429: Too many requests,&#39; indicating a HTTP 429 error response due to exceeding the rate limit.  The diagram clearly shows the flow of requests from clients, their filtering by the Rate limiter, and the potential for rejection based on exceeding a defined request rate." loading="lazy" width="500" height="189" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110694/interview-prep/system-design/step-05/003-figure-4-3-KLFLUVLJ.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 3</figcaption></div></figure>
 <p>Cloud microservices [4] have become widely popular and rate limiting is usually implemented within a component called API gateway. API gateway is a fully managed service that supports rate limiting, SSL termination, authentication, IP whitelisting, servicing static content, etc. For now, we only need to know that the API gateway is a middleware that supports rate limiting.</p>
-<p>While designing a rate limiter, an important question to ask ourselves is: where should the rate limiter be implemented, on the server-side or in a gateway? There is no absolute answer. It depends on your company’s current technology stack, engineering resources, priorities, goals, etc. Here are a few general guidelines:</p>
+<p>While designing a rate limiter, an important question to ask ourselves is: where should the rate limiter be implemented, on the server-side or in a gateway? There is no absolute answer. It depends on your companyâ€™s current technology stack, engineering resources, priorities, goals, etc. Here are a few general guidelines:</p>
 <ul>
 <li>
 <p>Evaluate your current technology stack, such as programming language, cache service, etc. Make sure your current programming language is efficient to implement rate limiting on the server-side.</p>
@@ -509,7 +510,7 @@ X-Ratelimit-Retry-After: The number of seconds to wait until you can make a requ
 <p>Performance optimization is a common topic in system design interviews. We will cover two areas to improve.</p>
 <p>First, multi-data center setup is crucial for a rate limiter because latency is high for users located far away from the data center. Most cloud service providers build many edge server locations around the world. For example, as of 5/20 2020, Cloudflare has 194 geographically distributed edge servers [14]. Traffic is automatically routed to the closest edge server to reduce latency.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified map, possibly of a geographical region, showing the distribution of data points or resources.  The map is primarily light blue, depicting landmasses with irregular boundaries. Scattered across these landmasses are numerous light purple circles with white outlines, suggesting locations of individual entities or data points.  A single, larger light purple circle with a white outline is located on one of the landmasses, and a dark grey circle is situated to its left. A black arrow points from the grey circle directly towards the larger light purple circle, indicating a flow of information or a connection between these two points. The grey circle might represent a source or origin, while the larger purple circle could be a destination or central point receiving data. The smaller purple circles are distributed across both landmasses, suggesting a network or cluster of related entities.  The overall arrangement suggests a client-server or data aggregation model, where data from multiple sources (smaller purple circles) might be collected and processed at a central location (larger purple circle), potentially originating from a specific source (grey circle)." loading="lazy" width="400" height="236" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110727/interview-prep/system-design/step-05/017-figure-4-17-AWRJL2OI.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 17 (Source: [10])</figcaption></div></figure>
-<p>Second, synchronize data with an eventual consistency model. If you are unclear about the eventual consistency model, refer to the “Consistency” section in the “Design a Key-value Store” chapter.</p>
+<p>Second, synchronize data with an eventual consistency model. If you are unclear about the eventual consistency model, refer to the â€œConsistencyâ€ section in the â€œDesign a Key-value Storeâ€ chapter.</p>
 <h3 id="monitoring">Monitoring</h3>
 <p>After the rate limiter is put in place, it is important to gather analytics data to check whether the rate limiter is effective. Primarily, we want to make sure:</p>
 <ul>
@@ -584,7 +585,7 @@ X-Ratelimit-Retry-After: The number of seconds to wait until you can make a requ
 <a href="https://help.shopify.com/en/api/reference/rest-admin-api-rate-limits" target="_blank" rel="noopener noreferrer"><u>https://help.shopify.com/en/api/reference/rest-admin-api-rate-limits</u></a></p>
 <p>[8] Better Rate Limiting With Redis Sorted Sets:<br>
 <a href="https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/" target="_blank" rel="noopener noreferrer"><u>https://engineering.classdojo.com/blog/2015/02/06/rolling-rate-limiter/</u></a></p>
-<p>[9] System Design — Rate limiter and Data modelling:<br>
+<p>[9] System Design â€” Rate limiter and Data modelling:<br>
 <a href="https://medium.com/@saisandeepmopuri/system-design-rate-limiter-and-data-modelling-9304b0d18250" target="_blank" rel="noopener noreferrer"><u>https://medium.com/@saisandeepmopuri/system-design-rate-limiter-and-data-modelling-9304b0d18250</u></a></p>
 <p>[10] How we built rate limiting capable of scaling to millions of domains:<br>
 <a href="https://blog.cloudflare.com/counting-things-a-lot-of-different-things/" target="_blank" rel="noopener noreferrer"><u>https://blog.cloudflare.com/counting-things-a-lot-of-different-things/</u></a></p>
@@ -602,3 +603,4 @@ X-Ratelimit-Retry-After: The number of seconds to wait until you can make a requ
     </main>
   </body>
 </html>
+

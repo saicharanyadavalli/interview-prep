@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Design YouTube | System Design Course</title>
     <meta name="description" content="System Design lesson 15: Design YouTube" />
+    <link rel="icon" type="image/svg+xml" href="../../assets/logo-mark.svg" />
     <link rel="stylesheet" href="../../css/global.css" />
     <link rel="stylesheet" href="../../css/components.css" />
     <style>
@@ -69,7 +70,7 @@
         </header>
         <article class="system-design-chapter-content">
 <header><strong class="style_chapter__grtAe">15</strong><h1>Design YouTube</h1></header><p>In this chapter, you are asked to design YouTube. The solution to this question can be applied to other interview questions like designing a video sharing platform such as Netflix and Hulu. Figure 1 shows the YouTube homepage.</p>
-<figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a screenshot of the YouTube website&#39;s homepage.  The left side displays a vertical menu bar with options for &#39;Sports,&#39; &#39;Gaming,&#39; &#39;Movies,&#39; &#39;TV Shows,&#39; &#39;News,&#39; &#39;Live,&#39; &#39;Fashion,&#39; &#39;Spotlight,&#39; &#39;360° Video,&#39; &#39;Browse channels,&#39; and further options under &#39;MORE FROM YOUTUBE,&#39; including &#39;YouTube Premium,&#39; &#39;Live,&#39; &#39;Settings,&#39; &#39;Report history,&#39; &#39;Help,&#39; and &#39;Send feedback.&#39;  The main area shows a grid of video thumbnails, each with a title, creator&#39;s name (often with a verified checkmark), view count, and upload date.  Examples include &#39;I edited a peppa pig episode cause I didn&#39;t know what else to post (part 2)&#39; by Steph Inc., &#39;14-year-old Alysa Liu makes history again at 2020 Nationals | NBC Sports&#39; by NBC Sports, &#39;Building A Large Post Frame Garage Full Time-lapse Construction: NEVER...&#39; by RR Buildings, and &#39;3 Cool Gadgets - You Can Only Pick One.&#39; by Unbox Therapy.  Each thumbnail displays a video duration.  At the top, a search bar is present with a search icon, and the user&#39;s profile icon is visible in the upper right corner, along with other settings icons.  The videos are arranged in a grid format, and no explicit connections are shown between them beyond their shared presence on the homepage.  Information flow is implicit; the user interacts with the menu and thumbnails to select and view videos." width="750" height="336" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110912/interview-prep/system-design/step-15/001-figure-14-1-POM4N7ME.png" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 1</figcaption></div></figure>
+<figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a screenshot of the YouTube website&#39;s homepage.  The left side displays a vertical menu bar with options for &#39;Sports,&#39; &#39;Gaming,&#39; &#39;Movies,&#39; &#39;TV Shows,&#39; &#39;News,&#39; &#39;Live,&#39; &#39;Fashion,&#39; &#39;Spotlight,&#39; &#39;360Â° Video,&#39; &#39;Browse channels,&#39; and further options under &#39;MORE FROM YOUTUBE,&#39; including &#39;YouTube Premium,&#39; &#39;Live,&#39; &#39;Settings,&#39; &#39;Report history,&#39; &#39;Help,&#39; and &#39;Send feedback.&#39;  The main area shows a grid of video thumbnails, each with a title, creator&#39;s name (often with a verified checkmark), view count, and upload date.  Examples include &#39;I edited a peppa pig episode cause I didn&#39;t know what else to post (part 2)&#39; by Steph Inc., &#39;14-year-old Alysa Liu makes history again at 2020 Nationals | NBC Sports&#39; by NBC Sports, &#39;Building A Large Post Frame Garage Full Time-lapse Construction: NEVER...&#39; by RR Buildings, and &#39;3 Cool Gadgets - You Can Only Pick One.&#39; by Unbox Therapy.  Each thumbnail displays a video duration.  At the top, a search bar is present with a search icon, and the user&#39;s profile icon is visible in the upper right corner, along with other settings icons.  The videos are arranged in a grid format, and no explicit connections are shown between them beyond their shared presence on the homepage.  Information flow is implicit; the user interacts with the menu and thumbnails to select and view videos." width="750" height="336" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110912/interview-prep/system-design/step-15/001-figure-14-1-POM4N7ME.png" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 1</figcaption></div></figure>
 <p>YouTube looks simple: content creators upload videos and viewers click play. Is it really that simple? Not really. There are lots of complex technologies underneath the simplicity. Let us look at some impressive statistics, demographics, and fun facts of YouTube in 2020 [1] [2].</p>
 <ul>
 <li>
@@ -85,7 +86,7 @@
 <p>50 million creators on YouTube</p>
 </li>
 <li>
-<p>YouTube’s Ad revenue was $15.1 billion for the full year 2019, up 36% from 2018.</p>
+<p>YouTubeâ€™s Ad revenue was $15.1 billion for the full year 2019, up 36% from 2018.</p>
 </li>
 <li>
 <p>YouTube is responsible for 37% of all mobile internet traffic.</p>
@@ -162,7 +163,7 @@
 <p>When cloud CDN serves a video, you are charged for data transferred out of the CDN.</p>
 </li>
 <li>
-<p>Let us use Amazon’s CDN CloudFront for cost estimation (Figure 2) [3]. Assume 100% of traffic is served from the United States. The average cost per GB is $0.02. For simplicity, we only calculate the cost of video streaming.</p>
+<p>Let us use Amazonâ€™s CDN CloudFront for cost estimation (Figure 2) [3]. Assume 100% of traffic is served from the United States. The average cost per GB is $0.02. For simplicity, we only calculate the cost of video streaming.</p>
 </li>
 <li>
 <p>5 million * 5 videos * 0.3GB * <span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.02</mn><mo>=</mo></mrow><annotation encoding="application/x-tex">0.02 = </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.6444em;"></span><span class="mord">0.02</span><span class="mspace" style="margin-right: 0.2778em;"></span><span class="mrel">=</span></span></span></span>150,000 per day.</p>
@@ -177,7 +178,7 @@
 <p>System design interviews are not about building everything from scratch. Within the limited time frame, choosing the right technology to do a job right is more important than explaining how the technology works in detail. For instance, mentioning blob storage for storing source videos is enough for the interview. Talking about the detailed design for blob storage could be an overkill.</p>
 </li>
 <li>
-<p>Building scalable blob storage or CDN is extremely complex and costly. Even large companies like Netflix or Facebook do not build everything themselves. Netflix leverages Amazon’s cloud services [4], and Facebook uses Akamai’s CDN [5].</p>
+<p>Building scalable blob storage or CDN is extremely complex and costly. Even large companies like Netflix or Facebook do not build everything themselves. Netflix leverages Amazonâ€™s cloud services [4], and Facebook uses Akamaiâ€™s CDN [5].</p>
 </li>
 </ul>
 <p>At the high-level, the system comprises three components (Figure 3).</p>
@@ -216,7 +217,7 @@
 <p>Metadata cache: For better performance, video metadata and user objects are cached.</p>
 </li>
 <li>
-<p>Original storage: A blob storage system is used to store original videos. A quotation in Wikipedia regarding blob storage shows that: “A Binary Large Object (BLOB) is a collection of binary data stored as a single entity in a database management system” [6].</p>
+<p>Original storage: A blob storage system is used to store original videos. A quotation in Wikipedia regarding blob storage shows that: â€œA Binary Large Object (BLOB) is a collection of binary data stored as a single entity in a database management systemâ€ [6].</p>
 </li>
 <li>
 <p>Transcoding servers: Video transcoding is also called video encoding. It is the process of converting a video format to other formats (MPEG, HLS, etc), which provide the best video streams possible for different devices and bandwidth capabilities.</p>
@@ -263,10 +264,10 @@
 <p>Before we discuss video streaming flow, let us look at an important concept: streaming protocol. This is a standardized way to control data transfer for video streaming. Popular streaming protocols are:</p>
 <ul>
 <li>
-<p>MPEG–DASH. MPEG stands for “Moving Picture Experts Group” and DASH stands for "Dynamic Adaptive Streaming over HTTP".</p>
+<p>MPEGâ€“DASH. MPEG stands for â€œMoving Picture Experts Groupâ€ and DASH stands for "Dynamic Adaptive Streaming over HTTP".</p>
 </li>
 <li>
-<p>Apple HLS. HLS stands for “HTTP Live Streaming”.</p>
+<p>Apple HLS. HLS stands for â€œHTTP Live Streamingâ€.</p>
 </li>
 <li>
 <p>Microsoft Smooth Streaming.</p>
@@ -308,7 +309,7 @@
 </ul>
 <h3 id="directed-acyclic-graph-dag-model">Directed acyclic graph (DAG) model</h3>
 <p>Transcoding a video is computationally expensive and time-consuming. Besides, different content creators may have different video processing requirements. For instance, some content creators require watermarks on top of their videos, some provide thumbnail images themselves, and some upload high definition videos, whereas others do not.</p>
-<p>To support different video processing pipelines and maintain high parallelism, it is important to add some level of abstraction and let client programmers define what tasks to execute. For example, Facebook’s streaming video engine uses a directed acyclic graph (DAG) programming model, which defines tasks in stages so they can be executed sequentially or parallelly [8]. In our design, we adopt a similar DAG model to achieve flexibility and parallelism. Figure 8 represents a DAG for video transcoding.</p>
+<p>To support different video processing pipelines and maintain high parallelism, it is important to add some level of abstraction and let client programmers define what tasks to execute. For example, Facebookâ€™s streaming video engine uses a directed acyclic graph (DAG) programming model, which defines tasks in stages so they can be executed sequentially or parallelly [8]. In our design, we adopt a similar DAG model to achieve flexibility and parallelism. Figure 8 represents a DAG for video transcoding.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a data processing pipeline for video production.  An &#39;Original video&#39; block feeds into two parallel processing paths. The first path extracts the &#39;Video&#39; stream, which then feeds into a &#39;Tasks&#39; group. This group contains several sequential processing steps: &#39;Inspection&#39;, &#39;Video...&#39; (suggesting further video processing), &#39;Thumbnail&#39; generation, and finally &#39;Watermark&#39; addition.  The second path extracts the &#39;Audio&#39; stream, which undergoes processing in an &#39;Audio...&#39; block.  The &#39;Metadata&#39; from the original video is also extracted separately.  Finally, the processed &#39;Video...&#39; stream from the &#39;Tasks&#39; group, the processed &#39;Audio...&#39; stream, and the &#39;Metadata&#39; are all combined in an &#39;Assemble&#39; block to create the final output video.  The connections between blocks are represented by arrows indicating the flow of data.  The &#39;Tasks&#39; group is visually separated by a dashed line." loading="lazy" width="700" height="486" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110917/interview-prep/system-design/step-15/008-figure-14-8-6TUJKWRP.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 8</figcaption></div></figure>
 <p>In Figure 8, the original video is split into video, audio, and metadata. Here are some of the tasks that can be applied on a video file:</p>
 <ul>
@@ -359,8 +360,8 @@
 <p>Running queue: It contains info about the currently running tasks and workers running the tasks.</p>
 </li>
 </ul>
-<p>•Task scheduler: It picks the optimal task/worker, and instructs the chosen task worker to execute the job.</p>
-<figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system for task scheduling and execution.  The system is composed of three main components: a Resource Manager, a Task Scheduler, and a set of Task Workers.  Three queues—Task queue, Worker queue, and Running queue—are depicted as sources of tasks and worker information. The Resource Manager interacts with these queues, selecting the highest priority task from the Task queue and the optimal worker from the Worker queue.  This information is then passed to the Task Scheduler, which, in turn, sends the selected task to an appropriate Task Worker (&#39;run task&#39;). The Task Scheduler also receives task/worker information from the Running queue. The Task Workers are represented as four distinct units: Watermark, Encoder, Thumbnail, and Merger, suggesting different processing functions.  The dashed lines around the Task Scheduler and Task Workers indicate logical groupings.  The arrows show the flow of information and tasks between components." loading="lazy" width="750" height="237" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110932/interview-prep/system-design/step-15/017-figure-14-17-RHMGJC6L.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 17</figcaption></div></figure>
+<p>â€¢Task scheduler: It picks the optimal task/worker, and instructs the chosen task worker to execute the job.</p>
+<figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a system for task scheduling and execution.  The system is composed of three main components: a Resource Manager, a Task Scheduler, and a set of Task Workers.  Three queuesâ€”Task queue, Worker queue, and Running queueâ€”are depicted as sources of tasks and worker information. The Resource Manager interacts with these queues, selecting the highest priority task from the Task queue and the optimal worker from the Worker queue.  This information is then passed to the Task Scheduler, which, in turn, sends the selected task to an appropriate Task Worker (&#39;run task&#39;). The Task Scheduler also receives task/worker information from the Running queue. The Task Workers are represented as four distinct units: Watermark, Encoder, Thumbnail, and Merger, suggesting different processing functions.  The dashed lines around the Task Scheduler and Task Workers indicate logical groupings.  The arrows show the flow of information and tasks between components." loading="lazy" width="750" height="237" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110932/interview-prep/system-design/step-15/017-figure-14-17-RHMGJC6L.svg" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 17</figcaption></div></figure>
 <p>The resource manager works as follows:</p>
 <ul>
 <li>
@@ -417,7 +418,7 @@
 <p>Safety is one of the most important aspects of any product. To ensure only authorized users upload videos to the right location, we introduce pre-signed URLs as shown in Figure 27.</p>
 <figure class="py-1"><div style="display: flex; justify-content: center;"><img alt="Image represents a simplified system architecture for video uploading.  A user, represented by icons for a TV, laptop, and smartphone, initiates a video upload (labeled &#39;3. upload video&#39;). This action sends a request to a set of &#39;API servers,&#39; depicted as three stacked green rectangles within a dashed-line box.  The API servers respond with a &#39;pre-signed URL&#39; (labeled &#39;2. &lt;pre-signed URL&gt;&#39;) which the user then uses to upload the video directly to the &#39;Original storage,&#39; represented by a bucket icon labeled &#39;Original storage&#39; and connected by an arrow labeled &#39;3. upload video&#39;. The initial user request to the API servers is labeled &#39;1. POST /upload,&#39; indicating a POST HTTP request is used to initiate the upload process.  The overall flow shows a two-step process:  first, obtaining a pre-signed URL from the API servers, and second, using that URL to upload the video to the designated storage location." loading="lazy" width="500" height="287" decoding="async" data-nimg="1" src="https://res.cloudinary.com/asdf12235464/image/upload/v1776110951/interview-prep/system-design/step-15/027-figure-14-27-GVQ6JW3A.webp" style="color: transparent;"></div><div style="display: flex; justify-content: center;"><figcaption class="py-1">Figure 27</figcaption></div></figure>
 <p>The upload flow is updated as follows:</p>
-<p>1. The client makes a HTTP request to API servers to fetch the pre-signed URL, which gives the access permission to the object identified in the URL. The term pre-signed URL is used by uploading files to Amazon S3. Other cloud service providers might use a different name. For instance, Microsoft Azure blob storage supports the same feature, but call it “Shared Access Signature” [10].</p>
+<p>1. The client makes a HTTP request to API servers to fetch the pre-signed URL, which gives the access permission to the object identified in the URL. The term pre-signed URL is used by uploading files to Amazon S3. Other cloud service providers might use a different name. For instance, Microsoft Azure blob storage supports the same feature, but call it â€œShared Access Signatureâ€ [10].</p>
 <p>2. API servers respond with a pre-signed URL.</p>
 <p>3. Once the client receives the response, it uploads the video using the pre-signed URL.</p>
 <h4 id="safety-optimization-protect-your-videos">Safety optimization: protect your videos</h4>
@@ -528,7 +529,7 @@
 <p>[5] Akamai homepage: <a href="https://www.akamai.com/" target="_blank" rel="noopener noreferrer"><u>https://www.akamai.com/</u></a></p>
 <p>[6] Binary large object:<br>
 <a href="https://en.wikipedia.org/wiki/Binary_large_object" target="_blank" rel="noopener noreferrer"><u>https://en.wikipedia.org/wiki/Binary_large_object</u></a></p>
-<p>[7] Here’s What You Need to Know About Streaming Protocols:<br>
+<p>[7] Hereâ€™s What You Need to Know About Streaming Protocols:<br>
 <a href="https://www.dacast.com/blog/streaming-protocols/" target="_blank" rel="noopener noreferrer"><u>https://www.dacast.com/blog/streaming-protocols/</u></a></p>
 <p>[8] SVE: Distributed Video Processing at Facebook Scale:<br>
 <a href="https://www.cs.princeton.edu/~wlloyd/papers/sve-sosp17.pdf" target="_blank" rel="noopener noreferrer"><u>https://www.cs.princeton.edu/~wlloyd/papers/sve-sosp17.pdf</u></a></p>
@@ -547,3 +548,4 @@
     </main>
   </body>
 </html>
+

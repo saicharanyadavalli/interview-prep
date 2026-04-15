@@ -529,6 +529,7 @@ body[data-theme="dark"] .progress-wrap {
   padding-top: 1rem;
   display: grid;
   gap: 0.75rem;
+  min-width: 0;
 }
 
 .system-design-lesson-frame {
@@ -550,6 +551,13 @@ body[data-theme="dark"] .progress-wrap {
 .system-design-chapter-content li {
   color: var(--ink);
   line-height: 1.64;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
+
+.system-design-chapter-content a {
+  overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .system-design-file-path {
@@ -593,18 +601,31 @@ body[data-theme="dark"] .progress-wrap {
   gap: 0.35rem;
 }
 
-/* Keep lesson figures at intrinsic image size and allow horizontal scroll on small screens. */
-.system-design-lesson-main .system-design-chapter-content figure > div:first-child {
+.system-design-chapter-content .table-wrap {
   max-width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
 }
 
+.system-design-chapter-content .table-wrap table {
+  width: max-content !important;
+  min-width: 100%;
+}
+
+.system-design-lesson-main .system-design-chapter-content figure > div:first-child {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+
 .system-design-lesson-main .system-design-chapter-content figure > div:first-child img {
-  width: auto;
-  max-width: none;
-  height: auto;
-  flex-shrink: 0;
+  width: auto !important;
+  max-width: none !important;
+  height: auto !important;
+  flex: 0 0 auto;
 }
 
 .system-design-chapter-content figcaption {
