@@ -41,7 +41,6 @@ const SYSTEM_DESIGN_CHAPTERS = SYSTEM_DESIGN_TITLES.map((title, index) => {
   return {
     step_no: stepNo,
     title,
-    local_html: `system-design/lessons/step-${stepToken}.html`,
   };
 });
 
@@ -71,8 +70,7 @@ async function loadSystemDesignCoursePage() {
   const chapters = SYSTEM_DESIGN_CHAPTERS.map((chapter) => ({
     step_no: Number(chapter.step_no),
     title: String(chapter.title || "").trim(),
-    local_html: normalizeLocalPath(String(chapter.local_html || "").trim()),
-  })).filter((chapter) => Number.isFinite(chapter.step_no) && chapter.step_no > 0 && chapter.local_html);
+  })).filter((chapter) => Number.isFinite(chapter.step_no) && chapter.step_no > 0);
 
   updateFileCount(refs, chapters.length);
   renderStepsList(refs, chapters);
