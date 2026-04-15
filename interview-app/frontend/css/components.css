@@ -614,18 +614,16 @@ body[data-theme="dark"] .progress-wrap {
 
 .system-design-lesson-main .system-design-chapter-content figure > div:first-child {
   max-width: 100%;
-  overflow-x: auto;
-  overflow-y: hidden;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
   display: flex !important;
-  justify-content: flex-start !important;
+  justify-content: center !important;
 }
 
 .system-design-lesson-main .system-design-chapter-content figure > div:first-child img {
   width: auto !important;
-  max-width: none !important;
+  max-width: 100% !important;
   height: auto !important;
-  flex: 0 0 auto;
+  flex: 0 1 auto;
 }
 
 .system-design-chapter-content figcaption {
@@ -721,7 +719,7 @@ body[data-theme="dark"] .progress-wrap {
   }
 
   .system-design-lesson-main .system-design-chapter-content figure > div:first-child {
-    justify-content: flex-start !important;
+    justify-content: center !important;
   }
 }
 
