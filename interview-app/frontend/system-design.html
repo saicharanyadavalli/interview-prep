@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>System Design Course — Interview Practice Platform</title>
-    <meta name="description" content="Learn system design through a 30-step course with progress tracking and chapter notes." />
+    <meta name="description" content="Browse all 30 system design chapter files and open any lesson in a new tab." />
     <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/components.css" />
@@ -42,23 +42,19 @@
         <div class="page-header">
           <h1>🧠 System Design Course</h1>
           <div class="page-header-actions">
-            <span id="sdCompletionBadge" class="counter-badge">0 / 30</span>
+            <span id="sdCompletionBadge" class="counter-badge">0 files</span>
           </div>
         </div>
 
         <section class="card-flat section">
-          <p class="card-subtitle">Follow all 30 chapters in order, mark completion per step, and continue from where you left off.</p>
-          <div class="progress-wrap system-design-progress-wrap">
-            <div id="sdProgressFill" class="progress-fill"></div>
-          </div>
-          <p id="sdProgressText" class="text-sm text-muted" style="margin-top:0.55rem;">Loading progress...</p>
+          <p class="card-subtitle">Browse all local chapter HTML files. Click any chapter to open it in a new tab.</p>
         </section>
 
         <section class="system-design-layout section">
           <aside class="card-flat system-design-steps-panel">
             <div class="system-design-steps-head">
               <h3>📚 Chapters</h3>
-              <span id="sdCompletedPill" class="pill">0 completed</span>
+              <span id="sdCompletedPill" class="pill">0 files</span>
             </div>
             <div id="systemDesignSteps" class="system-design-steps-list">
               <p class="loading"><span class="loading-dot">⏳</span> Loading chapters...</p>
@@ -68,21 +64,18 @@
           <article class="card-flat system-design-content-panel">
             <div class="system-design-content-head">
               <div>
-                <h2 id="sdChapterTitle">Select a chapter</h2>
-                <p id="sdChapterMeta" class="text-sm text-muted">Choose a step from the left panel to start learning.</p>
+                <h2 id="sdChapterTitle">Select a chapter file</h2>
+                <p id="sdChapterMeta" class="text-sm text-muted">Choose a chapter from the left panel. It will open in a new tab.</p>
               </div>
               <div class="button-row">
                 <a id="sdSourceLink" class="btn btn-sm" href="#" target="_blank" rel="noopener noreferrer">Open Source</a>
-                <button id="sdToggleCompleteBtn" class="btn btn-sm btn-primary" type="button" disabled>
-                  Mark Complete
-                </button>
               </div>
             </div>
 
             <div id="sdChapterContent" class="system-design-chapter-content">
               <div class="empty-state">
                 <p class="empty-icon">🧩</p>
-                <p>Chapter content will appear here.</p>
+                <p>Chapter file details will appear here.</p>
               </div>
             </div>
           </article>

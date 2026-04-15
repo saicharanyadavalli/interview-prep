@@ -4,9 +4,7 @@
 
 const systemDesignState = {
   steps: [],
-  progressByStep: new Map(),
   activeStepNo: null,
-  renderRequestId: 0,
 };
 
 document.addEventListener("DOMContentLoaded", async () => {
@@ -28,22 +26,16 @@ async function loadSystemDesignCoursePage() {
     chapterMeta: document.getElementById("sdChapterMeta"),
     chapterContent: document.getElementById("sdChapterContent"),
     sourceLink: document.getElementById("sdSourceLink"),
-    toggleCompleteBtn: document.getElementById("sdToggleCompleteBtn"),
-    completionBadge: document.getElementById("sdCompletionBadge"),
-    completedPill: document.getElementById("sdCompletedPill"),
-    progressFill: document.getElementById("sdProgressFill"),
-    progressText: document.getElementById("sdProgressText"),
+    fileCountBadge: document.getElementById("sdCompletionBadge"),
+    filesPill: document.getElementById("sdCompletedPill"),
   };
 
-  if (Object.values(refs).some((el) => !el)) {
+  if (!refs.stepsList || !refs.chapterTitle || !refs.chapterMeta || !refs.chapterContent) {
     return;
   }
 
   try {
-    const [indexRes, progressRes] = await Promise.all([
-      fetch("assets/system-design/course-index.json"),
-      API.getSystemDesignProgress(),
-    ]);
+    const indexRes = await fetch("assets/system-design/course-index.json", { cache: "no-store" });
 
     if (!indexRes.ok) {
       throw new Error(`Failed to load course index (${indexRes.status})`);
@@ -51,23 +43,34 @@ async function loadSystemDesignCoursePage() {
 
     const indexData = await indexRes.json();
     const steps = Array.isArray(indexData && indexData.steps) ? indexData.steps : [];
-    systemDesignState.steps = steps;
+    systemDesignState.steps = steps
+      .map((step) => ({
+        step_no: Number(step && step.step_no),
+        title: String((step && step.title) || "").trim(),
+        source_url: String((step && step.source_url) || "").trim(),
+        local_html: normalizeLocalPath(String((step && step.local_html) || "").trim()),
+      }))
+      .filter((step) => Number.isFinite(step.step_no) && step.step_no > 0 && step.local_html)
+      .sort((a, b) => a.step_no - b.step_no);
 
-    const progressSteps = Array.isArray(progressRes && progressRes.steps) ? progressRes.steps : [];
-    systemDesignState.progressByStep = new Map(progressSteps.map((item) => [Number(item.step_no), Boolean(item.completed)]));
+    updateFileCount(refs);
 
     renderStepsList(refs);
 
-    const firstIncomplete = steps.find((step) => !systemDesignState.progressByStep.get(Number(step.step_no || 0)));
-    const initialStep = firstIncomplete || steps[0] || null;
+    const initialStep = systemDesignState.steps[0] || null;
     if (initialStep) {
-      await openStep(initialStep, refs);
+      setActiveStep(initialStep, refs);
       renderStepsList(refs);
+    } else {
+      refs.chapterTitle.textContent = "No chapter files found";
+      refs.chapterMeta.textContent = "Could not find valid local HTML files in the course index.";
+      refs.chapterContent.innerHTML = '<p class="text-muted">No chapter file paths are available.</p>';
     }
   } catch (error) {
+    updateFileCount(refs, 0);
     refs.stepsList.innerHTML = `
       <div class="empty-state">
-        <p class="empty-icon">??</p>
+        <p class="empty-icon">!</p>
         <p>Unable to load System Design course.</p>
         <p class="text-sm text-muted">${escapeHtml(error.message || "Unknown error")}</p>
       </div>
@@ -77,14 +80,6 @@ async function loadSystemDesignCoursePage() {
 
 function renderStepsList(refs) {
   const steps = systemDesignState.steps;
-  const total = steps.length;
-  const completed = steps.filter((step) => systemDesignState.progressByStep.get(Number(step.step_no || 0))).length;
-  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-
-  refs.completionBadge.textContent = `${completed} / ${total}`;
-  refs.completedPill.textContent = `${completed} completed`;
-  refs.progressFill.style.width = `${percent}%`;
-  refs.progressText.textContent = `${percent}% complete`;
 
   if (!steps.length) {
     refs.stepsList.innerHTML = '<p class="text-muted text-sm">No chapter data available.</p>';
@@ -94,13 +89,13 @@ function renderStepsList(refs) {
   refs.stepsList.innerHTML = steps
     .map((step) => {
       const stepNo = Number(step.step_no || 0);
-      const completedStep = Boolean(systemDesignState.progressByStep.get(stepNo));
       const active = stepNo === Number(systemDesignState.activeStepNo || 0);
       return `
         <button type="button" class="system-design-step-btn ${active ? "is-active" : ""}" data-step-no="${stepNo}">
           <span class="system-design-step-index">Step ${stepNo}</span>
           <span class="system-design-step-title">${escapeHtml(step.title || `Step ${stepNo}`)}</span>
-          <span class="system-design-step-status ${completedStep ? "done" : "pending"}">${completedStep ? "Completed" : "Pending"}</span>
+          <span class="system-design-file-path">${escapeHtml(step.local_html || "")}</span>
+          <span class="system-design-step-status open">Open HTML in new tab</span>
         </button>
       `;
     })
@@ -112,152 +107,71 @@ function renderStepsList(refs) {
       const step = systemDesignState.steps.find((item) => Number(item.step_no || 0) === stepNo);
       if (!step) return;
 
-      openStep(step, refs)
-        .then(() => {
-          renderStepsList(refs);
-        })
-        .catch(() => {
-          renderStepsList(refs);
-        });
+      setActiveStep(step, refs);
+      renderStepsList(refs);
+      openStepInNewTab(step, refs);
     });
   });
 }
 
-async function openStep(step, refs) {
+function setActiveStep(step, refs) {
   const stepNo = Number(step.step_no || 0);
   if (!stepNo) return;
 
   systemDesignState.activeStepNo = stepNo;
-  const requestId = ++systemDesignState.renderRequestId;
 
   const title = String(step.title || `Step ${stepNo}`).trim();
   const htmlPath = String(step.local_html || "").trim();
   const sourceUrl = String(step.source_url || "").trim();
 
   refs.chapterTitle.textContent = `Step ${stepNo}: ${title}`;
-  refs.chapterMeta.textContent = htmlPath ? "Loading chapter content..." : "Chapter file path unavailable.";
+  refs.chapterMeta.textContent = htmlPath
+    ? "Clicking the chapter opens this local HTML file in a new tab."
+    : "Chapter file path unavailable.";
 
-  refs.sourceLink.href = sourceUrl || "#";
-  refs.sourceLink.style.pointerEvents = sourceUrl ? "auto" : "none";
-  refs.sourceLink.style.opacity = sourceUrl ? "1" : "0.5";
+  if (refs.sourceLink) {
+    refs.sourceLink.href = sourceUrl || "#";
+    refs.sourceLink.style.pointerEvents = sourceUrl ? "auto" : "none";
+    refs.sourceLink.style.opacity = sourceUrl ? "1" : "0.5";
+  }
 
+  refs.chapterContent.innerHTML = `
+    <div class="empty-state">
+      <p><strong>Local file:</strong></p>
+      <p class="system-design-file-path">${escapeHtml(htmlPath || "(missing path)")}</p>
+      <p class="text-sm text-muted">Select this chapter to open it in a new tab.</p>
+    </div>
+  `;
+}
+
+function openStepInNewTab(step, refs) {
+  const htmlPath = String(step.local_html || "").trim();
   if (!htmlPath) {
-    refs.chapterContent.innerHTML = '<p class="text-muted">No chapter path found for this step.</p>';
-  } else {
-    refs.chapterContent.innerHTML = '<p class="loading"><span class="loading-dot">⏳</span> Loading chapter...</p>';
-    await renderLessonContent(htmlPath, title, refs, requestId);
+    refs.chapterMeta.textContent = "Cannot open chapter because local file path is missing.";
+    return;
   }
 
-  const isCompleted = Boolean(systemDesignState.progressByStep.get(stepNo));
-  refs.toggleCompleteBtn.disabled = false;
-  refs.toggleCompleteBtn.textContent = isCompleted ? "Mark Incomplete" : "Mark Complete";
+  const openedTab = window.open(encodeURI(htmlPath), "_blank", "noopener,noreferrer");
+  if (openedTab) {
+    refs.chapterMeta.textContent = `Opened ${htmlPath} in a new tab.`;
+    return;
+  }
 
-  refs.toggleCompleteBtn.onclick = async () => {
-    const current = Boolean(systemDesignState.progressByStep.get(stepNo));
-    const next = !current;
-
-    refs.toggleCompleteBtn.disabled = true;
-    try {
-      await API.updateSystemDesignProgress(stepNo, next);
-      systemDesignState.progressByStep.set(stepNo, next);
-      refs.toggleCompleteBtn.textContent = next ? "Mark Incomplete" : "Mark Complete";
-    } catch (error) {
-      alert(`Failed to update progress: ${error.message}`);
-    } finally {
-      refs.toggleCompleteBtn.disabled = false;
-      renderStepsList(refs);
-    }
-  };
+  refs.chapterMeta.textContent = "Popup was blocked by the browser. Allow popups and try again.";
 }
 
-async function renderLessonContent(htmlPath, title, refs, requestId) {
-  try {
-    const response = await fetch(htmlPath, { cache: "no-store" });
-    if (!response.ok) {
-      throw new Error(`Failed to load chapter file (${response.status})`);
-    }
-
-    const html = await response.text();
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(html, "text/html");
-    const sourceArticle = doc.querySelector("article.system-design-chapter-content") || doc.querySelector("article") || doc.body;
-    if (!sourceArticle) {
-      throw new Error("No chapter content found in lesson file");
-    }
-
-    const lessonNode = sourceArticle.cloneNode(true);
-    normalizeLessonNodeUrls(lessonNode, htmlPath);
-    lessonNode.querySelectorAll("script").forEach((scriptNode) => scriptNode.remove());
-    lessonNode.classList.remove("system-design-chapter-content");
-    lessonNode.classList.add("system-design-inline-lesson");
-
-    if (requestId !== systemDesignState.renderRequestId) {
-      return;
-    }
-
-    refs.chapterContent.innerHTML = "";
-    refs.chapterContent.appendChild(lessonNode);
-    refs.chapterMeta.textContent = "Integrated chapter view loaded.";
-  } catch (error) {
-    if (requestId !== systemDesignState.renderRequestId) {
-      return;
-    }
-
-    refs.chapterContent.innerHTML = `<iframe class="system-design-lesson-frame" src="${encodeURI(htmlPath)}" title="${escapeHtml(title)}" loading="lazy"></iframe>`;
-    refs.chapterMeta.textContent = "Embedded chapter view loaded.";
+function updateFileCount(refs, overrideCount = null) {
+  const total = Number.isFinite(Number(overrideCount)) ? Number(overrideCount) : systemDesignState.steps.length;
+  if (refs.fileCountBadge) {
+    refs.fileCountBadge.textContent = `${total} files`;
+  }
+  if (refs.filesPill) {
+    refs.filesPill.textContent = `${total} files`;
   }
 }
 
-function normalizeLessonNodeUrls(rootNode, lessonPath) {
-  const baseUrl = new URL(lessonPath, window.location.href);
-
-  rootNode.querySelectorAll("img[src], source[src], iframe[src], a[href]").forEach((node) => {
-    const attr = node.hasAttribute("href") ? "href" : "src";
-    const value = node.getAttribute(attr);
-    if (!value || isExternalResource(value)) {
-      return;
-    }
-
-    const absolute = new URL(value, baseUrl);
-    node.setAttribute(attr, `${absolute.pathname}${absolute.search}${absolute.hash}`);
-  });
-
-  rootNode.querySelectorAll("source[srcset], img[srcset]").forEach((node) => {
-    const srcset = node.getAttribute("srcset");
-    if (!srcset) return;
-
-    const normalized = srcset
-      .split(",")
-      .map((entry) => entry.trim())
-      .filter(Boolean)
-      .map((entry) => {
-        const parts = entry.split(/\s+/);
-        const resource = parts[0];
-        if (!resource || isExternalResource(resource)) {
-          return entry;
-        }
-
-        const absolute = new URL(resource, baseUrl);
-        const resolved = `${absolute.pathname}${absolute.search}${absolute.hash}`;
-        return [resolved, ...parts.slice(1)].join(" ").trim();
-      })
-      .join(", ");
-
-    node.setAttribute("srcset", normalized);
-  });
-}
-
-function isExternalResource(value) {
-  const text = String(value || "").trim().toLowerCase();
-  return (
-    text.startsWith("http://") ||
-    text.startsWith("https://") ||
-    text.startsWith("data:") ||
-    text.startsWith("blob:") ||
-    text.startsWith("mailto:") ||
-    text.startsWith("tel:") ||
-    text.startsWith("javascript:")
-  );
+function normalizeLocalPath(path) {
+  return String(path || "").replace(/^[./]+/, "").trim();
 }
 
 function escapeHtml(text) {

@@ -470,6 +470,10 @@ body[data-theme="dark"] .progress-wrap {
   color: var(--amber);
 }
 
+.system-design-step-status.open {
+  color: var(--teal);
+}
+
 .system-design-content-panel {
   min-height: 65vh;
 }
@@ -513,6 +517,13 @@ body[data-theme="dark"] .progress-wrap {
 .system-design-chapter-content li {
   color: var(--ink);
   line-height: 1.64;
+}
+
+.system-design-file-path {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: 0.86rem;
+  color: var(--muted);
+  word-break: break-word;
 }
 
 .system-design-chapter-content ul,
