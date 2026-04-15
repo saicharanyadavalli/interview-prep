@@ -41,6 +41,7 @@ const SYSTEM_DESIGN_CHAPTERS = SYSTEM_DESIGN_TITLES.map((title, index) => {
   return {
     step_no: stepNo,
     title,
+    local_html: `system-design/lessons/step-${stepToken}.html`,
   };
 });
 
@@ -70,7 +71,8 @@ async function loadSystemDesignCoursePage() {
   const chapters = SYSTEM_DESIGN_CHAPTERS.map((chapter) => ({
     step_no: Number(chapter.step_no),
     title: String(chapter.title || "").trim(),
-  })).filter((chapter) => Number.isFinite(chapter.step_no) && chapter.step_no > 0);
+    local_html: normalizeLocalPath(String(chapter.local_html || "").trim()),
+  })).filter((chapter) => Number.isFinite(chapter.step_no) && chapter.step_no > 0 && chapter.local_html);
 
   updateFileCount(refs, chapters.length);
   renderStepsList(refs, chapters);
@@ -92,7 +94,6 @@ function renderStepsList(refs, steps) {
           <div class="system-design-row-main">
             <p class="system-design-step-index">Step ${stepNo}</p>
             <p class="system-design-step-title">${escapeHtml(step.title || `Step ${stepNo}`)}</p>
-            <p class="system-design-file-path">${escapeHtml(filePath)}</p>
           </div>
           <a class="btn btn-sm btn-primary system-design-open-btn" href="${encodedPath}">Open</a>
         </div>
