@@ -593,6 +593,20 @@ body[data-theme="dark"] .progress-wrap {
   gap: 0.35rem;
 }
 
+/* Keep lesson figures at intrinsic image size and allow horizontal scroll on small screens. */
+.system-design-lesson-main .system-design-chapter-content figure > div:first-child {
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.system-design-lesson-main .system-design-chapter-content figure > div:first-child img {
+  width: auto;
+  max-width: none;
+  height: auto;
+  flex-shrink: 0;
+}
+
 .system-design-chapter-content figcaption {
   color: var(--muted);
   font-size: 0.82rem;
@@ -683,6 +697,10 @@ body[data-theme="dark"] .progress-wrap {
 
   .system-design-open-btn {
     width: 100%;
+  }
+
+  .system-design-lesson-main .system-design-chapter-content figure > div:first-child {
+    justify-content: flex-start !important;
   }
 }
 
