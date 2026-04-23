@@ -1,0 +1,215 @@
+{
+  "total_steps": 30,
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "Join the Community",
+      "slug": "join-discord-community",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/join-discord-community",
+      "local_html": "system-design/lessons/step-01.html"
+    },
+    {
+      "step_no": 2,
+      "title": "Scale From Zero To Millions Of Users",
+      "slug": "scale-from-zero-to-millions-of-users",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/scale-from-zero-to-millions-of-users",
+      "local_html": "system-design/lessons/step-02.html"
+    },
+    {
+      "step_no": 3,
+      "title": "Back-of-the-envelope Estimation",
+      "slug": "back-of-the-envelope-estimation",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/back-of-the-envelope-estimation",
+      "local_html": "system-design/lessons/step-03.html"
+    },
+    {
+      "step_no": 4,
+      "title": "A Framework For System Design Interviews",
+      "slug": "a-framework-for-system-design-interviews",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/a-framework-for-system-design-interviews",
+      "local_html": "system-design/lessons/step-04.html"
+    },
+    {
+      "step_no": 5,
+      "title": "Design A Rate Limiter",
+      "slug": "design-a-rate-limiter",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-rate-limiter",
+      "local_html": "system-design/lessons/step-05.html"
+    },
+    {
+      "step_no": 6,
+      "title": "Design Consistent Hashing",
+      "slug": "design-consistent-hashing",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-consistent-hashing",
+      "local_html": "system-design/lessons/step-06.html"
+    },
+    {
+      "step_no": 7,
+      "title": "Design A Key-value Store",
+      "slug": "design-a-key-value-store",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-key-value-store",
+      "local_html": "system-design/lessons/step-07.html"
+    },
+    {
+      "step_no": 8,
+      "title": "Design A Unique ID Generator In Distributed Systems",
+      "slug": "design-a-unique-id-generator-in-distributed-systems",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-unique-id-generator-in-distributed-systems",
+      "local_html": "system-design/lessons/step-08.html"
+    },
+    {
+      "step_no": 9,
+      "title": "Design A URL Shortener",
+      "slug": "design-a-url-shortener",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-url-shortener",
+      "local_html": "system-design/lessons/step-09.html"
+    },
+    {
+      "step_no": 10,
+      "title": "Design A Web Crawler",
+      "slug": "design-a-web-crawler",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-web-crawler",
+      "local_html": "system-design/lessons/step-10.html"
+    },
+    {
+      "step_no": 11,
+      "title": "Design A Notification System",
+      "slug": "design-a-notification-system",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-notification-system",
+      "local_html": "system-design/lessons/step-11.html"
+    },
+    {
+      "step_no": 12,
+      "title": "Design A News Feed System",
+      "slug": "design-a-news-feed-system",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-news-feed-system",
+      "local_html": "system-design/lessons/step-12.html"
+    },
+    {
+      "step_no": 13,
+      "title": "Design A Chat System",
+      "slug": "design-a-chat-system",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-chat-system",
+      "local_html": "system-design/lessons/step-13.html"
+    },
+    {
+      "step_no": 14,
+      "title": "Design A Search Autocomplete System",
+      "slug": "design-a-search-autocomplete-system",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-a-search-autocomplete-system",
+      "local_html": "system-design/lessons/step-14.html"
+    },
+    {
+      "step_no": 15,
+      "title": "Design YouTube",
+      "slug": "design-youtube",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-youtube",
+      "local_html": "system-design/lessons/step-15.html"
+    },
+    {
+      "step_no": 16,
+      "title": "Design Google Drive",
+      "slug": "design-google-drive",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/design-google-drive",
+      "local_html": "system-design/lessons/step-16.html"
+    },
+    {
+      "step_no": 17,
+      "title": "Proximity Service",
+      "slug": "proximity-service",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/proximity-service",
+      "local_html": "system-design/lessons/step-17.html"
+    },
+    {
+      "step_no": 18,
+      "title": "Nearby Friends",
+      "slug": "nearby-friends",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/nearby-friends",
+      "local_html": "system-design/lessons/step-18.html"
+    },
+    {
+      "step_no": 19,
+      "title": "Google Maps",
+      "slug": "google-maps",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/google-maps",
+      "local_html": "system-design/lessons/step-19.html"
+    },
+    {
+      "step_no": 20,
+      "title": "Distributed Message Queue",
+      "slug": "distributed-message-queue",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/distributed-message-queue",
+      "local_html": "system-design/lessons/step-20.html"
+    },
+    {
+      "step_no": 21,
+      "title": "Metrics Monitoring and Alerting System",
+      "slug": "metrics-monitoring-and-alerting-system",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/metrics-monitoring-and-alerting-system",
+      "local_html": "system-design/lessons/step-21.html"
+    },
+    {
+      "step_no": 22,
+      "title": "Ad Click Event Aggregation",
+      "slug": "ad-click-event-aggregation",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/ad-click-event-aggregation",
+      "local_html": "system-design/lessons/step-22.html"
+    },
+    {
+      "step_no": 23,
+      "title": "Hotel Reservation System",
+      "slug": "hotel-reservation-system",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/hotel-reservation-system",
+      "local_html": "system-design/lessons/step-23.html"
+    },
+    {
+      "step_no": 24,
+      "title": "Distributed Email Service",
+      "slug": "distributed-email-service",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/distributed-email-service",
+      "local_html": "system-design/lessons/step-24.html"
+    },
+    {
+      "step_no": 25,
+      "title": "S3-like Object Storage",
+      "slug": "s3-like-object-storage",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/s3-like-object-storage",
+      "local_html": "system-design/lessons/step-25.html"
+    },
+    {
+      "step_no": 26,
+      "title": "Real-time Gaming Leaderboard",
+      "slug": "real-time-gaming-leaderboard",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/real-time-gaming-leaderboard",
+      "local_html": "system-design/lessons/step-26.html"
+    },
+    {
+      "step_no": 27,
+      "title": "Payment System",
+      "slug": "payment-system",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/payment-system",
+      "local_html": "system-design/lessons/step-27.html"
+    },
+    {
+      "step_no": 28,
+      "title": "Digital Wallet",
+      "slug": "digital-wallet",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/digital-wallet",
+      "local_html": "system-design/lessons/step-28.html"
+    },
+    {
+      "step_no": 29,
+      "title": "Stock Exchange",
+      "slug": "stock-exchange",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/stock-exchange",
+      "local_html": "system-design/lessons/step-29.html"
+    },
+    {
+      "step_no": 30,
+      "title": "The Learning Continues",
+      "slug": "the-learning-continues",
+      "source_url": "https://bytebytego.com/courses/system-design-interview/the-learning-continues",
+      "local_html": "system-design/lessons/step-30.html"
+    }
+  ]
+}
