@@ -82,7 +82,7 @@ def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackPr
         steps.append(
             LearningTrackStepProgress(
                 step_no=step_no,
-                title=titles.get(step_no, f"Step {step_no}"),
+                title=titles.get(step_no, f"Chapter {step_no}"),
                 completed=completed,
                 updated_at=row.get("updated_at"),
             )
@@ -136,7 +136,7 @@ def _update_learning_track_progress(
     titles = load_learning_track_titles(track_id)
     return LearningTrackStepProgress(
         step_no=step_no,
-        title=titles.get(step_no, f"Step {step_no}"),
+        title=titles.get(step_no, f"Chapter {step_no}"),
         completed=bool(payload.completed),
         updated_at=now,
     )

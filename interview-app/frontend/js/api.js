@@ -92,7 +92,7 @@ const API = {
 
       steps.push({
         step_no: stepNo,
-        title: `Step ${stepNo}`,
+        title: `Chapter ${stepNo}`,
         completed,
         updated_at: entry.updated_at || null,
       });
@@ -447,7 +447,7 @@ const API = {
       return {
         track_id: trackId,
         step_no: safeStepNo,
-        title: `Step ${safeStepNo}`,
+        title: `Chapter ${safeStepNo}`,
         completed: Boolean(completed),
         updated_at: now,
       };
