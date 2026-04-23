@@ -7,7 +7,7 @@ backend/.env
 __pycache__/
 *.pyc
 deployed details.txt
-interview-app/frontend/assets/system-design/
+interview-app/frontend/assets/system-design/ordered-images/
 system design
 object oriented design
 mobile system design
