@@ -48,15 +48,10 @@
 
         <section class="card-flat progress-v3-system-design section">
           <div class="progress-v3-card-head">
-            <h3>🧠 System Design Course Tracking</h3>
-            <a href="system-design.html" class="btn btn-sm">Open Course</a>
+            <h3>🧠 Learning Track Progress</h3>
           </div>
-          <div class="progress-wrap">
-            <div id="sdCourseProgressFill" class="progress-fill"></div>
-          </div>
-          <div class="progress-v3-system-design-meta">
-            <span id="sdCourseProgressText">0 / 30 completed</span>
-            <span id="sdCourseProgressPercent">0%</span>
+          <div id="learningTrackProgressList" class="progress-v3-track-list">
+            <p class="loading"><span class="loading-dot">⏳</span> Loading learning tracks...</p>
           </div>
         </section>
 
@@ -126,6 +121,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/learning-tracks.js"></script>
     <script src="js/api.js"></script>
     <script src="js/sidebar.js"></script>
     <script src="js/filterBuilder.js"></script>

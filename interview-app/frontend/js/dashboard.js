@@ -20,13 +20,12 @@ async function loadDashboardData() {
   const statsGrid = document.getElementById("statsGrid");
   const recentList = document.getElementById("recentList");
   const revisitPreview = document.getElementById("revisitPreview");
-  const systemDesignFill = document.getElementById("dashboardSystemDesignFill");
-  const systemDesignText = document.getElementById("dashboardSystemDesignText");
+  const learningTracksList = document.getElementById("dashboardLearningTracksList");
 
-  const [progressResult, revisitResult, systemDesignResult] = await Promise.allSettled([
+  const [progressResult, revisitResult, learningTracksResult] = await Promise.allSettled([
     API.getUserProgress(),
     API.getRevisitQueue(),
-    API.getSystemDesignProgress(),
+    API.getLearningTracks(),
   ]);
 
   if (progressResult.status === "fulfilled") {
@@ -49,10 +48,13 @@ async function loadDashboardData() {
     }
   }
 
-  const systemDesign = systemDesignResult && systemDesignResult.status === "fulfilled"
-    ? systemDesignResult.value
-    : null;
-  renderSystemDesignProgress(systemDesignFill, systemDesignText, systemDesign);
+  const tracks = learningTracksResult && learningTracksResult.status === "fulfilled"
+    ? (Array.isArray(learningTracksResult.value && learningTracksResult.value.tracks)
+      ? learningTracksResult.value.tracks
+      : [])
+    : (Array.isArray(window.LEARNING_TRACKS) ? window.LEARNING_TRACKS : []);
+
+  await renderLearningTracksProgress(learningTracksList, tracks);
 }
 
 function renderStats(container, stats) {
@@ -135,15 +137,55 @@ function renderRevisitPreview(container, items) {
   }
 }
 
-function renderSystemDesignProgress(fillEl, textEl, data) {
-  if (!fillEl || !textEl) return;
+async function renderLearningTracksProgress(container, tracks) {
+  if (!container) return;
 
-  const total = Number((data && data.total_steps) || 30);
-  const completed = Number((data && data.completed_steps) || 0);
-  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+  const safeTracks = Array.isArray(tracks) ? tracks : [];
+  if (!safeTracks.length) {
+    container.innerHTML = '<p class="track-empty">No learning tracks available yet.</p>';
+    return;
+  }
 
-  fillEl.style.width = `${Math.max(0, Math.min(100, percent))}%`;
-  textEl.textContent = `${completed} / ${total} completed`;
+  const progressEntries = await Promise.all(
+    safeTracks.map(async (track) => {
+      const trackId = String((track && track.track_id) || "").trim();
+      if (!trackId) return null;
+
+      try {
+        const data = await API.getLearningTrackProgress(trackId);
+        return { track, data };
+      } catch (_) {
+        return { track, data: null };
+      }
+    })
+  );
+
+  container.innerHTML = progressEntries
+    .filter(Boolean)
+    .map(({ track, data }) => {
+      const trackId = String((track && track.track_id) || "").trim();
+      const localMeta = typeof getLearningTrackById === "function" ? getLearningTrackById(trackId) : null;
+      const icon = String((localMeta && localMeta.icon) || track.icon || "📘");
+      const name = escapeHtml(String((track && track.display_name) || (localMeta && localMeta.display_name) || "Learning Track"));
+      const href = escapeHtml(String((localMeta && localMeta.course_href) || track.course_href || "#"));
+      const total = Number((data && data.total_steps) || track.step_count || 0);
+      const completed = Number((data && data.completed_steps) || 0);
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+
+      return `
+        <article class="dashboard-track-item">
+          <div class="dashboard-track-row">
+            <p><strong>${icon} ${name}</strong></p>
+            <a class="btn btn-sm" href="${href}">Open Course</a>
+          </div>
+          <div class="progress-wrap dashboard-track-progress">
+            <div class="progress-fill" style="width:${Math.max(0, Math.min(100, percent))}%"></div>
+          </div>
+          <p class="text-sm text-muted dashboard-track-text">${completed} / ${total} completed</p>
+        </article>
+      `;
+    })
+    .join("");
 }
 
 function escapeHtml(text) {

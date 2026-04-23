@@ -684,8 +684,38 @@ body[data-theme="dark"] .progress-wrap {
   margin-top: 0.55rem;
 }
 
+.dashboard-track-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.dashboard-track-item {
+  border: 1px solid var(--line);
+  background: var(--surface-chip);
+  border-radius: var(--radius-sm);
+  padding: 0.72rem;
+}
+
+.dashboard-track-text {
+  margin-top: 0.55rem;
+}
+
 .progress-v3-system-design {
   margin-top: 0.5rem;
+}
+
+.progress-v3-track-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.progress-v3-track-item {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  background: var(--surface-chip);
+  padding: 0.72rem;
+  display: grid;
+  gap: 0.55rem;
 }
 
 .progress-v3-system-design-meta {

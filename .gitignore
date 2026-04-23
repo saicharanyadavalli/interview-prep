@@ -9,4 +9,14 @@ __pycache__/
 deployed details.txt
 interview-app/frontend/assets/system-design/
 system design
+object oriented design
+mobile system design
+ML system design
+gen ai system design
+update_images.py
+migrate_bytebytego_content.py
+
+interview-app/backend/scripts/upload_system_design_images_to_cloudinary.py
+interview-app/backend/scripts/generate_system_design_themed_pages.py
+interview-app/backend/scripts/collect_system_design_images.py
 

@@ -1,0 +1,82 @@
+{
+  "total_steps": 11,
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "Introduction and Overview",
+      "slug": "introduction-and-overview",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/introduction-and-overview",
+      "local_html": "ml-system-design/lessons/step-01.html"
+    },
+    {
+      "step_no": 2,
+      "title": "Visual Search System",
+      "slug": "visual-search-system",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/visual-search-system",
+      "local_html": "ml-system-design/lessons/step-02.html"
+    },
+    {
+      "step_no": 3,
+      "title": "Google Street View Blurring System",
+      "slug": "google-street-view-blurring-system",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/google-street-view-blurring-system",
+      "local_html": "ml-system-design/lessons/step-03.html"
+    },
+    {
+      "step_no": 4,
+      "title": "YouTube Video Search",
+      "slug": "youtube-video-search",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/youtube-video-search",
+      "local_html": "ml-system-design/lessons/step-04.html"
+    },
+    {
+      "step_no": 5,
+      "title": "Harmful Content Detection",
+      "slug": "harmful-content-detection",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/harmful-content-detection",
+      "local_html": "ml-system-design/lessons/step-05.html"
+    },
+    {
+      "step_no": 6,
+      "title": "Video Recommendation System",
+      "slug": "video-recommendation-system",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/video-recommendation-system",
+      "local_html": "ml-system-design/lessons/step-06.html"
+    },
+    {
+      "step_no": 7,
+      "title": "Event Recommendation System",
+      "slug": "event-recommendation-system",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/event-recommendation-system",
+      "local_html": "ml-system-design/lessons/step-07.html"
+    },
+    {
+      "step_no": 8,
+      "title": "Ad Click Prediction on Social Platforms",
+      "slug": "ad-click-prediction-on-social-platforms",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/ad-click-prediction-on-social-platforms",
+      "local_html": "ml-system-design/lessons/step-08.html"
+    },
+    {
+      "step_no": 9,
+      "title": "Similar Listings on Vacation Rental Platforms",
+      "slug": "similar-listings-on-vacation-rental-platforms",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/similar-listings-on-vacation-rental-platforms",
+      "local_html": "ml-system-design/lessons/step-09.html"
+    },
+    {
+      "step_no": 10,
+      "title": "Personalized News Feed",
+      "slug": "personalized-news-feed",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/personalized-news-feed",
+      "local_html": "ml-system-design/lessons/step-10.html"
+    },
+    {
+      "step_no": 11,
+      "title": "Personalized News Feed",
+      "slug": "personalized-news-feed",
+      "source_url": "https://bytebytego.com/courses/machine-learning-system-design-interview/personalized-news-feed",
+      "local_html": "ml-system-design/lessons/step-11.html"
+    }
+  ]
+}

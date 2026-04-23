@@ -9,6 +9,10 @@
 const NAV_ITEMS = [
   { id: "dashboard",  label: "Dashboard",       icon: "📊", href: "dashboard.html" },
   { id: "system-design", label: "System Design", icon: "🧠", href: "system-design.html" },
+  { id: "object-oriented-design", label: "Object-Oriented Design", icon: "🧩", href: "object-oriented-design.html" },
+  { id: "mobile-system-design", label: "Mobile System Design", icon: "📱", href: "mobile-system-design.html" },
+  { id: "ml-system-design", label: "ML System Design", icon: "🤖", href: "ml-system-design.html" },
+  { id: "genai-system-design", label: "GenAI System Design", icon: "✨", href: "genai-system-design.html" },
   { id: "questions",  label: "All Questions",   icon: "📋", href: "questions.html" },
   { id: "profile",    label: "Profile",         icon: "👤", href: "profile.html"   },
   { id: "revisit",    label: "Revisit Queue",   icon: "🔄", href: "revisit.html"   },

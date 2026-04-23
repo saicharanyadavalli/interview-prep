@@ -1,52 +1,15 @@
 /**
- * system-design.js - System Design Course page logic.
+ * system-design.js - Learning-track course page logic.
  */
 
-const SYSTEM_DESIGN_TITLES = [
-  "Join the Community",
-  "Scale From Zero To Millions Of Users",
-  "Back-of-the-envelope Estimation",
-  "A Framework For System Design Interviews",
-  "Design A Rate Limiter",
-  "Design Consistent Hashing",
-  "Design A Key-value Store",
-  "Design A Unique ID Generator In Distributed Systems",
-  "Design A URL Shortener",
-  "Design A Web Crawler",
-  "Design A Notification System",
-  "Design A News Feed System",
-  "Design A Chat System",
-  "Design A Search Autocomplete System",
-  "Design YouTube",
-  "Design Google Drive",
-  "Proximity Service",
-  "Nearby Friends",
-  "Google Maps",
-  "Distributed Message Queue",
-  "Metrics Monitoring and Alerting System",
-  "Ad Click Event Aggregation",
-  "Hotel Reservation System",
-  "Distributed Email Service",
-  "S3-like Object Storage",
-  "Real-time Gaming Leaderboard",
-  "Payment System",
-  "Digital Wallet",
-  "Stock Exchange",
-  "The Learning Continues",
-];
-
-const SYSTEM_DESIGN_CHAPTERS = SYSTEM_DESIGN_TITLES.map((title, index) => {
-  const stepNo = index + 1;
-  const stepToken = String(stepNo).padStart(2, "0");
-  return {
-    step_no: stepNo,
-    title,
-    local_html: `system-design/lessons/step-${stepToken}.html`,
-  };
-});
-
 document.addEventListener("DOMContentLoaded", async () => {
-  const user = await initSidebar("system-design", { requireLogin: true });
+  const trackId = resolveTrackIdFromPage();
+  const track = typeof getLearningTrackById === "function" ? getLearningTrackById(trackId) : null;
+  if (!track) {
+    return;
+  }
+
+  const user = await initSidebar(trackId, { requireLogin: true });
   if (!user) return;
 
   const { session } = await getSession();
@@ -54,28 +17,74 @@ document.addEventListener("DOMContentLoaded", async () => {
     await syncSessionWithBackend(session.access_token);
   }
 
-  await loadSystemDesignCoursePage();
+  await loadLearningTrackCoursePage(track);
 });
 
-async function loadSystemDesignCoursePage() {
+async function loadLearningTrackCoursePage(track) {
   const refs = {
     stepsList: document.getElementById("systemDesignSteps"),
     fileCountBadge: document.getElementById("sdCompletionBadge"),
     filesPill: document.getElementById("sdCompletedPill"),
+    pageTitle: document.getElementById("learningTrackTitle"),
+    pageEmoji: document.getElementById("learningTrackEmoji"),
+    chaptersLabel: document.getElementById("learningTrackChaptersLabel"),
   };
 
   if (!refs.stepsList) {
     return;
   }
 
-  const chapters = SYSTEM_DESIGN_CHAPTERS.map((chapter) => ({
-    step_no: Number(chapter.step_no),
-    title: String(chapter.title || "").trim(),
-    local_html: normalizeLocalPath(String(chapter.local_html || "").trim()),
-  })).filter((chapter) => Number.isFinite(chapter.step_no) && chapter.step_no > 0 && chapter.local_html);
+  if (refs.pageTitle) {
+    refs.pageTitle.textContent = `${track.display_name} Course`;
+  }
+  if (refs.pageEmoji) {
+    refs.pageEmoji.textContent = track.icon || "📘";
+  }
+  if (refs.chaptersLabel) {
+    refs.chaptersLabel.textContent = `${track.display_name} Chapters`;
+  }
+
+  const chapters = await loadTrackChapters(track);
 
   updateFileCount(refs, chapters.length);
   renderStepsList(refs, chapters);
+}
+
+async function loadTrackChapters(track) {
+  const indexPath = `assets/${track.assets_slug}/course-index.json`;
+  try {
+    const response = await fetch(indexPath, { cache: "no-store" });
+    if (response.ok) {
+      const payload = await response.json();
+      const steps = Array.isArray(payload && payload.steps) ? payload.steps : [];
+      const normalized = steps
+        .map((chapter) => ({
+          step_no: Number(chapter && chapter.step_no),
+          title: String((chapter && chapter.title) || "").trim(),
+          local_html: normalizeLocalPath(String((chapter && chapter.local_html) || "").trim()),
+        }))
+        .filter((chapter) => Number.isFinite(chapter.step_no) && chapter.step_no > 0);
+
+      if (normalized.length) {
+        return normalized.map((chapter) => ({
+          ...chapter,
+          local_html: chapter.local_html || `${track.lessons_root}/step-${String(chapter.step_no).padStart(2, "0")}.html`,
+        }));
+      }
+    }
+  } catch (_) {
+    // Fall back to generated default chapter links.
+  }
+
+  const totalSteps = Number(track.step_count || 0);
+  return Array.from({ length: totalSteps }, (_, index) => {
+    const stepNo = index + 1;
+    return {
+      step_no: stepNo,
+      title: `Step ${stepNo}`,
+      local_html: `${track.lessons_root}/step-${String(stepNo).padStart(2, "0")}.html`,
+    };
+  });
 }
 
 function renderStepsList(refs, steps) {
@@ -103,7 +112,7 @@ function renderStepsList(refs, steps) {
 }
 
 function updateFileCount(refs, overrideCount = null) {
-  const total = Number.isFinite(Number(overrideCount)) ? Number(overrideCount) : SYSTEM_DESIGN_CHAPTERS.length;
+  const total = Number.isFinite(Number(overrideCount)) ? Number(overrideCount) : 0;
   if (refs.fileCountBadge) {
     refs.fileCountBadge.textContent = `${total} files`;
   }
@@ -120,4 +129,12 @@ function escapeHtml(text) {
   const div = document.createElement("div");
   div.textContent = String(text || "");
   return div.innerHTML;
+}
+
+function resolveTrackIdFromPage() {
+  const bodyTrackId = String((document.body && document.body.dataset && document.body.dataset.trackId) || "").trim();
+  if (bodyTrackId) {
+    return bodyTrackId;
+  }
+  return "system-design";
 }

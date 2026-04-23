@@ -8,9 +8,7 @@
 
 const API = {
   _PROFILE_CACHE_KEY: "ipp_profile_cache_v1",
-  _SYSTEM_DESIGN_PROGRESS_CACHE_KEY: "ipp_system_design_progress_v1",
-  _SYSTEM_DESIGN_STEP_COUNT: 30,
-  _SYSTEM_DESIGN_QNUM_BASE: 900000,
+  _TRACK_PROGRESS_CACHE_PREFIX: "ipp_track_progress_v1:",
 
   _extractApiStatusCode(error) {
     const message = String((error && error.message) || "");
@@ -22,13 +20,26 @@ const API = {
     return this._extractApiStatusCode(error) === 404;
   },
 
-  _stepToSystemDesignQnum(stepNo) {
-    return this._SYSTEM_DESIGN_QNUM_BASE + Number(stepNo || 0);
+  _getTrackConfig(trackId) {
+    if (typeof getLearningTrackById === "function") {
+      return getLearningTrackById(trackId);
+    }
+    return null;
   },
 
-  _readSystemDesignProgressCache() {
+  _getTrackProgressCacheKey(trackId) {
+    return this._TRACK_PROGRESS_CACHE_PREFIX + String(trackId || "").trim();
+  },
+
+  _stepToTrackQnum(trackId, stepNo) {
+    const track = this._getTrackConfig(trackId);
+    if (!track) return 0;
+    return Number(track.qnum_base || 0) + Number(stepNo || 0);
+  },
+
+  _readTrackProgressCache(trackId) {
     try {
-      const raw = localStorage.getItem(this._SYSTEM_DESIGN_PROGRESS_CACHE_KEY);
+      const raw = localStorage.getItem(this._getTrackProgressCacheKey(trackId));
       if (!raw) return {};
       const parsed = JSON.parse(raw);
       if (!parsed || typeof parsed !== "object") return {};
@@ -39,10 +50,10 @@ const API = {
     }
   },
 
-  _writeSystemDesignProgressCache(data) {
+  _writeTrackProgressCache(trackId, data) {
     try {
       localStorage.setItem(
-        this._SYSTEM_DESIGN_PROGRESS_CACHE_KEY,
+        this._getTrackProgressCacheKey(trackId),
         JSON.stringify({ ts: Date.now(), data: data || {} })
       );
     } catch (_) {
@@ -50,7 +61,7 @@ const API = {
     }
   },
 
-  _cacheSystemDesignProgressResponse(response) {
+  _cacheTrackProgressResponse(trackId, response) {
     if (!response || !Array.isArray(response.steps)) return;
     const map = {};
     response.steps.forEach((step) => {
@@ -61,14 +72,20 @@ const API = {
         updated_at: step.updated_at || null,
       };
     });
-    this._writeSystemDesignProgressCache(map);
+    this._writeTrackProgressCache(trackId, map);
   },
 
-  _buildSystemDesignProgressFromMap(progressMap = {}) {
+  _buildTrackProgressFromMap(trackId, progressMap = {}) {
+    const track = this._getTrackConfig(trackId);
+    if (!track) {
+      throw new Error(`Unknown learning track: ${trackId}`);
+    }
+
     const steps = [];
     let completedSteps = 0;
 
-    for (let stepNo = 1; stepNo <= this._SYSTEM_DESIGN_STEP_COUNT; stepNo += 1) {
+    const totalSteps = Number(track.step_count || 0);
+    for (let stepNo = 1; stepNo <= totalSteps; stepNo += 1) {
       const entry = progressMap[String(stepNo)] || {};
       const completed = Boolean(entry.completed);
       if (completed) completedSteps += 1;
@@ -82,22 +99,28 @@ const API = {
     }
 
     return {
-      total_steps: this._SYSTEM_DESIGN_STEP_COUNT,
+      track_id: trackId,
+      total_steps: totalSteps,
       completed_steps: completedSteps,
-      completion_percent: Math.round((completedSteps / this._SYSTEM_DESIGN_STEP_COUNT) * 100),
+      completion_percent: totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0,
       steps,
       source: "legacy-fallback",
     };
   },
 
-  async _loadLegacySystemDesignProgressMap() {
-    const cached = this._readSystemDesignProgressCache();
+  async _loadLegacyTrackProgressMap(trackId) {
+    const track = this._getTrackConfig(trackId);
+    if (!track) {
+      throw new Error(`Unknown learning track: ${trackId}`);
+    }
+
+    const cached = this._readTrackProgressCache(trackId);
     const nextMap = { ...cached };
 
     const statuses = await Promise.all(
-      Array.from({ length: this._SYSTEM_DESIGN_STEP_COUNT }, async (_, index) => {
+      Array.from({ length: Number(track.step_count || 0) }, async (_, index) => {
         const stepNo = index + 1;
-        const qnum = this._stepToSystemDesignQnum(stepNo);
+        const qnum = this._stepToTrackQnum(trackId, stepNo);
         try {
           const status = await this.getProgressStatus(qnum);
           return { stepNo, status };
@@ -121,7 +144,7 @@ const API = {
     });
 
     if (hasRemoteData) {
-      this._writeSystemDesignProgressCache(nextMap);
+      this._writeTrackProgressCache(trackId, nextMap);
     }
 
     return nextMap;
@@ -301,24 +324,64 @@ const API = {
     return this._fetch("/progress/user");
   },
 
-  async getSystemDesignProgress() {
+  async getLearningTracks() {
     try {
-      const response = await this._fetch("/system-design/progress");
-      this._cacheSystemDesignProgressResponse(response);
+      const response = await this._fetch("/learning-tracks");
+      if (response && Array.isArray(response.tracks)) {
+        return response;
+      }
+    } catch (_) {
+      // Fall through to local metadata below.
+    }
+
+    return {
+      tracks: Array.isArray(window.LEARNING_TRACKS) ? window.LEARNING_TRACKS : [],
+      source: "frontend-fallback",
+    };
+  },
+
+  async getLearningTrackProgress(trackId) {
+    const track = this._getTrackConfig(trackId);
+    if (!track) {
+      throw new Error(`Unknown learning track: ${trackId}`);
+    }
+
+    try {
+      const response = await this._fetch(`/learning-tracks/${encodeURIComponent(trackId)}/progress`);
+      this._cacheTrackProgressResponse(trackId, response);
       return response;
     } catch (error) {
       if (!this._isApiNotFound(error)) {
         throw error;
       }
 
-      const fallbackMap = await this._loadLegacySystemDesignProgressMap();
-      return this._buildSystemDesignProgressFromMap(fallbackMap);
+      if (trackId === "system-design") {
+        try {
+          const legacyResponse = await this._fetch("/system-design/progress");
+          this._cacheTrackProgressResponse(trackId, legacyResponse);
+          return {
+            ...legacyResponse,
+            track_id: trackId,
+          };
+        } catch (_) {
+          // Continue to local fallback below.
+        }
+      }
+
+      const fallbackMap = await this._loadLegacyTrackProgressMap(trackId);
+      return this._buildTrackProgressFromMap(trackId, fallbackMap);
     }
   },
 
-  async updateSystemDesignProgress(stepNo, completed) {
+  async updateLearningTrackProgress(trackId, stepNo, completed) {
+    const track = this._getTrackConfig(trackId);
+    if (!track) {
+      throw new Error(`Unknown learning track: ${trackId}`);
+    }
+
     const numericStepNo = Number(stepNo);
-    if (!Number.isFinite(numericStepNo) || numericStepNo < 1 || numericStepNo > this._SYSTEM_DESIGN_STEP_COUNT) {
+    const maxSteps = Number(track.step_count || 0);
+    if (!Number.isFinite(numericStepNo) || numericStepNo < 1 || numericStepNo > maxSteps) {
       throw new Error(`Invalid step number: ${stepNo}`);
     }
 
@@ -329,17 +392,17 @@ const API = {
     };
 
     try {
-      const response = await this._fetch("/system-design/progress", {
+      const response = await this._fetch(`/learning-tracks/${encodeURIComponent(trackId)}/progress`, {
         method: "POST",
         body: JSON.stringify(payload),
       });
 
-      const cache = this._readSystemDesignProgressCache();
+      const cache = this._readTrackProgressCache(trackId);
       cache[String(safeStepNo)] = {
         completed: Boolean(completed),
         updated_at: response && response.updated_at ? response.updated_at : new Date().toISOString(),
       };
-      this._writeSystemDesignProgressCache(cache);
+      this._writeTrackProgressCache(trackId, cache);
 
       return response;
     } catch (error) {
@@ -347,27 +410,56 @@ const API = {
         throw error;
       }
 
-      const qnum = this._stepToSystemDesignQnum(safeStepNo);
+      if (trackId === "system-design") {
+        try {
+          const legacyResponse = await this._fetch("/system-design/progress", {
+            method: "POST",
+            body: JSON.stringify(payload),
+          });
+
+          const legacyCache = this._readTrackProgressCache(trackId);
+          legacyCache[String(safeStepNo)] = {
+            completed: Boolean(completed),
+            updated_at: legacyResponse && legacyResponse.updated_at ? legacyResponse.updated_at : new Date().toISOString(),
+          };
+          this._writeTrackProgressCache(trackId, legacyCache);
+
+          return legacyResponse;
+        } catch (_) {
+          // Continue to qnum fallback.
+        }
+      }
+
+      const qnum = this._stepToTrackQnum(trackId, safeStepNo);
       await this.updateProgress(qnum, {
         is_solved: Boolean(completed),
         revisit: false,
       });
 
-      const cache = this._readSystemDesignProgressCache();
+      const cache = this._readTrackProgressCache(trackId);
       const now = new Date().toISOString();
       cache[String(safeStepNo)] = {
         completed: Boolean(completed),
         updated_at: now,
       };
-      this._writeSystemDesignProgressCache(cache);
+      this._writeTrackProgressCache(trackId, cache);
 
       return {
+        track_id: trackId,
         step_no: safeStepNo,
         title: `Step ${safeStepNo}`,
         completed: Boolean(completed),
         updated_at: now,
       };
     }
+  },
+
+  async getSystemDesignProgress() {
+    return this.getLearningTrackProgress("system-design");
+  },
+
+  async updateSystemDesignProgress(stepNo, completed) {
+    return this.updateLearningTrackProgress("system-design", stepNo, completed);
   },
 
   async getProgressStatus(qnum) {

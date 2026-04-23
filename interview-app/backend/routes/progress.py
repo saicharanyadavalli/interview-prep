@@ -21,7 +21,7 @@ from services.questions_service import (
     get_question_summary_by_qnum,
     get_all_questions_catalog,
 )
-from services.system_design_course import is_system_design_qnum
+from services.system_design_course import is_reserved_learning_track_qnum
 
 router = APIRouter(prefix="/progress", tags=["progress"])
 
@@ -124,7 +124,7 @@ def get_user_progress(user: dict = Depends(get_current_user)):
         entries = [
             entry
             for entry in all_entries
-            if not is_system_design_qnum(int(entry.get("qnum", 0) or 0))
+            if not is_reserved_learning_track_qnum(int(entry.get("qnum", 0) or 0))
         ]
     except Exception:
         entries = []

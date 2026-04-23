@@ -1,0 +1,82 @@
+{
+  "total_steps": 11,
+  "steps": [
+    {
+      "step_no": 1,
+      "title": "Introduction and Overview",
+      "slug": "introduction-and-overview",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/introduction-and-overview",
+      "local_html": "genai-system-design/lessons/step-01.html"
+    },
+    {
+      "step_no": 2,
+      "title": "Gmail Smart Compose",
+      "slug": "gmail-smart-compose",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/gmail-smart-compose",
+      "local_html": "genai-system-design/lessons/step-02.html"
+    },
+    {
+      "step_no": 3,
+      "title": "Google Translate",
+      "slug": "google-translate",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/google-translate",
+      "local_html": "genai-system-design/lessons/step-03.html"
+    },
+    {
+      "step_no": 4,
+      "title": "ChatGPT: Personal Assistant Chatbot",
+      "slug": "chatgpt-personal-assistant-chatbot",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/chatgpt-personal-assistant-chatbot",
+      "local_html": "genai-system-design/lessons/step-04.html"
+    },
+    {
+      "step_no": 5,
+      "title": "Image Captioning",
+      "slug": "image-captioning",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/image-captioning",
+      "local_html": "genai-system-design/lessons/step-05.html"
+    },
+    {
+      "step_no": 6,
+      "title": "Retrieval-Augmented Generation",
+      "slug": "retrieval-augmented-generation",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/retrieval-augmented-generation",
+      "local_html": "genai-system-design/lessons/step-06.html"
+    },
+    {
+      "step_no": 7,
+      "title": "Realistic Face Generation",
+      "slug": "realistic-face-generation",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/realistic-face-generation",
+      "local_html": "genai-system-design/lessons/step-07.html"
+    },
+    {
+      "step_no": 8,
+      "title": "High-Resolution Image Synthesis",
+      "slug": "high-resolution-image-synthesis",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/high-resolution-image-synthesis",
+      "local_html": "genai-system-design/lessons/step-08.html"
+    },
+    {
+      "step_no": 9,
+      "title": "Text-to-Image Generation",
+      "slug": "text-to-image-generation",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/text-to-image-generation",
+      "local_html": "genai-system-design/lessons/step-09.html"
+    },
+    {
+      "step_no": 10,
+      "title": "Personalized Headshot Generation",
+      "slug": "personalized-headshot-generation",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/personalized-headshot-generation",
+      "local_html": "genai-system-design/lessons/step-10.html"
+    },
+    {
+      "step_no": 11,
+      "title": "Text-to-Video Generation",
+      "slug": "text-to-video-generation",
+      "source_url": "https://bytebytego.com/courses/genai-system-design-interview/text-to-video-generation",
+      "local_html": "genai-system-design/lessons/step-11.html"
+    }
+  ]
+}

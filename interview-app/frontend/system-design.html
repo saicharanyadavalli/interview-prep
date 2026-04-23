@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>System Design Course — Interview Practice Platform</title>
-    <meta name="description" content="Open any of the 30 system design chapter HTML files from a single chapter list." />
+    <title>Learning Track Course — Interview Practice Platform</title>
+    <meta name="description" content="Open chapter files for your selected learning track from one chapter list." />
     <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/components.css" />
   </head>
-  <body data-theme="dark" class="app-v2-theme system-design-page">
+  <body data-theme="dark" data-track-id="system-design" class="app-v2-theme system-design-page">
     <div class="bg-shape bg-shape-a"></div>
     <div class="bg-shape bg-shape-b"></div>
 
@@ -40,7 +40,7 @@
 
       <main class="main-content system-design-main">
         <div class="page-header">
-          <h1>🧠 System Design Course</h1>
+          <h1><span id="learningTrackEmoji">🧠</span> <span id="learningTrackTitle">System Design Course</span></h1>
           <div class="page-header-actions">
             <span id="sdCompletionBadge" class="counter-badge">0 files</span>
           </div>
@@ -48,7 +48,7 @@
 
         <section class="card-flat section system-design-list-card">
           <div class="system-design-steps-head">
-            <h3>📚 Chapters</h3>
+            <h3 id="learningTrackChaptersLabel">System Design Chapters</h3>
             <span id="sdCompletedPill" class="pill">0 files</span>
           </div>
 
@@ -62,6 +62,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/learning-tracks.js"></script>
     <script src="js/api.js"></script>
     <script src="js/sidebar.js"></script>
     <script src="js/system-design.js"></script>

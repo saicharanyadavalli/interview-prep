@@ -151,6 +151,38 @@ class ProgressStatusResponse(BaseModel):
     revisit: bool = False
 
 
+class LearningTrackMeta(BaseModel):
+    """Learning-track metadata consumed by frontend dashboards/pages."""
+    track_id: str
+    display_name: str
+    step_count: int = 0
+    qnum_base: int = 0
+    assets_slug: str = ""
+
+
+class LearningTrackStepProgress(BaseModel):
+    """Progress state for one learning-track lesson step."""
+    step_no: int = Field(..., ge=1)
+    title: str = ""
+    completed: bool = False
+    updated_at: Optional[str] = None
+
+
+class LearningTrackProgressResponse(BaseModel):
+    """Learning-track summary and per-step statuses."""
+    track_id: str
+    total_steps: int = 0
+    completed_steps: int = 0
+    completion_percent: int = 0
+    steps: list[LearningTrackStepProgress] = Field(default_factory=list)
+
+
+class LearningTrackProgressUpdateRequest(BaseModel):
+    """Update payload for a single learning-track lesson step."""
+    step_no: int = Field(..., ge=1)
+    completed: bool
+
+
 class SystemDesignStepProgress(BaseModel):
     """Progress state for one system design lesson step."""
     step_no: int = Field(..., ge=1)
@@ -171,6 +203,11 @@ class SystemDesignProgressUpdateRequest(BaseModel):
     """Update payload for a single system design lesson step."""
     step_no: int = Field(..., ge=1)
     completed: bool
+
+
+class LearningTracksResponse(BaseModel):
+    """All available learning-track metadata entries."""
+    tracks: list[LearningTrackMeta] = Field(default_factory=list)
 
 
 # ---------- Revisit ----------

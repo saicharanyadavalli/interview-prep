@@ -20,9 +20,7 @@ async function loadProgress() {
     topicChips: document.getElementById("topicChips"),
     topicDetail: document.getElementById("topicDetail"),
     topicInsightSummary: document.getElementById("topicInsightSummary"),
-    sdCourseProgressFill: document.getElementById("sdCourseProgressFill"),
-    sdCourseProgressText: document.getElementById("sdCourseProgressText"),
-    sdCourseProgressPercent: document.getElementById("sdCourseProgressPercent"),
+    learningTrackProgressList: document.getElementById("learningTrackProgressList"),
   };
 
   if (Object.values(refs).some((value) => !value)) {
@@ -120,30 +118,71 @@ async function loadProgress() {
     `;
   }
 
-  await renderSystemDesignCourseTracking(refs);
+  await renderLearningTrackCourseTracking(refs);
 }
 
-async function renderSystemDesignCourseTracking(refs) {
-  if (!refs.sdCourseProgressFill || !refs.sdCourseProgressText || !refs.sdCourseProgressPercent) {
+async function renderLearningTrackCourseTracking(refs) {
+  if (!refs.learningTrackProgressList) {
     return;
   }
 
-  let completed = 0;
-  let total = 30;
-
+  let tracks = Array.isArray(window.LEARNING_TRACKS) ? window.LEARNING_TRACKS : [];
   try {
-    const data = await API.getSystemDesignProgress();
-    completed = Number((data && data.completed_steps) || 0);
-    total = Number((data && data.total_steps) || 30);
+    const remote = await API.getLearningTracks();
+    if (remote && Array.isArray(remote.tracks) && remote.tracks.length) {
+      tracks = remote.tracks;
+    }
   } catch (_) {
-    completed = 0;
-    total = 30;
+    // Keep local fallback.
   }
 
-  const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
-  refs.sdCourseProgressFill.style.width = `${Math.max(0, Math.min(100, percent))}%`;
-  refs.sdCourseProgressText.textContent = `${completed} / ${total} completed`;
-  refs.sdCourseProgressPercent.textContent = `${percent}%`;
+  if (!tracks.length) {
+    refs.learningTrackProgressList.innerHTML = '<p class="text-sm text-muted">No learning tracks available yet.</p>';
+    return;
+  }
+
+  const progressRows = await Promise.all(
+    tracks.map(async (track) => {
+      const trackId = String((track && track.track_id) || "").trim();
+      if (!trackId) return null;
+
+      const localMeta = typeof getLearningTrackById === "function" ? getLearningTrackById(trackId) : null;
+      const icon = String((localMeta && localMeta.icon) || track.icon || "📘");
+      const name = String((track && track.display_name) || (localMeta && localMeta.display_name) || "Learning Track");
+      const href = String((localMeta && localMeta.course_href) || track.course_href || "#");
+
+      try {
+        const data = await API.getLearningTrackProgress(trackId);
+        return { icon, name, href, data, totalHint: Number(track.step_count || 0) };
+      } catch (_) {
+        return { icon, name, href, data: null, totalHint: Number(track.step_count || 0) };
+      }
+    })
+  );
+
+  refs.learningTrackProgressList.innerHTML = progressRows
+    .filter(Boolean)
+    .map((row) => {
+      const total = Number((row.data && row.data.total_steps) || row.totalHint || 0);
+      const completed = Number((row.data && row.data.completed_steps) || 0);
+      const percent = total > 0 ? Math.round((completed / total) * 100) : 0;
+      return `
+        <article class="progress-v3-track-item">
+          <div class="progress-v3-card-head">
+            <h4>${escapeHtml(`${row.icon} ${row.name}`)}</h4>
+            <a href="${escapeHtml(row.href)}" class="btn btn-sm">Open Course</a>
+          </div>
+          <div class="progress-wrap">
+            <div class="progress-fill" style="width:${Math.max(0, Math.min(100, percent))}%"></div>
+          </div>
+          <div class="progress-v3-system-design-meta">
+            <span>${completed} / ${total} completed</span>
+            <span>${percent}%</span>
+          </div>
+        </article>
+      `;
+    })
+    .join("");
 }
 
 function getFilterBuilderTopics() {
