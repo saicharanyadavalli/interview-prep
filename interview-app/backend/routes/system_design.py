@@ -1,4 +1,15 @@
-"""Learning-track progress routes."""
+"""Learning-track progress routes.
+
+Serves all 5 learning tracks:
+  - system-design
+  - object-oriented-design
+  - mobile-system-design
+  - ml-system-design
+  - genai-system-design
+
+Progress is stored in the `learning_track_progress` table (separate from
+`user_progress` which is exclusively for DSA questions).
+"""
 
 from __future__ import annotations
 
@@ -22,14 +33,17 @@ from services.system_design_course import (
     get_learning_track_config,
     get_learning_tracks,
     load_learning_track_titles,
-    step_to_track_qnum,
-    track_qnum_to_step,
 )
 
 router = APIRouter(tags=["learning-tracks"])
 
 
+# ── helpers ──────────────────────────────────────────────────────────
+
 def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackProgressResponse:
+    """Fetch all step rows for *track_id* from ``learning_track_progress``
+    and merge with titles from the course-index JSON."""
+
     config = get_learning_track_config(track_id)
     if not config:
         raise HTTPException(status_code=404, detail=f"Unknown learning track: {track_id}")
@@ -38,23 +52,22 @@ def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackPr
 
     try:
         rows = (
-            supabase.table("user_progress")
-            .select("qnum,is_solved,updated_at")
+            supabase.table("learning_track_progress")
+            .select("step_no,completed,updated_at")
             .eq("user_id", user["id"])
-            .gte("qnum", config.qnum_base + 1)
-            .lte("qnum", config.qnum_base + config.step_count)
-            .order("qnum")
+            .eq("track_id", track_id)
+            .order("step_no")
             .execute()
         ).data or []
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
+    # Build lookup: step_no → row
     by_step: dict[int, dict] = {}
     for row in rows:
-        step_no = track_qnum_to_step(track_id, int(row.get("qnum", 0) or 0))
-        if not step_no:
-            continue
-        by_step[step_no] = row
+        step_no = int(row.get("step_no", 0) or 0)
+        if step_no > 0:
+            by_step[step_no] = row
 
     titles = load_learning_track_titles(track_id)
     steps: list[LearningTrackStepProgress] = []
@@ -62,7 +75,7 @@ def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackPr
 
     for step_no in range(1, config.step_count + 1):
         row = by_step.get(step_no, {})
-        completed = bool(row.get("is_solved", False))
+        completed = bool(row.get("completed", False))
         if completed:
             completed_steps += 1
 
@@ -75,7 +88,7 @@ def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackPr
             )
         )
 
-    completion_percent = int(round((completed_steps / config.step_count) * 100))
+    completion_percent = int(round((completed_steps / config.step_count) * 100)) if config.step_count else 0
     return LearningTrackProgressResponse(
         track_id=track_id,
         total_steps=config.step_count,
@@ -90,6 +103,8 @@ def _update_learning_track_progress(
     payload: LearningTrackProgressUpdateRequest,
     user: dict,
 ) -> LearningTrackStepProgress:
+    """Upsert a single step's completion state into ``learning_track_progress``."""
+
     config = get_learning_track_config(track_id)
     if not config:
         raise HTTPException(status_code=404, detail=f"Unknown learning track: {track_id}")
@@ -101,20 +116,19 @@ def _update_learning_track_progress(
             detail=f"step_no must be between 1 and {config.step_count}",
         )
 
-    qnum = step_to_track_qnum(track_id, step_no)
     now = datetime.now(timezone.utc).isoformat()
     supabase = get_supabase_client()
 
     try:
-        supabase.table("user_progress").upsert(
+        supabase.table("learning_track_progress").upsert(
             {
                 "user_id": user["id"],
-                "qnum": qnum,
-                "is_solved": bool(payload.completed),
-                "is_revisit": False,
+                "track_id": track_id,
+                "step_no": step_no,
+                "completed": bool(payload.completed),
                 "updated_at": now,
             },
-            on_conflict="user_id,qnum",
+            on_conflict="user_id,track_id,step_no",
         ).execute()
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
@@ -127,6 +141,8 @@ def _update_learning_track_progress(
         updated_at=now,
     )
 
+
+# ── routes ───────────────────────────────────────────────────────────
 
 @router.get("/learning-tracks", response_model=LearningTracksResponse)
 def get_learning_tracks_meta(_: dict = Depends(get_current_user)):
@@ -159,6 +175,8 @@ def update_learning_track_progress(
     """Update completion state for one learning-track step."""
     return _update_learning_track_progress(track_id, payload, user)
 
+
+# ── legacy system-design endpoints (backward compat) ─────────────
 
 @router.get("/system-design/progress", response_model=SystemDesignProgressResponse)
 def get_system_design_progress_legacy(user: dict = Depends(get_current_user)):

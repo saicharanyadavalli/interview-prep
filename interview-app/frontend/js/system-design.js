@@ -51,6 +51,21 @@ async function loadLearningTrackCoursePage(track) {
 }
 
 async function loadTrackChapters(track) {
+  try {
+    const progressResponse = await API.getLearningTrackProgress(track.track_id);
+    if (progressResponse && progressResponse.steps && progressResponse.steps.length > 0) {
+      return progressResponse.steps.map(step => ({
+        step_no: step.step_no,
+        title: step.title,
+        completed: step.completed,
+        local_html: `${track.lessons_root}/step-${String(step.step_no).padStart(2, "0")}.html`,
+      }));
+    }
+  } catch (error) {
+    console.warn("API progress fetch failed, falling back to local json", error);
+  }
+
+  // Fallback to local json (may fail due to CORS on file://)
   const indexPath = `assets/${track.assets_slug}/course-index.json`;
   try {
     const response = await fetch(indexPath, { cache: "no-store" });
@@ -61,6 +76,7 @@ async function loadTrackChapters(track) {
         .map((chapter) => ({
           step_no: Number(chapter && chapter.step_no),
           title: String((chapter && chapter.title) || "").trim(),
+          completed: false,
           local_html: normalizeLocalPath(String((chapter && chapter.local_html) || "").trim()),
         }))
         .filter((chapter) => Number.isFinite(chapter.step_no) && chapter.step_no > 0);
@@ -82,6 +98,7 @@ async function loadTrackChapters(track) {
     return {
       step_no: stepNo,
       title: `Step ${stepNo}`,
+      completed: false,
       local_html: `${track.lessons_root}/step-${String(stepNo).padStart(2, "0")}.html`,
     };
   });
@@ -98,17 +115,40 @@ function renderStepsList(refs, steps) {
       const stepNo = Number(step.step_no || 0);
       const filePath = normalizeLocalPath(step.local_html || "");
       const encodedPath = encodeURI(filePath);
+      const isCompleted = step.completed ? "checked" : "";
       return `
         <div class="system-design-row" data-step-no="${stepNo}">
-          <div class="system-design-row-main">
-            <p class="system-design-step-index">Step ${stepNo}</p>
-            <p class="system-design-step-title">${escapeHtml(step.title || `Step ${stepNo}`)}</p>
+          <div class="system-design-row-main" style="display: flex; align-items: center; gap: 0.8rem;">
+            <label class="custom-checkbox" style="margin-bottom: 0;">
+              <input type="checkbox" class="sd-step-checkbox" data-step="${stepNo}" ${isCompleted} />
+              <span class="checkmark"></span>
+            </label>
+            <div>
+              <p class="system-design-step-index" style="margin: 0; font-size: 0.85rem; color: var(--text-muted);">Step ${stepNo}</p>
+              <p class="system-design-step-title" style="margin: 0; font-weight: 500;">${escapeHtml(step.title || `Step ${stepNo}`)}</p>
+            </div>
           </div>
           <a class="btn btn-sm btn-primary system-design-open-btn" href="${encodedPath}">Open</a>
         </div>
       `;
     })
     .join("");
+
+  // Add event listeners to newly inserted checkboxes
+  refs.stepsList.querySelectorAll('.sd-step-checkbox').forEach(box => {
+    box.addEventListener('change', async (e) => {
+      const stepNo = e.target.dataset.step;
+      const completed = e.target.checked;
+      const trackId = resolveTrackIdFromPage();
+      try {
+        await API.updateLearningTrackProgress(trackId, stepNo, completed);
+      } catch (err) {
+        console.error("Failed to update progress", err);
+        // Revert check on failure
+        e.target.checked = !completed;
+      }
+    });
+  });
 }
 
 function updateFileCount(refs, overrideCount = null) {

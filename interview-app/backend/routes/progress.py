@@ -21,7 +21,6 @@ from services.questions_service import (
     get_question_summary_by_qnum,
     get_all_questions_catalog,
 )
-from services.system_design_course import is_reserved_learning_track_qnum
 
 router = APIRouter(prefix="/progress", tags=["progress"])
 
@@ -110,9 +109,7 @@ def get_user_progress(user: dict = Depends(get_current_user)):
     supabase = get_supabase_client()
 
     try:
-        # Get all progress entries for this user.
-        # System-design course steps are stored in a reserved qnum range and
-        # intentionally excluded from coding-question analytics.
+        # Get all progress entries for this user
         result = (
             supabase.table("user_progress")
             .select("*")
@@ -120,12 +117,7 @@ def get_user_progress(user: dict = Depends(get_current_user)):
             .order("updated_at", desc=True)
             .execute()
         )
-        all_entries = result.data or []
-        entries = [
-            entry
-            for entry in all_entries
-            if not is_reserved_learning_track_qnum(int(entry.get("qnum", 0) or 0))
-        ]
+        entries = result.data or []
     except Exception:
         entries = []
 

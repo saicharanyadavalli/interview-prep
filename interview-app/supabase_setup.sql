@@ -58,6 +58,16 @@ CREATE TABLE public.user_comments (
   created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+CREATE TABLE public.learning_track_progress (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  track_id TEXT NOT NULL,
+  step_no INTEGER NOT NULL CHECK (step_no > 0),
+  completed BOOLEAN NOT NULL DEFAULT FALSE,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+  UNIQUE (user_id, track_id, step_no)
+);
+
 -- ============================================================
 -- QUESTION BANK
 -- ============================================================
@@ -107,6 +117,11 @@ BEFORE UPDATE ON public.question_bank_questions
 FOR EACH ROW
 EXECUTE FUNCTION public.set_current_timestamp_updated_at();
 
+CREATE TRIGGER trg_learning_track_progress_updated_at
+BEFORE UPDATE ON public.learning_track_progress
+FOR EACH ROW
+EXECUTE FUNCTION public.set_current_timestamp_updated_at();
+
 -- ============================================================
 -- INDEXES
 -- ============================================================
@@ -123,6 +138,9 @@ CREATE INDEX idx_practice_history_time ON public.practice_history(practiced_at D
 
 -- comments
 CREATE INDEX idx_user_comments_user_qnum ON public.user_comments(user_id, qnum);
+
+-- learning_track_progress
+CREATE INDEX idx_learning_track_progress_user_track ON public.learning_track_progress(user_id, track_id);
 
 -- profiles
 CREATE INDEX idx_user_profiles_email ON public.user_profiles(email);
@@ -146,7 +164,8 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON
   public.user_profiles,
   public.user_progress,
   public.practice_history,
-  public.user_comments
+  public.user_comments,
+  public.learning_track_progress
 TO authenticated;
 
 GRANT SELECT ON
@@ -162,6 +181,7 @@ ALTER TABLE public.user_profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.practice_history ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.user_comments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.learning_track_progress ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.question_bank_questions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.question_bank_qnum_aliases ENABLE ROW LEVEL SECURITY;
 
@@ -198,6 +218,19 @@ FOR INSERT WITH CHECK (auth.uid() = user_id);
 -- comments
 CREATE POLICY "comments_all" ON public.user_comments
 FOR ALL USING (auth.uid() = user_id);
+
+-- learning_track_progress
+CREATE POLICY "ltp_select" ON public.learning_track_progress
+FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "ltp_insert" ON public.learning_track_progress
+FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "ltp_update" ON public.learning_track_progress
+FOR UPDATE USING (auth.uid() = user_id);
+
+CREATE POLICY "ltp_delete" ON public.learning_track_progress
+FOR DELETE USING (auth.uid() = user_id);
 
 -- public read (question bank)
 CREATE POLICY "qb_read" ON public.question_bank_questions

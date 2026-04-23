@@ -20,3 +20,4 @@ interview-app/backend/scripts/upload_system_design_images_to_cloudinary.py
 interview-app/backend/scripts/generate_system_design_themed_pages.py
 interview-app/backend/scripts/collect_system_design_images.py
 
+interview-app/migrations/create_learning_track_progress.sql

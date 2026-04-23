@@ -41,7 +41,7 @@
       <main class="main-content">
         <div class="page-header">
           <h1>🧠 Solve Question</h1>
-          <a href="questions.html" class="btn btn-sm">← Back To All Questions</a>
+          <a href="questions.html" class="btn btn-sm">← Back To DSA Practice</a>
         </div>
 
         <div class="status-bar section">
@@ -59,8 +59,16 @@
             </div>
           </div>
 
-          <div class="quick-links">
-            <a id="qProblemUrl" href="#" target="_blank" rel="noopener noreferrer">Open Problem</a>
+          <div class="quick-links" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <a id="qProblemUrl" href="#" target="_blank" rel="noopener noreferrer" class="btn btn-sm">Open Problem</a>
+            <div id="solveTimer" class="solve-timer">
+              <span id="timerDisplay" class="timer-display">00:00</span>
+              <div class="timer-actions">
+                <button id="btnTimerToggle" class="btn btn-icon btn-sm" type="button" title="Start/Stop">▶</button>
+                <button id="btnTimerReset" class="btn btn-icon btn-sm" type="button" title="Reset">↺</button>
+                <button id="btnTimerMask" class="btn btn-icon btn-sm" type="button" title="Mask/Unmask Time">👁</button>
+              </div>
+            </div>
           </div>
 
           <div class="details-grid">

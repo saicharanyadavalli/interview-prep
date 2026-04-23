@@ -3319,3 +3319,84 @@ body.revisit-v3-page .revisit-v3-actions {
     grid-template-columns: repeat(7, minmax(0, 1fr));
   }
 }
+
+/* ---------- Solve Timer ---------- */
+.solve-timer {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--surface);
+  padding: 0.3rem 0.6rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--line);
+}
+.solve-timer .timer-display {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-base);
+  min-width: 3rem;
+  text-align: center;
+  transition: filter 0.2s, opacity 0.2s;
+}
+.solve-timer .timer-display.masked {
+  filter: blur(4px);
+  opacity: 0.7;
+}
+.solve-timer .timer-actions {
+  display: flex;
+  gap: 0.3rem;
+}
+
+/* ---------- Custom Checkbox (Learning Track Steps) ---------- */
+.custom-checkbox {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.custom-checkbox input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.custom-checkbox .checkmark {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface-chip);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.18s ease, border-color 0.18s ease, transform 0.12s ease;
+}
+
+.custom-checkbox:hover .checkmark {
+  border-color: var(--teal);
+  transform: scale(1.08);
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark {
+  background: linear-gradient(135deg, var(--teal), #12827a);
+  border-color: var(--teal);
+}
+
+.custom-checkbox input[type="checkbox"]:checked + .checkmark::after {
+  content: '✓';
+  color: #fff;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.custom-checkbox input[type="checkbox"]:focus-visible + .checkmark {
+  outline: 3px solid rgba(15, 118, 110, 0.35);
+  outline-offset: 2px;
+}

@@ -13,7 +13,7 @@ const NAV_ITEMS = [
   { id: "mobile-system-design", label: "Mobile System Design", icon: "📱", href: "mobile-system-design.html" },
   { id: "ml-system-design", label: "ML System Design", icon: "🤖", href: "ml-system-design.html" },
   { id: "genai-system-design", label: "GenAI System Design", icon: "✨", href: "genai-system-design.html" },
-  { id: "questions",  label: "All Questions",   icon: "📋", href: "questions.html" },
+  { id: "questions",  label: "DSA Practice",    icon: "📋", href: "questions.html" },
   { id: "profile",    label: "Profile",         icon: "👤", href: "profile.html"   },
   { id: "revisit",    label: "Revisit Queue",   icon: "🔄", href: "revisit.html"   },
   { id: "progress",   label: "Progress",        icon: "📈", href: "progress.html"  },

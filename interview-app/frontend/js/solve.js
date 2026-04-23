@@ -49,6 +49,11 @@ async function initSolvePage() {
   const sendDoubtBtn = document.getElementById("sendDoubtBtn");
   const clearChatBtn = document.getElementById("clearChatBtn");
 
+  const timerDisplay = document.getElementById("timerDisplay");
+  const btnTimerToggle = document.getElementById("btnTimerToggle");
+  const btnTimerReset = document.getElementById("btnTimerReset");
+  const btnTimerMask = document.getElementById("btnTimerMask");
+
   function setStatus(msg) {
     if (statusText) statusText.textContent = msg;
   }
@@ -448,6 +453,64 @@ async function initSolvePage() {
       solveState.chatInFlight = false;
     }
   }
+
+  // --- Timer Logic ---
+  let timerInterval = null;
+  let timerSeconds = 0;
+  let timerRunning = false;
+
+  function formatTime(sec) {
+    const m = Math.floor(sec / 60).toString().padStart(2, "0");
+    const s = (Math.floor(sec) % 60).toString().padStart(2, "0");
+    return `${m}:${s}`;
+  }
+
+  function updateTimerDisplay() {
+    if (timerDisplay) timerDisplay.textContent = formatTime(timerSeconds);
+  }
+
+  function startTimer() {
+    if (timerRunning) return;
+    timerRunning = true;
+    if (btnTimerToggle) {
+      btnTimerToggle.textContent = "⏸";
+      btnTimerToggle.title = "Pause";
+    }
+    timerInterval = setInterval(() => {
+      timerSeconds++;
+      updateTimerDisplay();
+    }, 1000);
+  }
+
+  function stopTimer() {
+    if (!timerRunning) return;
+    timerRunning = false;
+    if (btnTimerToggle) {
+      btnTimerToggle.textContent = "▶";
+      btnTimerToggle.title = "Start";
+    }
+    clearInterval(timerInterval);
+  }
+
+  function toggleTimer() {
+    if (timerRunning) stopTimer();
+    else startTimer();
+  }
+
+  function resetTimer() {
+    stopTimer();
+    timerSeconds = 0;
+    updateTimerDisplay();
+  }
+
+  function toggleMask() {
+    if (!timerDisplay) return;
+    timerDisplay.classList.toggle("masked");
+  }
+
+  if (btnTimerToggle) btnTimerToggle.addEventListener("click", toggleTimer);
+  if (btnTimerReset) btnTimerReset.addEventListener("click", resetTimer);
+  if (btnTimerMask) btnTimerMask.addEventListener("click", toggleMask);
 
   const params = new URLSearchParams(window.location.search);
   const qnum = Number(params.get("qnum") || 0);
