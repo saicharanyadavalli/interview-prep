@@ -3,44 +3,457 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign In — Interview Practice Platform</title>
-    <meta name="description" content="Sign in with Google to access the Interview Practice Platform. Practice coding interview questions with AI-powered assistance." />
+    <title>Interview Assistant — AI-Powered Prep Platform</title>
+    <meta name="description" content="Prepare for coding interviews with AI doubt resolution, company-wise questions, progress tracking, and interactive dashboards." />
     <link rel="icon" type="image/svg+xml" href="assets/logo-mark.svg" />
     <link rel="stylesheet" href="css/global.css" />
     <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/landing.css" />
   </head>
-  <body data-theme="dark" class="app-v2-theme">
-    <div class="bg-shape bg-shape-a"></div>
-    <div class="bg-shape bg-shape-b"></div>
+  <body class="landing-body">
+    <!-- Background grid and ambient spots -->
+    <div class="noise-overlay"></div>
+    <div class="landing-grid-bg"></div>
+    <div class="landing-glow-spot glow-cyan"></div>
+    <div class="landing-glow-spot glow-purple"></div>
+    <div class="landing-glow-spot glow-pink"></div>
 
-    <div class="login-page">
-      <div class="login-card">
-        <img class="brand-logo" src="assets/logo-mark.svg" alt="Interview Assistant logo" />
-        <h1>Interview Assistant</h1>
-        <p class="subtitle">Sharpen your coding interview skills with AI-powered guidance</p>
+    <!-- Navigation Header -->
+    <nav class="landing-nav">
+      <div class="nav-container">
+        <a class="nav-logo" href="#">
+          <img src="assets/logo-mark.svg" alt="Interview Assistant Logo" />
+          <span>Interview Assistant</span>
+        </a>
+        <div class="nav-links">
+          <a class="nav-link" href="#features">Features</a>
+          <a class="nav-link" href="#showcase">Showcase</a>
+          <a class="nav-link" href="#how-it-works">How It Works</a>
+          <a class="nav-link" href="#faq">FAQ</a>
+        </div>
+        <div class="nav-actions">
+          <button class="btn-premium open-login-modal">Sign In</button>
+          <button class="btn-premium btn-premium-primary btn-premium-glow open-login-modal">Get Started</button>
+        </div>
+      </div>
+    </nav>
 
-        <div class="login-divider">continue with</div>
+    <!-- Hero Section -->
+    <header class="hero-section">
+      <div class="hero-tag">
+        <span></span> Powered by Gemini 2.0 AI Assistant
+      </div>
+      <h1 class="hero-title">
+        Master Coding Interviews.<br />
+        <span class="gradient-text">Guided by Intelligence.</span>
+      </h1>
+      <p class="hero-subtitle">
+        Accelerate your technical preparation with real-time AI doubt resolution, targeted company track lists, and unified performance dashboards.
+      </p>
+      
+      <div class="hero-ctas">
+        <button class="btn-premium btn-premium-primary btn-premium-glow open-login-modal">
+          Start Preparing Now
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </button>
+        <a href="#features" class="btn-premium">
+          Explore Features
+        </a>
+      </div>
 
-        <button id="googleSignInBtn" class="btn btn-google" type="button">
+      <!-- Floating UI Micro Cards -->
+      <div class="floating-glass-card card-float-1">
+        <div class="icon-wrap">G</div>
+        <div class="details">
+          <span class="title">Google Target Track</span>
+          <span class="meta">18 / 25 questions solved</span>
+        </div>
+      </div>
+      <div class="floating-glass-card card-float-2">
+        <div class="icon-wrap">⚡</div>
+        <div class="details">
+          <span class="title">AI Explainer</span>
+          <span class="meta">Optimized to O(N log N)</span>
+        </div>
+      </div>
+
+      <!-- 3D Dashboard Showcase -->
+      <div class="showcase-container scroll-reveal">
+        <div class="showcase-depth-wrapper" style="transform: rotateX(12deg) rotateY(-8deg) rotateZ(3deg) scale(0.95)">
+          <div class="glass-dashboard-mock">
+            <!-- Window Title bar -->
+            <div class="mock-titlebar">
+              <div class="mock-window-buttons">
+                <span class="mock-btn red"></span>
+                <span class="mock-btn yellow"></span>
+                <span class="mock-btn green"></span>
+              </div>
+              <div class="mock-tab">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+                solve.html
+              </div>
+              <div style="width: 50px;"></div>
+            </div>
+
+            <!-- Workspace -->
+            <div class="mock-workspace">
+              <!-- Left Sidebar / catalog -->
+              <div class="mock-pane">
+                <div class="mock-problem-title">
+                  <span>Two Sum</span>
+                  <span class="mock-badge easy">Easy</span>
+                </div>
+                <div class="mock-text-flow">
+                  <p>Given an array of integers <code>nums</code> and an integer <code>target</code>, return indices of the two numbers such that they add up to target.</p>
+                  <p>You may assume that each input would have exactly one solution...</p>
+                  <div>
+                    <span class="mock-badge company">Google</span>
+                    <span class="mock-badge company">Amazon</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Middle Code Editor -->
+              <div class="mock-code-editor">
+                <div class="mock-code-line"><span class="mock-line-num">1</span><span><span class="mock-keyword">def</span> <span class="mock-func">twoSum</span>(nums, target):</span></div>
+                <div class="mock-code-line"><span class="mock-line-num">2</span><span>    <span class="mock-comment"># Use hashmap for lookup</span></span></div>
+                <div class="mock-code-line"><span class="mock-line-num">3</span><span>    seen = {}</span></div>
+                <div class="mock-code-line"><span class="mock-line-num">4</span><span>    <span class="mock-keyword">for</span> i, num <span class="mock-keyword">in</span> <span class="mock-func">enumerate</span>(nums):</span></div>
+                <div class="mock-code-line"><span class="mock-line-num">5</span><span>        diff = target - num</span></div>
+                <div class="mock-code-line"><span class="mock-line-num">6</span><span>        <span class="mock-keyword">if</span> diff <span class="mock-keyword">in</span> seen:</span></div>
+                <div class="mock-code-line"><span class="mock-line-num">7</span><span>            <span class="mock-keyword">return</span> [seen[diff], i]</span></div>
+                <div class="mock-code-line"><span class="mock-line-num">8</span><span>        seen[num] = i</span></div>
+                <div class="mock-code-line"><span class="mock-line-num">9</span><span>    <span class="mock-keyword">return</span> []</span></div>
+              </div>
+
+              <!-- Right AI Doubt Assistant -->
+              <div class="mock-pane">
+                <div class="mock-ai-assistant">
+                  <div class="mock-ai-header">
+                    <span>✨ Gemini AI Assistant</span>
+                  </div>
+                  <div class="mock-chat-messages">
+                    <div class="mock-bubble user">
+                      What is the space complexity of this solution?
+                    </div>
+                    <div class="mock-bubble assistant">
+                      The space complexity is <strong>O(N)</strong>, where N is the number of elements in <code>nums</code>. This is because, in the worst case, we store each element and its index in the hash map.
+                    </div>
+                  </div>
+                  <div class="mock-ai-input">
+                    <span>Ask a doubt about this question...</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Statistics strip -->
+    <section class="stats-strip scroll-reveal">
+      <div class="stats-container">
+        <div class="stat-item">
+          <span class="stat-num">10,000+</span>
+          <span class="stat-lbl">Questions Practice Solved</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">24/7</span>
+          <span class="stat-lbl">AI Expert Doubt Support</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">4.9/5</span>
+          <span class="stat-lbl">Gemini Response Rating</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-num">92%</span>
+          <span class="stat-lbl">SaaS & Big Tech Success Rate</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Bento Grid Section -->
+    <section id="features" class="section-wrapper scroll-reveal">
+      <div class="section-head">
+        <span class="section-tag">Next-Gen Preparation</span>
+        <h2 class="section-title">Designed for Elite Software Engineers</h2>
+        <p class="section-desc">Traditional prep platforms leave you stranded when you get stuck. Our platform integrates intelligence directly into your coding editor.</p>
+      </div>
+
+      <div class="bento-grid">
+        <!-- AI Doubt Resolver Card -->
+        <div class="bento-card bento-card-large">
+          <div class="bento-icon">✨</div>
+          <h3 class="bento-title">Real-Time AI Doubt Assistant</h3>
+          <p class="bento-desc">
+            Equipped with deep context about the problem description, your current draft code, and programming syntax, the built-in Gemini Assistant acts as a 1-on-1 private tutor to explain complex logical blocks, clarify edge cases, or review code efficiency.
+          </p>
+          <div class="bento-interactive-area" style="width: 100%;">
+            <div style="background: rgba(3, 7, 18, 0.4); border: 1px solid var(--l-border); border-radius: 8px; width: 100%; padding: 1rem; font-size: 0.8rem;">
+              <span style="color: var(--l-cyan); font-weight: 700; display: block; margin-bottom: 0.5rem;">User Query</span>
+              <p style="margin-bottom: 0.8rem; color: #fff;">"Why does my depth-first search exceed the memory limit?"</p>
+              <span style="color: var(--l-purple); font-weight: 700; display: block; margin-bottom: 0.5rem;">Gemini Response</span>
+              <p style="color: var(--l-text-muted); margin: 0;">"You have a missing visited-set tracking check, causing infinite loops and stack overflow recursion."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Target Companies Card -->
+        <div class="bento-card">
+          <div class="bento-icon">🏢</div>
+          <h3 class="bento-title">Target Company Curations</h3>
+          <p class="bento-desc">
+            Filter and target questions filtered by frequency and tags reported in recent Google, Amazon, Meta, and Microsoft rounds.
+          </p>
+          <div class="bento-interactive-area">
+            <div class="company-logo-cloud">
+              <span class="company-logo-badge">🤖 Google</span>
+              <span class="company-logo-badge">📦 Amazon</span>
+              <span class="company-logo-badge">♾️ Meta</span>
+              <span class="company-logo-badge">💻 Microsoft</span>
+              <span class="company-logo-badge">🍎 Apple</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Solving Tracker Card -->
+        <div class="bento-card">
+          <div class="bento-icon">✅</div>
+          <h3 class="bento-title">Solve Tracking & History</h3>
+          <p class="bento-desc">
+            Save outcomes instantly to your persistent history tracker. Flag questions as solved, attempted, or mark them for a revisit.
+          </p>
+          <div class="bento-interactive-area">
+            <div style="display: flex; gap: 0.5rem;">
+              <span style="padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); color: #4ade80;">Solved</span>
+              <span style="padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b;">Revisit</span>
+              <span style="padding: 4px 10px; border-radius: 6px; font-size: 0.75rem; background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.3); color: #f87171;">Attempted</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dashboard Progress Card -->
+        <div class="bento-card bento-card-large">
+          <div class="bento-icon">📊</div>
+          <h3 class="bento-title">Personal Analytics Dashboard</h3>
+          <p class="bento-desc">
+            Observe your prep progress globally and drill down by difficulty levels. The application records timestamps, notes, comments, and metrics to optimize review cycles.
+          </p>
+          <div class="bento-interactive-area">
+            <div class="stats-circle-preview">
+              <svg class="circular-chart" viewBox="0 0 36 36">
+                <path class="circle-bg" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+                <path class="circle cyan" stroke-dasharray="72, 100" d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" />
+              </svg>
+              <div class="chart-legend">
+                <span class="legend-item"><span class="legend-dot" style="background-color: var(--l-cyan);"></span> Solved Problems (72%)</span>
+                <span class="legend-item"><span class="legend-dot" style="background-color: rgba(255,255,255,0.2);"></span> Remaining (28%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Showcase Section -->
+    <section id="showcase" class="section-wrapper scroll-reveal">
+      <div class="section-head">
+        <span class="section-tag">Interactive Catalog</span>
+        <h2 class="section-title">The Unified Study Experience</h2>
+        <p class="section-desc">Filter questions, practice offline or online, and reference detailed solutions across structural learning tracks.</p>
+      </div>
+
+      <div style="background: var(--l-card-bg); border: 1px solid var(--l-border); border-radius: 20px; padding: 2rem; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);">
+        <div style="display: flex; justify-content: space-between; border-bottom: 1px solid var(--l-border); padding-bottom: 1rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+          <div style="display: flex; gap: 1rem;">
+            <span style="color: #fff; font-weight: 700; font-size: 0.95rem; border-bottom: 2px solid var(--l-cyan); padding-bottom: 1.1rem; margin-bottom: -1.1rem;">LeetCode / GFG Bank</span>
+            <span style="color: var(--l-text-muted); font-size: 0.95rem; cursor: pointer;">System Design Chapters</span>
+          </div>
+          <div style="display: flex; gap: 0.5rem;">
+            <span style="background: rgba(255,255,255,0.05); font-size: 0.8rem; border-radius: 6px; padding: 4px 10px; border: 1px solid var(--l-border); color: #fff;">Search questions...</span>
+          </div>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--l-border); border-radius: 10px; padding: 1rem;">
+            <div>
+              <span style="font-weight: 600; color: #fff; display: block;">1. Reverse Linked List</span>
+              <span style="font-size: 0.78rem; color: var(--l-text-muted);">Recursion, Linked Lists &bull; Tags: Amazon, Facebook</span>
+            </div>
+            <span class="mock-badge easy" style="font-size: 0.75rem;">Easy</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--l-border); border-radius: 10px; padding: 1rem;">
+            <div>
+              <span style="font-weight: 600; color: #fff; display: block;">2. LRU Cache Design</span>
+              <span style="font-size: 0.78rem; color: var(--l-text-muted);">Data Structures, Design &bull; Tags: Google, Amazon</span>
+            </div>
+            <span class="mock-badge easy" style="background: rgba(168, 85, 247, 0.15); color: var(--l-purple); font-size: 0.75rem;">Medium</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); border: 1px solid var(--l-border); border-radius: 10px; padding: 1rem;">
+            <div>
+              <span style="font-weight: 600; color: #fff; display: block;">3. Merge k Sorted Lists</span>
+              <span style="font-size: 0.78rem; color: var(--l-text-muted);">Divide and Conquer, Heaps &bull; Tags: Microsoft</span>
+            </div>
+            <span class="mock-badge easy" style="background: rgba(239, 68, 68, 0.15); color: #ef4444; font-size: 0.75rem;">Hard</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="section-wrapper scroll-reveal">
+      <div class="section-head">
+        <span class="section-tag">Step-by-Step Flow</span>
+        <h2 class="section-title">The Path to Interview Mastery</h2>
+        <p class="section-desc">Four simple phases to build confidence, identify logic gaps, and perform under high pressure.</p>
+      </div>
+
+      <div class="how-it-works-grid">
+        <div class="step-card">
+          <span class="step-num">01</span>
+          <h3 class="step-title">Authenticate Securely</h3>
+          <p class="step-desc">Connect using single click Google Authentication. Your progress data is linked securely to your email.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">02</span>
+          <h3 class="step-title">Select Focus Track</h3>
+          <p class="step-desc">Choose target difficulty levels or companies. Access custom-indexed coding questions.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">03</span>
+          <h3 class="step-title">Ask AI Clarifications</h3>
+          <p class="step-desc">Stuck on logic? Click to ask the integrated Gemini Assistant. It reads your draft and answers doubts instantly.</p>
+        </div>
+        <div class="step-card">
+          <span class="step-num">04</span>
+          <h3 class="step-title">Refine & Log History</h3>
+          <p class="step-desc">Save comment guides, save your solutions, track outcomes, and manage revisit tasks.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section id="faq" class="section-wrapper scroll-reveal">
+      <div class="section-head">
+        <span class="section-tag">Answering Queries</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-desc">Everything you need to know about the platform authentication, database, and doubt assistant.</p>
+      </div>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>How does the AI Doubt Assistant work?</span>
+            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <div class="faq-content">
+            <p>The Doubt Assistant connects directly to the Google Gemini API. When you prompt it inside the question solve workspace, the application automatically wraps the context (problem name, problem description, current code buffer, and user message) into a request. This provides a highly accurate response without you having to copy-paste.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>Is Google OAuth login secure?</span>
+            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <div class="faq-content">
+            <p>Yes. The platform relies entirely on Supabase Authentication services. We do not store your Google password. Supabase acts as an OAuth delegate and verifies your identity via standard encrypted token handshakes.</p>
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-trigger">
+            <span>Can I customize the question banks?</span>
+            <svg class="faq-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+          </button>
+          <div class="faq-content">
+            <p>Absolutely. If you run backend loader scripts locally (e.g. `load_questions_to_supabase.py`), you can import any JSON structures or crawled company patterns into your local Supabase database to seed customized lists.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bottom CTA Panel -->
+    <section class="section-wrapper scroll-reveal">
+      <div class="bottom-cta-panel">
+        <h2 class="bottom-cta-title">Ready to land your dream offer?</h2>
+        <p class="bottom-cta-desc">Start tracking progress, target companies, and resolve logic hurdles with Gemini AI doubt support.</p>
+        <button id="googleSignInBtnBottom" class="btn-premium btn-premium-primary btn-premium-glow open-login-modal" style="padding: 1rem 2rem; font-size: 1.1rem;">
+          Get Started Now
+        </button>
+      </div>
+    </section>
+
+    <!-- Premium Footer -->
+    <footer class="landing-footer">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="footer-brand-title">
+            <img src="assets/logo-mark.svg" alt="Interview Assistant" />
+            <span>Interview Assistant</span>
+          </div>
+          <p class="footer-brand-desc">An intelligent prep space built by developers, for developers, leveraging modern Large Language Models to accelerate technical study cycles.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Product</h4>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="#features">Features</a></li>
+            <li><a class="footer-link" href="#showcase">Showcase</a></li>
+            <li><a class="footer-link" href="#how-it-works">How It Works</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Integrations</h4>
+          <ul class="footer-links">
+            <li><span class="footer-link" style="cursor: default;">Google Gemini API</span></li>
+            <li><span class="footer-link" style="cursor: default;">Supabase Database</span></li>
+            <li><span class="footer-link" style="cursor: default;">Cloudinary hosting</span></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>System Design</h4>
+          <ul class="footer-links">
+            <li><a class="footer-link" href="system-design.html">System Design Prep</a></li>
+            <li><a class="footer-link" href="ml-system-design.html">ML System Design</a></li>
+            <li><a class="footer-link" href="object-oriented-design.html">Object Oriented Design</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Interview Assistant. All rights reserved. Built with precision.</span>
+        <span>Secure &bull; Open &bull; Scalable</span>
+      </div>
+    </footer>
+
+    <!-- Glassmorphic Auth Modal Popup -->
+    <div id="loginModal" class="glass-modal-overlay">
+      <div class="glass-modal-card">
+        <button id="closeModalBtn" class="modal-close-btn">&times;</button>
+        <img style="width: 3rem; height: 3rem; margin: 0 auto 1.5rem;" src="assets/logo-mark.svg" alt="Interview Assistant logo" />
+        <h3 style="font-size: 1.5rem; color: #fff; margin-bottom: 0.5rem;">Access the Platform</h3>
+        <p style="color: var(--l-text-muted); font-size: 0.9rem; margin-bottom: 2rem;">Sign in with Google to sync your progress and enable AI doubt support.</p>
+
+        <button id="googleSignInBtn" class="btn btn-google" style="width: 100%; justify-content: center; margin-bottom: 1.5rem;" type="button">
           <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#34A853" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59A14.5 14.5 0 0 1 9.5 24c0-1.59.28-3.14.76-4.59l-7.98-6.19A23.99 23.99 0 0 0 0 24c0 3.77.9 7.35 2.56 10.53l7.97-5.94z"/><path fill="#EA4335" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 5.94C6.51 42.62 14.62 48 24 48z"/></svg>
           Sign in with Google
         </button>
 
-        <p class="text-muted text-sm" style="margin-top: 1.5rem;">
+        <p style="font-size: 0.78rem; color: var(--l-text-muted);">
           By signing in, you agree to practice responsibly 🚀
         </p>
       </div>
     </div>
 
-    <!-- Supabase JS client from CDN -->
+    <!-- Supabase JS client and Auth configuration -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
     <script src="js/config.js"></script>
     <script src="js/auth.js"></script>
     <script>
       document.addEventListener("DOMContentLoaded", async () => {
-        // Load saved theme
-        const theme = localStorage.getItem("theme") || "dark";
-        document.body.setAttribute("data-theme", theme);
+        // Force dark theme by default on landing
+        document.body.setAttribute("data-theme", "dark");
 
         // If already logged in, redirect to dashboard
         const { session } = await getSession();
@@ -49,10 +462,100 @@
           return;
         }
 
-        // Google sign in button
+        // Connect sign in triggers
         document.getElementById("googleSignInBtn").addEventListener("click", () => {
           signInWithGoogle();
         });
+        
+        const bottomBtn = document.getElementById("googleSignInBtnBottom");
+        if (bottomBtn) {
+          bottomBtn.addEventListener("click", () => {
+            signInWithGoogle();
+          });
+        }
+
+        // Nav Scroll active styles
+        window.addEventListener('scroll', () => {
+          const nav = document.querySelector('.landing-nav');
+          if (window.scrollY > 20) {
+            nav.classList.add('scrolled');
+          } else {
+            nav.classList.remove('scrolled');
+          }
+        });
+
+        // Interactive 3D Mockup Card Rotation
+        const showcase = document.querySelector('.showcase-container');
+        const wrapper = document.querySelector('.showcase-depth-wrapper');
+        if (showcase && wrapper) {
+          showcase.addEventListener('mousemove', (e) => {
+            const rect = showcase.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            const rotateX = -(y / (rect.height / 2)) * 10;
+            const rotateY = (x / (rect.width / 2)) * 10;
+            wrapper.style.transform = `rotateX(${12 + rotateX}deg) rotateY(${-8 + rotateY}deg) rotateZ(2deg) scale(0.98)`;
+          });
+          showcase.addEventListener('mouseleave', () => {
+            wrapper.style.transform = `rotateX(12deg) rotateY(-8deg) rotateZ(3deg) scale(0.95)`;
+          });
+        }
+
+        // Bento card glow mouse tracking
+        document.querySelectorAll('.bento-card').forEach(card => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty('--x', `${x}px`);
+            card.style.setProperty('--y', `${y}px`);
+          });
+        });
+
+        // FAQ accordion handlers
+        document.querySelectorAll('.faq-trigger').forEach(trigger => {
+          trigger.addEventListener('click', () => {
+            const item = trigger.closest('.faq-item');
+            const wasActive = item.classList.contains('active');
+            document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('active'));
+            if (!wasActive) {
+              item.classList.add('active');
+            }
+          });
+        });
+
+        // Modal triggers
+        const loginModal = document.getElementById('loginModal');
+        const openModalBtns = document.querySelectorAll('.open-login-modal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        
+        openModalBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            loginModal.classList.add('open');
+          });
+        });
+        
+        if (closeModalBtn) {
+          closeModalBtn.addEventListener('click', () => {
+            loginModal.classList.remove('open');
+          });
+        }
+        
+        loginModal.addEventListener('click', (e) => {
+          if (e.target === loginModal) {
+            loginModal.classList.remove('open');
+          }
+        });
+
+        // Intersection Observer scroll reveals
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+            }
+          });
+        }, { threshold: 0.1 });
+        document.querySelectorAll('.scroll-reveal').forEach(el => observer.observe(el));
       });
     </script>
   </body>

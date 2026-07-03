@@ -21,3 +21,9 @@ interview-app/backend/scripts/generate_system_design_themed_pages.py
 interview-app/backend/scripts/collect_system_design_images.py
 
 interview-app/migrations/create_learning_track_progress.sql
+.github/workflows/deploy.yml
+interview-app/AWS-EC2-DEPLOYMENT-GUIDE.md
+interview-app/backend/.dockerignore
+interview-app/backend/docker-compose.yml
+interview-app/backend/Dockerfile
+interview-app/scripts/healthcheck.sh
