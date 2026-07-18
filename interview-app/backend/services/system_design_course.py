@@ -122,41 +122,31 @@ def is_system_design_qnum(qnum: int) -> bool:
     return is_track_qnum("system-design", qnum)
 
 
+from functools import lru_cache
+
+@lru_cache(maxsize=32)
 def load_learning_track_titles(track_id: str) -> dict[int, str]:
-    """Load step titles from generated frontend course index for a track."""
-    config = get_learning_track_config(track_id)
-    if not config:
-        return {}
-
-    index_path = (
-        Path(__file__).resolve().parent.parent.parent
-        / "frontend"
-        / "assets"
-        / config.assets_slug
-        / "course-index.json"
-    )
-    if not index_path.exists():
-        return {}
-
+    """Load step titles from the course_lessons table in Supabase for a track."""
+    from services.supabase_client import get_supabase_client
+    supabase = get_supabase_client()
     try:
-        payload = json.loads(index_path.read_text(encoding="utf-8"))
+        res = supabase.table("course_lessons").select("step_no, title").eq("track_id", track_id).execute()
+        titles: dict[int, str] = {}
+        for row in res.data or []:
+            try:
+                step_no = int(row.get("step_no", 0) or 0)
+                if step_no > 0:
+                    title = str(row.get("title", "")).strip()
+                    if title:
+                        titles[step_no] = title
+            except Exception:
+                continue
+        return titles
     except Exception:
         return {}
-
-    titles: dict[int, str] = {}
-    for step in payload.get("steps", []):
-        try:
-            step_no = int(step.get("step_no", 0) or 0)
-        except Exception:
-            continue
-        if step_no <= 0:
-            continue
-        title = str(step.get("title", "")).strip()
-        if title:
-            titles[step_no] = title
-    return titles
 
 
 def load_system_design_titles() -> dict[int, str]:
     """Back-compat helper for system design titles."""
     return load_learning_track_titles("system-design")
+

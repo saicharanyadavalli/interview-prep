@@ -11,8 +11,11 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from slowapi import _rate_limit_exceeded_handler
+from slowapi.errors import RateLimitExceeded
+from limiter import limiter
 
 # Load environment variables from .env file in the project root
 _env_path = Path(__file__).resolve().parent.parent / ".env"
@@ -39,11 +42,21 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# CORS — allow all origins in development.
-# In production, restrict to your deployed frontend URL.
+# CORS — allow specific origins in production
+# We allow localhost for development and use an env variable for production
+# Vercel preview domains can be matched using a custom regex, but for standard setup we allow
+# the specific FRONTEND_URL or rely on Vercel preview URLs.
+frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000").strip()
+origins = [
+    "http://localhost:3000",
+]
+if frontend_url and frontend_url not in origins:
+    origins.append(frontend_url)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
+    allow_origin_regex=r"https://.*\.vercel\.app",  # Allow Vercel preview deployments
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -58,6 +71,10 @@ app.include_router(revisit_router)
 app.include_router(comments_router)
 app.include_router(profile_router)
 app.include_router(system_design_router)
+
+# Rate Limiting
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
 
 @app.get("/")

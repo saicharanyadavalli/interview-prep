@@ -8,6 +8,7 @@ import re
 
 import cloudinary
 import cloudinary.uploader
+import filetype
 from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
 
 from models.schemas import ProfileResponse, ProfileUpdateRequest
@@ -142,6 +143,10 @@ async def upload_profile_avatar(file: UploadFile = File(...), current_user: dict
         raise HTTPException(status_code=400, detail="Uploaded file is empty.")
     if len(file_bytes) > 5 * 1024 * 1024:
         raise HTTPException(status_code=400, detail="Image size must be 5MB or less.")
+
+    kind = filetype.guess(file_bytes)
+    if kind is None or not kind.mime.startswith("image/"):
+        raise HTTPException(status_code=400, detail="Invalid image file format.")
 
     is_cloudinary_configured, folder = _configure_cloudinary()
 

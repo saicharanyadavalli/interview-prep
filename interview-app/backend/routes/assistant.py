@@ -2,16 +2,20 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, HTTPException
+import json
+from fastapi import APIRouter, HTTPException, Request
+from fastapi.responses import StreamingResponse
 
 from models.schemas import AskRequest, AskResponse
-from services.gemini_service import ask_gemini, is_in_scope
+from services.gemini_service import ask_gemini_stream, is_in_scope
+from limiter import limiter
 
 router = APIRouter(prefix="/assistant", tags=["assistant"])
 
 
-@router.post("/ask", response_model=AskResponse)
-def ask_assistant(payload: AskRequest):
+@router.post("/ask")
+@limiter.limit("20/hour")
+def ask_assistant(request: Request, payload: AskRequest):
     """Send a doubt about an interview question to the AI assistant.
 
     The AI will respond with hints and guidance without revealing
@@ -21,25 +25,21 @@ def ask_assistant(payload: AskRequest):
     history_dump = [m.model_dump() for m in payload.conversation_history]
 
     if not is_in_scope(payload.interview_question, payload.user_doubt, history_dump):
-        return AskResponse(
-            answer=(
-                "I can only help with DSA interview topics related to the current question. "
-                "Please ask about algorithm ideas, edge cases, complexity, or hints for this problem."
-            )
-        )
+        def out_of_scope_gen():
+            yield "data: " + json.dumps({"text": "I can only help with DSA interview topics related to the current question. Please ask about algorithm ideas, edge cases, complexity, or hints for this problem."}) + "\n\n"
+        return StreamingResponse(out_of_scope_gen(), media_type="text/event-stream")
 
-    try:
-        answer = ask_gemini(
-            interview_question=payload.interview_question,
-            user_doubt=payload.user_doubt,
-            conversation_history=history_dump,
-        )
-    except RuntimeError as exc:
-        raise HTTPException(status_code=500, detail=str(exc)) from exc
-    except Exception as exc:
-        raise HTTPException(
-            status_code=502,
-            detail=f"Gemini API call failed: {exc}",
-        ) from exc
+    def event_stream():
+        try:
+            for chunk in ask_gemini_stream(
+                interview_question=payload.interview_question,
+                user_doubt=payload.user_doubt,
+                conversation_history=history_dump,
+            ):
+                yield "data: " + json.dumps({"text": chunk}) + "\n\n"
+        except RuntimeError as exc:
+            yield "data: " + json.dumps({"error": str(exc)}) + "\n\n"
+        except Exception as exc:
+            yield "data: " + json.dumps({"error": f"Gemini API call failed: {exc}"}) + "\n\n"
 
-    return AskResponse(answer=answer)
+    return StreamingResponse(event_stream(), media_type="text/event-stream")

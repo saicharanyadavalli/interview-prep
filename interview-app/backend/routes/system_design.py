@@ -176,6 +176,40 @@ def update_learning_track_progress(
     return _update_learning_track_progress(track_id, payload, user)
 
 
+@router.get("/learning-tracks/{track_id}/lessons/{step_no}")
+def get_learning_track_lesson(
+    track_id: str,
+    step_no: int,
+    user: dict = Depends(get_current_user),
+):
+    """Return HTML content for a specific lesson from the database."""
+    config = get_learning_track_config(track_id)
+    if not config:
+        raise HTTPException(status_code=404, detail=f"Unknown learning track: {track_id}")
+
+    supabase = get_supabase_client()
+    try:
+        res = (
+            supabase.table("course_lessons")
+            .select("title, html_content")
+            .eq("track_id", track_id)
+            .eq("step_no", step_no)
+            .execute()
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+
+    if not res.data:
+        raise HTTPException(status_code=404, detail="Lesson not found")
+
+    return {
+        "track_id": track_id,
+        "step_no": step_no,
+        "title": res.data[0].get("title", ""),
+        "html_content": res.data[0].get("html_content", "")
+    }
+
+
 # ── legacy system-design endpoints (backward compat) ─────────────
 
 @router.get("/system-design/progress", response_model=SystemDesignProgressResponse)

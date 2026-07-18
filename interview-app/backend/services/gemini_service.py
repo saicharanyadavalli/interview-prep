@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import os
 import re
-from typing import Optional
+from typing import Optional, Generator
 
 import google.generativeai as genai
 
@@ -258,3 +258,29 @@ def ask_gemini(
     model = genai.GenerativeModel(MODEL_NAME)
     response = model.generate_content(prompt)
     return _extract_text(response)
+
+def ask_gemini_stream(
+    interview_question: str,
+    user_doubt: str,
+    conversation_history: list[dict[str, str]] | None = None,
+) -> Generator[str, None, None]:
+    """Send a prompt to Gemini and yield chunks for SSE."""
+    api_key = _get_api_key()
+    genai.configure(api_key=api_key)
+
+    prompt = build_prompt(interview_question, user_doubt, conversation_history)
+
+    model = genai.GenerativeModel(MODEL_NAME)
+    try:
+        response = model.generate_content(prompt, stream=True)
+        for chunk in response:
+            text_value: Optional[str] = getattr(chunk, "text", None)
+            if text_value:
+                yield text_value
+            else:
+                text_ext = _extract_text(chunk)
+                if text_ext and text_ext != "I could not generate a response. Please try again.":
+                    yield text_ext
+    except Exception as exc:
+        yield f"\\n\\n[Error: {str(exc)}]"
+

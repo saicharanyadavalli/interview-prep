@@ -11,6 +11,8 @@ import json
 import random
 from pathlib import Path
 
+from cachetools import cached, TTLCache
+
 from services.supabase_client import get_supabase_client
 
 # Path to the output data directory (relative to this file's location)
@@ -19,17 +21,14 @@ _BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent / "output" / "s
 # In-memory cache: key = "Company::difficulty" -> list of questions
 _cache: dict[str, list[dict]] = {}
 
-# Companies list cache
-_companies: list[str] | None = None
-
 # Lazy index: question_id -> qnum
 _qid_to_qnum: dict[str, int] | None = None
 
 # Lazy index: qnum -> formatted question summary
 _qnum_to_summary: dict[int, dict] | None = None
 
-# Cached flattened catalog across all companies/difficulties
-_catalog_cache: list[dict] | None = None
+# Lazy index: qnum -> formatted question summary
+_qnum_to_summary: dict[int, dict] | None = None
 
 _DB_QUESTIONS_TABLE = "question_bank_questions"
 _DB_ALIASES_TABLE = "question_bank_qnum_aliases"
@@ -340,12 +339,9 @@ def _db_fetch_questions_for_company_difficulty(company: str, difficulty: str) ->
     return rows
 
 
+@cached(cache=TTLCache(maxsize=1, ttl=3600))
 def get_companies() -> list[str]:
     """Return the list of available companies."""
-    global _companies
-    if _companies is not None:
-        return _companies
-
     # DB-first: pull distinct companies from company_tags in question rows.
     try:
         supabase = get_supabase_client()
@@ -379,24 +375,22 @@ def get_companies() -> list[str]:
             }
         )
         if companies:
-            _companies = companies
-            return _companies
+            return companies
     except Exception:
         pass
 
     path = _companies_json_path()
     if path.exists():
         with open(path, "r", encoding="utf-8") as f:
-            _companies = json.load(f)
-    else:
-        # Fallback: scan directory names
-        if _BASE_DIR.exists():
-            _companies = sorted([
-                d.name for d in _BASE_DIR.iterdir() if d.is_dir()
-            ])
-        else:
-            _companies = []
-    return _companies
+            return json.load(f)
+
+    # Fallback: scan directory names
+    if _BASE_DIR.exists():
+        return sorted([
+            d.name for d in _BASE_DIR.iterdir() if d.is_dir()
+        ])
+    
+    return []
 
 
 def _load_questions(company: str, difficulty: str) -> list[dict]:
@@ -516,18 +510,13 @@ def get_all_questions(company: str, difficulty: str) -> list[dict]:
     return [_format_question(q) for q in questions]
 
 
+@cached(cache=TTLCache(maxsize=1, ttl=3600))
 def get_all_questions_catalog() -> list[dict]:
     """Return a flattened catalog of all questions across all companies/difficulties."""
-    global _catalog_cache
-
-    if _catalog_cache is not None:
-        return _catalog_cache
-
     db_rows = _db_fetch_catalog_rows()
     if db_rows is not None and db_rows:
         formatted_rows = [_format_db_question(row) for row in db_rows]
-        _catalog_cache = _dedupe_catalog_entries(formatted_rows)
-        return _catalog_cache
+        return _dedupe_catalog_entries(formatted_rows)
 
     catalog: dict[int, dict] = {}
     for company in get_companies():
@@ -568,8 +557,7 @@ def get_all_questions_catalog() -> list[dict]:
         )
         rows.append(row)
 
-    _catalog_cache = _dedupe_catalog_entries(rows)
-    return _catalog_cache
+    return _dedupe_catalog_entries(rows)
 
 
 def get_question_by_qnum(qnum: int) -> dict | None:

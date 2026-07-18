@@ -36,14 +36,16 @@ def add_comment(payload: CommentRequest, user: dict = Depends(get_current_user))
 
         if rows:
             supabase.table("user_comments").update(
-                {"comment_text": payload.comment_text}
+                {
+                    "comment_text": payload.comment_text
+                }
             ).eq("id", rows[0].get("id", "")).eq("user_id", user["id"]).execute()
         else:
             supabase.table("user_comments").insert(
                 {
                     "user_id": user["id"],
                     "qnum": qnum,
-                    "comment_text": payload.comment_text,
+                    "comment_text": payload.comment_text
                 }
             ).execute()
     except Exception as exc:

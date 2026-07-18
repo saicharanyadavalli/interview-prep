@@ -231,8 +231,8 @@ class RevisitResponse(BaseModel):
 
 class CommentRequest(BaseModel):
     """Request to add a comment for a question."""
-    qnum: int
-    question_id: str
+    qnum: int | None = None
+    question_id: str | None = None
     comment_text: str = Field(..., min_length=1)
 
 

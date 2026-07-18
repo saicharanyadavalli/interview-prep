@@ -104,7 +104,7 @@ def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_cur
 
 
 @router.get("/user", response_model=UserProgressResponse)
-def get_user_progress(user: dict = Depends(get_current_user)):
+def get_user_progress(summary_only: bool = False, user: dict = Depends(get_current_user)):
     """Return aggregated progress stats and recent progress entries."""
     supabase = get_supabase_client()
 
@@ -161,6 +161,52 @@ def get_user_progress(user: dict = Depends(get_current_user)):
         for entry in entries
         if bool(entry.get("is_solved", False)) and int(entry.get("qnum", 0) or 0) > 0
     }
+
+    if summary_only:
+        stats = ProgressStats(
+            total_attempted=len(entries),
+            solved_count=len(solved_qnums),
+            unsolved_count=len(entries) - len(solved_qnums),
+            revisit_count=sum(1 for e in entries if bool(e.get("is_revisit", False))),
+            easy_attempted=easy_attempted,
+            medium_attempted=medium_attempted,
+            hard_attempted=hard_attempted,
+            easy_solved=easy_solved,
+            medium_solved=medium_solved,
+            hard_solved=hard_solved,
+            total_questions=0,
+            solved_total_questions=0,
+            easy_total_questions=0,
+            medium_total_questions=0,
+            hard_total_questions=0,
+            easy_solved_total_questions=0,
+            medium_solved_total_questions=0,
+            hard_solved_total_questions=0,
+        )
+        
+        recent_entries = []
+        for entry in entries[:20]:
+            qnum = int(entry.get("qnum", 0) or 0)
+            summary = _get_summary(qnum)
+            recent_entries.append(
+                ProgressEntry(
+                    qnum=qnum,
+                    question_id=summary.get("question_id", ""),
+                    question_title=summary.get("question_title", f"Question #{qnum}"),
+                    company=summary.get("company", ""),
+                    difficulty=summary.get("difficulty", ""),
+                    is_solved=bool(entry.get("is_solved", False)),
+                    revisit=bool(entry.get("is_revisit", False)),
+                    updated_at=str(entry.get("updated_at", "")),
+                )
+            )
+            
+        return UserProgressResponse(
+            stats=stats,
+            recent=recent_entries,
+            topic_progress=[],
+            activity_map={},
+        )
 
     try:
         catalog_rows = get_all_questions_catalog()
@@ -227,9 +273,6 @@ def get_user_progress(user: dict = Depends(get_current_user)):
         topic_pairs = question.get("topic_pairs") or set()
 
         for topic_key, topic_label in topic_pairs:
-            if topic_key not in solved_topic_keys:
-                continue
-
             bucket = topic_map.setdefault(
                 topic_key,
                 {
