@@ -230,7 +230,7 @@ export default function LandingPage() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "2rem" }}>
             {/* Feature 1 */}
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyCentent: "center", paddingLeft: "11px" }}>
+              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Brain size={18} />
               </div>
               <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Interactive AI Assistant</h3>
@@ -241,7 +241,7 @@ export default function LandingPage() {
 
             {/* Feature 2 */}
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyCentent: "center", paddingLeft: "11px" }}>
+              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <BookOpen size={18} />
               </div>
               <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Structured Learning Tracks</h3>
@@ -252,7 +252,7 @@ export default function LandingPage() {
 
             {/* Feature 3 */}
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyCentent: "center", paddingLeft: "11px" }}>
+              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Calendar size={18} />
               </div>
               <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Spaced Repetition Queue</h3>
@@ -263,7 +263,7 @@ export default function LandingPage() {
 
             {/* Feature 4 */}
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyCentent: "center", paddingLeft: "11px" }}>
+              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                 <Award size={18} />
               </div>
               <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Interactive Analytics</h3>
