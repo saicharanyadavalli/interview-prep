@@ -9,6 +9,17 @@ interface MarkdownRendererProps {
 export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   if (!content) return null;
 
+  // Check if content is raw HTML (e.g. system design HTML step lessons)
+  const trimmedContent = content.trim();
+  if (trimmedContent.startsWith("<") || /<[a-z][\s\S]*>/i.test(trimmedContent)) {
+    return (
+      <div 
+        className="html-lesson-content prose prose-invert max-w-none text-gray-300 leading-relaxed space-y-4"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
+    );
+  }
+
   // Split content into blocks by double newlines or block elements
   const lines = content.split(/\r?\n/);
   const elements: React.ReactNode[] = [];
