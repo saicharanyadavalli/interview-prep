@@ -81,17 +81,41 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [user, loading, pathname, router]);
 
   const signInWithGoogle = async () => {
+    if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
+      setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com" } } as any);
+      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User" } } as any);
+      router.push("/dashboard");
+      return;
+    }
+
     const sb = getSupabase();
-    if (!sb) return;
-    const { error } = await sb.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: window.location.origin + "/auth/callback?next=/dashboard",
-      },
-    });
-    if (error) {
-      console.error("Sign-in error:", error.message);
-      alert("Sign-in failed: " + error.message);
+    if (!sb) {
+      alert("Authentication is not configured. Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.");
+      return;
+    }
+
+    try {
+      const redirectUrl = `${window.location.origin}/auth/callback?next=/dashboard`;
+      const { data, error } = await sb.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+          redirectTo: redirectUrl,
+          queryParams: {
+            access_type: 'offline',
+            prompt: 'consent',
+          },
+        },
+      });
+
+      if (error) {
+        console.error("Sign-in error:", error.message);
+        alert("Sign-in failed: " + error.message);
+      } else if (data?.url) {
+        window.location.href = data.url;
+      }
+    } catch (err: any) {
+      console.error("Unexpected sign-in error:", err);
+      alert("An unexpected error occurred during sign-in: " + (err.message || String(err)));
     }
   };
 
