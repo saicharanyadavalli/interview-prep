@@ -325,5 +325,109 @@ export const API = {
       body: JSON.stringify({ step_no: stepNo, completed }),
     });
   },
+
+  // --- Courses API Endpoints ---
+  async getCourses(): Promise<CourseSummary[]> {
+    return this._fetch("/courses");
+  },
+
+  async getCourseDetails(courseSlug: string): Promise<CourseDetailResponse> {
+    return this._fetch(`/courses/${encodeURIComponent(courseSlug)}`);
+  },
+
+  async getLesson(courseSlug: string, lessonSlug: string): Promise<LessonDetailResponse> {
+    return this._fetch(`/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`);
+  },
+
+  async completeLesson(courseSlug: string, lessonSlug: string): Promise<LessonCompleteResponse> {
+    return this._fetch(`/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}/complete`, {
+      method: "POST",
+    });
+  },
+
+  async getCourseProgress(courseSlug: string): Promise<CourseProgressResponse> {
+    return this._fetch(`/courses/${encodeURIComponent(courseSlug)}/progress`);
+  },
+
+  async getCourseSeedTables(courseSlug: string): Promise<SeedTablesResponse> {
+    return this._fetch(`/courses/${encodeURIComponent(courseSlug)}/seed-tables`);
+  },
 };
+
+export interface CourseSummary {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  total_lessons: number;
+  completed_lessons?: number;
+  progress_percentage?: number;
+}
+
+export interface CourseLessonSummary {
+  id: string;
+  slug: string;
+  title: string;
+  order_index: number;
+  completed?: boolean;
+}
+
+export interface CourseDetailResponse {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  total_lessons: number;
+  completed_lessons?: number;
+  progress_percentage?: number;
+  lessons: CourseLessonSummary[];
+}
+
+export interface LessonDetailResponse {
+  id: string;
+  course_slug: string;
+  slug: string;
+  title: string;
+  order_index: number;
+  content_markdown: string;
+  tasks: string[];
+  completed?: boolean;
+  prev_lesson_slug?: string | null;
+  next_lesson_slug?: string | null;
+}
+
+export interface SeedTableDefinition {
+  name: string;
+  schema_sql: string;
+  insert_sql: string;
+  columns: string[];
+  rows: any[][];
+}
+
+export interface SeedTablesResponse {
+  course_slug: string;
+  tables: SeedTableDefinition[];
+}
+
+export interface LessonCompleteResponse {
+  success: boolean;
+  course_slug: string;
+  lesson_slug: string;
+  completed: boolean;
+  completed_at: string;
+  course_progress: {
+    completed_lessons: number;
+    total_lessons: number;
+    progress_percentage: number;
+  };
+}
+
+export interface CourseProgressResponse {
+  course_slug: string;
+  completed_lessons: number;
+  total_lessons: number;
+  progress_percentage: number;
+  completed_lesson_slugs: string[];
+}
+
 

@@ -9,6 +9,11 @@ export async function GET(request: Request) {
   const next = searchParams.get('next') ?? '/dashboard'
 
   if (code) {
+    if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
+      console.error("Auth callback error: Supabase environment variables missing.")
+      const url = new URL('/login?error=env-missing', request.url)
+      return NextResponse.redirect(url)
+    }
     const cookieStore = await cookies()
     const supabase = createServerClient(
       CONFIG.SUPABASE_URL,

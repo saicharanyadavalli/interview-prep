@@ -260,3 +260,98 @@ class PracticeHistoryEntry(BaseModel):
     """A single practice session record."""
     qnum: int
     practiced_at: str = ""
+
+
+# ---------- Courses ----------
+
+class CourseSummary(BaseModel):
+    """Summary representation of a course."""
+    id: str
+    slug: str
+    title: str
+    description: str
+    total_lessons: int = 0
+    completed_lessons: int = 0
+    progress_percentage: float = 0.0
+
+
+class CourseLessonSummary(BaseModel):
+    """Minimal lesson summary inside course detail view."""
+    id: str
+    slug: str
+    title: str
+    order_index: int
+    completed: bool = False
+
+
+class CourseDetailResponse(BaseModel):
+    """Full course details including ordered lesson list."""
+    id: str
+    slug: str
+    title: str
+    description: str
+    total_lessons: int = 0
+    completed_lessons: int = 0
+    progress_percentage: float = 0.0
+    lessons: list[CourseLessonSummary] = Field(default_factory=list)
+
+
+class LessonDetailResponse(BaseModel):
+    """Full lesson detail view."""
+    id: str
+    course_slug: str
+    slug: str
+    title: str
+    order_index: int
+    content_markdown: str
+    tasks: list[str] = Field(default_factory=list)
+    completed: bool = False
+    prev_lesson_slug: Optional[str] = None
+    next_lesson_slug: Optional[str] = None
+
+
+class LessonCompleteRequest(BaseModel):
+    """Request payload for completing a lesson."""
+    completed: bool = True
+
+
+class CourseProgressInfo(BaseModel):
+    """Course progress summary embedded in completion response."""
+    completed_lessons: int = 0
+    total_lessons: int = 0
+    progress_percentage: float = 0.0
+
+
+class LessonCompleteResponse(BaseModel):
+    """Response returned when a lesson is marked completed."""
+    success: bool = True
+    course_slug: str
+    lesson_slug: str
+    completed: bool
+    completed_at: str
+    course_progress: CourseProgressInfo
+
+
+class CourseProgressResponse(BaseModel):
+    """Course progress response for authenticated user."""
+    course_slug: str
+    completed_lessons: int = 0
+    total_lessons: int = 0
+    progress_percentage: float = 0.0
+    completed_lesson_slugs: list[str] = Field(default_factory=list)
+
+
+class SeedTableDefinition(BaseModel):
+    """Schema and initial seed rows for a client-side sql.js table."""
+    name: str
+    schema_sql: str
+    insert_sql: str
+    columns: list[str] = Field(default_factory=list)
+    rows: list[list] = Field(default_factory=list)
+
+
+class SeedTablesResponse(BaseModel):
+    """Collection of SQL seed tables for sql.js execution."""
+    course_slug: str
+    tables: list[SeedTableDefinition] = Field(default_factory=list)
+
