@@ -103,6 +103,34 @@ CREATE TABLE public.question_bank_qnum_aliases (
 -- TRIGGERS
 -- ============================================================
 
+CREATE OR REPLACE FUNCTION public.handle_new_user()
+RETURNS TRIGGER
+LANGUAGE plpgsql
+SECURITY DEFINER SET search_path = public
+AS $$
+BEGIN
+  INSERT INTO public.user_profiles (id, email, username, name, avatar_url)
+  VALUES (
+    NEW.id,
+    NEW.email,
+    NULLIF(COALESCE(NEW.raw_user_meta_data->>'username', ''), ''),
+    COALESCE(NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'name', ''),
+    COALESCE(NEW.raw_user_meta_data->>'avatar_url', NEW.raw_user_meta_data->>'picture', '')
+  )
+  ON CONFLICT (id) DO UPDATE SET
+    email = EXCLUDED.email,
+    username = COALESCE(EXCLUDED.username, public.user_profiles.username),
+    name = CASE WHEN EXCLUDED.name <> '' THEN EXCLUDED.name ELSE public.user_profiles.name END,
+    avatar_url = CASE WHEN EXCLUDED.avatar_url <> '' THEN EXCLUDED.avatar_url ELSE public.user_profiles.avatar_url END;
+  RETURN NEW;
+END;
+$$;
+
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
+  AFTER INSERT OR UPDATE ON auth.users
+  FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
 CREATE TRIGGER trg_user_profiles_updated_at
 BEFORE UPDATE ON public.user_profiles
 FOR EACH ROW

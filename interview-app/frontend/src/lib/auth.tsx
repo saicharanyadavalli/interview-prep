@@ -154,40 +154,36 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     // If identifier doesn't look like an email, try resolving it as a username
     if (!emailToUse.includes("@")) {
       try {
-        const apiBase = CONFIG.API_BASE_URL;
-        const res = await fetch(`${apiBase}/auth/resolve-username`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ username: emailToUse }),
-        });
-        const data = await res.json();
-        if (data && data.exists && data.email) {
-          emailToUse = data.email;
-        } else {
-          // Fallback: search user_profiles directly in Supabase
-          const { data: profile } = await sb
-            .from("user_profiles")
-            .select("email")
-            .ilike("username", emailToUse)
-            .maybeSingle();
-          if (profile?.email) {
-            emailToUse = profile.email;
-          } else {
-            return { error: `No user found with username "${identifier}".` };
+        // Strategy 1: Supabase RPC (bypasses RLS securely for anon user)
+        const { data: rpcData, error: rpcError } = await sb.rpc("get_email_by_username", { p_username: emailToUse });
+        if (!rpcError && rpcData) {
+          const resolved = Array.isArray(rpcData) ? rpcData[0]?.email : rpcData;
+          if (resolved) {
+            emailToUse = resolved;
           }
         }
-      } catch (err) {
-        // Fallback: search user_profiles directly
-        const { data: profile } = await sb
-          .from("user_profiles")
-          .select("email")
-          .ilike("username", emailToUse)
-          .maybeSingle();
-        if (profile?.email) {
-          emailToUse = profile.email;
-        } else {
-          return { error: `Could not resolve username "${identifier}".` };
+
+        // Strategy 2: Backend API fallback if RPC didn't resolve
+        if (!emailToUse.includes("@")) {
+          const apiBase = CONFIG.API_BASE_URL;
+          const res = await fetch(`${apiBase}/auth/resolve-username`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username: emailToUse }),
+          });
+          if (res.ok) {
+            const data = await res.json();
+            if (data && data.exists && data.email) {
+              emailToUse = data.email;
+            }
+          }
         }
+
+        if (!emailToUse.includes("@")) {
+          return { error: `No user found with username "${identifier}".` };
+        }
+      } catch (err) {
+        return { error: `Could not resolve username "${identifier}".` };
       }
     }
 

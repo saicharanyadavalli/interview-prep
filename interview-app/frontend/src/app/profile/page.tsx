@@ -94,6 +94,7 @@ export default function ProfilePage() {
   const { user } = useAuth();
   
   const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
@@ -117,6 +118,7 @@ export default function ProfilePage() {
         if (cached) {
           if (mounted) {
             setName(cached.name || "");
+            setUsername(cached.username || "");
             setPhone(cached.phone || "");
             setEmail(cached.email || user.email || "");
             setAvatarUrl(cached.avatar_url || "");
@@ -127,6 +129,7 @@ export default function ProfilePage() {
         const profile = await API.getMyProfile({ preferCache: false });
         if (mounted) {
           setName(profile.name || "");
+          setUsername(profile.username || "");
           setPhone(profile.phone || "");
           setEmail(profile.email || user.email || "");
           setAvatarUrl(profile.avatar_url || "");
@@ -159,10 +162,12 @@ export default function ProfilePage() {
     try {
       const updated = await API.updateMyProfile({
         name: name.trim(),
+        username: username.trim().toLowerCase(),
         phone: phone.trim(),
         avatar_url: avatarUrl.trim(),
       });
       setName(updated.name || "");
+      setUsername(updated.username || "");
       setPhone(updated.phone || "");
       setEmail(updated.email || email);
       setAvatarUrl(updated.avatar_url || "");
@@ -193,6 +198,7 @@ export default function ProfilePage() {
         API.setCachedProfile({
           ...(API.getCachedProfile ? API.getCachedProfile(0) : {}),
           name: name.trim(),
+          username: username.trim().toLowerCase(),
           email: email.trim(),
           phone: phone.trim(),
           avatar_url: data.avatar_url || "",
@@ -230,6 +236,17 @@ export default function ProfilePage() {
               placeholder="Enter full name" 
               value={name}
               onChange={e => setName(e.target.value)}
+              style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--ink)' }}
+            />
+          </div>
+          <div className="control-group" style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+            <label htmlFor="profileUsername" style={{ fontWeight: 500 }}>Username</label>
+            <input 
+              id="profileUsername" 
+              type="text" 
+              placeholder="Enter username" 
+              value={username}
+              onChange={e => setUsername(e.target.value)}
               style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--ink)' }}
             />
           </div>

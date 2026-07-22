@@ -105,7 +105,7 @@ export const API = {
             window.location.href = "/login";
           }
         }
-        throw new Error("Authentication required. Please sign in again.");
+        return null;
       }
 
       if (!response.ok) {
