@@ -124,6 +124,17 @@ export const API = {
     return fetchPromise;
   },
 
+  async _fetchOptional(path: string, options: RequestInit = {}) {
+    try {
+      return await this._fetch(path, options);
+    } catch (err: any) {
+      if (String(err?.message || "").startsWith("API 404:")) {
+        return null;
+      }
+      throw err;
+    }
+  },
+
   async getCompanies() {
     return this._fetch("/questions/companies");
   },
@@ -329,7 +340,7 @@ export const API = {
   // --- Courses API Endpoints ---
   async getCourses(): Promise<CourseSummary[]> {
     try {
-      const data = await this._fetch("/courses");
+      const data = await this._fetchOptional("/courses");
       if (Array.isArray(data) && data.length > 0) {
         return data;
       }
@@ -372,14 +383,19 @@ export const API = {
 
   async getCourseDetails(courseSlug: string): Promise<CourseDetailResponse> {
     try {
-      const data = await this._fetch(`/courses/${encodeURIComponent(courseSlug)}`);
+      const data = await this._fetchOptional(`/courses/${encodeURIComponent(courseSlug)}`);
       if (data && data.lessons && data.lessons.length > 0) {
         return data;
       }
     } catch (_) {}
 
     // Fetch actual System Design learning track progress & steps
-    const prog = await this.getLearningTrackProgress(courseSlug);
+    let prog = null;
+    try {
+      prog = await this.getLearningTrackProgress(courseSlug);
+    } catch (_) {
+      prog = null;
+    }
     const title = courseSlug
       .split("-")
       .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -405,7 +421,7 @@ export const API = {
 
   async getLesson(courseSlug: string, lessonSlug: string): Promise<LessonDetailResponse> {
     try {
-      const data = await this._fetch(`/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`);
+      const data = await this._fetchOptional(`/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`);
       if (data && data.slug) {
         return data;
       }
@@ -415,8 +431,18 @@ export const API = {
     const stepMatch = lessonSlug.match(/^step-(\d+)$/i) || lessonSlug.match(/^(\d+)$/);
     const stepNo = stepMatch ? parseInt(stepMatch[1], 10) : 1;
 
-    const data = await this.getLearningTrackLesson(courseSlug, stepNo);
-    const prog = await this.getLearningTrackProgress(courseSlug);
+    let data = null;
+    let prog = null;
+    try {
+      data = await this.getLearningTrackLesson(courseSlug, stepNo);
+    } catch (_) {
+      data = null;
+    }
+    try {
+      prog = await this.getLearningTrackProgress(courseSlug);
+    } catch (_) {
+      prog = null;
+    }
     const currentStep = prog?.steps?.find((s: any) => s.step_no === stepNo);
 
     const prevLesson = stepNo > 1 ? `step-${stepNo - 1}` : null;
@@ -469,13 +495,18 @@ export const API = {
 
   async getCourseProgress(courseSlug: string): Promise<CourseProgressResponse> {
     try {
-      const data = await this._fetch(`/courses/${encodeURIComponent(courseSlug)}/progress`);
+      const data = await this._fetchOptional(`/courses/${encodeURIComponent(courseSlug)}/progress`);
       if (data && typeof data.completed_lessons === "number") {
         return data;
       }
     } catch (_) {}
 
-    const prog = await this.getLearningTrackProgress(courseSlug);
+    let prog = null;
+    try {
+      prog = await this.getLearningTrackProgress(courseSlug);
+    } catch (_) {
+      prog = null;
+    }
     const completedSlugs = (prog?.steps || [])
       .filter((s: any) => s.completed)
       .map((s: any) => `step-${s.step_no}`);
@@ -491,7 +522,7 @@ export const API = {
 
   async getCourseSeedTables(courseSlug: string): Promise<SeedTablesResponse> {
     try {
-      const data = await this._fetch(`/courses/${encodeURIComponent(courseSlug)}/seed-tables`);
+      const data = await this._fetchOptional(`/courses/${encodeURIComponent(courseSlug)}/seed-tables`);
       if (data && data.tables) {
         return data;
       }

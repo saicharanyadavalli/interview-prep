@@ -226,26 +226,20 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return { error: "Authentication client is not configured." };
     }
 
+    const cleanEmail = email.trim().toLowerCase();
     const cleanUsername = username.trim().toLowerCase();
 
-    // Check if username is already taken
+    // Check if username is already taken via RPC (bypasses RLS)
     try {
-      const { data: existingUser } = await sb
-        .from("user_profiles")
-        .select("id")
-        .ilike("username", cleanUsername)
-        .maybeSingle();
-
-      if (existingUser) {
-        return { error: `Username "${username}" is already taken. Please choose another.` };
+      const { data: rpcEmail } = await sb.rpc("get_email_by_username", { p_username: cleanUsername });
+      if (rpcEmail) {
+        return { error: `Username "${username}" is already taken. Please choose another username.` };
       }
-    } catch (_) {
-      // Ignore schema lookup errors during registration
-    }
+    } catch (_) {}
 
     try {
       const { data, error } = await sb.auth.signUp({
-        email: email.trim(),
+        email: cleanEmail,
         password,
         options: {
           data: {
@@ -256,16 +250,24 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       });
 
       if (error) {
+        if (error.message.toLowerCase().includes("already registered") || error.message.toLowerCase().includes("already exists")) {
+          return { error: `An account with email "${email}" already exists. Please sign in instead.` };
+        }
         return { error: error.message };
+      }
+
+      // If user object returned with empty identities, the email is already registered
+      if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
+        return { error: `An account with email "${email}" already exists (e.g. registered via Google or Email). Please sign in instead.` };
       }
 
       if (data.session) {
         await syncBackendSession(data.session.access_token);
         router.push("/dashboard");
       } else if (data.user) {
-        // If session was created, log in
+        // Log in directly
         const loginRes = await sb.auth.signInWithPassword({
-          email: email.trim(),
+          email: cleanEmail,
           password,
         });
         if (loginRes.data?.session) {

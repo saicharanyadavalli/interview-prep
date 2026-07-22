@@ -46,6 +46,9 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
     supabase = get_supabase_client()
 
     try:
+        email = current_user.get("email", "")
+        default_username = (email.split("@")[0] if email else f"user_{current_user['id'][:8]}").lower()
+
         rows = (
             supabase.table("user_profiles")
             .select("id,email,username,name,phone,avatar_url")
@@ -56,20 +59,26 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
 
         if rows:
             row = rows[0]
+            username = row.get("username") or current_user.get("username") or default_username
+            # If username was missing in database, persist fallback username
+            if not row.get("username"):
+                supabase.table("user_profiles").update({"username": username}).eq("id", current_user["id"]).execute()
+
             return ProfileResponse(
                 id=row.get("id", current_user["id"]),
-                email=row.get("email", current_user.get("email", "")),
-                username=row.get("username", current_user.get("username")),
+                email=row.get("email", email),
+                username=username,
                 name=row.get("name", "") or "",
                 phone=row.get("phone", "") or "",
                 avatar_url=row.get("avatar_url", "") or "",
             )
 
         # Auto-create first profile row from auth info.
+        username = current_user.get("username") or default_username
         payload = {
             "id": current_user["id"],
-            "email": current_user.get("email", ""),
-            "username": current_user.get("username"),
+            "email": email,
+            "username": username,
             "name": current_user.get("name", "") or "",
             "phone": "",
             "avatar_url": current_user.get("avatar_url", "") or "",

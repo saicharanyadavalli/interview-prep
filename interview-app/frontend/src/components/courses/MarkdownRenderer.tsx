@@ -13,13 +13,14 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const trimmedContent = content.trim();
   if (trimmedContent.startsWith("<") || /<[a-z][\s\S]*>/i.test(trimmedContent)) {
     const sanitizedHtml = content
+      .replace(/<link\s+[^>]*rel=["']stylesheet["'][^>]*>/gi, '')
       .replace(/href="(?:\.\.\/)+system-design\.html"/gi, 'href="/courses/system-design"')
       .replace(/href="step-(\d+)\.html"/gi, 'href="/courses/system-design/step-$1"')
       .replace(/href="\.\.\/\.\.\/([a-z0-9-]+)\.html"/gi, 'href="/courses/$1"');
 
     return (
       <div 
-        className="html-lesson-content prose prose-invert max-w-none text-gray-300 leading-relaxed space-y-4"
+        className="html-lesson-content prose prose-invert w-full max-w-none break-words text-gray-300 leading-relaxed space-y-4"
         dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
       />
     );
@@ -222,5 +223,5 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   flushList("list-end");
   flushTable("table-end");
 
-  return <div className="markdown-content">{elements}</div>;
+  return <div className="markdown-content w-full max-w-none break-words">{elements}</div>;
 }

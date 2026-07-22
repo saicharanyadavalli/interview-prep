@@ -252,7 +252,7 @@ export default function LessonPage() {
           {/* Main Lesson Content Column */}
           <div className="flex flex-col gap-6 w-full">
             {/* Lesson Header Banner */}
-            <div className="card-flat p-6 rounded-2xl border border-line/60 bg-paper/80 w-full max-w-5xl mx-auto">
+            <div className="card-flat p-6 rounded-2xl border border-line/60 bg-paper/80 w-full max-w-none mx-auto">
               <div className="flex items-center justify-between gap-3 mb-2">
                 <span className="inline-flex items-center gap-1.5 text-xs font-semibold text-teal bg-teal/10 px-2.5 py-1 rounded-full">
                   Lesson {lesson.order_index}
@@ -267,13 +267,13 @@ export default function LessonPage() {
             </div>
 
             {/* Markdown Content Block */}
-            <div className="card-flat p-6 md:p-10 rounded-2xl border border-line/60 bg-paper/80 shadow-md w-full max-w-5xl mx-auto transition-all">
+            <div className="card-flat p-6 md:p-10 rounded-2xl border border-line/60 bg-paper/80 shadow-md w-full max-w-none mx-auto transition-all">
               <MarkdownRenderer content={lesson.content_markdown} />
             </div>
 
             {/* Exercise Tasks Section — Only for SQL Course */}
             {isSqlCourse && lesson.tasks && lesson.tasks.length > 0 && (
-              <div className="card-flat p-6 rounded-2xl border border-line/60 bg-paper/80 w-full max-w-5xl mx-auto">
+              <div className="card-flat p-6 rounded-2xl border border-line/60 bg-paper/80 w-full max-w-none mx-auto">
                 <h3 className="text-base font-bold text-white mb-3 flex items-center gap-2">
                   <CheckSquare size={18} className="text-teal" /> Lesson Exercises &amp; Tasks
                 </h3>
@@ -317,7 +317,7 @@ export default function LessonPage() {
 
             {/* SQL Runner Component — Only for SQL Course */}
             {isSqlCourse && (
-              <div className="mt-2 w-full max-w-5xl mx-auto">
+              <div className="mt-2 w-full max-w-none mx-auto">
                 <SqlRunner seedTables={seedTables} />
               </div>
             )}
