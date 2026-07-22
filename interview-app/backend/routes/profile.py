@@ -48,7 +48,7 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
     try:
         rows = (
             supabase.table("user_profiles")
-            .select("id,email,name,phone,avatar_url")
+            .select("id,email,username,name,phone,avatar_url")
             .eq("id", current_user["id"])
             .limit(1)
             .execute()
@@ -59,6 +59,7 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
             return ProfileResponse(
                 id=row.get("id", current_user["id"]),
                 email=row.get("email", current_user.get("email", "")),
+                username=row.get("username", current_user.get("username")),
                 name=row.get("name", "") or "",
                 phone=row.get("phone", "") or "",
                 avatar_url=row.get("avatar_url", "") or "",
@@ -68,6 +69,7 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
         payload = {
             "id": current_user["id"],
             "email": current_user.get("email", ""),
+            "username": current_user.get("username"),
             "name": current_user.get("name", "") or "",
             "phone": "",
             "avatar_url": current_user.get("avatar_url", "") or "",
@@ -85,6 +87,8 @@ def update_my_profile(payload: ProfileUpdateRequest, current_user: dict = Depend
     supabase = get_supabase_client()
 
     updates = {}
+    if payload.username is not None:
+        updates["username"] = payload.username.strip().lower()
     if payload.name is not None:
         updates["name"] = payload.name.strip()
     if payload.phone is not None:
@@ -106,7 +110,7 @@ def update_my_profile(payload: ProfileUpdateRequest, current_user: dict = Depend
 
         row = (
             supabase.table("user_profiles")
-            .select("id,email,name,phone,avatar_url")
+            .select("id,email,username,name,phone,avatar_url")
             .eq("id", current_user["id"])
             .limit(1)
             .execute()
@@ -119,6 +123,7 @@ def update_my_profile(payload: ProfileUpdateRequest, current_user: dict = Depend
         return ProfileResponse(
             id=data.get("id", current_user["id"]),
             email=data.get("email", current_user.get("email", "")),
+            username=data.get("username", current_user.get("username")),
             name=data.get("name", "") or "",
             phone=data.get("phone", "") or "",
             avatar_url=data.get("avatar_url", "") or "",

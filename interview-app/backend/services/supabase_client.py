@@ -44,19 +44,13 @@ def verify_supabase_token(access_token: str) -> dict | None:
         client = get_supabase_client()
         response = client.auth.get_user(access_token)
         if response and response.user:
+            metadata = response.user.user_metadata or {}
             return {
                 "id": response.user.id,
                 "email": response.user.email or "",
-                "name": (
-                    response.user.user_metadata.get("full_name", "")
-                    if response.user.user_metadata
-                    else ""
-                ),
-                "avatar_url": (
-                    response.user.user_metadata.get("avatar_url", "")
-                    if response.user.user_metadata
-                    else ""
-                ),
+                "username": metadata.get("username", "") or "",
+                "name": metadata.get("full_name", "") or metadata.get("name", "") or "",
+                "avatar_url": metadata.get("avatar_url", "") or "",
             }
     except Exception:
         pass

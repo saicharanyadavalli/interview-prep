@@ -5,13 +5,17 @@ import { getSupabase } from "./supabase";
 import { User, Session } from "@supabase/supabase-js";
 import { useRouter, usePathname } from "next/navigation";
 
+import { CONFIG } from "./config";
+
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
+  signInWithEmailOrUsername: (identifier: string, password: string) => Promise<{ error: string | null }>;
+  signUpWithEmail: (email: string, password: string, username: string, fullName: string) => Promise<{ error: string | null }>;
   signOut: () => Promise<void>;
-  getUserMeta: () => { name: string; email: string; avatar: string };
+  getUserMeta: () => { name: string; email: string; avatar: string; username: string };
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -42,7 +46,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
       setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com" } } as any);
-      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User" } } as any);
+      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User", username: "testuser" } } as any);
       setLoading(false);
       return;
     }
@@ -80,10 +84,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, [user, loading, pathname, router]);
 
+  const syncBackendSession = async (accessToken: string) => {
+    try {
+      const apiBase = CONFIG.API_BASE_URL;
+      await fetch(`${apiBase}/auth/session`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ access_token: accessToken }),
+      });
+    } catch (e) {
+      console.warn("Backend session sync warning:", e);
+    }
+  };
+
   const signInWithGoogle = async () => {
     if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
       setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com" } } as any);
-      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User" } } as any);
+      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User", username: "testuser" } } as any);
       router.push("/dashboard");
       return;
     }
@@ -119,6 +136,154 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  const signInWithEmailOrUsername = async (identifier: string, password: string): Promise<{ error: string | null }> => {
+    if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
+      setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com" } } as any);
+      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User", username: "testuser" } } as any);
+      router.push("/dashboard");
+      return { error: null };
+    }
+
+    const sb = getSupabase();
+    if (!sb) {
+      return { error: "Authentication client is not configured." };
+    }
+
+    let emailToUse = identifier.trim();
+
+    // If identifier doesn't look like an email, try resolving it as a username
+    if (!emailToUse.includes("@")) {
+      try {
+        const apiBase = CONFIG.API_BASE_URL;
+        const res = await fetch(`${apiBase}/auth/resolve-username`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: emailToUse }),
+        });
+        const data = await res.json();
+        if (data && data.exists && data.email) {
+          emailToUse = data.email;
+        } else {
+          // Fallback: search user_profiles directly in Supabase
+          const { data: profile } = await sb
+            .from("user_profiles")
+            .select("email")
+            .ilike("username", emailToUse)
+            .maybeSingle();
+          if (profile?.email) {
+            emailToUse = profile.email;
+          } else {
+            return { error: `No user found with username "${identifier}".` };
+          }
+        }
+      } catch (err) {
+        // Fallback: search user_profiles directly
+        const { data: profile } = await sb
+          .from("user_profiles")
+          .select("email")
+          .ilike("username", emailToUse)
+          .maybeSingle();
+        if (profile?.email) {
+          emailToUse = profile.email;
+        } else {
+          return { error: `Could not resolve username "${identifier}".` };
+        }
+      }
+    }
+
+    try {
+      const { data, error } = await sb.auth.signInWithPassword({
+        email: emailToUse,
+        password,
+      });
+
+      if (error) {
+        return { error: error.message };
+      }
+
+      if (data.session) {
+        await syncBackendSession(data.session.access_token);
+        router.push("/dashboard");
+      }
+
+      return { error: null };
+    } catch (err: any) {
+      return { error: err.message || "An unexpected login error occurred." };
+    }
+  };
+
+  const signUpWithEmail = async (
+    email: string,
+    password: string,
+    username: string,
+    fullName: string
+  ): Promise<{ error: string | null }> => {
+    if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
+      setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email } } as any);
+      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email, user_metadata: { full_name: fullName, username } } as any);
+      router.push("/dashboard");
+      return { error: null };
+    }
+
+    const sb = getSupabase();
+    if (!sb) {
+      return { error: "Authentication client is not configured." };
+    }
+
+    const cleanUsername = username.trim().toLowerCase();
+
+    // Check if username is already taken
+    try {
+      const { data: existingUser } = await sb
+        .from("user_profiles")
+        .select("id")
+        .ilike("username", cleanUsername)
+        .maybeSingle();
+
+      if (existingUser) {
+        return { error: `Username "${username}" is already taken. Please choose another.` };
+      }
+    } catch (_) {
+      // Ignore schema lookup errors during registration
+    }
+
+    try {
+      const { data, error } = await sb.auth.signUp({
+        email: email.trim(),
+        password,
+        options: {
+          data: {
+            full_name: fullName.trim(),
+            username: cleanUsername,
+          },
+        },
+      });
+
+      if (error) {
+        return { error: error.message };
+      }
+
+      if (data.session) {
+        await syncBackendSession(data.session.access_token);
+        router.push("/dashboard");
+      } else if (data.user) {
+        // If session was created, log in
+        const loginRes = await sb.auth.signInWithPassword({
+          email: email.trim(),
+          password,
+        });
+        if (loginRes.data?.session) {
+          await syncBackendSession(loginRes.data.session.access_token);
+          router.push("/dashboard");
+        }
+      }
+
+      return { error: null };
+    } catch (err: any) {
+      return { error: err.message || "An unexpected registration error occurred." };
+    }
+  };
+
   const signOut = async () => {
     const sb = getSupabase();
     if (!sb) return;
@@ -130,17 +295,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const getUserMeta = () => {
-    if (!user) return { name: "User", email: "", avatar: "" };
+    if (!user) return { name: "User", email: "", avatar: "", username: "" };
     const meta = user.user_metadata || {};
     return {
       name: meta.full_name || meta.name || user.email?.split("@")[0] || "User",
       email: user.email || "",
       avatar: meta.avatar_url || meta.picture || "",
+      username: meta.username || "",
     };
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signInWithGoogle, signOut, getUserMeta }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        session,
+        loading,
+        signInWithGoogle,
+        signInWithEmailOrUsername,
+        signUpWithEmail,
+        signOut,
+        getUserMeta,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

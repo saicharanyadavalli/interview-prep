@@ -13,10 +13,22 @@ class SessionRequest(BaseModel):
     access_token: str = Field(..., min_length=1)
 
 
+class ResolveUsernameRequest(BaseModel):
+    """Payload to look up an email associated with a username."""
+    username: str = Field(..., min_length=1)
+
+
+class ResolveUsernameResponse(BaseModel):
+    """Response returning resolved email or found flag."""
+    email: Optional[str] = None
+    exists: bool = False
+
+
 class UserResponse(BaseModel):
     """User profile info returned to the frontend."""
     id: str
     email: str
+    username: Optional[str] = None
     name: Optional[str] = None
     avatar_url: Optional[str] = None
 
@@ -25,6 +37,7 @@ class ProfileResponse(BaseModel):
     """Editable user profile payload."""
     id: str
     email: str
+    username: Optional[str] = None
     name: str = ""
     phone: str = ""
     avatar_url: str = ""
@@ -32,6 +45,7 @@ class ProfileResponse(BaseModel):
 
 class ProfileUpdateRequest(BaseModel):
     """Allowed profile updates from frontend."""
+    username: Optional[str] = Field(None, max_length=50)
     name: Optional[str] = Field(None, max_length=120)
     phone: Optional[str] = Field(None, max_length=30)
     avatar_url: Optional[str] = Field(None, max_length=500)

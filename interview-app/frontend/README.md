@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Interview Assistant — Next.js Frontend
+
+Modern Next.js 16 (App Router) web application for the Interview Practice Platform, featuring interactive practice tools, AI doubt assistant, courses with embedded SQLite practice, and Google OAuth integration.
+
+## Tech Stack & Architecture
+
+- **Framework**: Next.js 16 (App Router) with React 19 & TypeScript
+- **Styling**: Tailwind CSS v4 + Custom CSS Theme variables (`@theme` in `globals.css`)
+- **Icons**: Lucide React (`lucide-react`)
+- **Authentication & SSR**: Supabase Auth (`@supabase/ssr` & `@supabase/supabase-js`)
+- **Interactive SQL**: `sql.js` (WebAssembly SQLite in browser for SQL course practice)
 
 ## Getting Started
 
-First, run the development server:
+### 1. Environment Configuration
+
+Create a `.env.local` file in the `frontend` root:
+
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Key Feature Components
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `AssistantChat`: Streaming AI assistant chat interface connected to FastAPI backend via Server-Sent Events (SSE).
+- `FilterBuilder`: React component for building and persisting custom search & filter queries across question lists.
+- `DifficultyRings`: SVG-based visualization component showing solved question stats breakdown (Easy, Medium, Hard).
+- `ConsistencyHeatmap`: Practice activity heatmap component showing daily problem-solving trends.
+- `SqlEditor`: Client-side interactive SQLite environment powered by `sql.js` for SQL practice courses.
 
-## Learn More
+## Build and Deployment
 
-To learn more about Next.js, take a look at the following resources:
+### Production Build
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+npm run build
+npm run start
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Deploying on Vercel
 
-## Deploy on Vercel
+1. Push your repository to GitHub / GitLab.
+2. Import the project in Vercel, pointing to the `interview-app/frontend` root.
+3. Configure the environment variables (`NEXT_PUBLIC_API_BASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
+4. Ensure the backend URL is properly specified for production CORS.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

@@ -2,7 +2,7 @@
 .env
 *.env
 backend/.env
-
+graphify-out
 # Python cache
 __pycache__/
 *.pyc
@@ -58,3 +58,5 @@ interview-app/backend/SQL_SEED_DATA.md
 interview-app/backend/test_courses_api.py
 interview-app/backend/test_out.txt
 interview-app/backend/app/courses_openapi_contract.json
+.playwright-mcp
+.agents

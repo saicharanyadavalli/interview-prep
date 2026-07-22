@@ -27,6 +27,7 @@ $$;
 CREATE TABLE public.user_profiles (
   id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   email TEXT NOT NULL,
+  username TEXT UNIQUE,
   name TEXT NOT NULL DEFAULT '',
   phone TEXT NOT NULL DEFAULT '',
   avatar_url TEXT NOT NULL DEFAULT '',
@@ -144,6 +145,7 @@ CREATE INDEX idx_learning_track_progress_user_track ON public.learning_track_pro
 
 -- profiles
 CREATE INDEX idx_user_profiles_email ON public.user_profiles(email);
+CREATE INDEX idx_user_profiles_username ON public.user_profiles(username);
 
 -- question bank
 CREATE INDEX idx_qb_question_id ON public.question_bank_questions(question_id);

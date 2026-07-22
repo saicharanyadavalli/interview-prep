@@ -529,7 +529,130 @@ img {
 .login-card .subtitle {
   color: var(--muted);
   font-size: 0.95rem;
-  margin-bottom: 2rem;
+  margin-bottom: 1.25rem;
+}
+
+/* ---------- Auth Tabs ---------- */
+.auth-tabs {
+  display: flex;
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0.25rem;
+  margin-bottom: 1.25rem;
+}
+
+.auth-tab {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: calc(var(--radius) - 3px);
+  cursor: pointer;
+  transition: all 180ms ease;
+}
+
+.auth-tab:hover {
+  color: var(--ink);
+}
+
+.auth-tab.active {
+  background: var(--paper);
+  color: var(--teal);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+/* ---------- Auth Error Banner ---------- */
+.auth-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  color: var(--red);
+  padding: 0.65rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 1.25rem;
+  text-align: left;
+}
+
+/* ---------- Auth Form Controls ---------- */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  text-align: left;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.6rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--line);
+  background: var(--surface-chip);
+  color: var(--ink);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.form-control:focus {
+  border-color: var(--teal-light);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15);
+}
+
+.password-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.password-input-wrapper .form-control {
+  padding-right: 2.5rem;
+}
+
+.password-toggle-btn {
+  position: absolute;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-size: 1rem;
+  opacity: 0.7;
+  transition: opacity 150ms ease;
+}
+
+.password-toggle-btn:hover {
+  opacity: 1;
+}
+
+.form-hint {
+  font-size: 0.75rem;
+  color: var(--muted);
+  line-height: 1.3;
+}
+
+.btn-auth-submit {
+  margin-top: 0.25rem;
+  padding: 0.7rem;
 }
 
 .login-divider {
@@ -809,3 +932,93 @@ img {
   padding-top: 0.5rem;
   border-top: 1px solid var(--line);
 }
+
+/* ---------- HTML Lesson Content Styles ---------- */
+.html-lesson-content {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--ink);
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.html-lesson-content h1 {
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 0.5rem;
+}
+
+.html-lesson-content h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-top: 1.4rem;
+  margin-bottom: 0.8rem;
+  color: var(--ink);
+}
+
+.html-lesson-content h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-top: 1.2rem;
+  margin-bottom: 0.6rem;
+  color: var(--teal);
+}
+
+.html-lesson-content p {
+  margin-bottom: 1.2rem;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.html-lesson-content figure {
+  margin: 1.5rem auto;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.html-lesson-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background-color: white;
+  margin: 0.5rem auto;
+  display: block;
+}
+
+.html-lesson-content figcaption {
+  font-size: 0.875rem;
+  color: var(--muted);
+  margin-top: 0.5rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+.html-lesson-content ul, .html-lesson-content ol {
+  margin-bottom: 1.2rem;
+  padding-left: 1.5rem;
+}
+
+.html-lesson-content li {
+  margin-bottom: 0.4rem;
+  line-height: 1.7;
+}
+
+.html-lesson-content table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+}
+
+.html-lesson-content th, .html-lesson-content td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line);
+}
+

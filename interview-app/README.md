@@ -1,23 +1,25 @@
 # Interview Assistant
 
-Interview preparation app with Google sign-in, AI doubt support, and personal practice tracking.
+Interview preparation platform with Google sign-in, AI doubt assistant, courses, interactive SQL environment, and personal practice tracking.
 
 ## Tech Stack
 
 | Layer | Technology |
 | --- | --- |
-| Backend | Python, FastAPI |
-| Frontend | HTML, Vanilla JS, CSS |
-| Database | Supabase Postgres |
-| Auth | Supabase Auth (Google OAuth) |
-| AI | Google Gemini API |
+| Backend | Python 3.11+, FastAPI, Uvicorn, SlowAPI |
+| Frontend | Next.js 16 (App Router), React 19, TypeScript, Tailwind CSS v4, Lucide React |
+| Database | Supabase Postgres (PostgreSQL + RLS) |
+| Auth | Supabase Auth (Google OAuth) + @supabase/ssr |
+| AI | Google Gemini API (SSE Streaming) |
+| Storage | Cloudinary (Avatars / Assets) |
 
 ## What You Need
 
 1. Python 3.10 or newer
-2. A Supabase project
-3. A Google OAuth client (for Supabase Auth)
-4. A Gemini API key
+2. Node.js 18+ & npm
+3. A Supabase project
+4. A Google OAuth client (for Supabase Auth)
+5. A Gemini API key
 
 ## Project Structure
 
@@ -27,21 +29,35 @@ interview-app/
     main.py
     requirements.txt
     load_questions_to_supabase.py
+    upload_lessons_to_supabase.py
+    limiter.py
     models/
     routes/
+      auth.py
+      questions.py
+      assistant.py
+      progress.py
+      revisit.py
+      comments.py
+      profile.py
+      system_design.py
+      courses.py
     services/
   frontend/
-    index.html
-    dashboard.html
-    practice.html
-    questions.html
-    solve.html
-    revisit.html
-    progress.html
-    profile.html
-    css/
-    js/
+    src/
+      app/
+      components/
+      lib/
+    public/
+    package.json
+    next.config.ts
+    tsconfig.json
+    postcss.config.mjs
+    .env.example
   supabase_setup.sql
+  AWS-EC2-DEPLOYMENT-GUIDE.md
+  BACKEND_AUDIT.md
+  MIGRATION_NOTES.md
   README.md
 ```
 
@@ -65,17 +81,17 @@ cd interview-app
 ### 3. Run Database Setup Script
 
 1. Open Supabase SQL Editor.
-2. Paste all contents of supabase_setup.sql.
+2. Paste all contents of `supabase_setup.sql`.
 3. Run it once.
 
-This creates only the current required tables:
-1. users
-2. user_profiles
-3. user_progress
-4. practice_history
-5. user_comments
-6. question_bank_questions
-7. question_bank_qnum_aliases
+This creates the required tables with Row Level Security (RLS) policies:
+1. `users`
+2. `user_profiles`
+3. `user_progress`
+4. `practice_history`
+5. `user_comments`
+6. `question_bank_questions`
+7. `question_bank_qnum_aliases`
 
 ### 4. Configure Google Auth in Supabase
 
@@ -97,9 +113,9 @@ To keep auth sessions limited to 1 hour and align token lifetime:
 
 This project also applies a frontend idle timeout and signs users out after 1 hour of inactivity.
 
-### 5. Create Environment File
+### 5. Create Backend Environment File
 
-Create a .env file at project root (same level as supabase_setup.sql):
+Create a `.env` file in `interview-app/backend/` (or at `interview-app/` root):
 
 ```env
 GEMINI_API_KEY=your_gemini_api_key
@@ -114,16 +130,14 @@ CLOUDINARY_API_SECRET=
 CLOUDINARY_AVATAR_FOLDER=interview-prep/avatars
 ```
 
-### 6. Configure Frontend
+### 6. Configure Frontend Environment File
 
-Update frontend/js/config.js:
+Create a `.env.local` file in `interview-app/frontend/`:
 
-```js
-const CONFIG = {
-  API_BASE_URL: "http://localhost:8000",
-  SUPABASE_URL: "https://your-project-ref.supabase.co",
-  SUPABASE_ANON_KEY: "your_supabase_anon_key",
-};
+```env
+NEXT_PUBLIC_API_BASE_URL=http://localhost:8000
+NEXT_PUBLIC_SUPABASE_URL=https://your-project-ref.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 ### 7. Run Backend
@@ -154,18 +168,19 @@ Open a second terminal:
 
 ```bash
 cd frontend
-python -m http.server 3000
+npm install
+npm run dev
 ```
 
 Open in browser:
 
 ```text
-http://localhost:3000/index.html
+http://localhost:3000
 ```
 
-## Load Question Bank Data
+## Load Question Bank Data & Courses Data
 
-Question APIs depend on data in question_bank_questions.
+Question APIs depend on data in `question_bank_questions`.
 
 The loader expects JSON files in:
 
@@ -173,55 +188,62 @@ The loader expects JSON files in:
 ../output/stage3_company_wise
 ```
 
-From backend directory:
+From `backend` directory:
 
 ```bash
 python load_questions_to_supabase.py --truncate
+python upload_lessons_to_supabase.py
 ```
 
 Notes:
-1. --truncate clears question bank tables before reload.
+1. `--truncate` clears question bank tables before reload.
 2. Duplicate source qnums are merged into one canonical qnum.
-3. Company filtering runs from question_bank_questions.company_tags.
+3. Company filtering runs from `question_bank_questions.company_tags`.
 
 ## API Overview
 
 | Method | Endpoint | Auth Required | Description |
 | --- | --- | --- | --- |
-| GET | / | No | Basic health response |
-| GET | /health | No | Environment health check |
-| POST | /auth/session | No | Validate token and upsert user/profile |
-| GET | /questions/companies | Yes | List available companies |
-| GET | /questions/random | Yes | Random question by company and difficulty |
-| GET | /questions/recommend | Yes | Recommended question |
-| GET | /questions/all | Yes | Full list for company and difficulty |
-| GET | /questions/catalog | Optional | Global catalog with filters |
-| GET | /questions/catalog/user | Yes | Global catalog with user solved flags |
-| GET | /questions/by-qnum/{qnum} | Yes | Question by qnum |
-| POST | /assistant/ask | Yes | AI doubt assistant |
-| POST | /progress/update | Yes | Upsert is_solved and revisit state |
-| GET | /progress/user | Yes | User progress summary |
-| GET | /progress/status/{qnum} | Yes | Progress status for one qnum |
-| DELETE | /progress/{qnum} | Yes | Clear one progress row |
-| GET | /revisit | Yes | Revisit queue |
-| DELETE | /revisit/{qnum} | Yes | Remove one revisit row |
-| POST | /comments/add | Yes | Add or update comment for qnum |
-| GET | /comments/{qnum} | Yes | Get comments for qnum |
-| DELETE | /comments/{comment_id} | Yes | Delete one comment |
-| GET | /profile/me | Yes | Get profile |
-| PUT | /profile/me | Yes | Update profile |
-| POST | /profile/avatar/upload | Yes | Upload avatar |
+| GET | `/` | No | Basic health response |
+| GET | `/health` | No | Detailed environment health check |
+| POST | `/auth/session` | No | Validate token and upsert user/profile |
+| GET | `/questions/companies` | Yes | List available companies |
+| GET | `/questions/random` | Yes | Random question by company and difficulty |
+| GET | `/questions/recommend` | Yes | Recommended question |
+| GET | `/questions/all` | Yes | Full list for company and difficulty |
+| GET | `/questions/catalog` | Optional | Global catalog with filters |
+| GET | `/questions/catalog/user` | Yes | Global catalog with user solved flags |
+| GET | `/questions/by-qnum/{qnum}` | Yes | Question by qnum |
+| POST | `/assistant/ask` | Yes | AI doubt assistant (SSE Streaming & Rate Limited) |
+| POST | `/progress/update` | Yes | Upsert is_solved and revisit state |
+| GET | `/progress/user` | Yes | User progress summary |
+| GET | `/progress/status/{qnum}` | Yes | Progress status for one qnum |
+| DELETE | `/progress/{qnum}` | Yes | Clear one progress row |
+| GET | `/revisit` | Yes | Revisit queue |
+| DELETE | `/revisit/{qnum}` | Yes | Remove one revisit row |
+| POST | `/comments/add` | Yes | Add or update comment for qnum |
+| GET | `/comments/{qnum}` | Yes | Get comments for qnum |
+| DELETE | `/comments/{comment_id}` | Yes | Delete one comment |
+| GET | `/profile/me` | Yes | Get user profile |
+| PUT | `/profile/me` | Yes | Update user profile |
+| POST | `/profile/avatar/upload` | Yes | Upload avatar image (Cloudinary or inline fallback) |
+| GET | `/courses/` | Yes | List available interactive courses |
+| GET | `/courses/{course_slug}` | Yes | Get course details and lessons |
+| GET | `/courses/{course_slug}/lessons/{lesson_id}` | Yes | Get individual course lesson content |
+| GET | `/courses/{course_slug}/seed-tables` | Yes | Get SQL practice seed datasets for sql.js |
+| POST | `/courses/progress/mark-completed` | Yes | Mark a course lesson completed |
 
 ## Common Setup Issues
 
 1. 401 from protected APIs:
-   - Confirm frontend Supabase URL and anon key in frontend/js/config.js.
+   - Confirm frontend `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in `frontend/.env.local`.
    - Confirm Google provider and redirect URL are configured in Supabase.
 
 2. Runtime error about SUPABASE_URL or SUPABASE_SERVICE_KEY:
-   - Confirm .env is present in interview-app root.
-   - Restart backend after editing .env.
+   - Confirm `.env` is present in `interview-app/backend/` or `interview-app/` root.
+   - Restart backend after editing `.env`.
 
 3. Questions endpoint returns no data:
-   - Run load_questions_to_supabase.py.
-   - Verify JSON source folder exists at ../output/stage3_company_wise.
+   - Run `load_questions_to_supabase.py`.
+   - Verify JSON source folder exists at `../output/stage3_company_wise`.
+
