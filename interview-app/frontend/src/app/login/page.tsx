@@ -270,7 +270,7 @@ export default function LoginPage() {
                   id="signUpPassword"
                   type={showPassword ? "text" : "password"}
                   className="form-control"
-                  placeholder="Min 8 chars (A-Z, 0-9, !@#)"
+                  placeholder="••••••••"
                   value={signUpPassword}
                   onChange={(e) => setSignUpPassword(e.target.value)}
                   disabled={isSubmitting || loading}
@@ -285,9 +285,32 @@ export default function LoginPage() {
                   {showPassword ? "🙈" : "👁️"}
                 </button>
               </div>
-              <small className="form-hint">
-                Must be at least 8 characters with uppercase, digit & special symbol.
-              </small>
+
+              {/* Real-time Password Criteria Checklist */}
+              <div className="password-criteria-checklist">
+                <div className={`criteria-item ${signUpPassword.length >= 8 ? "satisfied" : ""}`}>
+                  <span className="criteria-icon">{signUpPassword.length >= 8 ? "✓" : "○"}</span>
+                  <span>At least 8 characters</span>
+                </div>
+                <div className={`criteria-item ${/[A-Z]/.test(signUpPassword) ? "satisfied" : ""}`}>
+                  <span className="criteria-icon">{/[A-Z]/.test(signUpPassword) ? "✓" : "○"}</span>
+                  <span>At least 1 uppercase letter (A-Z)</span>
+                </div>
+                <div className={`criteria-item ${/[0-9]/.test(signUpPassword) ? "satisfied" : ""}`}>
+                  <span className="criteria-icon">{/[0-9]/.test(signUpPassword) ? "✓" : "○"}</span>
+                  <span>At least 1 number (0-9)</span>
+                </div>
+                <div className={`criteria-item ${/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(signUpPassword) ? "satisfied" : ""}`}>
+                  <span className="criteria-icon">{/[!@#$%^&*()_+\-=\[\]{}|;:,.<>?]/.test(signUpPassword) ? "✓" : "○"}</span>
+                  <span>At least 1 special character (!@#$%^&*)</span>
+                </div>
+                {signUpConfirmPassword.length > 0 && (
+                  <div className={`criteria-item ${signUpPassword.length > 0 && signUpPassword === signUpConfirmPassword ? "satisfied" : ""}`}>
+                    <span className="criteria-icon">{signUpPassword.length > 0 && signUpPassword === signUpConfirmPassword ? "✓" : "○"}</span>
+                    <span>Passwords match</span>
+                  </div>
+                )}
+              </div>
             </div>
 
             <div className="form-group">
