@@ -150,6 +150,11 @@ export function Sidebar() {
             />
             <div className="sidebar-user-info">
               <p className="sidebar-user-name">{meta.name}</p>
+              {meta.username && (
+                <p className="sidebar-user-username" style={{ color: "var(--teal)", fontSize: "0.78rem", fontWeight: 600, fontFamily: "monospace", margin: "0.1rem 0" }}>
+                  @{meta.username}
+                </p>
+              )}
               <p className="sidebar-user-email">{meta.email || "Not signed in"}</p>
             </div>
           </div>

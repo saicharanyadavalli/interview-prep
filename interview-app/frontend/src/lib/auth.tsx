@@ -6,6 +6,7 @@ import { User, Session } from "@supabase/supabase-js";
 import { useRouter, usePathname } from "next/navigation";
 
 import { CONFIG } from "./config";
+import { API } from "./api";
 
 interface AuthContextType {
   user: User | null;
@@ -295,11 +296,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const getUserMeta = () => {
     if (!user) return { name: "User", email: "", avatar: "", username: "" };
     const meta = user.user_metadata || {};
+    let cached: any = null;
+    try {
+      if (typeof window !== "undefined" && API && typeof API.getCachedProfile === "function") {
+        cached = API.getCachedProfile(24 * 60 * 60 * 1000);
+      }
+    } catch (_) {}
+
+    const username = cached?.username || meta.username || (user.email ? user.email.split("@")[0] : "");
+    const name = cached?.name || meta.full_name || meta.name || (user.email ? user.email.split("@")[0] : "User");
+    const avatar = cached?.avatar_url || meta.avatar_url || meta.picture || "";
+
     return {
-      name: meta.full_name || meta.name || user.email?.split("@")[0] || "User",
+      name,
       email: user.email || "",
-      avatar: meta.avatar_url || meta.picture || "",
-      username: meta.username || "",
+      avatar,
+      username,
     };
   };
 
