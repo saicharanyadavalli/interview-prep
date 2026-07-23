@@ -11,7 +11,7 @@ const AVATAR_MAX_BYTES = 512 * 1024;
 function readImageDimensions(file: File): Promise<{ width: number; height: number; image: HTMLImageElement }> {
   return new Promise((resolve, reject) => {
     const url = URL.createObjectURL(file);
-    const img = new Image();
+    const img = new window.Image();
     img.onload = () => {
       const width = img.naturalWidth || img.width;
       const height = img.naturalHeight || img.height;

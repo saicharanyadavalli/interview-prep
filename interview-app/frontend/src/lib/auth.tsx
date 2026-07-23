@@ -65,8 +65,7 @@ export function AuthProvider({
 
   const signInWithGoogle = async () => {
     if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
-      setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com" } } as any);
-      setUser({ id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User", username: "testuser" } } as any);
+      setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "74c4b71d-86f3-475f-aa66-9faa76ee659d", email: "testuser@example.com", user_metadata: { full_name: "Test User", username: "testuser" } } } as any);
       router.push("/dashboard");
       return;
     }

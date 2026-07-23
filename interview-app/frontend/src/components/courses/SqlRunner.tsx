@@ -314,6 +314,7 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
           </div>
         )}
       </div>
+    </div>
     </>
   );
 }
