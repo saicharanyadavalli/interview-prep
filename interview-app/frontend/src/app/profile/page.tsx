@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { API } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { User, Pencil } from "lucide-react";
@@ -282,12 +283,14 @@ export default function ProfilePage() {
         <div className="control-group section" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
           <label style={{ fontWeight: 500 }}>Profile Picture</label>
           <div className="profile-avatar-editor" style={{ position: 'relative', width: '96px', height: '96px', borderRadius: '50%', background: 'var(--sidebar-bg)' }}>
-            <img 
+            <Image 
               id="profileAvatarPreview" 
               className="profile-avatar-preview" 
               src={avatarUrl || buildAvatarFallback(name)} 
-              onError={(e) => { e.currentTarget.src = buildAvatarFallback(name); }}
+              onError={(e) => { e.currentTarget.srcset = buildAvatarFallback(name); }}
               alt="Profile picture" 
+              width={96}
+              height={96}
               style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
             />
             <button 

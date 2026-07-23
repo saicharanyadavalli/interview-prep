@@ -308,32 +308,47 @@ def fetch_all_courses(user_id: Optional[str] = None) -> list[dict[str, Any]]:
         db_courses = supabase.table("courses").select("*").execute().data
         if db_courses:
             result = []
-            for course in db_courses:
-                course_id = course["id"]
-                lessons = (
-                    supabase.table("course_lessons")
-                    .select("id, slug")
-                    .eq("course_id", course_id)
+            
+            # Fetch all lessons for these courses in one query
+            course_ids = [c["id"] for c in db_courses]
+            all_lessons = (
+                supabase.table("course_lessons")
+                .select("id, slug, course_id")
+                .in_("course_id", course_ids)
+                .execute()
+                .data
+                or []
+            )
+            
+            # Map course_id to its lessons
+            lessons_by_course = {c_id: [] for c_id in course_ids}
+            for l in all_lessons:
+                lessons_by_course[l["course_id"]].append(l)
+
+            # Fetch all user progress if applicable
+            completed_lesson_ids = set()
+            if user_id and all_lessons:
+                lesson_ids = [l["id"] for l in all_lessons]
+                prog = (
+                    supabase.table("user_lesson_progress")
+                    .select("lesson_id")
+                    .eq("user_id", user_id)
+                    .eq("completed", True)
+                    .in_("lesson_id", lesson_ids)
                     .execute()
                     .data
                     or []
                 )
-                total_lessons = len(lessons)
-                completed_lessons = 0
+                completed_lesson_ids = {p["lesson_id"] for p in prog}
 
+            for course in db_courses:
+                course_id = course["id"]
+                lessons = lessons_by_course.get(course_id, [])
+                total_lessons = len(lessons)
+                
+                completed_lessons = 0
                 if user_id and total_lessons > 0:
-                    lesson_ids = [l["id"] for l in lessons]
-                    prog = (
-                        supabase.table("user_lesson_progress")
-                        .select("lesson_id")
-                        .eq("user_id", user_id)
-                        .eq("completed", True)
-                        .in_("lesson_id", lesson_ids)
-                        .execute()
-                        .data
-                        or []
-                    )
-                    completed_lessons = len(prog)
+                    completed_lessons = sum(1 for l in lessons if l["id"] in completed_lesson_ids)
 
                 pct = (
                     round((completed_lessons / total_lessons) * 100, 2)

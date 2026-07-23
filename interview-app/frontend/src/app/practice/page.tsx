@@ -421,7 +421,15 @@ function PracticeContent() {
         <div className="progress-fill" style={{ width: `${progressPct}%`, background: 'var(--teal)', height: '100%', transition: 'width 0.3s ease' }}></div>
       </div>
 
-      {currentQ && (
+      {isBusy && !currentQ && (
+        <div className="skeleton-loader section" style={{ background: 'var(--paper)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--line)', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem', animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}>
+          <div style={{ height: '32px', width: '40%', background: 'var(--line)', borderRadius: 'var(--radius)' }}></div>
+          <div style={{ height: '150px', width: '100%', background: 'var(--line)', borderRadius: 'var(--radius)' }}></div>
+          <div style={{ height: '150px', width: '100%', background: 'var(--line)', borderRadius: 'var(--radius)' }}></div>
+        </div>
+      )}
+
+      {currentQ && !isBusy && (
         <section className="question-card section" aria-live="polite" style={{ background: 'var(--paper)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--line)', padding: '2rem', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div className="question-head" style={{ borderBottom: '1px solid var(--line)', paddingBottom: '1rem' }}>
             <h2 style={{ fontSize: '1.5rem', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -450,7 +458,7 @@ function PracticeContent() {
                 <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: 'var(--ink)' }}>Examples</h3>
                 <div className="chip-list" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                   {examplesBlocks.map((b, i) => (
-                    <pre key={i} className="example-block" style={{ whiteSpace: 'pre-wrap', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', background: 'var(--sidebar-bg)', padding: '1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', color: 'var(--ink)' }}>{b}</pre>
+                    <pre key={i} className="example-block" style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', fontFamily: 'var(--font-mono)', fontSize: '0.9rem', background: 'var(--sidebar-bg)', padding: '1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', color: 'var(--ink)' }}>{b}</pre>
                   ))}
                 </div>
               </article>
@@ -478,14 +486,14 @@ function PracticeContent() {
 
           <details style={{ marginTop: '1rem' }}>
             <summary style={{ cursor: 'pointer', color: 'var(--muted)' }}>Show Raw JSON</summary>
-            <pre className="raw-json" style={{ marginTop: '1rem', whiteSpace: 'pre-wrap', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', background: 'var(--bg)', padding: '1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', overflowX: 'auto' }}>
+            <pre className="raw-json" style={{ marginTop: '1rem', whiteSpace: 'pre-wrap', wordWrap: 'break-word', fontFamily: 'var(--font-mono)', fontSize: '0.8rem', background: 'var(--bg)', padding: '1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', overflowX: 'auto' }}>
               {JSON.stringify(currentQ.raw || currentQ, null, 2)}
             </pre>
           </details>
         </section>
       )}
 
-      {currentQ && (
+      {currentQ && !isBusy && (
         <section className="card-flat section" style={{ padding: '1.5rem', background: 'var(--paper)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--line)', marginTop: '2rem' }}>
           <div className="card-header" style={{ marginBottom: '0.5rem' }}>
             <h3 style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -525,7 +533,7 @@ function PracticeContent() {
         </section>
       )}
 
-      {currentQ && (
+      {currentQ && !isBusy && (
         <section className="card-flat section" style={{ padding: '1.5rem', background: 'var(--paper)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--line)', marginTop: '2rem' }}>
           <div className="card-header" style={{ marginBottom: '0.5rem' }}>
             <h3 style={{ fontSize: '1.1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -555,7 +563,7 @@ function PracticeContent() {
         </section>
       )}
 
-      {currentQ && (
+      {currentQ && !isBusy && (
         <div style={{ marginTop: '2rem', marginBottom: '2rem' }}>
           <AssistantChat questionText={currentQTextForAssistant} />
         </div>

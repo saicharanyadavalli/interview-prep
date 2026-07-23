@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, useCallback } from "react";
+import Script from "next/script";
 import { SeedTableDefinition } from "@/lib/api";
 import { Play, RotateCcw, Database, Table, AlertCircle, CheckCircle2, Terminal } from "lucide-react";
 import { Spinner } from "@/components/Spinner";
@@ -30,64 +31,54 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
   }, [seedTables, activeTableTab]);
 
   // Load sql.js WASM runtime
-  useEffect(() => {
+  const initDb = useCallback(async () => {
     let isMounted = true;
-
-    const initDb = async () => {
-      try {
-        setLoading(true);
-        let SQL = sqlEngineRef.current;
-        if (!SQL) {
-          if (!(window as any).initSqlJs) {
-            await new Promise<void>((resolve, reject) => {
-              const script = document.createElement("script");
-              script.src = "https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js";
-              script.onload = () => resolve();
-              script.onerror = () => reject(new Error("Failed to load sql.js WebAssembly script from CDN"));
-              document.head.appendChild(script);
-            });
-          }
-
-          if ((window as any).initSqlJs) {
-            SQL = await (window as any).initSqlJs({
-              locateFile: (file: string) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`,
-            });
-            sqlEngineRef.current = SQL;
-          }
-        }
-
-        if (!SQL) {
-          throw new Error("sql.js initialization failed");
-        }
-
-        const newDb = new SQL.Database();
-        if (seedTables && seedTables.length > 0) {
-          for (const table of seedTables) {
-            if (table.schema_sql) newDb.run(table.schema_sql);
-            if (table.insert_sql) newDb.run(table.insert_sql);
-          }
-        }
-
-        if (isMounted) {
-          setDb(newDb);
-          setLoading(false);
-          setInitError("");
-        }
-      } catch (err: any) {
-        console.error("SQL.js init error:", err);
-        if (isMounted) {
-          setInitError(err.message || "Failed to initialize client-side SQLite database engine.");
-          setLoading(false);
+    try {
+      setLoading(true);
+      let SQL = sqlEngineRef.current;
+      if (!SQL) {
+        if ((window as any).initSqlJs) {
+          SQL = await (window as any).initSqlJs({
+            locateFile: (file: string) => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`,
+          });
+          sqlEngineRef.current = SQL;
         }
       }
-    };
 
-    initDb();
+      if (!SQL) {
+        // If initSqlJs isn't ready yet, we retry in a moment or rely on Script onLoad
+        return;
+      }
 
+      const newDb = new SQL.Database();
+      if (seedTables && seedTables.length > 0) {
+        for (const table of seedTables) {
+          if (table.schema_sql) newDb.run(table.schema_sql);
+          if (table.insert_sql) newDb.run(table.insert_sql);
+        }
+      }
+
+      if (isMounted) {
+        setDb(newDb);
+        setLoading(false);
+        setInitError("");
+      }
+    } catch (err: any) {
+      console.error("SQL.js init error:", err);
+      if (isMounted) {
+        setInitError(err.message || "Failed to initialize client-side SQLite database engine.");
+        setLoading(false);
+      }
+    }
     return () => {
       isMounted = false;
     };
   }, [seedTables]);
+
+  // Try to init DB on mount (in case script was already loaded and cached)
+  useEffect(() => {
+    initDb();
+  }, [initDb]);
 
   const handleResetDb = () => {
     if (!sqlEngineRef.current) return;
@@ -132,7 +123,13 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
   const selectedTable = seedTables.find((t) => t.name === activeTableTab) || seedTables[0];
 
   return (
-    <div className="flex flex-col gap-4 w-full">
+    <>
+      <Script 
+        src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js" 
+        strategy="lazyOnload" 
+        onLoad={initDb}
+      />
+      <div className="flex flex-col gap-4 w-full">
       {/* Table Schema / Seed Data Inspector */}
       <div className="card-flat p-4 rounded-xl border border-line/60 bg-paper/80">
         <div className="flex items-center gap-2 mb-3 text-xs font-semibold text-teal uppercase tracking-wider">
@@ -317,6 +314,6 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
           </div>
         )}
       </div>
-    </div>
+    </>
   );
 }

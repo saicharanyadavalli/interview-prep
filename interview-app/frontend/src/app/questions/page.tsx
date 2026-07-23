@@ -7,6 +7,7 @@ import { FilterBuilder } from "@/components/FilterBuilder";
 import { Spinner } from "@/components/Spinner";
 import { Search, ClipboardList } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 const COMPANY_FILTER_OPTIONS = [
   "24*7 Innovation Labs", "ABCO", "Accenture", "Accolite", "Adobe", "Airtel", "Amazon", "Amdocs",
@@ -348,7 +349,7 @@ export default function QuestionsPage() {
     <main className="main-content questions-main-content">
       <header className="page-header section" style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <img className="brand-logo" src="/assets/logo-mark.svg" alt="Logo" style={{ width: '1.5rem', height: '1.5rem' }}/>
+          <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Logo" width={24} height={24} />
           <span>Interview Assistant</span>
           <span className="text-muted" style={{ fontSize: '0.9rem', fontWeight: 500, marginLeft: '0.5rem' }}>All Questions</span>
         </h1>

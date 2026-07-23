@@ -44,7 +44,18 @@ export default function DashboardPage() {
   }, [user, session]);
 
   const renderRecentList = () => {
-    if (loadingProgress) return <Spinner />;
+    if (loadingProgress) return (
+      <>
+        {[1, 2, 3].map(i => (
+          <div key={i} className="track-item" style={{ animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}>
+            <div className="track-item-main" style={{ width: '100%' }}>
+              <div style={{ height: '18px', width: '60%', background: 'var(--line)', borderRadius: '4px', marginBottom: '8px' }}></div>
+              <div style={{ height: '14px', width: '40%', background: 'var(--line)', borderRadius: '4px' }}></div>
+            </div>
+          </div>
+        ))}
+      </>
+    );
     if (!recent || recent.length === 0) {
       return <p className="track-empty">No recent questions yet. Start practicing!</p>;
     }
@@ -80,7 +91,18 @@ export default function DashboardPage() {
   };
 
   const renderRevisitPreview = () => {
-    if (loadingRevisit) return <Spinner />;
+    if (loadingRevisit) return (
+      <>
+        {[1, 2].map(i => (
+          <div key={i} className="track-item" style={{ animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}>
+            <div className="track-item-main" style={{ width: '100%' }}>
+              <div style={{ height: '18px', width: '60%', background: 'var(--line)', borderRadius: '4px', marginBottom: '8px' }}></div>
+              <div style={{ height: '14px', width: '40%', background: 'var(--line)', borderRadius: '4px' }}></div>
+            </div>
+          </div>
+        ))}
+      </>
+    );
     if (!revisit || revisit.length === 0) {
       return <p className="track-empty">No questions in your revisit queue.</p>;
     }
@@ -121,16 +143,23 @@ export default function DashboardPage() {
         <h3 className="section-title">
           <TrendingUp size={20} className="text-teal" /> Your Progress
         </h3>
-        <div id="statsGrid" className="stats-grid">
-          <div className="stat-card attempted animate-slide" style={{ animationDelay: "0ms" }}>
-            <p className="stat-label">Total Attempted</p>
-            <p className="stat-value">{stats.total_attempted}</p>
+        {loadingProgress ? (
+          <div id="statsGrid" className="stats-grid">
+            <div className="stat-card skeleton-card" style={{ height: '90px', background: 'var(--paper)', border: '1px solid var(--line)', animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}></div>
+            <div className="stat-card skeleton-card" style={{ height: '90px', background: 'var(--paper)', border: '1px solid var(--line)', animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}></div>
           </div>
-          <div className="stat-card revisit animate-slide" style={{ animationDelay: "80ms" }}>
-            <p className="stat-label">Revisit</p>
-            <p className="stat-value">{stats.revisit_count}</p>
+        ) : (
+          <div id="statsGrid" className="stats-grid">
+            <div className="stat-card attempted animate-slide" style={{ animationDelay: "0ms" }}>
+              <p className="stat-label">Total Attempted</p>
+              <p className="stat-value">{stats.total_attempted}</p>
+            </div>
+            <div className="stat-card revisit animate-slide" style={{ animationDelay: "80ms" }}>
+              <p className="stat-label">Revisit</p>
+              <p className="stat-value">{stats.revisit_count}</p>
+            </div>
           </div>
-        </div>
+        )}
       </section>
 
       <div className="two-col">

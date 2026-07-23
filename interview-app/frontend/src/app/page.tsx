@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { Brain, Code, Award, Calendar, ChevronRight, Layout, ShieldCheck, Flame, BookOpen } from "lucide-react";
 
@@ -29,7 +30,7 @@ export default function LandingPage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <img src="/assets/logo-mark.svg" alt="Logo" style={{ width: "32px", height: "32px" }} />
+          <Image src="/assets/logo-mark.svg" alt="Logo" width={32} height={32} />
           <span style={{ fontWeight: 700, fontSize: "1.25rem", letterSpacing: "-0.025em" }}>Interview Assistant</span>
         </div>
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
@@ -298,7 +299,7 @@ export default function LandingPage() {
       <footer style={{ borderTop: "1px solid var(--line)", padding: "3rem 2rem", background: "var(--paper)" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem", alignItems: "center", fontSize: "0.88rem", color: "var(--muted)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <img src="/assets/logo-mark.svg" alt="Logo" style={{ width: "20px", height: "20px" }} />
+            <Image src="/assets/logo-mark.svg" alt="Logo" width={20} height={20} />
             <span style={{ fontWeight: 600, color: "var(--ink)" }}>Interview Assistant</span>
           </div>
           <div>

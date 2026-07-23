@@ -9,7 +9,8 @@ import re
 import cloudinary
 import cloudinary.uploader
 import filetype
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Request
+from limiter import limiter
 
 from models.schemas import ProfileResponse, ProfileUpdateRequest
 from routes.auth import get_current_user
@@ -41,7 +42,8 @@ def _configure_cloudinary() -> tuple[bool, str]:
 
 
 @router.get("/me", response_model=ProfileResponse)
-def get_my_profile(current_user: dict = Depends(get_current_user)):
+@limiter.limit("30/minute")
+def get_my_profile(request: Request, current_user: dict = Depends(get_current_user)):
     """Return profile row for current user, auto-creating one if missing."""
     supabase = get_supabase_client()
 
@@ -91,7 +93,8 @@ def get_my_profile(current_user: dict = Depends(get_current_user)):
 
 
 @router.put("/me", response_model=ProfileResponse)
-def update_my_profile(payload: ProfileUpdateRequest, current_user: dict = Depends(get_current_user)):
+@limiter.limit("10/minute")
+def update_my_profile(request: Request, payload: ProfileUpdateRequest, current_user: dict = Depends(get_current_user)):
     """Update editable profile fields for current user."""
     supabase = get_supabase_client()
 
@@ -99,7 +102,10 @@ def update_my_profile(payload: ProfileUpdateRequest, current_user: dict = Depend
     if payload.username is not None:
         updates["username"] = payload.username.strip().lower()
     if payload.name is not None:
-        updates["name"] = payload.name.strip()
+        name = payload.name.strip()
+        if name and not re.fullmatch(r"^[A-Za-z0-9 _\-']+$", name):
+            raise HTTPException(status_code=422, detail="Name contains invalid characters.")
+        updates["name"] = name
     if payload.phone is not None:
         phone = payload.phone.strip()
         if phone and not re.fullmatch(r"\d{10}", phone):
@@ -143,7 +149,8 @@ def update_my_profile(payload: ProfileUpdateRequest, current_user: dict = Depend
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
 @router.post("/avatar/upload")
-async def upload_profile_avatar(file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
+@limiter.limit("5/minute")
+async def upload_profile_avatar(request: Request, file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
     """Upload avatar image to Cloudinary and persist secure URL in user profile."""
     if not file:
         raise HTTPException(status_code=400, detail="No file provided.")

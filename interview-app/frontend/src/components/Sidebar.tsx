@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
 import { LayoutDashboard, List, Activity, RotateCcw, User, LogOut, Moon, Sun, Menu, BookOpen, ChevronsLeft, ChevronsRight } from "lucide-react";
@@ -107,7 +108,7 @@ export function Sidebar() {
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-brand" style={{ position: 'relative' }}>
           <h2>
-            <img className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" /> 
+            <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" width={24} height={24} /> 
             <span className="sidebar-brand-text">Interview Assistant</span>
           </h2>
           <button 
@@ -142,11 +143,13 @@ export function Sidebar() {
         </nav>
         <div className="sidebar-footer">
           <div className="sidebar-user">
-            <img 
+            <Image 
               className="sidebar-avatar" 
               src={meta.avatar || avatarFallback} 
               alt="Avatar" 
-              onError={(e) => { e.currentTarget.src = avatarFallback; }}
+              width={32}
+              height={32}
+              onError={(e) => { e.currentTarget.srcset = avatarFallback; }}
             />
             <div className="sidebar-user-info">
               <p className="sidebar-user-name">{meta.name}</p>

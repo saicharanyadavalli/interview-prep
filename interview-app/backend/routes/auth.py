@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Header, HTTPException
+from fastapi import APIRouter, Header, HTTPException, Request
+from limiter import limiter
 
 from models.schemas import SessionRequest, UserResponse, ResolveUsernameRequest, ResolveUsernameResponse
 from services.supabase_client import get_supabase_client, verify_supabase_token
@@ -52,7 +53,8 @@ def get_optional_current_user(authorization: str | None = Header(None)) -> dict 
 
 
 @router.post("/session", response_model=UserResponse)
-def create_session(payload: SessionRequest):
+@limiter.limit("10/minute")
+def create_session(request: Request, payload: SessionRequest):
     """Validate the access token and upsert the user in our users & user_profiles tables.
 
     The frontend calls this right after the user logs in with Google or password.
@@ -92,29 +94,4 @@ def create_session(payload: SessionRequest):
     )
 
 
-@router.post("/resolve-username", response_model=ResolveUsernameResponse)
-def resolve_username(payload: ResolveUsernameRequest):
-    """Look up an email associated with a username for password login.
 
-    Allows users to enter either their username or email to sign in.
-    """
-    username = payload.username.strip().lower()
-    if not username:
-        return ResolveUsernameResponse(exists=False, email=None)
-
-    try:
-        supabase = get_supabase_client()
-        res = (
-            supabase.table("user_profiles")
-            .select("email")
-            .ilike("username", username)
-            .limit(1)
-            .execute()
-        )
-        rows = res.data or []
-        if rows and rows[0].get("email"):
-            return ResolveUsernameResponse(exists=True, email=rows[0]["email"])
-    except Exception:
-        pass
-
-    return ResolveUsernameResponse(exists=False, email=None)

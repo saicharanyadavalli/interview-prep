@@ -3,6 +3,7 @@ import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
 import { Sidebar } from "@/components/Sidebar";
+import { createClient } from "@/utils/supabase/server";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -21,15 +22,18 @@ export const metadata: Metadata = {
   description: "Your interview practice dashboard.",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${spaceGrotesk.className} ${jetBrainsMono.variable} antialiased`} data-theme="dark" suppressHydrationWarning>
-        <AuthProvider>
+        <AuthProvider initialSession={session}>
           <div className="bg-shape bg-shape-a"></div>
           <div className="bg-shape bg-shape-b"></div>
           

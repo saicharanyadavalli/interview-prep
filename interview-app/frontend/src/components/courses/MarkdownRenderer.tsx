@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import DOMPurify from 'dompurify';
 
 interface MarkdownRendererProps {
   content: string;
@@ -21,7 +22,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     return (
       <div 
         className="html-lesson-content prose prose-invert w-full max-w-none break-words text-gray-300 leading-relaxed space-y-4"
-        dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
+        dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(sanitizedHtml) }}
       />
     );
   }

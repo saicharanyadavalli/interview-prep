@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function LoginPage() {
-  const { session, signInWithGoogle, signInWithEmailOrUsername, signUpWithEmail, loading } = useAuth();
+  const { session, signInWithGoogle, signInWithEmail, signUpWithEmail, loading } = useAuth();
   const router = useRouter();
 
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -50,8 +51,8 @@ export default function LoginPage() {
     e.preventDefault();
     setErrorMessage(null);
 
-    if (!loginIdentifier.trim()) {
-      setErrorMessage("Please enter your username or email address.");
+    if (!loginIdentifier.trim() || !loginIdentifier.includes("@")) {
+      setErrorMessage("Please enter a valid email address.");
       return;
     }
     if (!loginPassword) {
@@ -61,7 +62,7 @@ export default function LoginPage() {
 
     setIsSubmitting(true);
     try {
-      const res = await signInWithEmailOrUsername(loginIdentifier.trim(), loginPassword);
+      const res = await signInWithEmail(loginIdentifier.trim(), loginPassword);
       if (res.error) {
         setErrorMessage(res.error);
       }
@@ -135,7 +136,7 @@ export default function LoginPage() {
   return (
     <div className="login-page w-full">
       <div className="login-card mx-auto">
-        <img className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" />
+        <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" width={48} height={48} />
         <h1>Interview Assistant</h1>
         <p className="subtitle">Sharpen your coding interview skills with AI-powered guidance</p>
 
@@ -173,12 +174,12 @@ export default function LoginPage() {
         {mode === "signin" ? (
           <form onSubmit={handleSignInSubmit} className="auth-form">
             <div className="form-group">
-              <label htmlFor="loginIdentifier">Username or Email</label>
+              <label htmlFor="loginIdentifier">Email Address</label>
               <input
                 id="loginIdentifier"
-                type="text"
+                type="email"
                 className="form-control"
-                placeholder="e.g. alex_coder or alex@example.com"
+                placeholder="e.g. alex@example.com"
                 value={loginIdentifier}
                 onChange={(e) => setLoginIdentifier(e.target.value)}
                 disabled={isSubmitting || loading}

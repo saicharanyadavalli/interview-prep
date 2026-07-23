@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import json
-from fastapi import APIRouter, HTTPException, Request
+from fastapi import APIRouter, HTTPException, Request, Depends
 from fastapi.responses import StreamingResponse
+from routes.auth import get_current_user
 
 from models.schemas import AskRequest, AskResponse
 from services.gemini_service import ask_gemini_stream, is_in_scope
@@ -15,7 +16,7 @@ router = APIRouter(prefix="/assistant", tags=["assistant"])
 
 @router.post("/ask")
 @limiter.limit("20/hour")
-def ask_assistant(request: Request, payload: AskRequest):
+def ask_assistant(request: Request, payload: AskRequest, current_user: dict = Depends(get_current_user)):
     """Send a doubt about an interview question to the AI assistant.
 
     The AI will respond with hints and guidance without revealing

@@ -224,16 +224,21 @@ img {
   }
   html[data-sidebar="collapsed"] .sidebar-link {
     justify-content: center;
+    align-items: center;
     padding: 0;
     width: 44px;
     height: 44px;
     border-radius: var(--radius-sm);
     gap: 0;
+    display: flex;
   }
   html[data-sidebar="collapsed"] .sidebar-link .nav-icon {
     margin: 0;
     width: 20px;
     height: 20px;
+    min-width: 20px;
+    flex-shrink: 0;
+    display: block;
   }
   html[data-sidebar="collapsed"] .nav-label {
     display: none;

@@ -59,15 +59,19 @@ export default function LessonPage() {
       if (lessonRes.status === "fulfilled") {
         const l = lessonRes.value;
         setLesson(l);
-        setIsCompleted(Boolean(l.completed));
-        // Reset task check states
-        const initialTasks: Record<number, boolean> = {};
-        if (l.tasks) {
-          l.tasks.forEach((_, idx) => {
-            initialTasks[idx] = Boolean(l.completed);
-          });
+        if (l) {
+          setIsCompleted(Boolean(l.completed));
+          // Reset task check states
+          const initialTasks: Record<number, boolean> = {};
+          if (l.tasks) {
+            l.tasks.forEach((_, idx) => {
+              initialTasks[idx] = Boolean(l.completed);
+            });
+          }
+          setCheckedTasks(initialTasks);
+        } else {
+          setError("Lesson not found or failed to load.");
         }
-        setCheckedTasks(initialTasks);
       } else {
         setError("Lesson not found or failed to load.");
       }
