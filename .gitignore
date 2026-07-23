@@ -42,6 +42,8 @@ node_modules/
 out/
 build/
 .venv/
+.venv-new/
+.venv*/
 venv/
 env/
 ENV/
