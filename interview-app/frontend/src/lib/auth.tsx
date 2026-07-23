@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation";
 
 import { CONFIG } from "./config";
 import { API } from "./api";
+import { login, signup, logout } from "@/app/actions/auth";
 
 interface AuthContextType {
   user: User | null;
@@ -112,7 +113,6 @@ export function AuthProvider({
     formData.append("email", emailToUse);
     formData.append("password", password);
 
-    const { login } = await import("@/app/actions/auth");
     const result = await login(formData);
 
     if (result.error) {
@@ -137,7 +137,6 @@ export function AuthProvider({
     formData.append("username", username);
     formData.append("fullName", fullName);
 
-    const { signup } = await import("@/app/actions/auth");
     const result = await signup(formData);
 
     if (result.error) {
@@ -152,7 +151,6 @@ export function AuthProvider({
 
   const signOut = async () => {
     try {
-      const { logout } = await import("@/app/actions/auth");
       await logout();
       localStorage.removeItem("ipp_profile_cache_v1");
     } catch (_) {}
