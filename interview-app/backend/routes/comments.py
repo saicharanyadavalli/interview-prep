@@ -87,13 +87,24 @@ def get_comments(qnum: int, user: dict = Depends(get_current_user)):
 
 @router.delete("/{comment_id}")
 def delete_comment(comment_id: str, user: dict = Depends(get_current_user)):
-    """Delete a specific comment."""
+    """Delete a specific comment owned by the current user."""
     supabase = get_supabase_client()
 
     try:
-        supabase.table("user_comments").delete().eq(
-            "id", comment_id
-        ).eq("user_id", user["id"]).execute()
+        result = (
+            supabase.table("user_comments")
+            .delete()
+            .eq("id", comment_id)
+            .eq("user_id", user["id"])
+            .execute()
+        )
+        if not result.data:
+            raise HTTPException(
+                status_code=404,
+                detail="Comment not found or access denied.",
+            )
+    except HTTPException:
+        raise
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 

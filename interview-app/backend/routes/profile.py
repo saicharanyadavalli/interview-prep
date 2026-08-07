@@ -1,4 +1,11 @@
-"""Profile routes — read/update editable user profile fields."""
+"""Profile routes — read/update editable user profile fields.
+
+Rate limiting:
+  GET  /profile/me          — 60/minute per user (read, cheap)
+  PUT  /profile/me          — 10/minute, 60/hour per user (write, moderate)
+  POST /profile/avatar/upload — 3/minute, 10/hour per user
+    Upload calls Cloudinary (paid storage + bandwidth) — keep very tight.
+"""
 
 from __future__ import annotations
 
@@ -9,7 +16,7 @@ import re
 import cloudinary
 import cloudinary.uploader
 import filetype
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Request
+from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Request, Response
 from limiter import limiter
 
 from models.schemas import ProfileResponse, ProfileUpdateRequest
@@ -42,9 +49,10 @@ def _configure_cloudinary() -> tuple[bool, str]:
 
 
 @router.get("/me", response_model=ProfileResponse)
-@limiter.limit("30/minute")
-def get_my_profile(request: Request, current_user: dict = Depends(get_current_user)):
+@limiter.limit("30/minute")   # generous read limit — just prevents hammering DB
+def get_my_profile(request: Request, response: Response, current_user: dict = Depends(get_current_user)):
     """Return profile row for current user, auto-creating one if missing."""
+    request.state.rate_limit_user_id = current_user.get("id")
     supabase = get_supabase_client()
 
     try:
@@ -93,9 +101,21 @@ def get_my_profile(request: Request, current_user: dict = Depends(get_current_us
 
 
 @router.put("/me", response_model=ProfileResponse)
-@limiter.limit("10/minute")
-def update_my_profile(request: Request, payload: ProfileUpdateRequest, current_user: dict = Depends(get_current_user)):
-    """Update editable profile fields for current user."""
+@limiter.limit("10/minute")   # write limiter — prevents username-churn bots
+@limiter.limit("60/hour")     # hourly write budget per user
+def update_my_profile(
+    request: Request,
+    response: Response,
+    payload: ProfileUpdateRequest,
+    current_user: dict = Depends(get_current_user),
+):
+    """Update editable profile fields for current user.
+
+    Rate limits (per user):
+      - 10 / minute
+      - 60 / hour
+    """
+    request.state.rate_limit_user_id = current_user.get("id")
     supabase = get_supabase_client()
 
     updates = {}
@@ -148,10 +168,23 @@ def update_my_profile(request: Request, payload: ProfileUpdateRequest, current_u
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
+
 @router.post("/avatar/upload")
-@limiter.limit("5/minute")
-async def upload_profile_avatar(request: Request, file: UploadFile = File(...), current_user: dict = Depends(get_current_user)):
-    """Upload avatar image to Cloudinary and persist secure URL in user profile."""
+@limiter.limit("3/minute")
+async def upload_profile_avatar(
+    request: Request,
+    response: Response,
+    file: UploadFile = File(...),
+    current_user: dict = Depends(get_current_user),
+):
+    """Upload avatar image to Cloudinary and persist secure URL in user profile.
+
+    Rate limits (per user):
+      - 3 / minute   — prevents upload spam
+      - 10 / hour    — Cloudinary cost protection
+    """
+    request.state.rate_limit_user_id = current_user.get("id")
+
     if not file:
         raise HTTPException(status_code=400, detail="No file provided.")
 

@@ -1,11 +1,32 @@
-# Environment secrets
+# Environment & Secrets
 .env
 *.env
+*.env.local
+*.env.*.local
 backend/.env
-graphify-out
-# Python cache
+interview-app/.env
+interview-app/backend/.env
+
+# Caches & Temporary Files
+.cloudinary_upload_cache.json
+graphify-out/
 __pycache__/
 *.pyc
+.playwright-mcp
+.agents
+.venv/
+.venv*/
+venv/
+env/
+node_modules/
+.next/
+out/
+build/
+test-results/
+logs/
+*.log
+
+# System Design & Data Files
 deployed details.txt
 interview-app/frontend/assets/system-design/ordered-images/
 system design
@@ -16,10 +37,10 @@ gen ai system design
 update_images.py
 migrate_bytebytego_content.py
 
+# Scripts & Deployment Guides
 interview-app/backend/scripts/upload_system_design_images_to_cloudinary.py
 interview-app/backend/scripts/generate_system_design_themed_pages.py
 interview-app/backend/scripts/collect_system_design_images.py
-
 interview-app/migrations/create_learning_track_progress.sql
 .github/workflows/deploy.yml
 interview-app/AWS-EC2-DEPLOYMENT-GUIDE.md
@@ -28,37 +49,19 @@ interview-app/backend/docker-compose.yml
 interview-app/backend/Dockerfile
 interview-app/scripts/healthcheck.sh
 
+# Frontend / Design Artifacts
 interview-app/frontend/*-system-design/
 interview-app/frontend/object-oriented-design/
 interview-app/MIGRATION_NOTES.md
-.gitignore
 interview-app/frontend-legacy.zip
-interview-app/BACKEND_AUDIT.md
-.gitignore
 
-# Standard node/python ignores
-node_modules/
-.next/
-out/
-build/
-.venv/
-.venv-new/
-.venv*/
-venv/
-env/
-ENV/
-.env*.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
-.env
-*.env
-backend/.env
-
+# Audit & Report files
+*AUDIT*.md
+*_AUDIT.md
+*REPORT*.md
+*_REPORT.md
+*_report.json
 interview-app/backend/SQL_SEED_DATA.md
 interview-app/backend/test_courses_api.py
 interview-app/backend/test_out.txt
 interview-app/backend/app/courses_openapi_contract.json
-.playwright-mcp
-.agents

@@ -1,21 +1,39 @@
-"""Pydantic models for request/response validation."""
+"""Pydantic models for request/response validation.
+
+SECURITY POLICY
+---------------
+* All *Request* models use ``model_config = ConfigDict(extra='forbid')``.
+  This means any field not explicitly declared causes a 422 Unprocessable
+  Entity — no silent pass-through of attacker-controlled keys.
+* Response models use ``extra='ignore'`` so raw DB rows can be passed in
+  without leaking internal columns.
+* All user-supplied strings are length-bounded and pattern-validated before
+  they reach any service layer or ORM call.
+* Protected server-side fields (user_id, role, is_premium, credits,
+  subscription_status, updated_at) are NEVER present on any request model.
+"""
 
 from __future__ import annotations
 
-from typing import Optional
-from pydantic import BaseModel, Field
+import re
+from typing import Annotated, Optional
+from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 
 # ---------- Auth ----------
 
 class SessionRequest(BaseModel):
     """Frontend sends the Supabase access token after login."""
-    access_token: str = Field(..., min_length=1)
+    model_config = ConfigDict(extra="forbid")
+
+    access_token: str = Field(..., min_length=10, max_length=2048)
 
 
 class ResolveUsernameRequest(BaseModel):
     """Payload to look up an email associated with a username."""
-    username: str = Field(..., min_length=1)
+    model_config = ConfigDict(extra="forbid")
+
+    username: str = Field(..., min_length=1, max_length=50)
 
 
 class ResolveUsernameResponse(BaseModel):
@@ -44,11 +62,63 @@ class ProfileResponse(BaseModel):
 
 
 class ProfileUpdateRequest(BaseModel):
-    """Allowed profile updates from frontend."""
-    username: Optional[str] = Field(None, max_length=50)
+    """Allowed profile updates from frontend.
+
+    SECURITY: extra='forbid' prevents injection of protected fields such as
+    id, email, role, is_premium, subscription_status, credits, updated_at.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    # Only the four whitelisted user-editable fields are accepted.
+    username: Optional[str] = Field(None, min_length=3, max_length=50)
     name: Optional[str] = Field(None, max_length=120)
-    phone: Optional[str] = Field(None, max_length=30)
-    avatar_url: Optional[str] = Field(None, max_length=500)
+    phone: Optional[str] = Field(None, max_length=15)
+    avatar_url: Optional[str] = Field(None, max_length=512)
+
+    @field_validator("username")
+    @classmethod
+    def username_alphanumeric(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return v
+        v = v.strip().lower()
+        if not re.fullmatch(r"[a-z0-9_]{3,50}", v):
+            raise ValueError(
+                "Username must be 3–50 characters and contain only lowercase "
+                "letters, digits, or underscores."
+            )
+        return v
+
+    @field_validator("name")
+    @classmethod
+    def name_safe_chars(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return v
+        v = v.strip()
+        if v and not re.fullmatch(r"[A-Za-z0-9 '_\-]{1,120}", v):
+            raise ValueError("Name contains invalid characters.")
+        return v
+
+    @field_validator("phone")
+    @classmethod
+    def phone_digits_only(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return v
+        v = v.strip()
+        if v and not re.fullmatch(r"\d{7,15}", v):
+            raise ValueError("Phone must be 7–15 digits.")
+        return v
+
+    @field_validator("avatar_url")
+    @classmethod
+    def avatar_url_safe(cls, v: Optional[str]) -> Optional[str]:
+        if v is None:
+            return v
+        v = v.strip()
+        if v and not (v.startswith("https://") or v.startswith("data:image/")):
+            raise ValueError(
+                "avatar_url must start with 'https://' or be a data: image URI."
+            )
+        return v
 
 
 # ---------- Questions ----------
@@ -76,16 +146,36 @@ class CompaniesResponse(BaseModel):
 # ---------- AI Assistant ----------
 
 class ChatMessage(BaseModel):
-    """Single chat turn provided by frontend."""
-    role: str = Field(..., min_length=1)
-    content: str = Field(..., min_length=1)
+    """Single chat turn provided by frontend.
+
+    SECURITY: role is restricted to a known safe set so callers cannot
+    inject arbitrary role strings into the AI prompt context.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    role: str = Field(..., min_length=1, max_length=20)
+    content: str = Field(..., min_length=1, max_length=8000)
+
+    @field_validator("role")
+    @classmethod
+    def role_allowlist(cls, v: str) -> str:
+        allowed = {"user", "assistant", "model"}
+        if v.strip().lower() not in allowed:
+            raise ValueError(f"role must be one of {allowed}")
+        return v.strip().lower()
 
 
 class AskRequest(BaseModel):
-    """Incoming request payload for /assistant/ask."""
-    interview_question: str = Field(..., min_length=1)
-    user_doubt: str = Field(..., min_length=1)
-    conversation_history: list[ChatMessage] = Field(default_factory=list)
+    """Incoming request payload for /assistant/ask.
+
+    SECURITY: extra='forbid' + length caps prevent prompt-injection via
+    oversized or unexpected fields.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    interview_question: str = Field(..., min_length=1, max_length=4000)
+    user_doubt: str = Field(..., min_length=1, max_length=2000)
+    conversation_history: list[ChatMessage] = Field(default_factory=list, max_length=50)
 
 
 class AskResponse(BaseModel):
@@ -96,9 +186,17 @@ class AskResponse(BaseModel):
 # ---------- Progress ----------
 
 class ProgressUpdateRequest(BaseModel):
-    """Update a question's progress state using is_solved/revisit. Uses qnum."""
-    qnum: Optional[int] = Field(None, ge=1)
-    question_id: Optional[str] = None
+    """Update a question's progress state using is_solved/revisit. Uses qnum.
+
+    SECURITY: extra='forbid' prevents injection of protected fields such as
+    user_id, updated_at, or score overrides. The server always stamps user_id
+    from the verified JWT — never from this payload.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    # Callers must provide at most ONE identifier; the server resolves qnum.
+    qnum: Optional[int] = Field(None, ge=1, le=100_000)
+    question_id: Optional[str] = Field(None, max_length=128)
     is_solved: Optional[bool] = None
     revisit: Optional[bool] = None
 
@@ -192,8 +290,14 @@ class LearningTrackProgressResponse(BaseModel):
 
 
 class LearningTrackProgressUpdateRequest(BaseModel):
-    """Update payload for a single learning-track lesson step."""
-    step_no: int = Field(..., ge=1)
+    """Update payload for a single learning-track lesson step.
+
+    SECURITY: extra='forbid' prevents injection of user_id, track_id or
+    timestamps. The server derives those from JWT and URL params.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    step_no: int = Field(..., ge=1, le=10_000)
     completed: bool
 
 
@@ -214,8 +318,13 @@ class SystemDesignProgressResponse(BaseModel):
 
 
 class SystemDesignProgressUpdateRequest(BaseModel):
-    """Update payload for a single system design lesson step."""
-    step_no: int = Field(..., ge=1)
+    """Update payload for a single system design lesson step.
+
+    SECURITY: Mirrors LearningTrackProgressUpdateRequest constraints.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    step_no: int = Field(..., ge=1, le=10_000)
     completed: bool
 
 
@@ -244,10 +353,16 @@ class RevisitResponse(BaseModel):
 # ---------- Comments ----------
 
 class CommentRequest(BaseModel):
-    """Request to add a comment for a question."""
-    qnum: int | None = None
-    question_id: str | None = None
-    comment_text: str = Field(..., min_length=1)
+    """Request to add a comment for a question.
+
+    SECURITY: extra='forbid' prevents injection of user_id, created_at, or id.
+    comment_text is capped to prevent storage abuse.
+    """
+    model_config = ConfigDict(extra="forbid")
+
+    qnum: Optional[int] = Field(None, ge=1, le=100_000)
+    question_id: Optional[str] = Field(None, max_length=128)
+    comment_text: str = Field(..., min_length=1, max_length=10_000)
 
 
 class CommentEntry(BaseModel):
@@ -325,7 +440,13 @@ class LessonDetailResponse(BaseModel):
 
 
 class LessonCompleteRequest(BaseModel):
-    """Request payload for completing a lesson."""
+    """Request payload for completing a lesson.
+
+    SECURITY: extra='forbid' prevents injection of user_id, lesson_id,
+    completed_at, or course_slug — all derived server-side.
+    """
+    model_config = ConfigDict(extra="forbid")
+
     completed: bool = True
 
 

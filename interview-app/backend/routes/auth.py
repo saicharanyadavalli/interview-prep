@@ -1,8 +1,15 @@
-"""Auth routes — validate Supabase JWT and manage user profiles."""
+"""Auth routes — validate Supabase JWT and manage user profiles.
+
+Rate limiting:
+  POST /auth/session  — 5 / minute, 30 / hour per IP
+    Prevents:
+      - Session token replay loops
+      - Brute-force token testing
+"""
 
 from __future__ import annotations
 
-from fastapi import APIRouter, Header, HTTPException, Request
+from fastapi import APIRouter, Header, HTTPException, Request, Response
 from limiter import limiter
 
 from models.schemas import SessionRequest, UserResponse, ResolveUsernameRequest, ResolveUsernameResponse
@@ -19,6 +26,8 @@ def get_current_user(authorization: str | None = Header(None)) -> dict:
     """
     import os
     if os.getenv("DISABLE_AUTH") == "true":
+        import logging
+        logging.getLogger(__name__).warning("DISABLE_AUTH is enabled — all requests bypass authentication. DO NOT use in production.")
         return {
             "id": "12345678-1234-1234-1234-123456789012",
             "email": "testuser@example.com",
@@ -53,11 +62,16 @@ def get_optional_current_user(authorization: str | None = Header(None)) -> dict 
 
 
 @router.post("/session", response_model=UserResponse)
-@limiter.limit("10/minute")
-def create_session(request: Request, payload: SessionRequest):
+@limiter.limit("5/minute")    # strict minute window — prevents rapid replay attacks
+@limiter.limit("30/hour")     # hourly cap per IP
+def create_session(request: Request, response: Response, payload: SessionRequest):
     """Validate the access token and upsert the user in our users & user_profiles tables.
 
     The frontend calls this right after the user logs in with Google or password.
+
+    Rate limits (per IP):
+      - 5 / minute   — prevents burst token-replay or bot signup loops
+      - 30 / hour    — longer window cap
     """
     user = verify_supabase_token(payload.access_token)
     if not user:
@@ -92,6 +106,3 @@ def create_session(request: Request, payload: SessionRequest):
         name=user.get("name"),
         avatar_url=user.get("avatar_url"),
     )
-
-
-

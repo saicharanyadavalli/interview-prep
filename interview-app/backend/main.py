@@ -13,6 +13,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from limiter import limiter
@@ -35,6 +36,7 @@ from routes.comments import router as comments_router
 from routes.profile import router as profile_router
 from routes.system_design import router as system_design_router
 from routes.courses import router as courses_router
+from middleware.rate_limit_middleware import RateLimitAuthMiddleware
 
 
 app = FastAPI(
@@ -43,10 +45,9 @@ app = FastAPI(
     version="1.0.0",
 )
 
+# ── Middleware ───────────────────────────────────────────────────────────────
+
 # CORS — allow specific origins in production
-# We allow localhost for development and use an env variable for production
-# Vercel preview domains can be matched using a custom regex, but for standard setup we allow
-# the specific FRONTEND_URL or rely on Vercel preview URLs.
 frontend_url = os.getenv("FRONTEND_URL", "http://localhost:3000").strip()
 origins = [
     "http://localhost:3000",
@@ -62,7 +63,37 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Register route modules
+# Inject user_id onto request.state for composite rate-limit keying.
+app.add_middleware(RateLimitAuthMiddleware)
+
+# ── Rate Limiting ────────────────────────────────────────────────────────────
+
+app.state.limiter = limiter
+
+
+async def _custom_rate_limit_handler(request: Request, exc: RateLimitExceeded) -> JSONResponse:
+    """Return RFC-7807 compliant 429 response with Retry-After and quota headers."""
+    retry_after = getattr(exc, "retry_after", 60)
+    limit_str = str(getattr(exc, "detail", "rate limit exceeded"))
+    return JSONResponse(
+        status_code=429,
+        content={
+            "error": "rate_limit_exceeded",
+            "detail": f"Too many requests. {limit_str}",
+            "retry_after_seconds": retry_after,
+        },
+        headers={
+            "Retry-After": str(retry_after),
+            "X-RateLimit-Limit": limit_str,
+            "Content-Type": "application/json",
+        },
+    )
+
+
+app.add_exception_handler(RateLimitExceeded, _custom_rate_limit_handler)
+
+# ── Routers ──────────────────────────────────────────────────────────────────
+
 app.include_router(auth_router)
 app.include_router(questions_router)
 app.include_router(assistant_router)
@@ -74,10 +105,7 @@ app.include_router(system_design_router)
 app.include_router(courses_router)
 
 
-# Rate Limiting
-app.state.limiter = limiter
-app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
-
+# ── Health checks ────────────────────────────────────────────────────────────
 
 @app.get("/")
 def root():

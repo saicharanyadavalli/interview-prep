@@ -33,8 +33,10 @@ def verify_supabase_token(access_token: str) -> dict | None:
     against the Supabase Auth server.
     """
     if os.getenv("DISABLE_AUTH") == "true":
+        import logging
+        logging.getLogger(__name__).warning("DISABLE_AUTH is enabled — all requests bypass authentication. DO NOT use in production.")
         return {
-            "id": "74c4b71d-86f3-475f-aa66-9faa76ee659d",
+            "id": "12345678-1234-1234-1234-123456789012",
             "email": "testuser@example.com",
             "name": "Test User",
             "avatar_url": "",
