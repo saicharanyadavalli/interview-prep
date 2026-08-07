@@ -146,7 +146,7 @@ pydantic==2.13.4
     #   realtime
     #   storage3
     #   supabase-auth
-pydantic-core==2.46.4
+pydantic-core==2.47.0
     # via pydantic
 pyjwt[crypto]==2.13.0
     # via supabase-auth
