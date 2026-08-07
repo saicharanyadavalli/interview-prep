@@ -65,3 +65,5 @@ interview-app/backend/SQL_SEED_DATA.md
 interview-app/backend/test_courses_api.py
 interview-app/backend/test_out.txt
 interview-app/backend/app/courses_openapi_contract.json
+interview-app/frontend/AGENTS.md
+interview-app/frontend/CLAUDE.md
