@@ -68,3 +68,4 @@ interview-app/backend/test_out.txt
 interview-app/backend/app/courses_openapi_contract.json
 interview-app/frontend/AGENTS.md
 interview-app/frontend/CLAUDE.md
+interview-app/scripts/push_leetcode_to_supabase.py

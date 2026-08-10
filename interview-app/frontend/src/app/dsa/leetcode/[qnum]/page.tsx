@@ -140,7 +140,7 @@ export default function LeetCodeProblemDetailPage() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-slate-100 p-4 md:p-8 font-sans">
+    <div className="min-h-screen bg-[#0d1117] text-slate-100 p-4 md:p-8 font-sans transition-all duration-300 md:pl-[calc(var(--sidebar-width)+1.5rem)]">
       <div className="max-w-5xl mx-auto space-y-6">
 
         {/* Back Link */}

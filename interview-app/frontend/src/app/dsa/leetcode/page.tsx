@@ -73,7 +73,7 @@ export default function LeetCodeExplorerPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#0d1117] text-slate-100 p-6 md:p-10 font-sans">
+    <div className="min-h-screen bg-[#0d1117] text-slate-100 p-6 md:p-10 font-sans transition-all duration-300 md:pl-[calc(var(--sidebar-width)+1.5rem)]">
       <div className="max-w-7xl mx-auto space-y-8">
         
         {/* Header */}
