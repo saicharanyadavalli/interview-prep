@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { CONFIG } from '@/lib/config';
 
 const PROTECTED_ROUTES = [
   "/dashboard",
@@ -8,7 +9,8 @@ const PROTECTED_ROUTES = [
   "/solve",
   "/profile",
   "/progress",
-  "/revisit"
+  "/revisit",
+  "/dsa"
 ];
 
 export async function proxy(request: NextRequest) {
@@ -22,19 +24,33 @@ export async function proxy(request: NextRequest) {
     },
   });
 
+  const supabaseUrl = CONFIG.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+  const supabaseAnonKey = CONFIG.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => {
-            // Update request cookies for downstream
+          cookiesToSet.forEach(({ name, value }) => {
             request.cookies.set(name, value);
-            // Update response cookies for browser
+          });
+
+          supabaseResponse = NextResponse.next({
+            request: {
+              headers: request.headers,
+            },
+          });
+
+          cookiesToSet.forEach(({ name, value, options }) => {
             supabaseResponse.cookies.set(name, value, {
               ...options,
               httpOnly: true,
@@ -42,49 +58,29 @@ export async function proxy(request: NextRequest) {
               sameSite: 'lax',
             });
           });
-          
-          // Recreate response to incorporate updated cookies
-          supabaseResponse = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-          
-          cookiesToSet.forEach(({ name, value, options }) => {
-             supabaseResponse.cookies.set(name, value, {
-              ...options,
-              httpOnly: true,
-              secure: process.env.NODE_ENV === 'production',
-              sameSite: 'lax',
-             });
-          });
         },
       },
     }
   );
 
-  // Get session
+  // Authenticate & refresh user token using getUser() per Supabase SSR best practices
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  // Route guarding
-  const isProtected = PROTECTED_ROUTES.some(route => request.nextUrl.pathname.startsWith(route));
-  if (isProtected && !session) {
+  const pathname = request.nextUrl.pathname;
+  const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
+
+  if (isProtected && !user) {
     const url = request.nextUrl.clone();
     url.pathname = '/login';
     return NextResponse.redirect(url);
   }
 
-  if (session && request.nextUrl.pathname === '/login') {
+  if (user && pathname === '/login') {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);
-  }
-
-  // Inject Bearer token into proxied API requests
-  if (session && request.nextUrl.pathname.startsWith('/api/backend/')) {
-    supabaseResponse.headers.set('Authorization', `Bearer ${session.access_token}`);
   }
 
   return supabaseResponse;

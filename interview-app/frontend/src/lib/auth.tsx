@@ -47,6 +47,18 @@ export function AuthProvider({
 
   useEffect(() => {
     setSession(initialSession);
+
+    const sb = getSupabase();
+    if (!sb) return;
+
+    const { data: { subscription } } = sb.auth.onAuthStateChange((_event, newSession) => {
+      setSession(newSession);
+      setLoading(false);
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [initialSession]);
 
 
