@@ -36,6 +36,7 @@ from routes.comments import router as comments_router
 from routes.profile import router as profile_router
 from routes.system_design import router as system_design_router
 from routes.courses import router as courses_router
+from routes.leetcode import router as leetcode_router
 from middleware.rate_limit_middleware import RateLimitAuthMiddleware
 
 
@@ -103,6 +104,7 @@ app.include_router(comments_router)
 app.include_router(profile_router)
 app.include_router(system_design_router)
 app.include_router(courses_router)
+app.include_router(leetcode_router)
 
 
 # ── Health checks ────────────────────────────────────────────────────────────

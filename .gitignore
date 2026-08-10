@@ -9,6 +9,7 @@ interview-app/backend/.env
 
 # Caches & Temporary Files
 .cloudinary_upload_cache.json
+*.db
 graphify-out/
 __pycache__/
 *.pyc

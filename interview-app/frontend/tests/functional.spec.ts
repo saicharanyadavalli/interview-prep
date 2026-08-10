@@ -78,4 +78,14 @@ test.describe('Functional Testing', () => {
       logResult('Practice', 'Load', 'Fail', e.message);
     }
   });
+
+  test('Flow 6: LeetCode DSA Explorer & Detail Page', async ({ page }) => {
+    try {
+      await page.goto('http://127.0.0.1:3000/dsa/leetcode');
+      await expect(page.locator('h1')).toContainText('LeetCode');
+      logResult('LeetCode Explorer', 'Load', 'Pass', 'LeetCode DSA explorer page loads successfully');
+    } catch(e: any) {
+      logResult('LeetCode Explorer', 'Load', 'Fail', e.message);
+    }
+  });
 });

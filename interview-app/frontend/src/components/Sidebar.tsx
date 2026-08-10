@@ -131,6 +131,9 @@ export function Sidebar() {
           <Link href="/courses" className={`sidebar-link ${pathname.startsWith("/courses") || pathname.includes("/lessons") || pathname === "/system-design" ? "active" : ""}`} onClick={closeMobile} aria-label="Courses" title="Courses">
             <BookOpen className="nav-icon" size={18} /> <span className="nav-label">Courses</span>
           </Link>
+          <Link href="/dsa/leetcode" className={`sidebar-link ${pathname.startsWith("/dsa/leetcode") ? "active" : ""}`} onClick={closeMobile} aria-label="LeetCode DSA" title="LeetCode DSA">
+            <BookOpen className="nav-icon" size={18} /> <span className="nav-label">LeetCode DSA</span>
+          </Link>
           <Link href="/progress" className={`sidebar-link ${pathname === "/progress" ? "active" : ""}`} onClick={closeMobile} aria-label="Progress" title="Progress">
             <Activity className="nav-icon" size={18} /> <span className="nav-label">Progress</span>
           </Link>
