@@ -15,6 +15,7 @@ import {
   Cpu,
   BookOpen,
 } from "lucide-react";
+import { CONFIG } from "@/lib/config";
 
 interface ProblemDetail {
   qnum: number;
@@ -54,7 +55,7 @@ export default function LeetCodeProblemDetailPage() {
   const [selectedLanguage, setSelectedLanguage] = useState<string>("python");
   const [copied, setCopied] = useState<boolean>(false);
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_BASE = CONFIG.API_BASE_URL;
 
   useEffect(() => {
     if (!qnum) return;

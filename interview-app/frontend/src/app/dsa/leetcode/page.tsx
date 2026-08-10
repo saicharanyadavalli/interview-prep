@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, Filter, BookOpen, CheckCircle, Award, ChevronLeft, ChevronRight } from "lucide-react";
+import { CONFIG } from "@/lib/config";
 
 interface LeetCodeProblem {
   qnum: number;
@@ -21,7 +22,7 @@ export default function LeetCodeExplorerPage() {
   const [search, setSearch] = useState<string>("");
   const [difficulty, setDifficulty] = useState<string>("");
 
-  const API_BASE = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+  const API_BASE = CONFIG.API_BASE_URL;
 
   useEffect(() => {
     fetchProblems();
