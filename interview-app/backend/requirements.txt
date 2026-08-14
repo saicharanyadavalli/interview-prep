@@ -49,7 +49,7 @@ filetype==1.2.0
     # via -r requirements.txt
 google-ai-generativelanguage==0.6.15
     # via google-generativeai
-google-api-core[grpc]==2.33.0
+google-api-core[grpc]==2.34.0
     # via
     #   google-ai-generativelanguage
     #   google-api-python-client
