@@ -3,309 +3,193 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Brain, Code, Award, Calendar, ChevronRight, Layout, ShieldCheck, Flame, BookOpen } from "lucide-react";
+import { Brain, Code, Award, Calendar, ChevronRight, Layout, ShieldCheck, Flame, BookOpen, Sparkles, Terminal, CheckCircle2 } from "lucide-react";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Badge } from "@/components/ui/Badge";
 
 export default function LandingPage() {
   return (
-    <div 
-      className="landing-container w-full" 
-      style={{ 
-        color: "var(--ink)", 
-        background: "var(--bg)", 
-        minHeight: "100vh", 
-        fontFamily: "var(--font-space-grotesk), sans-serif",
-        overflowX: "hidden"
-      }}
-    >
-      {/* Navbar */}
-      <header 
-        style={{ 
-          display: "flex", 
-          justifyContent: "space-between", 
-          alignItems: "center", 
-          padding: "1.5rem 2rem", 
-          maxWidth: "1200px", 
-          margin: "0 auto",
-          borderBottom: "1px solid var(--line)"
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
-          <Image src="/assets/logo-mark.svg" alt="Logo" width={32} height={32} />
-          <span style={{ fontWeight: 700, fontSize: "1.25rem", letterSpacing: "-0.025em" }}>Interview Assistant</span>
+    <div className="landing-container w-full min-h-screen bg-zinc-950 text-zinc-100 font-sans overflow-x-hidden selection:bg-cyan-500 selection:text-white">
+      {/* Mesh Glow Backdrop */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] bg-cyan-600/10 rounded-full blur-[140px]" />
+        <div className="absolute top-1/3 -left-40 w-[500px] h-[500px] bg-indigo-600/10 rounded-full blur-[140px]" />
+        <div className="absolute -bottom-40 right-1/4 w-[600px] h-[600px] bg-cyan-500/10 rounded-full blur-[140px]" />
+      </div>
+
+      {/* Header */}
+      <header className="relative z-10 max-w-7xl mx-auto px-6 py-5 flex items-center justify-between border-b border-zinc-800/60 backdrop-blur-md">
+        <div className="flex items-center gap-3">
+          <Image src="/assets/logo-mark.svg" alt="Logo" width={28} height={28} className="w-7 h-7" />
+          <span className="font-bold text-lg tracking-tight text-white">Interview Assistant</span>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-          <Link href="/login" style={{ color: "var(--muted)", textDecoration: "none", fontSize: "0.95rem", fontWeight: 500 }}>
+        <div className="flex items-center gap-4">
+          <Link href="/login" className="text-sm text-zinc-400 hover:text-zinc-100 font-medium transition-colors">
             Sign In
           </Link>
-          <Link 
-            href="/login" 
-            className="btn btn-primary btn-sm" 
-            style={{ 
-              borderRadius: "var(--radius-sm)", 
-              padding: "0.5rem 1.25rem",
-              display: "inline-flex",
-              alignItems: "center"
-            }}
-          >
-            Get Started <ChevronRight size={16} style={{ marginLeft: "4px" }} />
+          <Link href="/login">
+            <Button size="sm" rightIcon={<ChevronRight size={14} />}>
+              Get Started
+            </Button>
           </Link>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section 
-        style={{ 
-          maxWidth: "1000px", 
-          margin: "0 auto", 
-          padding: "6rem 2rem 4rem", 
-          textAlign: "center",
-          position: "relative"
-        }}
-      >
-        <div 
-          style={{ 
-            display: "inline-flex", 
-            alignItems: "center", 
-            gap: "0.5rem", 
-            background: "rgba(34, 211, 238, 0.08)", 
-            border: "1px solid rgba(34, 211, 238, 0.2)", 
-            color: "var(--teal)", 
-            padding: "0.4rem 1rem", 
-            borderRadius: "9999px",
-            fontSize: "0.85rem",
-            fontWeight: 600,
-            marginBottom: "2rem"
-          }}
-        >
-          <Flame size={14} /> AI-Powered Coding Practice Platform
+      <section className="relative z-10 max-w-5xl mx-auto pt-20 pb-16 px-6 text-center">
+        <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold mb-8 backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-500">
+          <Flame size={14} className="text-cyan-400 animate-pulse" /> Next-Gen Technical Interview Prep Platform
         </div>
-        <h1 
-          style={{ 
-            fontSize: "clamp(2.5rem, 5vw, 4rem)", 
-            fontWeight: 700, 
-            lineHeight: 1.1,
-            letterSpacing: "-0.03em",
-            marginBottom: "1.5rem"
-          }}
-        >
+        
+        <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight text-white leading-tight mb-6 max-w-4xl mx-auto">
           Master Technical Interviews <br />
-          <span style={{ color: "var(--teal)" }}>With Interactive AI Guidance</span>
+          <span className="bg-gradient-to-r from-cyan-400 via-teal-300 to-indigo-400 bg-clip-text text-transparent">
+            With Interactive AI Guidance
+          </span>
         </h1>
-        <p 
-          style={{ 
-            fontSize: "clamp(1.1rem, 2vw, 1.25rem)", 
-            color: "var(--muted)", 
-            maxWidth: "680px", 
-            margin: "0 auto 3rem",
-            lineHeight: 1.5
-          }}
-        >
-          Structure your DSA and System Design prep, build long-term practice consistency, and solve complex problems with an interactive AI tutor trained to coach you.
+        
+        <p className="text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed font-normal">
+          Structure your DSA and System Design preparation, build long-term practice consistency, and solve complex problems with an interactive AI tutor trained to coach you.
         </p>
 
-        <div style={{ display: "flex", gap: "1rem", justifyContent: "center" }}>
-          <Link 
-            href="/login" 
-            className="btn btn-primary" 
-            style={{ 
-              padding: "0.75rem 2rem", 
-              borderRadius: "var(--radius)",
-              display: "inline-flex",
-              alignItems: "center",
-              fontSize: "1.05rem"
-            }}
-          >
-            Start Preparing Free
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center max-w-sm mx-auto mb-16">
+          <Link href="/login" className="w-full sm:w-auto">
+            <Button size="lg" className="w-full sm:w-auto text-base px-8 py-3.5 shadow-lg shadow-cyan-950/50" rightIcon={<Sparkles size={18} />}>
+              Start Preparing Free
+            </Button>
           </Link>
-          <a 
-            href="#features" 
-            className="btn" 
-            style={{ 
-              padding: "0.75rem 2rem", 
-              borderRadius: "var(--radius)",
-              background: "transparent",
-              border: "1px solid var(--line)",
-              color: "var(--ink)",
-              display: "inline-flex",
-              alignItems: "center",
-              fontSize: "1.05rem",
-              textDecoration: "none"
-            }}
-          >
-            Explore Features
+          <a href="#features" className="w-full sm:w-auto">
+            <Button variant="outline" size="lg" className="w-full sm:w-auto text-base px-6 py-3.5 border-zinc-800 hover:border-zinc-700">
+              Explore Features
+            </Button>
           </a>
         </div>
-      </section>
 
-      {/* Preview Section / Mock Dashboard */}
-      <section style={{ maxWidth: "1100px", margin: "0 auto 8rem", padding: "0 2rem" }}>
-        <div 
-          style={{ 
-            background: "var(--paper)", 
-            border: "1px solid var(--line)", 
-            borderRadius: "var(--radius-lg)",
-            padding: "2rem",
-            boxShadow: "var(--shadow)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "2rem",
-            position: "relative"
-          }}
-        >
-          {/* Mock Widget 1 */}
-          <div style={{ background: "var(--bg)", border: "1px solid var(--line)", borderRadius: "var(--radius)", padding: "1.25rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-              <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>Practice Streak</span>
-              <span style={{ color: "var(--teal)", background: "rgba(34, 211, 238, 0.08)", padding: "0.25rem 0.6rem", borderRadius: "9999px", fontSize: "0.75rem", fontWeight: 600 }}>Active</span>
+        {/* Live Interactive Showcase Mockup */}
+        <div className="relative max-w-5xl mx-auto rounded-2xl border border-zinc-800/80 bg-zinc-900/80 p-3 shadow-2xl backdrop-blur-xl">
+          <div className="flex items-center gap-2 px-3 py-2 border-b border-zinc-800/80 text-xs text-zinc-400 mb-3">
+            <div className="flex gap-1.5">
+              <span className="w-3 h-3 rounded-full bg-rose-500/80 inline-block" />
+              <span className="w-3 h-3 rounded-full bg-amber-500/80 inline-block" />
+              <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
             </div>
-            <div style={{ display: "flex", gap: "0.5rem" }}>
-              {[1, 2, 3, 4, 5, 6, 7].map((day) => (
-                <div 
-                  key={day} 
-                  style={{ 
-                    flex: 1, 
-                    height: "36px", 
-                    background: day <= 3 ? "var(--teal)" : "var(--line)", 
-                    borderRadius: "4px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: "0.75rem",
-                    fontWeight: 600,
-                    color: day <= 3 ? "var(--paper)" : "var(--muted)"
-                  }}
-                >
-                  D{day}
-                </div>
-              ))}
-            </div>
+            <span className="ml-2 font-mono text-zinc-500">interview-assistant // practice-workspace</span>
           </div>
 
-          {/* Mock Widget 2 */}
-          <div style={{ background: "var(--bg)", border: "1px solid var(--line)", borderRadius: "var(--radius)", padding: "1.25rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-              <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>Difficulty Distribution</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--muted)", marginBottom: "0.25rem" }}>
-                  <span>Easy</span>
-                  <span>14 / 20</span>
-                </div>
-                <div style={{ width: "100%", height: "6px", background: "var(--line)", borderRadius: "9999px", overflow: "hidden" }}>
-                  <div style={{ width: "70%", height: "100%", background: "var(--teal)", borderRadius: "9999px" }} />
-                </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-left p-2">
+            <Card variant="subtle" className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-sm text-zinc-200">Practice Heatmap</span>
+                <Badge variant="cyan" size="sm">Active Streak</Badge>
               </div>
-              <div>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.8rem", color: "var(--muted)", marginBottom: "0.25rem" }}>
-                  <span>Medium</span>
-                  <span>8 / 25</span>
-                </div>
-                <div style={{ width: "100%", height: "6px", background: "var(--line)", borderRadius: "9999px", overflow: "hidden" }}>
-                  <div style={{ width: "32%", height: "100%", background: "var(--amber)", borderRadius: "9999px" }} />
-                </div>
+              <div className="grid grid-cols-7 gap-1.5 pt-2">
+                {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14].map((day) => (
+                  <div
+                    key={day}
+                    className={`h-7 rounded flex items-center justify-center text-[10px] font-bold ${
+                      day <= 10 ? "bg-cyan-600/80 text-white" : "bg-zinc-800 text-zinc-500"
+                    }`}
+                  >
+                    D{day}
+                  </div>
+                ))}
               </div>
-            </div>
-          </div>
+            </Card>
 
-          {/* Mock Widget 3 */}
-          <div style={{ background: "var(--bg)", border: "1px solid var(--line)", borderRadius: "var(--radius)", padding: "1.25rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1rem" }}>
-              <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>AI Assistant Doubt Clearing</span>
-            </div>
-            <div style={{ fontSize: "0.85rem", color: "var(--muted)", fontStyle: "italic", background: "var(--paper)", padding: "0.75rem", borderRadius: "var(--radius-sm)", border: "1px solid var(--line)" }}>
-              "Since we need O(1) random lookup, an Array is preferred over a Linked List. Try maintaining the index hash..."
-            </div>
+            <Card variant="subtle" className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-sm text-zinc-200">Difficulty Matrix</span>
+                <span className="text-xs text-zinc-400 font-mono">1081 Questions</span>
+              </div>
+              <div className="space-y-2.5 pt-1">
+                <div>
+                  <div className="flex justify-between text-xs text-zinc-400 mb-1">
+                    <span>Easy</span>
+                    <span className="text-emerald-400 font-medium">142 / 448</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-full bg-emerald-500 rounded-full w-[31%]" />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs text-zinc-400 mb-1">
+                    <span>Medium</span>
+                    <span className="text-amber-400 font-medium">89 / 529</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-full bg-amber-500 rounded-full w-[17%]" />
+                  </div>
+                </div>
+                <div>
+                  <div className="flex justify-between text-xs text-zinc-400 mb-1">
+                    <span>Hard</span>
+                    <span className="text-rose-400 font-medium">18 / 104</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-zinc-800 overflow-hidden">
+                    <div className="h-full bg-rose-500 rounded-full w-[17%]" />
+                  </div>
+                </div>
+              </div>
+            </Card>
+
+            <Card variant="subtle" className="p-4 space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="font-semibold text-sm text-zinc-200">AI Assistant Tutor</span>
+                <Badge variant="solved" size="sm">Online</Badge>
+              </div>
+              <div className="bg-zinc-950/60 rounded-lg p-3 border border-zinc-800 text-xs space-y-2 font-mono text-zinc-300">
+                <p className="text-cyan-400 font-semibold">AI Tutor &gt;</p>
+                <p className="leading-relaxed">To optimize 2-Sum to O(N), use a hash map to store complements as you iterate.</p>
+              </div>
+            </Card>
           </div>
         </div>
       </section>
 
-      {/* Features Grid */}
-      <section id="features" style={{ background: "var(--paper)", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", padding: "8rem 2rem" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "5rem" }}>
-            <h2 style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: "1rem" }}>Everything you need to land the offer</h2>
-            <p style={{ color: "var(--muted)", maxWidth: "560px", margin: "0 auto" }}>Engineered to build consistency, strengthen recall, and clarify design patterns.</p>
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "2rem" }}>
-            {/* Feature 1 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Brain size={18} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Interactive AI Assistant</h3>
-              <p style={{ color: "var(--muted)", fontSize: "0.92rem", lineHeight: 1.5 }}>
-                Chat in real-time right alongside the problem workspace. Get targeted hints, run code walkthroughs, and clarify logic without copy-pasting code.
-              </p>
-            </div>
-
-            {/* Feature 2 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <BookOpen size={18} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Structured Learning Tracks</h3>
-              <p style={{ color: "var(--muted)", fontSize: "0.92rem", lineHeight: 1.5 }}>
-                Follow comprehensive, chapter-based courses on complex topics like System Design. Track track-by-track completions and check off milestones.
-              </p>
-            </div>
-
-            {/* Feature 3 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Calendar size={18} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Spaced Repetition Queue</h3>
-              <p style={{ color: "var(--muted)", fontSize: "0.92rem", lineHeight: 1.5 }}>
-                Flag hard questions into your persistent Revisit Queue. Spaced interval trackers remind you to retry questions you haven't fully mastered.
-              </p>
-            </div>
-
-            {/* Feature 4 */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              <div style={{ width: "40px", height: "40px", borderRadius: "var(--radius-sm)", background: "rgba(34, 211, 238, 0.08)", color: "var(--teal)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Award size={18} />
-              </div>
-              <h3 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Interactive Analytics</h3>
-              <p style={{ color: "var(--muted)", fontSize: "0.92rem", lineHeight: 1.5 }}>
-                Visualize your learning with interactive 30-day activity calendars, topic breakdowns, difficulty rings, and milestone badges.
-              </p>
-            </div>
-          </div>
+      {/* Feature Section */}
+      <section id="features" className="relative z-10 max-w-6xl mx-auto py-24 px-6 border-t border-zinc-900">
+        <div className="text-center max-w-2xl mx-auto mb-16 space-y-3">
+          <h2 className="text-3xl font-bold tracking-tight text-white">Engineered for Technical Excellence</h2>
+          <p className="text-zinc-400">Everything you need to master DSA, System Design, and SQL interviews in one unified workspace.</p>
         </div>
-      </section>
 
-      {/* CTA Section */}
-      <section style={{ maxWidth: "800px", margin: "0 auto", padding: "8rem 2rem", textAlign: "center" }}>
-        <h2 style={{ fontSize: "2.2rem", fontWeight: 700, letterSpacing: "-0.025em", marginBottom: "1rem" }}>Start your preparation today</h2>
-        <p style={{ color: "var(--muted)", maxWidth: "500px", margin: "0 auto 2.5rem", lineHeight: 1.5 }}>
-          Create your account for free and begin tracking your path toward your dream offer.
-        </p>
-        <Link 
-          href="/login" 
-          className="btn btn-primary" 
-          style={{ 
-            padding: "0.85rem 2.5rem", 
-            borderRadius: "var(--radius)",
-            fontSize: "1.05rem"
-          }}
-        >
-          Get Started Free
-        </Link>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Card variant="interactive" className="space-y-4">
+            <div className="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+              <Brain size={20} />
+            </div>
+            <h3 className="text-lg font-semibold text-white">AI Doubt Solver</h3>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Stuck on a problem? Ask the AI assistant for hints, optimal space/time complexity breakdowns, or edge-case walkthroughs without spoiling solutions.
+            </p>
+          </Card>
+
+          <Card variant="interactive" className="space-y-4">
+            <div className="w-10 h-10 rounded-lg bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
+              <BookOpen size={20} />
+            </div>
+            <h3 className="text-lg font-semibold text-white">Interactive Courses</h3>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Step-by-step System Design tracks covering Load Balancing, Consistent Hashing, Rate Limiters, and Database Sharding with SQL playgrounds.
+            </p>
+          </Card>
+
+          <Card variant="interactive" className="space-y-4">
+            <div className="w-10 h-10 rounded-lg bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center text-emerald-400">
+              <CheckCircle2 size={20} />
+            </div>
+            <h3 className="text-lg font-semibold text-white">Structured Practice</h3>
+            <p className="text-sm text-zinc-400 leading-relaxed">
+              Categorized question bank of 1080+ problems filtered by top tech companies (Google, Amazon, Meta, Apple) and difficulty.
+            </p>
+          </Card>
+        </div>
       </section>
 
       {/* Footer */}
-      <footer style={{ borderTop: "1px solid var(--line)", padding: "3rem 2rem", background: "var(--paper)" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem", alignItems: "center", fontSize: "0.88rem", color: "var(--muted)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-            <Image src="/assets/logo-mark.svg" alt="Logo" width={20} height={20} />
-            <span style={{ fontWeight: 600, color: "var(--ink)" }}>Interview Assistant</span>
-          </div>
-          <div>
-            © 2026 Interview Assistant. Sharpen your skills responsibly.
-          </div>
-        </div>
+      <footer className="relative z-10 max-w-7xl mx-auto px-6 py-8 border-t border-zinc-900 text-center text-xs text-zinc-500">
+        <p>© 2026 Interview Assistant. Production Technical Practice Platform.</p>
       </footer>
     </div>
   );

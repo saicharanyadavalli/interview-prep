@@ -2,7 +2,9 @@
 
 import React, { useState, useRef, useEffect, KeyboardEvent } from "react";
 import { API } from "@/lib/api";
-import { useAuth } from "@/lib/auth";
+import { Button } from "@/components/ui/Button";
+import { Card } from "@/components/ui/Card";
+import { Bot, Send, Trash2, Sparkles } from "lucide-react";
 
 export interface ChatMessage {
   role: "user" | "assistant";
@@ -18,10 +20,9 @@ export function AssistantChat({ questionText }: AssistantChatProps) {
   const [doubt, setDoubt] = useState("");
   const [inFlight, setInFlight] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  
+
   const chatMessagesRef = useRef<HTMLDivElement>(null);
 
-  // Auto-scroll to bottom on new messages
   useEffect(() => {
     if (chatMessagesRef.current) {
       chatMessagesRef.current.scrollTop = chatMessagesRef.current.scrollHeight;
@@ -67,10 +68,10 @@ export function AssistantChat({ questionText }: AssistantChatProps) {
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
-        
+
         const chunk = decoder.decode(value, { stream: true });
         const lines = chunk.split("\n");
-        
+
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             const dataStr = line.slice(6).trim();
@@ -82,7 +83,7 @@ export function AssistantChat({ questionText }: AssistantChatProps) {
                   answerText += data.text;
                   setHistory([...newHistory, { role: "assistant", content: answerText }]);
                 }
-              } catch(e) {
+              } catch (e) {
                 if (e instanceof Error && e.message !== "Unexpected end of JSON input" && !e.message.includes("is not valid JSON")) {
                   throw e;
                 }
@@ -92,10 +93,13 @@ export function AssistantChat({ questionText }: AssistantChatProps) {
         }
       }
     } catch (err: any) {
-      setHistory(prev => {
+      setHistory((prev) => {
         const last = prev[prev.length - 1];
         if (last && last.role === "assistant") {
-          return [...prev.slice(0, -1), { role: "assistant", content: last.content + (last.content ? "\n\n" : "") + `Error: ${err.message}` }];
+          return [
+            ...prev.slice(0, -1),
+            { role: "assistant", content: last.content + (last.content ? "\n\n" : "") + `Error: ${err.message}` },
+          ];
         }
         return [...prev, { role: "assistant", content: `Error: ${err.message}` }];
       });
@@ -114,60 +118,98 @@ export function AssistantChat({ questionText }: AssistantChatProps) {
 
   const clearChat = () => {
     setHistory([]);
-    setErrorMsg("Chat cleared.");
-    setTimeout(() => setErrorMsg(""), 2000);
+    setErrorMsg("");
   };
 
   return (
-    <section className="assistant-panel section" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', background: 'var(--paper)', border: '1px solid var(--line)', borderRadius: 'var(--radius-lg)', padding: '1.5rem' }}>
-      <div className="assistant-head">
-        <h3 style={{ margin: 0, fontSize: '1.1rem' }}>🤖 AI Interview Assistant</h3>
+    <Card variant="default" className="flex flex-col h-[500px] border-zinc-800 bg-zinc-900/90 shadow-2xl p-4 space-y-3">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-zinc-800 pb-3">
+        <div className="flex items-center gap-2">
+          <div className="w-7 h-7 rounded-lg bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center text-cyan-400">
+            <Bot size={16} />
+          </div>
+          <div>
+            <h3 className="text-sm font-semibold text-zinc-100 flex items-center gap-1.5">
+              AI Doubt Assistant <Sparkles size={12} className="text-cyan-400" />
+            </h3>
+            <p className="text-[11px] text-zinc-400">Ask for hints, complexity analysis, or approach tips.</p>
+          </div>
+        </div>
+        {history.length > 0 && (
+          <Button variant="ghost" size="sm" onClick={clearChat} title="Clear Chat">
+            <Trash2 size={14} />
+          </Button>
+        )}
       </div>
-      <p className="card-subtitle text-muted" style={{ fontSize: '0.9rem', margin: 0 }}>Ask doubts about the current problem. The assistant gives hints, not full solutions.</p>
-      
-      <div 
+
+      {/* Message History with ARIA Live Region */}
+      <div
         ref={chatMessagesRef}
-        className="chat-messages" 
-        style={{ flex: 1, minHeight: '200px', maxHeight: '400px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '1rem', padding: '1rem', background: 'var(--bg)', borderRadius: 'var(--radius)' }}
+        aria-live="polite"
+        aria-atomic="false"
+        className="flex-1 overflow-y-auto space-y-3 pr-1 text-xs"
       >
         {history.length === 0 ? (
-          <p className="chat-empty text-muted" style={{ textAlign: 'center', margin: 'auto' }}>Load a question, then ask your doubt here.</p>
+          <div className="h-full flex flex-col items-center justify-center text-center text-zinc-500 p-6 space-y-2">
+            <Bot size={32} className="text-zinc-600" />
+            <p>Ask any doubt about the current problem statement.</p>
+          </div>
         ) : (
           history.map((item, idx) => (
-            <article key={idx} className={`chat-bubble ${item.role}`} style={{ alignSelf: item.role === 'user' ? 'flex-end' : 'flex-start', background: item.role === 'user' ? 'var(--teal-soft)' : 'var(--paper)', color: item.role === 'user' ? 'var(--teal)' : 'var(--ink)', padding: '0.75rem 1rem', borderRadius: 'var(--radius)', border: item.role === 'assistant' ? '1px solid var(--line)' : 'none', maxWidth: '85%' }}>
-              <p className="chat-role text-muted" style={{ fontSize: '0.75rem', marginBottom: '0.25rem' }}>{item.role === "assistant" ? "Assistant" : "You"}</p>
-              <p className="chat-text" style={{ whiteSpace: 'pre-wrap', margin: 0, fontSize: '0.95rem' }}>
+            <div
+              key={idx}
+              className={`flex flex-col ${item.role === "user" ? "items-end" : "items-start"}`}
+            >
+              <span className="text-[10px] text-zinc-500 mb-1 px-1">
+                {item.role === "user" ? "You" : "AI Assistant"}
+              </span>
+              <div
+                className={`max-w-[88%] p-3 rounded-xl leading-relaxed whitespace-pre-wrap ${
+                  item.role === "user"
+                    ? "bg-cyan-600 text-white font-medium rounded-tr-none"
+                    : "bg-zinc-800/90 text-zinc-200 border border-zinc-700/60 rounded-tl-none"
+                }`}
+              >
                 {item.role === "assistant" ? normalizeAssistantText(item.content) : item.content}
-              </p>
-            </article>
+              </div>
+            </div>
           ))
         )}
         {inFlight && (
-          <article className="chat-bubble assistant typing-indicator" style={{ alignSelf: 'flex-start', background: 'var(--paper)', border: '1px solid var(--line)', padding: '0.75rem 1rem', borderRadius: 'var(--radius)', maxWidth: '85%' }}>
-            <p className="chat-role text-muted" style={{ fontSize: '0.75rem', marginBottom: '0.25rem' }}>Assistant</p>
-            <p className="chat-text" style={{ margin: 0, fontSize: '0.95rem' }}>
-              <span className="typing-dots" style={{ letterSpacing: '2px' }}>...</span> Thinking...
-            </p>
-          </article>
+          <div className="flex flex-col items-start">
+            <span className="text-[10px] text-zinc-500 mb-1 px-1">AI Assistant</span>
+            <div className="bg-zinc-800/90 text-zinc-400 border border-zinc-700/60 p-3 rounded-xl rounded-tl-none animate-pulse">
+              Thinking...
+            </div>
+          </div>
         )}
       </div>
-      
-      <div className="chat-input-wrap" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-        <textarea 
+
+      {/* Input Form */}
+      <div className="pt-2 border-t border-zinc-800 space-y-2">
+        <textarea
           value={doubt}
           onChange={(e) => setDoubt(e.target.value)}
           onKeyDown={handleKeyDown}
           disabled={inFlight || !questionText}
-          placeholder="Ask about approach, complexity, edge cases..." 
-          rows={3}
-          style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--ink)', resize: 'vertical' }}
+          placeholder="Ask a question or request a hint (Shift+Enter for newline)..."
+          rows={2}
+          className="w-full bg-zinc-950/80 border border-zinc-800 rounded-lg p-2.5 text-xs text-zinc-100 placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-cyan-500 resize-none"
         />
-        <div className="chat-actions" style={{ display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-          <button className="btn btn-primary" type="button" onClick={askAssistant} disabled={inFlight || !questionText}>Ask Assistant</button>
-          <button className="btn" type="button" onClick={clearChat}>Clear Chat</button>
-          {errorMsg && <span className="text-muted" style={{ fontSize: '0.85rem' }}>{errorMsg}</span>}
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] text-rose-400">{errorMsg}</span>
+          <Button
+            size="sm"
+            onClick={askAssistant}
+            isLoading={inFlight}
+            disabled={inFlight || !doubt.trim() || !questionText}
+            rightIcon={<Send size={12} />}
+          >
+            Ask Assistant
+          </Button>
         </div>
       </div>
-    </section>
+    </Card>
   );
 }
