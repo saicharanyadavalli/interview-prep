@@ -1,12 +1,10 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Script from "next/script";
 import { SeedTableDefinition } from "@/lib/api";
-import { Play, RotateCcw, Database, Table, AlertCircle, Terminal } from "lucide-react";
-import { Button } from "@/components/ui/Button";
-import { Card } from "@/components/ui/Card";
-import { Badge } from "@/components/ui/Badge";
+import { Play, RotateCcw, Database, Table, AlertCircle, CheckCircle2, Terminal } from "lucide-react";
+import { Spinner } from "@/components/Spinner";
 
 interface SqlRunnerProps {
   seedTables: SeedTableDefinition[];
@@ -25,12 +23,14 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
 
   const sqlEngineRef = useRef<any>(null);
 
+  // Initialize active table tab
   useEffect(() => {
     if (seedTables && seedTables.length > 0 && !activeTableTab) {
       setActiveTableTab(seedTables[0].name);
     }
   }, [seedTables, activeTableTab]);
 
+  // Load sql.js WASM runtime
   const initDb = useCallback(async () => {
     let isMounted = true;
     try {
@@ -45,7 +45,10 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
         }
       }
 
-      if (!SQL) return;
+      if (!SQL) {
+        // If initSqlJs isn't ready yet, we retry in a moment or rely on Script onLoad
+        return;
+      }
 
       const newDb = new SQL.Database();
       if (seedTables && seedTables.length > 0) {
@@ -61,8 +64,9 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
         setInitError("");
       }
     } catch (err: any) {
+      console.error("SQL.js init error:", err);
       if (isMounted) {
-        setInitError(err.message || "Failed to initialize SQLite database engine.");
+        setInitError(err.message || "Failed to initialize client-side SQLite database engine.");
         setLoading(false);
       }
     }
@@ -71,6 +75,7 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
     };
   }, [seedTables]);
 
+  // Try to init DB on mount (in case script was already loaded and cached)
   useEffect(() => {
     initDb();
   }, [initDb]);
@@ -119,111 +124,70 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
 
   return (
     <>
-      <Script
-        src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"
-        strategy="lazyOnload"
+      <Script 
+        src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js" 
+        strategy="lazyOnload" 
         onLoad={initDb}
       />
-      <div className="flex flex-col gap-5 w-full my-6 text-zinc-100">
-        {/* Table Schema Selector */}
-        <Card variant="subtle" className="p-4 space-y-3">
-          <div className="flex items-center gap-2 text-xs font-bold text-cyan-400 uppercase tracking-wider">
-            <Database size={16} /> Seed Database Tables ({seedTables.length})
-          </div>
+      <div className="flex flex-col gap-4 w-full">
+      {/* Table Schema / Seed Data Inspector */}
+      <div className="card-flat p-4 rounded-xl border border-line/60 bg-paper/80">
+        <div className="flex items-center gap-2 mb-3 text-xs font-semibold text-teal uppercase tracking-wider">
+          <Database size={16} /> Seed Database Tables ({seedTables.length})
+        </div>
 
-          <div className="flex flex-wrap gap-2 border-b border-zinc-800 pb-3">
-            {seedTables.map((table) => (
-              <button
-                key={table.name}
-                onClick={() => setActiveTableTab(table.name)}
-                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
-                  activeTableTab === table.name
-                    ? "bg-cyan-500/20 text-cyan-400 border border-cyan-500/40"
-                    : "bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-700/60"
-                }`}
-              >
-                <Table size={14} />
-                {table.name}
-              </button>
-            ))}
-          </div>
+        {/* Table selector tabs */}
+        <div className="flex flex-wrap gap-2 mb-3 border-b border-line/40 pb-2">
+          {seedTables.map((table) => (
+            <button
+              key={table.name}
+              onClick={() => setActiveTableTab(table.name)}
+              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
+                activeTableTab === table.name
+                  ? "bg-teal/20 text-teal border border-teal/40 font-semibold"
+                  : "bg-slate-800/60 text-gray-400 hover:text-white border border-line/30"
+              }`}
+            >
+              <Table size={14} />
+              {table.name}
+            </button>
+          ))}
+        </div>
 
-          {selectedTable && (
-            <div className="text-xs space-y-2">
-              <div className="flex flex-wrap items-center gap-1.5 font-mono text-zinc-300">
-                <span className="text-zinc-500 font-sans">Columns:</span>
-                {selectedTable.columns.map((col, i) => (
-                  <Badge key={i} variant="cyan" size="sm">
-                    {col}
-                  </Badge>
-                ))}
-              </div>
+        {/* Selected Table columns & sample preview */}
+        {selectedTable && (
+          <div className="text-xs">
+            <div className="flex flex-wrap items-center gap-1.5 mb-2 font-mono text-gray-300">
+              <span className="text-gray-400 font-sans">Columns:</span>
+              {selectedTable.columns.map((col, i) => (
+                <span key={i} className="bg-slate-800 text-teal-light px-2 py-0.5 rounded border border-teal/20">
+                  {col}
+                </span>
+              ))}
             </div>
-          )}
-        </Card>
 
-        {/* Editor Area */}
-        <Card variant="default" className="p-4 space-y-3">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2 text-xs font-bold text-cyan-400 uppercase tracking-wider">
-              <Terminal size={16} /> Interactive SQL Query Console
-            </div>
-            <div className="flex items-center gap-2">
-              <Button variant="secondary" size="sm" onClick={handleResetDb} disabled={loading} leftIcon={<RotateCcw size={12} />}>
-                Reset DB
-              </Button>
-              <Button size="sm" onClick={handleRunQuery} disabled={loading || !db} leftIcon={<Play size={12} />}>
-                Run Query (Ctrl+Enter)
-              </Button>
-            </div>
-          </div>
-
-          <div className="relative rounded-xl overflow-hidden border border-zinc-800 bg-zinc-950 font-mono text-xs">
-            <textarea
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              onKeyDown={handleKeyDown}
-              placeholder="Enter SQL query (e.g. SELECT * FROM Movies;)"
-              rows={4}
-              className="w-full p-4 bg-transparent text-emerald-400 outline-none resize-y leading-relaxed font-mono placeholder:text-zinc-600 focus:ring-1 focus:ring-cyan-500"
-              spellCheck={false}
-            />
-          </div>
-        </Card>
-
-        {/* Results Area */}
-        <Card variant="subtle" className="p-4 space-y-3">
-          <div className="flex items-center justify-between text-xs">
-            <span className="font-semibold text-zinc-400 uppercase tracking-wider">Results</span>
-            {executionTime !== null && <span className="text-zinc-500 font-mono">Executed in {executionTime} ms</span>}
-          </div>
-
-          {loading ? (
-            <p className="text-xs text-zinc-400 animate-pulse">Loading in-browser SQLite WASM engine...</p>
-          ) : queryError ? (
-            <div className="p-3 rounded-lg bg-rose-500/10 border border-rose-500/20 text-rose-400 text-xs font-mono">
-              <AlertCircle size={14} className="inline mr-1.5" />
-              {queryError}
-            </div>
-          ) : queryResults && queryResults.length > 0 ? (
-            queryResults.map((result, idx) => (
-              <div key={idx} className="overflow-x-auto rounded-lg border border-zinc-800 bg-zinc-950">
-                <table className="w-full text-left font-mono text-xs">
-                  <thead className="bg-zinc-900 text-cyan-400 border-b border-zinc-800">
+            {/* Quick table data preview dropdown/container */}
+            <details className="mt-2 text-gray-400 cursor-pointer">
+              <summary className="hover:text-teal transition-colors font-medium">
+                View {selectedTable.name} sample data ({selectedTable.rows.length} rows)
+              </summary>
+              <div className="mt-2 overflow-x-auto rounded-lg border border-line/40 bg-slate-900/80">
+                <table className="w-full text-left font-mono text-[11px]">
+                  <thead className="bg-slate-800/80 text-teal">
                     <tr>
-                      {result.columns.map((col, cIdx) => (
-                        <th key={cIdx} className="px-3 py-2 border-r last:border-r-0 border-zinc-800">
-                          {col}
+                      {selectedTable.columns.map((c, i) => (
+                        <th key={i} className="px-3 py-1.5 border-r last:border-r-0 border-line/30">
+                          {c}
                         </th>
                       ))}
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-800/60">
-                    {result.values.map((row, rIdx) => (
-                      <tr key={rIdx} className="hover:bg-zinc-900/60">
-                        {row.map((cell: any, cellIdx: number) => (
-                          <td key={cellIdx} className="px-3 py-1.5 border-r last:border-r-0 border-zinc-800/60 text-zinc-300">
-                            {cell === null ? <span className="text-zinc-600 italic">NULL</span> : String(cell)}
+                  <tbody>
+                    {selectedTable.rows.slice(0, 5).map((row, rIdx) => (
+                      <tr key={rIdx} className="border-b last:border-b-0 border-line/20 hover:bg-slate-800/40">
+                        {row.map((cell: any, cIdx: number) => (
+                          <td key={cIdx} className="px-3 py-1 border-r last:border-r-0 border-line/20">
+                            {cell === null ? <span className="text-gray-500 italic">NULL</span> : String(cell)}
                           </td>
                         ))}
                       </tr>
@@ -231,12 +195,126 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
                   </tbody>
                 </table>
               </div>
-            ))
-          ) : (
-            <p className="text-xs text-zinc-500 italic">Run a query to inspect SQL results.</p>
-          )}
-        </Card>
+            </details>
+          </div>
+        )}
       </div>
+
+      {/* SQL Editor Area */}
+      <div className="card-flat p-4 rounded-xl border border-line/60 bg-paper/90 shadow-md">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center gap-2 text-xs font-semibold text-teal uppercase tracking-wider">
+            <Terminal size={16} /> Interactive SQL Query Editor
+          </div>
+
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleResetDb}
+              disabled={loading}
+              className="btn btn-sm btn-secondary flex items-center gap-1.5 text-xs py-1 px-2.5"
+              title="Reset Database to original seed state"
+            >
+              <RotateCcw size={14} /> Reset DB
+            </button>
+
+            <button
+              onClick={handleRunQuery}
+              disabled={loading || !db}
+              className="btn btn-sm btn-primary flex items-center gap-1.5 text-xs py-1 px-3"
+            >
+              <Play size={14} fill="currentColor" /> Run Query (Ctrl+Enter)
+            </button>
+          </div>
+        </div>
+
+        {/* Textarea Code Editor */}
+        <div className="relative rounded-xl overflow-hidden border border-line/60 bg-slate-950 font-mono text-sm">
+          <textarea
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="Enter SQL query (e.g. SELECT * FROM Movies;)"
+            rows={5}
+            className="w-full p-4 bg-transparent text-emerald-400 outline-none resize-y leading-relaxed font-mono text-sm placeholder:text-gray-600"
+            spellCheck={false}
+          />
+        </div>
+      </div>
+
+      {/* Query Results / Errors Output Area */}
+      <div className="card-flat p-4 rounded-xl border border-line/60 bg-paper/80">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-xs font-semibold text-gray-300 uppercase tracking-wider">Query Results</span>
+          {executionTime !== null && (
+            <span className="text-xs text-gray-400 font-mono">Executed in {executionTime} ms</span>
+          )}
+        </div>
+
+        {loading ? (
+          <div className="flex items-center justify-center p-6 text-teal text-sm gap-2">
+            <Spinner /> Loading in-browser SQLite database engine (sql.js)...
+          </div>
+        ) : initError ? (
+          <div className="p-4 rounded-lg bg-red-950/40 border border-red-500/30 text-red-400 text-xs flex items-start gap-2">
+            <AlertCircle size={16} className="mt-0.5 flex-shrink-0" />
+            <div>
+              <p className="font-semibold mb-1">Database Initialization Error</p>
+              <p>{initError}</p>
+            </div>
+          </div>
+        ) : queryError ? (
+          <div className="p-4 rounded-lg bg-red-950/40 border border-red-500/30 text-red-400 text-xs flex items-start gap-2 font-mono">
+            <AlertCircle size={16} className="mt-0.5 flex-shrink-0 text-red-400" />
+            <div>
+              <p className="font-semibold font-sans mb-1 text-red-300">SQL Error</p>
+              <p>{queryError}</p>
+            </div>
+          </div>
+        ) : queryResults && queryResults.length > 0 ? (
+          queryResults.map((result, resIdx) => (
+            <div key={resIdx} className="overflow-x-auto rounded-lg border border-line/60 bg-slate-950">
+              <div className="px-3 py-1.5 bg-slate-900 text-xs text-teal font-mono border-b border-line/40 flex justify-between">
+                <span>{result.values.length} row(s) returned</span>
+              </div>
+              <table className="w-full text-left font-mono text-xs">
+                <thead className="bg-slate-900 text-teal-light font-semibold border-b border-line/40">
+                  <tr>
+                    {result.columns.map((col, cIdx) => (
+                      <th key={cIdx} className="px-4 py-2 border-r last:border-r-0 border-line/30">
+                        {col}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody>
+                  {result.values.map((row, rIdx) => (
+                    <tr key={rIdx} className="border-b last:border-b-0 border-line/20 hover:bg-slate-900/60 text-gray-200">
+                      {row.map((cell: any, cellIdx: number) => (
+                        <td key={cellIdx} className="px-4 py-2 border-r last:border-r-0 border-line/20">
+                          {cell === null ? (
+                            <span className="text-gray-500 italic font-sans">NULL</span>
+                          ) : (
+                            String(cell)
+                          )}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          ))
+        ) : queryResults && queryResults.length === 0 ? (
+          <div className="p-4 text-center text-xs text-gray-400 bg-slate-900/50 rounded-lg border border-line/30">
+            Query executed successfully. (0 rows returned or DDL/DML completed)
+          </div>
+        ) : (
+          <div className="p-6 text-center text-xs text-gray-500 italic bg-slate-900/30 rounded-lg border border-line/30">
+            Click &quot;Run Query&quot; to execute your SQL query against the in-memory SQLite database.
+          </div>
+        )}
+      </div>
+    </div>
     </>
   );
 }
