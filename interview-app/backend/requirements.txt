@@ -152,7 +152,7 @@ pyjwt[crypto]==2.13.0
     # via supabase-auth
 pyparsing==3.3.2
     # via httplib2
-python-dotenv==1.2.2
+python-dotenv==1.2.3
     # via
     #   -r requirements.txt
     #   uvicorn
