@@ -118,7 +118,7 @@ postgrest==2.31.0
     # via supabase
 propcache==0.5.2
     # via yarl
-proto-plus==1.28.2
+proto-plus==1.28.3
     # via
     #   google-ai-generativelanguage
     #   google-api-core
