@@ -16,12 +16,13 @@ import {
   BookOpen,
 } from "lucide-react";
 import { CONFIG } from "@/lib/config";
+import { getSupabase } from "@/lib/supabase";
 
 interface ProblemDetail {
   qnum: number;
   title: string;
   slug: string;
-  difficulty: "Easy" | "Medium" | "Hard";
+  difficulty: string;
   rating?: number;
   topic_tags: string[];
   description_md: string;
@@ -37,23 +38,24 @@ interface Approach {
 }
 
 interface CodeData {
+  qnum: number;
   languages: string[];
   solutions: Record<string, string>;
 }
 
-export default function LeetCodeProblemDetailPage() {
+export default function LeetCodeProblemPage() {
   const params = useParams();
-  const qnum = params?.qnum as string;
+  const qnum = params?.qnum ? parseInt(params.qnum as string, 10) : null;
 
   const [problem, setProblem] = useState<ProblemDetail | null>(null);
   const [approaches, setApproaches] = useState<Approach[]>([]);
   const [codeData, setCodeData] = useState<CodeData | null>(null);
 
   const [loading, setLoading] = useState<boolean>(true);
-  const [showSolutionDropdown, setShowSolutionDropdown] = useState<boolean>(false);
-  const [showCodeDropdown, setShowCodeDropdown] = useState<boolean>(false);
   const [selectedLanguage, setSelectedLanguage] = useState<string>("python");
   const [copied, setCopied] = useState<boolean>(false);
+  const [showSolutionDropdown, setShowSolutionDropdown] = useState<boolean>(false);
+  const [showCodeDropdown, setShowCodeDropdown] = useState<boolean>(false);
 
   const API_BASE = CONFIG.API_BASE_URL;
 
@@ -64,31 +66,96 @@ export default function LeetCodeProblemDetailPage() {
 
   const fetchProblemDetail = async () => {
     setLoading(true);
+    const supabase = getSupabase();
+
     try {
-      // 1. Description ONLY (default view)
-      const resProb = await fetch(`${API_BASE}/leetcode/problems/${qnum}`);
-      if (resProb.ok) {
-        const pData = await resProb.json();
-        setProblem(pData);
+      // 1. Description
+      let loadedProb = false;
+      try {
+        const resProb = await fetch(`${API_BASE}/leetcode/problems/${qnum}`);
+        if (resProb.ok) {
+          const pData = await resProb.json();
+          if (pData && pData.title) {
+            setProblem(pData);
+            loadedProb = true;
+          }
+        }
+      } catch (_) {}
+
+      if (!loadedProb) {
+        const { data: pData } = await supabase
+          .table("leetcode_problems")
+          .select("*")
+          .eq("qnum", qnum)
+          .maybeSingle();
+
+        if (pData) {
+          setProblem({
+            ...pData,
+            topic_tags: Array.isArray(pData.topic_tags)
+              ? pData.topic_tags
+              : typeof pData.topic_tags === "string"
+              ? JSON.parse(pData.topic_tags || "[]")
+              : [],
+          });
+        }
       }
 
-      // 2. Fetch Approaches for solution dropdown
-      const resApp = await fetch(`${API_BASE}/leetcode/problems/${qnum}/approaches`);
-      if (resApp.ok) {
-        const aData = await resApp.json();
-        setApproaches(aData || []);
+      // 2. Fetch Approaches
+      let loadedApp = false;
+      try {
+        const resApp = await fetch(`${API_BASE}/leetcode/problems/${qnum}/approaches`);
+        if (resApp.ok) {
+          const aData = await resApp.json();
+          if (Array.isArray(aData) && aData.length > 0) {
+            setApproaches(aData);
+            loadedApp = true;
+          }
+        }
+      } catch (_) {}
+
+      if (!loadedApp) {
+        const { data: aData } = await supabase
+          .table("leetcode_approaches")
+          .select("*")
+          .eq("qnum", qnum)
+          .order("approach_index", { ascending: true });
+
+        if (aData && aData.length > 0) {
+          setApproaches(aData);
+        }
       }
 
-      // 3. Fetch Code snippets for code dropdown
-      const resCode = await fetch(`${API_BASE}/leetcode/problems/${qnum}/code`);
-      if (resCode.ok) {
-        const cData = await resCode.json();
-        setCodeData(cData);
-        if (cData.languages && cData.languages.length > 0) {
-          const pref = cData.languages.includes("python")
-            ? "python"
-            : cData.languages[0];
-          setSelectedLanguage(pref);
+      // 3. Fetch Code snippets
+      let loadedCode = false;
+      try {
+        const resCode = await fetch(`${API_BASE}/leetcode/problems/${qnum}/code`);
+        if (resCode.ok) {
+          const cData = await resCode.json();
+          if (cData && cData.languages && cData.languages.length > 0) {
+            setCodeData(cData);
+            const pref = cData.languages.includes("python") ? "python" : cData.languages[0];
+            setSelectedLanguage(pref);
+            loadedCode = true;
+          }
+        }
+      } catch (_) {}
+
+      if (!loadedCode) {
+        const { data: cRows } = await supabase
+          .table("leetcode_code_solutions")
+          .select("language, code_content")
+          .eq("qnum", qnum)
+          .order("language", { ascending: true });
+
+        if (cRows && cRows.length > 0) {
+          const solutions: Record<string, string> = {};
+          cRows.forEach((r: any) => {
+            solutions[r.language] = r.code_content;
+          });
+          const languages = Object.keys(solutions);
+          setCodeData({ qnum: Number(qnum), languages, solutions });
+          setSelectedLanguage(languages.includes("python") ? "python" : languages[0]);
         }
       }
     } catch (err) {

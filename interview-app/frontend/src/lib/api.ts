@@ -468,63 +468,130 @@ export const API = {
 
   // --- Courses API Endpoints ---
   async getCourses(): Promise<CourseSummary[]> {
+    const defaultCatalog: CourseSummary[] = [
+      {
+        id: "system-design",
+        slug: "system-design",
+        title: "System Design Fundamentals",
+        description: "Master large-scale distributed system design principles, microservices, and interview patterns with 30 in-depth architectural breakdowns.",
+        total_lessons: 30,
+        completed_lessons: 0,
+        progress_percentage: 0,
+      },
+      {
+        id: "genai-system-design",
+        slug: "genai-system-design",
+        title: "Generative AI System Design",
+        description: "Design cutting-edge GenAI architectures including ChatGPT chatbots, RAG pipelines, Diffusion models, and Multimodal video synthesis.",
+        total_lessons: 11,
+        completed_lessons: 0,
+        progress_percentage: 0,
+      },
+      {
+        id: "ml-system-design",
+        slug: "ml-system-design",
+        title: "Machine Learning System Design",
+        description: "Architect real-world ML systems including Visual Search, YouTube Video Recommendations, and Real-time Ad Click Prediction.",
+        total_lessons: 11,
+        completed_lessons: 0,
+        progress_percentage: 0,
+      },
+      {
+        id: "mobile-system-design",
+        slug: "mobile-system-design",
+        title: "Mobile System Design",
+        description: "Master end-to-end mobile architecture for high-performance apps, offline caching, push notifications, and real-time news feeds.",
+        total_lessons: 11,
+        completed_lessons: 0,
+        progress_percentage: 0,
+      },
+      {
+        id: "object-oriented-design",
+        slug: "object-oriented-design",
+        title: "Object-Oriented Design (OOD)",
+        description: "Learn design patterns, SOLID principles, and complete class-diagram implementations for classic interview problems like Parking Lot and Elevator.",
+        total_lessons: 14,
+        completed_lessons: 0,
+        progress_percentage: 0,
+      },
+      {
+        id: "sql-course",
+        slug: "sql-course",
+        title: "SQL Practice Course",
+        description: "Master SQL queries step-by-step with interactive sql.js practice tables and exercises.",
+        total_lessons: 21,
+        completed_lessons: 0,
+        progress_percentage: 0,
+      },
+    ];
+
     try {
       const data = await this._fetchOptional("/courses");
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data) && data.length >= 6) {
         return data;
       }
-    } catch (_) {}
-
-    // Fetch actual System Design learning tracks from /learning-tracks
-    try {
-      const res = await this.getLearningTracks();
-      const tracks = res?.tracks || [];
-      if (Array.isArray(tracks) && tracks.length > 0) {
-        const results = await Promise.all(
-          tracks.map(async (t: any) => {
-            let completed = 0;
-            let percent = 0;
-            try {
-              const p = await this.getLearningTrackProgress(t.track_id);
-              if (p) {
-                completed = p.completed_steps || 0;
-                percent = p.completion_percent || 0;
-              }
-            } catch (_) {}
-
-            return {
-              id: t.track_id,
-              slug: t.track_id,
-              title: t.display_name,
-              description: `Comprehensive ${t.display_name} interview learning track with ${t.step_count} step-by-step interactive chapters.`,
-              total_lessons: t.step_count,
-              completed_lessons: completed,
-              progress_percentage: percent,
-            };
-          })
-        );
-        return results;
+      if (Array.isArray(data) && data.length > 0) {
+        const map = new Map<string, CourseSummary>();
+        defaultCatalog.forEach((c) => map.set(c.slug, c));
+        data.forEach((c) => {
+          if (c && c.slug) {
+            const existing = map.get(c.slug);
+            map.set(c.slug, {
+              ...existing,
+              ...c,
+              total_lessons: c.total_lessons || existing?.total_lessons || 0,
+            });
+          }
+        });
+        return Array.from(map.values());
       }
     } catch (_) {}
 
-    return [];
+    return defaultCatalog;
   },
 
   async getCourseDetails(courseSlug: string): Promise<CourseDetailResponse> {
     try {
       const data = await this._fetchOptional(`/courses/${encodeURIComponent(courseSlug)}`);
-      if (data && data.lessons && data.lessons.length > 0) {
+      if (data && data.lessons && data.lessons.length > 2) {
         return data;
       }
     } catch (_) {}
 
-    // Fetch actual System Design learning track progress & steps
-    let prog = null;
+    // Direct Supabase fallback for full lesson list
     try {
-      prog = await this.getLearningTrackProgress(courseSlug);
-    } catch (_) {
-      prog = null;
-    }
+      const supabase = getSupabase();
+      const { data: lessonRows } = await supabase
+        .table("course_lessons")
+        .select("id, step_no, title")
+        .eq("track_id", courseSlug)
+        .order("step_no", { ascending: true });
+
+      if (lessonRows && lessonRows.length > 0) {
+        const title = courseSlug
+          .split("-")
+          .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
+          .join(" ");
+
+        return {
+          id: courseSlug,
+          slug: courseSlug,
+          title,
+          description: `Comprehensive ${title} interview course with ${lessonRows.length} in-depth chapters.`,
+          total_lessons: lessonRows.length,
+          completed_lessons: 0,
+          progress_percentage: 0,
+          lessons: lessonRows.map((s: any) => ({
+            id: String(s.id || s.step_no),
+            slug: `step-${s.step_no}`,
+            title: s.title || `Chapter ${s.step_no}`,
+            order_index: s.step_no,
+            completed: false,
+          })),
+        };
+      }
+    } catch (_) {}
+
     const title = courseSlug
       .split("-")
       .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
@@ -535,15 +602,15 @@ export const API = {
       slug: courseSlug,
       title,
       description: `Comprehensive ${title} interview course.`,
-      total_lessons: prog?.total_steps || 0,
-      completed_lessons: prog?.completed_steps || 0,
-      progress_percentage: prog?.completion_percent || 0,
-      lessons: (prog?.steps || []).map((s: any) => ({
-        id: String(s.step_no),
-        slug: `step-${s.step_no}`,
-        title: s.title || `Chapter ${s.step_no}`,
-        order_index: s.step_no,
-        completed: Boolean(s.completed),
+      total_lessons: 10,
+      completed_lessons: 0,
+      progress_percentage: 0,
+      lessons: Array.from({ length: 10 }, (_, i) => ({
+        id: String(i + 1),
+        slug: `step-${i + 1}`,
+        title: `Chapter ${i + 1}`,
+        order_index: i + 1,
+        completed: false,
       })),
     };
   },
@@ -551,44 +618,52 @@ export const API = {
   async getLesson(courseSlug: string, lessonSlug: string): Promise<LessonDetailResponse> {
     try {
       const data = await this._fetchOptional(`/courses/${encodeURIComponent(courseSlug)}/lessons/${encodeURIComponent(lessonSlug)}`);
-      if (data && data.slug) {
+      if (data && data.slug && data.content_markdown && data.content_markdown.length > 50) {
         return data;
       }
     } catch (_) {}
 
-    // Parse step number and fetch actual lesson content from /learning-tracks
+    // Parse step number
     const stepMatch = lessonSlug.match(/^step-(\d+)$/i) || lessonSlug.match(/^(\d+)$/);
     const stepNo = stepMatch ? parseInt(stepMatch[1], 10) : 1;
 
-    let data = null;
-    let prog = null;
+    // Direct Supabase fallback
     try {
-      data = await this.getLearningTrackLesson(courseSlug, stepNo);
-    } catch (_) {
-      data = null;
-    }
-    try {
-      prog = await this.getLearningTrackProgress(courseSlug);
-    } catch (_) {
-      prog = null;
-    }
-    const currentStep = prog?.steps?.find((s: any) => s.step_no === stepNo);
+      const supabase = getSupabase();
+      const { data: row } = await supabase
+        .table("course_lessons")
+        .select("id, track_id, step_no, title, html_content")
+        .eq("track_id", courseSlug)
+        .eq("step_no", stepNo)
+        .maybeSingle();
 
-    const prevLesson = stepNo > 1 ? `step-${stepNo - 1}` : null;
-    const totalSteps = prog?.total_steps || 30;
-    const nextLesson = stepNo < totalSteps ? `step-${stepNo + 1}` : null;
+      if (row) {
+        return {
+          id: String(row.id || stepNo),
+          course_slug: courseSlug,
+          slug: `step-${stepNo}`,
+          title: row.title || `Step ${stepNo}`,
+          order_index: stepNo,
+          content_markdown: row.html_content || "",
+          tasks: [],
+          completed: false,
+          prev_lesson_slug: stepNo > 1 ? `step-${stepNo - 1}` : null,
+          next_lesson_slug: `step-${stepNo + 1}`,
+        };
+      }
+    } catch (_) {}
 
     return {
       id: String(stepNo),
       course_slug: courseSlug,
       slug: lessonSlug,
-      title: data?.title || `Chapter ${stepNo}`,
+      title: `Chapter ${stepNo}`,
       order_index: stepNo,
-      content_markdown: data?.html_content || "",
-      tasks: ["Review the chapter material", "Complete the self-assessment"],
-      completed: Boolean(currentStep?.completed),
-      prev_lesson_slug: prevLesson,
-      next_lesson_slug: nextLesson,
+      content_markdown: "# Lesson Content\n\nContent is being synced.",
+      tasks: [],
+      completed: false,
+      prev_lesson_slug: stepNo > 1 ? `step-${stepNo - 1}` : null,
+      next_lesson_slug: `step-${stepNo + 1}`,
     };
   },
 

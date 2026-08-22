@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { Search, Filter, BookOpen, CheckCircle, Award, ChevronLeft, ChevronRight } from "lucide-react";
 import { CONFIG } from "@/lib/config";
+import { getSupabase } from "@/lib/supabase";
 
 interface LeetCodeProblem {
   qnum: number;
@@ -30,26 +31,73 @@ export default function LeetCodeExplorerPage() {
 
   const fetchProblems = async (searchOverride?: string) => {
     setLoading(true);
+    const querySearch = searchOverride !== undefined ? searchOverride : search;
+    let loaded = false;
+
+    // 1. Try Backend API
     try {
       const qParams = new URLSearchParams({
         page: String(page),
         limit: "25",
       });
       if (difficulty) qParams.append("difficulty", difficulty);
-      const querySearch = searchOverride !== undefined ? searchOverride : search;
       if (querySearch) qParams.append("search", querySearch);
 
       const res = await fetch(`${API_BASE}/leetcode/problems?${qParams.toString()}`);
       if (res.ok) {
         const data = await res.json();
-        setProblems(data.problems || []);
-        setTotal(data.total || 0);
+        if (data && data.problems && data.problems.length > 0) {
+          setProblems(data.problems);
+          setTotal(data.total || 0);
+          loaded = true;
+        }
       }
-    } catch (err) {
-      console.error("Failed to load LeetCode problems:", err);
-    } finally {
-      setLoading(false);
+    } catch (_) {}
+
+    // 2. Direct Supabase Fallback if backend is cold/restarting
+    if (!loaded) {
+      try {
+        const supabase = getSupabase();
+        const offset = (page - 1) * 25;
+        let query = supabase
+          .table("leetcode_problems")
+          .select("qnum, title, slug, difficulty, rating, topic_tags", { count: "exact" });
+
+        if (difficulty) {
+          const diffClean = difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
+          query = query.ilike("difficulty", diffClean);
+        }
+
+        if (querySearch && querySearch.trim()) {
+          const s = querySearch.trim();
+          if (/^\d+$/.test(s)) {
+            query = query.eq("qnum", parseInt(s, 10));
+          } else {
+            query = query.ilike("title", `%${s}%`);
+          }
+        }
+
+        query = query.order("qnum", { ascending: true }).range(offset, offset + 24);
+        const { data, count, error } = await query;
+
+        if (data && !error) {
+          const formatted = data.map((p: any) => ({
+            ...p,
+            topic_tags: Array.isArray(p.topic_tags)
+              ? p.topic_tags
+              : typeof p.topic_tags === "string"
+              ? JSON.parse(p.topic_tags || "[]")
+              : [],
+          }));
+          setProblems(formatted);
+          setTotal(count || formatted.length);
+        }
+      } catch (err) {
+        console.error("Failed to load LeetCode problems from Supabase:", err);
+      }
     }
+
+    setLoading(false);
   };
 
   const handleSearchSubmit = (e: React.FormEvent) => {
