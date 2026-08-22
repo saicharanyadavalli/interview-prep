@@ -314,11 +314,13 @@ export function FilterBuilder({
                 value={filter.field}
                 onChange={(e) => updateFilter(index, "field", e.target.value)}
               >
-                {Object.keys(FIELD_DEFS).map((key) => (
-                  <option key={key} value={key}>
-                    {FIELD_DEFS[key].label}
-                  </option>
-                ))}
+                {Object.keys(FIELD_DEFS)
+                  .filter((key) => key !== "company" || (companies && companies.length > 0))
+                  .map((key) => (
+                    <option key={key} value={key}>
+                      {FIELD_DEFS[key].label}
+                    </option>
+                  ))}
               </select>
               
               <select
