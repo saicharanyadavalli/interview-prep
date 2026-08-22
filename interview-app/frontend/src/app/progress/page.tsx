@@ -199,7 +199,7 @@ export default function ProgressPage() {
       
     API.getLearningTracks().then(res => {
       if (!mounted) return;
-      const tracks = res.tracks || [];
+      const tracks = res?.tracks || [];
       Promise.all(
         tracks.map((t: any) => API.getLearningTrackProgress(t.track_id).catch(() => null))
       ).then(progressResults => {
