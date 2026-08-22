@@ -13,8 +13,6 @@ anyio==4.14.2
     #   httpx
     #   starlette
     #   watchfiles
-cachetools==5.5.2
-    # via -r requirements.txt
 certifi==2026.7.22
     # via
     #   cloudinary

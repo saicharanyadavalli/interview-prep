@@ -9,11 +9,26 @@ from __future__ import annotations
 
 import json
 import random
+import time
 from pathlib import Path
-
-from cachetools import cached, TTLCache
+from typing import Any, Callable
 
 from services.supabase_client import get_supabase_client
+
+def _ttl_cache(ttl_seconds: int = 3600):
+    """Simple standard library TTL cache decorator replacing external cachetools."""
+    def decorator(fn: Callable):
+        cache_data: dict[str, Any] = {"result": None, "expires_at": 0}
+        def wrapped(*args, **kwargs):
+            now = time.time()
+            if cache_data["result"] is not None and now < cache_data["expires_at"]:
+                return cache_data["result"]
+            res = fn(*args, **kwargs)
+            cache_data["result"] = res
+            cache_data["expires_at"] = now + ttl_seconds
+            return res
+        return wrapped
+    return decorator
 
 # Path to the output data directory (relative to this file's location)
 _BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent / "output" / "stage3_company_wise"
@@ -339,7 +354,7 @@ def _db_fetch_questions_for_company_difficulty(company: str, difficulty: str) ->
     return rows
 
 
-@cached(cache=TTLCache(maxsize=1, ttl=3600))
+@_ttl_cache(ttl_seconds=3600)
 def get_companies() -> list[str]:
     """Return the list of available companies."""
     # DB-first: pull distinct companies from company_tags in question rows.
@@ -510,7 +525,7 @@ def get_all_questions(company: str, difficulty: str) -> list[dict]:
     return [_format_question(q) for q in questions]
 
 
-@cached(cache=TTLCache(maxsize=1, ttl=3600))
+@_ttl_cache(ttl_seconds=3600)
 def get_all_questions_catalog() -> list[dict]:
     """Return a flattened catalog of all questions across all companies/difficulties."""
     db_rows = _db_fetch_catalog_rows()
