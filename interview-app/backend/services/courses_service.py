@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
@@ -14,12 +15,80 @@ BACKEND_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = BACKEND_DIR.parent
 SQLBOLT_JSON_PATH = PROJECT_DIR / "scripts" / "sqlbolt_courses.json"
 
-# In-memory user progress store for fallback / testing when Supabase table isn't accessible
+# In-memory user progress store for fallback / testing
 _IN_MEMORY_USER_PROGRESS: dict[str, set[str]] = {}
+
+COURSE_CATALOG: list[dict[str, Any]] = [
+    {
+        "id": "c0000000-0000-0000-0000-000000000001",
+        "slug": "system-design",
+        "track_id": "system-design",
+        "title": "System Design Fundamentals",
+        "description": "Master large-scale distributed system design principles, microservices, and interview patterns with 30 in-depth architectural breakdowns.",
+        "icon": "Layers",
+    },
+    {
+        "id": "c0000000-0000-0000-0000-000000000002",
+        "slug": "genai-system-design",
+        "track_id": "genai-system-design",
+        "title": "Generative AI System Design",
+        "description": "Design cutting-edge GenAI architectures including ChatGPT chatbots, RAG pipelines, Diffusion models, and Multimodal video synthesis.",
+        "icon": "Sparkles",
+    },
+    {
+        "id": "c0000000-0000-0000-0000-000000000003",
+        "slug": "ml-system-design",
+        "track_id": "ml-system-design",
+        "title": "Machine Learning System Design",
+        "description": "Architect real-world ML systems including Visual Search, YouTube Video Recommendations, and Real-time Ad Click Prediction.",
+        "icon": "Cpu",
+    },
+    {
+        "id": "c0000000-0000-0000-0000-000000000004",
+        "slug": "mobile-system-design",
+        "track_id": "mobile-system-design",
+        "title": "Mobile System Design",
+        "description": "Master end-to-end mobile architecture for high-performance apps, offline caching, push notifications, and real-time news feeds.",
+        "icon": "Smartphone",
+    },
+    {
+        "id": "c0000000-0000-0000-0000-000000000005",
+        "slug": "object-oriented-design",
+        "track_id": "object-oriented-design",
+        "title": "Object-Oriented Design (OOD)",
+        "description": "Learn design patterns, SOLID principles, and complete class-diagram implementations for classic interview problems like Parking Lot and Elevator.",
+        "icon": "Boxes",
+    },
+    {
+        "id": "c0000000-0000-0000-0000-000000000006",
+        "slug": "sql-course",
+        "track_id": "sql-course",
+        "title": "SQL Practice Course",
+        "description": "Master SQL queries step-by-step with interactive sql.js practice tables and exercises.",
+        "icon": "Database",
+    },
+]
+
+
+def _normalize_track_id(slug: str) -> str:
+    s = slug.strip().lower()
+    if s in ("sql", "sql-tutorial", "sql-course"):
+        return "sql-course"
+    if s in ("system-design", "system_design"):
+        return "system-design"
+    if s in ("genai-system-design", "genai_system_design", "gen-ai-system-design"):
+        return "genai-system-design"
+    if s in ("ml-system-design", "ml_system_design"):
+        return "ml-system-design"
+    if s in ("mobile-system-design", "mobile_system_design"):
+        return "mobile-system-design"
+    if s in ("object-oriented-design", "object_oriented_design", "ood"):
+        return "object-oriented-design"
+    return s
 
 
 def get_sql_seed_tables() -> list[dict[str, Any]]:
-    """Return DDL statements and initial data for SQL practice tables (Movies, Boxoffice, Buildings, Employees, Cities)."""
+    """Return DDL statements and initial data for SQL practice tables."""
     return [
         {
             "name": "Movies",
@@ -230,427 +299,367 @@ def _load_fallback_sql_lessons() -> list[dict[str, Any]]:
     if SQLBOLT_JSON_PATH.exists():
         try:
             with open(SQLBOLT_JSON_PATH, "r", encoding="utf-8") as f:
-                data = json.load(f)
-                return data
+                return json.load(f)
         except Exception:
             pass
-    return [
-        {
-            "slug": "select_queries_introduction",
-            "order": 1,
-            "title": "SQL Lesson 1: SELECT queries 101",
-            "content_markdown": "# SQL Lesson 1: SELECT queries 101\n\nTo retrieve data from a SQL database, write a `SELECT` statement.\n\nUse `SELECT * FROM Movies;` to view all columns.",
-            "tasks": [
-                "Find the title of each film",
-                "Find the director of each film",
-                "Find the title and director of each film",
-                "Find all the information about each film",
-            ],
-        }
-    ]
-
-
-def get_fallback_courses() -> list[dict[str, Any]]:
-    """Return static catalog of published courses."""
-    sql_lessons = _load_fallback_sql_lessons()
-    return [
-        {
-            "id": "c0000000-0000-0000-0000-000000000001",
-            "slug": "sql-course",
-            "title": "SQL Practice Course",
-            "description": "Master SQL queries step-by-step with interactive sql.js practice tables and exercises.",
-            "lessons": sql_lessons,
-        },
-        {
-            "id": "c0000000-0000-0000-0000-000000000002",
-            "slug": "system-design",
-            "title": "System Design Fundamentals",
-            "description": "Master large-scale distributed system design principles and interview patterns.",
-            "lessons": [
-                {
-                    "slug": "introduction-to-system-design",
-                    "order": 1,
-                    "title": "Introduction to System Design",
-                    "content_markdown": "# System Design Introduction\n\nLearn core building blocks of scalable systems.",
-                    "tasks": ["Review client-server model", "Understand DNS resolution"],
-                },
-                {
-                    "slug": "load-balancing",
-                    "order": 2,
-                    "title": "Load Balancing Strategies",
-                    "content_markdown": "# Load Balancing\n\nDistribute traffic efficiently across multiple servers.",
-                    "tasks": ["Compare L4 vs L7 load balancers", "Study consistent hashing"],
-                },
-            ],
-        },
-        {
-            "id": "c0000000-0000-0000-0000-000000000003",
-            "slug": "object-oriented-design",
-            "title": "Object-Oriented Design",
-            "description": "Learn OOD patterns, class diagrams, and SOLID design principles.",
-            "lessons": [
-                {
-                    "slug": "solid-principles",
-                    "order": 1,
-                    "title": "SOLID Design Principles",
-                    "content_markdown": "# SOLID Principles\n\nFive core guidelines for maintainable object-oriented software.",
-                    "tasks": ["Apply Single Responsibility Principle", "Implement Strategy Pattern"],
-                }
-            ],
-        },
-    ]
+    return []
 
 
 def fetch_all_courses(user_id: Optional[str] = None) -> list[dict[str, Any]]:
-    """Fetch all published courses, with lesson count and user progress if user_id is provided."""
+    """Fetch all 6 published courses, with lesson count and user progress."""
+    track_lesson_counts: dict[str, int] = {
+        "system-design": 30,
+        "genai-system-design": 11,
+        "ml-system-design": 11,
+        "mobile-system-design": 11,
+        "object-oriented-design": 14,
+        "sql-course": len(_load_fallback_sql_lessons()) or 21,
+    }
+
+    user_completed_counts: dict[str, int] = {k: 0 for k in track_lesson_counts}
+
+    # Fetch live lesson counts from Supabase if available
     try:
         supabase = get_supabase_client()
-        db_courses = supabase.table("courses").select("*").execute().data
-        if db_courses:
-            result = []
-            
-            # Fetch all lessons for these courses in one query
-            course_ids = [c["id"] for c in db_courses]
-            all_lessons = (
-                supabase.table("course_lessons")
-                .select("id, slug, course_id")
-                .in_("course_id", course_ids)
+        lessons_data = (
+            supabase.table("course_lessons")
+            .select("track_id, step_no")
+            .execute()
+            .data
+            or []
+        )
+        if lessons_data:
+            counts: dict[str, int] = {}
+            for l in lessons_data:
+                t = l.get("track_id")
+                if t:
+                    counts[t] = counts.get(t, 0) + 1
+            for t, c in counts.items():
+                if t in track_lesson_counts:
+                    track_lesson_counts[t] = c
+
+        # If user is authenticated, query learning_track_progress
+        if user_id:
+            prog_data = (
+                supabase.table("learning_track_progress")
+                .select("track_id, step_no")
+                .eq("user_id", user_id)
+                .eq("completed", True)
                 .execute()
                 .data
                 or []
             )
-            
-            # Map course_id to its lessons
-            lessons_by_course = {c_id: [] for c_id in course_ids}
-            for l in all_lessons:
-                lessons_by_course[l["course_id"]].append(l)
-
-            # Fetch all user progress if applicable
-            completed_lesson_ids = set()
-            if user_id and all_lessons:
-                lesson_ids = [l["id"] for l in all_lessons]
-                prog = (
-                    supabase.table("user_lesson_progress")
-                    .select("lesson_id")
-                    .eq("user_id", user_id)
-                    .eq("completed", True)
-                    .in_("lesson_id", lesson_ids)
-                    .execute()
-                    .data
-                    or []
-                )
-                completed_lesson_ids = {p["lesson_id"] for p in prog}
-
-            for course in db_courses:
-                course_id = course["id"]
-                lessons = lessons_by_course.get(course_id, [])
-                total_lessons = len(lessons)
-                
-                completed_lessons = 0
-                if user_id and total_lessons > 0:
-                    completed_lessons = sum(1 for l in lessons if l["id"] in completed_lesson_ids)
-
-                pct = (
-                    round((completed_lessons / total_lessons) * 100, 2)
-                    if total_lessons > 0
-                    else 0.0
-                )
-                result.append(
-                    {
-                        "id": course["id"],
-                        "slug": course["slug"],
-                        "title": course["title"],
-                        "description": course.get("description", ""),
-                        "total_lessons": total_lessons,
-                        "completed_lessons": completed_lessons,
-                        "progress_percentage": pct,
-                    }
-                )
-            return result
+            for p in prog_data:
+                t = p.get("track_id")
+                if t in user_completed_counts:
+                    user_completed_counts[t] += 1
     except Exception:
         pass
 
-    # Fallback to static catalog if DB empty or unavailable
-    fallback_courses = get_fallback_courses()
+    # Merge with in-memory fallback for user progress
+    if user_id:
+        for c in COURSE_CATALOG:
+            slug = c["slug"]
+            key = f"{user_id}:{slug}"
+            if key in _IN_MEMORY_USER_PROGRESS:
+                user_completed_counts[slug] = max(
+                    user_completed_counts.get(slug, 0),
+                    len(_IN_MEMORY_USER_PROGRESS[key]),
+                )
+
     result = []
-    for c in fallback_courses:
-        c_slug = c["slug"]
-        lessons = c["lessons"]
-        total_lessons = len(lessons)
-        completed_lessons = 0
+    for c in COURSE_CATALOG:
+        slug = c["slug"]
+        total = track_lesson_counts.get(slug, 0)
+        completed = min(user_completed_counts.get(slug, 0), total)
+        pct = round((completed / total) * 100, 1) if total > 0 else 0.0
 
-        if user_id and total_lessons > 0:
-            user_completed_slugs = _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{c_slug}", set())
-            completed_lessons = len(user_completed_slugs.intersection({l["slug"] for l in lessons}))
-
-        pct = (
-            round((completed_lessons / total_lessons) * 100, 2)
-            if total_lessons > 0
-            else 0.0
-        )
         result.append(
             {
                 "id": c["id"],
                 "slug": c["slug"],
                 "title": c["title"],
                 "description": c["description"],
-                "total_lessons": total_lessons,
-                "completed_lessons": completed_lessons,
+                "total_lessons": total,
+                "completed_lessons": completed,
                 "progress_percentage": pct,
             }
         )
+
     return result
 
 
 def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Optional[dict[str, Any]]:
-    """Fetch details of a single course with ordered lesson list."""
-    try:
-        supabase = get_supabase_client()
-        courses = (
-            supabase.table("courses")
-            .select("*")
-            .eq("slug", course_slug)
-            .limit(1)
-            .execute()
-            .data
+    """Fetch details of a single course with its ordered lesson list."""
+    norm_slug = _normalize_track_id(course_slug)
+    matched_meta = next((c for c in COURSE_CATALOG if c["slug"] == norm_slug), None)
+    if not matched_meta:
+        return None
+
+    # Handle SQL course
+    if norm_slug == "sql-course":
+        sql_lessons = _load_fallback_sql_lessons()
+        user_completed_slugs = (
+            _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
+            if user_id
+            else set()
         )
-        if courses:
-            course = courses[0]
-            course_id = course["id"]
-            lessons = (
-                supabase.table("course_lessons")
-                .select("id, slug, title, order_index")
-                .eq("course_id", course_id)
-                .order("order_index")
+        lesson_summaries = []
+        completed_count = 0
+        for idx, l in enumerate(sql_lessons, start=1):
+            s = l["slug"]
+            order_idx = l.get("order", idx)
+            is_comp = s in user_completed_slugs
+            if is_comp:
+                completed_count += 1
+            lesson_summaries.append(
+                {
+                    "id": f"sql-{order_idx}",
+                    "slug": s,
+                    "title": l["title"],
+                    "order_index": order_idx,
+                    "completed": is_comp,
+                }
+            )
+
+        total_lessons = len(lesson_summaries)
+        pct = round((completed_count / total_lessons) * 100, 1) if total_lessons > 0 else 0.0
+        return {
+            "id": matched_meta["id"],
+            "slug": matched_meta["slug"],
+            "title": matched_meta["title"],
+            "description": matched_meta["description"],
+            "total_lessons": total_lessons,
+            "completed_lessons": completed_count,
+            "progress_percentage": pct,
+            "lessons": lesson_summaries,
+        }
+
+    # Handle System Design / GenAI / ML / Mobile / OOD tracks from Supabase
+    completed_step_nos = set()
+    if user_id:
+        try:
+            supabase = get_supabase_client()
+            prog = (
+                supabase.table("learning_track_progress")
+                .select("step_no")
+                .eq("user_id", user_id)
+                .eq("track_id", norm_slug)
+                .eq("completed", True)
                 .execute()
                 .data
                 or []
             )
+            completed_step_nos = {p["step_no"] for p in prog}
+        except Exception:
+            pass
 
-            completed_lesson_ids = set()
-            if user_id and lessons:
-                prog = (
-                    supabase.table("user_lesson_progress")
-                    .select("lesson_id")
-                    .eq("user_id", user_id)
-                    .eq("completed", True)
-                    .execute()
-                    .data
-                    or []
-                )
-                completed_lesson_ids = {p["lesson_id"] for p in prog}
+        key = f"{user_id}:{norm_slug}"
+        if key in _IN_MEMORY_USER_PROGRESS:
+            for s in _IN_MEMORY_USER_PROGRESS[key]:
+                m = re.search(r"(\d+)", s)
+                if m:
+                    completed_step_nos.add(int(m.group(1)))
 
-            lesson_summaries = []
-            completed_count = 0
-            for l in lessons:
-                is_completed = l["id"] in completed_lesson_ids
-                if is_completed:
-                    completed_count += 1
-                lesson_summaries.append(
-                    {
-                        "id": str(l["id"]),
-                        "slug": l["slug"],
-                        "title": l["title"],
-                        "order_index": l["order_index"],
-                        "completed": is_completed,
-                    }
-                )
+    lesson_summaries = []
+    completed_count = 0
 
-            total_lessons = len(lesson_summaries)
-            pct = (
-                round((completed_count / total_lessons) * 100, 2)
-                if total_lessons > 0
-                else 0.0
+    try:
+        supabase = get_supabase_client()
+        lessons_data = (
+            supabase.table("course_lessons")
+            .select("id, step_no, title")
+            .eq("track_id", norm_slug)
+            .order("step_no", desc=False)
+            .execute()
+            .data
+            or []
+        )
+
+        for l in lessons_data:
+            step_no = l.get("step_no", 1)
+            is_comp = step_no in completed_step_nos
+            if is_comp:
+                completed_count += 1
+            lesson_summaries.append(
+                {
+                    "id": str(l.get("id", f"{norm_slug}-{step_no}")),
+                    "slug": f"step-{step_no}",
+                    "title": l.get("title", f"Step {step_no}"),
+                    "order_index": step_no,
+                    "completed": is_comp,
+                }
             )
-
-            return {
-                "id": str(course["id"]),
-                "slug": course["slug"],
-                "title": course["title"],
-                "description": course.get("description", ""),
-                "total_lessons": total_lessons,
-                "completed_lessons": completed_count,
-                "progress_percentage": pct,
-                "lessons": lesson_summaries,
-            }
     except Exception:
         pass
 
-    # Fallback to static data
-    fallback_courses = get_fallback_courses()
-    for c in fallback_courses:
-        if c["slug"] == course_slug:
-            lessons = c["lessons"]
-            user_completed_slugs = (
-                _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{course_slug}", set())
-                if user_id
-                else set()
+    if not lesson_summaries:
+        # Fallback default placeholders
+        default_count = 10
+        for step_no in range(1, default_count + 1):
+            is_comp = step_no in completed_step_nos
+            if is_comp:
+                completed_count += 1
+            lesson_summaries.append(
+                {
+                    "id": f"{norm_slug}-{step_no}",
+                    "slug": f"step-{step_no}",
+                    "title": f"Step {step_no}: Lesson {step_no}",
+                    "order_index": step_no,
+                    "completed": is_comp,
+                }
             )
-            lesson_summaries = []
-            completed_count = 0
-            for idx, l in enumerate(lessons, start=1):
-                slug = l["slug"]
-                order_idx = l.get("order", idx)
-                is_comp = slug in user_completed_slugs
-                if is_comp:
-                    completed_count += 1
-                lesson_summaries.append(
-                    {
-                        "id": f"l-{course_slug}-{order_idx}",
-                        "slug": slug,
-                        "title": l["title"],
-                        "order_index": order_idx,
-                        "completed": is_comp,
-                    }
-                )
 
-            total_lessons = len(lesson_summaries)
-            pct = (
-                round((completed_count / total_lessons) * 100, 2)
-                if total_lessons > 0
-                else 0.0
-            )
-            return {
-                "id": c["id"],
-                "slug": c["slug"],
-                "title": c["title"],
-                "description": c["description"],
-                "total_lessons": total_lessons,
-                "completed_lessons": completed_count,
-                "progress_percentage": pct,
-                "lessons": lesson_summaries,
-            }
+    total_lessons = len(lesson_summaries)
+    pct = round((completed_count / total_lessons) * 100, 1) if total_lessons > 0 else 0.0
 
-    return None
+    return {
+        "id": matched_meta["id"],
+        "slug": matched_meta["slug"],
+        "title": matched_meta["title"],
+        "description": matched_meta["description"],
+        "total_lessons": total_lessons,
+        "completed_lessons": completed_count,
+        "progress_percentage": pct,
+        "lessons": lesson_summaries,
+    }
 
 
 def fetch_lesson_detail(
     course_slug: str, lesson_slug: str, user_id: Optional[str] = None
 ) -> Optional[dict[str, Any]]:
     """Fetch full details of a specific lesson within a course."""
+    norm_slug = _normalize_track_id(course_slug)
+
+    # Handle SQL course
+    if norm_slug == "sql-course":
+        sql_lessons = _load_fallback_sql_lessons()
+        target_idx = None
+        target_lesson = None
+        for idx, l in enumerate(sql_lessons):
+            if l["slug"] == lesson_slug:
+                target_idx = idx
+                target_lesson = l
+                break
+
+        if target_lesson is None:
+            return None
+
+        prev_slug = sql_lessons[target_idx - 1]["slug"] if target_idx > 0 else None
+        next_slug = (
+            sql_lessons[target_idx + 1]["slug"]
+            if target_idx < len(sql_lessons) - 1
+            else None
+        )
+
+        completed = False
+        if user_id:
+            user_completed = _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
+            completed = lesson_slug in user_completed
+
+        return {
+            "id": f"sql-{target_lesson.get('order', target_idx + 1)}",
+            "course_slug": norm_slug,
+            "slug": target_lesson["slug"],
+            "title": target_lesson["title"],
+            "order_index": target_lesson.get("order", target_idx + 1),
+            "content_markdown": target_lesson.get("content_markdown", ""),
+            "tasks": target_lesson.get("tasks", []),
+            "completed": completed,
+            "prev_lesson_slug": prev_slug,
+            "next_lesson_slug": next_slug,
+        }
+
+    # Parse step_no from lesson_slug (e.g. 'step-4' -> 4)
+    step_no = 1
+    m = re.search(r"(\d+)", lesson_slug)
+    if m:
+        step_no = int(m.group(1))
+
     try:
         supabase = get_supabase_client()
-        courses = (
-            supabase.table("courses")
-            .select("id")
-            .eq("slug", course_slug)
+        # Fetch current lesson
+        row = (
+            supabase.table("course_lessons")
+            .select("id, track_id, step_no, title, html_content")
+            .eq("track_id", norm_slug)
+            .eq("step_no", step_no)
             .limit(1)
             .execute()
             .data
         )
-        if courses:
-            course_id = courses[0]["id"]
-            lessons = (
+
+        # Get total steps in this track to compute prev/next
+        all_steps_data = (
+            supabase.table("course_lessons")
+            .select("step_no")
+            .eq("track_id", norm_slug)
+            .order("step_no", desc=False)
+            .execute()
+            .data
+            or []
+        )
+        step_numbers = [s["step_no"] for s in all_steps_data]
+    except Exception:
+        row = []
+        step_numbers = list(range(1, 31))
+
+    if not row:
+        # If not found by exact step_no, try fetching first available lesson
+        try:
+            supabase = get_supabase_client()
+            row = (
                 supabase.table("course_lessons")
-                .select("id, slug, title, order_index, content_markdown")
-                .eq("course_id", course_id)
-                .order("order_index")
+                .select("id, track_id, step_no, title, html_content")
+                .eq("track_id", norm_slug)
+                .limit(1)
                 .execute()
                 .data
-                or []
             )
+        except Exception:
+            row = []
 
-            target_idx = None
-            target_lesson = None
-            for idx, l in enumerate(lessons):
-                if l["slug"] == lesson_slug:
-                    target_idx = idx
-                    target_lesson = l
-                    break
-
-            if target_lesson is not None and target_idx is not None:
-                # Fetch tasks
-                tasks_data = (
-                    supabase.table("lesson_tasks")
-                    .select("description")
-                    .eq("lesson_id", target_lesson["id"])
-                    .order("order_index")
-                    .execute()
-                    .data
-                    or []
-                )
-                tasks = [t["description"] for t in tasks_data]
-
-                # Prev/next slugs
-                prev_slug = lessons[target_idx - 1]["slug"] if target_idx > 0 else None
-                next_slug = (
-                    lessons[target_idx + 1]["slug"]
-                    if target_idx < len(lessons) - 1
-                    else None
-                )
-
-                # Check user completion
-                completed = False
-                if user_id:
-                    prog = (
-                        supabase.table("user_lesson_progress")
-                        .select("completed")
-                        .eq("user_id", user_id)
-                        .eq("lesson_id", target_lesson["id"])
-                        .limit(1)
-                        .execute()
-                        .data
-                    )
-                    if prog:
-                        completed = bool(prog[0].get("completed", False))
-
-                return {
-                    "id": str(target_lesson["id"]),
-                    "course_slug": course_slug,
-                    "slug": target_lesson["slug"],
-                    "title": target_lesson["title"],
-                    "order_index": target_lesson["order_index"],
-                    "content_markdown": target_lesson.get("content_markdown", ""),
-                    "tasks": tasks,
-                    "completed": completed,
-                    "prev_lesson_slug": prev_slug,
-                    "next_lesson_slug": next_slug,
-                }
-    except Exception:
-        pass
-
-    # Fallback to static catalog
-    course_info = fetch_course_by_slug(course_slug, user_id=user_id)
-    if not course_info:
+    if not row:
         return None
 
-    fallback_courses = get_fallback_courses()
-    target_c = next((c for c in fallback_courses if c["slug"] == course_slug), None)
-    if not target_c:
-        return None
+    current = row[0]
+    cur_step = current.get("step_no", step_no)
 
-    lessons = target_c["lessons"]
-    target_idx = None
-    target_l = None
-    for idx, l in enumerate(lessons):
-        if l["slug"] == lesson_slug:
-            target_idx = idx
-            target_l = l
-            break
+    prev_slug = f"step-{cur_step - 1}" if cur_step > 1 and (cur_step - 1 in step_numbers or not step_numbers) else None
+    next_slug = f"step-{cur_step + 1}" if (cur_step + 1 in step_numbers) or (not step_numbers and cur_step < 30) else None
 
-    if target_l is None or target_idx is None:
-        return None
+    # Check user completion
+    completed = False
+    if user_id:
+        try:
+            supabase = get_supabase_client()
+            prog = (
+                supabase.table("learning_track_progress")
+                .select("completed")
+                .eq("user_id", user_id)
+                .eq("track_id", norm_slug)
+                .eq("step_no", cur_step)
+                .limit(1)
+                .execute()
+                .data
+            )
+            if prog:
+                completed = bool(prog[0].get("completed", False))
+        except Exception:
+            pass
 
-    prev_slug = lessons[target_idx - 1]["slug"] if target_idx > 0 else None
-    next_slug = (
-        lessons[target_idx + 1]["slug"] if target_idx < len(lessons) - 1 else None
-    )
-
-    user_completed_slugs = (
-        _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{course_slug}", set())
-        if user_id
-        else set()
-    )
-    completed = lesson_slug in user_completed_slugs
+        key = f"{user_id}:{norm_slug}"
+        if key in _IN_MEMORY_USER_PROGRESS and (f"step-{cur_step}" in _IN_MEMORY_USER_PROGRESS[key] or str(cur_step) in _IN_MEMORY_USER_PROGRESS[key]):
+            completed = True
 
     return {
-        "id": f"l-{course_slug}-{target_l.get('order', target_idx + 1)}",
-        "course_slug": course_slug,
-        "slug": target_l["slug"],
-        "title": target_l["title"],
-        "order_index": target_l.get("order", target_idx + 1),
-        "content_markdown": target_l.get("content_markdown", ""),
-        "tasks": target_l.get("tasks", []),
+        "id": str(current.get("id", f"{norm_slug}-{cur_step}")),
+        "course_slug": norm_slug,
+        "slug": f"step-{cur_step}",
+        "title": current.get("title", f"Step {cur_step}"),
+        "order_index": cur_step,
+        "content_markdown": current.get("html_content", ""),
+        "tasks": [],
         "completed": completed,
         "prev_lesson_slug": prev_slug,
         "next_lesson_slug": next_slug,
@@ -661,60 +670,11 @@ def record_lesson_completion(
     user_id: str, course_slug: str, lesson_slug: str, completed: bool = True
 ) -> dict[str, Any]:
     """Record completion of a lesson for an authenticated user."""
+    norm_slug = _normalize_track_id(course_slug)
     now_iso = datetime.now(timezone.utc).isoformat()
-    try:
-        supabase = get_supabase_client()
-        courses = (
-            supabase.table("courses")
-            .select("id")
-            .eq("slug", course_slug)
-            .limit(1)
-            .execute()
-            .data
-        )
-        if courses:
-            course_id = courses[0]["id"]
-            lessons = (
-                supabase.table("course_lessons")
-                .select("id")
-                .eq("course_id", course_id)
-                .eq("slug", lesson_slug)
-                .limit(1)
-                .execute()
-                .data
-            )
-            if lessons:
-                lesson_id = lessons[0]["id"]
-                supabase.table("user_lesson_progress").upsert(
-                    {
-                        "user_id": user_id,
-                        "lesson_id": lesson_id,
-                        "completed": completed,
-                        "completed_at": now_iso if completed else None,
-                        "updated_at": now_iso,
-                    },
-                    on_conflict="user_id,lesson_id",
-                ).execute()
 
-                # Get updated course progress stats
-                course_detail = fetch_course_by_slug(course_slug, user_id=user_id)
-                return {
-                    "success": True,
-                    "course_slug": course_slug,
-                    "lesson_slug": lesson_slug,
-                    "completed": completed,
-                    "completed_at": now_iso,
-                    "course_progress": {
-                        "completed_lessons": course_detail["completed_lessons"] if course_detail else 0,
-                        "total_lessons": course_detail["total_lessons"] if course_detail else 0,
-                        "progress_percentage": course_detail["progress_percentage"] if course_detail else 0.0,
-                    },
-                }
-    except Exception:
-        pass
-
-    # In-memory fallback
-    key = f"{user_id}:{course_slug}"
+    # Track in in-memory progress cache
+    key = f"{user_id}:{norm_slug}"
     if key not in _IN_MEMORY_USER_PROGRESS:
         _IN_MEMORY_USER_PROGRESS[key] = set()
 
@@ -723,10 +683,31 @@ def record_lesson_completion(
     else:
         _IN_MEMORY_USER_PROGRESS[key].discard(lesson_slug)
 
-    course_detail = fetch_course_by_slug(course_slug, user_id=user_id)
+    # Persist in Supabase learning_track_progress
+    step_no = 1
+    m = re.search(r"(\d+)", lesson_slug)
+    if m:
+        step_no = int(m.group(1))
+
+    try:
+        supabase = get_supabase_client()
+        supabase.table("learning_track_progress").upsert(
+            {
+                "user_id": user_id,
+                "track_id": norm_slug,
+                "step_no": step_no,
+                "completed": completed,
+                "updated_at": now_iso,
+            },
+            on_conflict="user_id,track_id,step_no",
+        ).execute()
+    except Exception:
+        pass
+
+    course_detail = fetch_course_by_slug(norm_slug, user_id=user_id)
     return {
         "success": True,
-        "course_slug": course_slug,
+        "course_slug": norm_slug,
         "lesson_slug": lesson_slug,
         "completed": completed,
         "completed_at": now_iso,
@@ -740,18 +721,19 @@ def record_lesson_completion(
 
 def fetch_course_user_progress(user_id: str, course_slug: str) -> Optional[dict[str, Any]]:
     """Get list of completed lesson slugs and progress percentage for a course."""
-    course_detail = fetch_course_by_slug(course_slug, user_id=user_id)
+    norm_slug = _normalize_track_id(course_slug)
+    course_detail = fetch_course_by_slug(norm_slug, user_id=user_id)
     if not course_detail:
         return None
 
     completed_slugs = [
-        l["slug"] for l in course_detail["lessons"] if l["completed"]
+        l["slug"] for l in course_detail.get("lessons", []) if l.get("completed")
     ]
 
     return {
-        "course_slug": course_slug,
-        "completed_lessons": course_detail["completed_lessons"],
-        "total_lessons": course_detail["total_lessons"],
-        "progress_percentage": course_detail["progress_percentage"],
+        "course_slug": norm_slug,
+        "completed_lessons": course_detail.get("completed_lessons", 0),
+        "total_lessons": course_detail.get("total_lessons", 0),
+        "progress_percentage": course_detail.get("progress_percentage", 0.0),
         "completed_lesson_slugs": completed_slugs,
     }

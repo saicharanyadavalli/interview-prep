@@ -3,13 +3,49 @@
 import React, { useEffect, useState } from "react";
 import { API, CourseSummary } from "@/lib/api";
 import Link from "next/link";
-import { BookOpen, Database, CheckCircle2, Play, ArrowRight, Sparkles } from "lucide-react";
+import { BookOpen, Database, CheckCircle2, Play, ArrowRight, Sparkles, Layers, Cpu, Smartphone, Boxes } from "lucide-react";
 import { Spinner } from "@/components/Spinner";
 
 export default function CoursesPage() {
   const [courses, setCourses] = useState<CourseSummary[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const getCourseIcon = (slug: string) => {
+    switch (slug) {
+      case "system-design":
+        return <Layers size={24} className="text-teal" />;
+      case "genai-system-design":
+        return <Sparkles size={24} className="text-amber-400" />;
+      case "ml-system-design":
+        return <Cpu size={24} className="text-indigo-400" />;
+      case "mobile-system-design":
+        return <Smartphone size={24} className="text-emerald-400" />;
+      case "object-oriented-design":
+        return <Boxes size={24} className="text-purple-400" />;
+      case "sql-course":
+      default:
+        return <Database size={24} className="text-teal" />;
+    }
+  };
+
+  const getCourseBadgeColor = (slug: string) => {
+    switch (slug) {
+      case "system-design":
+        return "bg-teal-500/10 text-teal border-teal-500/20";
+      case "genai-system-design":
+        return "bg-amber-500/10 text-amber-400 border-amber-500/20";
+      case "ml-system-design":
+        return "bg-indigo-500/10 text-indigo-400 border-indigo-500/20";
+      case "mobile-system-design":
+        return "bg-emerald-500/10 text-emerald-400 border-emerald-500/20";
+      case "object-oriented-design":
+        return "bg-purple-500/10 text-purple-400 border-purple-500/20";
+      case "sql-course":
+      default:
+        return "bg-cyan-500/10 text-cyan-400 border-cyan-500/20";
+    }
+  };
 
   useEffect(() => {
     API.getCourses()
@@ -72,12 +108,16 @@ export default function CoursesPage() {
               >
                 <div>
                   <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-xl bg-teal-soft/20 text-teal border border-teal/20">
-                      <Database size={24} />
+                    <div className="p-3 rounded-xl bg-slate-900/80 border border-line/50">
+                      {getCourseIcon(course.slug)}
                     </div>
-                    {isStarted && (
-                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal bg-teal/10 px-3 py-1 rounded-full">
+                    {isStarted ? (
+                      <span className="inline-flex items-center gap-1 text-xs font-semibold text-teal bg-teal/10 px-3 py-1 rounded-full border border-teal/20">
                         <CheckCircle2 size={14} /> {progress}% Completed
+                      </span>
+                    ) : (
+                      <span className={`inline-flex items-center gap-1 text-[11px] font-semibold px-2.5 py-0.5 rounded-full border ${getCourseBadgeColor(course.slug)}`}>
+                        {totalCount} Chapters
                       </span>
                     )}
                   </div>
