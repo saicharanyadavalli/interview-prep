@@ -100,11 +100,9 @@ export const API = {
       const response = await fetch(url, { ...options, headers });
 
       if (response.status === 401) {
-        if (typeof window !== "undefined") {
-          if (!window.location.pathname.toLowerCase().endsWith("/login") && window.location.pathname !== "/") {
-            window.location.href = "/login";
-          }
-        }
+        // Return null gracefully - don't redirect to /login as this causes an
+        // infinite loop when the backend is down/restarting but the user IS
+        // authenticated via Supabase. The UI will show empty/error states instead.
         return null;
       }
 
@@ -192,9 +190,6 @@ export const API = {
     });
 
     if (response.status === 401) {
-      if (typeof window !== "undefined" && !window.location.pathname.toLowerCase().endsWith("/login") && window.location.pathname !== "/") {
-        window.location.href = "/login";
-      }
       throw new Error("Authentication required. Please sign in again.");
     }
     if (!response.ok) {

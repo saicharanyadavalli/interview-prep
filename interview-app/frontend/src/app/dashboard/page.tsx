@@ -19,7 +19,7 @@ export default function DashboardPage() {
     if (!user || !session) return;
     
     Promise.allSettled([API.getUserProgress(true), API.getRevisitQueue()]).then(([progressResult, revisitResult]) => {
-      if (progressResult.status === "fulfilled") {
+      if (progressResult.status === "fulfilled" && progressResult.value) {
         setStats(progressResult.value.stats || { total_attempted: 0, revisit_count: 0 });
         setRecent(progressResult.value.recent || []);
       } else {
@@ -28,7 +28,7 @@ export default function DashboardPage() {
       }
       setLoadingProgress(false);
 
-      if (revisitResult.status === "fulfilled") {
+      if (revisitResult.status === "fulfilled" && revisitResult.value) {
         setRevisit(revisitResult.value.items || []);
       } else {
         setRevisit([]);
