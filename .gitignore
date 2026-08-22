@@ -26,6 +26,12 @@ build/
 test-results/
 logs/
 *.log
+*.png
+*.jpg
+*.jpeg
+*.webp
+*.gif
+!interview-app/frontend/public/**
 
 # System Design & Data Files
 deployed details.txt
