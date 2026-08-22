@@ -63,7 +63,14 @@ export default function LeetCodeExplorerPage() {
   const [hydratedTopics, setHydratedTopics] = useState<string[]>(LEETCODE_TOPIC_OPTIONS);
 
   const scrollerRef = useRef<HTMLElement>(null);
+  const bottomSentinelRef = useRef<HTMLDivElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Live state tracking refs to guarantee fresh closures for infinite scroll
+  const offsetRef = useRef(0);
+  const rowsRef = useRef<LeetCodeProblem[]>([]);
+  const isLoadingRef = useRef(false);
+  const hasMoreRef = useRef(true);
 
   const API_BASE = CONFIG.API_BASE_URL;
 
@@ -73,15 +80,20 @@ export default function LeetCodeExplorerPage() {
       currentSearch: string = search,
       currentFilters: Record<string, any> = filterQuery
     ) => {
+      if (isLoadingRef.current) return;
+      if (!reset && !hasMoreRef.current) return;
+
+      isLoadingRef.current = true;
       setIsLoading(true);
       setErrorMsg("");
 
-      let currentOffset = offset;
-      let currentRows = rows;
+      let currentOffset = reset ? 0 : offsetRef.current;
+      let currentRows = reset ? [] : rowsRef.current;
 
       if (reset) {
-        currentOffset = 0;
-        currentRows = [];
+        offsetRef.current = 0;
+        rowsRef.current = [];
+        hasMoreRef.current = true;
         setOffset(0);
         setRows([]);
         setHasMore(true);
@@ -120,7 +132,6 @@ export default function LeetCodeExplorerPage() {
                 : [],
             }));
 
-            // Filter in-memory if multiple difficulty or topic filters applied
             if (diffFilters.length > 0) {
               fetched = fetched.filter((p: LeetCodeProblem) =>
                 diffFilters.includes(p.difficulty.toLowerCase())
@@ -136,12 +147,16 @@ export default function LeetCodeExplorerPage() {
             const nextOffset = currentOffset + fetched.length;
             const more = fetched.length === PAGE_SIZE && nextOffset < newTotal;
 
+            offsetRef.current = nextOffset;
+            hasMoreRef.current = more;
+            const combined = [...currentRows, ...fetched];
+            rowsRef.current = combined;
+
             setTotal(newTotal);
             setOffset(nextOffset);
             setHasMore(more);
-
-            const combined = [...currentRows, ...fetched];
             setRows(combined);
+
             if (combined.length > 0 && selectedQnum === null) {
               setSelectedQnum(Number(combined[0].qnum));
             }
@@ -161,7 +176,6 @@ export default function LeetCodeExplorerPage() {
                 count: "exact",
               });
 
-            // Difficulty filter
             if (diffFilters.length === 1) {
               const diffClean =
                 diffFilters[0].charAt(0).toUpperCase() + diffFilters[0].slice(1).toLowerCase();
@@ -173,7 +187,6 @@ export default function LeetCodeExplorerPage() {
               query = query.in("difficulty", capDiffs);
             }
 
-            // Search filter
             if (q) {
               if (/^\d+$/.test(q)) {
                 query = query.eq("qnum", parseInt(q, 10));
@@ -198,7 +211,6 @@ export default function LeetCodeExplorerPage() {
                   : [],
               }));
 
-              // Topic filtering if specified
               if (topicFilters.length > 0) {
                 fetched = fetched.filter((p: LeetCodeProblem) =>
                   p.topic_tags.some((t: string) => topicFilters.includes(t.toLowerCase()))
@@ -209,12 +221,16 @@ export default function LeetCodeExplorerPage() {
               const nextOffset = currentOffset + fetched.length;
               const more = fetched.length === PAGE_SIZE && nextOffset < newTotal;
 
+              offsetRef.current = nextOffset;
+              hasMoreRef.current = more;
+              const combined = [...currentRows, ...fetched];
+              rowsRef.current = combined;
+
               setTotal(newTotal);
               setOffset(nextOffset);
               setHasMore(more);
-
-              const combined = [...currentRows, ...fetched];
               setRows(combined);
+
               if (combined.length > 0 && selectedQnum === null) {
                 setSelectedQnum(Number(combined[0].qnum));
               }
@@ -226,10 +242,11 @@ export default function LeetCodeExplorerPage() {
         }
       }
 
+      isLoadingRef.current = false;
       setIsLoading(false);
       setIsInitialLoad(false);
     },
-    [offset, rows, search, filterQuery, selectedQnum, API_BASE]
+    [search, filterQuery, selectedQnum, API_BASE]
   );
 
   // Initial load
@@ -281,6 +298,41 @@ export default function LeetCodeExplorerPage() {
     setShowSuggestions(true);
   }, [search, rows]);
 
+  // Infinite Scroll Event Listener (auto-loads when scrolled within 250px of bottom)
+  useEffect(() => {
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    const handleScroll = () => {
+      if (isLoadingRef.current || !hasMoreRef.current) return;
+      const remaining = scroller.scrollHeight - (scroller.scrollTop + scroller.clientHeight);
+      if (remaining <= 250) {
+        loadProblems(false, search, filterQuery);
+      }
+    };
+
+    scroller.addEventListener("scroll", handleScroll, { passive: true });
+    return () => scroller.removeEventListener("scroll", handleScroll);
+  }, [loadProblems, search, filterQuery]);
+
+  // IntersectionObserver on bottom sentinel for extra responsiveness
+  useEffect(() => {
+    const sentinel = bottomSentinelRef.current;
+    if (!sentinel) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting && !isLoadingRef.current && hasMoreRef.current) {
+          loadProblems(false, search, filterQuery);
+        }
+      },
+      { root: scrollerRef.current, threshold: 0.1, rootMargin: "250px" }
+    );
+
+    observer.observe(sentinel);
+    return () => observer.disconnect();
+  }, [loadProblems, search, filterQuery]);
+
   // Derived selected question
   const selectedQuestion = rows.find((r) => Number(r.qnum) === selectedQnum) || rows[0] || null;
 
@@ -331,7 +383,6 @@ export default function LeetCodeExplorerPage() {
 
   const cleanSnippet = (text?: string) => {
     if (!text) return "Open this question to view the full prompt, examples, and solution approaches.";
-    // Strip raw HTML tags and replace with plain text preview
     const clean = text
       .replace(/<[^>]+>/g, " ")
       .replace(/&nbsp;/g, " ")
@@ -502,7 +553,7 @@ export default function LeetCodeExplorerPage() {
             />
           </section>
 
-          {/* Problem List */}
+          {/* Problem List with Infinite Scroll Auto-Loading */}
           <section
             ref={scrollerRef}
             aria-label="LeetCode questions list"
@@ -661,7 +712,16 @@ export default function LeetCodeExplorerPage() {
                 );
               })}
 
-              {isLoading && <Spinner text="Loading LeetCode questions..." />}
+              {/* Sentinel trigger element for auto-loading next page on scroll */}
+              {hasMore && (
+                <div ref={bottomSentinelRef} className="h-6 w-full flex items-center justify-center py-2" />
+              )}
+
+              {isLoading && (
+                <div className="py-3 flex justify-center">
+                  <Spinner text="Loading questions..." />
+                </div>
+              )}
 
               {errorMsg && (
                 <div
@@ -673,16 +733,6 @@ export default function LeetCodeExplorerPage() {
                 >
                   {errorMsg}
                 </div>
-              )}
-
-              {/* Load More Button if hasMore */}
-              {!isLoading && hasMore && rows.length > 0 && (
-                <button
-                  onClick={() => loadProblems(false)}
-                  className="btn btn-secondary w-full text-xs py-2 mt-2"
-                >
-                  Load More Questions ({rows.length} of {total})
-                </button>
               )}
 
               {!hasMore && rows.length > 0 && (
