@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import { API } from "@/lib/api";
@@ -110,19 +110,17 @@ export default function QuestionsPage() {
 
     try {
       const req = getRequestOptions(currentOffset, PAGE_SIZE, currentSearch, currentFilters);
-      let data;
-      try {
-        data = await API.getAllQuestionsCatalogForUser(req);
-      } catch (_) {
+      let data = await API.getAllQuestionsCatalogForUser(req);
+      if (!data) {
         data = await API.getAllQuestionsCatalog(req);
       }
 
-      const newRows = (data.questions || []).map((item: any) => ({
+      const newRows = (data?.questions || []).map((item: any) => ({
         ...item,
         solved: Number(item.solved || 0),
       }));
 
-      const newTotal = Number(data.total || 0);
+      const newTotal = Number(data?.total || 0);
       const nextOffset = currentOffset + newRows.length;
       const more = newRows.length === PAGE_SIZE && nextOffset < newTotal;
 

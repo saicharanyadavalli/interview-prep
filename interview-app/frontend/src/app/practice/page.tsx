@@ -89,7 +89,7 @@ function PracticeContent() {
     let mounted = true;
     API.getCompanies().then(data => {
       if (!mounted) return;
-      const comps = data.companies || [];
+      const comps = data?.companies || [];
       setCompanies(comps);
       if (comps.length > 0 && !companyInput && !presetCompany) {
         setCompanyInput(comps[0]);
@@ -121,7 +121,7 @@ function PracticeContent() {
 
       API.getComments(currentQ.qnum).then(data => {
         if (!mounted) return;
-        const comments = data.comments || [];
+        const comments = data?.comments || [];
         if (comments.length > 0) {
           const latest = comments[0];
           setCommentText(latest.comment_text || "");
@@ -161,7 +161,7 @@ function PracticeContent() {
     setIsBusy(true);
     try {
       const data = await API.getAllQuestions(trimmedComp, diff);
-      const qs = data.questions || [];
+      const qs = data?.questions || [];
       setQuestions(qs);
       
       if (!qs.length) {

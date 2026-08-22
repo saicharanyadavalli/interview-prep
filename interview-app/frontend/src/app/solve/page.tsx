@@ -72,7 +72,7 @@ function SolveContent() {
     setCommentMeta("Loading note...");
     try {
       const data = await API.getComments(String(qnum));
-      const comments = data.comments || [];
+      const comments = data?.comments || [];
       if (!comments.length) {
         setCommentMeta("No comment is found.");
         setCommentText("");
