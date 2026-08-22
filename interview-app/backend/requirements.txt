@@ -166,7 +166,7 @@ six==1.17.0
     # via cloudinary
 slowapi==0.1.10
     # via -r requirements.txt
-starlette==1.4.1
+starlette==1.6.0
     # via fastapi
 storage3==2.31.0
     # via supabase
