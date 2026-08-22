@@ -41,14 +41,28 @@ export function AuthProvider({
 }) {
   const [session, setSession] = useState<Session | null>(initialSession);
   const user = session?.user ?? null;
-  const [loading, setLoading] = useState(false);
+  // If SSR provided a session, we're not loading. Otherwise wait for client-side session fetch.
+  const [loading, setLoading] = useState(!initialSession);
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    setSession(initialSession);
-
     const sb = getSupabase();
+
+    // Always fetch the current session client-side on mount
+    // This ensures the sidebar/auth state is correct even when SSR session is stale
+    const initSession = async () => {
+      if (sb) {
+        const { data: { session: clientSession } } = await sb.auth.getSession();
+        setSession(clientSession ?? initialSession);
+      } else {
+        setSession(initialSession);
+      }
+      setLoading(false);
+    };
+
+    initSession();
+
     if (!sb) return;
 
     const { data: { subscription } } = sb.auth.onAuthStateChange((_event, newSession) => {
@@ -59,7 +73,8 @@ export function AuthProvider({
     return () => {
       subscription.unsubscribe();
     };
-  }, [initialSession]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
 
 
@@ -131,7 +146,9 @@ export function AuthProvider({
       return { error: result.error };
     }
 
-    window.location.href = "/dashboard";
+    // Use router.replace instead of window.location.href to avoid full page reload loop
+    // The session cookie is set server-side, so the next page load will have the session
+    window.location.replace("/dashboard");
     return { error: null };
   };
 
@@ -155,7 +172,7 @@ export function AuthProvider({
       return { error: result.error };
     }
 
-    window.location.href = "/dashboard";
+    window.location.replace("/dashboard");
     return { error: null };
   };
 
@@ -166,7 +183,7 @@ export function AuthProvider({
       await logout();
       localStorage.removeItem("ipp_profile_cache_v1");
     } catch (_) {}
-    window.location.href = "/login";
+    window.location.replace("/login");
   };
 
   const getUserMeta = () => {

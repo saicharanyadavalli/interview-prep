@@ -18,12 +18,6 @@ export default function DashboardPage() {
   useEffect(() => {
     if (!user || !session) return;
     
-    // Sync session with backend as legacy dashboard.js did
-    API._fetch("/auth/session", {
-      method: "POST",
-      body: JSON.stringify({ access_token: session.access_token }),
-    }).catch(() => {}); // Ignore sync errors
-
     Promise.allSettled([API.getUserProgress(true), API.getRevisitQueue()]).then(([progressResult, revisitResult]) => {
       if (progressResult.status === "fulfilled") {
         setStats(progressResult.value.stats || { total_attempted: 0, revisit_count: 0 });

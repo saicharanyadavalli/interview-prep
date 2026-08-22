@@ -13,6 +13,7 @@ export default function LoginPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+  const redirectingRef = React.useRef(false);
 
   // Sign In state
   const [loginIdentifier, setLoginIdentifier] = useState("");
@@ -26,8 +27,9 @@ export default function LoginPage() {
   const [signUpConfirmPassword, setSignUpConfirmPassword] = useState("");
 
   useEffect(() => {
-    if (!loading && session) {
-      router.push("/dashboard");
+    if (!loading && session && !redirectingRef.current) {
+      redirectingRef.current = true;
+      router.replace("/dashboard");
     }
   }, [session, loading, router]);
 

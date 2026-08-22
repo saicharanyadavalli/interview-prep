@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import Image from "next/image";
@@ -57,7 +57,7 @@ export default function LandingPage() {
         style={{ 
           maxWidth: "1000px", 
           margin: "0 auto", 
-          padding: "6rem 2rem 4rem", 
+          padding: "3.5rem 2rem 3rem", 
           textAlign: "center",
           position: "relative"
         }}
@@ -138,7 +138,7 @@ export default function LandingPage() {
       </section>
 
       {/* Preview Section / Mock Dashboard */}
-      <section style={{ maxWidth: "1100px", margin: "0 auto 8rem", padding: "0 2rem" }}>
+      <section style={{ maxWidth: "1100px", margin: "0 auto 3.5rem", padding: "0 2rem" }}>
         <div 
           style={{ 
             background: "var(--paper)", 
@@ -221,9 +221,9 @@ export default function LandingPage() {
       </section>
 
       {/* Features Grid */}
-      <section id="features" style={{ background: "var(--paper)", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", padding: "8rem 2rem" }}>
+      <section id="features" style={{ background: "var(--paper)", borderTop: "1px solid var(--line)", borderBottom: "1px solid var(--line)", padding: "4rem 2rem" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-          <div style={{ textAlign: "center", marginBottom: "5rem" }}>
+          <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
             <h2 style={{ fontSize: "2rem", fontWeight: 700, letterSpacing: "-0.02em", marginBottom: "1rem" }}>Everything you need to land the offer</h2>
             <p style={{ color: "var(--muted)", maxWidth: "560px", margin: "0 auto" }}>Engineered to build consistency, strengthen recall, and clarify design patterns.</p>
           </div>
@@ -277,7 +277,7 @@ export default function LandingPage() {
       </section>
 
       {/* CTA Section */}
-      <section style={{ maxWidth: "800px", margin: "0 auto", padding: "8rem 2rem", textAlign: "center" }}>
+      <section style={{ maxWidth: "800px", margin: "0 auto", padding: "4rem 2rem", textAlign: "center" }}>
         <h2 style={{ fontSize: "2.2rem", fontWeight: 700, letterSpacing: "-0.025em", marginBottom: "1rem" }}>Start your preparation today</h2>
         <p style={{ color: "var(--muted)", maxWidth: "500px", margin: "0 auto 2.5rem", lineHeight: 1.5 }}>
           Create your account for free and begin tracking your path toward your dream offer.
