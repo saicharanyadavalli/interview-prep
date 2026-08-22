@@ -153,12 +153,13 @@ export function FilterBuilder({
         if (!FIELD_DEFS[field]) return;
 
         const operator = normalizeText(item.operator) === "is not" ? "is not" : "is";
-        const value = normalizeText(item.value);
-        const values = getValuesForField(field, value);
-        if (!values.includes(value)) return;
+        const val = normalizeText(item.value);
+        const values = getValuesForField(field, val);
+        const normValues = values.map(normalizeText);
+        if (!normValues.includes(val)) return;
 
-        if (value) {
-          cleaned.push({ field, operator, value });
+        if (val) {
+          cleaned.push({ field, operator, value: val });
         }
       });
 
@@ -242,9 +243,19 @@ export function FilterBuilder({
   }, [state, isLoaded, persist, storageKey, sanitizeState]);
 
   const addFilter = () => {
+    const availableFields = Object.keys(FIELD_DEFS).filter(
+      (k) => k !== "company" || (companies && companies.length > 0)
+    );
+    const initialField = availableFields.includes("difficulty")
+      ? "difficulty"
+      : availableFields[0] || "status";
+    const initialValues = getValuesForField(initialField);
     setState((prev) => ({
       ...prev,
-      filters: [...prev.filters, { field: "status", operator: "is", value: "unsolved" }],
+      filters: [
+        ...prev.filters,
+        { field: initialField, operator: "is", value: initialValues[0] || "easy" },
+      ],
     }));
   };
 
