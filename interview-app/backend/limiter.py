@@ -58,7 +58,7 @@ def get_rate_limit_key(request: Request) -> str:
 
 limiter = Limiter(
     key_func=get_rate_limit_key,
-    default_limits=["100/second"],  # global safety net (100 requests / sec)
+    default_limits=["5000/minute"],  # generous limit: 5000 requests per minute
     headers_enabled=True,           # emit X-RateLimit-* headers
     storage_uri=_STORAGE_URI,
 )

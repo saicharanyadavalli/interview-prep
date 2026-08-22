@@ -62,8 +62,7 @@ def get_optional_current_user(authorization: str | None = Header(None)) -> dict 
 
 
 @router.post("/session", response_model=UserResponse)
-@limiter.limit("5/minute")    # strict minute window — prevents rapid replay attacks
-@limiter.limit("30/hour")     # hourly cap per IP
+@limiter.limit("5000/minute")
 def create_session(request: Request, response: Response, payload: SessionRequest):
     """Validate the access token and upsert the user in our users & user_profiles tables.
 

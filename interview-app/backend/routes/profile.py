@@ -49,7 +49,7 @@ def _configure_cloudinary() -> tuple[bool, str]:
 
 
 @router.get("/me", response_model=ProfileResponse)
-@limiter.limit("30/minute")   # generous read limit — just prevents hammering DB
+@limiter.limit("5000/minute")
 def get_my_profile(request: Request, response: Response, current_user: dict = Depends(get_current_user)):
     """Return profile row for current user, auto-creating one if missing."""
     request.state.rate_limit_user_id = current_user.get("id")
@@ -101,8 +101,7 @@ def get_my_profile(request: Request, response: Response, current_user: dict = De
 
 
 @router.put("/me", response_model=ProfileResponse)
-@limiter.limit("10/minute")   # write limiter — prevents username-churn bots
-@limiter.limit("60/hour")     # hourly write budget per user
+@limiter.limit("5000/minute")
 def update_my_profile(
     request: Request,
     response: Response,
@@ -112,8 +111,7 @@ def update_my_profile(
     """Update editable profile fields for current user.
 
     Rate limits (per user):
-      - 10 / minute
-      - 60 / hour
+      - 5000 / minute
     """
     request.state.rate_limit_user_id = current_user.get("id")
     supabase = get_supabase_client()
@@ -170,7 +168,7 @@ def update_my_profile(
 
 
 @router.post("/avatar/upload")
-@limiter.limit("3/minute")
+@limiter.limit("5000/minute")
 async def upload_profile_avatar(
     request: Request,
     response: Response,
