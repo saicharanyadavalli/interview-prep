@@ -63,13 +63,16 @@ export default function CourseDetailPage() {
   return (
     <main className="main-content animate-fade">
       {/* Back button */}
-      <button
-        onClick={() => router.push("/courses")}
-        className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6 cursor-pointer"
-        aria-label="Back to Courses"
-      >
-        <ArrowLeft size={16} /> Back to Courses
-      </button>
+      <div className="mb-6">
+        <Link
+          href="/courses"
+          className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-xl bg-slate-900/80 border border-line/60 text-xs font-semibold text-gray-300 hover:text-teal hover:border-teal/40 hover:bg-teal/5 transition-all shadow-sm group"
+          aria-label="Back to Courses"
+        >
+          <ArrowLeft size={14} className="text-gray-400 group-hover:text-teal transition-colors" />
+          <span>Back to Courses</span>
+        </Link>
+      </div>
 
       {/* Course Header Banner */}
       <div className="card-flat p-6 md:p-8 rounded-2xl mb-8 bg-paper/80 border border-line/60 backdrop-blur-md">

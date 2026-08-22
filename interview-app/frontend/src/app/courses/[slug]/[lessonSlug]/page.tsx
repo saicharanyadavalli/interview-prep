@@ -166,14 +166,24 @@ export default function LessonPage() {
     <main className="main-content animate-fade relative pb-12">
       {/* Top Header & Navigation Bar */}
       <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b border-line/50">
-        <div className="flex items-center gap-3">
-          <button
-            onClick={() => router.push(`/courses/${courseSlug}`)}
-            className="btn btn-sm btn-secondary flex items-center gap-1.5 text-xs text-gray-300 hover:text-white"
-            aria-label="Back to Course"
+        <div className="flex items-center gap-2.5">
+          <Link
+            href="/courses"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-line/60 text-xs font-semibold text-gray-300 hover:text-teal hover:border-teal/40 hover:bg-teal/5 transition-all shadow-sm group"
+            aria-label="All Courses"
           >
-            <ArrowLeft size={14} /> Course Overview
-          </button>
+            <ArrowLeft size={14} className="text-gray-400 group-hover:text-teal transition-colors" />
+            <span>Courses</span>
+          </Link>
+
+          <Link
+            href={`/courses/${courseSlug}`}
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-900/80 border border-line/60 text-xs font-semibold text-gray-300 hover:text-white hover:border-line transition-all shadow-sm"
+            aria-label="Course Overview"
+          >
+            <BookOpen size={14} className="text-teal" />
+            <span>Course Overview</span>
+          </Link>
 
           {/* Drawer toggle for small screens */}
           {course?.lessons && course.lessons.length > 0 && (

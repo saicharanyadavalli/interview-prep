@@ -1,6 +1,42 @@
 import { CONFIG } from "./config";
 import { getSupabase } from "./supabase";
 
+export const COURSE_CATALOG_DATA: Record<
+  string,
+  { title: string; description: string; total_lessons: number }
+> = {
+  "system-design": {
+    title: "System Design Fundamentals",
+    description: "Master large-scale distributed system design principles, microservices, and interview patterns with 30 in-depth architectural breakdowns.",
+    total_lessons: 30,
+  },
+  "genai-system-design": {
+    title: "Generative AI System Design",
+    description: "Design cutting-edge GenAI architectures including ChatGPT chatbots, RAG pipelines, Diffusion models, and Multimodal video synthesis.",
+    total_lessons: 11,
+  },
+  "ml-system-design": {
+    title: "Machine Learning System Design",
+    description: "Architect real-world ML systems including Visual Search, YouTube Video Recommendations, and Real-time Ad Click Prediction.",
+    total_lessons: 11,
+  },
+  "mobile-system-design": {
+    title: "Mobile System Design",
+    description: "Master end-to-end mobile architecture for high-performance apps, offline caching, push notifications, and real-time news feeds.",
+    total_lessons: 11,
+  },
+  "object-oriented-design": {
+    title: "Object-Oriented Design (OOD)",
+    description: "Learn design patterns, SOLID principles, and complete class-diagram implementations for classic interview problems like Parking Lot and Elevator.",
+    total_lessons: 14,
+  },
+  "sql-course": {
+    title: "SQL Practice Course",
+    description: "Master SQL queries step-by-step with interactive sql.js practice tables and exercises.",
+    total_lessons: 21,
+  },
+};
+
 export const API = {
   _PROFILE_CACHE_KEY: "ipp_profile_cache_v1",
   _activeRequests: new Map<string, Promise<any>>(),
@@ -472,54 +508,54 @@ export const API = {
       {
         id: "system-design",
         slug: "system-design",
-        title: "System Design Fundamentals",
-        description: "Master large-scale distributed system design principles, microservices, and interview patterns with 30 in-depth architectural breakdowns.",
-        total_lessons: 30,
+        title: COURSE_CATALOG_DATA["system-design"].title,
+        description: COURSE_CATALOG_DATA["system-design"].description,
+        total_lessons: COURSE_CATALOG_DATA["system-design"].total_lessons,
         completed_lessons: 0,
         progress_percentage: 0,
       },
       {
         id: "genai-system-design",
         slug: "genai-system-design",
-        title: "Generative AI System Design",
-        description: "Design cutting-edge GenAI architectures including ChatGPT chatbots, RAG pipelines, Diffusion models, and Multimodal video synthesis.",
-        total_lessons: 11,
+        title: COURSE_CATALOG_DATA["genai-system-design"].title,
+        description: COURSE_CATALOG_DATA["genai-system-design"].description,
+        total_lessons: COURSE_CATALOG_DATA["genai-system-design"].total_lessons,
         completed_lessons: 0,
         progress_percentage: 0,
       },
       {
         id: "ml-system-design",
         slug: "ml-system-design",
-        title: "Machine Learning System Design",
-        description: "Architect real-world ML systems including Visual Search, YouTube Video Recommendations, and Real-time Ad Click Prediction.",
-        total_lessons: 11,
+        title: COURSE_CATALOG_DATA["ml-system-design"].title,
+        description: COURSE_CATALOG_DATA["ml-system-design"].description,
+        total_lessons: COURSE_CATALOG_DATA["ml-system-design"].total_lessons,
         completed_lessons: 0,
         progress_percentage: 0,
       },
       {
         id: "mobile-system-design",
         slug: "mobile-system-design",
-        title: "Mobile System Design",
-        description: "Master end-to-end mobile architecture for high-performance apps, offline caching, push notifications, and real-time news feeds.",
-        total_lessons: 11,
+        title: COURSE_CATALOG_DATA["mobile-system-design"].title,
+        description: COURSE_CATALOG_DATA["mobile-system-design"].description,
+        total_lessons: COURSE_CATALOG_DATA["mobile-system-design"].total_lessons,
         completed_lessons: 0,
         progress_percentage: 0,
       },
       {
         id: "object-oriented-design",
         slug: "object-oriented-design",
-        title: "Object-Oriented Design (OOD)",
-        description: "Learn design patterns, SOLID principles, and complete class-diagram implementations for classic interview problems like Parking Lot and Elevator.",
-        total_lessons: 14,
+        title: COURSE_CATALOG_DATA["object-oriented-design"].title,
+        description: COURSE_CATALOG_DATA["object-oriented-design"].description,
+        total_lessons: COURSE_CATALOG_DATA["object-oriented-design"].total_lessons,
         completed_lessons: 0,
         progress_percentage: 0,
       },
       {
         id: "sql-course",
         slug: "sql-course",
-        title: "SQL Practice Course",
-        description: "Master SQL queries step-by-step with interactive sql.js practice tables and exercises.",
-        total_lessons: 21,
+        title: COURSE_CATALOG_DATA["sql-course"].title,
+        description: COURSE_CATALOG_DATA["sql-course"].description,
+        total_lessons: COURSE_CATALOG_DATA["sql-course"].total_lessons,
         completed_lessons: 0,
         progress_percentage: 0,
       },
@@ -528,18 +564,29 @@ export const API = {
     try {
       const data = await this._fetchOptional("/courses");
       if (Array.isArray(data) && data.length >= 6) {
-        return data;
+        return data.map((c) => {
+          const canonical = COURSE_CATALOG_DATA[c.slug];
+          return {
+            ...c,
+            title: canonical?.title || c.title,
+            description: canonical?.description || c.description,
+            total_lessons: canonical?.total_lessons || c.total_lessons,
+          };
+        });
       }
       if (Array.isArray(data) && data.length > 0) {
         const map = new Map<string, CourseSummary>();
         defaultCatalog.forEach((c) => map.set(c.slug, c));
         data.forEach((c) => {
           if (c && c.slug) {
+            const canonical = COURSE_CATALOG_DATA[c.slug];
             const existing = map.get(c.slug);
             map.set(c.slug, {
               ...existing,
               ...c,
-              total_lessons: c.total_lessons || existing?.total_lessons || 0,
+              title: canonical?.title || c.title || existing?.title || "",
+              description: canonical?.description || c.description || existing?.description || "",
+              total_lessons: canonical?.total_lessons || existing?.total_lessons || 0,
             });
           }
         });
@@ -551,10 +598,26 @@ export const API = {
   },
 
   async getCourseDetails(courseSlug: string): Promise<CourseDetailResponse> {
+    const canonical = COURSE_CATALOG_DATA[courseSlug];
+    const canonicalTitle =
+      canonical?.title ||
+      courseSlug
+        .split("-")
+        .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(" ");
+    const canonicalDescription =
+      canonical?.description || `Comprehensive ${canonicalTitle} interview course.`;
+    const canonicalTotal = canonical?.total_lessons || 10;
+
     try {
       const data = await this._fetchOptional(`/courses/${encodeURIComponent(courseSlug)}`);
       if (data && data.lessons && data.lessons.length > 2) {
-        return data;
+        return {
+          ...data,
+          title: canonicalTitle,
+          description: canonicalDescription,
+          total_lessons: Math.max(data.total_lessons || 0, data.lessons.length, canonicalTotal),
+        };
       }
     } catch (_) {}
 
@@ -569,16 +632,11 @@ export const API = {
           .order("step_no", { ascending: true });
 
         if (lessonRows && lessonRows.length > 0) {
-          const title = courseSlug
-            .split("-")
-            .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
-            .join(" ");
-
           return {
             id: courseSlug,
             slug: courseSlug,
-            title,
-            description: `Comprehensive ${title} interview course with ${lessonRows.length} in-depth chapters.`,
+            title: canonicalTitle,
+            description: `${canonicalDescription}`,
             total_lessons: lessonRows.length,
             completed_lessons: 0,
             progress_percentage: 0,
@@ -594,20 +652,15 @@ export const API = {
       }
     } catch (_) {}
 
-    const title = courseSlug
-      .split("-")
-      .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
-
     return {
       id: courseSlug,
       slug: courseSlug,
-      title,
-      description: `Comprehensive ${title} interview course.`,
-      total_lessons: 10,
+      title: canonicalTitle,
+      description: canonicalDescription,
+      total_lessons: canonicalTotal,
       completed_lessons: 0,
       progress_percentage: 0,
-      lessons: Array.from({ length: 10 }, (_, i) => ({
+      lessons: Array.from({ length: canonicalTotal }, (_, i) => ({
         id: String(i + 1),
         slug: `step-${i + 1}`,
         title: `Chapter ${i + 1}`,

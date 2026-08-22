@@ -15,6 +15,8 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   if (trimmedContent.startsWith("<") || /<[a-z][\s\S]*>/i.test(trimmedContent)) {
     const sanitizedHtml = content
       .replace(/<link\s+[^>]*rel=["']stylesheet["'][^>]*>/gi, '')
+      .replace(/<div\s+class=["'][^"']*header-nav[^"']*["'][^>]*>[\s\S]*?<\/div>/gi, '')
+      .replace(/<header\b[^>]*>[\s\S]*?<\/header>/gi, '')
       .replace(/href="(?:\.\.\/)+system-design\.html"/gi, 'href="/courses/system-design"')
       .replace(/href="step-(\d+)\.html"/gi, 'href="/courses/system-design/step-$1"')
       .replace(/href="\.\.\/\.\.\/([a-z0-9-]+)\.html"/gi, 'href="/courses/$1"');
