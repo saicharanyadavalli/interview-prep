@@ -57,40 +57,42 @@ export default function LeetCodeExplorerPage() {
     // 2. Direct Supabase Fallback if backend is cold/restarting
     if (!loaded) {
       try {
-        const supabase = getSupabase();
-        const offset = (page - 1) * 25;
-        let query = supabase
-          .table("leetcode_problems")
-          .select("qnum, title, slug, difficulty, rating, topic_tags", { count: "exact" });
+        const supabase = getSupabase() as any;
+        if (supabase) {
+          const offset = (page - 1) * 25;
+          let query = supabase
+            .from("leetcode_problems")
+            .select("qnum, title, slug, difficulty, rating, topic_tags", { count: "exact" });
 
-        if (difficulty) {
-          const diffClean = difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
-          query = query.ilike("difficulty", diffClean);
-        }
-
-        if (querySearch && querySearch.trim()) {
-          const s = querySearch.trim();
-          if (/^\d+$/.test(s)) {
-            query = query.eq("qnum", parseInt(s, 10));
-          } else {
-            query = query.ilike("title", `%${s}%`);
+          if (difficulty) {
+            const diffClean = difficulty.charAt(0).toUpperCase() + difficulty.slice(1).toLowerCase();
+            query = query.ilike("difficulty", diffClean);
           }
-        }
 
-        query = query.order("qnum", { ascending: true }).range(offset, offset + 24);
-        const { data, count, error } = await query;
+          if (querySearch && querySearch.trim()) {
+            const s = querySearch.trim();
+            if (/^\d+$/.test(s)) {
+              query = query.eq("qnum", parseInt(s, 10));
+            } else {
+              query = query.ilike("title", `%${s}%`);
+            }
+          }
 
-        if (data && !error) {
-          const formatted = data.map((p: any) => ({
-            ...p,
-            topic_tags: Array.isArray(p.topic_tags)
-              ? p.topic_tags
-              : typeof p.topic_tags === "string"
-              ? JSON.parse(p.topic_tags || "[]")
-              : [],
-          }));
-          setProblems(formatted);
-          setTotal(count || formatted.length);
+          query = query.order("qnum", { ascending: true }).range(offset, offset + 24);
+          const { data, count, error } = await query;
+
+          if (data && !error) {
+            const formatted = data.map((p: any) => ({
+              ...p,
+              topic_tags: Array.isArray(p.topic_tags)
+                ? p.topic_tags
+                : typeof p.topic_tags === "string"
+                ? JSON.parse(p.topic_tags || "[]")
+                : [],
+            }));
+            setProblems(formatted);
+            setTotal(count || formatted.length);
+          }
         }
       } catch (err) {
         console.error("Failed to load LeetCode problems from Supabase:", err);

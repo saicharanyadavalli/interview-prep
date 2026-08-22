@@ -560,35 +560,37 @@ export const API = {
 
     // Direct Supabase fallback for full lesson list
     try {
-      const supabase = getSupabase();
-      const { data: lessonRows } = await supabase
-        .table("course_lessons")
-        .select("id, step_no, title")
-        .eq("track_id", courseSlug)
-        .order("step_no", { ascending: true });
+      const supabase = getSupabase() as any;
+      if (supabase) {
+        const { data: lessonRows } = await supabase
+          .from("course_lessons")
+          .select("id, step_no, title")
+          .eq("track_id", courseSlug)
+          .order("step_no", { ascending: true });
 
-      if (lessonRows && lessonRows.length > 0) {
-        const title = courseSlug
-          .split("-")
-          .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
-          .join(" ");
+        if (lessonRows && lessonRows.length > 0) {
+          const title = courseSlug
+            .split("-")
+            .map((w: string) => w.charAt(0).toUpperCase() + w.slice(1))
+            .join(" ");
 
-        return {
-          id: courseSlug,
-          slug: courseSlug,
-          title,
-          description: `Comprehensive ${title} interview course with ${lessonRows.length} in-depth chapters.`,
-          total_lessons: lessonRows.length,
-          completed_lessons: 0,
-          progress_percentage: 0,
-          lessons: lessonRows.map((s: any) => ({
-            id: String(s.id || s.step_no),
-            slug: `step-${s.step_no}`,
-            title: s.title || `Chapter ${s.step_no}`,
-            order_index: s.step_no,
-            completed: false,
-          })),
-        };
+          return {
+            id: courseSlug,
+            slug: courseSlug,
+            title,
+            description: `Comprehensive ${title} interview course with ${lessonRows.length} in-depth chapters.`,
+            total_lessons: lessonRows.length,
+            completed_lessons: 0,
+            progress_percentage: 0,
+            lessons: lessonRows.map((s: any) => ({
+              id: String(s.id || s.step_no),
+              slug: `step-${s.step_no}`,
+              title: s.title || `Chapter ${s.step_no}`,
+              order_index: s.step_no,
+              completed: false,
+            })),
+          };
+        }
       }
     } catch (_) {}
 
@@ -629,27 +631,29 @@ export const API = {
 
     // Direct Supabase fallback
     try {
-      const supabase = getSupabase();
-      const { data: row } = await supabase
-        .table("course_lessons")
-        .select("id, track_id, step_no, title, html_content")
-        .eq("track_id", courseSlug)
-        .eq("step_no", stepNo)
-        .maybeSingle();
+      const supabase = getSupabase() as any;
+      if (supabase) {
+        const { data: row } = await supabase
+          .from("course_lessons")
+          .select("id, track_id, step_no, title, html_content")
+          .eq("track_id", courseSlug)
+          .eq("step_no", stepNo)
+          .maybeSingle();
 
-      if (row) {
-        return {
-          id: String(row.id || stepNo),
-          course_slug: courseSlug,
-          slug: `step-${stepNo}`,
-          title: row.title || `Step ${stepNo}`,
-          order_index: stepNo,
-          content_markdown: row.html_content || "",
-          tasks: [],
-          completed: false,
-          prev_lesson_slug: stepNo > 1 ? `step-${stepNo - 1}` : null,
-          next_lesson_slug: `step-${stepNo + 1}`,
-        };
+        if (row) {
+          return {
+            id: String(row.id || stepNo),
+            course_slug: courseSlug,
+            slug: `step-${stepNo}`,
+            title: row.title || `Step ${stepNo}`,
+            order_index: stepNo,
+            content_markdown: row.html_content || "",
+            tasks: [],
+            completed: false,
+            prev_lesson_slug: stepNo > 1 ? `step-${stepNo - 1}` : null,
+            next_lesson_slug: `step-${stepNo + 1}`,
+          };
+        }
       }
     } catch (_) {}
 

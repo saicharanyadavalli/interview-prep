@@ -82,9 +82,9 @@ export default function LeetCodeProblemPage() {
         }
       } catch (_) {}
 
-      if (!loadedProb) {
-        const { data: pData } = await supabase
-          .table("leetcode_problems")
+      if (!loadedProb && supabase) {
+        const { data: pData } = await (supabase as any)
+          .from("leetcode_problems")
           .select("*")
           .eq("qnum", qnum)
           .maybeSingle();
@@ -114,9 +114,9 @@ export default function LeetCodeProblemPage() {
         }
       } catch (_) {}
 
-      if (!loadedApp) {
-        const { data: aData } = await supabase
-          .table("leetcode_approaches")
+      if (!loadedApp && supabase) {
+        const { data: aData } = await (supabase as any)
+          .from("leetcode_approaches")
           .select("*")
           .eq("qnum", qnum)
           .order("approach_index", { ascending: true });
@@ -141,9 +141,9 @@ export default function LeetCodeProblemPage() {
         }
       } catch (_) {}
 
-      if (!loadedCode) {
-        const { data: cRows } = await supabase
-          .table("leetcode_code_solutions")
+      if (!loadedCode && supabase) {
+        const { data: cRows } = await (supabase as any)
+          .from("leetcode_code_solutions")
           .select("language, code_content")
           .eq("qnum", qnum)
           .order("language", { ascending: true });
