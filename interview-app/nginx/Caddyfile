@@ -1,0 +1,30 @@
+# Caddyfile for EC2 deployment
+# Direct HTTP/IP mode (no domain required)
+
+:80 {
+    # Logging
+    log {
+        output stdout
+        format console
+    }
+
+    # API requests forwarded to FastAPI
+    handle_path /api/backend/* {
+        reverse_proxy 127.0.0.1:8000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+
+    # All other routes to Next.js frontend
+    handle {
+        reverse_proxy 127.0.0.1:3000 {
+            header_up Host {host}
+            header_up X-Real-IP {remote_host}
+            header_up X-Forwarded-For {remote_host}
+            header_up X-Forwarded-Proto {scheme}
+        }
+    }
+}
