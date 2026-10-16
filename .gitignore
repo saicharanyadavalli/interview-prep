@@ -9,6 +9,9 @@ interview-app/.env
 interview-app/backend/.env
 interview-app/frontend/.env.local
 interview-app/frontend/.env*.local
+!.env.example
+!*.env.example
+!**/.env.example
 
 # Caches & Temporary Runtime Files
 .cloudinary_upload_cache.json
@@ -93,3 +96,5 @@ interview-app/backend/app/courses_openapi_contract.json
 interview-app/frontend/AGENTS.md
 interview-app/frontend/CLAUDE.md
 interview-app/scripts/push_leetcode_to_supabase.py
+AGENTS.md
+.github/
