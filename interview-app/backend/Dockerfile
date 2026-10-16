@@ -64,5 +64,5 @@ LABEL org.opencontainers.image.title="Interview Practice Platform"
 LABEL org.opencontainers.image.description="FastAPI backend for interview practice"
 LABEL org.opencontainers.image.version="1.0.0"
 
-# Production startup command - Use PORT env var for Render/Heroku support
-CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 2
+# Production startup command - Use PORT and UVICORN_WORKERS env vars
+CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-2}
