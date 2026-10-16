@@ -286,7 +286,7 @@ export const API = {
       res = await this._fetch(`/progress/user${summaryOnly ? "?summary_only=true" : ""}`);
     } catch (_) {}
 
-    if (res && res.stats && (res.stats.total_attempted > 0 || res.stats.solved_count > 0)) {
+    if (res && res.stats && typeof res.stats.total_attempted === "number") {
       return res;
     }
 

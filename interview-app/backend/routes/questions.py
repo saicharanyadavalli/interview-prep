@@ -161,7 +161,7 @@ def _apply_pagination(rows: list[dict], offset: int, limit: int) -> list[dict]:
 
 
 @router.get("/companies", response_model=CompaniesResponse)
-def list_companies(current_user: dict = Depends(get_current_user)):
+def list_companies(current_user: Optional[dict] = Depends(get_optional_current_user)):
     """Return all available company names."""
     return CompaniesResponse(companies=get_companies())
 
@@ -173,7 +173,7 @@ def random_question(
     topic: Optional[str] = Query(None, description="Topic filter, supports !value for is-not"),
     match: str = Query("all", pattern="^(all|any)$"),
     exclude: Optional[str] = Query(None, description="Comma-separated question IDs to exclude"),
-    current_user: dict = Depends(get_current_user),
+    current_user: Optional[dict] = Depends(get_optional_current_user),
 ):
     """Return a random question for the given company and difficulty."""
     exclude_ids = [e.strip() for e in exclude.split(",") if e.strip()] if exclude else None
@@ -213,7 +213,7 @@ def recommend_question(
     match: str = Query("all", pattern="^(all|any)$"),
     revisit_ids: Optional[str] = Query(None, description="Comma-separated revisit queue IDs"),
     exclude: Optional[str] = Query(None, description="Comma-separated seen question IDs"),
-    current_user: dict = Depends(get_current_user),
+    current_user: Optional[dict] = Depends(get_optional_current_user),
 ):
     """Return a recommended question, prioritizing revisit queue items."""
     r_ids = [e.strip() for e in revisit_ids.split(",") if e.strip()] if revisit_ids else None
@@ -245,7 +245,7 @@ def all_questions(
     difficulty: str = Query(..., pattern="^(easy|medium|hard)$"),
     topic: Optional[str] = Query(None, description="Topic filter, supports !value for is-not"),
     match: str = Query("all", pattern="^(all|any)$"),
-    current_user: dict = Depends(get_current_user),
+    current_user: Optional[dict] = Depends(get_optional_current_user),
 ):
     """Return all questions for a company and difficulty (for client-side use)."""
     questions = get_all_questions(company, difficulty)
@@ -370,7 +370,7 @@ def all_questions_catalog_user(
 
 
 @router.get("/by-qnum/{qnum}", response_model=QuestionResponse)
-def question_by_qnum(qnum: int, current_user: dict = Depends(get_current_user)):
+def question_by_qnum(qnum: int, current_user: Optional[dict] = Depends(get_optional_current_user)):
     """Return one question by qnum."""
     question = get_question_by_qnum(qnum)
     if not question:

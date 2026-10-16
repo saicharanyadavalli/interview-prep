@@ -21,6 +21,7 @@ from services.questions_service import (
     get_question_summary_by_qnum,
     get_all_questions_catalog,
 )
+from services.system_design_course import is_reserved_learning_track_qnum
 
 router = APIRouter(prefix="/progress", tags=["progress"])
 
@@ -117,7 +118,11 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
             .order("updated_at", desc=True)
             .execute()
         )
-        entries = result.data or []
+        raw_entries = result.data or []
+        entries = [
+            e for e in raw_entries
+            if not is_reserved_learning_track_qnum(int(e.get("qnum", 0) or 0))
+        ]
     except Exception:
         entries = []
 
@@ -204,8 +209,7 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
         return UserProgressResponse(
             stats=stats,
             recent=recent_entries,
-            topic_progress=[],
-            activity_map={},
+            topic_breakdown=[],
         )
 
     try:

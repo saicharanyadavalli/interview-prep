@@ -74,12 +74,12 @@ export function useQuestionCatalog() {
           data = await API.getAllQuestionsCatalog(req);
         }
 
-        const newRows = (data.questions || []).map((item: any) => ({
+        const newRows = (data?.questions || []).map((item: any) => ({
           ...item,
           solved: Number(item.solved || 0),
         }));
 
-        const newTotal = Number(data.total || 0);
+        const newTotal = Number(data?.total || 0);
         const nextOffset = currentOffset + newRows.length;
         const more = newRows.length === PAGE_SIZE && nextOffset < newTotal;
 

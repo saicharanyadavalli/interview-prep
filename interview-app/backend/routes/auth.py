@@ -88,11 +88,6 @@ def create_session(request: Request, response: Response, payload: SessionRequest
         if user.get("username"):
             profile_data["username"] = user.get("username")
 
-        try:
-            supabase.table("users").upsert(profile_data, on_conflict="id").execute()
-        except Exception:
-            pass
-
         supabase.table("user_profiles").upsert(profile_data, on_conflict="id").execute()
     except Exception:
         # If Supabase is not fully populated yet, still return user info

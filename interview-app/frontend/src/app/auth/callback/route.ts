@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { createServerClient, type CookieOptions } from '@supabase/ssr'
+import { createServerClient } from '@supabase/ssr'
 import { CONFIG } from '@/lib/config'
 
 export async function GET(request: Request) {
@@ -13,10 +13,14 @@ export async function GET(request: Request) {
   if (code) {
     if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
       console.error("Auth callback error: Supabase environment variables missing.")
-      const url = new URL('/login?error=env-missing', request.url)
+      const url = new URL('/login?error=env-missing', origin || request.url)
       return NextResponse.redirect(url)
     }
+
+    const redirectTarget = new URL(next, origin || request.url)
+    const response = NextResponse.redirect(redirectTarget)
     const cookieStore = await cookies()
+
     const supabase = createServerClient(
       CONFIG.SUPABASE_URL,
       CONFIG.SUPABASE_ANON_KEY,
@@ -27,9 +31,10 @@ export async function GET(request: Request) {
           },
           setAll(cookiesToSet) {
             try {
-              cookiesToSet.forEach(({ name, value, options }) =>
+              cookiesToSet.forEach(({ name, value, options }) => {
                 cookieStore.set(name, value, options)
-              )
+                response.cookies.set(name, value, options)
+              })
             } catch (error) {
               // Ignore if called from a context where cookies cannot be set
             }
@@ -37,15 +42,16 @@ export async function GET(request: Request) {
         },
       }
     )
+
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
-      const url = new URL(next, request.url)
-      return NextResponse.redirect(url)
+      return response
     } else {
       console.error("Auth callback error:", error.message)
     }
   }
 
-  const url = new URL('/login?error=auth-code-error', request.url)
+  const url = new URL('/login?error=auth-code-error', origin || request.url)
   return NextResponse.redirect(url)
 }
+

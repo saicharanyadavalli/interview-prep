@@ -8,7 +8,7 @@ import { Spinner } from "@/components/Spinner";
 import { useAuth } from "@/lib/auth";
 
 export default function DashboardPage() {
-  const { user, session } = useAuth();
+  const { user, session, loading: authLoading } = useAuth();
   const [stats, setStats] = useState({ total_attempted: 0, revisit_count: 0 });
   const [recent, setRecent] = useState<any[] | null>(null);
   const [revisit, setRevisit] = useState<any[] | null>(null);
@@ -16,8 +16,20 @@ export default function DashboardPage() {
   const [loadingRevisit, setLoadingRevisit] = useState(true);
 
   useEffect(() => {
-    if (!user || !session) return;
-    
+    if (authLoading) return;
+
+    if (!user || !session) {
+      setLoadingProgress(false);
+      setLoadingRevisit(false);
+      setStats({ total_attempted: 0, revisit_count: 0 });
+      setRecent([]);
+      setRevisit([]);
+      return;
+    }
+
+    setLoadingProgress(true);
+    setLoadingRevisit(true);
+
     Promise.allSettled([API.getUserProgress(true), API.getRevisitQueue()]).then(([progressResult, revisitResult]) => {
       if (progressResult.status === "fulfilled" && progressResult.value) {
         setStats(progressResult.value.stats || { total_attempted: 0, revisit_count: 0 });
@@ -34,8 +46,11 @@ export default function DashboardPage() {
         setRevisit([]);
       }
       setLoadingRevisit(false);
+    }).catch(() => {
+      setLoadingProgress(false);
+      setLoadingRevisit(false);
     });
-  }, [user, session]);
+  }, [user, session, authLoading]);
 
   const renderRecentList = () => {
     if (loadingProgress) return (

@@ -51,12 +51,7 @@ export async function proxy(request: NextRequest) {
           });
 
           cookiesToSet.forEach(({ name, value, options }) => {
-            supabaseResponse.cookies.set(name, value, {
-              ...options,
-              httpOnly: true,
-              secure: process.env.NODE_ENV === 'production',
-              sameSite: 'lax',
-            });
+            supabaseResponse.cookies.set(name, value, options);
           });
         },
       },
@@ -74,8 +69,7 @@ export async function proxy(request: NextRequest) {
       user = data.user;
     }
   } catch (err) {
-    // Gracefully handle network disconnect or invalid Supabase response
-    console.warn('Supabase auth.getUser() check failed in middleware:', err);
+    console.warn('Supabase auth.getUser() check failed in proxy:', err);
   }
 
   const pathname = request.nextUrl.pathname;
@@ -87,7 +81,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && pathname === '/login') {
+  if (user && (pathname === '/login' || pathname === '/')) {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);
@@ -95,6 +89,8 @@ export async function proxy(request: NextRequest) {
 
   return supabaseResponse;
 }
+
+export const middleware = proxy;
 
 export const config = {
   matcher: [

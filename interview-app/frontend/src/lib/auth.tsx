@@ -55,6 +55,9 @@ export function AuthProvider({
       if (sb) {
         const { data: { session: clientSession } } = await sb.auth.getSession();
         setSession(clientSession ?? initialSession);
+        if (clientSession?.user && (pathname === "/" || pathname === "/login")) {
+          router.push("/dashboard");
+        }
       } else {
         setSession(initialSession);
       }
@@ -65,9 +68,14 @@ export function AuthProvider({
 
     if (!sb) return;
 
-    const { data: { subscription } } = sb.auth.onAuthStateChange((_event, newSession) => {
+    const { data: { subscription } } = sb.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       setLoading(false);
+      if (newSession?.user && (event === "SIGNED_IN" || event === "USER_UPDATED")) {
+        if (typeof window !== "undefined" && (window.location.pathname === "/" || window.location.pathname === "/login")) {
+          router.push("/dashboard");
+        }
+      }
     });
 
     return () => {
@@ -105,7 +113,7 @@ export function AuthProvider({
     }
 
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback?next=/dashboard`;
+      const redirectUrl = `${window.location.origin}/auth/callback`;
       const { data, error } = await sb.auth.signInWithOAuth({
         provider: "google",
         options: {

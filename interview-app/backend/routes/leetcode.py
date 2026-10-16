@@ -83,6 +83,10 @@ def get_leetcode_problems(
             else:
                 query = query.ilike("title", f"%{s_clean}%")
 
+        if tag and isinstance(tag, str):
+            tag_clean = tag.strip().title()
+            query = query.contains("topic_tags", [tag_clean])
+
         query = query.order("qnum", desc=False).range(offset, offset + limit - 1)
         res = query.execute()
 
