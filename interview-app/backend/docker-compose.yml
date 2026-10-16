@@ -1,6 +1,8 @@
 # ============================================
-# Interview Practice Platform - Docker Compose
-# Production deployment configuration
+# Interview Practice Platform - Backend-Only Compose
+# NOTE: The canonical full-stack production compose file is:
+#       interview-app/docker-compose.yml
+# This file is retained only for isolated backend development.
 # ============================================
 
 version: "3.9"

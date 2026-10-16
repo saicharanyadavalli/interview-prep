@@ -16,7 +16,7 @@
 
 - **Web Application**: [https://interview-prep-kappa-sandy.vercel.app](https://interview-prep-kappa-sandy.vercel.app)
 - **API Backend**: [https://interview-prep-q3b8.onrender.com](https://interview-prep-q3b8.onrender.com)
-- **Test Credentials**: `portaluser88@gmail.com` / `Password99!` (or sign in via Google OAuth / Magic Link)
+- **Authentication**: Sign in using your configured authentication provider (Email/Password or Google OAuth / Magic Link via Supabase Auth)
 
 ---
 
