@@ -28,10 +28,17 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
+  let session = null;
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+      const { data } = await supabase.auth.getSession();
+      session = data?.session ?? null;
+    }
+  } catch (_) {}
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
       <body className={`${spaceGrotesk.className} ${jetBrainsMono.variable} antialiased`} data-theme="dark" suppressHydrationWarning>
         <AuthProvider initialSession={session}>
           <div className="bg-shape bg-shape-a"></div>
