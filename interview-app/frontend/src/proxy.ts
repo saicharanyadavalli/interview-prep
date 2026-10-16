@@ -64,9 +64,19 @@ export async function proxy(request: NextRequest) {
   );
 
   // Authenticate & refresh user token using getUser() per Supabase SSR best practices
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const {
+      data,
+      error,
+    } = await supabase.auth.getUser();
+    if (!error && data) {
+      user = data.user;
+    }
+  } catch (err) {
+    // Gracefully handle network disconnect or invalid Supabase response
+    console.warn('Supabase auth.getUser() check failed in middleware:', err);
+  }
 
   const pathname = request.nextUrl.pathname;
   const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
