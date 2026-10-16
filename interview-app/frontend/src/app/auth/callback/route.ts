@@ -2,22 +2,48 @@ import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import { CONFIG } from '@/lib/config'
+import {
+  getAllowedOrigins,
+  validateRedirectDestination,
+} from '@/utils/auth-redirect'
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url)
+  const requestUrl = new URL(request.url)
+  const searchParams = requestUrl.searchParams
   const code = searchParams.get('code')
-  const rawNext = searchParams.get('next') ?? '/dashboard'
-  // Prevent open redirect: only allow relative paths starting with /
-  const next = (rawNext.startsWith('/') && !rawNext.startsWith('//')) ? rawNext : '/dashboard'
+  const rawNext = searchParams.get('next')
+
+  // Resolve trusted allowed origins (including configured AUTH_REDIRECT_URL)
+  const allowedOrigins = getAllowedOrigins(process.env.AUTH_REDIRECT_URL)
+
+  // Validate and sanitize destination to strictly prevent open redirects
+  const safeNext = validateRedirectDestination(rawNext, allowedOrigins)
+
+  // Resolve the authoritative deployment origin to prevent cross-deployment or internal-proxy bleed
+  let baseOrigin = requestUrl.origin
+  if (process.env.AUTH_REDIRECT_URL) {
+    try {
+      baseOrigin = new URL(process.env.AUTH_REDIRECT_URL).origin
+    } catch (_) {}
+  } else {
+    const forwardedHost = request.headers.get('x-forwarded-host') || request.headers.get('host')
+    const forwardedProto =
+      request.headers.get('x-forwarded-proto') ||
+      requestUrl.protocol.replace(':', '') ||
+      'http'
+    if (forwardedHost) {
+      baseOrigin = `${forwardedProto}://${forwardedHost}`
+    }
+  }
 
   if (code) {
     if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
-      console.error("Auth callback error: Supabase environment variables missing.")
-      const url = new URL('/login?error=env-missing', origin || request.url)
+      console.error('Auth callback error: Supabase environment variables missing.')
+      const url = new URL('/login?error=env-missing', baseOrigin)
       return NextResponse.redirect(url)
     }
 
-    const redirectTarget = new URL(next, origin || request.url)
+    const redirectTarget = new URL(safeNext, baseOrigin)
     const response = NextResponse.redirect(redirectTarget)
     const cookieStore = await cookies()
 
@@ -47,11 +73,10 @@ export async function GET(request: Request) {
     if (!error) {
       return response
     } else {
-      console.error("Auth callback error:", error.message)
+      console.error('Auth callback error:', error.message)
     }
   }
 
-  const url = new URL('/login?error=auth-code-error', origin || request.url)
+  const url = new URL('/login?error=auth-code-error', baseOrigin)
   return NextResponse.redirect(url)
 }
-

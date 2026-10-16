@@ -15,7 +15,7 @@ interface AuthContextType {
   loading: boolean;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (identifier: string, password: string) => Promise<{ error: string | null }>;
-  signUpWithEmail: (email: string, password: string, username: string, fullName: string) => Promise<{ error: string | null }>;
+  signUpWithEmail: (email: string, password: string, username: string, fullName: string) => Promise<{ error: string | null; message?: string | null }>;
   signOut: () => Promise<void>;
   getUserMeta: () => { name: string; email: string; avatar: string; username: string };
 }
@@ -113,7 +113,9 @@ export function AuthProvider({
     }
 
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback`;
+      const redirectUrl = (typeof window !== "undefined" && window.location.origin)
+        ? `${window.location.origin}/auth/callback?next=/dashboard`
+        : (process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL || "/auth/callback?next=/dashboard");
       const { data, error } = await sb.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -167,7 +169,7 @@ export function AuthProvider({
     password: string,
     username: string,
     fullName: string
-  ): Promise<{ error: string | null }> => {
+  ): Promise<{ error: string | null; message?: string | null }> => {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -178,6 +180,10 @@ export function AuthProvider({
 
     if (result.error) {
       return { error: result.error };
+    }
+
+    if ((result as any).message) {
+      return { error: null, message: (result as any).message };
     }
 
     window.location.replace("/dashboard");

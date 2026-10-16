@@ -12,6 +12,7 @@ export default function LoginPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
   const redirectingRef = React.useRef(false);
 
@@ -52,6 +53,7 @@ export default function LoginPage() {
   const handleSignInSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setSuccessMessage(null);
 
     if (!loginIdentifier.trim() || !loginIdentifier.includes("@")) {
       setErrorMessage("Please enter a valid email address.");
@@ -76,6 +78,7 @@ export default function LoginPage() {
   const handleSignUpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setSuccessMessage(null);
 
     if (!signUpFullName.trim()) {
       setErrorMessage("Please enter your full name.");
@@ -119,6 +122,8 @@ export default function LoginPage() {
       );
       if (res.error) {
         setErrorMessage(res.error);
+      } else if (res.message) {
+        setSuccessMessage(res.message);
       }
     } finally {
       setIsSubmitting(false);
@@ -127,6 +132,7 @@ export default function LoginPage() {
 
   const handleGoogleSignIn = async () => {
     setErrorMessage(null);
+    setSuccessMessage(null);
     setIsSubmitting(true);
     try {
       await signInWithGoogle();
@@ -147,14 +153,14 @@ export default function LoginPage() {
           <button
             type="button"
             className={`auth-tab ${mode === "signin" ? "active" : ""}`}
-            onClick={() => { setMode("signin"); setErrorMessage(null); }}
+            onClick={() => { setMode("signin"); setErrorMessage(null); setSuccessMessage(null); }}
           >
             Sign In
           </button>
           <button
             type="button"
             className={`auth-tab ${mode === "signup" ? "active" : ""}`}
-            onClick={() => { setMode("signup"); setErrorMessage(null); }}
+            onClick={() => { setMode("signup"); setErrorMessage(null); setSuccessMessage(null); }}
           >
             Sign Up
           </button>
@@ -169,6 +175,17 @@ export default function LoginPage() {
               <line x1="12" y1="16" x2="12.01" y2="16" />
             </svg>
             <span>{errorMessage}</span>
+          </div>
+        )}
+
+        {/* Success Banner */}
+        {successMessage && (
+          <div className="auth-success-banner p-3 mb-4 rounded-lg bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-sm flex items-center gap-2" role="status">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+            <span>{successMessage}</span>
           </div>
         )}
 

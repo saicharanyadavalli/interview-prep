@@ -1,6 +1,7 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
+import { getAuthRedirectUrl } from '@/utils/auth-redirect'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
@@ -40,6 +41,13 @@ export async function signup(formData: FormData) {
     return { error: 'All fields are required' }
   }
 
+  // Validate deployment-specific redirect destination to prevent cross-deployment bleed
+  const redirectConfig = getAuthRedirectUrl('/dashboard')
+  if (redirectConfig.error || !redirectConfig.url) {
+    return { error: redirectConfig.error || 'Authentication redirect URL is not configured.' }
+  }
+  const emailRedirectTo = redirectConfig.url
+
   const cleanEmail = email.trim().toLowerCase()
   const cleanUsername = username.trim().toLowerCase()
 
@@ -57,6 +65,7 @@ export async function signup(formData: FormData) {
     email: cleanEmail,
     password,
     options: {
+      emailRedirectTo,
       data: {
         full_name: fullName.trim(),
         username: cleanUsername,
@@ -75,11 +84,21 @@ export async function signup(formData: FormData) {
     return { error: `An account with email "${email}" already exists. Please sign in instead.` };
   }
   
-  // Try logging in
-  await supabase.auth.signInWithPassword({
+  // Try logging in (auto sign-in if email confirmation is disabled)
+  const { error: signInError } = await supabase.auth.signInWithPassword({
     email: cleanEmail,
     password,
   })
+
+  if (signInError) {
+    if (signInError.message.toLowerCase().includes("confirm")) {
+      return {
+        success: true,
+        message: "Signup successful! Please check your email to confirm your account before logging in."
+      }
+    }
+    return { error: signInError.message }
+  }
 
   return { success: true }
 }
