@@ -1,0 +1,121 @@
+# ============================================
+# Interview Practice Platform - Docker Compose
+# Production deployment configuration
+# ============================================
+
+version: "3.9"
+
+services:
+  # ==========================================
+  # FastAPI Backend Application
+  # ==========================================
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: interview-api
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      # Application
+      - PYTHONUNBUFFERED=1
+      - PYTHONDONTWRITEBYTECODE=1
+      # Workers (adjust based on CPU cores)
+      - UVICORN_WORKERS=${UVICORN_WORKERS:-2}
+      # Secrets from .env file
+      - GEMINI_API_KEY=${GEMINI_API_KEY:?GEMINI_API_KEY is required}
+      - SUPABASE_URL=${SUPABASE_URL:?SUPABASE_URL is required}
+      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:?SUPABASE_ANON_KEY is required}
+      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY:?SUPABASE_SERVICE_KEY is required}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-}
+      - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-}
+      - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-}
+      - CLOUDINARY_AVATAR_FOLDER=${CLOUDINARY_AVATAR_FOLDER:-interview-prep/avatars}
+      - CLOUDINARY_SYSTEM_DESIGN_FOLDER=${CLOUDINARY_SYSTEM_DESIGN_FOLDER:-interview-prep/system-design}
+    volumes:
+      # Read-only mount for any static assets if needed
+      - ./assets:/app/assets:ro
+    networks:
+      - backend-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    deploy:
+      resources:
+        limits:
+          cpus: "2"
+          memory: "1G"
+        reservations:
+          cpus: "0.5"
+          memory: "256M"
+
+  # ==========================================
+  # Prometheus Monitoring (Optional)
+  # ==========================================
+  prometheus:
+    image: prom/prometheus:v2.48.0
+    container_name: prometheus
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=15d'
+      - '--web.enable-lifecycle'
+    profiles:
+      - monitoring
+    networks:
+      - backend-network
+
+  # ==========================================
+  # Grafana Dashboard (Optional)
+  # ==========================================
+  grafana:
+    image: grafana/grafana:10.2.2
+    container_name: grafana
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GF_ADMIN_USER:-admin}
+      - GF_SECURITY_ADMIN_PASSWORD=${GF_ADMIN_PASSWORD:-admin123}
+      - GF_SERVER_ROOT_URL=http://localhost:3001
+      - GF_INSTALL_PLUGINS=grafana-piechart-panel
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/dashboards:/etc/grafana/provisioning/dashboards:ro
+      - ./monitoring/grafana/datasources:/etc/grafana/provisioning/datasources:ro
+    profiles:
+      - monitoring
+    depends_on:
+      - prometheus
+    networks:
+      - backend-network
+
+networks:
+  backend-network:
+    driver: bridge
+    name: interview-network
+
+volumes:
+  prometheus-data:
+    name: prometheus-data
+  grafana-data:
+    name: grafana-data

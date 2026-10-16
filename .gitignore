@@ -1,18 +1,29 @@
 # Environment & Secrets
 .env
+.env.*
 *.env
 *.env.local
 *.env.*.local
 backend/.env
 interview-app/.env
 interview-app/backend/.env
+interview-app/frontend/.env.local
+interview-app/frontend/.env*.local
 
-# Caches & Temporary Files
+# Caches & Temporary Runtime Files
 .cloudinary_upload_cache.json
+cloudinary-map.json
 *.db
+*.sqlite
 graphify-out/
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
 .playwright-mcp
 .agents
 .venv/
@@ -22,10 +33,23 @@ env/
 node_modules/
 .next/
 out/
+dist/
 build/
+*.egg-info/
 test-results/
 logs/
 *.log
+
+# OS & Editor generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+*.swp
+*.swo
+*~
+
+# Static Assets
 *.png
 *.jpg
 *.jpeg
@@ -44,30 +68,24 @@ gen ai system design
 update_images.py
 migrate_bytebytego_content.py
 
-# Scripts & Deployment Guides
+# Scripts & Legacy Artifacts
 interview-app/backend/scripts/upload_system_design_images_to_cloudinary.py
 interview-app/backend/scripts/generate_system_design_themed_pages.py
 interview-app/backend/scripts/collect_system_design_images.py
 interview-app/migrations/create_learning_track_progress.sql
-.github/workflows/deploy.yml
-interview-app/AWS-EC2-DEPLOYMENT-GUIDE.md
-interview-app/backend/.dockerignore
-interview-app/backend/docker-compose.yml
-interview-app/backend/Dockerfile
-interview-app/scripts/healthcheck.sh
-
-# Frontend / Design Artifacts
 interview-app/frontend/*-system-design/
 interview-app/frontend/object-oriented-design/
 interview-app/MIGRATION_NOTES.md
 interview-app/frontend-legacy.zip
 
-# Audit & Report files
+# Audit & Scratch files
 *AUDIT*.md
 *_AUDIT.md
 *REPORT*.md
 *_REPORT.md
 *_report.json
+TEST_PLAN.md
+TEST_RESULTS.md
 interview-app/backend/SQL_SEED_DATA.md
 interview-app/backend/test_courses_api.py
 interview-app/backend/test_out.txt

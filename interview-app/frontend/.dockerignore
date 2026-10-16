@@ -1,0 +1,16 @@
+node_modules/
+.next/
+out/
+build/
+dist/
+.git/
+.gitignore
+.env
+.env.*
+*.env
+*.env.local
+test-results/
+tests/
+*.log
+Thumbs.db
+.DS_Store
