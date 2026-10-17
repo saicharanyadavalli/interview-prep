@@ -40,7 +40,7 @@ services:
       # Amazon RDS PostgreSQL & AWS Secrets Manager configuration
       - AWS_REGION=${AWS_REGION:-ap-south-2}
       - RDS_SECRET_NAME=${RDS_SECRET_NAME:-interview-prep/rds/app}
-      - RDS_SECRET_ARN=${RDS_SECRET_ARN:-arn:aws:secretsmanager:ap-south-2:808431466075:secret:interview-prep/rds/app-TVJeDz}
+      - RDS_SECRET_ARN=${RDS_SECRET_ARN:-}
       - RDS_POOL_MIN=${RDS_POOL_MIN:-2}
       - RDS_POOL_MAX=${RDS_POOL_MAX:-10}
       - DATABASE_URL=${DATABASE_URL:-}

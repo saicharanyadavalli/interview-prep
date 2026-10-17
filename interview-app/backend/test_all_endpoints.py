@@ -14,15 +14,16 @@ load_dotenv(backend_dir / ".env")
 
 from fastapi.testclient import TestClient
 from main import app
-from services.supabase_client import get_supabase_client
+from services.rds_client import rds_client
 
 client = TestClient(app)
-supabase = get_supabase_client()
 
-# Fetch a real user from user_profiles to test authenticated endpoints
-real_user_res = supabase.table("user_profiles").select("id, email, username").limit(1).execute()
-real_user = real_user_res.data[0] if real_user_res.data else None
-print(f"Testing with real user: {real_user}")
+# Fetch a user from RDS user_profiles to test authenticated endpoints
+try:
+    real_user = rds_client.query("SELECT id, email, username FROM user_profiles LIMIT 1;", fetch="one")
+except Exception:
+    real_user = None
+print(f"Testing with user: {real_user}")
 
 # Mock auth dependency or disable auth for test
 from routes.auth import get_current_user, get_optional_current_user

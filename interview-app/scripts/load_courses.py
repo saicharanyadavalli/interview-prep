@@ -1,124 +1,69 @@
-import os
+#!/usr/bin/env python3
+"""Amazon RDS Course Lessons Loader Utility.
+
+Loads interactive course lessons from sqlbolt_courses.json into the
+authoritative Amazon RDS PostgreSQL table 'course_lessons'.
+
+Connects via backend/services/rds_client.py or DATABASE_URL.
+"""
+
+from __future__ import annotations
+
 import json
+import logging
+import os
+import sys
 from pathlib import Path
 from dotenv import load_dotenv
-from supabase import create_client, Client
+
+script_dir = Path(__file__).parent.resolve()
+app_dir = script_dir.parent.resolve()
+backend_dir = app_dir / "backend"
+sys.path.insert(0, str(backend_dir))
+
+if (app_dir / ".env").exists():
+    load_dotenv(app_dir / ".env")
+elif (backend_dir / ".env").exists():
+    load_dotenv(backend_dir / ".env")
+else:
+    load_dotenv()
+
+from services.rds_client import rds_client
+
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger("load_courses")
 
 
 def load_courses():
-    # 1. Resolve paths
-    script_dir = Path(__file__).parent.resolve()
-    app_dir = script_dir.parent.resolve()
-    env_path = app_dir / ".env"
     json_path = script_dir / "sqlbolt_courses.json"
-
-    # 2. Load environment variables from interview-app/.env
-    if env_path.exists():
-        load_dotenv(dotenv_path=env_path)
-    else:
-        load_dotenv()
-
-    supabase_url = os.environ.get("SUPABASE_URL")
-    supabase_key = os.environ.get("SUPABASE_SERVICE_KEY")
-
-    if not supabase_url or not supabase_key:
-        raise ValueError(
-            "SUPABASE_URL and SUPABASE_SERVICE_KEY environment variables must be set in .env"
-        )
-
-    # 3. Create Supabase client
-    supabase: Client = create_client(supabase_url, supabase_key)
-    print(f"Connected to Supabase at: {supabase_url}")
-
-    # 4. Read JSON
     if not json_path.exists():
         raise FileNotFoundError(f"Courses JSON file not found at {json_path}")
 
     with open(json_path, "r", encoding="utf-8") as f:
         lessons_data = json.load(f)
 
-    print(f"Loaded {len(lessons_data)} lessons from {json_path.name}")
+    logger.info("Loaded %d lessons from %s", len(lessons_data), json_path.name)
 
-    # 5. Upsert default course: sql-tutorial
-    course_payload = {
-        "slug": "sql-tutorial",
-        "title": "SQL Tutorial (SQLBolt)",
-        "description": "Learn SQL interactively through hands-on queries and exercises.",
-    }
-
-    print("Upserting course 'sql-tutorial'...")
-    supabase.table("courses").upsert(course_payload, on_conflict="slug").execute()
-
-    # Query back course id to ensure accuracy
-    course_query = (
-        supabase.table("courses")
-        .select("id")
-        .eq("slug", "sql-tutorial")
-        .execute()
-    )
-    if not course_query.data:
-        raise RuntimeError("Failed to retrieve course ID for sql-tutorial")
-
-    course_id = course_query.data[0]["id"]
-    print(f"Course 'sql-tutorial' UUID: {course_id}")
-
-    # 6. Process each lesson and its tasks
-    total_lessons = 0
-    total_tasks = 0
+    track_id = "sql-tutorial"
+    synced = 0
 
     for lesson in lessons_data:
-        lesson_payload = {
-            "course_id": course_id,
-            "slug": lesson["slug"],
-            "order_index": lesson["order"],
-            "title": lesson["title"],
-            "content_markdown": lesson.get("content_markdown", ""),
-        }
+        step_no = int(lesson.get("order", 0))
+        title = lesson.get("title", f"Lesson {step_no}")
+        content = lesson.get("content_markdown", "")
 
-        # Upsert lesson into course_lessons
-        supabase.table("course_lessons").upsert(
-            lesson_payload, on_conflict="course_id,slug"
-        ).execute()
-
-        # Retrieve lesson ID
-        lesson_query = (
-            supabase.table("course_lessons")
-            .select("id")
-            .eq("course_id", course_id)
-            .eq("slug", lesson["slug"])
-            .execute()
+        rds_client.mutate(
+            """
+            INSERT INTO course_lessons (track_id, step_no, title, html_content)
+            VALUES (%s, %s, %s, %s)
+            ON CONFLICT (track_id, step_no)
+            DO UPDATE SET title = EXCLUDED.title, html_content = EXCLUDED.html_content;
+            """,
+            (track_id, step_no, title, content),
         )
-        if not lesson_query.data:
-            raise RuntimeError(
-                f"Failed to retrieve lesson ID for slug: {lesson['slug']}"
-            )
+        synced += 1
 
-        lesson_id = lesson_query.data[0]["id"]
-        total_lessons += 1
-
-        # Delete existing tasks for this lesson to ensure clean idempotency
-        supabase.table("lesson_tasks").delete().eq(
-            "lesson_id", lesson_id
-        ).execute()
-
-        # Prepare tasks for insertion
-        tasks = lesson.get("tasks", [])
-        tasks_payload = [
-            {
-                "lesson_id": lesson_id,
-                "order_index": idx + 1,
-                "description": task_text,
-            }
-            for idx, task_text in enumerate(tasks)
-        ]
-
-        if tasks_payload:
-            supabase.table("lesson_tasks").insert(tasks_payload).execute()
-            total_tasks += len(tasks_payload)
-
-    print(
-        f"Successfully synced {total_lessons} lessons and {total_tasks} tasks for 'sql-tutorial'."
-    )
+    logger.info("Successfully synced %d course lessons for track '%s' into RDS.", synced, track_id)
 
 
 if __name__ == "__main__":

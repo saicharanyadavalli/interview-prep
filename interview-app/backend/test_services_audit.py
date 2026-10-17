@@ -12,7 +12,7 @@ sys.path.insert(0, str(backend_dir))
 
 load_dotenv(backend_dir / ".env")
 
-from services.supabase_client import get_supabase_client
+from services.rds_client import rds_client
 from services.questions_service import (
     get_companies,
     get_all_questions,
@@ -37,7 +37,6 @@ from routes.leetcode import (
     get_leetcode_problem_code,
 )
 
-client = get_supabase_client()
 results = {}
 
 print("=== 1. Testing questions_service ===")
@@ -133,9 +132,9 @@ except Exception as e:
     results["fetch_all_courses_anon"] = {"status": "FAIL", "error": str(e), "tb": traceback.format_exc()}
     print(f"[FAIL] fetch_all_courses(): {e}")
 
-# Check with real user from user_profiles
-real_user_res = client.table("user_profiles").select("id").limit(1).execute()
-real_uid = real_user_res.data[0]["id"] if real_user_res.data else None
+# Check with real user from RDS user_profiles
+real_user_res = rds_client.query("SELECT id FROM user_profiles LIMIT 1;", fetch="one")
+real_uid = str(real_user_res["id"]) if real_user_res else None
 
 if real_uid:
     try:
@@ -189,7 +188,7 @@ if real_uid:
     try:
         rec = record_lesson_completion(user_id=real_uid, course_slug="system-design", lesson_slug="step-999", completed=True)
         # Verify and clean up
-        client.table("learning_track_progress").delete().eq("user_id", real_uid).eq("step_no", 999).execute()
+        rds_client.mutate("DELETE FROM learning_track_progress WHERE user_id = %s AND step_no = %s;", (real_uid, 999))
         results["record_lesson_completion"] = {
             "status": "PASS",
             "rec": rec
