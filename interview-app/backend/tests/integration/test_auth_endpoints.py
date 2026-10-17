@@ -66,3 +66,28 @@ def test_get_optional_current_user_missing_returns_none():
     """Verify get_optional_current_user returns None instead of raising on missing auth."""
     assert get_optional_current_user(authorization=None) is None
     assert get_optional_current_user(authorization="InvalidHeader") is None
+
+
+def test_create_session_database_failure_returns_503(unauth_client: TestClient, mock_user: dict):
+    """Verify POST /auth/session fails fast with 503 instead of fabricating success when RDS fails."""
+    with patch("routes.auth.verify_supabase_token", return_value=mock_user), \
+         patch("routes.auth.rds_client.mutate", side_effect=Exception("RDS Connection Refused")):
+        res = unauth_client.post(
+            "/auth/session",
+            json={"access_token": "valid-token-string-at-least-10-chars"},
+        )
+        assert res.status_code == 503
+        assert "temporarily unavailable" in res.json()["detail"].lower()
+
+
+def test_disable_auth_in_production_raises_500(monkeypatch):
+    """Verify get_current_user strictly blocks DISABLE_AUTH in production environment."""
+    import pytest
+    monkeypatch.setenv("DISABLE_AUTH", "true")
+    monkeypatch.setenv("ENVIRONMENT", "production")
+
+    with pytest.raises(HTTPException) as exc_info:
+        get_current_user(authorization="Bearer any-token")
+    assert exc_info.value.status_code == 500
+    assert "forbidden in production" in str(exc_info.value.detail).lower()
+

@@ -397,6 +397,14 @@ def _clean_state_and_rate_limits():
     limiter.reset()
 
 
+@pytest.fixture(autouse=True)
+def _mock_default_rds_health():
+    """Mock RDS health check to return True by default so tests don't make real network calls."""
+    with patch("services.rds_client.check_rds_health", return_value=True), \
+         patch("main.check_rds_health", return_value=True):
+        yield
+
+
 # ── TestClient Fixtures ────────────────────────────────────────────────────────
 
 @pytest.fixture

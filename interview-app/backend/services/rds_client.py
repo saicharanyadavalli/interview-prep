@@ -44,12 +44,17 @@ def mask_db_url(url: str) -> str:
         return ""
     try:
         parsed = urlparse(url)
-        if parsed.password:
-            masked_netloc = parsed.netloc.replace(f":{parsed.password}@", ":****@")
-            return parsed._replace(netloc=masked_netloc).geturl()
+        if "@" in parsed.netloc:
+            userinfo, hostport = parsed.netloc.rsplit("@", 1)
+            if ":" in userinfo:
+                username, _ = userinfo.split(":", 1)
+                masked_netloc = f"{username}:****@{hostport}"
+                return parsed._replace(netloc=masked_netloc).geturl()
+            else:
+                return parsed._replace(netloc=f":****@{hostport}").geturl()
     except Exception:
         pass
-    return re.sub(r"://([^:]+):([^@]+)@", r"://\1:****@", url)
+    return re.sub(r"(://|^)([^:@]*):([^@]+)@", r"\1\2:****@", url)
 
 
 def get_rds_credentials() -> dict[str, Any]:
@@ -76,11 +81,22 @@ def get_rds_credentials() -> dict[str, Any]:
         or "interview-prep/rds/app"
     ).strip()
 
+    # Extract region from ARN if provided, else check env, default to ap-south-2 (target region)
+    arn_region = None
+    if secret_id.startswith("arn:aws:secretsmanager:"):
+        arn_parts = secret_id.split(":")
+        if len(arn_parts) >= 4 and arn_parts[3]:
+            arn_region = arn_parts[3]
+
     region = (
         os.getenv("AWS_REGION")
         or os.getenv("AWS_DEFAULT_REGION")
-        or "us-east-1"
+        or arn_region
+        or "ap-south-2"
     ).strip()
+
+    if not region:
+        raise DatabaseConnectionError("AWS region cannot be empty. Configure AWS_REGION or use a valid secret ARN.")
 
     try:
         import boto3
@@ -119,6 +135,7 @@ def get_rds_credentials() -> dict[str, Any]:
             "port": port,
             "dbname": dbname,
             "username": username,
+            "region": region,
         }
     except ImportError as err:
         logger.error("boto3 is required for AWS Secrets Manager integration: %s", err)
@@ -140,9 +157,15 @@ class RDSConnectionPoolManager:
     _instance: Optional[RDSConnectionPoolManager] = None
     _lock = threading.Lock()
 
-    def __init__(self, minconn: int = 1, maxconn: int = 20):
-        self.minconn = minconn
-        self.maxconn = maxconn
+    def __init__(self, minconn: Optional[int] = None, maxconn: Optional[int] = None):
+        try:
+            self.minconn = minconn or max(1, int(os.getenv("RDS_POOL_MIN", "2")))
+        except ValueError:
+            self.minconn = 2
+        try:
+            self.maxconn = maxconn or max(self.minconn, int(os.getenv("RDS_POOL_MAX", "10")))
+        except ValueError:
+            self.maxconn = 10
         self._pool: Optional[pool.ThreadedConnectionPool] = None
         self._pool_lock = threading.Lock()
         self._config: Optional[dict[str, Any]] = None
@@ -189,7 +212,7 @@ class RDSConnectionPoolManager:
                     self._config.get("masked_url"),
                 )
             except Exception as exc:
-                logger.error("Failed to connect to RDS PostgreSQL: %s", exc)
+                logger.error("Failed to connect to RDS PostgreSQL: %s", type(exc).__name__)
                 raise DatabaseConnectionError(
                     f"Unable to establish RDS connection pool: {type(exc).__name__}"
                 ) from exc
@@ -204,9 +227,16 @@ class RDSConnectionPoolManager:
         try:
             conn = self._pool.getconn()
             if conn.closed:
-                # Connection was closed, reconnect
+                # Discard dead connection and reacquire
+                try:
+                    self._pool.putconn(conn, close=True)
+                except Exception:
+                    pass
                 conn = self._pool.getconn()
             yield conn
+        except pool.PoolError as exc:
+            logger.error("RDS connection pool exhausted (maxconn=%d): %s", self.maxconn, exc)
+            raise DatabaseConnectionError(f"RDS connection pool exhausted: {exc}") from exc
         except Exception as exc:
             if conn and not conn.closed:
                 try:
@@ -283,7 +313,7 @@ class RDSConnectionPoolManager:
             val = self.execute_query("SELECT 1 AS healthy;", fetch="scalar")
             return val == 1
         except Exception as exc:
-            logger.warning("RDS health check failed: %s", exc)
+            logger.warning("RDS health check failed: %s", type(exc).__name__)
             return False
 
     def close(self) -> None:

@@ -11,7 +11,7 @@ import os
 from pathlib import Path
 
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from slowapi import _rate_limit_exceeded_handler
@@ -118,9 +118,22 @@ app.include_router(leetcode_router)
 
 # ── Health checks ────────────────────────────────────────────────────────────
 
+from services.rds_client import check_rds_health
+
+
+@app.on_event("startup")
+def validate_production_environment():
+    """Fail-fast validation for critical security invariants at startup."""
+    env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or os.getenv("ENV") or "").lower()
+    if env in ("production", "prod") and os.getenv("DISABLE_AUTH") == "true":
+        raise RuntimeError("SECURITY INVARIANT VIOLATION: DISABLE_AUTH is strictly forbidden in production!")
+
+
+# ── Health & Diagnostics ──────────────────────────────────────────────────────
+
 @app.get("/")
 def root():
-    """Health check endpoint."""
+    """Default service status endpoint."""
     return {
         "status": "ok",
         "app": "Interview Practice Platform",
@@ -128,18 +141,51 @@ def root():
     }
 
 
+@app.get("/health/live")
+def liveness():
+    """Process liveness probe: verifies application process is running and responding."""
+    return {
+        "status": "live",
+        "app": "Interview Practice Platform",
+        "version": "1.0.0",
+    }
+
+
+@app.get("/health/ready")
+def readiness(response: Response):
+    """Database readiness probe: verifies Amazon RDS connection pool and connectivity."""
+    db_ok = check_rds_health()
+    if not db_ok:
+        response.status_code = 503
+        return {
+            "status": "not_ready",
+            "database": "disconnected",
+            "detail": "Amazon RDS PostgreSQL connectivity check failed",
+        }
+    return {
+        "status": "ready",
+        "database": "connected",
+    }
+
+
 @app.get("/health")
-def health():
-    """Detailed health check."""
+def health(response: Response):
+    """Detailed health check for all platform services."""
+    rds_ok = check_rds_health()
     checks = {
+        "rds_connected": rds_ok,
         "gemini_key_set": bool(os.getenv("GEMINI_API_KEY", "").strip()),
         "supabase_url_set": bool(os.getenv("SUPABASE_URL", "").strip()),
         "supabase_key_set": bool(os.getenv("SUPABASE_SERVICE_KEY", "").strip()),
     }
+    all_ok = all(checks.values())
+    if not rds_ok:
+        response.status_code = 503
     return {
-        "status": "ok" if all(checks.values()) else "partial",
+        "status": "ok" if all_ok else ("degraded" if rds_ok else "unhealthy"),
         "checks": checks,
     }
+
 
 if __name__ == "__main__":
     import uvicorn

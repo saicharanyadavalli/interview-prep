@@ -124,3 +124,65 @@ def test_rds_pool_check_health_false():
     pool_mgr = RDSConnectionPoolManager()
     with patch.object(pool_mgr, "execute_query", side_effect=Exception("Connection refused")):
         assert pool_mgr.check_health() is False
+
+
+def test_get_rds_credentials_default_region_is_ap_south_2(monkeypatch):
+    """Verify get_rds_credentials defaults to ap-south-2 when AWS_REGION is unset."""
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    monkeypatch.delenv("RDS_DATABASE_URL", raising=False)
+    monkeypatch.delenv("AWS_REGION", raising=False)
+    monkeypatch.delenv("AWS_DEFAULT_REGION", raising=False)
+    monkeypatch.setenv("RDS_SECRET_NAME", "interview-prep/rds/app")
+
+    secret_payload = json.dumps({"username": "u", "password": "p", "host": "h", "port": 5432, "dbname": "db"})
+    mock_boto = MagicMock()
+    mock_boto.get_secret_value.return_value = {"SecretString": secret_payload}
+
+    with patch("boto3.client") as mock_client_factory:
+        mock_client_factory.return_value = mock_boto
+        creds = get_rds_credentials()
+        assert creds["region"] == "ap-south-2"
+        mock_client_factory.assert_called_with("secretsmanager", region_name="ap-south-2")
+
+
+def test_get_rds_credentials_extracts_region_from_arn(monkeypatch):
+    """Verify get_rds_credentials extracts region directly from RDS_SECRET_ARN."""
+    monkeypatch.delenv("DATABASE_URL", raising=False)
+    monkeypatch.delenv("RDS_DATABASE_URL", raising=False)
+    monkeypatch.delenv("AWS_REGION", raising=False)
+    monkeypatch.delenv("AWS_DEFAULT_REGION", raising=False)
+    arn = "arn:aws:secretsmanager:ap-south-2:808431466075:secret:interview-prep/rds/app-TVJeDz"
+    monkeypatch.setenv("RDS_SECRET_ARN", arn)
+
+    secret_payload = json.dumps({"username": "u", "password": "p", "host": "h", "port": 5432, "dbname": "db"})
+    mock_boto = MagicMock()
+    mock_boto.get_secret_value.return_value = {"SecretString": secret_payload}
+
+    with patch("boto3.client") as mock_client_factory:
+        mock_client_factory.return_value = mock_boto
+        creds = get_rds_credentials()
+        assert creds["region"] == "ap-south-2"
+        mock_client_factory.assert_called_with("secretsmanager", region_name="ap-south-2")
+
+
+def test_rds_pool_custom_min_max_env(monkeypatch):
+    """Verify RDSConnectionPoolManager respects RDS_POOL_MIN and RDS_POOL_MAX."""
+    monkeypatch.setenv("RDS_POOL_MIN", "4")
+    monkeypatch.setenv("RDS_POOL_MAX", "16")
+    mgr = RDSConnectionPoolManager()
+    assert mgr.minconn == 4
+    assert mgr.maxconn == 16
+
+
+def test_rds_pool_exhausted_raises_database_connection_error():
+    """Verify pool.PoolError is converted to DatabaseConnectionError."""
+    from psycopg2 import pool as psycopg2_pool
+    mgr = RDSConnectionPoolManager()
+    mgr._pool = MagicMock()
+    mgr._pool.getconn.side_effect = psycopg2_pool.PoolError("connection pool exhausted")
+
+    with pytest.raises(DatabaseConnectionError) as exc_info:
+        with mgr.get_connection():
+            pass
+    assert "connection pool exhausted" in str(exc_info.value).lower()
+

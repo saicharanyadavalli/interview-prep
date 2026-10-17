@@ -23,11 +23,11 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 
 def _ensure_user_in_rds(user: dict) -> None:
     """Ensure authenticated user exists in RDS user_profiles table."""
-    try:
-        user_id = str(user.get("id", "")).strip()
-        if not user_id:
-            return
+    user_id = str(user.get("id", "")).strip()
+    if not user_id:
+        return
 
+    try:
         existing = rds_client.query(
             "SELECT id FROM user_profiles WHERE id = %s LIMIT 1",
             (user_id,),
@@ -37,10 +37,12 @@ def _ensure_user_in_rds(user: dict) -> None:
             return
 
         email = str(user.get("email", "")).strip()
-        base_username = (
+        raw_username = (
             str(user.get("username", "")).strip()
             or (email.split("@")[0] if email else f"user_{user_id[:8]}")
         ).lower()
+        # Truncate to 40 characters to reserve room for suffix within VARCHAR(50)
+        base_username = raw_username[:40]
 
         # Check if the proposed username is already taken by another user
         username = base_username
@@ -67,8 +69,14 @@ def _ensure_user_in_rds(user: dict) -> None:
                 user.get("avatar_url", "") or "",
             ),
         )
+    except HTTPException:
+        raise
     except Exception as exc:
-        logger.warning("Could not auto-sync user %s into RDS: %s", user.get("id"), exc)
+        logger.error("Could not auto-sync user %s into RDS: %s", user.get("id"), exc)
+        raise HTTPException(
+            status_code=503,
+            detail="Database service temporarily unavailable. Could not initialize user profile.",
+        ) from exc
 
 
 def get_current_user(authorization: str | None = Header(None)) -> dict:
@@ -78,6 +86,14 @@ def get_current_user(authorization: str | None = Header(None)) -> dict:
     and returns the authenticated user dictionary. Raises 401 on failure.
     """
     if os.getenv("DISABLE_AUTH") == "true":
+        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or os.getenv("ENV") or "").lower()
+        if env in ("production", "prod"):
+            logger.critical("SECURITY INVARIANT VIOLATION: DISABLE_AUTH is strictly forbidden in production!")
+            raise HTTPException(
+                status_code=500,
+                detail="Security misconfiguration: DISABLE_AUTH is forbidden in production environment.",
+            )
+
         logger.warning("DISABLE_AUTH is enabled — all requests bypass authentication. DO NOT use in production.")
         mock_user = {
             "id": "12345678-1234-1234-1234-123456789012",
@@ -125,7 +141,8 @@ def create_session(request: Request, response: Response, payload: SessionRequest
         raise HTTPException(status_code=401, detail="Invalid or expired token.")
 
     email = user.get("email", "")
-    username = user.get("username") or (email.split("@")[0] if email else f"user_{user['id'][:8]}").lower()
+    raw_username = (user.get("username") or (email.split("@")[0] if email else f"user_{user['id'][:8]}")).lower()
+    username = raw_username[:40]
 
     try:
         rds_client.mutate(
@@ -162,16 +179,18 @@ def create_session(request: Request, response: Response, payload: SessionRequest
                 name=db_user.get("name"),
                 avatar_url=db_user.get("avatar_url"),
             )
+        raise HTTPException(
+            status_code=503,
+            detail="Database profile retrieval failed after synchronization.",
+        )
+    except HTTPException:
+        raise
     except Exception as exc:
-        logger.warning("Session RDS user sync error for user %s: %s", user.get("id"), exc)
-
-    return UserResponse(
-        id=user["id"],
-        email=user["email"],
-        username=user.get("username"),
-        name=user.get("name"),
-        avatar_url=user.get("avatar_url"),
-    )
+        logger.error("Session RDS user sync error for user %s: %s", user.get("id"), exc)
+        raise HTTPException(
+            status_code=503,
+            detail="Database service temporarily unavailable. Could not synchronize user session.",
+        ) from exc
 
 
 @router.post("/resolve-username", response_model=ResolveUsernameResponse)

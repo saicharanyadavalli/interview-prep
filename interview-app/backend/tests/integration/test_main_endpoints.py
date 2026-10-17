@@ -16,14 +16,41 @@ def test_root_health_check_returns_200_ok(unauth_client: TestClient):
 
 
 def test_health_check_returns_status_and_checks(unauth_client: TestClient):
-    """Verify GET /health checks environment configuration variables."""
+    """Verify GET /health checks environment configuration and RDS status."""
     res = unauth_client.get("/health")
     assert res.status_code == 200
     data = res.json()
-    assert data["status"] in ("ok", "partial")
+    assert data["status"] in ("ok", "degraded", "partial")
     assert "checks" in data
     assert "gemini_key_set" in data["checks"]
     assert "supabase_url_set" in data["checks"]
+    assert "rds_connected" in data["checks"]
+
+
+def test_health_live_endpoint(unauth_client: TestClient):
+    """Verify GET /health/live returns 200 liveness probe."""
+    res = unauth_client.get("/health/live")
+    assert res.status_code == 200
+    data = res.json()
+    assert data["status"] == "live"
+
+
+def test_health_ready_endpoint_healthy(unauth_client: TestClient):
+    """Verify GET /health/ready returns 200 when database check succeeds."""
+    with patch("main.check_rds_health", return_value=True):
+        res = unauth_client.get("/health/ready")
+        assert res.status_code == 200
+        assert res.json()["status"] == "ready"
+        assert res.json()["database"] == "connected"
+
+
+def test_health_ready_endpoint_unhealthy_returns_503(unauth_client: TestClient):
+    """Verify GET /health/ready returns 503 when database connectivity fails."""
+    with patch("main.check_rds_health", return_value=False):
+        res = unauth_client.get("/health/ready")
+        assert res.status_code == 503
+        assert res.json()["status"] == "not_ready"
+        assert res.json()["database"] == "disconnected"
 
 
 def test_cors_headers_present_on_response(unauth_client: TestClient):
