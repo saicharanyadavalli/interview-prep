@@ -73,7 +73,7 @@ class ProfileUpdateRequest(BaseModel):
     username: Optional[str] = Field(None, min_length=3, max_length=50)
     name: Optional[str] = Field(None, max_length=120)
     phone: Optional[str] = Field(None, max_length=15)
-    avatar_url: Optional[str] = Field(None, max_length=512)
+    avatar_url: Optional[str] = Field(None, max_length=2500000)
 
     @field_validator("username")
     @classmethod
@@ -114,11 +114,13 @@ class ProfileUpdateRequest(BaseModel):
         if v is None:
             return v
         v = v.strip()
-        if v and not (v.startswith("https://") or v.startswith("data:image/")):
-            raise ValueError(
-                "avatar_url must start with 'https://' or be a data: image URI."
-            )
-        return v
+        if not v:
+            return ""
+        if v.startswith("https://") or v.startswith("data:image/"):
+            return v
+        raise ValueError(
+            "avatar_url must start with 'https://' or be a data: image URI."
+        )
 
 
 # ---------- Questions ----------

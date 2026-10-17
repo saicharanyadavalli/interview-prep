@@ -80,6 +80,9 @@ class MockQueryBuilder:
     def eq(self, column: str, value: Any):
         return self
 
+    def neq(self, column: str, value: Any):
+        return self
+
     def in_(self, column: str, values: list[Any]):
         return self
 

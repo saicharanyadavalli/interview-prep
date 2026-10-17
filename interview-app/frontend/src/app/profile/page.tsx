@@ -1,328 +1,590 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import Image from "next/image";
 import { API } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
-import { User, Pencil } from "lucide-react";
+import { UserAvatar } from "@/components/UserAvatar";
+import {
+  validateAvatarFile,
+  optimizeAvatarImage,
+  MAX_AVATAR_BYTES,
+} from "@/utils/avatar-validation";
+import { User, Pencil, RefreshCw, CheckCircle, AlertCircle, Loader2 } from "lucide-react";
 
-const AVATAR_MAX_BYTES = 512 * 1024;
-
-function readImageDimensions(file: File): Promise<{ width: number; height: number; image: HTMLImageElement }> {
-  return new Promise((resolve, reject) => {
-    const url = URL.createObjectURL(file);
-    const img = new window.Image();
-    img.onload = () => {
-      const width = img.naturalWidth || img.width;
-      const height = img.naturalHeight || img.height;
-      URL.revokeObjectURL(url);
-      resolve({ width, height, image: img });
-    };
-    img.onerror = () => {
-      URL.revokeObjectURL(url);
-      reject(new Error("Could not read image."));
-    };
-    img.src = url;
-  });
-}
-
-function canvasToBlob(canvas: HTMLCanvasElement, quality: number): Promise<Blob | null> {
-  return new Promise((resolve) => {
-    canvas.toBlob((blob) => resolve(blob), "image/jpeg", quality);
-  });
-}
-
-async function compressAvatarToLimit(file: File, maxBytes = AVATAR_MAX_BYTES): Promise<File> {
-  if (!file || !file.type.startsWith("image/")) {
-    throw new Error("Please choose a valid image file.");
-  }
-
-  if (file.size <= maxBytes) {
-    return file;
-  }
-
-  const { width, height, image } = await readImageDimensions(file);
-  const canvas = document.createElement("canvas");
-  const ctx = canvas.getContext("2d");
-  if (!ctx) {
-    throw new Error("Image compression is not supported in this browser.");
-  }
-
-  let targetW = width;
-  let targetH = height;
-  const maxDim = 1400;
-  if (Math.max(targetW, targetH) > maxDim) {
-    const ratio = maxDim / Math.max(targetW, targetH);
-    targetW = Math.max(1, Math.round(targetW * ratio));
-    targetH = Math.max(1, Math.round(targetH * ratio));
-  }
-
-  for (let round = 0; round < 6; round += 1) {
-    canvas.width = targetW;
-    canvas.height = targetH;
-    ctx.clearRect(0, 0, targetW, targetH);
-    ctx.drawImage(image, 0, 0, targetW, targetH);
-
-    for (const quality of [0.9, 0.82, 0.74, 0.66, 0.58, 0.5, 0.42]) {
-      const blob = await canvasToBlob(canvas, quality);
-      if (blob && blob.size <= maxBytes) {
-        const base = (file.name || "avatar").replace(/\.[^.]+$/, "");
-        return new File([blob], `${base}.jpg`, {
-          type: "image/jpeg",
-          lastModified: Date.now(),
-        });
-      }
-    }
-
-    targetW = Math.max(1, Math.round(targetW * 0.85));
-    targetH = Math.max(1, Math.round(targetH * 0.85));
-  }
-
-  throw new Error("Could not compress image to 512KB. Try a smaller image.");
-}
-
-function buildAvatarFallback(name: string) {
-  const trimmed = String(name || "").trim();
-  const parts = trimmed.split(/\s+/).filter(Boolean);
-  const initials = parts.length > 1
-    ? (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
-    : (parts[0] ? parts[0][0].toUpperCase() : "U");
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect width="96" height="96" rx="48" fill="#0f766e"/><text x="48" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ffffff">${initials}</text></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
+type UploadState = "idle" | "validating" | "preview_ready" | "uploading" | "success" | "error";
 
 export default function ProfilePage() {
-  const { user } = useAuth();
-  
+  const { user, refreshProfile } = useAuth();
+
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+
+  // Status and async loading states
   const [statusText, setStatusText] = useState("Loading profile...");
-  const [isBusy, setIsBusy] = useState(false);
-  
+  const [statusType, setStatusType] = useState<"info" | "success" | "error">("info");
+  const [isSaving, setIsSaving] = useState(false);
+  const [usernameError, setUsernameError] = useState<string | null>(null);
+
+  // Avatar upload state machine
+  const [uploadState, setUploadState] = useState<UploadState>("idle");
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [pendingFile, setPendingFile] = useState<File | null>(null);
+
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Deterministically clean up object URLs when previewUrl changes or component unmounts
+  useEffect(() => {
+    return () => {
+      if (previewUrl && previewUrl.startsWith("blob:")) {
+        try {
+          URL.revokeObjectURL(previewUrl);
+        } catch (_) {}
+      }
+    };
+  }, [previewUrl]);
+
+  // Load user profile on mount
   useEffect(() => {
     let mounted = true;
     if (!user) {
       setStatusText("Not signed in.");
+      setStatusType("info");
       return;
     }
-    
+
     setStatusText("Loading profile...");
-    
+    setStatusType("info");
+
     const loadData = async () => {
       try {
-        const cached = API.getCachedProfile ? API.getCachedProfile(12 * 60 * 60 * 1000) : null;
-        if (cached) {
-          if (mounted) {
-            setName(cached.name || "");
-            setUsername(cached.username || "");
-            setPhone(cached.phone || "");
-            setEmail(cached.email || user.email || "");
-            setAvatarUrl(cached.avatar_url || "");
-            setStatusText("Profile loaded.");
-          }
+        // Fast path: load user-scoped cache immediately
+        const cached = API.getCachedProfile ? API.getCachedProfile(12 * 60 * 60 * 1000, user.id) : null;
+        if (cached && mounted) {
+          setName(cached.name || "");
+          setUsername(cached.username || "");
+          setPhone(cached.phone || "");
+          setEmail(cached.email || user.email || "");
+          setAvatarUrl(cached.avatar_url || "");
+          setStatusText("Profile loaded.");
+          setStatusType("info");
         }
-        
-        const profile = await API.getMyProfile({ preferCache: false });
-        if (mounted) {
+
+        // Authoritative fetch from server
+        const profile = await API.getMyProfile({ preferCache: false, userId: user.id });
+        if (mounted && profile) {
           setName(profile.name || "");
           setUsername(profile.username || "");
           setPhone(profile.phone || "");
           setEmail(profile.email || user.email || "");
           setAvatarUrl(profile.avatar_url || "");
           setStatusText("Profile loaded.");
+          setStatusType("info");
         }
       } catch (err: any) {
-        if (mounted) setStatusText(`Could not load profile: ${err.message}`);
+        if (mounted) {
+          setStatusText(`Could not load profile: ${err.message || "Unknown error"}`);
+          setStatusType("error");
+        }
       }
     };
-    
+
     loadData();
-    
-    return () => { mounted = false; };
+
+    return () => {
+      mounted = false;
+    };
   }, [user]);
 
+  // Username validation
+  const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value.toLowerCase().trim();
+    setUsername(val);
+    if (val && !/^[a-z0-9_]{3,50}$/.test(val)) {
+      setUsernameError("Username must be 3-50 lowercase letters, numbers, or underscores.");
+    } else {
+      setUsernameError(null);
+    }
+  };
+
+  // Phone number input sanitization (digits only, max 10)
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const digitsOnly = String(e.target.value || "").replace(/\D+/g, "").slice(0, 10);
     setPhone(digitsOnly);
   };
-  
+
   const handlePhonePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
     e.preventDefault();
     const pasted = (e.clipboardData.getData("text") || "").replace(/\D+/g, "").slice(0, 10);
     setPhone(pasted);
   };
 
-  const handleSave = async () => {
-    setIsBusy(true);
-    setStatusText("Saving profile...");
+  // Process and upload avatar file
+  const processAndUploadAvatar = async (file: File) => {
+    setUploadState("validating");
+    setUploadError(null);
+    setPendingFile(file);
+
+    // 1. Client-side security and dimension validation
+    const validation = await validateAvatarFile(file);
+    if (!validation.valid) {
+      setUploadState("error");
+      setUploadError(validation.error || "Invalid image file.");
+      return;
+    }
+
+    // 2. Generate immediate preview
+    const localBlobUrl = URL.createObjectURL(file);
+    setPreviewUrl(localBlobUrl);
+    setUploadState("uploading");
+    setStatusText("Optimizing and uploading avatar...");
+    setStatusType("info");
+
     try {
-      const updated = await API.updateMyProfile({
+      // 3. Optimize image to prevent excessive bandwidth
+      const optimized = await optimizeAvatarImage(file, 1024, 0.88);
+
+      // 4. Send to backend avatar upload endpoint
+      const result = await API.uploadProfileAvatar(optimized);
+
+      if (result && result.avatar_url) {
+        setAvatarUrl(result.avatar_url);
+        setUploadState("success");
+        setPendingFile(null);
+        setStatusText("Avatar uploaded and saved successfully.");
+        setStatusType("success");
+
+        // Revoke the temporary blob preview URL
+        if (localBlobUrl) {
+          try {
+            URL.revokeObjectURL(localBlobUrl);
+          } catch (_) {}
+          setPreviewUrl(null);
+        }
+
+        if (refreshProfile) {
+          refreshProfile();
+        }
+      } else {
+        throw new Error(result?.error || "Failed to receive new avatar URL.");
+      }
+    } catch (err: any) {
+      setUploadState("error");
+      const message = err.message || "Failed to upload avatar.";
+      setUploadError(message);
+      setStatusText(`Avatar upload failed: ${message}`);
+      setStatusType("error");
+    } finally {
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
+    }
+  };
+
+  const handleAvatarFileSelected = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      processAndUploadAvatar(file);
+    }
+  };
+
+  const handleRetryUpload = () => {
+    if (pendingFile) {
+      processAndUploadAvatar(pendingFile);
+    } else if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+
+  // Save profile details
+  const handleSave = async () => {
+    if (usernameError) {
+      setStatusText(usernameError);
+      setStatusType("error");
+      return;
+    }
+
+    setIsSaving(true);
+    setStatusText("Saving profile...");
+    setStatusType("info");
+
+    try {
+      const payload: Record<string, string> = {
         name: name.trim(),
         username: username.trim().toLowerCase(),
         phone: phone.trim(),
         avatar_url: avatarUrl.trim(),
-      });
-      setName(updated.name || "");
-      setUsername(updated.username || "");
-      setPhone(updated.phone || "");
-      setEmail(updated.email || email);
-      setAvatarUrl(updated.avatar_url || "");
-      setStatusText("Profile saved.");
+      };
+
+      const updated = await API.updateMyProfile(payload);
+      if (updated) {
+        setName(updated.name || "");
+        setUsername(updated.username || "");
+        setPhone(updated.phone || "");
+        setEmail(updated.email || email);
+        setAvatarUrl(updated.avatar_url || avatarUrl);
+        setStatusText("Profile saved successfully.");
+        setStatusType("success");
+        if (refreshProfile) {
+          refreshProfile();
+        }
+      }
     } catch (err: any) {
-      setStatusText(`Save failed: ${err.message}`);
+      const msg = err.message || "Failed to save profile.";
+      setStatusText(`Save failed: ${msg}`);
+      setStatusType("error");
     } finally {
-      setIsBusy(false);
+      setIsSaving(false);
     }
   };
 
-  const handleAvatarChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    
-    setIsBusy(true);
-    setStatusText("Compressing image...");
-    
-    try {
-      const compressed = await compressAvatarToLimit(file, AVATAR_MAX_BYTES);
-      setStatusText(`Uploading image (${Math.round(compressed.size / 1024)}KB)...`);
-      
-      const data = await API.uploadProfileAvatar(compressed);
-      setAvatarUrl(data.avatar_url || "");
-      
-      // Update cache
-      if (API.setCachedProfile) {
-        API.setCachedProfile({
-          ...(API.getCachedProfile ? API.getCachedProfile(0) : {}),
-          name: name.trim(),
-          username: username.trim().toLowerCase(),
-          email: email.trim(),
-          phone: phone.trim(),
-          avatar_url: data.avatar_url || "",
-        });
-      }
-      
-      setStatusText("Avatar uploaded and saved.");
-    } catch (err: any) {
-      setStatusText(`Avatar upload failed: ${err.message}`);
-    } finally {
-      setIsBusy(false);
-      if (fileInputRef.current) fileInputRef.current.value = "";
-    }
-  };
+  const isBusy = isSaving || uploadState === "validating" || uploadState === "uploading";
 
   return (
     <main className="main-content">
       <div className="page-header">
-        <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-          <User size={28} className="text-teal" /> Profile
+        <h1 style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+          <User size={28} className="text-teal" /> Profile Settings
         </h1>
       </div>
 
-      <section className="card-flat section" style={{ padding: '1.5rem', background: 'var(--paper)', borderRadius: 'var(--radius-lg)', border: '1px solid var(--line)' }}>
-        <div className="card-header" style={{ marginBottom: '1.5rem' }}>
-          <h3 style={{ fontSize: '1.1rem' }}>Account Details</h3>
+      <section
+        className="card-flat section"
+        style={{
+          padding: "1.75rem",
+          background: "var(--paper)",
+          borderRadius: "var(--radius-lg)",
+          border: "1px solid var(--line)",
+          maxWidth: "760px",
+        }}
+      >
+        <div className="card-header" style={{ marginBottom: "1.5rem" }}>
+          <h2 style={{ fontSize: "1.2rem", fontWeight: 600 }}>Account & Identity</h2>
+          <p className="text-sm text-muted" style={{ marginTop: "0.25rem" }}>
+            Manage your personal profile, handle, contact information, and avatar image.
+          </p>
         </div>
-        
-        <div className="form-row section" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
-          <div className="control-group" style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label htmlFor="profileName" style={{ fontWeight: 500 }}>Full Name</label>
-            <input 
-              id="profileName" 
-              type="text" 
-              placeholder="Enter full name" 
+
+        {/* Avatar Section */}
+        <div
+          className="avatar-management-section"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "1.5rem",
+            padding: "1.25rem",
+            background: "var(--bg)",
+            borderRadius: "var(--radius)",
+            border: "1px solid var(--line)",
+            marginBottom: "1.5rem",
+          }}
+        >
+          <div
+            className="profile-avatar-container"
+            style={{
+              position: "relative",
+              width: "96px",
+              height: "96px",
+              flexShrink: 0,
+            }}
+          >
+            <UserAvatar
+              src={previewUrl || avatarUrl}
+              name={name}
+              username={username}
+              size={96}
+              priority={true}
+              alt="Profile avatar"
+              style={{
+                width: "96px",
+                height: "96px",
+                border: "2px solid var(--teal)",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+              }}
+            />
+
+            {(uploadState === "validating" || uploadState === "uploading") && (
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  borderRadius: "50%",
+                  background: "rgba(0,0,0,0.55)",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  color: "#ffffff",
+                }}
+                aria-label="Processing avatar"
+              >
+                <Loader2 size={28} className="animate-spin" />
+              </div>
+            )}
+
+            <button
+              id="profileAvatarEditBtn"
+              type="button"
+              aria-label="Upload profile avatar"
+              title="Change avatar picture"
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isBusy}
+              style={{
+                position: "absolute",
+                bottom: 0,
+                right: 0,
+                background: "var(--teal)",
+                color: "#ffffff",
+                border: "2px solid var(--paper)",
+                borderRadius: "50%",
+                width: "32px",
+                height: "32px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                cursor: isBusy ? "not-allowed" : "pointer",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+              }}
+            >
+              <Pencil size={14} />
+            </button>
+
+            <input
+              id="profileAvatarFile"
+              type="file"
+              accept=".jpg,.jpeg,.png,.webp,.gif,image/jpeg,image/png,image/webp,image/gif"
+              aria-label="Upload avatar image file"
+              ref={fileInputRef}
+              onChange={handleAvatarFileSelected}
+              style={{ display: "none" }}
+            />
+          </div>
+
+          <div style={{ flex: 1 }}>
+            <h3 style={{ fontSize: "1rem", fontWeight: 600, margin: "0 0 0.25rem 0" }}>
+              Profile Photo
+            </h3>
+            <p className="text-sm text-muted" style={{ margin: "0 0 0.5rem 0", fontSize: "0.85rem" }}>
+              Accepted formats: JPG, PNG, WebP, GIF. Maximum file size: 5 MB.
+            </p>
+
+            {uploadState === "error" && uploadError && (
+              <div
+                role="alert"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  color: "var(--danger, #ef4444)",
+                  fontSize: "0.85rem",
+                  marginTop: "0.25rem",
+                }}
+              >
+                <AlertCircle size={16} />
+                <span>{uploadError}</span>
+                {pendingFile && (
+                  <button
+                    type="button"
+                    onClick={handleRetryUpload}
+                    className="btn btn-sm btn-outline"
+                    style={{
+                      marginLeft: "0.5rem",
+                      padding: "0.2rem 0.5rem",
+                      fontSize: "0.75rem",
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "0.25rem",
+                    }}
+                  >
+                    <RefreshCw size={12} /> Retry
+                  </button>
+                )}
+              </div>
+            )}
+
+            {uploadState === "success" && (
+              <div
+                role="status"
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.35rem",
+                  color: "var(--teal, #0f766e)",
+                  fontSize: "0.85rem",
+                }}
+              >
+                <CheckCircle size={15} />
+                <span>Avatar updated!</span>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Input Details */}
+        <div
+          className="form-row section"
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "1.25rem",
+            marginBottom: "1.5rem",
+          }}
+        >
+          <div className="control-group" style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            <label htmlFor="profileName" style={{ fontWeight: 500, fontSize: "0.9rem" }}>
+              Full Name
+            </label>
+            <input
+              id="profileName"
+              type="text"
+              placeholder="e.g. John Doe"
               value={name}
-              onChange={e => setName(e.target.value)}
-              style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--ink)' }}
+              onChange={(e) => setName(e.target.value)}
+              disabled={isBusy}
+              style={{
+                padding: "0.6rem 0.85rem",
+                borderRadius: "var(--radius)",
+                border: "1px solid var(--line)",
+                background: "var(--bg)",
+                color: "var(--ink)",
+                fontSize: "0.95rem",
+              }}
             />
           </div>
-          <div className="control-group" style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label htmlFor="profileUsername" style={{ fontWeight: 500 }}>Username</label>
-            <input 
-              id="profileUsername" 
-              type="text" 
-              placeholder="Enter username" 
+
+          <div className="control-group" style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            <label htmlFor="profileUsername" style={{ fontWeight: 500, fontSize: "0.9rem" }}>
+              Username
+            </label>
+            <input
+              id="profileUsername"
+              type="text"
+              placeholder="e.g. johndoe"
               value={username}
-              onChange={e => setUsername(e.target.value)}
-              style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--ink)' }}
+              onChange={handleUsernameChange}
+              disabled={isBusy}
+              style={{
+                padding: "0.6rem 0.85rem",
+                borderRadius: "var(--radius)",
+                border: usernameError ? "1px solid var(--danger, #ef4444)" : "1px solid var(--line)",
+                background: "var(--bg)",
+                color: "var(--ink)",
+                fontSize: "0.95rem",
+              }}
             />
+            {usernameError && (
+              <span style={{ color: "var(--danger, #ef4444)", fontSize: "0.78rem" }}>
+                {usernameError}
+              </span>
+            )}
           </div>
-          <div className="control-group" style={{ flex: 1, minWidth: '200px', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-            <label htmlFor="profilePhone" style={{ fontWeight: 500 }}>Phone Number</label>
-            <input 
-              id="profilePhone" 
-              type="text" 
-              inputMode="numeric" 
-              autoComplete="tel-national" 
-              pattern="[0-9]{10}" 
-              maxLength={10} 
-              placeholder="Enter 10-digit phone number"
+
+          <div className="control-group" style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+            <label htmlFor="profilePhone" style={{ fontWeight: 500, fontSize: "0.9rem" }}>
+              Phone Number
+            </label>
+            <input
+              id="profilePhone"
+              type="text"
+              inputMode="numeric"
+              autoComplete="tel-national"
+              pattern="[0-9]{10}"
+              maxLength={10}
+              placeholder="10-digit phone number"
               value={phone}
               onChange={handlePhoneChange}
               onPaste={handlePhonePaste}
-              style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--ink)' }}
-            />
-          </div>
-        </div>
-
-        <div className="control-group section" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-          <label htmlFor="profileEmail" style={{ fontWeight: 500 }}>Email</label>
-          <input 
-            id="profileEmail" 
-            type="email" 
-            disabled 
-            value={email}
-            style={{ padding: '0.5rem 1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--sidebar-bg)', color: 'var(--muted)', cursor: 'not-allowed' }}
-          />
-        </div>
-
-        <div className="control-group section" style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.5rem' }}>
-          <label style={{ fontWeight: 500 }}>Profile Picture</label>
-          <div className="profile-avatar-editor" style={{ position: 'relative', width: '96px', height: '96px', borderRadius: '50%', background: 'var(--sidebar-bg)' }}>
-            <Image 
-              id="profileAvatarPreview" 
-              className="profile-avatar-preview" 
-              src={avatarUrl || buildAvatarFallback(name)} 
-              onError={(e) => { e.currentTarget.srcset = buildAvatarFallback(name); }}
-              alt="Profile picture" 
-              width={96}
-              height={96}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
-            />
-            <button 
-              id="profileAvatarEditBtn" 
-              className="profile-avatar-edit-btn" 
-              type="button" 
-              aria-label="Upload profile picture"
-              onClick={() => fileInputRef.current?.click()}
               disabled={isBusy}
-              style={{ position: 'absolute', bottom: 0, right: 0, background: 'var(--teal)', color: 'white', border: 'none', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', fontSize: '12px' }}
-            >
-              <Pencil size={12} />
-            </button>
-            <input 
-              id="profileAvatarFile" 
-              className="profile-avatar-file-input" 
-              type="file" 
-              accept="image/*" 
-              aria-label="Choose profile picture"
-              ref={fileInputRef}
-              onChange={handleAvatarChange}
-              style={{ display: 'none' }}
+              style={{
+                padding: "0.6rem 0.85rem",
+                borderRadius: "var(--radius)",
+                border: "1px solid var(--line)",
+                background: "var(--bg)",
+                color: "var(--ink)",
+                fontSize: "0.95rem",
+              }}
             />
           </div>
-          <p className="text-sm text-muted" style={{ fontSize: '0.85rem' }}>Click the pencil icon to upload a profile image. It is automatically compressed to 512KB max.</p>
         </div>
 
-        <div className="status-bar section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2rem', padding: '1rem', background: 'var(--bg)', borderRadius: 'var(--radius)' }}>
-          <span id="profileStatus" className="status-text text-muted" style={{ fontSize: '0.9rem' }}>{statusText}</span>
-          <div className="status-right">
-            <button id="saveProfileBtn" className="btn btn-primary" type="button" onClick={handleSave} disabled={isBusy || !user}>Save Profile</button>
+        <div className="control-group section" style={{ display: "flex", flexDirection: "column", gap: "0.4rem", marginBottom: "1.75rem" }}>
+          <label htmlFor="profileEmail" style={{ fontWeight: 500, fontSize: "0.9rem" }}>
+            Email Address
+          </label>
+          <input
+            id="profileEmail"
+            type="email"
+            disabled
+            value={email}
+            style={{
+              padding: "0.6rem 0.85rem",
+              borderRadius: "var(--radius)",
+              border: "1px solid var(--line)",
+              background: "var(--sidebar-bg)",
+              color: "var(--muted)",
+              fontSize: "0.95rem",
+              cursor: "not-allowed",
+            }}
+          />
+          <span style={{ fontSize: "0.78rem", color: "var(--muted)" }}>
+            Email address is managed by your authentication provider.
+          </span>
+        </div>
+
+        {/* Status Bar */}
+        <div
+          className="status-bar section"
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: "1rem 1.25rem",
+            background: "var(--bg)",
+            borderRadius: "var(--radius)",
+            border: "1px solid var(--line)",
+          }}
+        >
+          <div
+            id="profileStatus"
+            role={statusType === "error" ? "alert" : "status"}
+            style={{
+              fontSize: "0.9rem",
+              fontWeight: 500,
+              color:
+                statusType === "error"
+                  ? "var(--danger, #ef4444)"
+                  : statusType === "success"
+                  ? "var(--teal, #0f766e)"
+                  : "var(--muted)",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.4rem",
+            }}
+          >
+            {statusType === "error" && <AlertCircle size={16} />}
+            {statusType === "success" && <CheckCircle size={16} />}
+            <span>{statusText}</span>
           </div>
+
+          <button
+            id="saveProfileBtn"
+            className="btn btn-primary"
+            type="button"
+            onClick={handleSave}
+            disabled={isBusy || !user || Boolean(usernameError)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              padding: "0.55rem 1.25rem",
+              fontWeight: 600,
+            }}
+          >
+            {isSaving && <Loader2 size={16} className="animate-spin" />}
+            Save Profile
+          </button>
         </div>
       </section>
     </main>

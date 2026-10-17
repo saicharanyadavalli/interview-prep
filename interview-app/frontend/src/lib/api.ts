@@ -41,13 +41,18 @@ export const API = {
   _PROFILE_CACHE_KEY: "ipp_profile_cache_v1",
   _activeRequests: new Map<string, Promise<any>>(),
 
-  getCachedProfile(maxAgeMs = 24 * 60 * 60 * 1000) {
+  getCachedProfile(maxAgeMs = 24 * 60 * 60 * 1000, expectedUserId?: string) {
     if (typeof window === "undefined") return null;
     try {
       const raw = localStorage.getItem(this._PROFILE_CACHE_KEY);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
       if (!parsed || typeof parsed !== "object" || !parsed.data) return null;
+
+      // If an expected user ID is provided, verify ownership to prevent account-bleed
+      if (expectedUserId && parsed.userId && parsed.userId !== expectedUserId) {
+        return null;
+      }
 
       const ts = Number(parsed.ts || 0);
       if (maxAgeMs > 0 && Date.now() - ts > maxAgeMs) {
@@ -59,13 +64,18 @@ export const API = {
     }
   },
 
-  setCachedProfile(profile: any) {
+  setCachedProfile(profile: any, userId?: string) {
     if (typeof window === "undefined") return;
     if (!profile || typeof profile !== "object") return;
     try {
+      const targetUserId = userId || profile.id || "";
       localStorage.setItem(
         this._PROFILE_CACHE_KEY,
-        JSON.stringify({ ts: Date.now(), data: profile })
+        JSON.stringify({ ts: Date.now(), userId: targetUserId, data: profile })
+      );
+      // Dispatch a window event so all reactive components update immediately
+      window.dispatchEvent(
+        new CustomEvent("ipp_profile_updated", { detail: profile })
       );
     } catch (_) {}
   },
@@ -74,6 +84,9 @@ export const API = {
     if (typeof window === "undefined") return;
     try {
       localStorage.removeItem(this._PROFILE_CACHE_KEY);
+      window.dispatchEvent(
+        new CustomEvent("ipp_profile_updated", { detail: null })
+      );
     } catch (_) {}
   },
 
@@ -410,9 +423,10 @@ export const API = {
     const maxAgeMs = Number.isFinite(Number(options.maxAgeMs))
       ? Number(options.maxAgeMs)
       : (24 * 60 * 60 * 1000);
+    const expectedUserId = options.userId;
 
     if (preferCache) {
-      const cached = this.getCachedProfile(maxAgeMs);
+      const cached = this.getCachedProfile(maxAgeMs, expectedUserId);
       if (cached && cached.username) {
         return cached;
       }
@@ -451,7 +465,7 @@ export const API = {
     } catch (_) {}
 
     if (profile) {
-      this.setCachedProfile(profile);
+      this.setCachedProfile(profile, profile.id);
     }
     return profile || { id: "", email: "", username: "", name: "", phone: "", avatar_url: "" };
   },
@@ -481,7 +495,9 @@ export const API = {
       method: "PUT",
       body: JSON.stringify(payload),
     });
-    this.setCachedProfile(updated);
+    if (updated) {
+      this.setCachedProfile(updated, updated.id);
+    }
     return updated;
   },
 
@@ -495,7 +511,8 @@ export const API = {
     });
     if (result && result.avatar_url) {
       const cached = this.getCachedProfile(0) || {};
-      this.setCachedProfile({ ...cached, avatar_url: result.avatar_url });
+      const updated = { ...cached, avatar_url: result.avatar_url };
+      this.setCachedProfile(updated, updated.id);
     }
     return result;
   },

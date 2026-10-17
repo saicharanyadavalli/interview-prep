@@ -14,6 +14,15 @@ interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  profile: {
+    id?: string;
+    name: string;
+    email: string;
+    avatar: string;
+    username: string;
+    phone?: string;
+  } | null;
+  refreshProfile: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (identifier: string, password: string) => Promise<{ error: string | null }>;
   signUpWithEmail: (email: string, password: string, username: string, fullName: string) => Promise<{ error: string | null; message?: string | null }>;
@@ -44,6 +53,14 @@ export function AuthProvider({
   const user = session?.user ?? null;
   // If SSR provided a session, we're not loading. Otherwise wait for client-side session fetch.
   const [loading, setLoading] = useState(!initialSession);
+  const [profile, setProfile] = useState<{
+    id?: string;
+    name: string;
+    email: string;
+    avatar: string;
+    username: string;
+    phone?: string;
+  } | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -84,6 +101,82 @@ export function AuthProvider({
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const refreshProfile = async () => {
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+    try {
+      const p = await API.getMyProfile({ preferCache: false, userId: user.id });
+      if (p) {
+        setProfile({
+          id: p.id,
+          name: p.name || "",
+          email: p.email || user.email || "",
+          avatar: p.avatar_url || "",
+          username: p.username || "",
+          phone: p.phone || "",
+        });
+      }
+    } catch (_) {}
+  };
+
+  useEffect(() => {
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+
+    // Attempt instant render from user-scoped localStorage cache
+    const cached = API.getCachedProfile ? API.getCachedProfile(24 * 60 * 60 * 1000, user.id) : null;
+    if (cached) {
+      setProfile({
+        id: cached.id || user.id,
+        name: cached.name || "",
+        email: cached.email || user.email || "",
+        avatar: cached.avatar_url || "",
+        username: cached.username || "",
+        phone: cached.phone || "",
+      });
+    } else {
+      const meta = user.user_metadata || {};
+      setProfile({
+        id: user.id,
+        name: meta.full_name || meta.name || (user.email ? user.email.split("@")[0] : "User"),
+        email: user.email || "",
+        avatar: meta.avatar_url || meta.picture || "",
+        username: meta.username || (user.email ? user.email.split("@")[0] : ""),
+      });
+    }
+
+    // Refresh profile in background from server
+    refreshProfile();
+
+    const handleProfileUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const data = customEvent.detail;
+      if (!data) {
+        setProfile(null);
+      } else {
+        setProfile({
+          id: data.id,
+          name: data.name || "",
+          email: data.email || user?.email || "",
+          avatar: data.avatar_url || "",
+          username: data.username || "",
+          phone: data.phone || "",
+        });
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("ipp_profile_updated", handleProfileUpdate);
+      return () => {
+        window.removeEventListener("ipp_profile_updated", handleProfileUpdate);
+      };
+    }
+  }, [user]);
 
 
 
@@ -209,22 +302,35 @@ export function AuthProvider({
     try {
       await logout();
       if (typeof window !== "undefined") {
-        localStorage.removeItem("ipp_profile_cache_v1");
+        if (API && typeof API.clearCachedProfile === "function") {
+          API.clearCachedProfile();
+        } else {
+          localStorage.removeItem("ipp_profile_cache_v1");
+        }
         localStorage.removeItem("questionsPageUiState");
         localStorage.removeItem("questionsCustomFolderV1");
         sessionStorage.clear();
       }
     } catch (_) {}
+    setProfile(null);
     window.location.replace("/login");
   };
 
   const getUserMeta = () => {
     if (!user) return { name: "User", email: "", avatar: "", username: "" };
+    if (profile) {
+      return {
+        name: profile.name || (user.email ? user.email.split("@")[0] : "User"),
+        email: profile.email || user.email || "",
+        avatar: profile.avatar || "",
+        username: profile.username || (user.email ? user.email.split("@")[0] : ""),
+      };
+    }
     const meta = user.user_metadata || {};
     let cached: any = null;
     try {
       if (typeof window !== "undefined" && API && typeof API.getCachedProfile === "function") {
-        cached = API.getCachedProfile(24 * 60 * 60 * 1000);
+        cached = API.getCachedProfile(24 * 60 * 60 * 1000, user.id);
       }
     } catch (_) {}
 
@@ -246,6 +352,8 @@ export function AuthProvider({
         user,
         session,
         loading,
+        profile,
+        refreshProfile,
         signInWithGoogle,
         signInWithEmail,
         signUpWithEmail,
