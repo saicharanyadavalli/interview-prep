@@ -644,7 +644,25 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
       assert.equal(resolved.origin, AWS_ORIGIN);
       assert.equal(resolved.pathname, '/evil.com');
     });
+
+    it('should block encoded slash and backslash attack vectors (/%2f%2f, /%5c, \\\\)', () => {
+      assert.equal(validateRedirectDestination('//evil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination('///evil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination('https://evil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination('\\evil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination('\\\\evil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination('/%2f%2fevil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination('/%5cevil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination('/%252f%252fevil.example'), '/dashboard');
+    });
+
+    it('should prevent recursive auth/callback loops and nested external callback redirects', () => {
+      assert.equal(validateRedirectDestination('/auth/callback'), '/dashboard');
+      assert.equal(validateRedirectDestination('/auth/callback?next=https://evil.example'), '/dashboard');
+      assert.equal(validateRedirectDestination(`${AWS_ORIGIN}/auth/callback?next=https://evil.example`), '/dashboard');
+    });
   });
+
 
   // ── cleanEnvValue & Quoted Environment Variable Handling ─────────────────
 

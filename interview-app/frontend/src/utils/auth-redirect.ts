@@ -315,8 +315,28 @@ export function validateRedirectDestination(
     return '/dashboard';
   }
 
-  // Reject backslashes (e.g. \evil.com, /\evil.com) and protocol-relative URLs (//evil.com)
-  if (trimmed.includes('\\') || trimmed.startsWith('//')) {
+  // Iteratively decode to catch encoded attack vectors (%2f -> /, %5c -> \, %25 -> %)
+  let decoded = trimmed;
+  for (let i = 0; i < 3; i++) {
+    try {
+      const next = decodeURIComponent(decoded);
+      if (next === decoded) break;
+      decoded = next;
+    } catch (_) {
+      break;
+    }
+  }
+
+  // Reject backslashes (e.g. \evil.com, /\evil.com, /%5cevil.com),
+  // protocol-relative URLs (//evil.com, /%2f%2fevil.com), and control chars
+  if (
+    decoded.includes('\\') ||
+    decoded.startsWith('//') ||
+    decoded.includes('/\\') ||
+    decoded.includes('\\/') ||
+    /^[\/\\]{2,}/.test(decoded) ||
+    decoded.startsWith('/\\')
+  ) {
     return '/dashboard';
   }
 
@@ -325,6 +345,10 @@ export function validateRedirectDestination(
     try {
       const parsed = new URL(trimmed, 'http://dummy.local');
       if (parsed.origin === 'http://dummy.local' && parsed.pathname.startsWith('/')) {
+        // Prevent redirect loops or nested open-redirects through callback chaining
+        if (parsed.pathname === '/auth/callback' || parsed.pathname.startsWith('/auth/callback/')) {
+          return '/dashboard';
+        }
         return parsed.pathname + parsed.search + parsed.hash;
       }
     } catch (_) {}
@@ -337,6 +361,10 @@ export function validateRedirectDestination(
     const origins = new Set(allowedOrigins.map((o) => o.toLowerCase()));
 
     if (origins.has(parsed.origin.toLowerCase())) {
+      // Prevent callback loops on absolute URLs
+      if (parsed.pathname === '/auth/callback' || parsed.pathname.startsWith('/auth/callback/')) {
+        return '/dashboard';
+      }
       // Prevent protocol-relative path bypass (e.g. http://16.113.92.222//evil.com -> //evil.com)
       const cleanPath = parsed.pathname.startsWith('//')
         ? parsed.pathname.replace(/^\/+/, '/')

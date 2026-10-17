@@ -345,3 +345,8 @@ def mutate(sql: str, params: Optional[tuple | list | dict] = None, returning: bo
 
 def check_rds_health() -> bool:
     return get_db_pool().check_health()
+
+
+# Self-alias for module-level convenience (allows `from services.rds_client import rds_client`)
+import sys
+rds_client = sys.modules[__name__]
