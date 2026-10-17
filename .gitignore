@@ -98,3 +98,7 @@ interview-app/frontend/CLAUDE.md
 interview-app/scripts/push_leetcode_to_supabase.py
 AGENTS.md
 .github/
+
+# Database Backups
+backups/
+database_backups/
