@@ -65,8 +65,11 @@ export async function signup(formData: FormData) {
   const proto = headerList.get('x-forwarded-proto') || 'http'
   const requestOrigin = host ? `${proto}://${host}` : undefined
 
-  // Ensure redirect URL points to /auth/callback on the current deployment
-  const emailRedirectTo = getAuthRedirectUrl(requestOrigin)
+  // Ensure redirect URL points to /auth/callback on the current deployment (preserving post-login route if configured)
+  const emailRedirectTo = getAuthRedirectUrl({
+    fallbackOrigin: requestOrigin,
+    preserveParams: true,
+  })
 
   const cleanEmail = email.trim().toLowerCase()
   const cleanUsername = username.trim().toLowerCase()

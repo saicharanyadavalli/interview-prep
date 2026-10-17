@@ -104,10 +104,58 @@ export const API = {
   },
 
   async _getAccessToken() {
-    const sb = getSupabase();
-    if (!sb) return null;
-    const { data } = await sb.auth.getSession();
-    return data?.session?.access_token || null;
+    try {
+      const sb = getSupabase();
+      if (sb) {
+        const { data } = await sb.auth.getSession();
+        if (data?.session?.access_token) return data.session.access_token;
+      }
+    } catch (_) {}
+
+    // Fallback: extract auth token from browser cookies if Supabase client is hydrating
+    if (typeof document !== "undefined") {
+      try {
+        const cookies = document.cookie.split(";");
+        for (const c of cookies) {
+          const trimmed = c.trim();
+          if (trimmed.startsWith("sb-") && trimmed.includes("-auth-token=")) {
+            const rawVal = trimmed.split("=").slice(1).join("=");
+            if (rawVal) {
+              const decoded = decodeURIComponent(rawVal);
+              const val = decoded.startsWith("base64-")
+                ? atob(decoded.slice(7))
+                : decoded;
+              const parsed = JSON.parse(val);
+              if (parsed?.access_token) return parsed.access_token;
+            }
+          }
+        }
+        // Check chunked cookies: sb-*-auth-token.0, .1 ...
+        const chunks: Record<string, string[]> = {};
+        for (const c of cookies) {
+          const trimmed = c.trim();
+          const match = trimmed.match(/^(sb-[^=]+-auth-token)\.(\d+)=(.*)$/);
+          if (match) {
+            const prefix = match[1];
+            const idx = parseInt(match[2], 10);
+            if (!chunks[prefix]) chunks[prefix] = [];
+            chunks[prefix][idx] = match[3];
+          }
+        }
+        for (const prefix of Object.keys(chunks)) {
+          const combined = chunks[prefix].join("");
+          if (combined) {
+            const decoded = decodeURIComponent(combined);
+            const val = decoded.startsWith("base64-")
+              ? atob(decoded.slice(7))
+              : decoded;
+            const parsed = JSON.parse(val);
+            if (parsed?.access_token) return parsed.access_token;
+          }
+        }
+      } catch (_) {}
+    }
+    return null;
   },
   async _fetch(path: string, options: RequestInit = {}) {
     const url = CONFIG.API_BASE_URL + path;
@@ -311,6 +359,7 @@ export const API = {
                 solved_count: solved,
                 unsolved_count: attempted - solved,
                 revisit_count: revisit,
+                current_streak: 0,
                 easy_attempted: 0,
                 medium_attempted: 0,
                 hard_attempted: 0,
@@ -343,7 +392,7 @@ export const API = {
       }
     } catch (_) {}
 
-    return res || { stats: { total_attempted: 0, solved_count: 0, revisit_count: 0 }, recent: [] };
+    return res || { stats: { total_attempted: 0, solved_count: 0, revisit_count: 0, current_streak: 0 }, recent: [] };
   },
 
   async getProgressStatus(qnum: string) {

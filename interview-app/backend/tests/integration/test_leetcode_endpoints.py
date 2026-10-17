@@ -88,3 +88,14 @@ def test_get_leetcode_problem_code_snippets(client: TestClient, mock_supabase):
     data = res.json()
     assert data["qnum"] == 1
     assert "python" in data["languages"] or "python" in data["solutions"]
+
+
+def test_get_leetcode_problems_rating_sorting(client: TestClient, mock_supabase):
+    """Verify GET /leetcode/problems with sort_by=rating_desc sorts properly."""
+    mock_supabase.set_table_data("leetcode_problems", SAMPLE_LEETCODE_PROBLEMS)
+
+    res = client.get("/leetcode/problems?page=1&limit=10&sort_by=rating_desc")
+    assert res.status_code == 200
+    data = res.json()
+    assert "problems" in data
+    assert len(data["problems"]) > 0

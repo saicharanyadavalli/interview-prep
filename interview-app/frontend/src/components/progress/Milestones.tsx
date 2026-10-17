@@ -20,10 +20,26 @@ export function calculateStreak(recent: any[]) {
       .filter(Boolean)
   );
 
-  let streak = 0;
-  const cursor = new Date();
-  cursor.setHours(0, 0, 0, 0);
+  if (uniqueDays.size === 0) return 0;
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayKey = toDateKey(today);
+
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = toDateKey(yesterday);
+
+  let cursor = today;
+  if (!uniqueDays.has(todayKey)) {
+    if (uniqueDays.has(yesterdayKey)) {
+      cursor = yesterday;
+    } else {
+      return 0;
+    }
+  }
+
+  let streak = 0;
   while (true) {
     const key = toDateKey(cursor);
     if (!uniqueDays.has(key)) break;
@@ -38,7 +54,7 @@ export function Milestones({ stats, difficultyStats, recent }: { stats: any; dif
   const totalAttempted = Number(stats.total_attempted || 0);
   const solvedCount = Number(stats.solved_count || 0);
   const revisitCount = Number(stats.revisit_count || 0);
-  const streak = calculateStreak(recent);
+  const streak = Number(stats?.current_streak ?? calculateStreak(recent));
 
   const totalDifficultySolved =
     Number((difficultyStats.easy && difficultyStats.easy.solved) || 0) +

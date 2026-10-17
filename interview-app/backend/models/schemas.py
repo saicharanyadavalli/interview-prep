@@ -207,6 +207,7 @@ class ProgressStats(BaseModel):
     solved_count: int = 0
     unsolved_count: int = 0
     revisit_count: int = 0
+    current_streak: int = 0
     easy_attempted: int = 0
     medium_attempted: int = 0
     hard_attempted: int = 0

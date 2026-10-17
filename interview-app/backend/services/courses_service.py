@@ -69,6 +69,15 @@ COURSE_CATALOG: list[dict[str, Any]] = [
     },
 ]
 
+TRACK_STEP_LIMITS: dict[str, int] = {
+    "system-design": 30,
+    "genai-system-design": 11,
+    "ml-system-design": 11,
+    "mobile-system-design": 11,
+    "object-oriented-design": 14,
+    "sql-course": 21,
+}
+
 
 def _normalize_track_id(slug: str) -> str:
     s = slug.strip().lower()
@@ -349,10 +358,14 @@ def fetch_all_courses(user_id: Optional[str] = None) -> list[dict[str, Any]]:
                 .data
                 or []
             )
+            completed_steps_by_track: dict[str, set[int]] = {k: set() for k in track_lesson_counts}
             for p in prog_data:
-                t = p.get("track_id")
-                if t in user_completed_counts:
-                    user_completed_counts[t] += 1
+                t = _normalize_track_id(str(p.get("track_id") or ""))
+                step_no = p.get("step_no")
+                if t in completed_steps_by_track and isinstance(step_no, int):
+                    completed_steps_by_track[t].add(step_no)
+            for t, steps in completed_steps_by_track.items():
+                user_completed_counts[t] = len(steps)
     except Exception:
         pass
 
@@ -399,17 +412,41 @@ def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Opt
     # Handle SQL course
     if norm_slug == "sql-course":
         sql_lessons = _load_fallback_sql_lessons()
-        user_completed_slugs = (
-            _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
-            if user_id
-            else set()
-        )
+        completed_step_nos: set[int] = set()
+        user_completed_slugs: set[str] = set()
+
+        if user_id:
+            try:
+                supabase = get_supabase_client()
+                prog = (
+                    supabase.table("learning_track_progress")
+                    .select("step_no")
+                    .eq("user_id", user_id)
+                    .in_("track_id", ["sql-course", "sql"])
+                    .eq("completed", True)
+                    .execute()
+                    .data
+                    or []
+                )
+                completed_step_nos = {
+                    p["step_no"] for p in prog if isinstance(p.get("step_no"), int)
+                }
+            except Exception:
+                pass
+
+            in_mem = _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
+            user_completed_slugs.update(in_mem)
+
         lesson_summaries = []
         completed_count = 0
         for idx, l in enumerate(sql_lessons, start=1):
             s = l["slug"]
             order_idx = l.get("order", idx)
-            is_comp = s in user_completed_slugs
+            is_comp = (
+                (order_idx in completed_step_nos)
+                or (s in user_completed_slugs)
+                or (f"step-{order_idx}" in user_completed_slugs)
+            )
             if is_comp:
                 completed_count += 1
             lesson_summaries.append(
@@ -554,8 +591,30 @@ def fetch_lesson_detail(
 
         completed = False
         if user_id:
+            order_idx = target_lesson.get("order", target_idx + 1)
+            try:
+                supabase = get_supabase_client()
+                prog = (
+                    supabase.table("learning_track_progress")
+                    .select("completed")
+                    .eq("user_id", user_id)
+                    .in_("track_id", ["sql-course", "sql"])
+                    .eq("step_no", order_idx)
+                    .limit(1)
+                    .execute()
+                    .data
+                )
+                if prog:
+                    completed = bool(prog[0].get("completed", False))
+            except Exception:
+                pass
+
             user_completed = _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
-            completed = lesson_slug in user_completed
+            if (
+                lesson_slug in user_completed
+                or f"step-{order_idx}" in user_completed
+            ):
+                completed = True
 
         return {
             "id": f"sql-{target_lesson.get('order', target_idx + 1)}",
@@ -625,8 +684,9 @@ def fetch_lesson_detail(
     current = row[0]
     cur_step = current.get("step_no", step_no)
 
+    max_steps = max(step_numbers) if step_numbers else TRACK_STEP_LIMITS.get(norm_slug, 30)
     prev_slug = f"step-{cur_step - 1}" if cur_step > 1 and (cur_step - 1 in step_numbers or not step_numbers) else None
-    next_slug = f"step-{cur_step + 1}" if (cur_step + 1 in step_numbers) or (not step_numbers and cur_step < 30) else None
+    next_slug = f"step-{cur_step + 1}" if (cur_step + 1 in step_numbers) or (not step_numbers and cur_step < max_steps) else None
 
     # Check user completion
     completed = False
@@ -673,6 +733,19 @@ def record_lesson_completion(
     norm_slug = _normalize_track_id(course_slug)
     now_iso = datetime.now(timezone.utc).isoformat()
 
+    # Determine numeric step_no accurately for both SQL and System Design courses
+    step_no = 1
+    if norm_slug == "sql-course":
+        sql_lessons = _load_fallback_sql_lessons()
+        for idx, l in enumerate(sql_lessons, start=1):
+            if l.get("slug") == lesson_slug or f"step-{l.get('order', idx)}" == lesson_slug:
+                step_no = l.get("order", idx)
+                break
+    else:
+        m = re.search(r"(\d+)", lesson_slug)
+        if m:
+            step_no = int(m.group(1))
+
     # Track in in-memory progress cache
     key = f"{user_id}:{norm_slug}"
     if key not in _IN_MEMORY_USER_PROGRESS:
@@ -680,15 +753,12 @@ def record_lesson_completion(
 
     if completed:
         _IN_MEMORY_USER_PROGRESS[key].add(lesson_slug)
+        _IN_MEMORY_USER_PROGRESS[key].add(f"step-{step_no}")
     else:
         _IN_MEMORY_USER_PROGRESS[key].discard(lesson_slug)
+        _IN_MEMORY_USER_PROGRESS[key].discard(f"step-{step_no}")
 
     # Persist in Supabase learning_track_progress
-    step_no = 1
-    m = re.search(r"(\d+)", lesson_slug)
-    if m:
-        step_no = int(m.group(1))
-
     try:
         supabase = get_supabase_client()
         supabase.table("learning_track_progress").upsert(

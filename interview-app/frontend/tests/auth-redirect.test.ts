@@ -5,13 +5,18 @@ import {
   getAuthRedirectUrl,
   getAllowedOrigins,
   validateRedirectDestination,
+  CANONICAL_AWS_ORIGIN,
+  CANONICAL_AWS_CALLBACK,
   DEFAULT_ALLOWED_ORIGINS,
 } from '../src/utils/auth-redirect.ts';
 
 describe('Authentication Redirect Utilities', () => {
   const originalAuthEnv = process.env.AUTH_REDIRECT_URL;
+  const originalNextPublicAuthEnv = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
   const originalVercelEnv = process.env.VERCEL_URL;
+  const originalVercelFlag = process.env.VERCEL;
   const originalFrontendEnv = process.env.FRONTEND_URL;
+  const originalAppUrlEnv = process.env.NEXT_PUBLIC_APP_URL;
 
   afterEach(() => {
     if (originalAuthEnv !== undefined) {
@@ -19,15 +24,30 @@ describe('Authentication Redirect Utilities', () => {
     } else {
       delete process.env.AUTH_REDIRECT_URL;
     }
+    if (originalNextPublicAuthEnv !== undefined) {
+      process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL = originalNextPublicAuthEnv;
+    } else {
+      delete process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
+    }
     if (originalVercelEnv !== undefined) {
       process.env.VERCEL_URL = originalVercelEnv;
     } else {
       delete process.env.VERCEL_URL;
     }
+    if (originalVercelFlag !== undefined) {
+      process.env.VERCEL = originalVercelFlag;
+    } else {
+      delete process.env.VERCEL;
+    }
     if (originalFrontendEnv !== undefined) {
       process.env.FRONTEND_URL = originalFrontendEnv;
     } else {
       delete process.env.FRONTEND_URL;
+    }
+    if (originalAppUrlEnv !== undefined) {
+      process.env.NEXT_PUBLIC_APP_URL = originalAppUrlEnv;
+    } else {
+      delete process.env.NEXT_PUBLIC_APP_URL;
     }
   });
 
@@ -82,20 +102,33 @@ describe('Authentication Redirect Utilities', () => {
     });
   });
 
-  describe('getAuthRedirectUrl (Exact /auth/callback only)', () => {
+  describe('getAuthRedirectUrl (Deployment-Safe Resolution)', () => {
     it('should cleanly resolve to /auth/callback when AUTH_REDIRECT_URL is configured', () => {
       process.env.AUTH_REDIRECT_URL = 'http://16.113.92.222/auth/callback?next=/dashboard';
       const url = getAuthRedirectUrl();
       assert.equal(url, 'http://16.113.92.222/auth/callback');
     });
 
-    it('should normalize base domain to /auth/callback', () => {
+    it('should preserve query parameters when preserveParams: true is passed', () => {
+      process.env.AUTH_REDIRECT_URL = 'http://16.113.92.222/auth/callback?next=/dashboard';
+      const url = getAuthRedirectUrl({ preserveParams: true });
+      assert.equal(url, 'http://16.113.92.222/auth/callback?next=/dashboard');
+    });
+
+    it('should normalize base domain without path to /auth/callback', () => {
       process.env.AUTH_REDIRECT_URL = 'http://16.113.92.222';
       const url = getAuthRedirectUrl();
       assert.equal(url, 'http://16.113.92.222/auth/callback');
     });
 
-    it('should fallback gracefully to request-derived fallbackOrigin if env is unset', () => {
+    it('AWS AUTH_REDIRECT_URL wins even if VERCEL_URL is also set in environment', () => {
+      process.env.AUTH_REDIRECT_URL = 'http://16.113.92.222/auth/callback';
+      process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
+      const url = getAuthRedirectUrl();
+      assert.equal(url, 'http://16.113.92.222/auth/callback');
+    });
+
+    it('should fallback to trusted request-derived fallbackOrigin if env is unset', () => {
       delete process.env.AUTH_REDIRECT_URL;
       const url = getAuthRedirectUrl('http://16.113.92.222');
       assert.equal(url, 'http://16.113.92.222/auth/callback');
@@ -107,9 +140,32 @@ describe('Authentication Redirect Utilities', () => {
       assert.equal(url, 'http://localhost:3000/auth/callback');
     });
 
-    it('should fallback to Vercel deployment URL if on Vercel', () => {
+    it('should REJECT untrusted fallbackOrigin (Host header injection prevention)', () => {
       delete process.env.AUTH_REDIRECT_URL;
+      delete process.env.FRONTEND_URL;
+      // Hostile domain should not be accepted as redirect destination
+      const url = getAuthRedirectUrl('http://evil.com');
+      assert.notEqual(url, 'http://evil.com/auth/callback');
+      assert.equal(url, CANONICAL_AWS_CALLBACK);
+    });
+
+    it('should not fallback to VERCEL_URL on AWS even if VERCEL_URL exists, unless VERCEL===1', () => {
+      delete process.env.AUTH_REDIRECT_URL;
+      delete process.env.FRONTEND_URL;
+      delete process.env.VERCEL;
       process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
+
+      // On non-Vercel environment (AWS), should NOT leak to Vercel
+      const url = getAuthRedirectUrl();
+      assert.equal(url, CANONICAL_AWS_CALLBACK);
+    });
+
+    it('should fallback to Vercel deployment URL ONLY when VERCEL===1', () => {
+      delete process.env.AUTH_REDIRECT_URL;
+      delete process.env.FRONTEND_URL;
+      process.env.VERCEL = '1';
+      process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
+
       const url = getAuthRedirectUrl();
       assert.equal(url, 'https://interview-prep-preview.vercel.app/auth/callback');
     });
@@ -118,8 +174,9 @@ describe('Authentication Redirect Utilities', () => {
       delete process.env.AUTH_REDIRECT_URL;
       delete process.env.VERCEL_URL;
       delete process.env.FRONTEND_URL;
+      delete process.env.VERCEL;
       const url = getAuthRedirectUrl();
-      assert.equal(url, 'http://16.113.92.222/auth/callback');
+      assert.equal(url, CANONICAL_AWS_CALLBACK);
     });
   });
 
@@ -134,6 +191,12 @@ describe('Authentication Redirect Utilities', () => {
     it('should include origin from custom configured URL', () => {
       const origins = getAllowedOrigins('https://custom-domain.com/auth/callback');
       assert.ok(origins.includes('https://custom-domain.com'));
+    });
+
+    it('should include origin from FRONTEND_URL environment variable', () => {
+      process.env.FRONTEND_URL = 'http://13.200.50.25';
+      const origins = getAllowedOrigins();
+      assert.ok(origins.includes('http://13.200.50.25'));
     });
   });
 

@@ -34,7 +34,12 @@ export async function GET(request: Request) {
       requestUrl.protocol.replace(':', '') ||
       'http'
     if (forwardedHost) {
-      baseOrigin = `${forwardedProto}://${forwardedHost}`
+      try {
+        const candidateOrigin = new URL(`${forwardedProto}://${forwardedHost}`).origin
+        if (allowedOrigins.some((o) => o.toLowerCase() === candidateOrigin.toLowerCase())) {
+          baseOrigin = candidateOrigin
+        }
+      } catch (_) {}
     }
   }
 

@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -24,6 +24,39 @@ from services.questions_service import (
 from services.system_design_course import is_reserved_learning_track_qnum
 
 router = APIRouter(prefix="/progress", tags=["progress"])
+
+def _calculate_streak(entries: list[dict]) -> int:
+    """Calculate user practice streak in consecutive days."""
+    unique_days = set()
+    for e in entries:
+        ts = e.get("updated_at")
+        if not ts:
+            continue
+        try:
+            dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+            unique_days.add(dt.date())
+        except Exception:
+            pass
+
+    if not unique_days:
+        return 0
+
+    today = datetime.now(timezone.utc).date()
+    yesterday = today - timedelta(days=1)
+
+    if today in unique_days:
+        cursor = today
+    elif yesterday in unique_days:
+        cursor = yesterday
+    else:
+        return 0
+
+    streak = 0
+    while cursor in unique_days:
+        streak += 1
+        cursor -= timedelta(days=1)
+    return streak
+
 
 def _coerce_state_from_payload(payload: ProgressUpdateRequest, current_is_solved: bool, current_revisit: bool) -> tuple[bool, bool]:
     is_solved = current_is_solved
@@ -114,6 +147,7 @@ def get_user_progress(summary_only: bool = False, user: dict | None = Depends(ge
                 solved_count=0,
                 unsolved_count=0,
                 revisit_count=0,
+                current_streak=0,
                 easy_attempted=0,
                 medium_attempted=0,
                 hard_attempted=0,
@@ -199,6 +233,7 @@ def get_user_progress(summary_only: bool = False, user: dict | None = Depends(ge
             solved_count=len(solved_qnums),
             unsolved_count=len(entries) - len(solved_qnums),
             revisit_count=sum(1 for e in entries if bool(e.get("is_revisit", False))),
+            current_streak=_calculate_streak(entries),
             easy_attempted=easy_attempted,
             medium_attempted=medium_attempted,
             hard_attempted=hard_attempted,
@@ -357,6 +392,7 @@ def get_user_progress(summary_only: bool = False, user: dict | None = Depends(ge
             for e in entries
             if bool(e.get("is_revisit", False))
         ),
+        current_streak=_calculate_streak(entries),
         easy_attempted=easy_attempted,
         medium_attempted=medium_attempted,
         hard_attempted=hard_attempted,

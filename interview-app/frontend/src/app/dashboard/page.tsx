@@ -3,13 +3,28 @@
 import React, { useEffect, useState } from "react";
 import { API } from "@/lib/api";
 import Link from "next/link";
-import { LayoutDashboard, TrendingUp, Clock, RotateCcw } from "lucide-react";
-import { Spinner } from "@/components/Spinner";
+import {
+  LayoutDashboard,
+  TrendingUp,
+  Clock,
+  RotateCcw,
+  CheckCircle2,
+  Flame,
+  Compass,
+  Activity,
+  ArrowRight
+} from "lucide-react";
 import { useAuth } from "@/lib/auth";
+import { calculateStreak } from "@/components/progress/Milestones";
 
 export default function DashboardPage() {
   const { user, session, loading: authLoading } = useAuth();
-  const [stats, setStats] = useState({ total_attempted: 0, revisit_count: 0 });
+  const [stats, setStats] = useState({
+    total_attempted: 0,
+    solved_count: 0,
+    revisit_count: 0,
+    current_streak: 0
+  });
   const [recent, setRecent] = useState<any[] | null>(null);
   const [revisit, setRevisit] = useState<any[] | null>(null);
   const [loadingProgress, setLoadingProgress] = useState(true);
@@ -21,7 +36,7 @@ export default function DashboardPage() {
     if (!user || !session) {
       setLoadingProgress(false);
       setLoadingRevisit(false);
-      setStats({ total_attempted: 0, revisit_count: 0 });
+      setStats({ total_attempted: 0, solved_count: 0, revisit_count: 0, current_streak: 0 });
       setRecent([]);
       setRevisit([]);
       return;
@@ -32,10 +47,23 @@ export default function DashboardPage() {
 
     Promise.allSettled([API.getUserProgress(true), API.getRevisitQueue()]).then(([progressResult, revisitResult]) => {
       if (progressResult.status === "fulfilled" && progressResult.value) {
-        setStats(progressResult.value.stats || { total_attempted: 0, revisit_count: 0 });
-        setRecent(progressResult.value.recent || []);
+        const receivedStats = progressResult.value.stats || {};
+        const receivedRecent = progressResult.value.recent || [];
+        const computedStreak = Number(
+          receivedStats.current_streak !== undefined
+            ? receivedStats.current_streak
+            : calculateStreak(receivedRecent)
+        );
+
+        setStats({
+          total_attempted: Number(receivedStats.total_attempted || 0),
+          solved_count: Number(receivedStats.solved_count || 0),
+          revisit_count: Number(receivedStats.revisit_count || 0),
+          current_streak: computedStreak,
+        });
+        setRecent(receivedRecent);
       } else {
-        setStats({ total_attempted: 0, revisit_count: 0 });
+        setStats({ total_attempted: 0, solved_count: 0, revisit_count: 0, current_streak: 0 });
         setRecent([]);
       }
       setLoadingProgress(false);
@@ -53,23 +81,33 @@ export default function DashboardPage() {
   }, [user, session, authLoading]);
 
   const renderRecentList = () => {
-    if (loadingProgress) return (
-      <>
-        {[1, 2, 3].map(i => (
-          <div key={i} className="track-item" style={{ animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}>
-            <div className="track-item-main" style={{ width: '100%' }}>
-              <div style={{ height: '18px', width: '60%', background: 'var(--line)', borderRadius: '4px', marginBottom: '8px' }}></div>
-              <div style={{ height: '14px', width: '40%', background: 'var(--line)', borderRadius: '4px' }}></div>
+    if (loadingProgress) {
+      return (
+        <>
+          {[1, 2, 3].map(i => (
+            <div key={i} className="track-item" style={{ animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}>
+              <div className="track-item-main" style={{ width: '100%' }}>
+                <div style={{ height: '18px', width: '60%', background: 'var(--line)', borderRadius: '4px', marginBottom: '8px' }}></div>
+                <div style={{ height: '14px', width: '40%', background: 'var(--line)', borderRadius: '4px' }}></div>
+              </div>
             </div>
-          </div>
-        ))}
-      </>
-    );
-    if (!recent || recent.length === 0) {
-      return <p className="track-empty">No recent questions yet. Start practicing!</p>;
+          ))}
+        </>
+      );
     }
 
-    return recent.slice(0, 8).map((entry, i) => {
+    if (!recent || recent.length === 0) {
+      return (
+        <div className="track-empty" style={{ textAlign: "center", padding: "2rem 1rem" }}>
+          <p className="text-muted" style={{ marginBottom: "0.85rem" }}>No recent questions yet. Start practicing!</p>
+          <Link href="/questions" className="btn btn-sm btn-primary">
+            Browse Question Bank
+          </Link>
+        </div>
+      );
+    }
+
+    const items = recent.slice(0, 8).map((entry, i) => {
       const isSolved = Boolean(entry.is_solved);
       const isRevisit = Boolean(entry.revisit);
       let statusLabel = "Not Solved";
@@ -83,69 +121,115 @@ export default function DashboardPage() {
         color = "var(--green)";
       }
 
+      const metaParts = [entry.company, entry.difficulty].filter(Boolean).join(" · ");
+
       return (
         <div key={i} className="track-item">
           <div className="track-item-main">
             <p className="track-title">{entry.question_title || entry.question_id}</p>
             <p className="track-meta">
-              {entry.company} · {entry.difficulty} · <span style={{ color, fontWeight: 600 }}>{statusLabel}</span>
+              {metaParts ? `${metaParts} · ` : ""}
+              <span style={{ color, fontWeight: 600 }}>{statusLabel}</span>
             </p>
           </div>
-          <Link href={`/solve?qnum=${encodeURIComponent(entry.qnum || "")}`} className="btn btn-sm">
+          <Link
+            href={`/solve?qnum=${encodeURIComponent(entry.qnum || "")}`}
+            className="btn btn-sm"
+            aria-label={`Practice ${entry.question_title || entry.question_id}`}
+          >
             Practice
           </Link>
         </div>
       );
     });
-  };
-
-  const renderRevisitPreview = () => {
-    if (loadingRevisit) return (
-      <>
-        {[1, 2].map(i => (
-          <div key={i} className="track-item" style={{ animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}>
-            <div className="track-item-main" style={{ width: '100%' }}>
-              <div style={{ height: '18px', width: '60%', background: 'var(--line)', borderRadius: '4px', marginBottom: '8px' }}></div>
-              <div style={{ height: '14px', width: '40%', background: 'var(--line)', borderRadius: '4px' }}></div>
-            </div>
-          </div>
-        ))}
-      </>
-    );
-    if (!revisit || revisit.length === 0) {
-      return <p className="track-empty">No questions in your revisit queue.</p>;
-    }
-
-    const items = revisit.slice(0, 5).map((entry, i) => (
-      <div key={i} className="track-item">
-        <div className="track-item-main">
-          <p className="track-title">{entry.question_title || `Question #${entry.qnum || ""}`}</p>
-          <p className="track-meta">{entry.company} · {entry.difficulty}</p>
-        </div>
-        <Link href={`/solve?qnum=${encodeURIComponent(entry.qnum || "")}`} className="btn btn-sm">
-          Practice
-        </Link>
-      </div>
-    ));
 
     return (
       <>
         {items}
-        {revisit.length > 5 && (
-          <Link href="/revisit" className="text-teal text-sm block mt-2" style={{ display: "block", marginTop: "0.5rem" }}>
-            View all {revisit.length} items →
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1rem", paddingTop: "0.75rem", borderTop: "1px solid var(--line)" }}>
+          <Link href="/questions" className="text-teal text-sm" style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+            Browse Question Bank <ArrowRight size={14} />
           </Link>
-        )}
+          <Link href="/progress" className="text-muted text-sm hover-text-teal" style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+            View full history →
+          </Link>
+        </div>
+      </>
+    );
+  };
+
+  const renderRevisitPreview = () => {
+    if (loadingRevisit) {
+      return (
+        <>
+          {[1, 2].map(i => (
+            <div key={i} className="track-item" style={{ animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}>
+              <div className="track-item-main" style={{ width: '100%' }}>
+                <div style={{ height: '18px', width: '60%', background: 'var(--line)', borderRadius: '4px', marginBottom: '8px' }}></div>
+                <div style={{ height: '14px', width: '40%', background: 'var(--line)', borderRadius: '4px' }}></div>
+              </div>
+            </div>
+          ))}
+        </>
+      );
+    }
+
+    if (!revisit || revisit.length === 0) {
+      return (
+        <div className="track-empty" style={{ textAlign: "center", padding: "2rem 1rem" }}>
+          <p className="text-muted" style={{ marginBottom: "0.85rem" }}>No questions in your revisit queue.</p>
+          <Link href="/questions" className="text-teal text-sm">
+            Add questions from Question Bank →
+          </Link>
+        </div>
+      );
+    }
+
+    const items = revisit.slice(0, 5).map((entry, i) => {
+      const metaParts = [entry.company, entry.difficulty].filter(Boolean).join(" · ");
+      return (
+        <div key={i} className="track-item">
+          <div className="track-item-main">
+            <p className="track-title">{entry.question_title || `Question #${entry.qnum || ""}`}</p>
+            <p className="track-meta">{metaParts || "General Practice"}</p>
+          </div>
+          <Link
+            href={`/solve?qnum=${encodeURIComponent(entry.qnum || "")}`}
+            className="btn btn-sm"
+            aria-label={`Practice question ${entry.question_title || entry.qnum}`}
+          >
+            Practice
+          </Link>
+        </div>
+      );
+    });
+
+    return (
+      <>
+        {items}
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "1rem", paddingTop: "0.75rem", borderTop: "1px solid var(--line)" }}>
+          <Link href="/revisit" className="text-teal text-sm" style={{ display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+            View all {revisit.length} in queue <ArrowRight size={14} />
+          </Link>
+        </div>
       </>
     );
   };
 
   return (
     <main className="main-content">
-      <div className="page-header">
+      <div className="page-header" style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "1rem" }}>
         <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <LayoutDashboard size={28} className="text-teal" /> Dashboard
         </h1>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
+          <Link href="/questions" className="btn btn-sm btn-primary" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+            <Compass size={16} /> Browse Questions
+          </Link>
+          <Link href="/progress" className="btn btn-sm" style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem" }}>
+            <Activity size={16} /> Analytics
+          </Link>
+        </div>
       </div>
 
       <section className="section">
@@ -154,19 +238,76 @@ export default function DashboardPage() {
         </h3>
         {loadingProgress ? (
           <div id="statsGrid" className="stats-grid">
-            <div className="stat-card skeleton-card" style={{ height: '90px', background: 'var(--paper)', border: '1px solid var(--line)', animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}></div>
-            <div className="stat-card skeleton-card" style={{ height: '90px', background: 'var(--paper)', border: '1px solid var(--line)', animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}></div>
+            {[1, 2, 3, 4].map(i => (
+              <div key={i} className="stat-card skeleton-card" style={{ height: '90px', background: 'var(--paper)', border: '1px solid var(--line)', animation: 'pulse 1.5s infinite ease-in-out opacity 0.5' }}></div>
+            ))}
           </div>
         ) : (
           <div id="statsGrid" className="stats-grid">
-            <div className="stat-card attempted animate-slide" style={{ animationDelay: "0ms" }}>
-              <p className="stat-label">Total Attempted</p>
-              <p className="stat-value">{stats.total_attempted}</p>
-            </div>
-            <div className="stat-card revisit animate-slide" style={{ animationDelay: "80ms" }}>
-              <p className="stat-label">Revisit</p>
-              <p className="stat-value">{stats.revisit_count}</p>
-            </div>
+            <Link
+              href="/questions"
+              className="stat-card attempted animate-slide"
+              style={{ animationDelay: "0ms", textDecoration: "none", cursor: "pointer" }}
+              title="View all questions"
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <p className="stat-label">Total Attempted</p>
+                  <p className="stat-value">{stats.total_attempted}</p>
+                </div>
+                <TrendingUp size={24} className="text-teal" style={{ opacity: 0.8 }} />
+              </div>
+            </Link>
+
+            <Link
+              href="/questions"
+              className="stat-card solved animate-slide"
+              style={{ animationDelay: "60ms", textDecoration: "none", cursor: "pointer" }}
+              title="View solved questions"
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <p className="stat-label">Solved</p>
+                  <p className="stat-value" style={{ color: "var(--green)" }}>{stats.solved_count}</p>
+                </div>
+                <CheckCircle2 size={24} style={{ color: "var(--green)", opacity: 0.8 }} />
+              </div>
+            </Link>
+
+            <Link
+              href="/revisit"
+              className="stat-card revisit animate-slide"
+              style={{ animationDelay: "120ms", textDecoration: "none", cursor: "pointer" }}
+              title="Open revisit queue"
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <p className="stat-label">Revisit Queue</p>
+                  <p className="stat-value" style={{ color: "var(--amber)" }}>{stats.revisit_count}</p>
+                </div>
+                <RotateCcw size={24} style={{ color: "var(--amber)", opacity: 0.8 }} />
+              </div>
+            </Link>
+
+            <Link
+              href="/progress"
+              className="stat-card streak animate-slide"
+              style={{ animationDelay: "180ms", textDecoration: "none", cursor: "pointer" }}
+              title="View consistency heatmap & streak"
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div>
+                  <p className="stat-label">Streaks</p>
+                  <p className="stat-value" style={{ color: "var(--teal)" }}>
+                    {stats.current_streak}{" "}
+                    <span style={{ fontSize: "1rem", fontWeight: 500, color: "var(--muted)" }}>
+                      {stats.current_streak === 1 ? "day" : "days"}
+                    </span>
+                  </p>
+                </div>
+                <Flame size={24} style={{ color: "var(--teal)", opacity: 0.8 }} />
+              </div>
+            </Link>
           </div>
         )}
       </section>

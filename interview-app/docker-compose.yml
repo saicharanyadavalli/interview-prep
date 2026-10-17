@@ -51,6 +51,9 @@ services:
         - SUPABASE_URL=${SUPABASE_URL:-${NEXT_PUBLIC_SUPABASE_URL}}
         - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-${NEXT_PUBLIC_SUPABASE_ANON_KEY}}
         - AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL}
+        - NEXT_PUBLIC_AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL}
+        - FRONTEND_URL=${FRONTEND_URL}
+        - NEXT_PUBLIC_APP_URL=${FRONTEND_URL}
     container_name: interview-prep-frontend
     restart: unless-stopped
     ports:
@@ -64,6 +67,9 @@ services:
       - SUPABASE_URL=${SUPABASE_URL:-${NEXT_PUBLIC_SUPABASE_URL}}
       - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-${NEXT_PUBLIC_SUPABASE_ANON_KEY}}
       - AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL}
+      - NEXT_PUBLIC_AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL}
+      - FRONTEND_URL=${FRONTEND_URL}
+      - NEXT_PUBLIC_APP_URL=${FRONTEND_URL}
     depends_on:
       backend:
         condition: service_healthy

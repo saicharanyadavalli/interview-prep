@@ -8,6 +8,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { CONFIG } from "./config";
 import { API } from "./api";
 import { login, signup, logout } from "@/app/actions/auth";
+import { getAuthRedirectUrl } from "@/utils/auth-redirect";
 
 interface AuthContextType {
   user: User | null;
@@ -113,13 +114,8 @@ export function AuthProvider({
     }
 
     try {
-      let redirectUrl = `${window.location.origin}/auth/callback`;
-      if (process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL) {
-        try {
-          const parsed = new URL(process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL);
-          redirectUrl = `${parsed.origin}/auth/callback`;
-        } catch (_) {}
-      }
+      const requestOrigin = typeof window !== "undefined" ? window.location.origin : null;
+      const redirectUrl = getAuthRedirectUrl(requestOrigin);
       const { data, error } = await sb.auth.signInWithOAuth({
         provider: "google",
         options: {

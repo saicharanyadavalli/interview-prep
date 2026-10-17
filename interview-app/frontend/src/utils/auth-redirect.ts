@@ -70,72 +70,119 @@ export function validateAuthRedirectUrl(
   }
 }
 
+export const CANONICAL_AWS_ORIGIN = 'http://16.113.92.222';
+export const CANONICAL_AWS_CALLBACK = `${CANONICAL_AWS_ORIGIN}/auth/callback`;
+
 /**
  * Known default allowed origins for the application deployments.
  */
 export const DEFAULT_ALLOWED_ORIGINS = [
-  'http://16.113.92.222',
+  CANONICAL_AWS_ORIGIN,
   'https://interview-prep-saicharanyadavallis-projects.vercel.app',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
 ];
 
+export interface GetAuthRedirectUrlOptions {
+  fallbackOrigin?: string | null;
+  preserveParams?: boolean;
+}
+
 /**
  * Returns the configured authentication redirect URL for Supabase Auth flows
  * (e.g. emailRedirectTo during signup, OAuth redirectTo).
  *
- * Guarantees a clean, exact redirect URL pointing strictly to /auth/callback
- * (without query parameters that break Supabase Dashboard whitelist matching).
+ * Guarantees a validated redirect URL pointing to /auth/callback.
  *
- * If AUTH_REDIRECT_URL is not explicitly configured, gracefully falls back to:
- * 1. The provided fallbackOrigin (e.g. from request headers or window.location.origin)
- * 2. FRONTEND_URL or NEXT_PUBLIC_APP_URL
- * 3. Vercel deployment URL if on Vercel
- * 4. Default EC2 origin: http://16.113.92.222/auth/callback
+ * Priority order:
+ * 1. Explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment
+ * 2. FRONTEND_URL or NEXT_PUBLIC_APP_URL from environment
+ * 3. Request-derived fallbackOrigin (e.g. window.location.origin or Host header)
+ *    ONLY IF the origin is in the allowed origins list!
+ * 4. Vercel deployment URL ONLY when running in an active Vercel environment (VERCEL === '1')
+ * 5. Canonical EC2 fallback: http://16.113.92.222/auth/callback
  */
-export function getAuthRedirectUrl(fallbackOrigin?: string | null): string {
-  // 1. Try explicit AUTH_REDIRECT_URL from environment
+export function getAuthRedirectUrl(
+  optionsOrFallbackOrigin?: string | null | GetAuthRedirectUrlOptions
+): string {
+  let fallbackOrigin: string | null = null;
+  let preserveParams = false;
+
+  if (typeof optionsOrFallbackOrigin === 'string') {
+    fallbackOrigin = optionsOrFallbackOrigin;
+  } else if (optionsOrFallbackOrigin && typeof optionsOrFallbackOrigin === 'object') {
+    fallbackOrigin = optionsOrFallbackOrigin.fallbackOrigin || null;
+    preserveParams = Boolean(optionsOrFallbackOrigin.preserveParams);
+  }
+
+  // 1. Try explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment
   const envUrl = process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
   if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
     try {
       const parsed = new URL(envUrl.trim());
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        if (preserveParams && (parsed.search || parsed.hash)) {
+          return `${parsed.origin}/auth/callback${parsed.search}${parsed.hash}`;
+        }
         return `${parsed.origin}/auth/callback`;
       }
     } catch (_) {}
   }
 
-  // 2. Try request-derived fallback origin (e.g. Host header from server actions or window.location.origin)
-  if (fallbackOrigin && typeof fallbackOrigin === 'string' && fallbackOrigin.trim()) {
-    try {
-      const parsed = new URL(fallbackOrigin.trim());
-      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
-        return `${parsed.origin}/auth/callback`;
-      }
-    } catch (_) {
-      try {
-        const parsed = new URL(`http://${fallbackOrigin.trim()}`);
-        return `${parsed.origin}/auth/callback`;
-      } catch (_) {}
-    }
-  }
-
-  // 3. Try standard deployment environment variables
+  // 2. Try standard deployment environment variables (FRONTEND_URL / NEXT_PUBLIC_APP_URL)
   const hostUrl = process.env.FRONTEND_URL || process.env.NEXT_PUBLIC_APP_URL;
   if (hostUrl && typeof hostUrl === 'string' && hostUrl.trim()) {
     try {
       const parsed = new URL(hostUrl.trim());
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return `${parsed.origin}/auth/callback`;
+      }
+    } catch (_) {}
+  }
+
+  // 3. Try request-derived fallback origin, strictly validated against allowed origins
+  if (fallbackOrigin && typeof fallbackOrigin === 'string' && fallbackOrigin.trim()) {
+    let candidateOrigin: string | null = null;
+    try {
+      const parsed = new URL(fallbackOrigin.trim());
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        candidateOrigin = parsed.origin;
+      }
+    } catch (_) {
+      try {
+        const parsed = new URL(`http://${fallbackOrigin.trim()}`);
+        candidateOrigin = parsed.origin;
+      } catch (_) {}
+    }
+
+    if (candidateOrigin) {
+      const allowed = getAllowedOrigins();
+      const isAllowed = allowed.some(
+        (o) => o.toLowerCase() === candidateOrigin!.toLowerCase()
+      );
+      if (isAllowed) {
+        return `${candidateOrigin}/auth/callback`;
+      }
+    }
+  }
+
+  // 4. Try Vercel environment URL ONLY if explicitly running in a Vercel deployment
+  const isVercelRuntime =
+    process.env.VERCEL === '1' ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined;
+  if (isVercelRuntime && process.env.VERCEL_URL) {
+    const rawVercel = process.env.VERCEL_URL.trim();
+    const vercelHost = rawVercel.startsWith('http')
+      ? rawVercel
+      : `https://${rawVercel}`;
+    try {
+      const parsed = new URL(vercelHost);
       return `${parsed.origin}/auth/callback`;
     } catch (_) {}
   }
 
-  // 4. Try Vercel environment URL
-  if (process.env.VERCEL_URL) {
-    return `https://${process.env.VERCEL_URL}/auth/callback`;
-  }
-
-  // 5. Default canonical fallback for EC2
-  return 'http://16.113.92.222/auth/callback';
+  // 5. Canonical fallback for AWS EC2
+  return CANONICAL_AWS_CALLBACK;
 }
 
 /**
@@ -145,15 +192,23 @@ export function getAuthRedirectUrl(fallbackOrigin?: string | null): string {
 export function getAllowedOrigins(configuredUrl?: string | null): string[] {
   const origins = new Set<string>(DEFAULT_ALLOWED_ORIGINS);
 
-  const target =
-    configuredUrl || process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
-  if (target) {
-    try {
-      const parsed = new URL(target);
-      if (parsed.origin && parsed.origin !== 'null') {
-        origins.add(parsed.origin);
-      }
-    } catch (_) {}
+  const candidates = [
+    configuredUrl,
+    process.env.AUTH_REDIRECT_URL,
+    process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL,
+    process.env.FRONTEND_URL,
+    process.env.NEXT_PUBLIC_APP_URL,
+  ];
+
+  for (const target of candidates) {
+    if (target && typeof target === 'string' && target.trim()) {
+      try {
+        const parsed = new URL(target.trim());
+        if (parsed.origin && parsed.origin !== 'null') {
+          origins.add(parsed.origin);
+        }
+      } catch (_) {}
+    }
   }
 
   return Array.from(origins);
