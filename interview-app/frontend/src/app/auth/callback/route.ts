@@ -5,6 +5,7 @@ import { CONFIG } from '@/lib/config'
 import {
   getAllowedOrigins,
   validateRedirectDestination,
+  CANONICAL_AWS_ORIGIN,
 } from '@/utils/auth-redirect'
 
 export async function GET(request: Request) {
@@ -22,11 +23,17 @@ export async function GET(request: Request) {
   const safeNext = validateRedirectDestination(rawNext, allowedOrigins)
 
   // Resolve authoritative deployment origin to prevent cross-deployment or internal-proxy bleed
-  let baseOrigin = requestUrl.origin
+  let baseOrigin = CANONICAL_AWS_ORIGIN
   if (process.env.AUTH_REDIRECT_URL) {
     try {
       baseOrigin = new URL(process.env.AUTH_REDIRECT_URL).origin
     } catch (_) {}
+  } else if (process.env.FRONTEND_URL) {
+    try {
+      baseOrigin = new URL(process.env.FRONTEND_URL).origin
+    } catch (_) {}
+  } else if (requestUrl.hostname === 'localhost' || requestUrl.hostname === '127.0.0.1') {
+    baseOrigin = requestUrl.origin
   } else {
     const forwardedHost = request.headers.get('x-forwarded-host') || request.headers.get('host')
     const forwardedProto =

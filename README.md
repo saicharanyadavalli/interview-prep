@@ -14,7 +14,7 @@
 
 ## 🌐 Live Deployments
 
-- **Web Application**: [https://interview-prep-kappa-sandy.vercel.app](https://interview-prep-kappa-sandy.vercel.app)
+- **Web Application**: [http://16.113.92.222](http://16.113.92.222)
 - **API Backend**: [https://interview-prep-q3b8.onrender.com](https://interview-prep-q3b8.onrender.com)
 - **Authentication**: Sign in using your configured authentication provider (Email/Password or Google OAuth / Magic Link via Supabase Auth)
 
@@ -74,7 +74,7 @@ Preparing for software engineering interviews often requires juggling fragmented
 | **Database & Auth** | Supabase (PostgreSQL with Row Level Security, Supabase Auth with PKCE) |
 | **AI Integration** | Google Gemini API (SSE streaming doubt-clearing assistant) |
 | **Media & Storage** | Cloudinary (User avatars and architectural diagram storage) |
-| **Hosting & CI/CD** | Vercel (Frontend edge deployment), Render (FastAPI web service) |
+| **Hosting & CI/CD** | AWS EC2 (Docker Compose, Nginx Reverse Proxy), Render (FastAPI web service) |
 
 ---
 

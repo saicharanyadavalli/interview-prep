@@ -53,10 +53,14 @@ npm run build
 npm run start
 ```
 
-### Deploying on Vercel
+### Deploying on AWS EC2 (Docker)
 
-1. Push your repository to GitHub / GitLab.
-2. Import the project in Vercel, pointing to the `interview-app/frontend` root.
-3. Configure the environment variables (`NEXT_PUBLIC_API_BASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`).
-4. Ensure the backend URL is properly specified for production CORS.
+1. Push your changes to the `aws-migration` branch on GitHub.
+2. SSH into your AWS EC2 instance and pull the latest changes.
+3. Configure the environment variables in `interview-app/.env` (`NEXT_PUBLIC_API_BASE_URL`, `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `AUTH_REDIRECT_URL=http://16.113.92.222/auth/callback?next=/dashboard`).
+4. Build and start the containers:
+   ```bash
+   docker compose build frontend
+   docker compose up -d
+   ```
 

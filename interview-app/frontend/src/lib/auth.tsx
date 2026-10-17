@@ -115,7 +115,10 @@ export function AuthProvider({
 
     try {
       const requestOrigin = typeof window !== "undefined" ? window.location.origin : null;
-      const redirectUrl = getAuthRedirectUrl(requestOrigin);
+      const redirectUrl = getAuthRedirectUrl({
+        fallbackOrigin: requestOrigin,
+        next: "/dashboard",
+      });
       const { data, error } = await sb.auth.signInWithOAuth({
         provider: "google",
         options: {

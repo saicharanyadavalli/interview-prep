@@ -1,10 +1,10 @@
 /**
- * Authentication Redirect Utilities
+ * Authentication Redirect Utilities (AWS EC2 Canonical)
  *
  * Handles validation and construction of deployment-specific redirect URLs
  * for Supabase Authentication (email confirmation, magic links, OAuth callbacks).
  *
- * Prevents cross-deployment redirect bleed (e.g. EC2 falling back to Vercel Site URL)
+ * Strictly enforces canonical AWS EC2 deployment destination (http://16.113.92.222)
  * and guards against open-redirect vulnerabilities.
  */
 
@@ -74,11 +74,11 @@ export const CANONICAL_AWS_ORIGIN = 'http://16.113.92.222';
 export const CANONICAL_AWS_CALLBACK = `${CANONICAL_AWS_ORIGIN}/auth/callback`;
 
 /**
- * Known default allowed origins for the application deployments.
+ * Authoritative allowed origins for application deployments.
+ * Only the canonical AWS EC2 origin and local development hosts are permitted.
  */
 export const DEFAULT_ALLOWED_ORIGINS = [
   CANONICAL_AWS_ORIGIN,
-  'https://interview-prep-saicharanyadavallis-projects.vercel.app',
   'http://localhost:3000',
   'http://127.0.0.1:3000',
 ];
@@ -86,34 +86,55 @@ export const DEFAULT_ALLOWED_ORIGINS = [
 export interface GetAuthRedirectUrlOptions {
   fallbackOrigin?: string | null;
   preserveParams?: boolean;
+  next?: string | null;
 }
 
 /**
- * Returns the configured authentication redirect URL for Supabase Auth flows
+ * Returns the canonical authentication redirect URL for Supabase Auth flows
  * (e.g. emailRedirectTo during signup, OAuth redirectTo).
  *
- * Guarantees a validated redirect URL pointing to /auth/callback.
+ * Guarantees a validated redirect URL pointing to /auth/callback on the AWS EC2 deployment.
  *
  * Priority order:
  * 1. Explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment
  * 2. FRONTEND_URL or NEXT_PUBLIC_APP_URL from environment
  * 3. Request-derived fallbackOrigin (e.g. window.location.origin or Host header)
- *    ONLY IF the origin is in the allowed origins list!
- * 4. Vercel deployment URL ONLY when running in an active Vercel environment (VERCEL === '1')
- * 5. Canonical EC2 fallback: http://16.113.92.222/auth/callback
+ *    ONLY IF the origin is in the allowed origins list (e.g. local dev on localhost:3000)!
+ * 4. Canonical EC2 destination: http://16.113.92.222/auth/callback
  */
 export function getAuthRedirectUrl(
   optionsOrFallbackOrigin?: string | null | GetAuthRedirectUrlOptions
 ): string {
   let fallbackOrigin: string | null = null;
   let preserveParams = false;
+  let nextTarget: string | null = null;
 
   if (typeof optionsOrFallbackOrigin === 'string') {
     fallbackOrigin = optionsOrFallbackOrigin;
   } else if (optionsOrFallbackOrigin && typeof optionsOrFallbackOrigin === 'object') {
     fallbackOrigin = optionsOrFallbackOrigin.fallbackOrigin || null;
     preserveParams = Boolean(optionsOrFallbackOrigin.preserveParams);
+    if (optionsOrFallbackOrigin.next) {
+      const cleanNext = optionsOrFallbackOrigin.next.trim();
+      if (cleanNext.startsWith('/') && !cleanNext.startsWith('//') && !cleanNext.includes('\\')) {
+        nextTarget = cleanNext;
+      }
+    }
   }
+
+  const appendNext = (baseUrl: string): string => {
+    if (!nextTarget) return baseUrl;
+    try {
+      const u = new URL(baseUrl);
+      if (!u.searchParams.has('next')) {
+        u.searchParams.set('next', nextTarget);
+      }
+      return u.toString();
+    } catch (_) {
+      const sep = baseUrl.includes('?') ? '&' : '?';
+      return `${baseUrl}${sep}next=${encodeURIComponent(nextTarget)}`;
+    }
+  };
 
   // 1. Try explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment
   const envUrl = process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
@@ -122,9 +143,10 @@ export function getAuthRedirectUrl(
       const parsed = new URL(envUrl.trim());
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
         if (preserveParams && (parsed.search || parsed.hash)) {
-          return `${parsed.origin}/auth/callback${parsed.search}${parsed.hash}`;
+          const fullUrl = `${parsed.origin}/auth/callback${parsed.search}${parsed.hash}`;
+          return appendNext(fullUrl);
         }
-        return `${parsed.origin}/auth/callback`;
+        return appendNext(`${parsed.origin}/auth/callback`);
       }
     } catch (_) {}
   }
@@ -135,7 +157,7 @@ export function getAuthRedirectUrl(
     try {
       const parsed = new URL(hostUrl.trim());
       if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
-        return `${parsed.origin}/auth/callback`;
+        return appendNext(`${parsed.origin}/auth/callback`);
       }
     } catch (_) {}
   }
@@ -161,33 +183,18 @@ export function getAuthRedirectUrl(
         (o) => o.toLowerCase() === candidateOrigin!.toLowerCase()
       );
       if (isAllowed) {
-        return `${candidateOrigin}/auth/callback`;
+        return appendNext(`${candidateOrigin}/auth/callback`);
       }
     }
   }
 
-  // 4. Try Vercel environment URL ONLY if explicitly running in a Vercel deployment
-  const isVercelRuntime =
-    process.env.VERCEL === '1' ||
-    process.env.NEXT_PUBLIC_VERCEL_ENV !== undefined;
-  if (isVercelRuntime && process.env.VERCEL_URL) {
-    const rawVercel = process.env.VERCEL_URL.trim();
-    const vercelHost = rawVercel.startsWith('http')
-      ? rawVercel
-      : `https://${rawVercel}`;
-    try {
-      const parsed = new URL(vercelHost);
-      return `${parsed.origin}/auth/callback`;
-    } catch (_) {}
-  }
-
-  // 5. Canonical fallback for AWS EC2
-  return CANONICAL_AWS_CALLBACK;
+  // 4. Canonical fallback for AWS EC2
+  return appendNext(CANONICAL_AWS_CALLBACK);
 }
 
 /**
  * Returns a list of trusted allowed origins, dynamically including the
- * origin of the currently configured AUTH_REDIRECT_URL.
+ * origin of the currently configured AUTH_REDIRECT_URL, FRONTEND_URL, or NEXT_PUBLIC_APP_URL.
  */
 export function getAllowedOrigins(configuredUrl?: string | null): string[] {
   const origins = new Set<string>(DEFAULT_ALLOWED_ORIGINS);
