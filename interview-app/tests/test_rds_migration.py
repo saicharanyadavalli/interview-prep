@@ -89,13 +89,13 @@ class TestDataMarshallingAndSecurity:
 
     def test_mask_connection_url(self):
         """Verify password is never exposed in masked URL."""
-        secret_url = "postgresql://myuser:SuperSecretPassword123!@my-rds.12345.ap-southeast-1.rds.amazonaws.com:5432/interview_prep_db"
+        secret_url = "postgresql://test_user:synthetic_dummy_pw@db.example.invalid:5432/interview_prep_test_db"
         masked = mask_connection_url(secret_url)
-        assert "SuperSecretPassword123!" not in masked
+        assert "synthetic_dummy_pw" not in masked
         assert "****" in masked
-        assert "myuser" in masked
-        assert "my-rds.12345.ap-southeast-1.rds.amazonaws.com:5432" in masked
-        assert "interview_prep_db" in masked
+        assert "test_user" in masked
+        assert "db.example.invalid:5432" in masked
+        assert "interview_prep_test_db" in masked
 
     def test_mask_connection_url_empty_or_invalid(self):
         """Verify empty and invalid URLs are handled safely."""

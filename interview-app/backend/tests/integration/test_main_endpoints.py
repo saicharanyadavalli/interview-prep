@@ -17,14 +17,15 @@ def test_root_health_check_returns_200_ok(unauth_client: TestClient):
 
 def test_health_check_returns_status_and_checks(unauth_client: TestClient):
     """Verify GET /health checks environment configuration and RDS status."""
-    res = unauth_client.get("/health")
-    assert res.status_code == 200
-    data = res.json()
-    assert data["status"] in ("ok", "degraded", "partial")
-    assert "checks" in data
-    assert "gemini_key_set" in data["checks"]
-    assert "supabase_url_set" in data["checks"]
-    assert "rds_connected" in data["checks"]
+    with patch("main.check_rds_health", return_value=True):
+        res = unauth_client.get("/health")
+        assert res.status_code == 200
+        data = res.json()
+        assert data["status"] in ("ok", "degraded", "partial")
+        assert "checks" in data
+        assert "gemini_key_set" in data["checks"]
+        assert "supabase_url_set" in data["checks"]
+        assert "rds_connected" in data["checks"]
 
 
 def test_health_live_endpoint(unauth_client: TestClient):

@@ -17,30 +17,67 @@ from services.rds_client import (
 
 def test_mask_db_url_masks_password():
     """Verify mask_db_url removes plain text passwords from connection strings."""
-    url = "postgresql://my_user:super_secret_pw123!@rds-endpoint.us-east-1.rds.amazonaws.com:5432/interview_prep_db"
+    dummy_pass = "synthetic_dummy_pw_not_real"
+    url = f"postgresql://test_user:{dummy_pass}@db.example.invalid:5432/interview_prep_test_db"
     masked = mask_db_url(url)
-    assert "super_secret_pw123!" not in masked
-    assert "my_user" in masked
-    assert "rds-endpoint.us-east-1.rds.amazonaws.com" in masked
-    assert "interview_prep_db" in masked
+    assert dummy_pass not in masked
+    assert "test_user" in masked
+    assert "db.example.invalid:5432" in masked
+    assert "interview_prep_test_db" in masked
     assert "****" in masked
+
+
+def test_mask_db_url_encoded_password():
+    """Verify mask_db_url masks percent-encoded passwords."""
+    url = "postgresql://test_user:p%40ss%21word@db.example.invalid:5432/test_db"
+    masked = mask_db_url(url)
+    assert "p%40ss%21word" not in masked
+    assert "p@ss!word" not in masked
+    assert "test_user" in masked
+    assert "****" in masked
+
+
+def test_mask_db_url_password_without_username():
+    """Verify mask_db_url masks password even when username is omitted."""
+    url = "postgresql://:dummy_pass@db.example.invalid:5432/test_db"
+    masked = mask_db_url(url)
+    assert "dummy_pass" not in masked
+    assert "****" in masked
+    assert "db.example.invalid" in masked
+
+
+def test_mask_db_url_preserves_query_and_fragment():
+    """Verify mask_db_url preserves non-secret query params and fragments."""
+    url = "postgresql://test_user:dummy_pass@db.example.invalid:5432/test_db?sslmode=require#pool"
+    masked = mask_db_url(url)
+    assert "dummy_pass" not in masked
+    assert "sslmode=require" in masked
+    assert "#pool" in masked
+    assert "test_user" in masked
 
 
 def test_mask_db_url_empty_or_safe():
     """Verify mask_db_url safely handles empty strings or strings without passwords."""
     assert mask_db_url("") == ""
     assert mask_db_url("postgresql://localhost:5432/db") == "postgresql://localhost:5432/db"
+    assert mask_db_url("postgresql://db.example.invalid:5432/test_db") == "postgresql://db.example.invalid:5432/test_db"
+
+
+def test_mask_db_url_malformed():
+    """Verify mask_db_url safely handles malformed strings without raising exceptions."""
+    assert mask_db_url("not_a_valid_url") == "not_a_valid_url"
+    assert "****" in mask_db_url("postgresql://test_user:dummy_pass@")
 
 
 def test_get_rds_credentials_from_database_url_env(monkeypatch):
     """Verify get_rds_credentials prioritizes DATABASE_URL environment variable."""
-    test_url = "postgresql://app_user:testpass@localhost:5432/interview_prep_db"
+    test_url = "postgresql://test_user:test_dummy_pass@localhost:5432/interview_prep_test_db"
     monkeypatch.setenv("DATABASE_URL", test_url)
 
     creds = get_rds_credentials()
     assert creds["source"] == "DATABASE_URL"
     assert creds["connection_url"] == test_url
-    assert "testpass" not in creds["masked_url"]
+    assert "test_dummy_pass" not in creds["masked_url"]
 
 
 def test_get_rds_credentials_from_secrets_manager(monkeypatch):
@@ -48,14 +85,14 @@ def test_get_rds_credentials_from_secrets_manager(monkeypatch):
     monkeypatch.delenv("DATABASE_URL", raising=False)
     monkeypatch.delenv("RDS_DATABASE_URL", raising=False)
     monkeypatch.setenv("RDS_SECRET_NAME", "interview-prep/rds/app")
-    monkeypatch.setenv("AWS_REGION", "us-east-1")
+    monkeypatch.setenv("AWS_REGION", "ap-south-2")
 
     secret_payload = json.dumps({
-        "username": "interview_prep_app",
-        "password": "RdsSecurePassword456!",
-        "host": "test-rds.cluster-xyz.us-east-1.rds.amazonaws.com",
+        "username": "test_app_user",
+        "password": "synthetic_mock_pw_789",
+        "host": "db.example.invalid",
         "port": 5432,
-        "dbname": "interview_prep_db",
+        "dbname": "interview_prep_test_db",
     })
 
     mock_boto_client = MagicMock()
@@ -64,10 +101,10 @@ def test_get_rds_credentials_from_secrets_manager(monkeypatch):
     with patch("boto3.client", return_value=mock_boto_client):
         creds = get_rds_credentials()
         assert creds["source"] == "SECRETS_MANAGER"
-        assert creds["username"] == "interview_prep_app"
-        assert creds["host"] == "test-rds.cluster-xyz.us-east-1.rds.amazonaws.com"
-        assert "RdsSecurePassword456!" not in creds["masked_url"]
-        assert creds["connection_url"].startswith("postgresql://interview_prep_app:")
+        assert creds["username"] == "test_app_user"
+        assert creds["host"] == "db.example.invalid"
+        assert "synthetic_mock_pw_789" not in creds["masked_url"]
+        assert creds["connection_url"].startswith("postgresql://test_app_user:")
 
 
 def test_get_rds_credentials_missing_secret_raises_error(monkeypatch):
@@ -134,7 +171,7 @@ def test_get_rds_credentials_default_region_is_ap_south_2(monkeypatch):
     monkeypatch.delenv("AWS_DEFAULT_REGION", raising=False)
     monkeypatch.setenv("RDS_SECRET_NAME", "interview-prep/rds/app")
 
-    secret_payload = json.dumps({"username": "u", "password": "p", "host": "h", "port": 5432, "dbname": "db"})
+    secret_payload = json.dumps({"username": "test_user", "password": "dummy_password", "host": "db.example.invalid", "port": 5432, "dbname": "test_db"})
     mock_boto = MagicMock()
     mock_boto.get_secret_value.return_value = {"SecretString": secret_payload}
 
@@ -151,10 +188,10 @@ def test_get_rds_credentials_extracts_region_from_arn(monkeypatch):
     monkeypatch.delenv("RDS_DATABASE_URL", raising=False)
     monkeypatch.delenv("AWS_REGION", raising=False)
     monkeypatch.delenv("AWS_DEFAULT_REGION", raising=False)
-    arn = "arn:aws:secretsmanager:ap-south-2:808431466075:secret:interview-prep/rds/app-TVJeDz"
+    arn = "arn:aws:secretsmanager:ap-south-2:123456789012:secret:interview-prep/rds/app-dummy123"
     monkeypatch.setenv("RDS_SECRET_ARN", arn)
 
-    secret_payload = json.dumps({"username": "u", "password": "p", "host": "h", "port": 5432, "dbname": "db"})
+    secret_payload = json.dumps({"username": "test_user", "password": "dummy_password", "host": "db.example.invalid", "port": 5432, "dbname": "test_db"})
     mock_boto = MagicMock()
     mock_boto.get_secret_value.return_value = {"SecretString": secret_payload}
 

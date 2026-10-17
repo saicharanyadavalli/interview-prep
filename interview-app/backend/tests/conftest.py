@@ -26,6 +26,7 @@ os.environ["GEMINI_API_KEY"] = "mock-test-gemini-key"
 os.environ["SUPABASE_URL"] = "https://mock-test.supabase.co"
 os.environ["SUPABASE_SERVICE_KEY"] = "mock-test-supabase-service-key"
 os.environ["RATE_LIMIT_STORAGE_URI"] = "memory://"
+os.environ["DATABASE_URL"] = "postgresql://test_user:dummy_password@localhost:5432/interview_prep_test_db"
 
 from limiter import limiter
 from main import app
