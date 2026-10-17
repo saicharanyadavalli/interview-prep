@@ -16,12 +16,25 @@ export interface AuthRedirectValidationResult {
 }
 
 /**
+ * Sanitizes an environment variable value by trimming whitespace and
+ * removing surrounding single or double quotes (e.g. from Docker/env files).
+ */
+export function cleanEnvValue(val?: string | null): string | null {
+  if (!val || typeof val !== 'string') return null;
+  const trimmed = val.trim();
+  if (!trimmed) return null;
+  const unquoted = trimmed.replace(/^["']|["']$/g, '').trim();
+  return unquoted || null;
+}
+
+/**
  * Validates that the provided redirect URL is an absolute, well-formed HTTP/HTTPS URL.
  */
 export function validateAuthRedirectUrl(
   rawUrl?: string | null
 ): AuthRedirectValidationResult {
-  if (!rawUrl || typeof rawUrl !== 'string' || !rawUrl.trim()) {
+  const cleaned = cleanEnvValue(rawUrl);
+  if (!cleaned) {
     return {
       isValid: false,
       error:
@@ -31,10 +44,8 @@ export function validateAuthRedirectUrl(
     };
   }
 
-  const trimmed = rawUrl.trim();
-
   try {
-    const parsed = new URL(trimmed);
+    const parsed = new URL(cleaned);
 
     if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
       return {
@@ -63,7 +74,7 @@ export function validateAuthRedirectUrl(
   } catch {
     return {
       isValid: false,
-      error: `AUTH_REDIRECT_URL "${trimmed}" is not a valid absolute URL.`,
+      error: `AUTH_REDIRECT_URL "${cleaned}" is not a valid absolute URL.`,
       url: null,
       origin: null,
     };
@@ -92,7 +103,9 @@ export const DEFAULT_ALLOWED_ORIGINS = [
  * - Must have explicit VERCEL === '1' AND a non-empty VERCEL_URL.
  */
 export function isVercelRuntime(): boolean {
-  return process.env.VERCEL === '1' && Boolean(process.env.VERCEL_URL?.trim());
+  const isVercel = cleanEnvValue(process.env.VERCEL) === '1';
+  const vercelUrl = cleanEnvValue(process.env.VERCEL_URL);
+  return isVercel && Boolean(vercelUrl);
 }
 
 export interface GetAuthRedirectUrlOptions {
@@ -149,11 +162,12 @@ export function getAuthRedirectUrl(
   };
 
   // 1. Explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment (always wins)
-  const rawEnvUrl = process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
-  if (rawEnvUrl && typeof rawEnvUrl === 'string' && rawEnvUrl.trim()) {
-    const trimmedEnv = rawEnvUrl.trim();
+  const rawEnvUrl =
+    cleanEnvValue(process.env.AUTH_REDIRECT_URL) ||
+    cleanEnvValue(process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL);
+  if (rawEnvUrl) {
     try {
-      const parsed = new URL(trimmedEnv);
+      const parsed = new URL(rawEnvUrl);
       if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname) {
         if (preserveParams && (parsed.search || parsed.hash)) {
           const fullUrl = `${parsed.origin}/auth/callback${parsed.search}${parsed.hash}`;
@@ -161,30 +175,31 @@ export function getAuthRedirectUrl(
         }
         return appendNext(`${parsed.origin}/auth/callback`);
       } else {
-        throw new Error(`Invalid protocol or host: ${trimmedEnv}`);
+        throw new Error(`Invalid protocol or host: ${rawEnvUrl}`);
       }
     } catch (err) {
       console.error(
-        `[auth-redirect] Configured AUTH_REDIRECT_URL "${trimmedEnv}" is invalid or malformed (${err}). Falling back strictly to canonical AWS callback to prevent unsafe redirection.`
+        `[auth-redirect] Configured AUTH_REDIRECT_URL "${rawEnvUrl}" is invalid or malformed (${err}). Falling back strictly to canonical AWS callback to prevent unsafe redirection.`
       );
       return appendNext(CANONICAL_AWS_CALLBACK);
     }
   }
 
   // 2. Standard deployment host environment variables (FRONTEND_URL / NEXT_PUBLIC_APP_URL)
-  const hostUrl = process.env.FRONTEND_URL || process.env.NEXT_PUBLIC_APP_URL;
-  if (hostUrl && typeof hostUrl === 'string' && hostUrl.trim()) {
-    const trimmedHost = hostUrl.trim();
+  const hostUrl =
+    cleanEnvValue(process.env.FRONTEND_URL) ||
+    cleanEnvValue(process.env.NEXT_PUBLIC_APP_URL);
+  if (hostUrl) {
     try {
-      const parsed = new URL(trimmedHost);
+      const parsed = new URL(hostUrl);
       if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname) {
         return appendNext(`${parsed.origin}/auth/callback`);
       } else {
-        throw new Error(`Invalid protocol or host: ${trimmedHost}`);
+        throw new Error(`Invalid protocol or host: ${hostUrl}`);
       }
     } catch (err) {
       console.error(
-        `[auth-redirect] Configured FRONTEND_URL/NEXT_PUBLIC_APP_URL "${trimmedHost}" is invalid (${err}). Falling back strictly to canonical AWS callback.`
+        `[auth-redirect] Configured FRONTEND_URL/NEXT_PUBLIC_APP_URL "${hostUrl}" is invalid (${err}). Falling back strictly to canonical AWS callback.`
       );
       return appendNext(CANONICAL_AWS_CALLBACK);
     }
@@ -195,23 +210,24 @@ export function getAuthRedirectUrl(
   // NEXT_PUBLIC_VERCEL_ENV alone does NOT activate this.
   if (isVercelRuntime()) {
     try {
-      const vercelHost = process.env.VERCEL_URL!.trim();
+      const vercelHost = cleanEnvValue(process.env.VERCEL_URL)!;
       const vercelOrigin = new URL(`https://${vercelHost}`).origin;
       return appendNext(`${vercelOrigin}/auth/callback`);
     } catch (_) {}
   }
 
   // 4. Request-derived fallback origin, strictly validated against allowed origins
-  if (fallbackOrigin && typeof fallbackOrigin === 'string' && fallbackOrigin.trim()) {
+  const cleanFallback = cleanEnvValue(fallbackOrigin);
+  if (cleanFallback) {
     let candidateOrigin: string | null = null;
     try {
-      const parsed = new URL(fallbackOrigin.trim());
+      const parsed = new URL(cleanFallback);
       if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname) {
         candidateOrigin = parsed.origin;
       }
     } catch (_) {
       try {
-        const parsed = new URL(`http://${fallbackOrigin.trim()}`);
+        const parsed = new URL(`http://${cleanFallback}`);
         if (parsed.hostname) {
           candidateOrigin = parsed.origin;
         }
@@ -241,17 +257,17 @@ export function getAllowedOrigins(configuredUrl?: string | null): string[] {
   const origins = new Set<string>(DEFAULT_ALLOWED_ORIGINS);
 
   const candidates = [
-    configuredUrl,
-    process.env.AUTH_REDIRECT_URL,
-    process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL,
-    process.env.FRONTEND_URL,
-    process.env.NEXT_PUBLIC_APP_URL,
+    cleanEnvValue(configuredUrl),
+    cleanEnvValue(process.env.AUTH_REDIRECT_URL),
+    cleanEnvValue(process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL),
+    cleanEnvValue(process.env.FRONTEND_URL),
+    cleanEnvValue(process.env.NEXT_PUBLIC_APP_URL),
   ];
 
   for (const target of candidates) {
-    if (target && typeof target === 'string' && target.trim()) {
+    if (target) {
       try {
-        const parsed = new URL(target.trim());
+        const parsed = new URL(target);
         if (
           parsed.origin &&
           parsed.origin !== 'null' &&
@@ -266,8 +282,11 @@ export function getAllowedOrigins(configuredUrl?: string | null): string[] {
   // Only include dynamic Vercel origin if actively running on Vercel platform runtime
   if (isVercelRuntime()) {
     try {
-      const vercelOrigin = new URL(`https://${process.env.VERCEL_URL!.trim()}`).origin;
-      origins.add(vercelOrigin);
+      const vercelUrl = cleanEnvValue(process.env.VERCEL_URL);
+      if (vercelUrl) {
+        const vercelOrigin = new URL(`https://${vercelUrl}`).origin;
+        origins.add(vercelOrigin);
+      }
     } catch (_) {}
   }
 
@@ -318,7 +337,11 @@ export function validateRedirectDestination(
     const origins = new Set(allowedOrigins.map((o) => o.toLowerCase()));
 
     if (origins.has(parsed.origin.toLowerCase())) {
-      return parsed.pathname + parsed.search + parsed.hash;
+      // Prevent protocol-relative path bypass (e.g. http://16.113.92.222//evil.com -> //evil.com)
+      const cleanPath = parsed.pathname.startsWith('//')
+        ? parsed.pathname.replace(/^\/+/, '/')
+        : parsed.pathname;
+      return cleanPath + parsed.search + parsed.hash;
     }
   } catch (_) {}
 

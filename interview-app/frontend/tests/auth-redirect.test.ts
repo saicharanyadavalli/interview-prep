@@ -6,6 +6,7 @@ import {
   getAllowedOrigins,
   validateRedirectDestination,
   isVercelRuntime,
+  cleanEnvValue,
   CANONICAL_AWS_ORIGIN,
   CANONICAL_AWS_CALLBACK,
   DEFAULT_ALLOWED_ORIGINS,
@@ -628,6 +629,76 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
         validateRedirectDestination('http://localhost:3000/profile'),
         '/profile'
       );
+    });
+
+    it('should sanitize protocol-relative paths inside absolute URLs matching canonical origin', () => {
+      assert.equal(
+        validateRedirectDestination(`${AWS_ORIGIN}//evil.com`),
+        '/evil.com'
+      );
+      assert.equal(
+        validateRedirectDestination(`${AWS_ORIGIN}///evil.com/phishing`),
+        '/evil.com/phishing'
+      );
+      const resolved = new URL(validateRedirectDestination(`${AWS_ORIGIN}//evil.com`), AWS_ORIGIN);
+      assert.equal(resolved.origin, AWS_ORIGIN);
+      assert.equal(resolved.pathname, '/evil.com');
+    });
+  });
+
+  // ── cleanEnvValue & Quoted Environment Variable Handling ─────────────────
+
+  describe('cleanEnvValue & Quoted Environment Variable Handling', () => {
+    it('returns null for null, undefined, or empty/whitespace strings', () => {
+      assert.equal(cleanEnvValue(null), null);
+      assert.equal(cleanEnvValue(undefined), null);
+      assert.equal(cleanEnvValue(''), null);
+      assert.equal(cleanEnvValue('   '), null);
+      assert.equal(cleanEnvValue('""'), null);
+      assert.equal(cleanEnvValue("''"), null);
+    });
+
+    it('strips surrounding double quotes and trims whitespace', () => {
+      assert.equal(cleanEnvValue('"http://16.113.92.222"'), 'http://16.113.92.222');
+      assert.equal(cleanEnvValue('  "http://16.113.92.222"  '), 'http://16.113.92.222');
+    });
+
+    it('strips surrounding single quotes and trims whitespace', () => {
+      assert.equal(cleanEnvValue("'http://16.113.92.222'"), 'http://16.113.92.222');
+      assert.equal(cleanEnvValue("  'http://16.113.92.222'  "), 'http://16.113.92.222');
+    });
+
+    it('preserves inner content without surrounding quotes', () => {
+      assert.equal(cleanEnvValue('http://16.113.92.222'), 'http://16.113.92.222');
+    });
+
+    it('validates quoted AUTH_REDIRECT_URL in validateAuthRedirectUrl', () => {
+      const res = validateAuthRedirectUrl('"http://16.113.92.222/auth/callback"');
+      assert.equal(res.isValid, true);
+      assert.equal(res.origin, 'http://16.113.92.222');
+      assert.equal(res.url, 'http://16.113.92.222/auth/callback');
+    });
+
+    it('resolves quoted AUTH_REDIRECT_URL in getAuthRedirectUrl', () => {
+      process.env.AUTH_REDIRECT_URL = '"http://16.113.92.222/auth/callback?next=/dashboard"';
+      const url = getAuthRedirectUrl();
+      assert.equal(url, 'http://16.113.92.222/auth/callback');
+
+      const urlWithParams = getAuthRedirectUrl({ preserveParams: true });
+      assert.equal(urlWithParams, 'http://16.113.92.222/auth/callback?next=/dashboard');
+    });
+
+    it('resolves quoted FRONTEND_URL in getAuthRedirectUrl', () => {
+      delete process.env.AUTH_REDIRECT_URL;
+      delete process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
+      process.env.FRONTEND_URL = '"http://16.113.92.222"';
+      const url = getAuthRedirectUrl();
+      assert.equal(url, 'http://16.113.92.222/auth/callback');
+    });
+
+    it('includes quoted origins properly in getAllowedOrigins', () => {
+      const origins = getAllowedOrigins('"http://16.113.92.222"');
+      assert.ok(origins.includes('http://16.113.92.222'));
     });
   });
 });

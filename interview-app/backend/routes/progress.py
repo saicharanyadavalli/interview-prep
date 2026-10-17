@@ -1,4 +1,4 @@
-"""Progress routes — track user question progress in Supabase."""
+"""Progress routes — track user question progress in Amazon RDS PostgreSQL."""
 
 from __future__ import annotations
 

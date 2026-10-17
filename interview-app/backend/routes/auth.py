@@ -142,9 +142,19 @@ def create_session(request: Request, response: Response, payload: SessionRequest
 
     email = user.get("email", "")
     raw_username = (user.get("username") or (email.split("@")[0] if email else f"user_{user['id'][:8]}")).lower()
-    username = raw_username[:40]
+    base_username = raw_username[:40]
 
     try:
+        # Check if the proposed username is already taken by another user
+        username = base_username
+        taken = rds_client.query(
+            "SELECT id FROM user_profiles WHERE LOWER(username) = %s AND id != %s LIMIT 1",
+            (username, user["id"]),
+            fetch="one",
+        )
+        if taken:
+            username = f"{base_username[:33]}_{user['id'][:6]}".lower()
+
         rds_client.mutate(
             """
             INSERT INTO user_profiles (id, email, username, name, avatar_url)

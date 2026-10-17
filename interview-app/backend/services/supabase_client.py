@@ -12,9 +12,8 @@ from supabase import create_client, Client
 def get_supabase_client() -> Client:
     """Return a cached Supabase client using the service-role key.
 
-    The service-role key bypasses Row Level Security so the backend can
-    read/write data on behalf of any authenticated user.  The anon key is
-    used on the frontend instead.
+    Used strictly for Supabase Auth administration and user token verification.
+    Application data is authoritatively stored in Amazon RDS PostgreSQL.
     """
     url = os.getenv("SUPABASE_URL", "").strip().strip('"').strip("'")
     key = os.getenv("SUPABASE_SERVICE_KEY", "").strip().strip('"').strip("'")

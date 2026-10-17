@@ -41,10 +41,7 @@ def _mock_external_services():
         yield "Mocked AI Response"
 
     with patch("routes.assistant.ask_gemini_stream", side_effect=dummy_stream), \
-         patch("routes.profile.cloudinary.uploader.upload", return_value={"secure_url": "http://example.com/avatar.png"}), \
-         patch("routes.profile.get_supabase_client") as mock_supabase:
-        mock_db = MagicMock()
-        mock_supabase.return_value = mock_db
+         patch("routes.profile.cloudinary.uploader.upload", return_value={"secure_url": "http://example.com/avatar.png"}):
         yield
 
 

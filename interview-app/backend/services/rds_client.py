@@ -245,8 +245,11 @@ class RDSConnectionPoolManager:
                     pass
             raise
         finally:
-            if conn and self._pool and not conn.closed:
-                self._pool.putconn(conn)
+            if conn and self._pool:
+                try:
+                    self._pool.putconn(conn, close=bool(conn.closed))
+                except Exception as exc:
+                    logger.warning("Error releasing connection to pool: %s", exc)
 
     @contextmanager
     def get_cursor(self, commit: bool = False) -> Generator[RealDictCursor, None, None]:
