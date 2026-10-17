@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 
 from fastapi import APIRouter, Depends, HTTPException
 
@@ -14,15 +14,49 @@ from models.schemas import (
     ProgressStatusResponse,
     TopicProgressEntry,
 )
-from routes.auth import get_current_user
+from routes.auth import get_current_user, get_optional_current_user
 from services.supabase_client import get_supabase_client
 from services.questions_service import (
     find_qnum_by_question_id,
     get_question_summary_by_qnum,
     get_all_questions_catalog,
 )
+from services.system_design_course import is_reserved_learning_track_qnum
 
 router = APIRouter(prefix="/progress", tags=["progress"])
+
+def _calculate_streak(entries: list[dict]) -> int:
+    """Calculate user practice streak in consecutive days."""
+    unique_days = set()
+    for e in entries:
+        ts = e.get("updated_at")
+        if not ts:
+            continue
+        try:
+            dt = datetime.fromisoformat(str(ts).replace("Z", "+00:00"))
+            unique_days.add(dt.date())
+        except Exception:
+            pass
+
+    if not unique_days:
+        return 0
+
+    today = datetime.now(timezone.utc).date()
+    yesterday = today - timedelta(days=1)
+
+    if today in unique_days:
+        cursor = today
+    elif yesterday in unique_days:
+        cursor = yesterday
+    else:
+        return 0
+
+    streak = 0
+    while cursor in unique_days:
+        streak += 1
+        cursor -= timedelta(days=1)
+    return streak
+
 
 def _coerce_state_from_payload(payload: ProgressUpdateRequest, current_is_solved: bool, current_revisit: bool) -> tuple[bool, bool]:
     is_solved = current_is_solved
@@ -104,8 +138,35 @@ def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_cur
 
 
 @router.get("/user", response_model=UserProgressResponse)
-def get_user_progress(summary_only: bool = False, user: dict = Depends(get_current_user)):
+def get_user_progress(summary_only: bool = False, user: dict | None = Depends(get_optional_current_user)):
     """Return aggregated progress stats and recent progress entries."""
+    if not user:
+        return UserProgressResponse(
+            stats=ProgressStats(
+                total_attempted=0,
+                solved_count=0,
+                unsolved_count=0,
+                revisit_count=0,
+                current_streak=0,
+                easy_attempted=0,
+                medium_attempted=0,
+                hard_attempted=0,
+                easy_solved=0,
+                medium_solved=0,
+                hard_solved=0,
+                total_questions=0,
+                solved_total_questions=0,
+                easy_total_questions=0,
+                medium_total_questions=0,
+                hard_total_questions=0,
+                easy_solved_total_questions=0,
+                medium_solved_total_questions=0,
+                hard_solved_total_questions=0,
+            ),
+            recent=[],
+            topic_breakdown=[],
+        )
+
     supabase = get_supabase_client()
 
     try:
@@ -117,7 +178,11 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
             .order("updated_at", desc=True)
             .execute()
         )
-        entries = result.data or []
+        raw_entries = result.data or []
+        entries = [
+            e for e in raw_entries
+            if not is_reserved_learning_track_qnum(int(e.get("qnum", 0) or 0))
+        ]
     except Exception:
         entries = []
 
@@ -168,6 +233,7 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
             solved_count=len(solved_qnums),
             unsolved_count=len(entries) - len(solved_qnums),
             revisit_count=sum(1 for e in entries if bool(e.get("is_revisit", False))),
+            current_streak=_calculate_streak(entries),
             easy_attempted=easy_attempted,
             medium_attempted=medium_attempted,
             hard_attempted=hard_attempted,
@@ -204,8 +270,7 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
         return UserProgressResponse(
             stats=stats,
             recent=recent_entries,
-            topic_progress=[],
-            activity_map={},
+            topic_breakdown=[],
         )
 
     try:
@@ -327,6 +392,7 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
             for e in entries
             if bool(e.get("is_revisit", False))
         ),
+        current_streak=_calculate_streak(entries),
         easy_attempted=easy_attempted,
         medium_attempted=medium_attempted,
         hard_attempted=hard_attempted,
@@ -365,10 +431,13 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
 
 
 @router.get("/status/{qnum}", response_model=ProgressStatusResponse)
-def get_question_progress_status(qnum: int, user: dict = Depends(get_current_user)):
-    """Return saved progress state for one question, or null/false when not set."""
+def get_question_progress_status(qnum: int, user: dict | None = Depends(get_optional_current_user)):
+    """Return saved progress state for one question, or null/false when not set or unauthenticated."""
     if qnum <= 0:
         raise HTTPException(status_code=422, detail="qnum must be greater than 0")
+
+    if not user:
+        return ProgressStatusResponse(qnum=qnum, is_solved=None, revisit=False)
 
     supabase = get_supabase_client()
     try:

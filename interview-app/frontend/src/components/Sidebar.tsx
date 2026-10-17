@@ -5,21 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@/lib/auth";
+import { UserAvatar } from "@/components/UserAvatar";
 import { LayoutDashboard, List, Activity, RotateCcw, User, LogOut, Moon, Sun, Menu, BookOpen, ChevronsLeft, ChevronsRight } from "lucide-react";
-
-function initialsFromName(name: string) {
-  const text = String(name || "").trim();
-  if (!text) return "U";
-  const parts = text.split(/\s+/).filter(Boolean);
-  if (parts.length === 1) return parts[0].slice(0, 1).toUpperCase();
-  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
-}
-
-function buildAvatarDataUri(name: string) {
-  const initials = initialsFromName(name);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96"><rect width="96" height="96" rx="48" fill="#0f766e"/><text x="48" y="58" text-anchor="middle" font-family="Arial, sans-serif" font-size="36" fill="#ffffff">${initials}</text></svg>`;
-  return `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
-}
 
 export function Sidebar() {
   const pathname = usePathname();
@@ -83,7 +70,6 @@ export function Sidebar() {
   const closeMobile = () => setIsOpen(false);
 
   const meta = getUserMeta();
-  const avatarFallback = buildAvatarDataUri(meta.name);
 
   // Do not render sidebar on login page
   if (pathname === "/login" || pathname === "/") {
@@ -146,13 +132,13 @@ export function Sidebar() {
         </nav>
         <div className="sidebar-footer">
           <div className="sidebar-user">
-            <Image 
+            <UserAvatar 
               className="sidebar-avatar" 
-              src={meta.avatar || avatarFallback} 
-              alt="Avatar" 
-              width={32}
-              height={32}
-              onError={(e) => { e.currentTarget.srcset = avatarFallback; }}
+              src={meta.avatar} 
+              name={meta.name}
+              username={meta.username}
+              size={32}
+              alt={`${meta.name || "User"}'s avatar`}
             />
             <div className="sidebar-user-info">
               <p className="sidebar-user-name">{meta.name}</p>

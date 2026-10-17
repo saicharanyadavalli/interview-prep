@@ -1,20 +1,37 @@
 'use server'
 
 import { createClient } from '@/utils/supabase/server'
-import { revalidatePath } from 'next/cache'
-import { redirect } from 'next/navigation'
+import { getAuthRedirectUrl } from '@/utils/auth-redirect'
+import { headers } from 'next/headers'
 
 export async function login(formData: FormData) {
-  const email = formData.get('email') as string
+  const rawIdentifier = (formData.get('identifier') || formData.get('email')) as string
   const password = formData.get('password') as string
 
-  if (!email || !password) {
-    return { error: 'Email and password are required' }
+  if (!rawIdentifier || !password) {
+    return { error: 'Email or username, and password are required' }
   }
 
   const supabase = await createClient()
+  let emailToUse = rawIdentifier.trim()
+
+  if (!emailToUse.includes('@')) {
+    // Input is a username — resolve to email using Supabase RPC
+    const cleanUsername = emailToUse.toLowerCase()
+    try {
+      const { data: rpcResult } = await supabase.rpc("get_email_by_username", { p_username: cleanUsername })
+      const resolvedEmail = Array.isArray(rpcResult) && rpcResult.length > 0 ? rpcResult[0]?.email : (typeof rpcResult === 'string' ? rpcResult : null)
+      if (!resolvedEmail) {
+        return { error: `No account found with username "${rawIdentifier}". Please check your username or sign in with your email address.` }
+      }
+      emailToUse = resolvedEmail
+    } catch (_) {
+      return { error: 'Failed to look up username. Please try signing in with your email address.' }
+    }
+  }
+
   const { data, error } = await supabase.auth.signInWithPassword({
-    email,
+    email: emailToUse,
     password,
   })
 
@@ -40,6 +57,18 @@ export async function signup(formData: FormData) {
     return { error: 'All fields are required' }
   }
 
+  // Dynamically resolve request host headers for seamless fallback to /auth/callback
+  const headerList = await headers()
+  const host = headerList.get('x-forwarded-host') || headerList.get('host')
+  const proto = headerList.get('x-forwarded-proto') || 'https'
+  const requestOrigin = host ? `${proto}://${host}` : undefined
+
+  const emailRedirectTo = getAuthRedirectUrl({
+    fallbackOrigin: requestOrigin,
+    preserveParams: true,
+    next: '/dashboard',
+  })
+
   const cleanEmail = email.trim().toLowerCase()
   const cleanUsername = username.trim().toLowerCase()
 
@@ -48,7 +77,8 @@ export async function signup(formData: FormData) {
   // First check if username exists
   try {
     const { data: rpcEmail } = await supabase.rpc("get_email_by_username", { p_username: cleanUsername })
-    if (rpcEmail) {
+    const isTaken = Array.isArray(rpcEmail) ? rpcEmail.length > 0 : Boolean(rpcEmail)
+    if (isTaken) {
       return { error: `Username "${username}" is already taken. Please choose another username.` }
     }
   } catch (_) {}
@@ -57,6 +87,7 @@ export async function signup(formData: FormData) {
     email: cleanEmail,
     password,
     options: {
+      emailRedirectTo,
       data: {
         full_name: fullName.trim(),
         username: cleanUsername,
@@ -76,10 +107,20 @@ export async function signup(formData: FormData) {
   }
   
   // Try logging in
-  await supabase.auth.signInWithPassword({
+  const { error: signInError } = await supabase.auth.signInWithPassword({
     email: cleanEmail,
     password,
   })
+
+  if (signInError) {
+    if (signInError.message.toLowerCase().includes("confirm")) {
+      return {
+        success: true,
+        message: "Signup successful! Please check your email to confirm your account before logging in."
+      }
+    }
+    return { error: signInError.message }
+  }
 
   return { success: true }
 }

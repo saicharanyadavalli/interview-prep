@@ -1,11 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Brain, Code, Award, Calendar, ChevronRight, Layout, ShieldCheck, Flame, BookOpen } from "lucide-react";
+import { useAuth } from "@/lib/auth";
 
 export default function LandingPage() {
+  const { user, loading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!loading && user) {
+      router.replace("/dashboard");
+      return;
+    }
+
+    if (typeof window !== "undefined") {
+      const search = window.location.search || "";
+      if (search.includes("code=") || search.includes("token_hash=")) {
+        window.location.replace(`/auth/callback${search}`);
+        return;
+      }
+      const hash = window.location.hash || "";
+      if (hash.includes("access_token=")) {
+        router.replace("/dashboard");
+      }
+    }
+  }, [user, loading, router]);
+
   return (
     <div 
       className="landing-container w-full" 

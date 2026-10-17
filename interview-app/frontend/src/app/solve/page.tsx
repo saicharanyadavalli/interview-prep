@@ -52,7 +52,7 @@ function SolveContent() {
   const [commentText, setCommentText] = useState("");
   const [commentMeta, setCommentMeta] = useState("");
   const [commentId, setCommentId] = useState<string | null>(null);
-  
+
   const [toastMsg, setToastMsg] = useState("");
   const [toastType, setToastType] = useState("info");
   const [showToast, setShowToast] = useState(false);
@@ -100,7 +100,7 @@ function SolveContent() {
       if (!mounted) return;
       setCurrentQ(q);
       setStatusText("Question loaded.");
-      
+
       if (user) {
         API.getProgressStatus(String(q.qnum)).then(data => {
           if (!mounted) return;
@@ -111,9 +111,13 @@ function SolveContent() {
         }).catch(() => {
           if (mounted) setProgress({ is_solved: null, revisit: false });
         });
+        loadNote(q.qnum);
+      } else {
+        setProgress({ is_solved: null, revisit: false });
+        setCommentMeta("Sign in to view and save note.");
+        setCommentText("");
+        setCommentId(null);
       }
-      
-      loadNote(q.qnum);
     }).catch(err => {
       if (mounted) setStatusText(`Could not load question: ${err.message}`);
     });
@@ -130,8 +134,8 @@ function SolveContent() {
       if (isSolved === null) {
         await API.clearProgress(currentQ.qnum);
         setProgress(p => ({ ...p, is_solved: null }));
-        displayToast("Marked as not solved.", "success");
-        setStatusText("Saved as not solved.");
+        displayToast("Question progress cleared.", "info");
+        setStatusText("Progress cleared.");
       } else {
         await API.updateProgress(currentQ.qnum, { is_solved: isSolved, revisit: progress.revisit });
         setProgress(p => ({ ...p, is_solved: isSolved }));
@@ -147,20 +151,19 @@ function SolveContent() {
     }
   };
 
-  const markUnsolved = async () => {
-    if (!currentQ) return;
-    if (progress.is_solved === false) return; // Prevent duplicate API call
-    if (!user) return displayToast("Sign in to save progress.", "warning");
-    setIsBusy(true);
-    try {
-      await API.updateProgress(currentQ.qnum, { is_solved: false, revisit: progress.revisit });
-      setProgress(p => ({ ...p, is_solved: false }));
-      displayToast("Marked as not solved.", "success");
-      setStatusText("Saved as not solved.");
-    } catch (err: any) {
-      displayToast(`Failed to clear progress: ${err.message}`, "error");
-    } finally {
-      setIsBusy(false);
+  const toggleSolved = async () => {
+    if (progress.is_solved === true) {
+      await markQuestion(null);
+    } else {
+      await markQuestion(true);
+    }
+  };
+
+  const toggleNotSolved = async () => {
+    if (progress.is_solved === false) {
+      await markQuestion(null);
+    } else {
+      await markQuestion(false);
     }
   };
 
@@ -186,7 +189,7 @@ function SolveContent() {
     if (!currentQ) return;
     const text = commentText.trim();
     if (!text) return displayToast("Write your note first.", "warning");
-    
+
     setIsBusy(true);
     try {
       await API.addComment(currentQ.qnum, text);
@@ -220,16 +223,16 @@ function SolveContent() {
   let examplesBlocks: string[] = [];
   let tags: string[] = [];
   let currentQTextForAssistant = "";
-  
+
   if (currentQ) {
     const split = splitStatementExamples(currentQ.statement_text);
     statementText = split.statement || "No statement available.";
     constraintText = currentQ.constraints_text || "No constraints available.";
-    
+
     const ex = parseArray(currentQ.examples).map(e => String(e).trim()).filter(Boolean);
     examplesBlocks = ex.flatMap(splitExamples);
     if (!examplesBlocks.length && split.tail) examplesBlocks = splitExamples(split.tail);
-    
+
     tags = Array.from(new Set([...parseArray(currentQ.topic_tags), ...parseArray(currentQ.company_tags)]));
     currentQTextForAssistant = `Title: ${currentQ.problem_name || ""}\n\nStatement:\n${statementText}\n\nConstraints:\n${constraintText}`;
   }
@@ -241,7 +244,7 @@ function SolveContent() {
           {toastMsg}
         </div>
       )}
-      
+
       <div className="page-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
           <Brain size={28} className="text-teal" /> Solve Question
@@ -278,7 +281,7 @@ function SolveContent() {
               <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: 'var(--ink)' }}>Statement</h3>
               <pre className="text-block" style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', fontFamily: 'inherit', color: 'var(--muted)', background: 'var(--bg)', padding: '1rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)' }}>{statementText}</pre>
             </article>
-            
+
             {examplesBlocks.length > 0 && (
               <article>
                 <h3 style={{ fontSize: '1.1rem', marginBottom: '0.75rem', color: 'var(--ink)' }}>Examples</h3>
@@ -321,28 +324,28 @@ function SolveContent() {
           </div>
           <p className="card-subtitle text-muted" style={{ marginBottom: '1rem', fontSize: '0.9rem' }}>Set this manually. Opening a question does not mark it as solved.</p>
           <div className="button-row" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-            <button 
-              className={`btn btn-sm outcome-btn ${progress.is_solved === true ? "btn-feedback-selected" : ""}`} 
-              type="button" 
-              onClick={() => markQuestion(true)} 
+            <button
+              className={`btn btn-sm outcome-btn ${progress.is_solved === true ? "btn-feedback-selected" : ""}`}
+              type="button"
+              onClick={toggleSolved}
               disabled={isBusy}
               style={{ background: progress.is_solved === true ? 'var(--teal-soft)' : 'var(--bg)', color: progress.is_solved === true ? 'var(--teal)' : 'var(--ink)', borderColor: progress.is_solved === true ? 'var(--teal)' : 'var(--line)' }}
             >
               <CheckCircle size={16} /> Solved
             </button>
-            <button 
-              className={`btn btn-sm outcome-btn ${progress.is_solved === false ? "btn-feedback-selected" : ""}`} 
-              type="button" 
-              onClick={markUnsolved} 
+            <button
+              className={`btn btn-sm outcome-btn ${progress.is_solved === false ? "btn-feedback-selected" : ""}`}
+              type="button"
+              onClick={toggleNotSolved}
               disabled={isBusy}
               style={{ background: progress.is_solved === false ? 'var(--red)' : 'var(--bg)', color: progress.is_solved === false ? 'white' : 'var(--ink)', borderColor: progress.is_solved === false ? 'var(--red)' : 'var(--line)' }}
             >
               <XCircle size={16} /> Not Solved
             </button>
-            <button 
-              className={`btn btn-sm outcome-btn ${progress.revisit ? "btn-feedback-selected" : ""}`} 
-              type="button" 
-              onClick={toggleRevisit} 
+            <button
+              className={`btn btn-sm outcome-btn ${progress.revisit ? "btn-feedback-selected" : ""}`}
+              type="button"
+              onClick={toggleRevisit}
               disabled={isBusy}
               style={{ background: progress.revisit ? 'var(--amber)' : 'var(--bg)', color: progress.revisit ? 'black' : 'var(--ink)', borderColor: progress.revisit ? 'var(--amber)' : 'var(--line)' }}
             >
@@ -373,10 +376,10 @@ function SolveContent() {
             </div>
           </div>
           <div className="comment-input-wrap" style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-            <textarea 
+            <textarea
               value={commentText}
               onChange={e => setCommentText(e.target.value)}
-              placeholder="Write your note for this question..." 
+              placeholder="Write your note for this question..."
               rows={3}
               style={{ width: '100%', padding: '0.75rem', borderRadius: 'var(--radius)', border: '1px solid var(--line)', background: 'var(--bg)', color: 'var(--ink)', resize: 'vertical' }}
             />

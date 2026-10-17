@@ -210,12 +210,12 @@ Conversation History:
 
 OUTPUT STYLE:
 
-* Clear explanation
-* Bullet points when helpful
+* Clear, well-structured explanation using standard markdown formatting.
+* Use bullet points or numbered lists when breaking down concepts or steps.
+* Use bold (e.g. **key term**) for important ideas and backticks (`code`) for variables or function names.
+* When providing code snippets, always use fenced code blocks with the language tag (e.g. ```python ... ```).
 * Hints instead of full answers
 * Concise and interview-friendly
-* Return plain text only.
-* Do not use markdown symbols like **, *, `, or headings.
 """
 
 

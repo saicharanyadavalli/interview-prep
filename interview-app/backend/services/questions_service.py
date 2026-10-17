@@ -42,9 +42,6 @@ _qid_to_qnum: dict[str, int] | None = None
 # Lazy index: qnum -> formatted question summary
 _qnum_to_summary: dict[int, dict] | None = None
 
-# Lazy index: qnum -> formatted question summary
-_qnum_to_summary: dict[int, dict] | None = None
-
 _DB_QUESTIONS_TABLE = "question_bank_questions"
 _DB_ALIASES_TABLE = "question_bank_qnum_aliases"
 _DB_PAGE_SIZE = 1000

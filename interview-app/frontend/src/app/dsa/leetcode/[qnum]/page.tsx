@@ -19,6 +19,7 @@ import {
   Share2,
 } from "lucide-react";
 import { CONFIG } from "@/lib/config";
+import { API } from "@/lib/api";
 import { getSupabase } from "@/lib/supabase";
 import { LeetCodeRenderer, formatLeetCodeMath } from "@/components/LeetCodeRenderer";
 import { Spinner } from "@/components/Spinner";
@@ -74,10 +75,13 @@ export default function LeetCodeProblemPage() {
     const supabase = getSupabase();
 
     try {
+      const token = await API._getAccessToken();
+      const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+
       // 1. Description
       let loadedProb = false;
       try {
-        const resProb = await fetch(`${API_BASE}/leetcode/problems/${qnum}`);
+        const resProb = await fetch(`${API_BASE}/leetcode/problems/${qnum}`, { headers });
         if (resProb.ok) {
           const pData = await resProb.json();
           if (pData && pData.title) {
@@ -109,7 +113,7 @@ export default function LeetCodeProblemPage() {
       // 2. Fetch Approaches
       let loadedApp = false;
       try {
-        const resApp = await fetch(`${API_BASE}/leetcode/problems/${qnum}/approaches`);
+        const resApp = await fetch(`${API_BASE}/leetcode/problems/${qnum}/approaches`, { headers });
         if (resApp.ok) {
           const aData = await resApp.json();
           if (Array.isArray(aData) && aData.length > 0) {
@@ -134,7 +138,7 @@ export default function LeetCodeProblemPage() {
       // 3. Fetch Code snippets
       let loadedCode = false;
       try {
-        const resCode = await fetch(`${API_BASE}/leetcode/problems/${qnum}/code`);
+        const resCode = await fetch(`${API_BASE}/leetcode/problems/${qnum}/code`, { headers });
         if (resCode.ok) {
           const cData = await resCode.json();
           if (cData && cData.languages && cData.languages.length > 0) {

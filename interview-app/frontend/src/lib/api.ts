@@ -41,13 +41,18 @@ export const API = {
   _PROFILE_CACHE_KEY: "ipp_profile_cache_v1",
   _activeRequests: new Map<string, Promise<any>>(),
 
-  getCachedProfile(maxAgeMs = 24 * 60 * 60 * 1000) {
+  getCachedProfile(maxAgeMs = 24 * 60 * 60 * 1000, expectedUserId?: string) {
     if (typeof window === "undefined") return null;
     try {
       const raw = localStorage.getItem(this._PROFILE_CACHE_KEY);
       if (!raw) return null;
       const parsed = JSON.parse(raw);
       if (!parsed || typeof parsed !== "object" || !parsed.data) return null;
+
+      // If an expected user ID is provided, verify ownership to prevent account-bleed
+      if (expectedUserId && parsed.userId && parsed.userId !== expectedUserId) {
+        return null;
+      }
 
       const ts = Number(parsed.ts || 0);
       if (maxAgeMs > 0 && Date.now() - ts > maxAgeMs) {
@@ -59,13 +64,18 @@ export const API = {
     }
   },
 
-  setCachedProfile(profile: any) {
+  setCachedProfile(profile: any, userId?: string) {
     if (typeof window === "undefined") return;
     if (!profile || typeof profile !== "object") return;
     try {
+      const targetUserId = userId || profile.id || "";
       localStorage.setItem(
         this._PROFILE_CACHE_KEY,
-        JSON.stringify({ ts: Date.now(), data: profile })
+        JSON.stringify({ ts: Date.now(), userId: targetUserId, data: profile })
+      );
+      // Dispatch a window event so all reactive components update immediately
+      window.dispatchEvent(
+        new CustomEvent("ipp_profile_updated", { detail: profile })
       );
     } catch (_) {}
   },
@@ -74,6 +84,9 @@ export const API = {
     if (typeof window === "undefined") return;
     try {
       localStorage.removeItem(this._PROFILE_CACHE_KEY);
+      window.dispatchEvent(
+        new CustomEvent("ipp_profile_updated", { detail: null })
+      );
     } catch (_) {}
   },
 
@@ -104,10 +117,58 @@ export const API = {
   },
 
   async _getAccessToken() {
-    const sb = getSupabase();
-    if (!sb) return null;
-    const { data } = await sb.auth.getSession();
-    return data?.session?.access_token || null;
+    try {
+      const sb = getSupabase();
+      if (sb) {
+        const { data } = await sb.auth.getSession();
+        if (data?.session?.access_token) return data.session.access_token;
+      }
+    } catch (_) {}
+
+    // Fallback: extract auth token from browser cookies if Supabase client is hydrating
+    if (typeof document !== "undefined") {
+      try {
+        const cookies = document.cookie.split(";");
+        for (const c of cookies) {
+          const trimmed = c.trim();
+          if (trimmed.startsWith("sb-") && trimmed.includes("-auth-token=")) {
+            const rawVal = trimmed.split("=").slice(1).join("=");
+            if (rawVal) {
+              const decoded = decodeURIComponent(rawVal);
+              const val = decoded.startsWith("base64-")
+                ? atob(decoded.slice(7))
+                : decoded;
+              const parsed = JSON.parse(val);
+              if (parsed?.access_token) return parsed.access_token;
+            }
+          }
+        }
+        // Check chunked cookies: sb-*-auth-token.0, .1 ...
+        const chunks: Record<string, string[]> = {};
+        for (const c of cookies) {
+          const trimmed = c.trim();
+          const match = trimmed.match(/^(sb-[^=]+-auth-token)\.(\d+)=(.*)$/);
+          if (match) {
+            const prefix = match[1];
+            const idx = parseInt(match[2], 10);
+            if (!chunks[prefix]) chunks[prefix] = [];
+            chunks[prefix][idx] = match[3];
+          }
+        }
+        for (const prefix of Object.keys(chunks)) {
+          const combined = chunks[prefix].join("");
+          if (combined) {
+            const decoded = decodeURIComponent(combined);
+            const val = decoded.startsWith("base64-")
+              ? atob(decoded.slice(7))
+              : decoded;
+            const parsed = JSON.parse(val);
+            if (parsed?.access_token) return parsed.access_token;
+          }
+        }
+      } catch (_) {}
+    }
+    return null;
   },
   async _fetch(path: string, options: RequestInit = {}) {
     const url = CONFIG.API_BASE_URL + path;
@@ -286,7 +347,7 @@ export const API = {
       res = await this._fetch(`/progress/user${summaryOnly ? "?summary_only=true" : ""}`);
     } catch (_) {}
 
-    if (res && res.stats && (res.stats.total_attempted > 0 || res.stats.solved_count > 0)) {
+    if (res && res.stats && typeof res.stats.total_attempted === "number") {
       return res;
     }
 
@@ -311,6 +372,7 @@ export const API = {
                 solved_count: solved,
                 unsolved_count: attempted - solved,
                 revisit_count: revisit,
+                current_streak: 0,
                 easy_attempted: 0,
                 medium_attempted: 0,
                 hard_attempted: 0,
@@ -343,7 +405,7 @@ export const API = {
       }
     } catch (_) {}
 
-    return res || { stats: { total_attempted: 0, solved_count: 0, revisit_count: 0 }, recent: [] };
+    return res || { stats: { total_attempted: 0, solved_count: 0, revisit_count: 0, current_streak: 0 }, recent: [] };
   },
 
   async getProgressStatus(qnum: string) {
@@ -361,9 +423,10 @@ export const API = {
     const maxAgeMs = Number.isFinite(Number(options.maxAgeMs))
       ? Number(options.maxAgeMs)
       : (24 * 60 * 60 * 1000);
+    const expectedUserId = options.userId;
 
     if (preferCache) {
-      const cached = this.getCachedProfile(maxAgeMs);
+      const cached = this.getCachedProfile(maxAgeMs, expectedUserId);
       if (cached && cached.username) {
         return cached;
       }
@@ -402,7 +465,7 @@ export const API = {
     } catch (_) {}
 
     if (profile) {
-      this.setCachedProfile(profile);
+      this.setCachedProfile(profile, profile.id);
     }
     return profile || { id: "", email: "", username: "", name: "", phone: "", avatar_url: "" };
   },
@@ -432,7 +495,9 @@ export const API = {
       method: "PUT",
       body: JSON.stringify(payload),
     });
-    this.setCachedProfile(updated);
+    if (updated) {
+      this.setCachedProfile(updated, updated.id);
+    }
     return updated;
   },
 
@@ -446,7 +511,8 @@ export const API = {
     });
     if (result && result.avatar_url) {
       const cached = this.getCachedProfile(0) || {};
-      this.setCachedProfile({ ...cached, avatar_url: result.avatar_url });
+      const updated = { ...cached, avatar_url: result.avatar_url };
+      this.setCachedProfile(updated, updated.id);
     }
     return result;
   },

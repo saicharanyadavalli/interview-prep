@@ -75,3 +75,9 @@ interview-app/backend/app/courses_openapi_contract.json
 interview-app/frontend/AGENTS.md
 interview-app/frontend/CLAUDE.md
 interview-app/scripts/push_leetcode_to_supabase.py
+backups/
+AGENTS.md
+TEST_*.md
+*.coverage
+.coverage
+interview-app/backend/tests/

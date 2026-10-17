@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Search, BookOpen, ClipboardList, Sparkles, CheckCircle2, Bookmark, FolderPlus } from "lucide-react";
 import { CONFIG } from "@/lib/config";
+import { API } from "@/lib/api";
 import { getSupabase } from "@/lib/supabase";
 import { FilterBuilder, FilterState } from "@/components/FilterBuilder";
 import { Spinner } from "@/components/Spinner";
@@ -118,8 +119,11 @@ export default function LeetCodeExplorerPage() {
         });
         if (q) qParams.append("search", q);
         if (diffFilters.length === 1) qParams.append("difficulty", diffFilters[0]);
+        if (topicFilters.length === 1) qParams.append("tag", topicFilters[0]);
 
-        const res = await fetch(`${API_BASE}/leetcode/problems?${qParams.toString()}`);
+        const token = await API._getAccessToken();
+        const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
+        const res = await fetch(`${API_BASE}/leetcode/problems?${qParams.toString()}`, { headers });
         if (res.ok) {
           const data = await res.json();
           if (data && Array.isArray(data.problems)) {

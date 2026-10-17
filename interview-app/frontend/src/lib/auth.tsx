@@ -8,14 +8,24 @@ import { useRouter, usePathname } from "next/navigation";
 import { CONFIG } from "./config";
 import { API } from "./api";
 import { login, signup, logout } from "@/app/actions/auth";
+import { getAuthRedirectUrl } from "@/utils/auth-redirect";
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  profile: {
+    id?: string;
+    name: string;
+    email: string;
+    avatar: string;
+    username: string;
+    phone?: string;
+  } | null;
+  refreshProfile: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (identifier: string, password: string) => Promise<{ error: string | null }>;
-  signUpWithEmail: (email: string, password: string, username: string, fullName: string) => Promise<{ error: string | null }>;
+  signUpWithEmail: (email: string, password: string, username: string, fullName: string) => Promise<{ error: string | null; message?: string | null }>;
   signOut: () => Promise<void>;
   getUserMeta: () => { name: string; email: string; avatar: string; username: string };
 }
@@ -43,6 +53,14 @@ export function AuthProvider({
   const user = session?.user ?? null;
   // If SSR provided a session, we're not loading. Otherwise wait for client-side session fetch.
   const [loading, setLoading] = useState(!initialSession);
+  const [profile, setProfile] = useState<{
+    id?: string;
+    name: string;
+    email: string;
+    avatar: string;
+    username: string;
+    phone?: string;
+  } | null>(null);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -55,6 +73,9 @@ export function AuthProvider({
       if (sb) {
         const { data: { session: clientSession } } = await sb.auth.getSession();
         setSession(clientSession ?? initialSession);
+        if (clientSession?.user && (pathname === "/" || pathname === "/login")) {
+          router.push("/dashboard");
+        }
       } else {
         setSession(initialSession);
       }
@@ -65,9 +86,14 @@ export function AuthProvider({
 
     if (!sb) return;
 
-    const { data: { subscription } } = sb.auth.onAuthStateChange((_event, newSession) => {
+    const { data: { subscription } } = sb.auth.onAuthStateChange((event, newSession) => {
       setSession(newSession);
       setLoading(false);
+      if (newSession?.user && (event === "SIGNED_IN" || event === "USER_UPDATED")) {
+        if (typeof window !== "undefined" && (window.location.pathname === "/" || window.location.pathname === "/login")) {
+          router.push("/dashboard");
+        }
+      }
     });
 
     return () => {
@@ -75,6 +101,82 @@ export function AuthProvider({
     };
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const refreshProfile = async () => {
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+    try {
+      const p = await API.getMyProfile({ preferCache: false, userId: user.id });
+      if (p) {
+        setProfile({
+          id: p.id,
+          name: p.name || "",
+          email: p.email || user.email || "",
+          avatar: p.avatar_url || "",
+          username: p.username || "",
+          phone: p.phone || "",
+        });
+      }
+    } catch (_) {}
+  };
+
+  useEffect(() => {
+    if (!user) {
+      setProfile(null);
+      return;
+    }
+
+    // Attempt instant render from user-scoped localStorage cache
+    const cached = API.getCachedProfile ? API.getCachedProfile(24 * 60 * 60 * 1000, user.id) : null;
+    if (cached) {
+      setProfile({
+        id: cached.id || user.id,
+        name: cached.name || "",
+        email: cached.email || user.email || "",
+        avatar: cached.avatar_url || "",
+        username: cached.username || "",
+        phone: cached.phone || "",
+      });
+    } else {
+      const meta = user.user_metadata || {};
+      setProfile({
+        id: user.id,
+        name: meta.full_name || meta.name || (user.email ? user.email.split("@")[0] : "User"),
+        email: user.email || "",
+        avatar: meta.avatar_url || meta.picture || "",
+        username: meta.username || (user.email ? user.email.split("@")[0] : ""),
+      });
+    }
+
+    // Refresh profile in background from server
+    refreshProfile();
+
+    const handleProfileUpdate = (event: Event) => {
+      const customEvent = event as CustomEvent;
+      const data = customEvent.detail;
+      if (!data) {
+        setProfile(null);
+      } else {
+        setProfile({
+          id: data.id,
+          name: data.name || "",
+          email: data.email || user?.email || "",
+          avatar: data.avatar_url || "",
+          username: data.username || "",
+          phone: data.phone || "",
+        });
+      }
+    };
+
+    if (typeof window !== "undefined") {
+      window.addEventListener("ipp_profile_updated", handleProfileUpdate);
+      return () => {
+        window.removeEventListener("ipp_profile_updated", handleProfileUpdate);
+      };
+    }
+  }, [user]);
 
 
 
@@ -105,7 +207,11 @@ export function AuthProvider({
     }
 
     try {
-      const redirectUrl = `${window.location.origin}/auth/callback?next=/dashboard`;
+      const requestOrigin = typeof window !== "undefined" ? window.location.origin : null;
+      const redirectUrl = getAuthRedirectUrl({
+        fallbackOrigin: requestOrigin,
+        next: "/dashboard",
+      });
       const { data, error } = await sb.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -130,14 +236,15 @@ export function AuthProvider({
   };
 
   const signInWithEmail = async (identifier: string, password: string): Promise<{ error: string | null }> => {
-    let emailToUse = identifier.trim();
+    const cleanIdentifier = identifier.trim();
 
-    if (!emailToUse.includes("@")) {
-      return { error: `Please enter a valid email address to sign in.` };
+    if (!cleanIdentifier) {
+      return { error: `Please enter your email address or username to sign in.` };
     }
 
     const formData = new FormData();
-    formData.append("email", emailToUse);
+    formData.append("identifier", cleanIdentifier);
+    formData.append("email", cleanIdentifier);
     formData.append("password", password);
 
     const result = await login(formData);
@@ -146,8 +253,17 @@ export function AuthProvider({
       return { error: result.error };
     }
 
-    // Use router.replace instead of window.location.href to avoid full page reload loop
-    // The session cookie is set server-side, so the next page load will have the session
+    // Refresh client auth session if available and redirect
+    const sb = getSupabase();
+    if (sb) {
+      try {
+        const { data: { session: newSession } } = await sb.auth.getSession();
+        if (newSession) {
+          setSession(newSession);
+        }
+      } catch (_) {}
+    }
+
     window.location.replace("/dashboard");
     return { error: null };
   };
@@ -159,7 +275,7 @@ export function AuthProvider({
     password: string,
     username: string,
     fullName: string
-  ): Promise<{ error: string | null }> => {
+  ): Promise<{ error: string | null; message?: string | null }> => {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -172,6 +288,10 @@ export function AuthProvider({
       return { error: result.error };
     }
 
+    if ((result as any).message) {
+      return { error: null, message: (result as any).message };
+    }
+
     window.location.replace("/dashboard");
     return { error: null };
   };
@@ -181,18 +301,36 @@ export function AuthProvider({
   const signOut = async () => {
     try {
       await logout();
-      localStorage.removeItem("ipp_profile_cache_v1");
+      if (typeof window !== "undefined") {
+        if (API && typeof API.clearCachedProfile === "function") {
+          API.clearCachedProfile();
+        } else {
+          localStorage.removeItem("ipp_profile_cache_v1");
+        }
+        localStorage.removeItem("questionsPageUiState");
+        localStorage.removeItem("questionsCustomFolderV1");
+        sessionStorage.clear();
+      }
     } catch (_) {}
+    setProfile(null);
     window.location.replace("/login");
   };
 
   const getUserMeta = () => {
     if (!user) return { name: "User", email: "", avatar: "", username: "" };
+    if (profile) {
+      return {
+        name: profile.name || (user.email ? user.email.split("@")[0] : "User"),
+        email: profile.email || user.email || "",
+        avatar: profile.avatar || "",
+        username: profile.username || (user.email ? user.email.split("@")[0] : ""),
+      };
+    }
     const meta = user.user_metadata || {};
     let cached: any = null;
     try {
       if (typeof window !== "undefined" && API && typeof API.getCachedProfile === "function") {
-        cached = API.getCachedProfile(24 * 60 * 60 * 1000);
+        cached = API.getCachedProfile(24 * 60 * 60 * 1000, user.id);
       }
     } catch (_) {}
 
@@ -214,6 +352,8 @@ export function AuthProvider({
         user,
         session,
         loading,
+        profile,
+        refreshProfile,
         signInWithGoogle,
         signInWithEmail,
         signUpWithEmail,

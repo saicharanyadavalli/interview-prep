@@ -61,8 +61,12 @@ def get_leetcode_problems(
     difficulty: Optional[str] = Query(None, description="Easy, Medium, or Hard"),
     search: Optional[str] = Query(None, description="Search title or number"),
     tag: Optional[str] = Query(None, description="Filter by topic tag"),
+    sort_by: Optional[str] = Query(
+        None,
+        description="Sort order: rating_desc, rating_asc, qnum_asc, qnum_desc, difficulty_asc, difficulty_desc, title_asc",
+    ),
 ):
-    """Retrieve paginated LeetCode problems list with optional search and filters."""
+    """Retrieve paginated LeetCode problems list with optional search, filters, and rating sorting."""
     offset = (page - 1) * limit
 
     # Primary: query Supabase cloud database
@@ -83,7 +87,26 @@ def get_leetcode_problems(
             else:
                 query = query.ilike("title", f"%{s_clean}%")
 
-        query = query.order("qnum", desc=False).range(offset, offset + limit - 1)
+        if tag and isinstance(tag, str):
+            tag_clean = tag.strip().title()
+            query = query.contains("topic_tags", [tag_clean])
+
+        if sort_by == "rating_desc":
+            query = query.order("rating", desc=True).order("qnum", desc=False)
+        elif sort_by == "rating_asc":
+            query = query.order("rating", desc=False).order("qnum", desc=False)
+        elif sort_by == "qnum_desc":
+            query = query.order("qnum", desc=True)
+        elif sort_by == "difficulty_asc":
+            query = query.order("difficulty", desc=False).order("qnum", desc=False)
+        elif sort_by == "difficulty_desc":
+            query = query.order("difficulty", desc=True).order("qnum", desc=False)
+        elif sort_by == "title_asc":
+            query = query.order("title", desc=False)
+        else:
+            query = query.order("qnum", desc=False)
+
+        query = query.range(offset, offset + limit - 1)
         res = query.execute()
 
         total = res.count if res.count is not None else len(res.data or [])
@@ -143,11 +166,25 @@ def get_leetcode_problems(
     cur.execute(f"SELECT COUNT(*) as count FROM leetcode_problems{where_sql}", params)
     total = cur.fetchone()["count"]
 
+    order_by_sql = "qnum ASC"
+    if sort_by == "rating_desc":
+        order_by_sql = "(CASE WHEN rating IS NULL THEN 0 ELSE rating END) DESC, qnum ASC"
+    elif sort_by == "rating_asc":
+        order_by_sql = "(CASE WHEN rating IS NULL THEN 99999 ELSE rating END) ASC, qnum ASC"
+    elif sort_by == "qnum_desc":
+        order_by_sql = "qnum DESC"
+    elif sort_by == "difficulty_asc":
+        order_by_sql = "CASE LOWER(difficulty) WHEN 'easy' THEN 1 WHEN 'medium' THEN 2 WHEN 'hard' THEN 3 ELSE 4 END ASC, qnum ASC"
+    elif sort_by == "difficulty_desc":
+        order_by_sql = "CASE LOWER(difficulty) WHEN 'hard' THEN 1 WHEN 'medium' THEN 2 WHEN 'easy' THEN 3 ELSE 4 END ASC, qnum ASC"
+    elif sort_by == "title_asc":
+        order_by_sql = "title ASC"
+
     cur.execute(
         f"""
         SELECT qnum, title, slug, difficulty, rating, topic_tags 
         FROM leetcode_problems{where_sql}
-        ORDER BY qnum ASC 
+        ORDER BY {order_by_sql}
         LIMIT ? OFFSET ?
         """,
         params + [limit, offset],

@@ -35,9 +35,11 @@ def add_comment(payload: CommentRequest, user: dict = Depends(get_current_user))
         rows = existing.data or []
 
         if rows:
+            now = datetime.now(timezone.utc).isoformat()
             supabase.table("user_comments").update(
                 {
-                    "comment_text": payload.comment_text
+                    "comment_text": payload.comment_text,
+                    "created_at": now,
                 }
             ).eq("id", rows[0].get("id", "")).eq("user_id", user["id"]).execute()
         else:

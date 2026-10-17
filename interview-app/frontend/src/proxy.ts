@@ -51,12 +51,7 @@ export async function proxy(request: NextRequest) {
           });
 
           cookiesToSet.forEach(({ name, value, options }) => {
-            supabaseResponse.cookies.set(name, value, {
-              ...options,
-              httpOnly: true,
-              secure: process.env.NODE_ENV === 'production',
-              sameSite: 'lax',
-            });
+            supabaseResponse.cookies.set(name, value, options);
           });
         },
       },
@@ -64,9 +59,18 @@ export async function proxy(request: NextRequest) {
   );
 
   // Authenticate & refresh user token using getUser() per Supabase SSR best practices
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const {
+      data,
+      error,
+    } = await supabase.auth.getUser();
+    if (!error && data) {
+      user = data.user;
+    }
+  } catch (err) {
+    console.warn('Supabase auth.getUser() check failed in proxy:', err);
+  }
 
   const pathname = request.nextUrl.pathname;
   const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
@@ -77,7 +81,7 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  if (user && pathname === '/login') {
+  if (user && (pathname === '/login' || pathname === '/')) {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
     return NextResponse.redirect(url);
@@ -85,6 +89,8 @@ export async function proxy(request: NextRequest) {
 
   return supabaseResponse;
 }
+
+export const middleware = proxy;
 
 export const config = {
   matcher: [

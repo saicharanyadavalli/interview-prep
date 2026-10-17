@@ -7,13 +7,24 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "lh3.googleusercontent.com" },
       { protocol: "https", hostname: "avatars.githubusercontent.com" },
       { protocol: "https", hostname: "ui-avatars.com" },
+      { protocol: "https", hostname: "*.supabase.co" },
     ],
   },
   async rewrites() {
+    const backendUrl = process.env.BACKEND_INTERNAL_URL || process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
     return [
       {
         source: '/api/backend/:path*',
-        destination: 'http://127.0.0.1:8000/:path*',
+        destination: `${backendUrl}/:path*`,
+      },
+    ];
+  },
+  async redirects() {
+    return [
+      {
+        source: '/signup',
+        destination: '/login?mode=signup',
+        permanent: false,
       },
     ];
   },

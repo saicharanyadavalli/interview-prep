@@ -30,17 +30,20 @@ def get_revisit_queue(user: dict = Depends(get_current_user)):
     except Exception:
         entries = []
 
-    items = [
-        RevisitEntry(
-            qnum=e.get("qnum", 0),
-            question_id=get_question_summary_by_qnum(e.get("qnum", 0)).get("question_id", ""),
-            question_title=get_question_summary_by_qnum(e.get("qnum", 0)).get("question_title", f"Question #{e.get('qnum', 0)}"),
-            company=get_question_summary_by_qnum(e.get("qnum", 0)).get("company", ""),
-            difficulty=get_question_summary_by_qnum(e.get("qnum", 0)).get("difficulty", ""),
-            added_at=e.get("updated_at", ""),
+    items = []
+    for e in entries:
+        qnum = int(e.get("qnum", 0) or 0)
+        summary = get_question_summary_by_qnum(qnum)
+        items.append(
+            RevisitEntry(
+                qnum=qnum,
+                question_id=summary.get("question_id", ""),
+                question_title=summary.get("question_title", f"Question #{qnum}"),
+                company=summary.get("company", ""),
+                difficulty=summary.get("difficulty", ""),
+                added_at=str(e.get("updated_at", "")),
+            )
         )
-        for e in entries
-    ]
 
     return RevisitResponse(items=items)
 

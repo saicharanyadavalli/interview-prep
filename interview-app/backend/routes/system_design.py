@@ -27,7 +27,7 @@ from models.schemas import (
     SystemDesignStepProgress,
     SystemDesignProgressUpdateRequest,
 )
-from routes.auth import get_current_user
+from routes.auth import get_current_user, get_optional_current_user
 from services.supabase_client import get_supabase_client
 from services.system_design_course import (
     get_learning_track_config,
@@ -145,7 +145,7 @@ def _update_learning_track_progress(
 # ── routes ───────────────────────────────────────────────────────────
 
 @router.get("/learning-tracks", response_model=LearningTracksResponse)
-def get_learning_tracks_meta(_: dict = Depends(get_current_user)):
+def get_learning_tracks_meta(_: Optional[dict] = Depends(get_optional_current_user)):
     """Return all configured learning-track metadata."""
     tracks = [
         LearningTrackMeta(
@@ -233,6 +233,7 @@ def get_system_design_progress_legacy(user: dict = Depends(get_current_user)):
 
 
 @router.post("/system-design/progress", response_model=SystemDesignStepProgress)
+@router.post("/system-design/progress/update", response_model=SystemDesignStepProgress)
 def update_system_design_progress_legacy(
     payload: SystemDesignProgressUpdateRequest,
     user: dict = Depends(get_current_user),

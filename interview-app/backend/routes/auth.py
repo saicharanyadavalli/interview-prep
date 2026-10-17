@@ -88,11 +88,6 @@ def create_session(request: Request, response: Response, payload: SessionRequest
         if user.get("username"):
             profile_data["username"] = user.get("username")
 
-        try:
-            supabase.table("users").upsert(profile_data, on_conflict="id").execute()
-        except Exception:
-            pass
-
         supabase.table("user_profiles").upsert(profile_data, on_conflict="id").execute()
     except Exception:
         # If Supabase is not fully populated yet, still return user info
@@ -105,3 +100,18 @@ def create_session(request: Request, response: Response, payload: SessionRequest
         name=user.get("name"),
         avatar_url=user.get("avatar_url"),
     )
+
+
+@router.post("/resolve-username", response_model=ResolveUsernameResponse)
+@limiter.limit("60/minute")
+def resolve_username(request: Request, response: Response, payload: ResolveUsernameRequest):
+    """Look up the email associated with a username using Supabase RPC."""
+    try:
+        supabase = get_supabase_client()
+        res = supabase.rpc("get_email_by_username", {"p_username": payload.username.strip().lower()}).execute()
+        if res.data and len(res.data) > 0 and res.data[0].get("email"):
+            return ResolveUsernameResponse(email=res.data[0]["email"], exists=True)
+    except Exception as e:
+        import logging
+        logging.getLogger(__name__).warning(f"Error resolving username {payload.username}: {e}")
+    return ResolveUsernameResponse(email=None, exists=False)

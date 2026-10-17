@@ -168,6 +168,11 @@ export function FilterBuilder({
     [getValuesForField]
   );
 
+  const sanitizeStateRef = useRef(sanitizeState);
+  useEffect(() => {
+    sanitizeStateRef.current = sanitizeState;
+  }, [sanitizeState]);
+
   // Initial load
   useEffect(() => {
     let initialState: FilterState = { version: 3, matchType: "all", filters: [] };
@@ -194,9 +199,9 @@ export function FilterBuilder({
         }
       } catch (e) {}
     }
-    setState(sanitizeState(initialState));
+    setState(sanitizeStateRef.current ? sanitizeStateRef.current(initialState) : initialState);
     setIsLoaded(true);
-  }, [persist, storageKey, sanitizeState]);
+  }, [persist, storageKey]);
 
   const onChangeRef = useRef(onChange);
   useEffect(() => {
@@ -208,7 +213,7 @@ export function FilterBuilder({
   // Handle updates & notify
   useEffect(() => {
     if (!isLoaded) return;
-    const sanitized = sanitizeState(state);
+    const sanitized = sanitizeStateRef.current ? sanitizeStateRef.current(state) : state;
     
     const queryObj: Record<string, any> = {
       match: sanitized.matchType,
@@ -240,7 +245,7 @@ export function FilterBuilder({
     if (onChangeRef.current) {
       onChangeRef.current(sanitized, queryObj);
     }
-  }, [state, isLoaded, persist, storageKey, sanitizeState]);
+  }, [state, isLoaded, persist, storageKey]);
 
   const addFilter = () => {
     const availableFields = Object.keys(FIELD_DEFS).filter(
