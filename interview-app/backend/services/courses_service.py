@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Optional
 
-from services.supabase_client import get_supabase_client
+from services import rds_client
 
 # Path to sqlbolt_courses.json
 BACKEND_DIR = Path(__file__).resolve().parent.parent
@@ -327,37 +327,25 @@ def fetch_all_courses(user_id: Optional[str] = None) -> list[dict[str, Any]]:
 
     user_completed_counts: dict[str, int] = {k: 0 for k in track_lesson_counts}
 
-    # Fetch live lesson counts from Supabase if available
+    # Fetch live lesson counts from RDS if available
     try:
-        supabase = get_supabase_client()
-        lessons_data = (
-            supabase.table("course_lessons")
-            .select("track_id, step_no")
-            .execute()
-            .data
-            or []
-        )
-        if lessons_data:
-            counts: dict[str, int] = {}
-            for l in lessons_data:
-                t = l.get("track_id")
-                if t:
-                    counts[t] = counts.get(t, 0) + 1
-            for t, c in counts.items():
-                if t in track_lesson_counts:
-                    track_lesson_counts[t] = c
+        counts_data = rds_client.query(
+            "SELECT track_id, COUNT(*) as count FROM course_lessons GROUP BY track_id",
+            fetch="all",
+        ) or []
+        for row in counts_data:
+            t = row.get("track_id")
+            c = int(row.get("count", 0) or 0)
+            if t and t in track_lesson_counts:
+                track_lesson_counts[t] = c
 
         # If user is authenticated, query learning_track_progress
         if user_id:
-            prog_data = (
-                supabase.table("learning_track_progress")
-                .select("track_id, step_no")
-                .eq("user_id", user_id)
-                .eq("completed", True)
-                .execute()
-                .data
-                or []
-            )
+            prog_data = rds_client.query(
+                "SELECT track_id, step_no FROM learning_track_progress WHERE user_id = %s AND completed = TRUE",
+                (user_id,),
+                fetch="all",
+            ) or []
             completed_steps_by_track: dict[str, set[int]] = {k: set() for k in track_lesson_counts}
             for p in prog_data:
                 t = _normalize_track_id(str(p.get("track_id") or ""))
@@ -417,19 +405,13 @@ def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Opt
 
         if user_id:
             try:
-                supabase = get_supabase_client()
-                prog = (
-                    supabase.table("learning_track_progress")
-                    .select("step_no")
-                    .eq("user_id", user_id)
-                    .in_("track_id", ["sql-course", "sql"])
-                    .eq("completed", True)
-                    .execute()
-                    .data
-                    or []
-                )
+                prog = rds_client.query(
+                    "SELECT step_no FROM learning_track_progress WHERE user_id = %s AND track_id IN ('sql-course', 'sql') AND completed = TRUE",
+                    (user_id,),
+                    fetch="all",
+                ) or []
                 completed_step_nos = {
-                    p["step_no"] for p in prog if isinstance(p.get("step_no"), int)
+                    int(p["step_no"]) for p in prog if p.get("step_no") is not None
                 }
             except Exception:
                 pass
@@ -472,22 +454,16 @@ def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Opt
             "lessons": lesson_summaries,
         }
 
-    # Handle System Design / GenAI / ML / Mobile / OOD tracks from Supabase
+    # Handle System Design / GenAI / ML / Mobile / OOD tracks from RDS
     completed_step_nos = set()
     if user_id:
         try:
-            supabase = get_supabase_client()
-            prog = (
-                supabase.table("learning_track_progress")
-                .select("step_no")
-                .eq("user_id", user_id)
-                .eq("track_id", norm_slug)
-                .eq("completed", True)
-                .execute()
-                .data
-                or []
-            )
-            completed_step_nos = {p["step_no"] for p in prog}
+            prog = rds_client.query(
+                "SELECT step_no FROM learning_track_progress WHERE user_id = %s AND track_id = %s AND completed = TRUE",
+                (user_id, norm_slug),
+                fetch="all",
+            ) or []
+            completed_step_nos = {int(p["step_no"]) for p in prog if p.get("step_no") is not None}
         except Exception:
             pass
 
@@ -502,19 +478,14 @@ def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Opt
     completed_count = 0
 
     try:
-        supabase = get_supabase_client()
-        lessons_data = (
-            supabase.table("course_lessons")
-            .select("id, step_no, title")
-            .eq("track_id", norm_slug)
-            .order("step_no", desc=False)
-            .execute()
-            .data
-            or []
-        )
+        lessons_data = rds_client.query(
+            "SELECT id, step_no, title FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC",
+            (norm_slug,),
+            fetch="all",
+        ) or []
 
         for l in lessons_data:
-            step_no = l.get("step_no", 1)
+            step_no = int(l.get("step_no", 1) or 1)
             is_comp = step_no in completed_step_nos
             if is_comp:
                 completed_count += 1
@@ -593,19 +564,13 @@ def fetch_lesson_detail(
         if user_id:
             order_idx = target_lesson.get("order", target_idx + 1)
             try:
-                supabase = get_supabase_client()
-                prog = (
-                    supabase.table("learning_track_progress")
-                    .select("completed")
-                    .eq("user_id", user_id)
-                    .in_("track_id", ["sql-course", "sql"])
-                    .eq("step_no", order_idx)
-                    .limit(1)
-                    .execute()
-                    .data
+                prog = rds_client.query(
+                    "SELECT completed FROM learning_track_progress WHERE user_id = %s AND track_id IN ('sql-course', 'sql') AND step_no = %s LIMIT 1",
+                    (user_id, order_idx),
+                    fetch="one",
                 )
                 if prog:
-                    completed = bool(prog[0].get("completed", False))
+                    completed = bool(prog.get("completed", False))
             except Exception:
                 pass
 
@@ -636,53 +601,40 @@ def fetch_lesson_detail(
         step_no = int(m.group(1))
 
     try:
-        supabase = get_supabase_client()
         # Fetch current lesson
-        row = (
-            supabase.table("course_lessons")
-            .select("id, track_id, step_no, title, html_content")
-            .eq("track_id", norm_slug)
-            .eq("step_no", step_no)
-            .limit(1)
-            .execute()
-            .data
+        row = rds_client.query(
+            "SELECT id, track_id, step_no, title, html_content FROM course_lessons WHERE track_id = %s AND step_no = %s LIMIT 1",
+            (norm_slug, step_no),
+            fetch="one",
         )
 
         # Get total steps in this track to compute prev/next
-        all_steps_data = (
-            supabase.table("course_lessons")
-            .select("step_no")
-            .eq("track_id", norm_slug)
-            .order("step_no", desc=False)
-            .execute()
-            .data
-            or []
-        )
-        step_numbers = [s["step_no"] for s in all_steps_data]
+        all_steps_data = rds_client.query(
+            "SELECT step_no FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC",
+            (norm_slug,),
+            fetch="all",
+        ) or []
+        step_numbers = [int(s["step_no"]) for s in all_steps_data if s.get("step_no") is not None]
     except Exception:
-        row = []
+        row = None
         step_numbers = list(range(1, 31))
 
     if not row:
         # If not found by exact step_no, try fetching first available lesson
         try:
-            supabase = get_supabase_client()
-            row = (
-                supabase.table("course_lessons")
-                .select("id, track_id, step_no, title, html_content")
-                .eq("track_id", norm_slug)
-                .limit(1)
-                .execute()
-                .data
+            row = rds_client.query(
+                "SELECT id, track_id, step_no, title, html_content FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC LIMIT 1",
+                (norm_slug,),
+                fetch="one",
             )
         except Exception:
-            row = []
+            row = None
 
     if not row:
         return None
 
-    current = row[0]
-    cur_step = current.get("step_no", step_no)
+    current = row
+    cur_step = int(current.get("step_no", step_no) or step_no)
 
     max_steps = max(step_numbers) if step_numbers else TRACK_STEP_LIMITS.get(norm_slug, 30)
     prev_slug = f"step-{cur_step - 1}" if cur_step > 1 and (cur_step - 1 in step_numbers or not step_numbers) else None
@@ -692,19 +644,13 @@ def fetch_lesson_detail(
     completed = False
     if user_id:
         try:
-            supabase = get_supabase_client()
-            prog = (
-                supabase.table("learning_track_progress")
-                .select("completed")
-                .eq("user_id", user_id)
-                .eq("track_id", norm_slug)
-                .eq("step_no", cur_step)
-                .limit(1)
-                .execute()
-                .data
+            prog = rds_client.query(
+                "SELECT completed FROM learning_track_progress WHERE user_id = %s AND track_id = %s AND step_no = %s LIMIT 1",
+                (user_id, norm_slug, cur_step),
+                fetch="one",
             )
             if prog:
-                completed = bool(prog[0].get("completed", False))
+                completed = bool(prog.get("completed", False))
         except Exception:
             pass
 
@@ -758,19 +704,17 @@ def record_lesson_completion(
         _IN_MEMORY_USER_PROGRESS[key].discard(lesson_slug)
         _IN_MEMORY_USER_PROGRESS[key].discard(f"step-{step_no}")
 
-    # Persist in Supabase learning_track_progress
+    # Persist in RDS learning_track_progress
     try:
-        supabase = get_supabase_client()
-        supabase.table("learning_track_progress").upsert(
-            {
-                "user_id": user_id,
-                "track_id": norm_slug,
-                "step_no": step_no,
-                "completed": completed,
-                "updated_at": now_iso,
-            },
-            on_conflict="user_id,track_id,step_no",
-        ).execute()
+        rds_client.mutate(
+            """
+            INSERT INTO learning_track_progress (user_id, track_id, step_no, completed, updated_at)
+            VALUES (%s, %s, %s, %s, now())
+            ON CONFLICT (user_id, track_id, step_no)
+            DO UPDATE SET completed = EXCLUDED.completed, updated_at = now();
+            """,
+            (user_id, norm_slug, step_no, completed),
+        )
     except Exception:
         pass
 

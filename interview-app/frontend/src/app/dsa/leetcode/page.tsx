@@ -6,7 +6,6 @@ import Image from "next/image";
 import { Search, BookOpen, ClipboardList, Sparkles, CheckCircle2, Bookmark, FolderPlus } from "lucide-react";
 import { CONFIG } from "@/lib/config";
 import { API } from "@/lib/api";
-import { getSupabase } from "@/lib/supabase";
 import { FilterBuilder, FilterState } from "@/components/FilterBuilder";
 import { Spinner } from "@/components/Spinner";
 import { formatLeetCodeMath } from "@/components/LeetCodeRenderer";
@@ -169,81 +168,8 @@ export default function LeetCodeExplorerPage() {
         }
       } catch (_) {}
 
-      // 2. Direct Supabase Fallback
       if (!loaded) {
-        try {
-          const supabase = getSupabase() as any;
-          if (supabase) {
-            let query = supabase
-              .from("leetcode_problems")
-              .select("qnum, title, slug, difficulty, rating, topic_tags, description_md", {
-                count: "exact",
-              });
-
-            if (diffFilters.length === 1) {
-              const diffClean =
-                diffFilters[0].charAt(0).toUpperCase() + diffFilters[0].slice(1).toLowerCase();
-              query = query.ilike("difficulty", diffClean);
-            } else if (diffFilters.length > 1) {
-              const capDiffs = diffFilters.map(
-                (d) => d.charAt(0).toUpperCase() + d.slice(1).toLowerCase()
-              );
-              query = query.in("difficulty", capDiffs);
-            }
-
-            if (q) {
-              if (/^\d+$/.test(q)) {
-                query = query.eq("qnum", parseInt(q, 10));
-              } else {
-                query = query.ilike("title", `%${q}%`);
-              }
-            }
-
-            query = query
-              .order("qnum", { ascending: true })
-              .range(currentOffset, currentOffset + PAGE_SIZE - 1);
-
-            const { data, count, error } = await query;
-
-            if (data && !error) {
-              let fetched = data.map((p: any) => ({
-                ...p,
-                topic_tags: Array.isArray(p.topic_tags)
-                  ? p.topic_tags
-                  : typeof p.topic_tags === "string"
-                  ? JSON.parse(p.topic_tags || "[]")
-                  : [],
-              }));
-
-              if (topicFilters.length > 0) {
-                fetched = fetched.filter((p: LeetCodeProblem) =>
-                  p.topic_tags.some((t: string) => topicFilters.includes(t.toLowerCase()))
-                );
-              }
-
-              const newTotal = count || fetched.length;
-              const nextOffset = currentOffset + fetched.length;
-              const more = fetched.length === PAGE_SIZE && nextOffset < newTotal;
-
-              offsetRef.current = nextOffset;
-              hasMoreRef.current = more;
-              const combined = [...currentRows, ...fetched];
-              rowsRef.current = combined;
-
-              setTotal(newTotal);
-              setOffset(nextOffset);
-              setHasMore(more);
-              setRows(combined);
-
-              if (combined.length > 0 && selectedQnum === null) {
-                setSelectedQnum(Number(combined[0].qnum));
-              }
-            }
-          }
-        } catch (err: any) {
-          console.error("Failed to load LeetCode problems:", err);
-          setErrorMsg("Failed to load LeetCode questions. Please try again.");
-        }
+        setErrorMsg("Failed to load LeetCode questions. Please try again.");
       }
 
       isLoadingRef.current = false;

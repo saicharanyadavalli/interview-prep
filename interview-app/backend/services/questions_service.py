@@ -13,7 +13,7 @@ import time
 from pathlib import Path
 from typing import Any, Callable
 
-from services.supabase_client import get_supabase_client
+from services import rds_client
 
 def _ttl_cache(ttl_seconds: int = 3600):
     """Simple standard library TTL cache decorator replacing external cachetools."""
@@ -94,6 +94,20 @@ def _format_db_question(row: dict) -> dict:
     source_qnums = [int(v) for v in (row.get("source_qnums") or []) if int(v or 0) > 0]
     all_qnums = sorted(set(source_qnums + [int(row.get("qnum", 0) or 0)]) - {0})
 
+    examples = row.get("examples") or []
+    if isinstance(examples, str):
+        try:
+            examples = json.loads(examples)
+        except Exception:
+            examples = []
+
+    raw = row.get("raw") or {}
+    if isinstance(raw, str):
+        try:
+            raw = json.loads(raw)
+        except Exception:
+            raw = {}
+
     formatted = {
         "qnum": int(row.get("qnum", 0) or 0),
         "question_id": row.get("question_id", ""),
@@ -102,10 +116,10 @@ def _format_db_question(row: dict) -> dict:
         "problem_url": row.get("problem_url", ""),
         "statement_text": row.get("statement_text", ""),
         "constraints_text": row.get("constraints_text", ""),
-        "examples": row.get("examples") or [],
+        "examples": examples,
         "topic_tags": row.get("topic_tags") or [],
         "company_tags": row.get("company_tags") or [],
-        "raw": row.get("raw") or {},
+        "raw": raw,
         "company": primary_company,
         "companies": companies,
         "company_count": company_count,
@@ -119,21 +133,18 @@ def _format_db_question(row: dict) -> dict:
 
 
 def _db_resolve_canonical_qnum(qnum: int) -> int | None:
-    """Resolve source qnum to canonical qnum via alias table."""
+    """Resolve source qnum to canonical qnum via alias table in RDS."""
     if qnum <= 0:
         return None
 
     try:
-        supabase = get_supabase_client()
-        row = (
-            supabase.table(_DB_ALIASES_TABLE)
-            .select("canonical_qnum")
-            .eq("source_qnum", qnum)
-            .limit(1)
-            .execute()
-        ).data or []
-        if row:
-            canonical = int(row[0].get("canonical_qnum", 0) or 0)
+        row = rds_client.query(
+            "SELECT canonical_qnum FROM question_bank_qnum_aliases WHERE source_qnum = %s LIMIT 1",
+            (qnum,),
+            fetch="one",
+        )
+        if row and row.get("canonical_qnum"):
+            canonical = int(row["canonical_qnum"] or 0)
             if canonical > 0:
                 return canonical
     except Exception:
@@ -238,156 +249,95 @@ def _dedupe_catalog_entries(rows: list[dict]) -> list[dict]:
 
 
 def _db_fetch_catalog_rows() -> list[dict] | None:
-    """Fetch all catalog rows from Supabase, or None when DB table is unavailable."""
+    """Fetch all catalog rows from RDS, or None when DB table is unavailable."""
     try:
-        supabase = get_supabase_client()
+        rows = rds_client.query(
+            """
+            SELECT qnum, question_id, problem_name, difficulty, problem_url,
+                   statement_text, constraints_text, examples, topic_tags,
+                   company_tags, raw, primary_company, companies, company_count, source_qnums
+            FROM question_bank_questions
+            ORDER BY qnum ASC
+            """,
+            fetch="all",
+        )
+        return rows if rows is not None else None
     except Exception:
         return None
-
-    rows: list[dict] = []
-    offset = 0
-
-    try:
-        while True:
-            batch = (
-                supabase.table(_DB_QUESTIONS_TABLE)
-                .select(
-                    "qnum,question_id,problem_name,difficulty,problem_url,"
-                    "statement_text,constraints_text,examples,topic_tags,"
-                    "company_tags,raw,primary_company,companies,company_count,source_qnums"
-                )
-                .order("qnum")
-                .range(offset, offset + _DB_PAGE_SIZE - 1)
-                .execute()
-            ).data or []
-
-            if not batch:
-                break
-
-            rows.extend(batch)
-
-            if len(batch) < _DB_PAGE_SIZE:
-                break
-
-            offset += _DB_PAGE_SIZE
-    except Exception:
-        return None
-
-    return rows
 
 
 def _db_fetch_question_rows_by_qnums(qnums: list[int]) -> dict[int, dict] | None:
-    """Fetch question rows for qnums from Supabase as a qnum->row map."""
+    """Fetch question rows for qnums from RDS as a qnum->row map."""
     if not qnums:
         return {}
 
     try:
-        supabase = get_supabase_client()
-        data = (
-            supabase.table(_DB_QUESTIONS_TABLE)
-            .select(
-                "qnum,question_id,problem_name,difficulty,problem_url,"
-                "statement_text,constraints_text,examples,topic_tags,"
-                "company_tags,raw,primary_company,companies,company_count,source_qnums"
-            )
-            .in_("qnum", qnums)
-            .execute()
-        ).data or []
+        rows = rds_client.query(
+            """
+            SELECT qnum, question_id, problem_name, difficulty, problem_url,
+                   statement_text, constraints_text, examples, topic_tags,
+                   company_tags, raw, primary_company, companies, company_count, source_qnums
+            FROM question_bank_questions
+            WHERE qnum = ANY(%s)
+            """,
+            (list(qnums),),
+            fetch="all",
+        )
+        if rows is None:
+            return None
+        return {int(row.get("qnum", 0) or 0): row for row in rows}
     except Exception:
         return None
 
-    return {int(row.get("qnum", 0) or 0): row for row in data}
-
 
 def _db_fetch_questions_for_company_difficulty(company: str, difficulty: str) -> list[dict] | None:
-    """Fetch question rows for (company, difficulty) using company_tags in question table."""
+    """Fetch question rows for (company, difficulty) using company_tags in RDS."""
     normalized_company = str(company or "").strip().lower()
     if not normalized_company:
         return []
 
-    try:
-        supabase = get_supabase_client()
-    except Exception:
-        return None
-
-    rows: list[dict] = []
-    offset = 0
     normalized_difficulty = _normalize_difficulty(difficulty)
 
     try:
-        while True:
-            batch = (
-                supabase.table(_DB_QUESTIONS_TABLE)
-                .select(
-                    "qnum,question_id,problem_name,difficulty,problem_url,"
-                    "statement_text,constraints_text,examples,topic_tags,"
-                    "company_tags,raw,primary_company,companies,company_count,source_qnums"
-                )
-                .eq("difficulty", normalized_difficulty)
-                .order("qnum")
-                .range(offset, offset + _DB_PAGE_SIZE - 1)
-                .execute()
-            ).data or []
-
-            if not batch:
-                break
-
-            for row in batch:
-                tags = {
-                    str(value).strip().lower()
-                    for value in (row.get("company_tags") or [])
-                    if str(value).strip()
-                }
-                if normalized_company in tags:
-                    rows.append(row)
-
-            if len(batch) < _DB_PAGE_SIZE:
-                break
-
-            offset += _DB_PAGE_SIZE
+        rows = rds_client.query(
+            """
+            SELECT qnum, question_id, problem_name, difficulty, problem_url,
+                   statement_text, constraints_text, examples, topic_tags,
+                   company_tags, raw, primary_company, companies, company_count, source_qnums
+            FROM question_bank_questions
+            WHERE LOWER(difficulty) = %s
+              AND EXISTS (
+                  SELECT 1 FROM unnest(company_tags) AS tag
+                  WHERE LOWER(tag) = %s
+              )
+            ORDER BY qnum ASC
+            """,
+            (normalized_difficulty, normalized_company),
+            fetch="all",
+        )
+        return rows if rows is not None else None
     except Exception:
         return None
-
-    return rows
 
 
 @_ttl_cache(ttl_seconds=3600)
 def get_companies() -> list[str]:
     """Return the list of available companies."""
-    # DB-first: pull distinct companies from company_tags in question rows.
+    # DB-first: pull distinct companies from company_tags in RDS.
     try:
-        supabase = get_supabase_client()
-        rows: list[dict] = []
-        offset = 0
-        while True:
-            batch = (
-                supabase.table(_DB_QUESTIONS_TABLE)
-                .select("company_tags")
-                .order("qnum")
-                .range(offset, offset + _DB_PAGE_SIZE - 1)
-                .execute()
-            ).data or []
-
-            if not batch:
-                break
-
-            rows.extend(batch)
-
-            if len(batch) < _DB_PAGE_SIZE:
-                break
-
-            offset += _DB_PAGE_SIZE
-
-        companies = sorted(
-            {
-                str(company).strip()
-                for row in rows
-                for company in (row.get("company_tags") or [])
-                if str(company).strip() and not _is_unknown_company(str(company).strip())
-            }
+        rows = rds_client.query(
+            """
+            SELECT DISTINCT tag
+            FROM question_bank_questions, unnest(company_tags) AS tag
+            WHERE tag IS NOT NULL AND TRIM(tag) <> '' AND LOWER(TRIM(tag)) NOT IN ('unknown', 'unknown company')
+            ORDER BY tag ASC
+            """,
+            fetch="all",
         )
-        if companies:
-            return companies
+        if rows:
+            companies = sorted({str(r["tag"]).strip() for r in rows if r.get("tag")})
+            if companies:
+                return companies
     except Exception:
         pass
 
@@ -606,18 +556,15 @@ def find_qnum_by_question_id(question_id: str) -> int | None:
     if not question_id:
         return None
 
-    # Fast DB lookup when table exists.
+    # Fast DB lookup in RDS when table exists.
     try:
-        supabase = get_supabase_client()
-        row = (
-            supabase.table(_DB_QUESTIONS_TABLE)
-            .select("qnum")
-            .eq("question_id", question_id)
-            .limit(1)
-            .execute()
-        ).data or []
-        if row:
-            qnum = int(row[0].get("qnum", 0) or 0)
+        row = rds_client.query(
+            "SELECT qnum FROM question_bank_questions WHERE question_id = %s LIMIT 1",
+            (question_id,),
+            fetch="one",
+        )
+        if row and row.get("qnum"):
+            qnum = int(row["qnum"] or 0)
             if qnum > 0:
                 return qnum
     except Exception:

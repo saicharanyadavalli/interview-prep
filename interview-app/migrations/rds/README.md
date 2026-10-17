@@ -146,3 +146,50 @@ Expected output:
   GRANT ALL ON SCHEMA public TO public;
   ```
   Then re-run Step 2 (`001_schema.sql`) followed by Step 3 (`import_json_to_rds.py`).
+
+---
+
+## 5. Application Data Access & AWS Secrets Manager Integration
+
+### 5.1 Architecture Overview
+- **Application Data:** Amazon RDS PostgreSQL 17.11 (`interview_prep_db`, database role `interview_prep_app`) is the authoritative datastore for all 11 application tables.
+- **Authentication:** Supabase Auth remains in place for email/password signup, login, session tokens, and password recovery. Incoming JWTs are validated via `services/supabase_client.py:verify_supabase_token` in the backend before data access.
+- **Client Zero-Exposure:** Frontend never connects to RDS or receives database credentials. All database interactions route strictly through FastAPI backend proxies.
+
+### 5.2 Credential Resolution Priority (`services/rds_client.py`)
+1. **Local Dev / Testing Override:** `DATABASE_URL` or `RDS_DATABASE_URL` environment variable.
+2. **Production AWS Secrets Manager:**
+   - Secret Name: `interview-prep/rds/app` (configurable via `RDS_SECRET_NAME` or `RDS_SECRET_ARN`)
+   - Region: `AWS_REGION` or `AWS_DEFAULT_REGION` (default: `us-east-1`)
+   - Retrieved via AWS SDK (`boto3`) utilizing the EC2 Instance IAM Profile. Plain text credentials are never hard-coded, committed, or exposed in logs (`mask_db_url` masks passwords).
+
+### 5.3 Minimal EC2 IAM Policy
+Attach the following least-privilege IAM policy to the EC2 instance role:
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowReadRDSAppSecret",
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue"
+      ],
+      "Resource": "arn:aws:secretsmanager:*:*:secret:interview-prep/rds/app-*"
+    }
+  ]
+}
+```
+
+### 5.4 Secret JSON Schema
+The secret `interview-prep/rds/app` in Secrets Manager must contain:
+```json
+{
+  "username": "interview_prep_app",
+  "password": "<secure-random-app-password>",
+  "host": "<rds-endpoint-url>",
+  "port": 5432,
+  "dbname": "interview_prep_db"
+}
+```
+

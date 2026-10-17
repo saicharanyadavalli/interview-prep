@@ -1,9 +1,8 @@
-"""Profile routes — read/update editable user profile fields and upload avatars.
+"""User profile routes — view, edit, and upload avatar.
 
-Rate limiting:
-  GET  /profile/me          — 60/minute per user
-  PUT  /profile/me          — 10/minute, 60/hour per user
-  POST /profile/avatar/upload — 5/minute, 20/hour per user
+Persists authoritative application profile data directly to Amazon RDS PostgreSQL.
+Validates input, checks username uniqueness (409 Conflict), validates avatar images
+using Pillow, uploads to Cloudinary with inline data URI fallback, and updates RDS.
 """
 
 from __future__ import annotations
@@ -13,40 +12,43 @@ import io
 import logging
 import os
 import re
+from typing import Tuple
 
 import cloudinary
 import cloudinary.uploader
 import filetype
-from fastapi import APIRouter, Depends, HTTPException, UploadFile, File, Request, Response
-from limiter import limiter
+from fastapi import APIRouter, Depends, File, HTTPException, Request, Response, UploadFile
 from PIL import Image, UnidentifiedImageError
 
+from limiter import limiter
 from models.schemas import ProfileResponse, ProfileUpdateRequest
 from routes.auth import get_current_user
-from services.supabase_client import get_supabase_client
+from services import rds_client
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/profile", tags=["profile"])
 
-ALLOWED_IMAGE_MIMES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
-ALLOWED_PIL_FORMATS = {"JPEG", "PNG", "WEBP", "GIF"}
-MAX_AVATAR_BYTES = 5 * 1024 * 1024  # 5 MB
-MIN_DIMENSION = 1
+MAX_AVATAR_BYTES = 5 * 1024 * 1024  # 5MB
+MIN_DIMENSION = 16
 MAX_DIMENSION = 4096
+ALLOWED_IMAGE_MIMES = {
+    "image/jpeg",
+    "image/png",
+    "image/webp",
+    "image/gif",
+}
+ALLOWED_PIL_FORMATS = {"JPEG", "PNG", "WEBP", "GIF"}
 
 
-def _configure_cloudinary() -> tuple[bool, str]:
-    """Configure Cloudinary when credentials exist.
-
-    Returns (is_configured, upload_folder).
-    """
+def _configure_cloudinary() -> Tuple[bool, str]:
+    """Configure Cloudinary using backend environment variables if present."""
     cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME", "").strip()
     api_key = os.getenv("CLOUDINARY_API_KEY", "").strip()
     api_secret = os.getenv("CLOUDINARY_API_SECRET", "").strip()
-    folder = os.getenv("CLOUDINARY_AVATAR_FOLDER", "interview-prep/avatars").strip() or "interview-prep/avatars"
+    folder = os.getenv("CLOUDINARY_AVATARS_FOLDER", "interview-prep/avatars").strip()
 
-    if not cloud_name or not api_key or not api_secret:
+    if not (cloud_name and api_key and api_secret):
         return False, folder
 
     cloudinary.config(
@@ -61,53 +63,73 @@ def _configure_cloudinary() -> tuple[bool, str]:
 @router.get("/me", response_model=ProfileResponse)
 @limiter.limit("5000/minute")
 def get_my_profile(request: Request, response: Response, current_user: dict = Depends(get_current_user)):
-    """Return profile row for current user, auto-creating one if missing."""
+    """Return profile row for current user from RDS, auto-creating one if missing."""
     request.state.rate_limit_user_id = current_user.get("id")
-    supabase = get_supabase_client()
 
     try:
         email = current_user.get("email", "")
         default_username = (email.split("@")[0] if email else f"user_{current_user['id'][:8]}").lower()
 
-        rows = (
-            supabase.table("user_profiles")
-            .select("id,email,username,name,phone,avatar_url")
-            .eq("id", current_user["id"])
-            .limit(1)
-            .execute()
-        ).data or []
+        row = rds_client.query(
+            """
+            SELECT id, email, username, name, phone, avatar_url
+            FROM user_profiles
+            WHERE id = %s
+            LIMIT 1;
+            """,
+            (current_user["id"],),
+            fetch="one",
+        )
 
-        if rows:
-            row = rows[0]
+        if row:
             username = row.get("username") or current_user.get("username") or default_username
             # If username was missing in database, persist fallback username
             if not row.get("username"):
-                supabase.table("user_profiles").update({"username": username}).eq("id", current_user["id"]).execute()
+                rds_client.mutate(
+                    "UPDATE user_profiles SET username = %s, updated_at = now() WHERE id = %s;",
+                    (username, current_user["id"]),
+                )
 
             return ProfileResponse(
-                id=row.get("id", current_user["id"]),
-                email=row.get("email", email),
+                id=str(row.get("id", current_user["id"])),
+                email=row.get("email", email) or email,
                 username=username,
                 name=row.get("name", "") or "",
                 phone=row.get("phone", "") or "",
                 avatar_url=row.get("avatar_url", "") or "",
             )
 
-        # Auto-create first profile row from auth info.
+        # Auto-create first profile row from auth info into RDS.
         username = current_user.get("username") or default_username
-        payload = {
-            "id": current_user["id"],
-            "email": email,
-            "username": username,
-            "name": current_user.get("name", "") or "",
-            "phone": "",
-            "avatar_url": current_user.get("avatar_url", "") or "",
-        }
-        supabase.table("user_profiles").upsert(payload, on_conflict="id").execute()
+        rds_client.mutate(
+            """
+            INSERT INTO user_profiles (id, email, username, name, phone, avatar_url)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (id) DO UPDATE
+            SET email = EXCLUDED.email,
+                username = COALESCE(user_profiles.username, EXCLUDED.username),
+                name = COALESCE(NULLIF(user_profiles.name, ''), EXCLUDED.name);
+            """,
+            (
+                current_user["id"],
+                email,
+                username,
+                current_user.get("name", "") or "",
+                "",
+                current_user.get("avatar_url", "") or "",
+            ),
+        )
 
-        return ProfileResponse(**payload)
+        return ProfileResponse(
+            id=current_user["id"],
+            email=email,
+            username=username,
+            name=current_user.get("name", "") or "",
+            phone="",
+            avatar_url=current_user.get("avatar_url", "") or "",
+        )
     except Exception as exc:
-        logger.error("get_my_profile database error for user %s: %s", current_user.get("id"), exc)
+        logger.error("get_my_profile RDS error for user %s: %s", current_user.get("id"), exc)
         raise HTTPException(status_code=500, detail="Failed to retrieve user profile.") from exc
 
 
@@ -119,12 +141,11 @@ def update_my_profile(
     payload: ProfileUpdateRequest,
     current_user: dict = Depends(get_current_user),
 ):
-    """Update editable profile fields for current user.
+    """Update editable profile fields for current user in RDS.
 
     Validates field constraints and prevents username collision across users.
     """
     request.state.rate_limit_user_id = current_user.get("id")
-    supabase = get_supabase_client()
 
     updates: dict[str, str] = {}
 
@@ -136,17 +157,16 @@ def update_my_profile(
                 detail="Username must be 3-50 characters and contain only lowercase letters, digits, or underscores.",
             )
 
-        # Check for username uniqueness against other user accounts
+        # Check for username uniqueness against other user accounts in RDS
         try:
-            existing = (
-                supabase.table("user_profiles")
-                .select("id,username")
-                .eq("username", clean_user)
-                .execute()
-            ).data or []
-            collision = any(
-                r.get("id") != current_user["id"] and (r.get("username") or "").lower() == clean_user
-                for r in existing
+            collision = rds_client.query(
+                """
+                SELECT id, username FROM user_profiles
+                WHERE LOWER(username) = LOWER(%s) AND id != %s
+                LIMIT 1;
+                """,
+                (clean_user, current_user["id"]),
+                fetch="one",
             )
             if collision:
                 raise HTTPException(
@@ -156,7 +176,8 @@ def update_my_profile(
         except HTTPException:
             raise
         except Exception as exc:
-            logger.error("Username uniqueness check failed: %s", exc)
+            logger.error("Username uniqueness check failed in RDS: %s", exc)
+            raise HTTPException(status_code=500, detail="Failed to verify username uniqueness.") from exc
 
         updates["username"] = clean_user
 
@@ -185,26 +206,54 @@ def update_my_profile(
     if not updates:
         raise HTTPException(status_code=400, detail="No profile fields provided to update.")
 
-    updates["id"] = current_user["id"]
-    updates["email"] = current_user.get("email", "")
-
     try:
-        supabase.table("user_profiles").upsert(updates, on_conflict="id").execute()
+        set_clauses = []
+        params = []
+        for col, val in updates.items():
+            set_clauses.append(f"{col} = %s")
+            params.append(val)
 
-        rows = (
-            supabase.table("user_profiles")
-            .select("id,email,username,name,phone,avatar_url")
-            .eq("id", current_user["id"])
-            .limit(1)
-            .execute()
-        ).data or []
+        params.append(current_user["id"])
+        sql = f"""
+        UPDATE user_profiles
+        SET {', '.join(set_clauses)}, updated_at = now()
+        WHERE id = %s
+        RETURNING id, email, username, name, phone, avatar_url;
+        """
+
+        rows = rds_client.mutate(sql, tuple(params), returning=True)
 
         if not rows:
-            raise HTTPException(status_code=500, detail="Could not reload updated profile.")
+            # If user row did not exist yet, insert it with updates
+            email = current_user.get("email", "")
+            username = updates.get("username") or current_user.get("username") or (email.split("@")[0] if email else f"user_{current_user['id'][:8]}")
+            insert_sql = """
+            INSERT INTO user_profiles (id, email, username, name, phone, avatar_url)
+            VALUES (%s, %s, %s, %s, %s, %s)
+            ON CONFLICT (id) DO UPDATE
+            SET username = COALESCE(EXCLUDED.username, user_profiles.username),
+                name = COALESCE(EXCLUDED.name, user_profiles.name),
+                phone = COALESCE(EXCLUDED.phone, user_profiles.phone),
+                avatar_url = COALESCE(EXCLUDED.avatar_url, user_profiles.avatar_url),
+                updated_at = now()
+            RETURNING id, email, username, name, phone, avatar_url;
+            """
+            rows = rds_client.mutate(
+                insert_sql,
+                (
+                    current_user["id"],
+                    email,
+                    username,
+                    updates.get("name", ""),
+                    updates.get("phone", ""),
+                    updates.get("avatar_url", ""),
+                ),
+                returning=True,
+            )
 
         data = rows[0]
         return ProfileResponse(
-            id=data.get("id", current_user["id"]),
+            id=str(data.get("id", current_user["id"])),
             email=data.get("email", current_user.get("email", "")),
             username=data.get("username", current_user.get("username")),
             name=data.get("name", "") or "",
@@ -214,7 +263,7 @@ def update_my_profile(
     except HTTPException:
         raise
     except Exception as exc:
-        logger.error("update_my_profile database error for user %s: %s", current_user.get("id"), exc)
+        logger.error("update_my_profile RDS error for user %s: %s", current_user.get("id"), exc)
         raise HTTPException(status_code=500, detail="Failed to persist profile updates.") from exc
 
 
@@ -226,7 +275,7 @@ async def upload_profile_avatar(
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_user),
 ):
-    """Validate, decode, upload avatar to Cloudinary, and persist secure URL in user profile."""
+    """Validate, decode, upload avatar to Cloudinary, and persist secure URL in RDS user_profiles."""
     request.state.rate_limit_user_id = current_user.get("id")
 
     if not file or not file.filename:
@@ -324,17 +373,17 @@ async def upload_profile_avatar(
         raise HTTPException(status_code=500, detail="Avatar storage did not return a valid URL.")
 
     try:
-        supabase = get_supabase_client()
-        supabase.table("user_profiles").upsert(
-            {
-                "id": current_user["id"],
-                "email": current_user.get("email", ""),
-                "avatar_url": avatar_url,
-            },
-            on_conflict="id",
-        ).execute()
+        rds_client.mutate(
+            """
+            INSERT INTO user_profiles (id, email, avatar_url)
+            VALUES (%s, %s, %s)
+            ON CONFLICT (id) DO UPDATE
+            SET avatar_url = EXCLUDED.avatar_url, updated_at = now();
+            """,
+            (current_user["id"], current_user.get("email", ""), avatar_url),
+        )
     except Exception as db_err:
-        logger.error("Failed to persist avatar_url in database: %s", db_err)
+        logger.error("Failed to persist avatar_url in RDS: %s", db_err)
         raise HTTPException(status_code=500, detail="Failed to persist avatar URL in database.") from db_err
 
     return {"avatar_url": avatar_url, "storage": storage_mode}

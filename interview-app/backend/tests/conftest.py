@@ -146,21 +146,243 @@ class MockSupabaseClient:
         return MockQueryBuilder(table_name, self._tables.get(table_name, []))
 
 
+class MockRDSStore:
+    """In-memory mock database store intercepting rds_client.query and rds_client.mutate."""
+
+    def __init__(self, tables: dict[str, list[dict]]):
+        self._tables = tables
+
+    def query(self, sql: str, params: Any = None, fetch: str = "all") -> Any:
+        import re
+        sql_clean = sql.strip()
+        params = list(params) if isinstance(params, (tuple, list)) else ([params] if params is not None else [])
+
+        # Health check
+        if "SELECT 1" in sql_clean:
+            if fetch == "scalar":
+                return 1
+            return [{"healthy": 1}]
+
+        # Extract table name
+        match = re.search(r"FROM\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        if not match:
+            return [] if fetch == "all" else None
+
+        table = match.group(1).lower()
+        rows = [dict(r) for r in self._tables.get(table, [])]
+
+        # DISTINCT track_id
+        if "distinct track_id" in sql_clean.lower():
+            seen = set()
+            res = []
+            for r in rows:
+                t = r.get("track_id")
+                if t and t not in seen:
+                    seen.add(t)
+                    res.append({"track_id": t})
+            return res
+
+        # DISTINCT unnest(company_tags)
+        if "distinct unnest(company_tags)" in sql_clean.lower():
+            seen = set()
+            for r in rows:
+                for c in r.get("company_tags", []):
+                    seen.add(c)
+            return [{"company": c} for c in sorted(seen)]
+
+        # Specific filters
+        if "id !=" in sql_clean.lower() and len(params) >= 2:
+            uname = str(params[0]).lower()
+            not_id = str(params[1])
+            rows = [r for r in rows if str(r.get("username", "")).lower() == uname and str(r.get("id")) != not_id]
+        elif "lower(username) = lower(%s)" in sql_clean.lower() and params:
+            uname = str(params[0]).lower()
+            rows = [r for r in rows if str(r.get("username", "")).lower() == uname]
+        elif "username = %s" in sql_clean.lower() and params:
+            uname = str(params[0]).lower()
+            rows = [r for r in rows if str(r.get("username", "")).lower() == uname]
+
+        if "where id = %s" in sql_clean.lower() and params:
+            target_id = str(params[0])
+            rows = [r for r in rows if str(r.get("id")) == target_id]
+
+        if "source_qnum = %s" in sql_clean and params:
+            sq = params[0]
+            rows = [r for r in rows if r.get("source_qnum") == sq]
+
+        if "qnum = any(%s)" in sql_clean.lower() or "qnum in" in sql_clean.lower():
+            for p in params:
+                if isinstance(p, (list, tuple, set)):
+                    rows = [r for r in rows if r.get("qnum") in p]
+                    break
+        elif "qnum = %s" in sql_clean:
+            q_val = None
+            for p in params:
+                if isinstance(p, int) or (isinstance(p, str) and p.isdigit()):
+                    q_val = int(p)
+                    break
+            if q_val is not None:
+                if any("qnum" in r for r in rows):
+                    rows = [r for r in rows if r.get("qnum") == q_val]
+
+        if "user_id = %s" in sql_clean and params:
+            uid = str(params[0])
+            if any("user_id" in r for r in rows):
+                rows = [r for r in rows if str(r.get("user_id")) == uid]
+
+        if "track_id = %s" in sql_clean:
+            tid = None
+            for p in params:
+                if isinstance(p, str) and ("design" in p or "course" in p or "-" in p):
+                    tid = p
+                    break
+            if tid is None and params:
+                tid = str(params[-1])
+            if tid is not None and any("track_id" in r for r in rows):
+                rows = [r for r in rows if r.get("track_id") == tid]
+        elif "track_id = 'system-design'" in sql_clean.lower() and any("track_id" in r for r in rows):
+            rows = [r for r in rows if r.get("track_id") == "system-design"]
+
+        if "is_revisit = true" in sql_clean.lower():
+            rows = [r for r in rows if r.get("is_revisit") is True]
+
+        if "is_solved = true" in sql_clean.lower():
+            rows = [r for r in rows if r.get("is_solved") is True]
+
+        if "difficulty = %s" in sql_clean:
+            for p in params:
+                if str(p).lower() in ("easy", "medium", "hard"):
+                    rows = [r for r in rows if str(r.get("difficulty", "")).lower() == str(p).lower()]
+                    break
+
+        # Aggregate / Count
+        if "count(*)" in sql_clean.lower():
+            if fetch == "scalar":
+                return len(rows)
+            return [{"count": len(rows)}]
+
+        # Sorting
+        if "order by created_at desc" in sql_clean.lower() and table != "user_comments":
+            rows = sorted(rows, key=lambda x: str(x.get("created_at", "")), reverse=True)
+        elif "order by updated_at desc" in sql_clean.lower():
+            rows = sorted(rows, key=lambda x: str(x.get("updated_at", "")), reverse=True)
+        elif "order by step_no asc" in sql_clean.lower():
+            rows = sorted(rows, key=lambda x: int(x.get("step_no", 0)))
+        elif "order by approach_index asc" in sql_clean.lower():
+            rows = sorted(rows, key=lambda x: int(x.get("approach_index", 0)))
+        elif "order by rating desc" in sql_clean.lower():
+            rows = sorted(rows, key=lambda x: float(x.get("rating", 0) or 0), reverse=True)
+        elif "order by rating asc" in sql_clean.lower():
+            rows = sorted(rows, key=lambda x: float(x.get("rating", 0) or 0))
+
+        # Fetch mode
+        if fetch == "one":
+            return rows[0] if rows else None
+        elif fetch == "scalar":
+            if rows:
+                return next(iter(rows[0].values()))
+            return None
+        return rows
+
+    def mutate(self, sql: str, params: Any = None, returning: bool = False) -> Any:
+        import re
+        sql_clean = sql.strip()
+        params = list(params) if isinstance(params, (tuple, list)) else ([params] if params is not None else [])
+
+        # INSERT
+        m_ins = re.search(r"INSERT\s+INTO\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        if m_ins:
+            table = m_ins.group(1).lower()
+            table_rows = self._tables.setdefault(table, [])
+            m_cols = re.search(r"\(([^)]+)\)\s+VALUES", sql_clean, re.IGNORECASE)
+            new_row = {}
+            if m_cols:
+                cols = [c.strip() for c in m_cols.group(1).split(",")]
+                for i, col in enumerate(cols):
+                    if i < len(params):
+                        new_row[col] = params[i]
+
+            if "id" not in new_row and table in ("user_profiles", "user_comments", "practice_history", "learning_track_progress"):
+                new_row["id"] = f"{table}-{len(table_rows)+1}"
+
+            if "on conflict" in sql_clean.lower():
+                if "(id)" in sql_clean.lower() and "id" in new_row:
+                    for idx, r in enumerate(table_rows):
+                        if str(r.get("id")) == str(new_row["id"]):
+                            table_rows[idx].update(new_row)
+                            return [table_rows[idx]] if returning else 1
+                elif "(user_id, qnum)" in sql_clean.lower() and "user_id" in new_row and "qnum" in new_row:
+                    for idx, r in enumerate(table_rows):
+                        if str(r.get("user_id")) == str(new_row["user_id"]) and r.get("qnum") == new_row["qnum"]:
+                            table_rows[idx].update(new_row)
+                            return [table_rows[idx]] if returning else 1
+                elif "(user_id, track_id, step_no)" in sql_clean.lower():
+                    for idx, r in enumerate(table_rows):
+                        if (str(r.get("user_id")) == str(new_row.get("user_id")) and
+                            r.get("track_id") == new_row.get("track_id") and
+                            r.get("step_no") == new_row.get("step_no")):
+                            table_rows[idx].update(new_row)
+                            return [table_rows[idx]] if returning else 1
+
+            table_rows.append(new_row)
+            return [new_row] if returning else 1
+
+        # UPDATE
+        m_upd = re.search(r"UPDATE\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        if m_upd:
+            table = m_upd.group(1).lower()
+            table_rows = self._tables.get(table, [])
+            updated_rows = []
+
+            if "is_revisit = false" in sql_clean.lower():
+                for r in table_rows:
+                    if len(params) >= 2 and (r.get("qnum") == params[1] or str(r.get("qnum")) == str(params[1])):
+                        r["is_revisit"] = False
+                        updated_rows.append(r)
+            elif table == "user_comments":
+                for r in table_rows:
+                    if len(params) >= 2 and str(r.get("id")) == str(params[1]):
+                        r["comment_text"] = params[0]
+                        updated_rows.append(r)
+            elif table == "user_profiles":
+                target_id = params[-1] if params else None
+                for r in table_rows:
+                    if str(r.get("id")) == str(target_id):
+                        if "username = %s" in sql_clean and len(params) >= 3:
+                            r["username"] = params[0]
+                            r["name"] = params[1]
+                            r["phone"] = params[2]
+                        if "avatar_url = %s" in sql_clean and len(params) >= 1:
+                            r["avatar_url"] = params[0]
+                        updated_rows.append(r)
+
+            return updated_rows if returning else (len(updated_rows) or 1)
+
+        # DELETE
+        m_del = re.search(r"DELETE\s+FROM\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        if m_del:
+            table = m_del.group(1).lower()
+            table_rows = self._tables.get(table, [])
+            if "where id = %s" in sql_clean.lower() and params:
+                target_id = str(params[0])
+                self._tables[table] = [r for r in table_rows if str(r.get("id")) != target_id]
+            elif "where user_id = %s and qnum = %s" in sql_clean.lower() and len(params) >= 2:
+                target_qnum = params[1]
+                self._tables[table] = [r for r in table_rows if r.get("qnum") != target_qnum]
+            return 1
+
+        return 1
+
+
 @pytest.fixture
 def mock_supabase() -> Generator[MockSupabaseClient, None, None]:
-    """Fixture providing a configurable MockSupabaseClient patched across all service/route imports."""
+    """Fixture providing a configurable MockSupabaseClient and mock RDS layer."""
     mock_client = MockSupabaseClient()
+    mock_rds = MockRDSStore(mock_client._tables)
     with patch("services.supabase_client.get_supabase_client", return_value=mock_client), \
-         patch("services.courses_service.get_supabase_client", return_value=mock_client), \
-         patch("services.questions_service.get_supabase_client", return_value=mock_client), \
-         patch("routes.auth.get_supabase_client", return_value=mock_client), \
-         patch("routes.questions.get_supabase_client", return_value=mock_client), \
-         patch("routes.progress.get_supabase_client", return_value=mock_client), \
-         patch("routes.revisit.get_supabase_client", return_value=mock_client), \
-         patch("routes.comments.get_supabase_client", return_value=mock_client), \
-         patch("routes.profile.get_supabase_client", return_value=mock_client), \
-         patch("routes.system_design.get_supabase_client", return_value=mock_client), \
-         patch("routes.leetcode.get_supabase_client", return_value=mock_client):
+         patch("services.rds_client.query", side_effect=mock_rds.query), \
+         patch("services.rds_client.mutate", side_effect=mock_rds.mutate), \
+         patch("services.rds_client.check_rds_health", return_value=True):
         yield mock_client
 
 

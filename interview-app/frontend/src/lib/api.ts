@@ -312,25 +312,6 @@ export const API = {
     const isNum = Number.isFinite(Number(questionRef)) && Number(questionRef) > 0;
     const payload = { ...(progressPayload || {}) };
 
-    try {
-      const sb = getSupabase();
-      if (sb && isNum) {
-        const { data: { session } } = await sb.auth.getSession();
-        if (session?.user) {
-          const qnumVal = Number(questionRef);
-          const updateData: Record<string, any> = {
-            user_id: session.user.id,
-            qnum: qnumVal,
-            updated_at: new Date().toISOString(),
-          };
-          if (payload.is_solved !== undefined) updateData.is_solved = Boolean(payload.is_solved);
-          if (payload.revisit !== undefined) updateData.is_revisit = Boolean(payload.revisit);
-
-          await sb.from("user_progress").upsert(updateData, { onConflict: "user_id,qnum" });
-        }
-      }
-    } catch (_) {}
-
     return this._fetch("/progress/update", {
       method: "POST",
       body: JSON.stringify({
@@ -350,60 +331,6 @@ export const API = {
     if (res && res.stats && typeof res.stats.total_attempted === "number") {
       return res;
     }
-
-    // Direct Supabase fallback
-    try {
-      const sb = getSupabase();
-      if (sb) {
-        const { data: { session } } = await sb.auth.getSession();
-        if (session?.user) {
-          const { data: entries } = await sb
-            .from("user_progress")
-            .select("*")
-            .eq("user_id", session.user.id);
-
-          if (entries && entries.length > 0) {
-            const attempted = entries.length;
-            const solved = entries.filter((e: any) => Boolean(e.is_solved)).length;
-            const revisit = entries.filter((e: any) => Boolean(e.is_revisit)).length;
-            return {
-              stats: {
-                total_attempted: attempted,
-                solved_count: solved,
-                unsolved_count: attempted - solved,
-                revisit_count: revisit,
-                current_streak: 0,
-                easy_attempted: 0,
-                medium_attempted: 0,
-                hard_attempted: 0,
-                easy_solved: 0,
-                medium_solved: 0,
-                hard_solved: 0,
-                total_questions: 1081,
-                solved_total_questions: solved,
-                easy_total_questions: 448,
-                medium_total_questions: 529,
-                hard_total_questions: 104,
-                easy_solved_total_questions: 0,
-                medium_solved_total_questions: 0,
-                hard_solved_total_questions: 0,
-              },
-              recent: entries.slice(0, 20).map((e: any) => ({
-                qnum: e.qnum,
-                question_id: `q_${e.qnum}`,
-                question_title: `Question #${e.qnum}`,
-                company: "",
-                difficulty: "",
-                is_solved: Boolean(e.is_solved),
-                revisit: Boolean(e.is_revisit),
-                updated_at: e.updated_at || "",
-              })),
-              topic_breakdown: [],
-            };
-          }
-        }
-      }
-    } catch (_) {}
 
     return res || { stats: { total_attempted: 0, solved_count: 0, revisit_count: 0, current_streak: 0 }, recent: [] };
   },
@@ -437,33 +364,6 @@ export const API = {
       profile = await this._fetch("/profile/me");
     } catch (_) {}
 
-    // Supabase client fallback to guarantee instant data retrieval
-    try {
-      const sb = getSupabase();
-      if (sb) {
-        const { data: { session } } = await sb.auth.getSession();
-        if (session?.user) {
-          const { data: dbRows } = await sb
-            .from("user_profiles")
-            .select("id,email,username,name,phone,avatar_url")
-            .eq("id", session.user.id)
-            .limit(1);
-
-          if (dbRows && dbRows[0]) {
-            const row = dbRows[0];
-            profile = {
-              id: row.id,
-              email: row.email || session.user.email || "",
-              username: row.username || profile?.username || session.user.user_metadata?.username || "",
-              name: row.name || profile?.name || "",
-              phone: row.phone || profile?.phone || "",
-              avatar_url: row.avatar_url || profile?.avatar_url || "",
-            };
-          }
-        }
-      }
-    } catch (_) {}
-
     if (profile) {
       this.setCachedProfile(profile, profile.id);
     }
@@ -471,26 +371,6 @@ export const API = {
   },
 
   async updateMyProfile(payload: any) {
-    // Directly update Supabase user_profiles table as well for instant client consistency
-    try {
-      const sb = getSupabase();
-      if (sb) {
-        const { data: { session } } = await sb.auth.getSession();
-        if (session?.user) {
-          const upsertData: Record<string, any> = {
-            id: session.user.id,
-            email: session.user.email || "",
-          };
-          if (payload.name !== undefined) upsertData.name = String(payload.name).trim();
-          if (payload.username !== undefined) upsertData.username = String(payload.username).trim().toLowerCase();
-          if (payload.phone !== undefined) upsertData.phone = String(payload.phone).trim();
-          if (payload.avatar_url !== undefined) upsertData.avatar_url = String(payload.avatar_url).trim();
-
-          await sb.from("user_profiles").upsert(upsertData, { onConflict: "id" });
-        }
-      }
-    } catch (_) {}
-
     const updated = await this._fetch("/profile/me", {
       method: "PUT",
       body: JSON.stringify(payload),
@@ -687,37 +567,6 @@ export const API = {
       }
     } catch (_) {}
 
-    // Direct Supabase fallback for full lesson list
-    try {
-      const supabase = getSupabase() as any;
-      if (supabase) {
-        const { data: lessonRows } = await supabase
-          .from("course_lessons")
-          .select("id, step_no, title")
-          .eq("track_id", courseSlug)
-          .order("step_no", { ascending: true });
-
-        if (lessonRows && lessonRows.length > 0) {
-          return {
-            id: courseSlug,
-            slug: courseSlug,
-            title: canonicalTitle,
-            description: `${canonicalDescription}`,
-            total_lessons: lessonRows.length,
-            completed_lessons: 0,
-            progress_percentage: 0,
-            lessons: lessonRows.map((s: any) => ({
-              id: String(s.id || s.step_no),
-              slug: `step-${s.step_no}`,
-              title: s.title || `Chapter ${s.step_no}`,
-              order_index: s.step_no,
-              completed: false,
-            })),
-          };
-        }
-      }
-    } catch (_) {}
-
     return {
       id: courseSlug,
       slug: courseSlug,
@@ -748,33 +597,7 @@ export const API = {
     const stepMatch = lessonSlug.match(/^step-(\d+)$/i) || lessonSlug.match(/^(\d+)$/);
     const stepNo = stepMatch ? parseInt(stepMatch[1], 10) : 1;
 
-    // Direct Supabase fallback
-    try {
-      const supabase = getSupabase() as any;
-      if (supabase) {
-        const { data: row } = await supabase
-          .from("course_lessons")
-          .select("id, track_id, step_no, title, html_content")
-          .eq("track_id", courseSlug)
-          .eq("step_no", stepNo)
-          .maybeSingle();
 
-        if (row) {
-          return {
-            id: String(row.id || stepNo),
-            course_slug: courseSlug,
-            slug: `step-${stepNo}`,
-            title: row.title || `Step ${stepNo}`,
-            order_index: stepNo,
-            content_markdown: row.html_content || "",
-            tasks: [],
-            completed: false,
-            prev_lesson_slug: stepNo > 1 ? `step-${stepNo - 1}` : null,
-            next_lesson_slug: `step-${stepNo + 1}`,
-          };
-        }
-      }
-    } catch (_) {}
 
     return {
       id: String(stepNo),

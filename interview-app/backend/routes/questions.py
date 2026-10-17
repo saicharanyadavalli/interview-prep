@@ -8,7 +8,6 @@ from fastapi import APIRouter, Query, Depends, HTTPException
 
 from models.schemas import QuestionResponse, CompaniesResponse
 from routes.auth import get_current_user, get_optional_current_user
-from services.supabase_client import get_supabase_client
 from services.questions_service import (
     get_companies,
     get_random_question,
@@ -52,18 +51,18 @@ def _as_tag_set(values: list[str] | None) -> set[str]:
     return {str(v).strip().lower() for v in (values or []) if str(v).strip()}
 
 
+from services import rds_client
+
+
 def _load_solved_qnums(user_id: str) -> set[int]:
     if not user_id:
         return set()
 
-    supabase = get_supabase_client()
     try:
-        rows = (
-            supabase.table("user_progress")
-            .select("qnum,is_solved")
-            .eq("user_id", user_id)
-            .execute()
-        ).data or []
+        rows = rds_client.query(
+            "SELECT qnum, is_solved FROM user_progress WHERE user_id = %s;",
+            (user_id,),
+        ) or []
     except Exception:
         return set()
 

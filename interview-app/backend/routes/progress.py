@@ -14,8 +14,11 @@ from models.schemas import (
     ProgressStatusResponse,
     TopicProgressEntry,
 )
+import logging
 from routes.auth import get_current_user, get_optional_current_user
-from services.supabase_client import get_supabase_client
+from services import rds_client
+
+logger = logging.getLogger(__name__)
 from services.questions_service import (
     find_qnum_by_question_id,
     get_question_summary_by_qnum,
@@ -73,9 +76,7 @@ def _coerce_state_from_payload(payload: ProgressUpdateRequest, current_is_solved
 
 @router.post("/update")
 def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_current_user)):
-    """Update question progress using is_solved/revisit values."""
-    supabase = get_supabase_client()
-    now = datetime.now(timezone.utc).isoformat()
+    """Update question progress in RDS using is_solved/revisit values."""
     qnum = payload.qnum
     if qnum is None and payload.question_id:
         qnum = find_qnum_by_question_id(payload.question_id)
@@ -93,40 +94,36 @@ def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_cur
         )
 
     try:
-        existing_rows = (
-            supabase.table("user_progress")
-            .select("is_solved,is_revisit")
-            .eq("user_id", user["id"])
-            .eq("qnum", qnum)
-            .limit(1)
-            .execute()
-        ).data or []
+        existing = rds_client.query(
+            "SELECT is_solved, is_revisit FROM user_progress WHERE user_id = %s AND qnum = %s LIMIT 1;",
+            (user["id"], qnum),
+            fetch="one",
+        ) or {}
 
-        existing = existing_rows[0] if existing_rows else {}
         current_is_solved = bool(existing.get("is_solved", False))
         current_revisit = bool(existing.get("is_revisit", False))
 
         next_is_solved, next_revisit = _coerce_state_from_payload(payload, current_is_solved, current_revisit)
 
-        supabase.table("user_progress").upsert(
-            {
-                "user_id": user["id"],
-                "qnum": qnum,
-                "is_solved": next_is_solved,
-                "is_revisit": next_revisit,
-                "updated_at": now,
-            },
-            on_conflict="user_id,qnum",
-        ).execute()
+        rds_client.mutate(
+            """
+            INSERT INTO user_progress (user_id, qnum, is_solved, is_revisit, updated_at)
+            VALUES (%s, %s, %s, %s, now())
+            ON CONFLICT (user_id, qnum) DO UPDATE
+            SET is_solved = EXCLUDED.is_solved,
+                is_revisit = EXCLUDED.is_revisit,
+                updated_at = now();
+            """,
+            (user["id"], qnum, next_is_solved, next_revisit),
+        )
 
         # Also add to practice_history
-        supabase.table("practice_history").insert(
-            {
-                "user_id": user["id"],
-                "qnum": qnum,
-            }
-        ).execute()
+        rds_client.mutate(
+            "INSERT INTO practice_history (user_id, qnum, practiced_at) VALUES (%s, %s, now());",
+            (user["id"], qnum),
+        )
     except Exception as exc:
+        logger.error("update_progress RDS error: %s", exc)
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
     return {
@@ -167,23 +164,23 @@ def get_user_progress(summary_only: bool = False, user: dict | None = Depends(ge
             topic_breakdown=[],
         )
 
-    supabase = get_supabase_client()
-
     try:
-        # Get all progress entries for this user
-        result = (
-            supabase.table("user_progress")
-            .select("*")
-            .eq("user_id", user["id"])
-            .order("updated_at", desc=True)
-            .execute()
-        )
-        raw_entries = result.data or []
+        # Get all progress entries for this user from RDS
+        raw_entries = rds_client.query(
+            """
+            SELECT id, user_id, qnum, is_solved, is_revisit, updated_at
+            FROM user_progress
+            WHERE user_id = %s
+            ORDER BY updated_at DESC;
+            """,
+            (user["id"],),
+        ) or []
         entries = [
             e for e in raw_entries
             if not is_reserved_learning_track_qnum(int(e.get("qnum", 0) or 0))
         ]
-    except Exception:
+    except Exception as exc:
+        logger.error("get_user_progress RDS error: %s", exc)
         entries = []
 
     summary_cache: dict[int, dict] = {}
@@ -432,26 +429,23 @@ def get_user_progress(summary_only: bool = False, user: dict | None = Depends(ge
 
 @router.get("/status/{qnum}", response_model=ProgressStatusResponse)
 def get_question_progress_status(qnum: int, user: dict | None = Depends(get_optional_current_user)):
-    """Return saved progress state for one question, or null/false when not set or unauthenticated."""
+    """Return saved progress state for one question from RDS."""
     if qnum <= 0:
         raise HTTPException(status_code=422, detail="qnum must be greater than 0")
 
     if not user:
         return ProgressStatusResponse(qnum=qnum, is_solved=None, revisit=False)
 
-    supabase = get_supabase_client()
     try:
-        rows = (
-            supabase.table("user_progress")
-            .select("is_solved,is_revisit")
-            .eq("user_id", user["id"])
-            .eq("qnum", qnum)
-            .limit(1)
-            .execute()
-        ).data or []
-        is_solved = bool(rows[0].get("is_solved", False)) if rows else None
-        revisit = bool(rows[0].get("is_revisit", False)) if rows else False
+        row = rds_client.query(
+            "SELECT is_solved, is_revisit FROM user_progress WHERE user_id = %s AND qnum = %s LIMIT 1;",
+            (user["id"], qnum),
+            fetch="one",
+        )
+        is_solved = bool(row.get("is_solved", False)) if row else None
+        revisit = bool(row.get("is_revisit", False)) if row else False
     except Exception as exc:
+        logger.error("get_question_progress_status RDS error: %s", exc)
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
     return ProgressStatusResponse(qnum=qnum, is_solved=is_solved, revisit=revisit)
@@ -459,20 +453,17 @@ def get_question_progress_status(qnum: int, user: dict | None = Depends(get_opti
 
 @router.delete("/{qnum}")
 def clear_question_progress(qnum: int, user: dict = Depends(get_current_user)):
-    """Clear saved progress for a question (manual not-solved/reset)."""
+    """Clear saved progress for a question in RDS (manual not-solved/reset)."""
     if qnum <= 0:
         raise HTTPException(status_code=422, detail="qnum must be greater than 0")
 
-    supabase = get_supabase_client()
     try:
-        (
-            supabase.table("user_progress")
-            .delete()
-            .eq("user_id", user["id"])
-            .eq("qnum", qnum)
-            .execute()
+        rds_client.mutate(
+            "DELETE FROM user_progress WHERE user_id = %s AND qnum = %s;",
+            (user["id"], qnum),
         )
     except Exception as exc:
+        logger.error("clear_question_progress RDS error: %s", exc)
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
     return {"success": True, "qnum": qnum}

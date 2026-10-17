@@ -20,7 +20,6 @@ import {
 } from "lucide-react";
 import { CONFIG } from "@/lib/config";
 import { API } from "@/lib/api";
-import { getSupabase } from "@/lib/supabase";
 import { LeetCodeRenderer, formatLeetCodeMath } from "@/components/LeetCodeRenderer";
 import { Spinner } from "@/components/Spinner";
 
@@ -72,71 +71,34 @@ export default function LeetCodeProblemPage() {
 
   const fetchProblemDetail = async () => {
     setLoading(true);
-    const supabase = getSupabase();
 
     try {
       const token = await API._getAccessToken();
       const headers: Record<string, string> = token ? { Authorization: `Bearer ${token}` } : {};
 
       // 1. Description
-      let loadedProb = false;
       try {
         const resProb = await fetch(`${API_BASE}/leetcode/problems/${qnum}`, { headers });
         if (resProb.ok) {
           const pData = await resProb.json();
           if (pData && pData.title) {
             setProblem(pData);
-            loadedProb = true;
           }
         }
       } catch (_) {}
 
-      if (!loadedProb && supabase) {
-        const { data: pData } = await (supabase as any)
-          .from("leetcode_problems")
-          .select("*")
-          .eq("qnum", qnum)
-          .maybeSingle();
-
-        if (pData) {
-          setProblem({
-            ...pData,
-            topic_tags: Array.isArray(pData.topic_tags)
-              ? pData.topic_tags
-              : typeof pData.topic_tags === "string"
-              ? JSON.parse(pData.topic_tags || "[]")
-              : [],
-          });
-        }
-      }
-
       // 2. Fetch Approaches
-      let loadedApp = false;
       try {
         const resApp = await fetch(`${API_BASE}/leetcode/problems/${qnum}/approaches`, { headers });
         if (resApp.ok) {
           const aData = await resApp.json();
           if (Array.isArray(aData) && aData.length > 0) {
             setApproaches(aData);
-            loadedApp = true;
           }
         }
       } catch (_) {}
 
-      if (!loadedApp && supabase) {
-        const { data: aData } = await (supabase as any)
-          .from("leetcode_approaches")
-          .select("*")
-          .eq("qnum", qnum)
-          .order("approach_index", { ascending: true });
-
-        if (aData && aData.length > 0) {
-          setApproaches(aData);
-        }
-      }
-
       // 3. Fetch Code snippets
-      let loadedCode = false;
       try {
         const resCode = await fetch(`${API_BASE}/leetcode/problems/${qnum}/code`, { headers });
         if (resCode.ok) {
@@ -145,28 +107,9 @@ export default function LeetCodeProblemPage() {
             setCodeData(cData);
             const pref = cData.languages.includes("python") ? "python" : cData.languages[0];
             setSelectedLanguage(pref);
-            loadedCode = true;
           }
         }
       } catch (_) {}
-
-      if (!loadedCode && supabase) {
-        const { data: cRows } = await (supabase as any)
-          .from("leetcode_code_solutions")
-          .select("language, code_content")
-          .eq("qnum", qnum)
-          .order("language", { ascending: true });
-
-        if (cRows && cRows.length > 0) {
-          const solutions: Record<string, string> = {};
-          cRows.forEach((r: any) => {
-            solutions[r.language] = r.code_content;
-          });
-          const languages = Object.keys(solutions);
-          setCodeData({ qnum: Number(qnum), languages, solutions });
-          setSelectedLanguage(languages.includes("python") ? "python" : languages[0]);
-        }
-      }
     } catch (err) {
       console.error("Error fetching problem data:", err);
     } finally {

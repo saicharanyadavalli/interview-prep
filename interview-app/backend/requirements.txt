@@ -218,3 +218,6 @@ yarl==1.24.5
     #   storage3
     #   supabase
     #   supabase-functions
+boto3>=1.34.0
+psycopg2-binary>=2.9.9
+Pillow>=10.0.0

@@ -126,13 +126,16 @@ from functools import lru_cache
 
 @lru_cache(maxsize=32)
 def load_learning_track_titles(track_id: str) -> dict[int, str]:
-    """Load step titles from the course_lessons table in Supabase for a track."""
-    from services.supabase_client import get_supabase_client
-    supabase = get_supabase_client()
+    """Load step titles from the course_lessons table in RDS for a track."""
+    from services import rds_client
     try:
-        res = supabase.table("course_lessons").select("step_no, title").eq("track_id", track_id).execute()
+        rows = rds_client.query(
+            "SELECT step_no, title FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC",
+            (track_id,),
+            fetch="all",
+        )
         titles: dict[int, str] = {}
-        for row in res.data or []:
+        for row in rows or []:
             try:
                 step_no = int(row.get("step_no", 0) or 0)
                 if step_no > 0:

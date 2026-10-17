@@ -1,33 +1,35 @@
-"""Revisit queue routes — manage saved questions for later practice."""
+"""Revisit queue routes — manage saved questions for later practice in RDS."""
 
 from __future__ import annotations
 
+import logging
 from fastapi import APIRouter, Depends, HTTPException
 
 from models.schemas import RevisitResponse, RevisitEntry
 from routes.auth import get_current_user
-from services.supabase_client import get_supabase_client
+from services import rds_client
 from services.questions_service import get_question_summary_by_qnum
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/revisit", tags=["revisit"])
 
 
 @router.get("", response_model=RevisitResponse)
 def get_revisit_queue(user: dict = Depends(get_current_user)):
-    """Return all questions in the user's revisit queue."""
-    supabase = get_supabase_client()
-
+    """Return all questions in the user's revisit queue from RDS."""
     try:
-        result = (
-            supabase.table("user_progress")
-            .select("*")
-            .eq("user_id", user["id"])
-            .eq("is_revisit", True)
-            .order("updated_at", desc=True)
-            .execute()
-        )
-        entries = result.data or []
-    except Exception:
+        entries = rds_client.query(
+            """
+            SELECT qnum, updated_at
+            FROM user_progress
+            WHERE user_id = %s AND is_revisit = true
+            ORDER BY updated_at DESC;
+            """,
+            (user["id"],),
+        ) or []
+    except Exception as exc:
+        logger.error("get_revisit_queue RDS error for user %s: %s", user.get("id"), exc)
         entries = []
 
     items = []
@@ -50,26 +52,14 @@ def get_revisit_queue(user: dict = Depends(get_current_user)):
 
 @router.delete("/{qnum}")
 def remove_from_revisit(qnum: int, user: dict = Depends(get_current_user)):
-    """Remove a question from revisit while preserving solved state."""
-    supabase = get_supabase_client()
-
+    """Remove a question from revisit in RDS while preserving solved state."""
     try:
-        current_rows = (
-            supabase.table("user_progress")
-            .select("is_solved")
-            .eq("user_id", user["id"])
-            .eq("qnum", qnum)
-            .limit(1)
-            .execute()
-        ).data or []
-
-        current = current_rows[0] if current_rows else {}
-        is_solved = bool(current.get("is_solved", False))
-
-        supabase.table("user_progress").update(
-            {"is_revisit": False, "is_solved": is_solved}
-        ).eq("user_id", user["id"]).eq("qnum", qnum).execute()
+        rds_client.mutate(
+            "UPDATE user_progress SET is_revisit = false, updated_at = now() WHERE user_id = %s AND qnum = %s;",
+            (user["id"], qnum),
+        )
     except Exception as exc:
+        logger.error("remove_from_revisit RDS error for user %s, qnum %d: %s", user.get("id"), qnum, exc)
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
     return {"success": True}

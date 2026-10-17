@@ -6,6 +6,14 @@ import { headers } from 'next/headers'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 
+function getInternalBackendUrl(): string {
+  const envUrl = process.env.BACKEND_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL;
+  if (envUrl && envUrl.startsWith('http')) {
+    return envUrl.replace(/\/api\/backend\/?$/, '');
+  }
+  return 'http://127.0.0.1:8000';
+}
+
 export async function login(formData: FormData) {
   const rawIdentifier = (formData.get('identifier') || formData.get('email')) as string
   const password = formData.get('password') as string
@@ -18,15 +26,24 @@ export async function login(formData: FormData) {
   let emailToUse = rawIdentifier.trim()
 
   if (!emailToUse.includes('@')) {
-    // Input is a username — resolve to email using Supabase RPC
+    // Input is a username — resolve to email using RDS backend endpoint
     const cleanUsername = emailToUse.toLowerCase()
     try {
-      const { data: rpcResult, error: rpcError } = await supabase.rpc("get_email_by_username", { p_username: cleanUsername })
-      const resolvedEmail = Array.isArray(rpcResult) && rpcResult.length > 0 ? rpcResult[0]?.email : (typeof rpcResult === 'string' ? rpcResult : null)
-      if (!resolvedEmail) {
+      const backendUrl = getInternalBackendUrl()
+      const res = await fetch(`${backendUrl}/auth/resolve-username`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: cleanUsername }),
+        cache: 'no-store',
+      })
+      if (!res.ok) {
+        return { error: 'Failed to look up username. Please try signing in with your email address.' }
+      }
+      const data = await res.json()
+      if (!data.exists || !data.email) {
         return { error: `No account found with username "${rawIdentifier}". Please check your username or sign in with your email address.` }
       }
-      emailToUse = resolvedEmail
+      emailToUse = data.email
     } catch (err: any) {
       return { error: 'Failed to look up username. Please try signing in with your email address.' }
     }
@@ -77,12 +94,17 @@ export async function signup(formData: FormData) {
 
   const supabase = await createClient()
 
-  // First check if username exists
+  // First check if username exists in RDS
   try {
-    const { data: rpcEmail } = await supabase.rpc("get_email_by_username", { p_username: cleanUsername })
-    const isTaken = Array.isArray(rpcEmail) ? rpcEmail.length > 0 : Boolean(rpcEmail)
-    if (isTaken) {
-      return { error: `Username "${username}" is already taken. Please choose another username.` }
+    const backendUrl = getInternalBackendUrl()
+    const checkRes = await fetch(`${backendUrl}/auth/check-username?username=${encodeURIComponent(cleanUsername)}`, {
+      cache: 'no-store',
+    })
+    if (checkRes.ok) {
+      const checkData = await checkRes.json()
+      if (checkData.available === false) {
+        return { error: `Username "${username}" is already taken. Please choose another username.` }
+      }
     }
   } catch (_) {}
 

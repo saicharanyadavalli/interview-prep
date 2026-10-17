@@ -1,27 +1,24 @@
-"""LeetCode DSA problems and multi-language solutions API router."""
+"""LeetCode master problems, approaches, and code solutions routes.
+
+Authoritative data source: Amazon RDS PostgreSQL 17.11 (database: interview_prep_db).
+Queries:
+  - leetcode_problems
+  - leetcode_approaches
+  - leetcode_code_solutions
+"""
 
 from __future__ import annotations
 
-import json
-import sqlite3
-from pathlib import Path
-from typing import Optional, List, Dict, Any
-
-from fastapi import APIRouter, Query, HTTPException
+import logging
+from typing import List, Optional
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
-from services.supabase_client import get_supabase_client
+
+from services import rds_client
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/leetcode", tags=["leetcode"])
-
-DB_PATH = Path(__file__).resolve().parent.parent / "leetcode_dsa.db"
-
-
-def _get_sqlite_db():
-    if not DB_PATH.exists():
-        return None
-    conn = sqlite3.connect(DB_PATH)
-    conn.row_factory = sqlite3.Row
-    return conn
 
 
 class LeetCodeProblemItem(BaseModel):
@@ -49,77 +46,79 @@ class ApproachItem(BaseModel):
     explanation_md: str
 
 
-class CodeSolutionItem(BaseModel):
-    language: str
-    code_content: str
-
-
 @router.get("/problems", response_model=LeetCodeProblemListResponse)
 def get_leetcode_problems(
-    page: int = Query(1, ge=1),
-    limit: int = Query(25, ge=1, le=100),
+    page: int = Query(1, ge=1, description="Page number"),
+    limit: int = Query(20, ge=1, le=100, description="Items per page"),
     difficulty: Optional[str] = Query(None, description="Easy, Medium, or Hard"),
-    search: Optional[str] = Query(None, description="Search title or number"),
-    tag: Optional[str] = Query(None, description="Filter by topic tag"),
+    search: Optional[str] = Query(None, description="Search term matching title or exact qnum"),
+    tag: Optional[str] = Query(None, description="Topic tag filter (e.g. Array, Dynamic Programming)"),
     sort_by: Optional[str] = Query(
         None,
         description="Sort order: rating_desc, rating_asc, qnum_asc, qnum_desc, difficulty_asc, difficulty_desc, title_asc",
     ),
 ):
-    """Retrieve paginated LeetCode problems list with optional search, filters, and rating sorting."""
+    """Retrieve paginated LeetCode problems list from RDS with search, filters, and rating sorting."""
     offset = (page - 1) * limit
 
-    # Primary: query Supabase cloud database
-    try:
-        supabase = get_supabase_client()
-        query = supabase.table("leetcode_problems").select(
-            "qnum, title, slug, difficulty, rating, topic_tags", count="exact"
-        )
+    where_clauses = []
+    params: list = []
 
-        if difficulty and isinstance(difficulty, str):
-            diff_clean = difficulty.strip().capitalize()
-            query = query.ilike("difficulty", diff_clean)
+    if difficulty and isinstance(difficulty, str):
+        diff_clean = difficulty.strip().capitalize()
+        where_clauses.append("LOWER(difficulty) = LOWER(%s)")
+        params.append(diff_clean)
 
-        if search and isinstance(search, str):
-            s_clean = search.strip()
-            if s_clean.isdigit():
-                query = query.eq("qnum", int(s_clean))
-            else:
-                query = query.ilike("title", f"%{s_clean}%")
-
-        if tag and isinstance(tag, str):
-            tag_clean = tag.strip().title()
-            query = query.contains("topic_tags", [tag_clean])
-
-        if sort_by == "rating_desc":
-            query = query.order("rating", desc=True).order("qnum", desc=False)
-        elif sort_by == "rating_asc":
-            query = query.order("rating", desc=False).order("qnum", desc=False)
-        elif sort_by == "qnum_desc":
-            query = query.order("qnum", desc=True)
-        elif sort_by == "difficulty_asc":
-            query = query.order("difficulty", desc=False).order("qnum", desc=False)
-        elif sort_by == "difficulty_desc":
-            query = query.order("difficulty", desc=True).order("qnum", desc=False)
-        elif sort_by == "title_asc":
-            query = query.order("title", desc=False)
+    if search and isinstance(search, str):
+        s_clean = search.strip()
+        if s_clean.isdigit():
+            where_clauses.append("qnum = %s")
+            params.append(int(s_clean))
         else:
-            query = query.order("qnum", desc=False)
+            where_clauses.append("title ILIKE %s")
+            params.append(f"%{s_clean}%")
 
-        query = query.range(offset, offset + limit - 1)
-        res = query.execute()
+    if tag and isinstance(tag, str):
+        tag_clean = tag.strip().title()
+        where_clauses.append("topic_tags @> ARRAY[%s]::text[]")
+        params.append(tag_clean)
 
-        total = res.count if res.count is not None else len(res.data or [])
+    where_sql = f"WHERE {' AND '.join(where_clauses)}" if where_clauses else ""
+
+    # Sort order
+    if sort_by == "rating_desc":
+        order_clause = "ORDER BY rating DESC NULLS LAST, qnum ASC"
+    elif sort_by == "rating_asc":
+        order_clause = "ORDER BY rating ASC NULLS LAST, qnum ASC"
+    elif sort_by == "qnum_desc":
+        order_clause = "ORDER BY qnum DESC"
+    elif sort_by == "difficulty_asc":
+        order_clause = "ORDER BY difficulty ASC, qnum ASC"
+    elif sort_by == "difficulty_desc":
+        order_clause = "ORDER BY difficulty DESC, qnum ASC"
+    elif sort_by == "title_asc":
+        order_clause = "ORDER BY title ASC"
+    else:
+        order_clause = "ORDER BY qnum ASC"
+
+    try:
+        count_sql = f"SELECT count(*) FROM leetcode_problems {where_sql};"
+        total = int(rds_client.query(count_sql, tuple(params), fetch="scalar") or 0)
+
+        query_sql = f"""
+        SELECT qnum, title, slug, difficulty, rating, topic_tags
+        FROM leetcode_problems
+        {where_sql}
+        {order_clause}
+        LIMIT %s OFFSET %s;
+        """
+        rows = rds_client.query(query_sql, tuple(params + [limit, offset])) or []
+
         problems = []
-        for r in res.data or []:
-            tags = r.get("topic_tags")
+        for r in rows:
+            tags = r.get("topic_tags") or []
             if isinstance(tags, str):
-                try:
-                    tags = json.loads(tags)
-                except Exception:
-                    tags = []
-            elif not isinstance(tags, list):
-                tags = []
+                tags = [t.strip() for t in tags.strip("{}").split(",") if t.strip()]
 
             problems.append(
                 LeetCodeProblemItem(
@@ -127,254 +126,115 @@ def get_leetcode_problems(
                     title=r["title"],
                     slug=r["slug"],
                     difficulty=r["difficulty"],
-                    rating=r.get("rating"),
+                    rating=float(r["rating"]) if r.get("rating") is not None else None,
                     topic_tags=tags,
                 )
             )
 
-        return LeetCodeProblemListResponse(
-            total=total, page=page, limit=limit, problems=problems
-        )
+        return LeetCodeProblemListResponse(total=total, page=page, limit=limit, problems=problems)
     except Exception as exc:
-        pass
-
-    # Fallback to local SQLite if available
-    conn = _get_sqlite_db()
-    if conn is None:
-        return LeetCodeProblemListResponse(total=0, page=page, limit=limit, problems=[])
-
-    cur = conn.cursor()
-    where_clauses = []
-    params = []
-
-    if difficulty and isinstance(difficulty, str):
-        where_clauses.append("LOWER(difficulty) = LOWER(?)")
-        params.append(difficulty.strip())
-
-    if search and isinstance(search, str):
-        s_term = f"%{search.strip()}%"
-        where_clauses.append("(title LIKE ? OR CAST(qnum AS TEXT) LIKE ?)")
-        params.extend([s_term, s_term])
-
-    if tag and isinstance(tag, str):
-        t_term = f"%{tag.strip()}%"
-        where_clauses.append("topic_tags LIKE ?")
-        params.append(t_term)
-
-    where_sql = (" WHERE " + " AND ".join(where_clauses)) if where_clauses else ""
-
-    cur.execute(f"SELECT COUNT(*) as count FROM leetcode_problems{where_sql}", params)
-    total = cur.fetchone()["count"]
-
-    order_by_sql = "qnum ASC"
-    if sort_by == "rating_desc":
-        order_by_sql = "(CASE WHEN rating IS NULL THEN 0 ELSE rating END) DESC, qnum ASC"
-    elif sort_by == "rating_asc":
-        order_by_sql = "(CASE WHEN rating IS NULL THEN 99999 ELSE rating END) ASC, qnum ASC"
-    elif sort_by == "qnum_desc":
-        order_by_sql = "qnum DESC"
-    elif sort_by == "difficulty_asc":
-        order_by_sql = "CASE LOWER(difficulty) WHEN 'easy' THEN 1 WHEN 'medium' THEN 2 WHEN 'hard' THEN 3 ELSE 4 END ASC, qnum ASC"
-    elif sort_by == "difficulty_desc":
-        order_by_sql = "CASE LOWER(difficulty) WHEN 'hard' THEN 1 WHEN 'medium' THEN 2 WHEN 'easy' THEN 3 ELSE 4 END ASC, qnum ASC"
-    elif sort_by == "title_asc":
-        order_by_sql = "title ASC"
-
-    cur.execute(
-        f"""
-        SELECT qnum, title, slug, difficulty, rating, topic_tags 
-        FROM leetcode_problems{where_sql}
-        ORDER BY {order_by_sql}
-        LIMIT ? OFFSET ?
-        """,
-        params + [limit, offset],
-    )
-    rows = cur.fetchall()
-
-    problems = []
-    for r in rows:
-        try:
-            tags = json.loads(r["topic_tags"]) if r["topic_tags"] else []
-        except Exception:
-            tags = []
-        problems.append(
-            LeetCodeProblemItem(
-                qnum=r["qnum"],
-                title=r["title"],
-                slug=r["slug"],
-                difficulty=r["difficulty"],
-                rating=r["rating"],
-                topic_tags=tags,
-            )
-        )
-
-    conn.close()
-    return LeetCodeProblemListResponse(total=total, page=page, limit=limit, problems=problems)
+        logger.error("get_leetcode_problems RDS error: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Database query error: {exc}") from exc
 
 
 @router.get("/problems/{qnum}")
 def get_leetcode_problem_detail(qnum: int):
-    """Get single LeetCode problem description only by question number."""
-    # Primary: Supabase
+    """Get single LeetCode problem description from RDS by question number."""
     try:
-        supabase = get_supabase_client()
-        res = (
-            supabase.table("leetcode_problems")
-            .select("*")
-            .eq("qnum", qnum)
-            .limit(1)
-            .execute()
+        row = rds_client.query(
+            """
+            SELECT qnum, title, slug, difficulty, rating, topic_tags, description_md
+            FROM leetcode_problems
+            WHERE qnum = %s
+            LIMIT 1;
+            """,
+            (qnum,),
+            fetch="one",
         )
-        if res.data and len(res.data) > 0:
-            row = res.data[0]
-            tags = row.get("topic_tags")
-            if isinstance(tags, str):
-                try:
-                    tags = json.loads(tags)
-                except Exception:
-                    tags = []
-            elif not isinstance(tags, list):
-                tags = []
+        if not row:
+            raise HTTPException(status_code=404, detail=f"LeetCode problem #{qnum} not found")
 
-            return {
-                "qnum": row["qnum"],
-                "title": row["title"],
-                "slug": row["slug"],
-                "difficulty": row["difficulty"],
-                "rating": row.get("rating"),
-                "topic_tags": tags,
-                "description_md": row.get("description_md", ""),
-            }
-    except Exception:
-        pass
+        tags = row.get("topic_tags") or []
+        if isinstance(tags, str):
+            tags = [t.strip() for t in tags.strip("{}").split(",") if t.strip()]
 
-    # Fallback: SQLite
-    conn = _get_sqlite_db()
-    if conn:
-        cur = conn.cursor()
-        cur.execute("SELECT * FROM leetcode_problems WHERE qnum = ?", (qnum,))
-        row = cur.fetchone()
-        conn.close()
-        if row:
-            try:
-                tags = json.loads(row["topic_tags"]) if row["topic_tags"] else []
-            except Exception:
-                tags = []
-            return {
-                "qnum": row["qnum"],
-                "title": row["title"],
-                "slug": row["slug"],
-                "difficulty": row["difficulty"],
-                "rating": row["rating"],
-                "topic_tags": tags,
-                "description_md": row["description_md"],
-            }
-
-    raise HTTPException(status_code=404, detail=f"LeetCode problem #{qnum} not found")
+        return {
+            "qnum": row["qnum"],
+            "title": row["title"],
+            "slug": row["slug"],
+            "difficulty": row["difficulty"],
+            "rating": float(row["rating"]) if row.get("rating") is not None else None,
+            "topic_tags": tags,
+            "description_md": row.get("description_md", ""),
+        }
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("get_leetcode_problem_detail RDS error for qnum %d: %s", qnum, exc)
+        raise HTTPException(status_code=500, detail=f"Database query error: {exc}") from exc
 
 
 @router.get("/problems/{qnum}/approaches", response_model=List[ApproachItem])
 def get_leetcode_problem_approaches(qnum: int):
-    """Get solution explanation approaches for the Solution Accordion dropdown."""
-    # Primary: Supabase
+    """Get solution explanation approaches for the Solution Accordion dropdown from RDS."""
     try:
-        supabase = get_supabase_client()
-        res = (
-            supabase.table("leetcode_approaches")
-            .select("*")
-            .eq("qnum", qnum)
-            .order("approach_index", desc=False)
-            .execute()
-        )
-        if res.data is not None:
-            return [
-                ApproachItem(
-                    approach_index=r.get("approach_index", 1),
-                    title=r.get("title", ""),
-                    intuition_md=r.get("intuition_md") or "",
-                    time_complexity=r.get("time_complexity") or "",
-                    space_complexity=r.get("space_complexity") or "",
-                    explanation_md=r.get("explanation_md") or "",
-                )
-                for r in res.data
-            ]
-    except Exception:
-        pass
-
-    # Fallback: SQLite
-    conn = _get_sqlite_db()
-    if conn:
-        cur = conn.cursor()
-        cur.execute(
+        rows = rds_client.query(
             """
             SELECT approach_index, title, intuition_md, time_complexity, space_complexity, explanation_md
             FROM leetcode_approaches
-            WHERE qnum = ?
-            ORDER BY approach_index ASC
+            WHERE qnum = %s
+            ORDER BY approach_index ASC;
             """,
             (qnum,),
-        )
-        rows = cur.fetchall()
-        conn.close()
+        ) or []
+
         return [
             ApproachItem(
-                approach_index=r["approach_index"],
-                title=r["title"],
-                intuition_md=r["intuition_md"] or "",
-                time_complexity=r["time_complexity"] or "",
-                space_complexity=r["space_complexity"] or "",
-                explanation_md=r["explanation_md"] or "",
+                approach_index=r.get("approach_index", 1),
+                title=r.get("title", ""),
+                intuition_md=r.get("intuition_md") or "",
+                time_complexity=r.get("time_complexity") or "",
+                space_complexity=r.get("space_complexity") or "",
+                explanation_md=r.get("explanation_md") or "",
             )
             for r in rows
         ]
-
-    return []
+    except Exception as exc:
+        logger.error("get_leetcode_problem_approaches RDS error for qnum %d: %s", qnum, exc)
+        raise HTTPException(status_code=500, detail=f"Database query error: {exc}") from exc
 
 
 @router.get("/problems/{qnum}/code")
 def get_leetcode_problem_code(qnum: int, language: Optional[str] = Query(None)):
-    """Get code solution snippets for the Code Language Dropdown."""
-    # Primary: Supabase
+    """Get code solution snippets for the Code Language Dropdown from RDS."""
     try:
-        supabase = get_supabase_client()
-        query = supabase.table("leetcode_code_solutions").select("language, code_content").eq("qnum", qnum)
         if language and isinstance(language, str):
-            query = query.ilike("language", language.strip())
-        else:
-            query = query.order("language", desc=False)
-        res = query.execute()
-        if res.data is not None:
-            solutions = {r["language"]: r["code_content"] for r in res.data}
-            return {
-                "qnum": qnum,
-                "languages": list(solutions.keys()),
-                "solutions": solutions,
-            }
-    except Exception:
-        pass
-
-    # Fallback: SQLite
-    conn = _get_sqlite_db()
-    if conn:
-        cur = conn.cursor()
-        if language and isinstance(language, str):
-            cur.execute(
-                "SELECT language, code_content FROM leetcode_code_solutions WHERE qnum = ? AND LOWER(language) = LOWER(?)",
+            rows = rds_client.query(
+                """
+                SELECT language, code_content
+                FROM leetcode_code_solutions
+                WHERE qnum = %s AND LOWER(language) = LOWER(%s)
+                ORDER BY language ASC;
+                """,
                 (qnum, language.strip()),
-            )
+            ) or []
         else:
-            cur.execute(
-                "SELECT language, code_content FROM leetcode_code_solutions WHERE qnum = ? ORDER BY language ASC",
+            rows = rds_client.query(
+                """
+                SELECT language, code_content
+                FROM leetcode_code_solutions
+                WHERE qnum = %s
+                ORDER BY language ASC;
+                """,
                 (qnum,),
-            )
-        rows = cur.fetchall()
-        conn.close()
-        if rows:
-            solutions = {r["language"]: r["code_content"] for r in rows}
-            return {
-                "qnum": qnum,
-                "languages": list(solutions.keys()),
-                "solutions": solutions,
-            }
+            ) or []
 
-    return {"qnum": qnum, "languages": [], "solutions": {}}
+        solutions = {r["language"]: r["code_content"] for r in rows}
+        return {
+            "qnum": qnum,
+            "languages": list(solutions.keys()),
+            "solutions": solutions,
+        }
+    except Exception as exc:
+        logger.error("get_leetcode_problem_code RDS error for qnum %d: %s", qnum, exc)
+        raise HTTPException(status_code=500, detail=f"Database query error: {exc}") from exc

@@ -28,7 +28,7 @@ from models.schemas import (
     SystemDesignProgressUpdateRequest,
 )
 from routes.auth import get_current_user, get_optional_current_user
-from services.supabase_client import get_supabase_client
+from services import rds_client
 from services.system_design_course import (
     get_learning_track_config,
     get_learning_tracks,
@@ -48,17 +48,17 @@ def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackPr
     if not config:
         raise HTTPException(status_code=404, detail=f"Unknown learning track: {track_id}")
 
-    supabase = get_supabase_client()
-
     try:
-        rows = (
-            supabase.table("learning_track_progress")
-            .select("step_no,completed,updated_at")
-            .eq("user_id", user["id"])
-            .eq("track_id", track_id)
-            .order("step_no")
-            .execute()
-        ).data or []
+        rows = rds_client.query(
+            """
+            SELECT step_no, completed, updated_at
+            FROM learning_track_progress
+            WHERE user_id = %s AND track_id = %s
+            ORDER BY step_no ASC
+            """,
+            (user["id"], track_id),
+            fetch="all",
+        ) or []
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
@@ -79,12 +79,15 @@ def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackPr
         if completed:
             completed_steps += 1
 
+        raw_updated = row.get("updated_at")
+        updated_str = raw_updated.isoformat() if hasattr(raw_updated, "isoformat") else (str(raw_updated) if raw_updated else None)
+
         steps.append(
             LearningTrackStepProgress(
                 step_no=step_no,
                 title=titles.get(step_no, f"Chapter {step_no}"),
                 completed=completed,
-                updated_at=row.get("updated_at"),
+                updated_at=updated_str,
             )
         )
 
@@ -116,20 +119,21 @@ def _update_learning_track_progress(
             detail=f"step_no must be between 1 and {config.step_count}",
         )
 
-    now = datetime.now(timezone.utc).isoformat()
-    supabase = get_supabase_client()
-
     try:
-        supabase.table("learning_track_progress").upsert(
-            {
-                "user_id": user["id"],
-                "track_id": track_id,
-                "step_no": step_no,
-                "completed": bool(payload.completed),
-                "updated_at": now,
-            },
-            on_conflict="user_id,track_id,step_no",
-        ).execute()
+        row = rds_client.mutate(
+            """
+            INSERT INTO learning_track_progress (user_id, track_id, step_no, completed, updated_at)
+            VALUES (%s, %s, %s, %s, now())
+            ON CONFLICT (user_id, track_id, step_no)
+            DO UPDATE SET completed = EXCLUDED.completed, updated_at = now()
+            RETURNING updated_at;
+            """,
+            (user["id"], track_id, step_no, bool(payload.completed)),
+            returning=True,
+        )
+        first_row = row[0] if isinstance(row, list) and row else (row if isinstance(row, dict) else {})
+        raw_updated = first_row.get("updated_at") if first_row else None
+        updated_str = raw_updated.isoformat() if hasattr(raw_updated, "isoformat") else (str(raw_updated) if raw_updated else datetime.now(timezone.utc).isoformat())
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
@@ -138,7 +142,7 @@ def _update_learning_track_progress(
         step_no=step_no,
         title=titles.get(step_no, f"Chapter {step_no}"),
         completed=bool(payload.completed),
-        updated_at=now,
+        updated_at=updated_str,
     )
 
 
@@ -187,26 +191,23 @@ def get_learning_track_lesson(
     if not config:
         raise HTTPException(status_code=404, detail=f"Unknown learning track: {track_id}")
 
-    supabase = get_supabase_client()
     try:
-        res = (
-            supabase.table("course_lessons")
-            .select("title, html_content")
-            .eq("track_id", track_id)
-            .eq("step_no", step_no)
-            .execute()
+        row = rds_client.query(
+            "SELECT title, html_content FROM course_lessons WHERE track_id = %s AND step_no = %s LIMIT 1",
+            (track_id, step_no),
+            fetch="one",
         )
     except Exception as exc:
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
-    if not res.data:
+    if not row:
         raise HTTPException(status_code=404, detail="Lesson not found")
 
     return {
         "track_id": track_id,
         "step_no": step_no,
-        "title": res.data[0].get("title", ""),
-        "html_content": res.data[0].get("html_content", "")
+        "title": row.get("title", ""),
+        "html_content": row.get("html_content", ""),
     }
 
 
