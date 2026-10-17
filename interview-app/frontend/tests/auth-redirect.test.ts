@@ -5,6 +5,7 @@ import {
   getAuthRedirectUrl,
   getAllowedOrigins,
   validateRedirectDestination,
+  isVercelRuntime,
   CANONICAL_AWS_ORIGIN,
   CANONICAL_AWS_CALLBACK,
   DEFAULT_ALLOWED_ORIGINS,
@@ -15,6 +16,9 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
   const originalNextPublicAuthEnv = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
   const originalFrontendEnv = process.env.FRONTEND_URL;
   const originalAppUrlEnv = process.env.NEXT_PUBLIC_APP_URL;
+  const originalVercelUrl = process.env.VERCEL_URL;
+  const originalVercelFlag = process.env.VERCEL;
+  const originalNextPublicVercelEnv = process.env.NEXT_PUBLIC_VERCEL_ENV;
 
   afterEach(() => {
     if (originalAuthEnv !== undefined) {
@@ -36,6 +40,21 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
       process.env.NEXT_PUBLIC_APP_URL = originalAppUrlEnv;
     } else {
       delete process.env.NEXT_PUBLIC_APP_URL;
+    }
+    if (originalVercelUrl !== undefined) {
+      process.env.VERCEL_URL = originalVercelUrl;
+    } else {
+      delete process.env.VERCEL_URL;
+    }
+    if (originalVercelFlag !== undefined) {
+      process.env.VERCEL = originalVercelFlag;
+    } else {
+      delete process.env.VERCEL;
+    }
+    if (originalNextPublicVercelEnv !== undefined) {
+      process.env.NEXT_PUBLIC_VERCEL_ENV = originalNextPublicVercelEnv;
+    } else {
+      delete process.env.NEXT_PUBLIC_VERCEL_ENV;
     }
   });
 
@@ -78,6 +97,36 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
       const res = validateAuthRedirectUrl('http://localhost:3000/auth/callback');
       assert.equal(res.isValid, true);
       assert.equal(res.origin, 'http://localhost:3000');
+    });
+  });
+
+  describe('isVercelRuntime', () => {
+    it('returns false when VERCEL is not "1"', () => {
+      delete process.env.VERCEL;
+      process.env.VERCEL_URL = 'preview.vercel.app';
+      assert.equal(isVercelRuntime(), false);
+    });
+
+    it('returns false when NEXT_PUBLIC_VERCEL_ENV is set but VERCEL is not "1"', () => {
+      delete process.env.VERCEL;
+      process.env.NEXT_PUBLIC_VERCEL_ENV = 'preview';
+      process.env.VERCEL_URL = 'preview.vercel.app';
+      assert.equal(isVercelRuntime(), false);
+    });
+
+    it('returns false when VERCEL is "1" but VERCEL_URL is missing or empty', () => {
+      process.env.VERCEL = '1';
+      delete process.env.VERCEL_URL;
+      assert.equal(isVercelRuntime(), false);
+
+      process.env.VERCEL_URL = '   ';
+      assert.equal(isVercelRuntime(), false);
+    });
+
+    it('returns true ONLY when VERCEL is "1" and VERCEL_URL is non-empty', () => {
+      process.env.VERCEL = '1';
+      process.env.VERCEL_URL = 'my-app.vercel.app';
+      assert.equal(isVercelRuntime(), true);
     });
   });
 
@@ -131,7 +180,6 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
     it('should REJECT untrusted fallbackOrigin (Host header injection prevention)', () => {
       delete process.env.AUTH_REDIRECT_URL;
       delete process.env.FRONTEND_URL;
-      // Hostile domain should NOT be accepted as redirect destination
       const url = getAuthRedirectUrl('http://evil.com');
       assert.notEqual(url, 'http://evil.com/auth/callback');
       assert.equal(url, CANONICAL_AWS_CALLBACK);
@@ -145,37 +193,126 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
       assert.equal(url, CANONICAL_AWS_CALLBACK);
     });
 
-    // ── Anti-Regression: Prevent Reintroduction of Vercel Fallback ───
-    it('ANTI-REGRESSION: should NEVER return a Vercel URL even if VERCEL_URL is set in environment', () => {
+    // ── Regression: Explicit AWS Redirect Taking Precedence Over All Fallbacks ──
+    it('REGRESSION: explicit AWS redirect takes absolute precedence over VERCEL_URL, FRONTEND_URL, and fallbackOrigin', () => {
+      process.env.AUTH_REDIRECT_URL = 'http://16.113.92.222/auth/callback';
+      process.env.FRONTEND_URL = 'https://other-deployment.com';
+      process.env.VERCEL = '1';
+      process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
+      process.env.NEXT_PUBLIC_VERCEL_ENV = 'preview';
+
+      const url = getAuthRedirectUrl('http://localhost:3000');
+      assert.equal(url, 'http://16.113.92.222/auth/callback');
+    });
+
+    // ── Regression: VERCEL_URL Present on AWS with No Vercel Runtime Flag ──
+    it('REGRESSION: VERCEL_URL present on AWS without VERCEL=1 NEVER activates Vercel redirect', () => {
       delete process.env.AUTH_REDIRECT_URL;
       delete process.env.FRONTEND_URL;
-      (process.env as any).VERCEL_URL = 'interview-prep-preview.vercel.app';
-      (process.env as any).VERCEL = '1';
+      delete process.env.VERCEL; // No VERCEL runtime flag
+      process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
 
       const url = getAuthRedirectUrl();
       assert.equal(url.includes('vercel.app'), false);
       assert.equal(url, CANONICAL_AWS_CALLBACK);
-
-      delete (process.env as any).VERCEL_URL;
-      delete (process.env as any).VERCEL;
     });
 
-    it('ANTI-REGRESSION: should REJECT former Vercel deployment if passed as fallbackOrigin', () => {
+    // ── Regression: NEXT_PUBLIC_VERCEL_ENV Present or Empty on AWS ──
+    it('REGRESSION: NEXT_PUBLIC_VERCEL_ENV present or empty on AWS NEVER activates Vercel redirect', () => {
       delete process.env.AUTH_REDIRECT_URL;
       delete process.env.FRONTEND_URL;
-      const url = getAuthRedirectUrl('https://interview-prep-saicharanyadavallis-projects.vercel.app');
-      assert.equal(url.includes('vercel.app'), false);
+      delete process.env.VERCEL;
+
+      // Case A: NEXT_PUBLIC_VERCEL_ENV is preview
+      process.env.NEXT_PUBLIC_VERCEL_ENV = 'preview';
+      process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
+      assert.equal(getAuthRedirectUrl(), CANONICAL_AWS_CALLBACK);
+
+      // Case B: NEXT_PUBLIC_VERCEL_ENV is production
+      process.env.NEXT_PUBLIC_VERCEL_ENV = 'production';
+      assert.equal(getAuthRedirectUrl(), CANONICAL_AWS_CALLBACK);
+
+      // Case C: NEXT_PUBLIC_VERCEL_ENV is empty string
+      process.env.NEXT_PUBLIC_VERCEL_ENV = '';
+      assert.equal(getAuthRedirectUrl(), CANONICAL_AWS_CALLBACK);
+    });
+
+    // ── Regression: Missing and Malformed Redirect Configuration ──
+    it('REGRESSION: malformed AUTH_REDIRECT_URL produces safe canonical fallback and does NOT select secondary untrusted fallback', () => {
+      delete process.env.FRONTEND_URL;
+      process.env.AUTH_REDIRECT_URL = 'not-a-valid-url';
+
+      // Even if an attacker passes fallbackOrigin, malformed AUTH_REDIRECT_URL must safely fallback to canonical AWS
+      const url = getAuthRedirectUrl('http://attacker.com');
       assert.equal(url, CANONICAL_AWS_CALLBACK);
+    });
+
+    it('REGRESSION: non-http protocol in AUTH_REDIRECT_URL produces safe canonical fallback', () => {
+      delete process.env.FRONTEND_URL;
+      process.env.AUTH_REDIRECT_URL = 'ftp://malicious.host/auth/callback';
+
+      const url = getAuthRedirectUrl();
+      assert.equal(url, CANONICAL_AWS_CALLBACK);
+    });
+
+    // ── Regression: Host-Header and Forwarded-Header Injection ──
+    it('REGRESSION: reject spoofed subdomains and host header injection variants', () => {
+      delete process.env.AUTH_REDIRECT_URL;
+      delete process.env.FRONTEND_URL;
+
+      const hostileOrigins = [
+        'http://evil.com',
+        'http://16.113.92.222.attacker.com',
+        'http://localhost.attacker.com',
+        'http://16.113.92.222:8080',
+        'http://attacker.com/16.113.92.222',
+        'https://interview-prep-saicharanyadavallis-projects.vercel.app',
+      ];
+
+      for (const hostile of hostileOrigins) {
+        const url = getAuthRedirectUrl(hostile);
+        assert.equal(url, CANONICAL_AWS_CALLBACK, `Failed to reject hostile origin: ${hostile}`);
+      }
+    });
+
+    // ── Regression: Signup Confirmation and Google OAuth Callbacks ──
+    it('REGRESSION: signup confirmation and Google OAuth preserve next=/dashboard destination', () => {
+      process.env.AUTH_REDIRECT_URL = 'http://16.113.92.222/auth/callback?next=/dashboard';
+      
+      // Signup flow uses preserveParams: true
+      const signupUrl = getAuthRedirectUrl({
+        fallbackOrigin: 'http://16.113.92.222',
+        preserveParams: true,
+        next: '/dashboard',
+      });
+      assert.equal(signupUrl, 'http://16.113.92.222/auth/callback?next=/dashboard');
+
+      // Google OAuth flow passes next: '/dashboard'
+      const oauthUrl = getAuthRedirectUrl({
+        fallbackOrigin: 'http://16.113.92.222',
+        next: '/dashboard',
+      });
+      assert.equal(oauthUrl, 'http://16.113.92.222/auth/callback?next=%2Fdashboard');
+    });
+
+    // ── Isolated Vercel Support ──
+    it('ISOLATED VERCEL: only activated when explicitly running in Vercel container (VERCEL===1) with no AWS env', () => {
+      delete process.env.AUTH_REDIRECT_URL;
+      delete process.env.FRONTEND_URL;
+      process.env.VERCEL = '1';
+      process.env.VERCEL_URL = 'interview-prep-isolated.vercel.app';
+
+      const url = getAuthRedirectUrl();
+      assert.equal(url, 'https://interview-prep-isolated.vercel.app/auth/callback');
     });
   });
 
   describe('getAllowedOrigins', () => {
-    it('should include canonical AWS origin and localhost only', () => {
+    it('should include canonical AWS origin and localhost only by default', () => {
       const origins = getAllowedOrigins();
       assert.ok(origins.includes('http://16.113.92.222'));
       assert.ok(origins.includes('http://localhost:3000'));
       assert.ok(origins.includes('http://127.0.0.1:3000'));
-      // Must NOT contain Vercel
       assert.equal(origins.some((o) => o.includes('vercel.app')), false);
     });
 
@@ -188,6 +325,20 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
       process.env.FRONTEND_URL = 'http://16.113.92.222';
       const origins = getAllowedOrigins();
       assert.ok(origins.includes('http://16.113.92.222'));
+    });
+
+    it('should NOT include Vercel origin when VERCEL_URL is set but VERCEL!=1', () => {
+      delete process.env.VERCEL;
+      process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
+      const origins = getAllowedOrigins();
+      assert.equal(origins.some((o) => o.includes('vercel.app')), false);
+    });
+
+    it('should include Vercel origin ONLY when VERCEL===1', () => {
+      process.env.VERCEL = '1';
+      process.env.VERCEL_URL = 'interview-prep-preview.vercel.app';
+      const origins = getAllowedOrigins();
+      assert.ok(origins.includes('https://interview-prep-preview.vercel.app'));
     });
   });
 
@@ -225,7 +376,7 @@ describe('Authentication Redirect Utilities (AWS EC2 Canonical)', () => {
       assert.equal(validateRedirectDestination('http://malicious-site.org'), '/dashboard');
     });
 
-    it('should block former Vercel deployment URLs and fallback to /dashboard', () => {
+    it('should block former Vercel deployment URLs and fallback to /dashboard on AWS', () => {
       assert.equal(
         validateRedirectDestination('https://interview-prep-saicharanyadavallis-projects.vercel.app/dashboard'),
         '/dashboard'

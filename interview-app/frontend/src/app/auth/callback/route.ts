@@ -26,11 +26,17 @@ export async function GET(request: Request) {
   let baseOrigin = CANONICAL_AWS_ORIGIN
   if (process.env.AUTH_REDIRECT_URL) {
     try {
-      baseOrigin = new URL(process.env.AUTH_REDIRECT_URL).origin
+      const p = new URL(process.env.AUTH_REDIRECT_URL)
+      if ((p.protocol === 'http:' || p.protocol === 'https:') && p.hostname) {
+        baseOrigin = p.origin
+      }
     } catch (_) {}
   } else if (process.env.FRONTEND_URL) {
     try {
-      baseOrigin = new URL(process.env.FRONTEND_URL).origin
+      const p = new URL(process.env.FRONTEND_URL)
+      if ((p.protocol === 'http:' || p.protocol === 'https:') && p.hostname) {
+        baseOrigin = p.origin
+      }
     } catch (_) {}
   } else if (requestUrl.hostname === 'localhost' || requestUrl.hostname === '127.0.0.1') {
     baseOrigin = requestUrl.origin

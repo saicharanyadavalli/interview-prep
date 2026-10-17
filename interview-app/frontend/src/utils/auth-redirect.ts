@@ -83,6 +83,18 @@ export const DEFAULT_ALLOWED_ORIGINS = [
   'http://127.0.0.1:3000',
 ];
 
+/**
+ * Helper to determine whether the current process is genuinely running
+ * inside an active Vercel platform runtime.
+ *
+ * Security Invariant:
+ * - NEXT_PUBLIC_VERCEL_ENV alone does NOT activate Vercel fallback.
+ * - Must have explicit VERCEL === '1' AND a non-empty VERCEL_URL.
+ */
+export function isVercelRuntime(): boolean {
+  return process.env.VERCEL === '1' && Boolean(process.env.VERCEL_URL?.trim());
+}
+
 export interface GetAuthRedirectUrlOptions {
   fallbackOrigin?: string | null;
   preserveParams?: boolean;
@@ -96,11 +108,11 @@ export interface GetAuthRedirectUrlOptions {
  * Guarantees a validated redirect URL pointing to /auth/callback on the AWS EC2 deployment.
  *
  * Priority order:
- * 1. Explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment
- * 2. FRONTEND_URL or NEXT_PUBLIC_APP_URL from environment
- * 3. Request-derived fallbackOrigin (e.g. window.location.origin or Host header)
- *    ONLY IF the origin is in the allowed origins list (e.g. local dev on localhost:3000)!
- * 4. Canonical EC2 destination: http://16.113.92.222/auth/callback
+ * 1. Explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment (always wins)
+ * 2. Standard host environment variables (FRONTEND_URL or NEXT_PUBLIC_APP_URL)
+ * 3. Isolated Vercel runtime (ONLY when VERCEL === '1' and VERCEL_URL is set, and no AWS vars exist)
+ * 4. Request-derived fallbackOrigin ONLY IF in allowed origins list (e.g. localhost:3000 in dev)
+ * 5. Canonical EC2 destination: http://16.113.92.222/auth/callback
  */
 export function getAuthRedirectUrl(
   optionsOrFallbackOrigin?: string | null | GetAuthRedirectUrlOptions
@@ -136,44 +148,73 @@ export function getAuthRedirectUrl(
     }
   };
 
-  // 1. Try explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment
-  const envUrl = process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
-  if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+  // 1. Explicit AUTH_REDIRECT_URL or NEXT_PUBLIC_AUTH_REDIRECT_URL from environment (always wins)
+  const rawEnvUrl = process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
+  if (rawEnvUrl && typeof rawEnvUrl === 'string' && rawEnvUrl.trim()) {
+    const trimmedEnv = rawEnvUrl.trim();
     try {
-      const parsed = new URL(envUrl.trim());
-      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      const parsed = new URL(trimmedEnv);
+      if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname) {
         if (preserveParams && (parsed.search || parsed.hash)) {
           const fullUrl = `${parsed.origin}/auth/callback${parsed.search}${parsed.hash}`;
           return appendNext(fullUrl);
         }
         return appendNext(`${parsed.origin}/auth/callback`);
+      } else {
+        throw new Error(`Invalid protocol or host: ${trimmedEnv}`);
       }
-    } catch (_) {}
+    } catch (err) {
+      console.error(
+        `[auth-redirect] Configured AUTH_REDIRECT_URL "${trimmedEnv}" is invalid or malformed (${err}). Falling back strictly to canonical AWS callback to prevent unsafe redirection.`
+      );
+      return appendNext(CANONICAL_AWS_CALLBACK);
+    }
   }
 
-  // 2. Try standard deployment environment variables (FRONTEND_URL / NEXT_PUBLIC_APP_URL)
+  // 2. Standard deployment host environment variables (FRONTEND_URL / NEXT_PUBLIC_APP_URL)
   const hostUrl = process.env.FRONTEND_URL || process.env.NEXT_PUBLIC_APP_URL;
   if (hostUrl && typeof hostUrl === 'string' && hostUrl.trim()) {
+    const trimmedHost = hostUrl.trim();
     try {
-      const parsed = new URL(hostUrl.trim());
-      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      const parsed = new URL(trimmedHost);
+      if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname) {
         return appendNext(`${parsed.origin}/auth/callback`);
+      } else {
+        throw new Error(`Invalid protocol or host: ${trimmedHost}`);
       }
+    } catch (err) {
+      console.error(
+        `[auth-redirect] Configured FRONTEND_URL/NEXT_PUBLIC_APP_URL "${trimmedHost}" is invalid (${err}). Falling back strictly to canonical AWS callback.`
+      );
+      return appendNext(CANONICAL_AWS_CALLBACK);
+    }
+  }
+
+  // 3. Isolated Vercel runtime fallback
+  // Activated ONLY when running explicitly inside Vercel platform runtime (VERCEL === '1') with VERCEL_URL.
+  // NEXT_PUBLIC_VERCEL_ENV alone does NOT activate this.
+  if (isVercelRuntime()) {
+    try {
+      const vercelHost = process.env.VERCEL_URL!.trim();
+      const vercelOrigin = new URL(`https://${vercelHost}`).origin;
+      return appendNext(`${vercelOrigin}/auth/callback`);
     } catch (_) {}
   }
 
-  // 3. Try request-derived fallback origin, strictly validated against allowed origins
+  // 4. Request-derived fallback origin, strictly validated against allowed origins
   if (fallbackOrigin && typeof fallbackOrigin === 'string' && fallbackOrigin.trim()) {
     let candidateOrigin: string | null = null;
     try {
       const parsed = new URL(fallbackOrigin.trim());
-      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      if ((parsed.protocol === 'http:' || parsed.protocol === 'https:') && parsed.hostname) {
         candidateOrigin = parsed.origin;
       }
     } catch (_) {
       try {
         const parsed = new URL(`http://${fallbackOrigin.trim()}`);
-        candidateOrigin = parsed.origin;
+        if (parsed.hostname) {
+          candidateOrigin = parsed.origin;
+        }
       } catch (_) {}
     }
 
@@ -188,7 +229,7 @@ export function getAuthRedirectUrl(
     }
   }
 
-  // 4. Canonical fallback for AWS EC2
+  // 5. Canonical fallback for AWS EC2
   return appendNext(CANONICAL_AWS_CALLBACK);
 }
 
@@ -211,11 +252,23 @@ export function getAllowedOrigins(configuredUrl?: string | null): string[] {
     if (target && typeof target === 'string' && target.trim()) {
       try {
         const parsed = new URL(target.trim());
-        if (parsed.origin && parsed.origin !== 'null') {
+        if (
+          parsed.origin &&
+          parsed.origin !== 'null' &&
+          (parsed.protocol === 'http:' || parsed.protocol === 'https:')
+        ) {
           origins.add(parsed.origin);
         }
       } catch (_) {}
     }
+  }
+
+  // Only include dynamic Vercel origin if actively running on Vercel platform runtime
+  if (isVercelRuntime()) {
+    try {
+      const vercelOrigin = new URL(`https://${process.env.VERCEL_URL!.trim()}`).origin;
+      origins.add(vercelOrigin);
+    } catch (_) {}
   }
 
   return Array.from(origins);
