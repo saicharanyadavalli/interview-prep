@@ -147,3 +147,64 @@ def test_user_profile_update_enforces_current_user_isolation():
                 assert "legitimate-user-id" in sql_params
     finally:
         app.dependency_overrides.clear()
+
+
+def test_rds_pool_reacquire_failure_does_not_double_return_dead_conn():
+    """Verify that if reacquiring after a dead connection fails, putconn is not called twice on dead_conn."""
+    mgr = RDSConnectionPoolManager()
+    mgr._pool = MagicMock()
+
+    dead_conn = MagicMock()
+    dead_conn.closed = 1
+
+    # First call yields dead_conn; second call raises exception
+    mgr._pool.getconn.side_effect = [dead_conn, RuntimeError("Pool reacquire failed")]
+
+    with pytest.raises(RuntimeError) as exc_info:
+        with mgr.get_connection():
+            pass
+
+    assert "Pool reacquire failed" in str(exc_info.value)
+    # putconn must be called once for discarding dead_conn, and NEVER a second time in finally
+    assert mgr._pool.putconn.call_count == 1
+    mgr._pool.putconn.assert_called_once_with(dead_conn, close=True)
+
+
+def test_rds_cursor_close_exception_handled_safely():
+    """Verify that if cursor.close() raises an exception, it does not raise unhandled or corrupt pool return."""
+    mgr = RDSConnectionPoolManager()
+    mgr._pool = MagicMock()
+
+    mock_conn = MagicMock()
+    mock_conn.closed = 0
+    mock_cursor = MagicMock()
+    mock_cursor.close.side_effect = Exception("Cursor already closed on server")
+    mock_conn.cursor.return_value = mock_cursor
+    mgr._pool.getconn.return_value = mock_conn
+
+    # Should execute without raising the cursor close exception
+    with mgr.get_cursor(commit=False) as cur:
+        assert cur is mock_cursor
+
+    # Connection should still be returned safely to pool
+    mgr._pool.putconn.assert_called_once_with(mock_conn, close=False)
+
+
+def test_rds_cursor_rollback_on_query_error():
+    """Verify that conn.rollback() is invoked when an exception occurs inside get_cursor block."""
+    mgr = RDSConnectionPoolManager()
+    mgr._pool = MagicMock()
+
+    mock_conn = MagicMock()
+    mock_conn.closed = 0
+    mock_cursor = MagicMock()
+    mock_conn.cursor.return_value = mock_cursor
+    mgr._pool.getconn.return_value = mock_conn
+
+    with pytest.raises(ValueError, match="Query failure"):
+        with mgr.get_cursor(commit=True) as cur:
+            raise ValueError("Query failure")
+
+    mock_conn.rollback.assert_called_once()
+    mock_conn.commit.assert_not_called()
+    mgr._pool.putconn.assert_called_once_with(mock_conn, close=False)

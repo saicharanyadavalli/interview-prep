@@ -91,3 +91,69 @@ def test_disable_auth_in_production_raises_500(monkeypatch):
     assert exc_info.value.status_code == 500
     assert "forbidden in production" in str(exc_info.value.detail).lower()
 
+
+# ── Username Resolution & Availability Tests ─────────────────────────────────
+
+def test_resolve_username_found(unauth_client: TestClient):
+    """Verify POST /auth/resolve-username returns email and exists=True when found in RDS."""
+    with patch("routes.auth.rds_client.query", return_value={"email": "alpha@example.com"}):
+        res = unauth_client.post(
+            "/auth/resolve-username",
+            json={"username": "alpha_coder"},
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["exists"] is True
+        assert data["email"] == "alpha@example.com"
+
+
+def test_resolve_username_not_found(unauth_client: TestClient):
+    """Verify POST /auth/resolve-username returns exists=False when not found in RDS."""
+    with patch("routes.auth.rds_client.query", return_value=None):
+        res = unauth_client.post(
+            "/auth/resolve-username",
+            json={"username": "nonexistent_coder"},
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["exists"] is False
+        assert data["email"] is None
+
+
+def test_resolve_username_rds_error_safe_fallback(unauth_client: TestClient):
+    """Verify POST /auth/resolve-username degrades safely when RDS query errors."""
+    with patch("routes.auth.rds_client.query", side_effect=Exception("RDS timeout")):
+        res = unauth_client.post(
+            "/auth/resolve-username",
+            json={"username": "alpha_coder"},
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["exists"] is False
+        assert data["email"] is None
+
+
+def test_check_username_available(unauth_client: TestClient):
+    """Verify GET /auth/check-username returns available=True when username is free."""
+    with patch("routes.auth.rds_client.query", return_value=None):
+        res = unauth_client.get("/auth/check-username?username=brand_new_user")
+        assert res.status_code == 200
+        data = res.json()
+        assert data["available"] is True
+        assert data["username"] == "brand_new_user"
+
+
+def test_check_username_taken(unauth_client: TestClient):
+    """Verify GET /auth/check-username returns available=False when username is already taken."""
+    with patch("routes.auth.rds_client.query", return_value={"id": "existing-uuid"}):
+        res = unauth_client.get("/auth/check-username?username=taken_user")
+        assert res.status_code == 200
+        data = res.json()
+        assert data["available"] is False
+        assert data["username"] == "taken_user"
+
+
+def test_check_username_too_short_returns_422(unauth_client: TestClient):
+    """Verify GET /auth/check-username enforces minimum length of 3 chars."""
+    res = unauth_client.get("/auth/check-username?username=ab")
+    assert res.status_code == 422

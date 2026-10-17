@@ -10,7 +10,7 @@ backend_dir = Path(__file__).resolve().parent.parent.parent
 scripts_dir = backend_dir.parent / "scripts"
 sys.path.insert(0, str(scripts_dir))
 
-from load_courses import load_courses
+from load_courses import load_courses, validate_lesson_data
 
 
 def test_load_courses_missing_file_raises_error(tmp_path):
@@ -58,3 +58,67 @@ def test_load_courses_partial_failure_continues_processing(tmp_path):
         assert result["synced"] == 1
         assert result["failed"] == 1
         assert result["total"] == 2
+
+
+def test_validate_lesson_data_valid_structure():
+    """Verify validate_lesson_data returns no errors for well-formed lesson records."""
+    lessons = [
+        {"order": 1, "title": "Lesson 1"},
+        {"order": 2, "title": "Lesson 2"},
+    ]
+    errors = validate_lesson_data(lessons)
+    assert errors == []
+
+
+def test_validate_lesson_data_detects_duplicate_order_and_empty_title():
+    """Verify validate_lesson_data detects duplicate orders and missing/empty titles."""
+    lessons = [
+        {"order": 1, "title": "Lesson 1"},
+        {"order": 1, "title": ""},  # duplicate order and empty title
+        {"order": "invalid", "title": "Lesson 3"},  # non-integer order
+    ]
+    errors = validate_lesson_data(lessons)
+    assert len(errors) == 3
+    assert any("Duplicate order 1" in e for e in errors)
+    assert any("missing or empty title" in e for e in errors)
+    assert any("invalid or missing 'order'" in e for e in errors)
+
+
+def test_load_courses_dry_run_does_not_mutate_rds(tmp_path):
+    """Verify dry_run=True logs actions and does not invoke rds_client.mutate."""
+    sample_data = [
+        {"order": 1, "title": "Lesson 1", "content_markdown": "Test"},
+        {"order": 2, "title": "Lesson 2", "content_markdown": "Test 2"},
+    ]
+    test_json = tmp_path / "test_lessons.json"
+    test_json.write_text(json.dumps(sample_data), encoding="utf-8")
+
+    with patch("load_courses.rds_client.mutate") as mock_mutate:
+        result = load_courses(json_path=test_json, track_ids=("sql-course",), dry_run=True)
+        assert result["synced"] == 2
+        assert result["failed"] == 0
+        assert mock_mutate.call_count == 0
+
+
+def test_load_courses_validate_only_mode(tmp_path):
+    """Verify validate_only=True returns valid status without mutating database."""
+    sample_data = [
+        {"order": 1, "title": "Valid Lesson 1"},
+    ]
+    test_json = tmp_path / "test_lessons.json"
+    test_json.write_text(json.dumps(sample_data), encoding="utf-8")
+
+    with patch("load_courses.rds_client.mutate") as mock_mutate:
+        result = load_courses(json_path=test_json, validate_only=True)
+        assert result["synced"] == 1
+        assert result["failed"] == 0
+        assert mock_mutate.call_count == 0
+
+
+def test_load_courses_malformed_json_raises_value_error(tmp_path):
+    """Verify malformed JSON in course file raises ValueError."""
+    test_json = tmp_path / "malformed.json"
+    test_json.write_text("{ not valid json: }", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="Malformed JSON in course file"):
+        load_courses(json_path=test_json)

@@ -228,8 +228,10 @@ class RDSConnectionPoolManager:
             conn = self._pool.getconn()
             if conn.closed:
                 # Discard dead connection and reacquire
+                dead_conn = conn
+                conn = None  # Reset reference so finally cannot double-return if reacquire fails
                 try:
-                    self._pool.putconn(conn, close=True)
+                    self._pool.putconn(dead_conn, close=True)
                 except Exception:
                     pass
                 conn = self._pool.getconn()
@@ -255,17 +257,20 @@ class RDSConnectionPoolManager:
     def get_cursor(self, commit: bool = False) -> Generator[RealDictCursor, None, None]:
         """Context manager yielding a RealDictCursor with optional auto-commit."""
         with self.get_connection() as conn:
-            cursor = conn.cursor(cursor_factory=RealDictCursor)
+            cursor = None
             try:
+                cursor = conn.cursor(cursor_factory=RealDictCursor)
                 yield cursor
                 if commit:
                     conn.commit()
-            except Exception:
-                if not conn.closed:
-                    conn.rollback()
-                raise
             finally:
-                cursor.close()
+                if cursor:
+                    try:
+                        cursor.close()
+                    except Exception:
+                        pass
+
+
 
     def execute_query(
         self,
