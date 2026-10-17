@@ -11,15 +11,17 @@ export async function GET(request: Request) {
   const requestUrl = new URL(request.url)
   const searchParams = requestUrl.searchParams
   const code = searchParams.get('code')
+  const token_hash = searchParams.get('token_hash')
+  const type = searchParams.get('type')
   const rawNext = searchParams.get('next')
 
   // Resolve trusted allowed origins (including configured AUTH_REDIRECT_URL)
   const allowedOrigins = getAllowedOrigins(process.env.AUTH_REDIRECT_URL)
 
-  // Validate and sanitize destination to strictly prevent open redirects
+  // Validate and sanitize destination to strictly prevent open redirects (defaults to /dashboard)
   const safeNext = validateRedirectDestination(rawNext, allowedOrigins)
 
-  // Resolve the authoritative deployment origin to prevent cross-deployment or internal-proxy bleed
+  // Resolve authoritative deployment origin to prevent cross-deployment or internal-proxy bleed
   let baseOrigin = requestUrl.origin
   if (process.env.AUTH_REDIRECT_URL) {
     try {
@@ -36,7 +38,8 @@ export async function GET(request: Request) {
     }
   }
 
-  if (code) {
+  // Handle PKCE code exchange or Email OTP verification
+  if (code || (token_hash && type)) {
     if (!CONFIG.SUPABASE_URL || !CONFIG.SUPABASE_ANON_KEY) {
       console.error('Auth callback error: Supabase environment variables missing.')
       const url = new URL('/login?error=env-missing', baseOrigin)
@@ -69,14 +72,26 @@ export async function GET(request: Request) {
       }
     )
 
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
-    if (!error) {
-      return response
-    } else {
-      console.error('Auth callback error:', error.message)
+    if (token_hash && type) {
+      const { error } = await supabase.auth.verifyOtp({
+        type: type as any,
+        token_hash,
+      })
+      if (!error) {
+        return response
+      }
+      console.error('Auth callback OTP verify error:', error.message)
+    } else if (code) {
+      const { error } = await supabase.auth.exchangeCodeForSession(code)
+      if (!error) {
+        return response
+      }
+      console.error('Auth callback code exchange error:', error.message)
     }
   }
 
-  const url = new URL('/login?error=auth-code-error', baseOrigin)
+  const errorDesc = searchParams.get('error_description') || searchParams.get('error')
+  const errorQuery = errorDesc ? `?error=${encodeURIComponent(errorDesc)}` : '?error=auth-code-error'
+  const url = new URL(`/login${errorQuery}`, baseOrigin)
   return NextResponse.redirect(url)
 }

@@ -24,8 +24,8 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  const supabaseUrl = CONFIG.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-  const supabaseAnonKey = CONFIG.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || CONFIG.SUPABASE_URL || '').trim().replace(/^["']|["']$/g, '');
+  const supabaseAnonKey = (process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || CONFIG.SUPABASE_ANON_KEY || '').trim().replace(/^["']|["']$/g, '');
 
   if (!supabaseUrl || !supabaseAnonKey) {
     return supabaseResponse;
@@ -73,6 +73,26 @@ export async function proxy(request: NextRequest) {
   }
 
   const pathname = request.nextUrl.pathname;
+
+  // If auth code or token_hash arrives outside /auth/callback (e.g. at root /),
+  // immediately forward to /auth/callback to perform the PKCE session exchange or OTP verification
+  if (
+    pathname !== '/auth/callback' &&
+    (request.nextUrl.searchParams.has('code') || request.nextUrl.searchParams.has('token_hash'))
+  ) {
+    const url = request.nextUrl.clone();
+    url.pathname = '/auth/callback';
+    return NextResponse.redirect(url);
+  }
+
+  // Gracefully handle /signup route by redirecting to /login in signup mode
+  if (pathname === '/signup') {
+    const url = request.nextUrl.clone();
+    url.pathname = '/login';
+    url.searchParams.set('mode', 'signup');
+    return NextResponse.redirect(url);
+  }
+
   const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
 
   if (isProtected && !user) {

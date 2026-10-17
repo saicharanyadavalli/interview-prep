@@ -25,7 +25,7 @@ export function validateAuthRedirectUrl(
     return {
       isValid: false,
       error:
-        'AUTH_REDIRECT_URL environment variable is not configured. An explicit, absolute redirect URL (e.g. http://16.113.92.222/auth/callback?next=/dashboard) is required to ensure authentication callbacks do not fall back to another deployment.',
+        'AUTH_REDIRECT_URL is not configured. An explicit, absolute redirect URL (e.g. http://16.113.92.222/auth/callback) is recommended.',
       url: null,
       origin: null,
     };
@@ -71,54 +71,6 @@ export function validateAuthRedirectUrl(
 }
 
 /**
- * Returns the configured authentication redirect URL for Supabase Auth flows
- * (e.g. emailRedirectTo during signup).
- *
- * Normalizes the path to /auth/callback and ensures the `next` query parameter is present.
- */
-export function getAuthRedirectUrl(
-  intendedNext: string = '/dashboard'
-): { url: string; error: null } | { url: null; error: string } {
-  const envUrl = process.env.AUTH_REDIRECT_URL;
-  const validation = validateAuthRedirectUrl(envUrl);
-
-  if (!validation.isValid || !validation.url) {
-    return {
-      url: null,
-      error: validation.error || 'Invalid AUTH_REDIRECT_URL configuration.',
-    };
-  }
-
-  try {
-    const parsed = new URL(validation.url);
-
-    // Normalize path to /auth/callback if just root or base domain was supplied
-    if (parsed.pathname === '/' || !parsed.pathname) {
-      parsed.pathname = '/auth/callback';
-    }
-
-    // Ensure `next` query parameter exists and is safe
-    if (!parsed.searchParams.has('next')) {
-      const safeNext =
-        intendedNext.startsWith('/') && !intendedNext.startsWith('//')
-          ? intendedNext
-          : '/dashboard';
-      parsed.searchParams.set('next', safeNext);
-    }
-
-    return {
-      url: parsed.toString(),
-      error: null,
-    };
-  } catch (err: any) {
-    return {
-      url: null,
-      error: err?.message || 'Failed to construct auth redirect URL.',
-    };
-  }
-}
-
-/**
  * Known default allowed origins for the application deployments.
  */
 export const DEFAULT_ALLOWED_ORIGINS = [
@@ -129,13 +81,72 @@ export const DEFAULT_ALLOWED_ORIGINS = [
 ];
 
 /**
+ * Returns the configured authentication redirect URL for Supabase Auth flows
+ * (e.g. emailRedirectTo during signup, OAuth redirectTo).
+ *
+ * Guarantees a clean, exact redirect URL pointing strictly to /auth/callback
+ * (without query parameters that break Supabase Dashboard whitelist matching).
+ *
+ * If AUTH_REDIRECT_URL is not explicitly configured, gracefully falls back to:
+ * 1. The provided fallbackOrigin (e.g. from request headers or window.location.origin)
+ * 2. FRONTEND_URL or NEXT_PUBLIC_APP_URL
+ * 3. Vercel deployment URL if on Vercel
+ * 4. Default EC2 origin: http://16.113.92.222/auth/callback
+ */
+export function getAuthRedirectUrl(fallbackOrigin?: string | null): string {
+  // 1. Try explicit AUTH_REDIRECT_URL from environment
+  const envUrl = process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
+  if (envUrl && typeof envUrl === 'string' && envUrl.trim()) {
+    try {
+      const parsed = new URL(envUrl.trim());
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return `${parsed.origin}/auth/callback`;
+      }
+    } catch (_) {}
+  }
+
+  // 2. Try request-derived fallback origin (e.g. Host header from server actions or window.location.origin)
+  if (fallbackOrigin && typeof fallbackOrigin === 'string' && fallbackOrigin.trim()) {
+    try {
+      const parsed = new URL(fallbackOrigin.trim());
+      if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+        return `${parsed.origin}/auth/callback`;
+      }
+    } catch (_) {
+      try {
+        const parsed = new URL(`http://${fallbackOrigin.trim()}`);
+        return `${parsed.origin}/auth/callback`;
+      } catch (_) {}
+    }
+  }
+
+  // 3. Try standard deployment environment variables
+  const hostUrl = process.env.FRONTEND_URL || process.env.NEXT_PUBLIC_APP_URL;
+  if (hostUrl && typeof hostUrl === 'string' && hostUrl.trim()) {
+    try {
+      const parsed = new URL(hostUrl.trim());
+      return `${parsed.origin}/auth/callback`;
+    } catch (_) {}
+  }
+
+  // 4. Try Vercel environment URL
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}/auth/callback`;
+  }
+
+  // 5. Default canonical fallback for EC2
+  return 'http://16.113.92.222/auth/callback';
+}
+
+/**
  * Returns a list of trusted allowed origins, dynamically including the
  * origin of the currently configured AUTH_REDIRECT_URL.
  */
 export function getAllowedOrigins(configuredUrl?: string | null): string[] {
   const origins = new Set<string>(DEFAULT_ALLOWED_ORIGINS);
 
-  const target = configuredUrl || process.env.AUTH_REDIRECT_URL;
+  const target =
+    configuredUrl || process.env.AUTH_REDIRECT_URL || process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL;
   if (target) {
     try {
       const parsed = new URL(target);

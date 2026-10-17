@@ -18,9 +18,13 @@ export default function LandingPage() {
     }
 
     if (typeof window !== "undefined") {
-      const hash = window.location.hash || "";
       const search = window.location.search || "";
-      if (hash.includes("access_token=") || search.includes("code=")) {
+      if (search.includes("code=") || search.includes("token_hash=")) {
+        window.location.replace(`/auth/callback${search}`);
+        return;
+      }
+      const hash = window.location.hash || "";
+      if (hash.includes("access_token=")) {
         router.replace("/dashboard");
       }
     }

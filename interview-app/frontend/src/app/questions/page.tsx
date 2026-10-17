@@ -86,8 +86,8 @@ export default function QuestionsPage() {
 
   const getRequestCacheKey = useCallback((q: string, filters: Record<string, any>) => {
     const req = getRequestOptions(0, PAGE_SIZE, q, filters);
-    return JSON.stringify({ q: req.q, solved: req.solved, filters: req.filters });
-  }, [getRequestOptions]);
+    return JSON.stringify({ userId: user?.id || "anon", q: req.q, solved: req.solved, filters: req.filters });
+  }, [getRequestOptions, user?.id]);
 
   const loadNextPage = useCallback(async (reset: boolean = false, currentSearch: string = search, currentFilters: Record<string, any> = filterQuery) => {
     setIsLoading(true);

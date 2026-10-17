@@ -113,9 +113,13 @@ export function AuthProvider({
     }
 
     try {
-      const redirectUrl = (typeof window !== "undefined" && window.location.origin)
-        ? `${window.location.origin}/auth/callback?next=/dashboard`
-        : (process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL || "/auth/callback?next=/dashboard");
+      let redirectUrl = `${window.location.origin}/auth/callback`;
+      if (process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL) {
+        try {
+          const parsed = new URL(process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL);
+          redirectUrl = `${parsed.origin}/auth/callback`;
+        } catch (_) {}
+      }
       const { data, error } = await sb.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -140,14 +144,15 @@ export function AuthProvider({
   };
 
   const signInWithEmail = async (identifier: string, password: string): Promise<{ error: string | null }> => {
-    let emailToUse = identifier.trim();
+    const cleanIdentifier = identifier.trim();
 
-    if (!emailToUse.includes("@")) {
-      return { error: `Please enter a valid email address to sign in.` };
+    if (!cleanIdentifier) {
+      return { error: `Please enter your email address or username to sign in.` };
     }
 
     const formData = new FormData();
-    formData.append("email", emailToUse);
+    formData.append("identifier", cleanIdentifier);
+    formData.append("email", cleanIdentifier);
     formData.append("password", password);
 
     const result = await login(formData);
@@ -156,8 +161,17 @@ export function AuthProvider({
       return { error: result.error };
     }
 
-    // Use router.replace instead of window.location.href to avoid full page reload loop
-    // The session cookie is set server-side, so the next page load will have the session
+    // Refresh client auth session if available and redirect
+    const sb = getSupabase();
+    if (sb) {
+      try {
+        const { data: { session: newSession } } = await sb.auth.getSession();
+        if (newSession) {
+          setSession(newSession);
+        }
+      } catch (_) {}
+    }
+
     window.location.replace("/dashboard");
     return { error: null };
   };
@@ -195,7 +209,12 @@ export function AuthProvider({
   const signOut = async () => {
     try {
       await logout();
-      localStorage.removeItem("ipp_profile_cache_v1");
+      if (typeof window !== "undefined") {
+        localStorage.removeItem("ipp_profile_cache_v1");
+        localStorage.removeItem("questionsPageUiState");
+        localStorage.removeItem("questionsCustomFolderV1");
+        sessionStorage.clear();
+      }
     } catch (_) {}
     window.location.replace("/login");
   };

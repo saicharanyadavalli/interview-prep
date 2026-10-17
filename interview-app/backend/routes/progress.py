@@ -14,7 +14,7 @@ from models.schemas import (
     ProgressStatusResponse,
     TopicProgressEntry,
 )
-from routes.auth import get_current_user
+from routes.auth import get_current_user, get_optional_current_user
 from services.supabase_client import get_supabase_client
 from services.questions_service import (
     find_qnum_by_question_id,
@@ -105,8 +105,34 @@ def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_cur
 
 
 @router.get("/user", response_model=UserProgressResponse)
-def get_user_progress(summary_only: bool = False, user: dict = Depends(get_current_user)):
+def get_user_progress(summary_only: bool = False, user: dict | None = Depends(get_optional_current_user)):
     """Return aggregated progress stats and recent progress entries."""
+    if not user:
+        return UserProgressResponse(
+            stats=ProgressStats(
+                total_attempted=0,
+                solved_count=0,
+                unsolved_count=0,
+                revisit_count=0,
+                easy_attempted=0,
+                medium_attempted=0,
+                hard_attempted=0,
+                easy_solved=0,
+                medium_solved=0,
+                hard_solved=0,
+                total_questions=0,
+                solved_total_questions=0,
+                easy_total_questions=0,
+                medium_total_questions=0,
+                hard_total_questions=0,
+                easy_solved_total_questions=0,
+                medium_solved_total_questions=0,
+                hard_solved_total_questions=0,
+            ),
+            recent=[],
+            topic_breakdown=[],
+        )
+
     supabase = get_supabase_client()
 
     try:
@@ -369,10 +395,13 @@ def get_user_progress(summary_only: bool = False, user: dict = Depends(get_curre
 
 
 @router.get("/status/{qnum}", response_model=ProgressStatusResponse)
-def get_question_progress_status(qnum: int, user: dict = Depends(get_current_user)):
-    """Return saved progress state for one question, or null/false when not set."""
+def get_question_progress_status(qnum: int, user: dict | None = Depends(get_optional_current_user)):
+    """Return saved progress state for one question, or null/false when not set or unauthenticated."""
     if qnum <= 0:
         raise HTTPException(status_code=422, detail="qnum must be greater than 0")
+
+    if not user:
+        return ProgressStatusResponse(qnum=qnum, is_solved=None, revisit=False)
 
     supabase = get_supabase_client()
     try:

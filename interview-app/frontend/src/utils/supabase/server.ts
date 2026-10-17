@@ -5,9 +5,12 @@ import { CONFIG } from '@/lib/config';
 export async function createClient() {
   const cookieStore = await cookies();
 
+  const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || CONFIG.SUPABASE_URL || "").trim().replace(/^["']|["']$/g, "");
+  const supabaseAnonKey = (process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || CONFIG.SUPABASE_ANON_KEY || "").trim().replace(/^["']|["']$/g, "");
+
   return createServerClient(
-    CONFIG.SUPABASE_URL,
-    CONFIG.SUPABASE_ANON_KEY,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         getAll() {

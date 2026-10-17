@@ -16,8 +16,8 @@ def get_supabase_client() -> Client:
     read/write data on behalf of any authenticated user.  The anon key is
     used on the frontend instead.
     """
-    url = os.getenv("SUPABASE_URL", "")
-    key = os.getenv("SUPABASE_SERVICE_KEY", "")
+    url = os.getenv("SUPABASE_URL", "").strip().strip('"').strip("'")
+    key = os.getenv("SUPABASE_SERVICE_KEY", "").strip().strip('"').strip("'")
     if not url or not key:
         raise RuntimeError(
             "Missing SUPABASE_URL or SUPABASE_SERVICE_KEY in environment. "

@@ -161,7 +161,7 @@ def _apply_pagination(rows: list[dict], offset: int, limit: int) -> list[dict]:
 
 
 @router.get("/companies", response_model=CompaniesResponse)
-def list_companies(current_user: Optional[dict] = Depends(get_optional_current_user)):
+def list_companies(current_user: dict = Depends(get_current_user)):
     """Return all available company names."""
     return CompaniesResponse(companies=get_companies())
 

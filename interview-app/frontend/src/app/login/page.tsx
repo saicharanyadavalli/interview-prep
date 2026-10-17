@@ -34,6 +34,20 @@ export default function LoginPage() {
     }
   }, [session, loading, router]);
 
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const modeParam = params.get("mode") || params.get("tab");
+      if (modeParam === "signup") {
+        setMode("signup");
+      }
+      const errorParam = params.get("error");
+      if (errorParam && errorParam !== "auth-code-error" && errorParam !== "env-missing") {
+        setErrorMessage(decodeURIComponent(errorParam));
+      }
+    }
+  }, []);
+
   const validatePassword = (pass: string): string | null => {
     if (pass.length < 8) {
       return "Password must be at least 8 characters long.";
@@ -55,8 +69,8 @@ export default function LoginPage() {
     setErrorMessage(null);
     setSuccessMessage(null);
 
-    if (!loginIdentifier.trim() || !loginIdentifier.includes("@")) {
-      setErrorMessage("Please enter a valid email address.");
+    if (!loginIdentifier.trim()) {
+      setErrorMessage("Please enter your email address or username.");
       return;
     }
     if (!loginPassword) {
@@ -193,12 +207,14 @@ export default function LoginPage() {
         {mode === "signin" ? (
           <form onSubmit={handleSignInSubmit} className="auth-form">
             <div className="form-group">
-              <label htmlFor="loginIdentifier">Email Address</label>
+              <label htmlFor="loginIdentifier">Email or Username</label>
               <input
                 id="loginIdentifier"
-                type="email"
+                type="text"
+                autoCapitalize="none"
+                autoCorrect="off"
                 className="form-control"
-                placeholder="e.g. alex@example.com"
+                placeholder="e.g. alex@example.com or alex_coder"
                 value={loginIdentifier}
                 onChange={(e) => setLoginIdentifier(e.target.value)}
                 disabled={isSubmitting || loading}
