@@ -56,3 +56,55 @@ def verify_supabase_token(access_token: str) -> dict | None:
     except Exception:
         pass
     return None
+
+
+def authenticate_user_credentials(email: str, password: str) -> dict | None:
+    """Authenticate user with email and password via Supabase Auth without service-role bypass.
+
+    Returns dict with access_token, refresh_token, and user info on success,
+    or None if credentials are invalid or auth fails.
+    """
+    if os.getenv("DISABLE_AUTH") == "true":
+        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or os.getenv("ENV") or "").lower()
+        if env not in ("production", "prod"):
+            return {
+                "access_token": "mock-test-access-token-12345",
+                "refresh_token": "mock-test-refresh-token-12345",
+                "user": {
+                    "id": "12345678-1234-1234-1234-123456789012",
+                    "email": email,
+                    "username": email.split("@")[0],
+                    "name": "Test User",
+                    "avatar_url": "",
+                },
+            }
+
+    try:
+        url = os.getenv("SUPABASE_URL", "").strip().strip('"').strip("'")
+        anon_key = (
+            os.getenv("SUPABASE_ANON_KEY")
+            or os.getenv("NEXT_PUBLIC_SUPABASE_ANON_KEY")
+            or os.getenv("SUPABASE_SERVICE_KEY", "")
+        ).strip().strip('"').strip("'")
+
+        if not url or not anon_key:
+            return None
+
+        client = create_client(url, anon_key)
+        response = client.auth.sign_in_with_password({"email": email, "password": password})
+        if response and response.session and response.user:
+            metadata = response.user.user_metadata or {}
+            return {
+                "access_token": response.session.access_token,
+                "refresh_token": response.session.refresh_token,
+                "user": {
+                    "id": response.user.id,
+                    "email": response.user.email or email,
+                    "username": metadata.get("username", "") or "",
+                    "name": metadata.get("full_name", "") or metadata.get("name", "") or "",
+                    "avatar_url": metadata.get("avatar_url", "") or "",
+                },
+            }
+    except Exception:
+        pass
+    return None

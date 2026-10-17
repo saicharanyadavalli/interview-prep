@@ -23,34 +23,42 @@ export async function login(formData: FormData) {
   }
 
   const supabase = await createClient()
-  let emailToUse = rawIdentifier.trim()
+  const cleanIdentifier = rawIdentifier.trim()
 
-  if (!emailToUse.includes('@')) {
-    // Input is a username — resolve to email using RDS backend endpoint
-    const cleanUsername = emailToUse.toLowerCase()
+  if (!cleanIdentifier.includes('@')) {
+    // Input is a username — authenticate securely via backend without public email disclosure
     try {
       const backendUrl = getInternalBackendUrl()
-      const res = await fetch(`${backendUrl}/auth/resolve-username`, {
+      const res = await fetch(`${backendUrl}/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: cleanUsername }),
+        body: JSON.stringify({ identifier: cleanIdentifier.toLowerCase(), password }),
         cache: 'no-store',
       })
       if (!res.ok) {
-        return { error: 'Failed to look up username. Please try signing in with your email address.' }
+        const errorData = await res.json().catch(() => ({}))
+        return { error: errorData.detail || 'Invalid username or password.' }
       }
       const data = await res.json()
-      if (!data.exists || !data.email) {
-        return { error: `No account found with username "${rawIdentifier}". Please check your username or sign in with your email address.` }
+      if (data.access_token && data.refresh_token) {
+        const { error: sessionError } = await supabase.auth.setSession({
+          access_token: data.access_token,
+          refresh_token: data.refresh_token,
+        })
+        if (sessionError) {
+          return { error: sessionError.message }
+        }
+        return { success: true }
       }
-      emailToUse = data.email
+      return { error: 'Failed to establish authenticated session.' }
     } catch (err: any) {
-      return { error: 'Failed to look up username. Please try signing in with your email address.' }
+      return { error: 'Authentication service temporarily unavailable. Please try again.' }
     }
   }
 
+  // Direct email authentication via Supabase client
   const { data, error } = await supabase.auth.signInWithPassword({
-    email: emailToUse,
+    email: cleanIdentifier,
     password,
   })
 
@@ -94,7 +102,7 @@ export async function signup(formData: FormData) {
 
   const supabase = await createClient()
 
-  // First check if username exists in RDS
+  // First check if username exists in RDS (fail closed if check fails)
   try {
     const backendUrl = getInternalBackendUrl()
     const checkRes = await fetch(`${backendUrl}/auth/check-username?username=${encodeURIComponent(cleanUsername)}`, {
@@ -105,8 +113,13 @@ export async function signup(formData: FormData) {
       if (checkData.available === false) {
         return { error: `Username "${username}" is already taken. Please choose another username.` }
       }
+    } else {
+      return { error: 'Unable to verify username availability. Please try again.' }
     }
-  } catch (_) {}
+  } catch (_) {
+    return { error: 'Unable to verify username availability. Please try again.' }
+  }
+
 
   const { data, error } = await supabase.auth.signUp({
     email: cleanEmail,

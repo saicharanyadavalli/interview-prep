@@ -59,7 +59,7 @@ Complete these manual checks in the AWS Management Console in the **Hyderabad (`
 4. **Database Subnets (Isolation Check):**
    - Verify that your database subnets (e.g., `interview-prep-db-a`, `interview-prep-db-b`) are associated with the **private route table**.
    - Confirm the private route table has **NO** route to `0.0.0.0/0` &rarr; `interview-prep-igw`.
-   - *Note:* Do not provision an AWS RDS instance or NAT Gateway in this phase; Supabase Cloud serves as the external database.
+   - Amazon RDS PostgreSQL (`interview_prep_db`) is isolated in these private database subnets. EC2 connects securely to RDS via the VPC internal network. Supabase is retained strictly for authentication/JWT identity.
 
 ### B. Security Group Configuration (`interview-prep-app-sg`)
 Reuse the existing security group `interview-prep-app-sg`. Ensure the **Inbound rules** match:
@@ -185,12 +185,19 @@ Populate the following values:
 # ── 1. Google Gemini AI Service ─────────────────────────────
 GEMINI_API_KEY=AIzaSy...
 
-# ── 2. Supabase Cloud (Database & Authentication) ───────────
-# ⚠️ Verify project is ACTIVE (unpaused) in Supabase dashboard
+# ── 2. Supabase Cloud (Authentication Only) ───────────────────
+# Retained strictly for user auth, session tokens, and identity management.
 SUPABASE_URL=https://armfnjzilchguppytyvm.supabase.co
 SUPABASE_ANON_KEY=eyJ...
 # ⚠️ SECRET: Server-side only (never expose to frontend)
 SUPABASE_SERVICE_KEY=eyJ...
+
+# ── 2b. Amazon RDS PostgreSQL & AWS Secrets Manager ───────────
+# Authoritative application datastore for all application data tables.
+AWS_REGION=ap-south-2
+RDS_SECRET_NAME=interview-prep/rds/app
+RDS_POOL_MIN=2
+RDS_POOL_MAX=10
 
 # ── 3. Google OAuth & Cloudinary ────────────────────────────
 GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
@@ -199,17 +206,22 @@ CLOUDINARY_API_KEY=your_cloudinary_key
 CLOUDINARY_API_SECRET=your_cloudinary_secret
 
 # ── 4. Host Networking & CORS ───────────────────────────────
-# Set to your EC2 Public IP for initial testing (e.g. http://13.200.50.25)
+# Set to your EC2 Public IP for initial staging (e.g. http://16.113.92.222)
 FRONTEND_URL=http://<EC2_PUBLIC_IP>
 ALLOWED_ORIGINS=http://<EC2_PUBLIC_IP>,http://localhost:3000,http://127.0.0.1:3000
 
-# ── 5. Frontend Build Variables ─────────────────────────────
+# ── 5. Authentication Redirect URLs (AWS EC2 Canonical) ─────
+AUTH_REDIRECT_URL=http://<EC2_PUBLIC_IP>/auth/callback?next=/dashboard
+NEXT_PUBLIC_AUTH_REDIRECT_URL=http://<EC2_PUBLIC_IP>/auth/callback?next=/dashboard
+NEXT_PUBLIC_APP_URL=http://<EC2_PUBLIC_IP>
+
+# ── 6. Frontend Build Variables ─────────────────────────────
 NEXT_PUBLIC_API_BASE_URL=/api/backend
 NEXT_PUBLIC_SUPABASE_URL=https://armfnjzilchguppytyvm.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 NEXT_PUBLIC_DISABLE_AUTH=false
 
-# ── 6. Worker Tuning (m7i-flex.large: 2 vCPUs) ──────────────
+# ── 7. Worker Tuning (m7i-flex.large: 2 vCPUs) ──────────────
 UVICORN_WORKERS=2
 ```
 
@@ -295,18 +307,50 @@ Run these GET requests on the EC2 host:
 
 ---
 
-## 5. Supabase & Authentication Limitations
+## 5. Supabase, OAuth & Reverse Proxy Architecture
 
-1. **Supabase Inactivity Blocker:**
-   - Preflight audits identified that Supabase project `armfnjzilchguppytyvm` is currently paused (`INACTIVE`).
-   - Before database operations will succeed, log in to the [Supabase Dashboard](https://supabase.com/dashboard) and click **Restore Project**.
-2. **Plain HTTP / Raw IP Limitations:**
-   - Initial testing over `http://<EC2_PUBLIC_IP>` is intended only for non-sensitive smoke tests.
-   - Do **NOT** enter real passwords over unencrypted HTTP.
-   - **Google OAuth / Magic Links:** Google Cloud Console and modern browsers reject OAuth redirects over raw IP HTTP (`http://<ip>/auth/callback`). Use email/password authentication during initial IP testing.
-3. **OAuth Implementation Detail:**
-   - The OAuth PKCE exchange handler is implemented in `interview-app/frontend/src/app/auth/callback/route.ts` at route `/auth/callback`.
-   - When configuring custom domains with SSL, register `https://<yourdomain>/auth/callback` in both Google Cloud Console and the Supabase Authentication URL configuration.
+1. **Supabase Scope & Project Status:**
+   - Supabase Cloud is retained **strictly for Authentication**, user identity, and session tokens.
+   - All application tables and user data reside authoritatively in **Amazon RDS PostgreSQL**.
+   - If Supabase project `armfnjzilchguppytyvm` is paused (`INACTIVE`), log in to the [Supabase Dashboard](https://supabase.com/dashboard) and click **Restore Project** before starting auth flows.
+
+2. **Google OAuth & Redirect URI Configuration (Exact Mapping):**
+   - **Google Cloud Console (`APIs & Services > Credentials > OAuth 2.0 Client IDs`):**
+     - **Authorized JavaScript origins:**
+       - `http://16.113.92.222` (for staging IP testing)
+       - `https://yourdomain.com` (for production)
+     - **Authorized redirect URIs:**
+       - `https://<project-ref>.supabase.co/auth/v1/callback` (e.g. `https://armfnjzilchguppytyvm.supabase.co/auth/v1/callback`)
+     - ⚠️ **CRITICAL:** Do NOT put `http://16.113.92.222/auth/callback` in Google Cloud Console. Google must redirect to Supabase's auth handler, which validates the exchange and then redirects to the application callback below.
+
+   - **Supabase Dashboard (`Authentication > URL Configuration`):**
+     - **Site URL:**
+       - `http://16.113.92.222` (staging) or `https://yourdomain.com` (production)
+     - **Redirect URLs:**
+       - `http://16.113.92.222/**`
+       - `http://16.113.92.222/auth/callback`
+       - `https://yourdomain.com/auth/callback` (production)
+       - `http://localhost:3000/**` (local dev)
+     - Supabase checks the `redirectTo` parameter against this allowlist. If the IP or domain is not present, Supabase rejects the redirect and falls back to Site URL.
+
+3. **Production HTTPS & Custom Domain Mandate:**
+   - Raw IP HTTP (`http://<ip>/auth/callback`) is suitable only for staging smoke tests.
+   - For production, a custom domain and HTTPS are **mandatory**. Modern browsers enforce `SameSite` cookie security and reject insecure cookie storage across cross-site OAuth redirects.
+
+4. **Nginx Buffer Tuning & 502 Bad Gateway Mitigation:**
+   - Next.js `@supabase/ssr` returns multiple large `Set-Cookie` headers during OAuth session exchange (access token, refresh token, provider token).
+   - Standard Nginx proxy buffer defaults (4k/8k) can overflow, triggering `502 Bad Gateway` with error:
+     `upstream sent too big header while reading response header from upstream`.
+   - The verified Nginx configuration in `nginx/interview-app.conf` includes:
+     ```nginx
+     proxy_buffer_size 128k;
+     proxy_buffers 4 256k;
+     proxy_busy_buffers_size 256k;
+     large_client_header_buffers 4 32k;
+     ```
+   - **Diagnostic Check:** If a 502 Bad Gateway is encountered, inspect `/var/log/nginx/error.log`:
+     - If the log reports `upstream sent too big header`, verify the buffer directives are loaded.
+     - If the log reports `Connection refused` or `Connection reset by peer`, the Next.js or FastAPI container exited or failed to start. Check `docker compose logs frontend` or `docker compose logs backend`.
 
 ---
 
@@ -315,17 +359,73 @@ Run these GET requests on the EC2 host:
 1. **Dynamic Public IP Address Changes:**
    - An EC2 instance with auto-assigned public IP receives a **new IPv4 address** each time it is stopped and started.
    - If the IP changes:
-     1. Update `.env`: set `FRONTEND_URL=http://<NEW_IP>` and `ALLOWED_ORIGINS=http://<NEW_IP>,...`.
-     2. Rebuild the frontend: `docker compose build frontend && docker compose up -d`.
-     3. Restart the backend: `docker compose restart backend`.
+     1. Update `.env`: set `FRONTEND_URL=http://<NEW_IP>`, `AUTH_REDIRECT_URL=http://<NEW_IP>/auth/callback?next=/dashboard`, and `ALLOWED_ORIGINS=http://<NEW_IP>,...`.
+     2. Update Supabase Dashboard > Authentication > URL Configuration with the new IP.
+     3. Rebuild the frontend: `docker compose build frontend && docker compose up -d`.
+     4. Restart the backend: `docker compose restart backend`.
 2. **Billing & Compute Costs:**
    - A running EC2 instance incurs compute charges continuously, regardless of traffic volume.
-   - **Stopping the instance** stops EC2 compute billing, but the website becomes unavailable.
-   - Attached EBS storage (30 GiB `gp3`) incurs storage charges continuously while retained.
-   - Please confirm current regional AWS pricing in `ap-south-2` and verify active trial credits in the AWS Billing Console.
+   - Stopping the instance stops EC2 compute billing, but EBS storage (30 GiB `gp3`) incurs storage charges continuously while retained.
 3. **Production SSL Setup (Let's Encrypt):**
    - Once a custom domain DNS A-record points to the EC2 Public IP:
      ```bash
      sudo apt install -y certbot python3-certbot-nginx
      sudo certbot --nginx -d yourdomain.com
      ```
+
+---
+
+## 7. Staging Zero-Downtime Deployment Runbook
+
+Follow this step-by-step sequence when deploying updates to staging:
+
+### Phase 1: Database Migration (Additive & Non-destructive)
+Run migration `002_course_lessons_tasks.sql` against Amazon RDS PostgreSQL:
+```bash
+# Connect to RDS (via bastion or EC2 instance using credentials from Secrets Manager)
+psql -h <RDS_ENDPOINT> -U <DB_USER> -d interview_prep_db -f migrations/rds/002_course_lessons_tasks.sql
+```
+*Note: This migration adds `tasks JSONB NOT NULL DEFAULT '[]'::jsonb` and `slug TEXT` with indexes. It is completely additive and backwards compatible.*
+
+### Phase 2: Validate & Seed SQL Course Lessons
+Seed course lessons and interactive tasks into RDS:
+```bash
+# 1. Validate data integrity without database connection
+python scripts/load_courses.py --validate-only
+
+# 2. Dry-run to preview database operations without writing
+python scripts/load_courses.py --dry-run
+
+# 3. Authoritative upsert into RDS
+python scripts/load_courses.py
+```
+
+### Phase 3: Read-Only Course Reconciliation
+Verify data parity between reference catalog and RDS:
+```bash
+python scripts/reconcile_courses.py
+```
+*Expected: 21/21 lessons matched, tasks checksum matches, 0 missing or mismatched.*
+
+### Phase 4: Container Build & Service Restart
+Rebuild and deploy containers:
+```bash
+docker compose build
+docker compose up -d
+docker compose ps
+```
+
+### Phase 5: Verification & Smoke Testing
+```bash
+# 1. Backend health
+curl -fsS http://127.0.0.1:8000/health
+
+# 2. Nginx proxy route
+curl -fsS http://127.0.0.1/api/backend/health
+
+# 3. Authoritative lesson tasks endpoint
+curl -fsS http://127.0.0.1/api/backend/courses/sql-course/lessons/select_queries_introduction | grep "tasks"
+
+# 4. Frontend root
+curl -fsS http://127.0.0.1/ | head -n 20
+```

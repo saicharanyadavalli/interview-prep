@@ -92,45 +92,120 @@ def test_disable_auth_in_production_raises_500(monkeypatch):
     assert "forbidden in production" in str(exc_info.value.detail).lower()
 
 
-# ── Username Resolution & Availability Tests ─────────────────────────────────
+# ── Username Privacy, Availability & Secure Login Tests ────────────────────────
 
-def test_resolve_username_found(unauth_client: TestClient):
-    """Verify POST /auth/resolve-username returns email and exists=True when found in RDS."""
-    with patch("routes.auth.rds_client.query", return_value={"email": "alpha@example.com"}):
+def test_login_with_username_success(unauth_client: TestClient):
+    """Verify POST /auth/login resolves username to email in RDS and returns tokens."""
+    mock_auth_res = {
+        "access_token": "valid-access-token",
+        "refresh_token": "valid-refresh-token",
+        "user": {
+            "id": "12345678-1234-1234-1234-123456789012",
+            "email": "alpha@example.com",
+            "username": "alpha_coder",
+            "name": "Alpha Coder",
+            "avatar_url": "",
+        },
+    }
+    mock_profile = {
+        "id": "12345678-1234-1234-1234-123456789012",
+        "email": "alpha@example.com",
+        "username": "alpha_coder",
+        "name": "Alpha Coder",
+        "avatar_url": "",
+    }
+    with patch("routes.auth.rds_client.query", side_effect=[{"email": "alpha@example.com"}, mock_profile]), \
+         patch("routes.auth.authenticate_user_credentials", return_value=mock_auth_res), \
+         patch("routes.auth.rds_client.mutate", return_value=None):
         res = unauth_client.post(
-            "/auth/resolve-username",
-            json={"username": "alpha_coder"},
+            "/auth/login",
+            json={"identifier": "alpha_coder", "password": "SecurePassword123!"},
         )
         assert res.status_code == 200
         data = res.json()
-        assert data["exists"] is True
-        assert data["email"] == "alpha@example.com"
+        assert data["access_token"] == "valid-access-token"
+        assert data["refresh_token"] == "valid-refresh-token"
+        assert data["user"]["id"] == "12345678-1234-1234-1234-123456789012"
+        assert data["user"]["username"] == "alpha_coder"
 
 
-def test_resolve_username_not_found(unauth_client: TestClient):
-    """Verify POST /auth/resolve-username returns exists=False when not found in RDS."""
+def test_login_with_email_success(unauth_client: TestClient):
+    """Verify POST /auth/login authenticates email directly without querying RDS username."""
+    mock_auth_res = {
+        "access_token": "valid-access-token",
+        "refresh_token": "valid-refresh-token",
+        "user": {
+            "id": "12345678-1234-1234-1234-123456789012",
+            "email": "beta@example.com",
+            "username": "beta_coder",
+            "name": "Beta Coder",
+            "avatar_url": "",
+        },
+    }
+    mock_profile = {
+        "id": "12345678-1234-1234-1234-123456789012",
+        "email": "beta@example.com",
+        "username": "beta_coder",
+        "name": "Beta Coder",
+        "avatar_url": "",
+    }
+    with patch("routes.auth.rds_client.query", return_value=mock_profile) as mock_rds, \
+         patch("routes.auth.authenticate_user_credentials", return_value=mock_auth_res), \
+         patch("routes.auth.rds_client.mutate", return_value=None):
+        res = unauth_client.post(
+            "/auth/login",
+            json={"identifier": "beta@example.com", "password": "SecurePassword123!"},
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["access_token"] == "valid-access-token"
+        # RDS query should only be called for fetching user profile by ID, not for username lookup
+        for call_args in mock_rds.call_args_list:
+            assert "WHERE username = %s" not in call_args[0][0]
+
+
+def test_login_invalid_password_returns_401(unauth_client: TestClient):
+    """Verify POST /auth/login returns uniform 401 when password check fails."""
+    with patch("routes.auth.rds_client.query", return_value={"email": "alpha@example.com"}), \
+         patch("routes.auth.authenticate_user_credentials", return_value=None):
+        res = unauth_client.post(
+            "/auth/login",
+            json={"identifier": "alpha_coder", "password": "WrongPassword"},
+        )
+        assert res.status_code == 401
+        assert "Invalid email/username or password" in res.json()["detail"]
+
+
+def test_login_nonexistent_username_returns_401(unauth_client: TestClient):
+    """Verify POST /auth/login returns uniform 401 for unknown user without exposing user existence."""
     with patch("routes.auth.rds_client.query", return_value=None):
         res = unauth_client.post(
-            "/auth/resolve-username",
-            json={"username": "nonexistent_coder"},
+            "/auth/login",
+            json={"identifier": "nonexistent_coder", "password": "AnyPassword123!"},
         )
-        assert res.status_code == 200
-        data = res.json()
-        assert data["exists"] is False
-        assert data["email"] is None
+        assert res.status_code == 401
+        assert "Invalid email/username or password" in res.json()["detail"]
 
 
-def test_resolve_username_rds_error_safe_fallback(unauth_client: TestClient):
-    """Verify POST /auth/resolve-username degrades safely when RDS query errors."""
+def test_login_rds_error_returns_503(unauth_client: TestClient):
+    """Verify POST /auth/login returns 503 when RDS fails during username resolution."""
     with patch("routes.auth.rds_client.query", side_effect=Exception("RDS timeout")):
         res = unauth_client.post(
-            "/auth/resolve-username",
-            json={"username": "alpha_coder"},
+            "/auth/login",
+            json={"identifier": "alpha_coder", "password": "AnyPassword123!"},
         )
-        assert res.status_code == 200
-        data = res.json()
-        assert data["exists"] is False
-        assert data["email"] is None
+        assert res.status_code == 503
+        assert "temporarily unavailable" in res.json()["detail"].lower()
+
+
+def test_resolve_username_deprecated_returns_404(unauth_client: TestClient):
+    """Verify public POST /auth/resolve-username is disabled and returns 404 to protect user privacy."""
+    res = unauth_client.post(
+        "/auth/resolve-username",
+        json={"username": "alpha_coder"},
+    )
+    assert res.status_code == 404
+    assert "deprecated" in res.json()["detail"].lower()
 
 
 def test_check_username_available(unauth_client: TestClient):
@@ -151,6 +226,14 @@ def test_check_username_taken(unauth_client: TestClient):
         data = res.json()
         assert data["available"] is False
         assert data["username"] == "taken_user"
+
+
+def test_check_username_database_error_fails_closed_503(unauth_client: TestClient):
+    """Verify GET /auth/check-username fails closed with 503 on database errors."""
+    with patch("routes.auth.rds_client.query", side_effect=Exception("DB connection dropped")):
+        res = unauth_client.get("/auth/check-username?username=any_user")
+        assert res.status_code == 503
+        assert "unable to verify username availability" in res.json()["detail"].lower()
 
 
 def test_check_username_too_short_returns_422(unauth_client: TestClient):

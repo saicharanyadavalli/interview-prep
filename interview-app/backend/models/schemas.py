@@ -29,17 +29,34 @@ class SessionRequest(BaseModel):
     access_token: str = Field(..., min_length=10, max_length=2048)
 
 
+class LoginRequest(BaseModel):
+    """Payload for secure username/password or email/password authentication."""
+    model_config = ConfigDict(extra="forbid")
+
+    identifier: str = Field(..., min_length=3, max_length=100)
+    password: str = Field(..., min_length=6, max_length=128)
+
+
+class LoginResponse(BaseModel):
+    """Response containing authenticated session tokens and profile info."""
+    access_token: str
+    refresh_token: str
+    token_type: str = "bearer"
+    user: UserResponse
+
+
 class ResolveUsernameRequest(BaseModel):
-    """Payload to look up an email associated with a username."""
+    """Deprecated: Previous payload to look up an email associated with a username."""
     model_config = ConfigDict(extra="forbid")
 
     username: str = Field(..., min_length=1, max_length=50)
 
 
 class ResolveUsernameResponse(BaseModel):
-    """Response returning resolved email or found flag."""
+    """Deprecated: Previous response returning resolved email."""
     email: Optional[str] = None
     exists: bool = False
+
 
 
 class UserResponse(BaseModel):

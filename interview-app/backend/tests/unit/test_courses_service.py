@@ -1,5 +1,6 @@
 """Unit tests for courses_service course retrieval, SQL seed data, and progress tracking."""
 
+import pytest
 from unittest.mock import patch, MagicMock
 from services.courses_service import (
     COURSE_CATALOG,
@@ -7,6 +8,7 @@ from services.courses_service import (
     get_sql_seed_tables,
     fetch_all_courses,
     fetch_course_by_slug,
+    fetch_lesson_detail,
     record_lesson_completion,
     fetch_course_user_progress,
 )
@@ -66,3 +68,36 @@ def test_record_lesson_completion_updates_progress(mock_supabase):
     prog = fetch_course_user_progress(user_id, "sql-course")
     assert prog is not None
     assert "select_queries_introduction" in prog["completed_lesson_slugs"]
+
+
+def test_fetch_lesson_detail_authoritative_rds():
+    """Verify fetch_lesson_detail queries RDS and parses JSON tasks and slugs."""
+    mock_row = {
+        "id": "11111111-1111-1111-1111-111111111111",
+        "step_no": 1,
+        "title": "Select Queries 101",
+        "html_content": "# Intro to SQL",
+        "tasks": ["Find the title of each film", "Find the director of each film"],
+        "slug": "select-queries-101",
+    }
+    mock_all_steps = [
+        {"step_no": 1, "slug": "select-queries-101"},
+        {"step_no": 2, "slug": "queries-with-constraints-pt-1"},
+    ]
+    with patch("services.courses_service.rds_client.query", side_effect=[mock_row, mock_all_steps]):
+        lesson = fetch_lesson_detail("sql-course", "select-queries-101")
+        assert lesson is not None
+        assert lesson["slug"] == "select-queries-101"
+        assert lesson["title"] == "Select Queries 101"
+        assert len(lesson["tasks"]) == 2
+        assert lesson["tasks"][0] == "Find the title of each film"
+        assert lesson["next_lesson_slug"] == "queries-with-constraints-pt-1"
+        assert lesson["prev_lesson_slug"] is None
+
+
+def test_fetch_course_rds_failure_in_production_raises(monkeypatch):
+    """Verify fetch_course_by_slug raises on RDS error in production without silent fallback."""
+    monkeypatch.setenv("ENVIRONMENT", "production")
+    with patch("services.courses_service.rds_client.query", side_effect=Exception("RDS Down")):
+        with pytest.raises(Exception, match="RDS Down"):
+            fetch_course_by_slug("sql-course")

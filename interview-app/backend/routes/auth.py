@@ -12,9 +12,17 @@ import os
 from fastapi import APIRouter, Header, HTTPException, Query, Request, Response
 from limiter import limiter
 
-from models.schemas import SessionRequest, UserResponse, ResolveUsernameRequest, ResolveUsernameResponse
-from services.supabase_client import verify_supabase_token
+from models.schemas import (
+    SessionRequest,
+    UserResponse,
+    LoginRequest,
+    LoginResponse,
+    ResolveUsernameRequest,
+    ResolveUsernameResponse,
+)
+from services.supabase_client import verify_supabase_token, authenticate_user_credentials
 from services import rds_client
+
 
 logger = logging.getLogger(__name__)
 
@@ -203,28 +211,91 @@ def create_session(request: Request, response: Response, payload: SessionRequest
         ) from exc
 
 
-@router.post("/resolve-username", response_model=ResolveUsernameResponse)
-@limiter.limit("60/minute")
-def resolve_username(request: Request, response: Response, payload: ResolveUsernameRequest):
-    """Look up the email associated with a username directly from RDS user_profiles."""
+@router.post("/login", response_model=LoginResponse)
+@limiter.limit("30/minute")
+def login_with_credentials(request: Request, response: Response, payload: LoginRequest):
+    """Authenticate user with username or email and password without disclosing emails.
+
+    SECURITY INVARIANTS:
+    - Never exposes registered email addresses to unauthenticated callers.
+    - Resolves username -> email privately within RDS.
+    - Delegates credential verification to Supabase Auth without service-role bypass.
+    - Returns uniform 401 'Invalid email/username or password.' for both non-existent
+      users and incorrect passwords to prevent account enumeration.
+    """
+    raw_ident = payload.identifier.strip()
+    if "@" in raw_ident:
+        target_email = raw_ident.lower()
+    else:
+        # Private RDS lookup for email by username
+        try:
+            row = rds_client.query(
+                "SELECT email FROM user_profiles WHERE LOWER(username) = LOWER(%s) LIMIT 1;",
+                (raw_ident.lower(),),
+                fetch="one",
+            )
+        except Exception as exc:
+            logger.error("Database error during username lookup for %s: %s", raw_ident, exc)
+            raise HTTPException(
+                status_code=503,
+                detail="Authentication service temporarily unavailable.",
+            ) from exc
+
+        if not row or not row.get("email"):
+            # Uniform error message: Do not reveal whether username exists
+            raise HTTPException(status_code=401, detail="Invalid email/username or password.")
+        target_email = row["email"].lower()
+
+    # Delegate password verification to Supabase Auth
+    auth_data = authenticate_user_credentials(target_email, payload.password)
+    if not auth_data:
+        raise HTTPException(status_code=401, detail="Invalid email/username or password.")
+
+    # Synchronize profile in RDS
+    user_dict = auth_data["user"]
+    _ensure_user_in_rds(user_dict)
+
+    # Fetch authoritative profile from RDS
+    db_user = None
     try:
-        clean = payload.username.strip().lower()
-        row = rds_client.query(
-            "SELECT email FROM user_profiles WHERE LOWER(username) = LOWER(%s) LIMIT 1;",
-            (clean,),
+        db_user = rds_client.query(
+            "SELECT id, email, username, name, avatar_url FROM user_profiles WHERE id = %s LIMIT 1;",
+            (user_dict["id"],),
             fetch="one",
         )
-        if row and row.get("email"):
-            return ResolveUsernameResponse(email=row["email"], exists=True)
-    except Exception as exc:
-        logger.warning("Error resolving username %s in RDS: %s", payload.username, exc)
-    return ResolveUsernameResponse(email=None, exists=False)
+    except Exception:
+        pass
+
+    user_resp = UserResponse(
+        id=str((db_user.get("id") if db_user else None) or user_dict.get("id") or ""),
+        email=str((db_user.get("email") if db_user else None) or user_dict.get("email") or ""),
+        username=str((db_user.get("username") if db_user else None) or user_dict.get("username") or ""),
+        name=str((db_user.get("name") if db_user else None) or user_dict.get("name") or ""),
+        avatar_url=str((db_user.get("avatar_url") if db_user else None) or user_dict.get("avatar_url") or ""),
+    )
+
+    return LoginResponse(
+        access_token=auth_data["access_token"],
+        refresh_token=auth_data["refresh_token"],
+        token_type="bearer",
+        user=user_resp,
+    )
+
+
+@router.post("/resolve-username")
+@limiter.limit("30/minute")
+def resolve_username(request: Request, response: Response, payload: ResolveUsernameRequest):
+    """Deprecated endpoint disabled to prevent unauthenticated email harvesting."""
+    raise HTTPException(
+        status_code=404,
+        detail="Deprecated: Unauthenticated username-to-email resolution has been removed for privacy protection. Use POST /auth/login instead.",
+    )
 
 
 @router.get("/check-username")
 @limiter.limit("120/minute")
 def check_username_availability(request: Request, response: Response, username: str = Query(..., min_length=3, max_length=50)):
-    """Check if a username is available in RDS user_profiles (for live client-side validation)."""
+    """Check if a username is available in RDS user_profiles (for client-side signup validation)."""
     try:
         clean = username.strip().lower()
         row = rds_client.query(
@@ -235,4 +306,7 @@ def check_username_availability(request: Request, response: Response, username: 
         return {"available": row is None, "username": clean}
     except Exception as exc:
         logger.warning("Error checking username availability for %s: %s", username, exc)
-        return {"available": False, "username": username, "error": "Database check failed"}
+        raise HTTPException(
+            status_code=503,
+            detail="Database check failed. Unable to verify username availability.",
+        )

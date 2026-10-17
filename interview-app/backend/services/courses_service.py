@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 import re
 from datetime import datetime, timezone
 from pathlib import Path
@@ -391,76 +392,21 @@ def fetch_all_courses(user_id: Optional[str] = None) -> list[dict[str, Any]]:
 
 
 def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Optional[dict[str, Any]]:
-    """Fetch details of a single course with its ordered lesson list."""
+    """Fetch details of a single course with its ordered lesson list authoritatively from RDS."""
     norm_slug = _normalize_track_id(course_slug)
     matched_meta = next((c for c in COURSE_CATALOG if c["slug"] == norm_slug), None)
     if not matched_meta:
         return None
 
-    # Handle SQL course
-    if norm_slug == "sql-course":
-        sql_lessons = _load_fallback_sql_lessons()
-        completed_step_nos: set[int] = set()
-        user_completed_slugs: set[str] = set()
+    completed_step_nos: set[int] = set()
+    user_completed_slugs: set[str] = set()
 
-        if user_id:
-            try:
-                prog = rds_client.query(
-                    "SELECT step_no FROM learning_track_progress WHERE user_id = %s AND track_id IN ('sql-course', 'sql') AND completed = TRUE",
-                    (user_id,),
-                    fetch="all",
-                ) or []
-                completed_step_nos = {
-                    int(p["step_no"]) for p in prog if p.get("step_no") is not None
-                }
-            except Exception:
-                pass
-
-            in_mem = _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
-            user_completed_slugs.update(in_mem)
-
-        lesson_summaries = []
-        completed_count = 0
-        for idx, l in enumerate(sql_lessons, start=1):
-            s = l["slug"]
-            order_idx = l.get("order", idx)
-            is_comp = (
-                (order_idx in completed_step_nos)
-                or (s in user_completed_slugs)
-                or (f"step-{order_idx}" in user_completed_slugs)
-            )
-            if is_comp:
-                completed_count += 1
-            lesson_summaries.append(
-                {
-                    "id": f"sql-{order_idx}",
-                    "slug": s,
-                    "title": l["title"],
-                    "order_index": order_idx,
-                    "completed": is_comp,
-                }
-            )
-
-        total_lessons = len(lesson_summaries)
-        pct = round((completed_count / total_lessons) * 100, 1) if total_lessons > 0 else 0.0
-        return {
-            "id": matched_meta["id"],
-            "slug": matched_meta["slug"],
-            "title": matched_meta["title"],
-            "description": matched_meta["description"],
-            "total_lessons": total_lessons,
-            "completed_lessons": completed_count,
-            "progress_percentage": pct,
-            "lessons": lesson_summaries,
-        }
-
-    # Handle System Design / GenAI / ML / Mobile / OOD tracks from RDS
-    completed_step_nos = set()
     if user_id:
         try:
+            track_filter = ("sql-course", "sql") if norm_slug == "sql-course" else (norm_slug,)
             prog = rds_client.query(
-                "SELECT step_no FROM learning_track_progress WHERE user_id = %s AND track_id = %s AND completed = TRUE",
-                (user_id, norm_slug),
+                "SELECT step_no FROM learning_track_progress WHERE user_id = %s AND track_id IN %s AND completed = TRUE",
+                (user_id, track_filter),
                 fetch="all",
             ) or []
             completed_step_nos = {int(p["step_no"]) for p in prog if p.get("step_no") is not None}
@@ -473,50 +419,81 @@ def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Opt
                 m = re.search(r"(\d+)", s)
                 if m:
                     completed_step_nos.add(int(m.group(1)))
+                user_completed_slugs.add(s)
 
     lesson_summaries = []
     completed_count = 0
 
     try:
         lessons_data = rds_client.query(
-            "SELECT id, step_no, title FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC",
+            "SELECT id, step_no, title, slug FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC",
             (norm_slug,),
             fetch="all",
         ) or []
 
         for l in lessons_data:
             step_no = int(l.get("step_no", 1) or 1)
-            is_comp = step_no in completed_step_nos
+            lesson_slug = l.get("slug") or f"step-{step_no}"
+            is_comp = (
+                (step_no in completed_step_nos)
+                or (lesson_slug in user_completed_slugs)
+                or (f"step-{step_no}" in user_completed_slugs)
+            )
             if is_comp:
                 completed_count += 1
             lesson_summaries.append(
                 {
                     "id": str(l.get("id", f"{norm_slug}-{step_no}")),
-                    "slug": f"step-{step_no}",
+                    "slug": lesson_slug,
                     "title": l.get("title", f"Step {step_no}"),
                     "order_index": step_no,
                     "completed": is_comp,
                 }
             )
-    except Exception:
-        pass
+    except Exception as exc:
+        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or "").lower()
+        if env in ("production", "staging", "prod"):
+            raise
 
+    # Fallback only if no rows exist in RDS and in local dev/test mode
     if not lesson_summaries:
-        # Fallback default placeholders
-        default_count = 10
-        for step_no in range(1, default_count + 1):
-            is_comp = step_no in completed_step_nos
-            if is_comp:
-                completed_count += 1
-            lesson_summaries.append(
-                {
-                    "id": f"{norm_slug}-{step_no}",
-                    "slug": f"step-{step_no}",
-                    "title": f"Step {step_no}: Lesson {step_no}",
-                    "order_index": step_no,
-                    "completed": is_comp,
-                }
-            )
+        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or "").lower()
+        if norm_slug == "sql-course" and env not in ("production", "staging", "prod"):
+            sql_lessons = _load_fallback_sql_lessons()
+            for idx, l in enumerate(sql_lessons, start=1):
+                s = l["slug"]
+                order_idx = l.get("order", idx)
+                is_comp = (
+                    (order_idx in completed_step_nos)
+                    or (s in user_completed_slugs)
+                    or (f"step-{order_idx}" in user_completed_slugs)
+                )
+                if is_comp:
+                    completed_count += 1
+                lesson_summaries.append(
+                    {
+                        "id": f"sql-{order_idx}",
+                        "slug": s,
+                        "title": l["title"],
+                        "order_index": order_idx,
+                        "completed": is_comp,
+                    }
+                )
+        elif env not in ("production", "staging", "prod"):
+            default_count = 10
+            for step_no in range(1, default_count + 1):
+                is_comp = step_no in completed_step_nos
+                if is_comp:
+                    completed_count += 1
+                lesson_summaries.append(
+                    {
+                        "id": f"{norm_slug}-{step_no}",
+                        "slug": f"step-{step_no}",
+                        "title": f"Step {step_no}: Lesson {step_no}",
+                        "order_index": step_no,
+                        "completed": is_comp,
+                    }
+                )
 
     total_lessons = len(lesson_summaries)
     pct = round((completed_count / total_lessons) * 100, 1) if total_lessons > 0 else 0.0
@@ -536,117 +513,131 @@ def fetch_course_by_slug(course_slug: str, user_id: Optional[str] = None) -> Opt
 def fetch_lesson_detail(
     course_slug: str, lesson_slug: str, user_id: Optional[str] = None
 ) -> Optional[dict[str, Any]]:
-    """Fetch full details of a specific lesson within a course."""
+    """Fetch full details of a specific lesson within a course authoritatively from RDS."""
     norm_slug = _normalize_track_id(course_slug)
+    matched_meta = next((c for c in COURSE_CATALOG if c["slug"] == norm_slug), None)
+    if not matched_meta:
+        return None
 
-    # Handle SQL course
-    if norm_slug == "sql-course":
-        sql_lessons = _load_fallback_sql_lessons()
-        target_idx = None
-        target_lesson = None
-        for idx, l in enumerate(sql_lessons):
-            if l["slug"] == lesson_slug:
-                target_idx = idx
-                target_lesson = l
-                break
-
-        if target_lesson is None:
-            return None
-
-        prev_slug = sql_lessons[target_idx - 1]["slug"] if target_idx > 0 else None
-        next_slug = (
-            sql_lessons[target_idx + 1]["slug"]
-            if target_idx < len(sql_lessons) - 1
-            else None
-        )
-
-        completed = False
-        if user_id:
-            order_idx = target_lesson.get("order", target_idx + 1)
-            try:
-                prog = rds_client.query(
-                    "SELECT completed FROM learning_track_progress WHERE user_id = %s AND track_id IN ('sql-course', 'sql') AND step_no = %s LIMIT 1",
-                    (user_id, order_idx),
-                    fetch="one",
-                )
-                if prog:
-                    completed = bool(prog.get("completed", False))
-            except Exception:
-                pass
-
-            user_completed = _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
-            if (
-                lesson_slug in user_completed
-                or f"step-{order_idx}" in user_completed
-            ):
-                completed = True
-
-        return {
-            "id": f"sql-{target_lesson.get('order', target_idx + 1)}",
-            "course_slug": norm_slug,
-            "slug": target_lesson["slug"],
-            "title": target_lesson["title"],
-            "order_index": target_lesson.get("order", target_idx + 1),
-            "content_markdown": target_lesson.get("content_markdown", ""),
-            "tasks": target_lesson.get("tasks", []),
-            "completed": completed,
-            "prev_lesson_slug": prev_slug,
-            "next_lesson_slug": next_slug,
-        }
-
-    # Parse step_no from lesson_slug (e.g. 'step-4' -> 4)
-    step_no = 1
+    # Parse potential numeric step number from lesson_slug (e.g. 'step-4' -> 4)
+    step_no = None
     m = re.search(r"(\d+)", lesson_slug)
     if m:
-        step_no = int(m.group(1))
+        try:
+            step_no = int(m.group(1))
+        except ValueError:
+            step_no = None
+
+    row = None
+    all_steps_data = []
 
     try:
-        # Fetch current lesson
+        # Query lesson from RDS by slug or step_no
         row = rds_client.query(
-            "SELECT id, track_id, step_no, title, html_content FROM course_lessons WHERE track_id = %s AND step_no = %s LIMIT 1",
-            (norm_slug, step_no),
+            """
+            SELECT id, track_id, step_no, title, html_content, tasks, slug
+            FROM course_lessons
+            WHERE track_id = %s
+              AND (slug = %s OR (slug IS NULL AND step_no = %s) OR step_no = %s)
+            LIMIT 1;
+            """,
+            (norm_slug, lesson_slug, step_no, step_no),
             fetch="one",
         )
 
-        # Get total steps in this track to compute prev/next
+        # Get all lessons in track to compute prev/next navigation
         all_steps_data = rds_client.query(
-            "SELECT step_no FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC",
+            "SELECT step_no, slug FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC;",
             (norm_slug,),
             fetch="all",
         ) or []
-        step_numbers = [int(s["step_no"]) for s in all_steps_data if s.get("step_no") is not None]
-    except Exception:
-        row = None
-        step_numbers = list(range(1, 31))
+    except Exception as exc:
+        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or "").lower()
+        if env in ("production", "staging", "prod"):
+            raise
 
-    if not row:
-        # If not found by exact step_no, try fetching first available lesson
-        try:
-            row = rds_client.query(
-                "SELECT id, track_id, step_no, title, html_content FROM course_lessons WHERE track_id = %s ORDER BY step_no ASC LIMIT 1",
-                (norm_slug,),
-                fetch="one",
-            )
-        except Exception:
-            row = None
+    # Local fallback only allowed in dev/test mode if table is unseeded
+    if not row and norm_slug == "sql-course":
+        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or "").lower()
+        if env not in ("production", "staging", "prod"):
+            sql_lessons = _load_fallback_sql_lessons()
+            target_idx = None
+            target_lesson = None
+            for idx, l in enumerate(sql_lessons):
+                if l["slug"] == lesson_slug or (step_no and l.get("order") == step_no):
+                    target_idx = idx
+                    target_lesson = l
+                    break
+
+            if target_lesson:
+                prev_slug = sql_lessons[target_idx - 1]["slug"] if target_idx > 0 else None
+                next_slug = sql_lessons[target_idx + 1]["slug"] if target_idx < len(sql_lessons) - 1 else None
+                order_idx = target_lesson.get("order", target_idx + 1)
+                completed = False
+                if user_id:
+                    user_completed = _IN_MEMORY_USER_PROGRESS.get(f"{user_id}:{norm_slug}", set())
+                    completed = (
+                        lesson_slug in user_completed
+                        or f"step-{order_idx}" in user_completed
+                    )
+                return {
+                    "id": f"sql-{order_idx}",
+                    "course_slug": norm_slug,
+                    "slug": target_lesson["slug"],
+                    "title": target_lesson["title"],
+                    "order_index": order_idx,
+                    "content_markdown": target_lesson.get("content_markdown", ""),
+                    "tasks": target_lesson.get("tasks", []),
+                    "completed": completed,
+                    "prev_lesson_slug": prev_slug,
+                    "next_lesson_slug": next_slug,
+                }
 
     if not row:
         return None
 
-    current = row
-    cur_step = int(current.get("step_no", step_no) or step_no)
+    cur_step = int(row.get("step_no", 1) or 1)
+    actual_slug = row.get("slug") or f"step-{cur_step}"
 
-    max_steps = max(step_numbers) if step_numbers else TRACK_STEP_LIMITS.get(norm_slug, 30)
-    prev_slug = f"step-{cur_step - 1}" if cur_step > 1 and (cur_step - 1 in step_numbers or not step_numbers) else None
-    next_slug = f"step-{cur_step + 1}" if (cur_step + 1 in step_numbers) or (not step_numbers and cur_step < max_steps) else None
+    # Determine prev and next slugs from all_steps_data
+    prev_slug = None
+    next_slug = None
+    if all_steps_data:
+        sorted_steps = sorted(all_steps_data, key=lambda s: int(s.get("step_no", 0)))
+        current_idx = next((i for i, s in enumerate(sorted_steps) if int(s.get("step_no", 0)) == cur_step), None)
+        if current_idx is not None:
+            if current_idx > 0:
+                prev_item = sorted_steps[current_idx - 1]
+                prev_slug = prev_item.get("slug") or f"step-{prev_item.get('step_no')}"
+            if current_idx < len(sorted_steps) - 1:
+                next_item = sorted_steps[current_idx + 1]
+                next_slug = next_item.get("slug") or f"step-{next_item.get('step_no')}"
+    else:
+        max_steps = TRACK_STEP_LIMITS.get(norm_slug, 30)
+        prev_slug = f"step-{cur_step - 1}" if cur_step > 1 else None
+        next_slug = f"step-{cur_step + 1}" if cur_step < max_steps else None
 
-    # Check user completion
+    # Parse tasks JSON
+    raw_tasks = row.get("tasks")
+    tasks_list: list[str] = []
+    if isinstance(raw_tasks, list):
+        tasks_list = [str(t) for t in raw_tasks]
+    elif isinstance(raw_tasks, str):
+        try:
+            parsed = json.loads(raw_tasks)
+            if isinstance(parsed, list):
+                tasks_list = [str(t) for t in parsed]
+        except Exception:
+            tasks_list = []
+
+    # Check user completion from RDS
     completed = False
     if user_id:
         try:
+            track_filter = ("sql-course", "sql") if norm_slug == "sql-course" else (norm_slug,)
             prog = rds_client.query(
-                "SELECT completed FROM learning_track_progress WHERE user_id = %s AND track_id = %s AND step_no = %s LIMIT 1",
-                (user_id, norm_slug, cur_step),
+                "SELECT completed FROM learning_track_progress WHERE user_id = %s AND track_id IN %s AND step_no = %s LIMIT 1",
+                (user_id, track_filter, cur_step),
                 fetch="one",
             )
             if prog:
@@ -655,21 +646,24 @@ def fetch_lesson_detail(
             pass
 
         key = f"{user_id}:{norm_slug}"
-        if key in _IN_MEMORY_USER_PROGRESS and (f"step-{cur_step}" in _IN_MEMORY_USER_PROGRESS[key] or str(cur_step) in _IN_MEMORY_USER_PROGRESS[key]):
-            completed = True
+        if key in _IN_MEMORY_USER_PROGRESS:
+            user_completed = _IN_MEMORY_USER_PROGRESS[key]
+            if actual_slug in user_completed or f"step-{cur_step}" in user_completed or str(cur_step) in user_completed:
+                completed = True
 
     return {
-        "id": str(current.get("id", f"{norm_slug}-{cur_step}")),
+        "id": str(row.get("id", f"{norm_slug}-{cur_step}")),
         "course_slug": norm_slug,
-        "slug": f"step-{cur_step}",
-        "title": current.get("title", f"Step {cur_step}"),
+        "slug": actual_slug,
+        "title": row.get("title", f"Lesson {cur_step}"),
         "order_index": cur_step,
-        "content_markdown": current.get("html_content", ""),
-        "tasks": [],
+        "content_markdown": row.get("html_content", ""),
+        "tasks": tasks_list,
         "completed": completed,
         "prev_lesson_slug": prev_slug,
         "next_lesson_slug": next_slug,
     }
+
 
 
 def record_lesson_completion(

@@ -118,9 +118,12 @@ CREATE TABLE IF NOT EXISTS public.course_lessons (
   step_no INTEGER NOT NULL CHECK (step_no > 0),
   title TEXT NOT NULL,
   html_content TEXT NOT NULL DEFAULT '',
+  tasks JSONB NOT NULL DEFAULT '[]'::jsonb,
+  slug TEXT,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   CONSTRAINT uq_course_lessons_track_step UNIQUE (track_id, step_no)
 );
+
 
 -- -----------------------------------------------------------------------------
 -- 7. USER PROGRESS, HISTORY, COMMENTS & TRACK COMPLETION

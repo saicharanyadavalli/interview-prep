@@ -63,6 +63,10 @@ def validate_lesson_data(lessons: list) -> list[str]:
         if not title or not str(title).strip():
             errors.append(f"Lesson at index {idx} has missing or empty title.")
 
+        tasks = item.get("tasks")
+        if tasks is not None and not isinstance(tasks, list):
+            errors.append(f"Lesson at index {idx} ('{title}') 'tasks' must be a list.")
+
     return errors
 
 
@@ -71,7 +75,7 @@ def load_courses(
     track_ids: Sequence[str] = ("sql-course",),
     dry_run: bool = False,
     validate_only: bool = False,
-) -> dict[str, int]:
+) -> dict[str, Any]:
     """Load interactive course lessons into RDS table course_lessons.
 
     Args:
@@ -121,38 +125,61 @@ def load_courses(
             step_no = int(lesson.get("order", 0))
             title = str(lesson.get("title", f"Lesson {step_no}")).strip()
             content = str(lesson.get("content_markdown", "")).strip()
+            slug = str(lesson.get("slug", f"step-{step_no}")).strip()
+            tasks_list = lesson.get("tasks", [])
+            tasks_json = json.dumps(tasks_list if isinstance(tasks_list, list) else [])
 
             if dry_run:
-                logger.info("[DRY-RUN] Would upsert track='%s', step=%d, title='%s'", track_id, step_no, title)
+                logger.info(
+                    "[DRY-RUN] Validated lesson for track='%s', step=%d, slug='%s', tasks=%d (no DB write)",
+                    track_id,
+                    step_no,
+                    slug,
+                    len(tasks_list),
+                )
                 track_synced += 1
                 continue
 
             try:
                 rds_client.mutate(
                     """
-                    INSERT INTO course_lessons (track_id, step_no, title, html_content)
-                    VALUES (%s, %s, %s, %s)
+                    INSERT INTO course_lessons (track_id, step_no, title, html_content, tasks, slug)
+                    VALUES (%s, %s, %s, %s, %s::jsonb, %s)
                     ON CONFLICT (track_id, step_no)
-                    DO UPDATE SET title = EXCLUDED.title, html_content = EXCLUDED.html_content;
+                    DO UPDATE SET title = EXCLUDED.title,
+                                  html_content = EXCLUDED.html_content,
+                                  tasks = EXCLUDED.tasks,
+                                  slug = COALESCE(EXCLUDED.slug, course_lessons.slug);
                     """,
-                    (track_id, step_no, title, content),
+                    (track_id, step_no, title, content, tasks_json, slug),
                 )
                 track_synced += 1
             except Exception as exc:
                 logger.error("Failed to sync lesson %d for track '%s': %s", step_no, track_id, exc)
                 track_failed += 1
 
-        logger.info("Track '%s' sync result: %d succeeded, %d failed", track_id, track_synced, track_failed)
+        if dry_run:
+            logger.info("[DRY-RUN] Track '%s' simulation: %d lessons validated", track_id, track_synced)
+        else:
+            logger.info("Track '%s' sync result: %d succeeded, %d failed", track_id, track_synced, track_failed)
         overall_synced += track_synced
         overall_failed += track_failed
 
-    logger.info(
-        "Course loading summary: %d succeeded, %d failed across %d total operations",
-        overall_synced,
-        overall_failed,
-        total_operations,
-    )
-    return {"synced": overall_synced, "failed": overall_failed, "total": total_operations}
+    if dry_run:
+        logger.info(
+            "[DRY-RUN] Simulation summary: %d lessons validated across %d tracks (zero database writes executed)",
+            overall_synced,
+            len(track_ids),
+        )
+    else:
+        logger.info(
+            "Course loading summary: %d succeeded, %d failed across %d total operations",
+            overall_synced,
+            overall_failed,
+            total_operations,
+        )
+    return {"synced": overall_synced, "failed": overall_failed, "total": total_operations, "dry_run": dry_run}
+
 
 
 def parse_args():
