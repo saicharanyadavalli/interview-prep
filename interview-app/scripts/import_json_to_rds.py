@@ -316,6 +316,30 @@ def run_migration(
         conn.close()
 
 
+def resolve_database_url(url: str | None = None) -> str:
+    """Resolve database URL from parameter, env var, or AWS Secrets Manager."""
+    if url and url.strip():
+        return url.strip()
+    env_url = os.getenv("DATABASE_URL", "").strip()
+    if env_url:
+        return env_url
+    secret_name = os.getenv("RDS_SECRET_NAME", "interview-prep/rds/app")
+    region = os.getenv("AWS_REGION", "ap-south-2")
+    try:
+        import boto3
+        sm = boto3.client("secretsmanager", region_name=region)
+        sec = json.loads(sm.get_secret_value(SecretId=secret_name)["SecretString"])
+        user = sec["username"]
+        pw = sec["password"]
+        host = sec["host"]
+        port = sec.get("port", 5432)
+        db = sec.get("dbname", "interview_prep_db")
+        return f"postgresql://{user}:{pw}@{host}:{port}/{db}"
+    except Exception as exc:
+        logger.debug("Secrets Manager resolution skipped/failed: %s", exc)
+        return ""
+
+
 def main():
     parser = argparse.ArgumentParser(description="Import JSON backups into Amazon RDS PostgreSQL 17.11")
     parser.add_argument(
@@ -342,9 +366,9 @@ def main():
     )
     args = parser.parse_args()
 
-    database_url = os.getenv("DATABASE_URL", "").strip()
+    database_url = resolve_database_url() if not args.dry_run else ""
     if not database_url and not args.dry_run:
-        logger.error("DATABASE_URL environment variable must be set (unless --dry-run is specified)")
+        logger.error("DATABASE_URL environment variable must be set or RDS_SECRET_NAME must be resolvable via AWS Secrets Manager (unless --dry-run is specified)")
         sys.exit(1)
 
     try:
