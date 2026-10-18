@@ -1,16 +1,51 @@
 "use client";
 
 import React, { createContext, useContext, useEffect, useState } from "react";
-import { getSupabase } from "./supabase";
-import { User, Session } from "@supabase/supabase-js";
 import { useRouter, usePathname } from "next/navigation";
 
-import { CONFIG } from "./config";
 import { API } from "./api";
-import { login, signup, logout } from "@/app/actions/auth";
+import {
+  login,
+  signup,
+  logout,
+  initiateCognitoGoogleAuth,
+  getCurrentSession,
+} from "@/app/actions/auth";
+import { getSupabase } from "./supabase";
 import { getAuthRedirectUrl } from "@/utils/auth-redirect";
 
-interface AuthContextType {
+export interface AuthUser {
+  id: string;
+  email?: string;
+  user_metadata?: {
+    full_name?: string;
+    name?: string;
+    username?: string;
+    avatar_url?: string;
+    picture?: string;
+    [key: string]: any;
+  };
+  app_metadata?: Record<string, any>;
+  aud?: string;
+  created_at?: string;
+  [key: string]: any;
+}
+
+export interface AuthSession {
+  access_token: string;
+  refresh_token?: string;
+  id_token?: string;
+  token_type?: string;
+  expires_in?: number;
+  user: AuthUser;
+  [key: string]: any;
+}
+
+// Backward-compatibility aliases for Supabase types
+export type User = AuthUser;
+export type Session = AuthSession;
+
+export interface AuthContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
@@ -25,33 +60,27 @@ interface AuthContextType {
   refreshProfile: () => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithEmail: (identifier: string, password: string) => Promise<{ error: string | null }>;
-  signUpWithEmail: (email: string, password: string, username: string, fullName: string) => Promise<{ error: string | null; message?: string | null }>;
+  signUpWithEmail: (
+    email: string,
+    password: string,
+    username: string,
+    fullName: string
+  ) => Promise<{ error: string | null; message?: string | null }>;
   signOut: () => Promise<void>;
   getUserMeta: () => { name: string; email: string; avatar: string; username: string };
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const PROTECTED_ROUTES = [
-  "/dashboard",
-  "/practice",
-  "/questions",
-  "/solve",
-  "/profile",
-  "/progress",
-  "/revisit"
-];
-
-export function AuthProvider({ 
+export function AuthProvider({
   children,
-  initialSession = null
-}: { 
-  children: React.ReactNode,
-  initialSession?: Session | null
+  initialSession = null,
+}: {
+  children: React.ReactNode;
+  initialSession?: Session | null;
 }) {
   const [session, setSession] = useState<Session | null>(initialSession);
   const user = session?.user ?? null;
-  // If SSR provided a session, we're not loading. Otherwise wait for client-side session fetch.
   const [loading, setLoading] = useState(!initialSession);
   const [profile, setProfile] = useState<{
     id?: string;
@@ -65,41 +94,93 @@ export function AuthProvider({
   const pathname = usePathname();
 
   useEffect(() => {
-    const sb = getSupabase();
+    let isMounted = true;
 
-    // Always fetch the current session client-side on mount
-    // This ensures the sidebar/auth state is correct even when SSR session is stale
     const initSession = async () => {
-      if (sb) {
-        const { data: { session: clientSession } } = await sb.auth.getSession();
-        setSession(clientSession ?? initialSession);
-        if (clientSession?.user && (pathname === "/" || pathname === "/login")) {
-          router.push("/dashboard");
+      // 1. Mock session for test environments
+      if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
+        const mockUser: User = {
+          id: "12345678-1234-1234-1234-123456789012",
+          email: "testuser@example.com",
+          user_metadata: { full_name: "Test User", username: "testuser" },
+        };
+        const mockSession: Session = {
+          access_token: "mock-token",
+          token_type: "bearer",
+          user: mockUser,
+        };
+        if (isMounted) {
+          setSession(mockSession);
+          setLoading(false);
+          if (pathname === "/" || pathname === "/login") {
+            router.push("/dashboard");
+          }
         }
-      } else {
-        setSession(initialSession);
+        return;
       }
-      setLoading(false);
+
+      // 2. Authoritative server-side session check (Cognito cookies & Supabase fallback)
+      try {
+        const { session: serverSession } = await getCurrentSession();
+        if (isMounted) {
+          if (serverSession) {
+            setSession(serverSession);
+            if (pathname === "/" || pathname === "/login") {
+              router.push("/dashboard");
+            }
+          } else {
+            setSession(initialSession);
+          }
+        }
+      } catch (err) {
+        console.warn("[Auth] Server session fetch error:", err);
+        if (isMounted) {
+          setSession(initialSession);
+        }
+      } finally {
+        if (isMounted) {
+          setLoading(false);
+        }
+      }
     };
 
     initSession();
 
-    if (!sb) return;
-
-    const { data: { subscription } } = sb.auth.onAuthStateChange((event, newSession) => {
-      setSession(newSession);
-      setLoading(false);
-      if (newSession?.user && (event === "SIGNED_IN" || event === "USER_UPDATED")) {
-        if (typeof window !== "undefined" && (window.location.pathname === "/" || window.location.pathname === "/login")) {
-          router.push("/dashboard");
-        }
-      }
-    });
+    // 3. Fallback Supabase client listener if configured
+    const sb = getSupabase();
+    let unsubscribeSb: (() => void) | undefined = undefined;
+    if (sb) {
+      try {
+        const {
+          data: { subscription },
+        } = sb.auth.onAuthStateChange((event, newSession) => {
+          if (!isMounted) return;
+          if (newSession) {
+            setSession({
+              access_token: newSession.access_token,
+              refresh_token: newSession.refresh_token,
+              token_type: newSession.token_type || "bearer",
+              user: newSession.user,
+            });
+            setLoading(false);
+            if (
+              newSession.user &&
+              typeof window !== "undefined" &&
+              (window.location.pathname === "/" || window.location.pathname === "/login")
+            ) {
+              router.push("/dashboard");
+            }
+          }
+        });
+        unsubscribeSb = () => subscription.unsubscribe();
+      } catch (_) {}
+    }
 
     return () => {
-      subscription.unsubscribe();
+      isMounted = false;
+      if (unsubscribeSb) unsubscribeSb();
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const refreshProfile = async () => {
@@ -128,7 +209,7 @@ export function AuthProvider({
       return;
     }
 
-    // Attempt instant render from user-scoped localStorage cache
+    // Instant render from user-scoped localStorage cache
     const cached = API.getCachedProfile ? API.getCachedProfile(24 * 60 * 60 * 1000, user.id) : null;
     if (cached) {
       setProfile({
@@ -178,64 +259,75 @@ export function AuthProvider({
     }
   }, [user]);
 
-
-
-  const syncBackendSession = async (accessToken: string) => {
-    try {
-      const apiBase = CONFIG.API_BASE_URL;
-      await fetch(`${apiBase}/auth/session`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ access_token: accessToken }),
-      });
-    } catch (e) {
-      console.warn("Backend session sync warning:", e);
-    }
-  };
-
   const signInWithGoogle = async () => {
     if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
-      setSession({ access_token: "mock-token", token_type: "bearer", user: { id: "12345678-1234-1234-1234-123456789012", email: "testuser@example.com", user_metadata: { full_name: "Test User", username: "testuser" } } } as any);
+      setSession({
+        access_token: "mock-token",
+        token_type: "bearer",
+        user: {
+          id: "12345678-1234-1234-1234-123456789012",
+          email: "testuser@example.com",
+          user_metadata: { full_name: "Test User", username: "testuser" },
+        },
+      });
       router.push("/dashboard");
       return;
     }
 
-    const sb = getSupabase();
-    if (!sb) {
-      alert("Authentication is not configured. Missing NEXT_PUBLIC_SUPABASE_URL or NEXT_PUBLIC_SUPABASE_ANON_KEY environment variables.");
-      return;
-    }
-
+    // 1. Primary: initiate Cognito Google OAuth with PKCE
     try {
-      const requestOrigin = typeof window !== "undefined" ? window.location.origin : null;
-      const redirectUrl = getAuthRedirectUrl({
-        fallbackOrigin: requestOrigin,
-        next: "/dashboard",
-      });
-      const { data, error } = await sb.auth.signInWithOAuth({
-        provider: "google",
-        options: {
-          redirectTo: redirectUrl,
-          queryParams: {
-            access_type: 'offline',
-            prompt: 'consent',
-          },
-        },
-      });
-
-      if (error) {
-        console.error("Sign-in error:", error.message);
-        alert("Sign-in failed: " + error.message);
-      } else if (data?.url) {
-        window.location.href = data.url;
+      const res = await initiateCognitoGoogleAuth("/dashboard");
+      if (res?.url) {
+        window.location.href = res.url;
+        return;
       }
-    } catch (err: any) {
-      console.error("Unexpected sign-in error:", err);
-      alert("An unexpected error occurred during sign-in: " + (err.message || String(err)));
+    } catch (cognitoErr: any) {
+      console.warn("[Auth] Cognito Google sign-in initialization notice:", cognitoErr?.message);
     }
+
+    // 2. Fallback: Supabase OAuth if Cognito is not yet fully configured in environment
+    const sb = getSupabase();
+    if (sb) {
+      try {
+        const requestOrigin = typeof window !== "undefined" ? window.location.origin : null;
+        const redirectUrl = getAuthRedirectUrl({
+          fallbackOrigin: requestOrigin,
+          next: "/dashboard",
+        });
+        const { data, error } = await sb.auth.signInWithOAuth({
+          provider: "google",
+          options: {
+            redirectTo: redirectUrl,
+            queryParams: {
+              access_type: "offline",
+              prompt: "consent",
+            },
+          },
+        });
+
+        if (error) {
+          console.error("Sign-in error:", error.message);
+          alert("Sign-in failed: " + error.message);
+        } else if (data?.url) {
+          window.location.href = data.url;
+        }
+        return;
+      } catch (err: any) {
+        console.error("Unexpected sign-in error:", err);
+        alert("An unexpected error occurred during sign-in: " + (err.message || String(err)));
+        return;
+      }
+    }
+
+    alert(
+      "Authentication is not configured. Please ensure Amazon Cognito environment variables are provided."
+    );
   };
 
-  const signInWithEmail = async (identifier: string, password: string): Promise<{ error: string | null }> => {
+  const signInWithEmail = async (
+    identifier: string,
+    password: string
+  ): Promise<{ error: string | null }> => {
     const cleanIdentifier = identifier.trim();
 
     if (!cleanIdentifier) {
@@ -253,22 +345,17 @@ export function AuthProvider({
       return { error: result.error };
     }
 
-    // Refresh client auth session if available and redirect
-    const sb = getSupabase();
-    if (sb) {
-      try {
-        const { data: { session: newSession } } = await sb.auth.getSession();
-        if (newSession) {
-          setSession(newSession);
-        }
-      } catch (_) {}
-    }
+    // Refresh server session state
+    try {
+      const { session: newSession } = await getCurrentSession();
+      if (newSession) {
+        setSession(newSession);
+      }
+    } catch (_) {}
 
     window.location.replace("/dashboard");
     return { error: null };
   };
-
-
 
   const signUpWithEmail = async (
     email: string,
@@ -292,15 +379,25 @@ export function AuthProvider({
       return { error: null, message: (result as any).message };
     }
 
+    // Refresh server session state
+    try {
+      const { session: newSession } = await getCurrentSession();
+      if (newSession) {
+        setSession(newSession);
+      }
+    } catch (_) {}
+
     window.location.replace("/dashboard");
     return { error: null };
   };
 
-
-
   const signOut = async () => {
+    let logoutUrl = "/login";
     try {
-      await logout();
+      const res = await logout();
+      if (res?.logoutUrl) {
+        logoutUrl = res.logoutUrl;
+      }
       if (typeof window !== "undefined") {
         if (API && typeof API.clearCachedProfile === "function") {
           API.clearCachedProfile();
@@ -312,8 +409,9 @@ export function AuthProvider({
         sessionStorage.clear();
       }
     } catch (_) {}
+    setSession(null);
     setProfile(null);
-    window.location.replace("/login");
+    window.location.replace(logoutUrl);
   };
 
   const getUserMeta = () => {
@@ -334,8 +432,13 @@ export function AuthProvider({
       }
     } catch (_) {}
 
-    const username = cached?.username || meta.username || (user.email ? user.email.split("@")[0] : "");
-    const name = cached?.name || meta.full_name || meta.name || (user.email ? user.email.split("@")[0] : "User");
+    const username =
+      cached?.username || meta.username || (user.email ? user.email.split("@")[0] : "");
+    const name =
+      cached?.name ||
+      meta.full_name ||
+      meta.name ||
+      (user.email ? user.email.split("@")[0] : "User");
     const avatar = cached?.avatar_url || meta.avatar_url || meta.picture || "";
 
     return {

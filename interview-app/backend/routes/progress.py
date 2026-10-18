@@ -13,6 +13,10 @@ from models.schemas import (
     ProgressEntry,
     ProgressStatusResponse,
     TopicProgressEntry,
+    CustomFolderEntry,
+    CustomFolderListResponse,
+    CustomFolderCreateRequest,
+    CustomFolderQuestionActionRequest,
 )
 import logging
 from routes.auth import get_current_user, get_optional_current_user
@@ -467,3 +471,218 @@ def clear_question_progress(qnum: int, user: dict = Depends(get_current_user)):
         raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
 
     return {"success": True, "qnum": qnum}
+
+
+# ── Custom Folders ───────────────────────────────────────────────────────────
+
+def _ensure_folders_table():
+    """Ensure user_custom_folders table exists in RDS."""
+    try:
+        rds_client.mutate("""
+            CREATE TABLE IF NOT EXISTS user_custom_folders (
+                id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+                user_id UUID NOT NULL REFERENCES user_profiles(id) ON DELETE CASCADE,
+                folder_name TEXT NOT NULL,
+                qnums INTEGER[] NOT NULL DEFAULT '{}'::int[],
+                created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                updated_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+                CONSTRAINT uq_user_folder_name UNIQUE (user_id, folder_name)
+            );
+            CREATE INDEX IF NOT EXISTS idx_user_custom_folders_user ON user_custom_folders(user_id);
+        """)
+    except Exception as exc:
+        logger.warning("Could not ensure user_custom_folders table: %s", exc)
+
+
+@router.get("/folders", response_model=CustomFolderListResponse)
+def get_user_custom_folders(user: dict = Depends(get_current_user)):
+    """Return all custom question folders for current user."""
+    _ensure_folders_table()
+    try:
+        rows = rds_client.query(
+            """
+            SELECT id, folder_name, qnums, created_at, updated_at
+            FROM user_custom_folders
+            WHERE user_id = %s
+            ORDER BY updated_at DESC, folder_name ASC;
+            """,
+            (user["id"],),
+        ) or []
+    except Exception as exc:
+        logger.error("get_user_custom_folders RDS error: %s", exc)
+        rows = []
+
+    folders = []
+    for r in rows:
+        raw_qnums = r.get("qnums") or []
+        qnums = [int(q) for q in raw_qnums if int(q) > 0]
+        folders.append(
+            CustomFolderEntry(
+                id=str(r.get("id", "")),
+                name=r.get("folder_name", ""),
+                qnums=qnums,
+                count=len(qnums),
+                created_at=str(r.get("created_at", "")),
+                updated_at=str(r.get("updated_at", "")),
+            )
+        )
+    return CustomFolderListResponse(folders=folders)
+
+
+@router.post("/folders", response_model=CustomFolderEntry)
+def create_or_update_custom_folder(payload: CustomFolderCreateRequest, user: dict = Depends(get_current_user)):
+    """Create or overwrite a custom question folder."""
+    _ensure_folders_table()
+    name = payload.name.strip()
+    if not name:
+        raise HTTPException(status_code=422, detail="Folder name cannot be empty.")
+
+    clean_qnums = list(dict.fromkeys([int(q) for q in payload.qnums if int(q) > 0]))
+
+    try:
+        rds_client.mutate(
+            """
+            INSERT INTO user_custom_folders (user_id, folder_name, qnums, updated_at)
+            VALUES (%s, %s, %s, now())
+            ON CONFLICT (user_id, folder_name) DO UPDATE
+            SET qnums = EXCLUDED.qnums,
+                updated_at = now();
+            """,
+            (user["id"], name, clean_qnums),
+        )
+        row = rds_client.query(
+            "SELECT id, folder_name, qnums, created_at, updated_at FROM user_custom_folders WHERE user_id = %s AND folder_name = %s LIMIT 1;",
+            (user["id"], name),
+            fetch="one",
+        ) or {}
+    except Exception as exc:
+        logger.error("create_or_update_custom_folder RDS error: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+
+    return CustomFolderEntry(
+        id=str(row.get("id", "")),
+        name=name,
+        qnums=clean_qnums,
+        count=len(clean_qnums),
+        created_at=str(row.get("created_at", "")),
+        updated_at=str(row.get("updated_at", "")),
+    )
+
+
+@router.post("/folders/add-question")
+def add_question_to_custom_folder(payload: CustomFolderQuestionActionRequest, user: dict = Depends(get_current_user)):
+    """Add a question to a custom folder, creating the folder if needed."""
+    _ensure_folders_table()
+    folder_name = payload.folder_name.strip()
+    if not folder_name:
+        raise HTTPException(status_code=422, detail="Folder name cannot be empty.")
+    qnum = payload.qnum
+
+    try:
+        existing = rds_client.query(
+            "SELECT id, qnums FROM user_custom_folders WHERE user_id = %s AND folder_name = %s LIMIT 1;",
+            (user["id"], folder_name),
+            fetch="one",
+        )
+
+        if not existing:
+            rds_client.mutate(
+                """
+                INSERT INTO user_custom_folders (user_id, folder_name, qnums, updated_at)
+                VALUES (%s, %s, %s, now());
+                """,
+                (user["id"], folder_name, [qnum]),
+            )
+            return {
+                "success": True,
+                "folder_name": folder_name,
+                "qnum": qnum,
+                "already_present": False,
+                "count": 1,
+            }
+
+        raw_qnums = existing.get("qnums") or []
+        current_qnums = [int(q) for q in raw_qnums if int(q) > 0]
+        if qnum in current_qnums:
+            return {
+                "success": True,
+                "folder_name": folder_name,
+                "qnum": qnum,
+                "already_present": True,
+                "count": len(current_qnums),
+            }
+
+        current_qnums.append(qnum)
+        rds_client.mutate(
+            """
+            UPDATE user_custom_folders
+            SET qnums = %s, updated_at = now()
+            WHERE user_id = %s AND folder_name = %s;
+            """,
+            (current_qnums, user["id"], folder_name),
+        )
+        return {
+            "success": True,
+            "folder_name": folder_name,
+            "qnum": qnum,
+            "already_present": False,
+            "count": len(current_qnums),
+        }
+    except Exception as exc:
+        logger.error("add_question_to_custom_folder RDS error: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+
+
+@router.post("/folders/remove-question")
+def remove_question_from_custom_folder(payload: CustomFolderQuestionActionRequest, user: dict = Depends(get_current_user)):
+    """Remove a question from a custom folder."""
+    _ensure_folders_table()
+    folder_name = payload.folder_name.strip()
+    if not folder_name:
+        raise HTTPException(status_code=422, detail="Folder name cannot be empty.")
+    qnum = payload.qnum
+
+    try:
+        existing = rds_client.query(
+            "SELECT id, qnums FROM user_custom_folders WHERE user_id = %s AND folder_name = %s LIMIT 1;",
+            (user["id"], folder_name),
+            fetch="one",
+        )
+        if not existing:
+            return {"success": True, "folder_name": folder_name, "qnum": qnum, "count": 0}
+
+        raw_qnums = existing.get("qnums") or []
+        current_qnums = [int(q) for q in raw_qnums if int(q) > 0]
+        new_qnums = [q for q in current_qnums if q != qnum]
+
+        rds_client.mutate(
+            """
+            UPDATE user_custom_folders
+            SET qnums = %s, updated_at = now()
+            WHERE user_id = %s AND folder_name = %s;
+            """,
+            (new_qnums, user["id"], folder_name),
+        )
+        return {"success": True, "folder_name": folder_name, "qnum": qnum, "count": len(new_qnums)}
+    except Exception as exc:
+        logger.error("remove_question_from_custom_folder RDS error: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+
+
+@router.delete("/folders/{folder_name}")
+def delete_custom_folder(folder_name: str, user: dict = Depends(get_current_user)):
+    """Delete a custom folder."""
+    _ensure_folders_table()
+    clean_name = folder_name.strip()
+    if not clean_name:
+        raise HTTPException(status_code=422, detail="Folder name cannot be empty.")
+
+    try:
+        rds_client.mutate(
+            "DELETE FROM user_custom_folders WHERE user_id = %s AND folder_name = %s;",
+            (user["id"], clean_name),
+        )
+        return {"success": True, "folder_name": clean_name}
+    except Exception as exc:
+        logger.error("delete_custom_folder RDS error: %s", exc)
+        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc

@@ -53,10 +53,15 @@ export default function LandingPage() {
           borderBottom: "1px solid var(--line)"
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.75rem" }}>
+        <Link
+          href={user ? "/dashboard" : "/"}
+          style={{ display: "flex", alignItems: "center", gap: "0.75rem", textDecoration: "none", color: "inherit" }}
+          aria-label="Interview Assistant"
+          title="Interview Assistant"
+        >
           <Image src="/assets/logo-mark.svg" alt="Logo" width={32} height={32} />
           <span style={{ fontWeight: 700, fontSize: "1.25rem", letterSpacing: "-0.025em" }}>Interview Assistant</span>
-        </div>
+        </Link>
         <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
           <Link href="/login" style={{ color: "var(--muted)", textDecoration: "none", fontSize: "0.95rem", fontWeight: 500 }}>
             Sign In
@@ -322,10 +327,15 @@ export default function LandingPage() {
       {/* Footer */}
       <footer style={{ borderTop: "1px solid var(--line)", padding: "3rem 2rem", background: "var(--paper)" }}>
         <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: "2rem", alignItems: "center", fontSize: "0.88rem", color: "var(--muted)" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+          <Link
+            href={user ? "/dashboard" : "/"}
+            style={{ display: "flex", alignItems: "center", gap: "0.5rem", textDecoration: "none", color: "inherit" }}
+            aria-label="Interview Assistant"
+            title="Interview Assistant"
+          >
             <Image src="/assets/logo-mark.svg" alt="Logo" width={20} height={20} />
             <span style={{ fontWeight: 600, color: "var(--ink)" }}>Interview Assistant</span>
-          </div>
+          </Link>
           <div>
             ┬⌐ 2026 Interview Assistant. Sharpen your skills responsibly.
           </div>

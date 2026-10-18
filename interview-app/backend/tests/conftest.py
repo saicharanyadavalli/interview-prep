@@ -165,7 +165,7 @@ class MockRDSStore:
             return [{"healthy": 1}]
 
         # Extract table name
-        match = re.search(r"FROM\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        match = re.search(r"FROM\s+(?:[a-zA-Z0-9_]+\.)?([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
         if not match:
             return [] if fetch == "all" else None
 
@@ -202,6 +202,18 @@ class MockRDSStore:
         elif "username = %s" in sql_clean.lower() and params:
             uname = str(params[0]).lower()
             rows = [r for r in rows if str(r.get("username", "")).lower() == uname]
+
+        if "lower(email) = lower(%s)" in sql_clean.lower() and params:
+            em = str(params[0]).lower()
+            rows = [r for r in rows if str(r.get("email", "")).lower() == em]
+        elif "email = %s" in sql_clean.lower() and params:
+            em = str(params[0]).lower()
+            rows = [r for r in rows if str(r.get("email", "")).lower() == em]
+
+        if "provider = %s and provider_sub = %s" in sql_clean.lower() and len(params) >= 2:
+            prov = str(params[0]).lower()
+            psub = str(params[1])
+            rows = [r for r in rows if str(r.get("provider", "")).lower() == prov and str(r.get("provider_sub", "")) == psub]
 
         if "where id = %s" in sql_clean.lower() and params:
             target_id = str(params[0])
@@ -262,6 +274,18 @@ class MockRDSStore:
                 return len(rows)
             return [{"count": len(rows)}]
 
+        # Information schema table existence checks
+        if "information_schema.tables" in sql_clean.lower():
+            for t_name in ("user_identities", "user_profiles", "user_progress", "learning_track_progress", "practice_history", "user_comments"):
+                if t_name in sql_clean.lower():
+                    exists = t_name in self._tables
+                    if fetch == "scalar":
+                        return exists
+                    return [{"exists": exists}] if exists else []
+            if fetch == "scalar":
+                return True
+            return [{"exists": True}]
+
         # Sorting
         if "order by created_at desc" in sql_clean.lower() and table != "user_comments":
             rows = sorted(rows, key=lambda x: str(x.get("created_at", "")), reverse=True)
@@ -291,7 +315,7 @@ class MockRDSStore:
         params = list(params) if isinstance(params, (tuple, list)) else ([params] if params is not None else [])
 
         # INSERT
-        m_ins = re.search(r"INSERT\s+INTO\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        m_ins = re.search(r"INSERT\s+INTO\s+(?:[a-zA-Z0-9_]+\.)?([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
         if m_ins:
             table = m_ins.group(1).lower()
             table_rows = self._tables.setdefault(table, [])
@@ -329,7 +353,7 @@ class MockRDSStore:
             return [new_row] if returning else 1
 
         # UPDATE
-        m_upd = re.search(r"UPDATE\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        m_upd = re.search(r"UPDATE\s+(?:[a-zA-Z0-9_]+\.)?([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
         if m_upd:
             table = m_upd.group(1).lower()
             table_rows = self._tables.get(table, [])
@@ -360,19 +384,38 @@ class MockRDSStore:
             return updated_rows if returning else (len(updated_rows) or 1)
 
         # DELETE
-        m_del = re.search(r"DELETE\s+FROM\s+([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
+        m_del = re.search(r"DELETE\s+FROM\s+(?:[a-zA-Z0-9_]+\.)?([a-zA-Z0-9_]+)", sql_clean, re.IGNORECASE)
         if m_del:
             table = m_del.group(1).lower()
             table_rows = self._tables.get(table, [])
-            if "where id = %s" in sql_clean.lower() and params:
+            before_len = len(table_rows)
+            if "where id = %s and user_id = %s" in sql_clean.lower() and len(params) >= 2:
+                target_id = str(params[0])
+                uid = str(params[1])
+                self._tables[table] = [r for r in table_rows if not (str(r.get("id")) == target_id and str(r.get("user_id")) == uid)]
+                return (before_len - len(self._tables[table])) if before_len > 0 else 1
+            elif "where id = %s" in sql_clean.lower() and params:
                 target_id = str(params[0])
                 self._tables[table] = [r for r in table_rows if str(r.get("id")) != target_id]
+                return (before_len - len(self._tables[table])) if before_len > 0 else 1
             elif "where user_id = %s and qnum = %s" in sql_clean.lower() and len(params) >= 2:
                 target_qnum = params[1]
                 self._tables[table] = [r for r in table_rows if r.get("qnum") != target_qnum]
+                return before_len - len(self._tables[table])
+            elif "where user_id = %s" in sql_clean.lower() and params:
+                uid = str(params[0])
+                self._tables[table] = [r for r in table_rows if str(r.get("user_id")) != uid]
+                return before_len - len(self._tables[table])
             return 1
 
         return 1
+
+    def execute_transaction(self, statements: list[tuple[str, Any]]) -> list[int]:
+        results = []
+        for sql, params in statements:
+            count = self.mutate(sql, params)
+            results.append(count if isinstance(count, int) else 0)
+        return results
 
 
 @pytest.fixture
@@ -383,6 +426,7 @@ def mock_supabase() -> Generator[MockSupabaseClient, None, None]:
     with patch("services.supabase_client.get_supabase_client", return_value=mock_client), \
          patch("services.rds_client.query", side_effect=mock_rds.query), \
          patch("services.rds_client.mutate", side_effect=mock_rds.mutate), \
+         patch("services.rds_client.execute_transaction", side_effect=mock_rds.execute_transaction), \
          patch("services.rds_client.check_rds_health", return_value=True):
         yield mock_client
 

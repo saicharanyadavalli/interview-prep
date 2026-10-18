@@ -125,12 +125,16 @@ export const API = {
       }
     } catch (_) {}
 
-    // Fallback: extract auth token from browser cookies if Supabase client is hydrating
+    // Fallback: extract auth token from browser cookies if accessible
     if (typeof document !== "undefined") {
       try {
         const cookies = document.cookie.split(";");
         for (const c of cookies) {
           const trimmed = c.trim();
+          if (trimmed.startsWith("cognito_access_token=")) {
+            const rawVal = trimmed.split("=").slice(1).join("=");
+            if (rawVal) return decodeURIComponent(rawVal);
+          }
           if (trimmed.startsWith("sb-") && trimmed.includes("-auth-token=")) {
             const rawVal = trimmed.split("=").slice(1).join("=");
             if (rawVal) {
@@ -397,12 +401,72 @@ export const API = {
     return result;
   },
 
+  async resetUserProgress(): Promise<{ success: boolean; message: string; stats?: any }> {
+    const res = await this._fetch("/profile/reset-progress", {
+      method: "POST",
+    });
+    if (typeof window !== "undefined") {
+      try {
+        localStorage.removeItem("questionsPageUiState");
+        window.dispatchEvent(new CustomEvent("ipp_progress_updated"));
+      } catch (_) {}
+    }
+    return res;
+  },
+
+  async deleteUserAccount(): Promise<{ success: boolean; message: string }> {
+    const res = await this._fetch("/profile/account", {
+      method: "DELETE",
+      body: JSON.stringify({ confirm: true }),
+    });
+    if (typeof window !== "undefined") {
+      try {
+        this.clearCachedProfile();
+        localStorage.removeItem("questionsPageUiState");
+        localStorage.removeItem("questionsCustomFolderV1");
+        sessionStorage.clear();
+      } catch (_) {}
+    }
+    return res;
+  },
+
   async getRevisitQueue() {
     return this._fetch("/revisit");
   },
 
   async removeFromRevisit(qnum: string) {
     return this._fetch(`/revisit/${encodeURIComponent(qnum)}`, {
+      method: "DELETE",
+    });
+  },
+
+  async getCustomFolders() {
+    return this._fetch("/progress/folders");
+  },
+
+  async createCustomFolder(name: string, qnums: number[] = []) {
+    return this._fetch("/progress/folders", {
+      method: "POST",
+      body: JSON.stringify({ name, qnums }),
+    });
+  },
+
+  async addQuestionToFolder(folderName: string, qnum: number) {
+    return this._fetch("/progress/folders/add-question", {
+      method: "POST",
+      body: JSON.stringify({ folder_name: folderName, qnum }),
+    });
+  },
+
+  async removeQuestionFromFolder(folderName: string, qnum: number) {
+    return this._fetch("/progress/folders/remove-question", {
+      method: "POST",
+      body: JSON.stringify({ folder_name: folderName, qnum }),
+    });
+  },
+
+  async deleteCustomFolder(folderName: string) {
+    return this._fetch(`/progress/folders/${encodeURIComponent(folderName)}`, {
       method: "DELETE",
     });
   },

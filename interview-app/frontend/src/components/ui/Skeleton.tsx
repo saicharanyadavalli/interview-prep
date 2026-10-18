@@ -22,7 +22,7 @@ export const Skeleton: React.FC<SkeletonProps> = ({
 
   return (
     <div
-      className={`animate-pulse bg-zinc-800/60 ${width} ${height} ${roundedClasses[rounded]} ${className}`}
+      className={`animate-pulse bg-sidebar-hover ${width} ${height} ${roundedClasses[rounded]} ${className}`}
       {...props}
     />
   );

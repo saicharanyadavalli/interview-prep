@@ -49,11 +49,9 @@ export default function DashboardPage() {
       if (progressResult.status === "fulfilled" && progressResult.value) {
         const receivedStats = progressResult.value.stats || {};
         const receivedRecent = progressResult.value.recent || [];
-        const computedStreak = Number(
-          receivedStats.current_streak !== undefined
-            ? receivedStats.current_streak
-            : calculateStreak(receivedRecent)
-        );
+        const localStreak = calculateStreak(receivedRecent);
+        const serverStreak = Number(receivedStats.current_streak || 0);
+        const computedStreak = Math.max(serverStreak, localStreak);
 
         setStats({
           total_attempted: Number(receivedStats.total_attempted || 0),
@@ -126,7 +124,14 @@ export default function DashboardPage() {
       return (
         <div key={i} className="track-item">
           <div className="track-item-main">
-            <p className="track-title">{entry.question_title || entry.question_id}</p>
+            <Link
+              href={`/solve?qnum=${encodeURIComponent(entry.qnum || "")}`}
+              className="track-title-link"
+              style={{ textDecoration: "none", color: "inherit" }}
+              aria-label={`Practice ${entry.question_title || entry.question_id}`}
+            >
+              <p className="track-title hover-text-teal">{entry.question_title || entry.question_id}</p>
+            </Link>
             <p className="track-meta">
               {metaParts ? `${metaParts} · ` : ""}
               <span style={{ color, fontWeight: 600 }}>{statusLabel}</span>
@@ -190,7 +195,14 @@ export default function DashboardPage() {
       return (
         <div key={i} className="track-item">
           <div className="track-item-main">
-            <p className="track-title">{entry.question_title || `Question #${entry.qnum || ""}`}</p>
+            <Link
+              href={`/solve?qnum=${encodeURIComponent(entry.qnum || "")}`}
+              className="track-title-link"
+              style={{ textDecoration: "none", color: "inherit" }}
+              aria-label={`Practice question ${entry.question_title || entry.qnum}`}
+            >
+              <p className="track-title hover-text-teal">{entry.question_title || `Question #${entry.qnum || ""}`}</p>
+            </Link>
             <p className="track-meta">{metaParts || "General Practice"}</p>
           </div>
           <Link
@@ -249,6 +261,7 @@ export default function DashboardPage() {
               className="stat-card attempted animate-slide"
               style={{ animationDelay: "0ms", textDecoration: "none", cursor: "pointer" }}
               title="View all questions"
+              aria-label="View all questions"
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
@@ -260,10 +273,11 @@ export default function DashboardPage() {
             </Link>
 
             <Link
-              href="/questions"
+              href="/questions?status=solved"
               className="stat-card solved animate-slide"
               style={{ animationDelay: "60ms", textDecoration: "none", cursor: "pointer" }}
               title="View solved questions"
+              aria-label="View solved questions"
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
@@ -279,6 +293,7 @@ export default function DashboardPage() {
               className="stat-card revisit animate-slide"
               style={{ animationDelay: "120ms", textDecoration: "none", cursor: "pointer" }}
               title="Open revisit queue"
+              aria-label="Open revisit queue"
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
@@ -294,6 +309,7 @@ export default function DashboardPage() {
               className="stat-card streak animate-slide"
               style={{ animationDelay: "180ms", textDecoration: "none", cursor: "pointer" }}
               title="View consistency heatmap & streak"
+              aria-label="View consistency heatmap & streak"
             >
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
                 <div>
@@ -314,9 +330,27 @@ export default function DashboardPage() {
 
       <div className="two-col">
         <section className="section">
-          <h3 className="section-title">
-            <Clock size={20} className="text-teal" /> Recently Attempted
-          </h3>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+            <h3 className="section-title" style={{ margin: 0 }}>
+              <Link
+                href="/questions"
+                className="section-title-link"
+                style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "inherit", textDecoration: "none" }}
+                title="View question bank"
+                aria-label="Recently Attempted - View questions"
+              >
+                <Clock size={20} className="text-teal" /> Recently Attempted
+              </Link>
+            </h3>
+            <Link
+              href="/questions"
+              className="text-sm text-teal hover-text-teal"
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem" }}
+              title="View all questions"
+            >
+              View all <ArrowRight size={14} />
+            </Link>
+          </div>
           <div className="card-flat">
             <div id="recentList" className="track-list">
               {renderRecentList()}
@@ -325,9 +359,27 @@ export default function DashboardPage() {
         </section>
 
         <section className="section">
-          <h3 className="section-title">
-            <RotateCcw size={20} className="text-teal" /> Revisit Queue
-          </h3>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.75rem" }}>
+            <h3 className="section-title" style={{ margin: 0 }}>
+              <Link
+                href="/revisit"
+                className="section-title-link"
+                style={{ display: "inline-flex", alignItems: "center", gap: "0.4rem", color: "inherit", textDecoration: "none" }}
+                title="Open revisit queue"
+                aria-label="Revisit Queue - Open revisit list"
+              >
+                <RotateCcw size={20} className="text-teal" /> Revisit Queue
+              </Link>
+            </h3>
+            <Link
+              href="/revisit"
+              className="text-sm text-teal hover-text-teal"
+              style={{ display: "inline-flex", alignItems: "center", gap: "0.25rem" }}
+              title="View all revisit questions"
+            >
+              View queue <ArrowRight size={14} />
+            </Link>
+          </div>
           <div className="card-flat">
             <div id="revisitPreview" className="track-list">
               {renderRevisitPreview()}

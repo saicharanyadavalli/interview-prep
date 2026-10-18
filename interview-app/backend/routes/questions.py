@@ -375,3 +375,19 @@ def question_by_qnum(qnum: int, current_user: Optional[dict] = Depends(get_optio
     if not question:
         raise HTTPException(status_code=404, detail=f"Question with qnum={qnum} not found.")
     return QuestionResponse(**question)
+
+
+@router.get("/folders")
+def get_question_folders_alias(user: dict = Depends(get_current_user)):
+    """Convenience alias for /progress/folders."""
+    from routes.progress import get_user_custom_folders
+    return get_user_custom_folders(user)
+
+
+@router.post("/folders/add-question")
+def add_question_to_folder_alias(payload: dict, user: dict = Depends(get_current_user)):
+    """Convenience alias for /progress/folders/add-question."""
+    from routes.progress import add_question_to_custom_folder
+    from models.schemas import CustomFolderQuestionActionRequest
+    req = CustomFolderQuestionActionRequest(**payload)
+    return add_question_to_custom_folder(req, user)

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
@@ -27,6 +28,9 @@ export default async function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const cookieStore = await cookies();
+  const initialTheme = cookieStore.get("theme")?.value || "dark";
+
   const supabase = await createClient();
   let session = null;
   try {
@@ -38,8 +42,15 @@ export default async function RootLayout({
   } catch (_) {}
 
   return (
-    <html lang="en" data-scroll-behavior="smooth" suppressHydrationWarning>
-      <body className={`${spaceGrotesk.className} ${jetBrainsMono.variable} antialiased`} data-theme="dark" suppressHydrationWarning>
+    <html lang="en" data-theme={initialTheme} data-scroll-behavior="smooth" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("theme")||document.documentElement.getAttribute("data-theme")||"dark";document.documentElement.setAttribute("data-theme",t);}catch(e){}})();`,
+          }}
+        />
+      </head>
+      <body className={`${spaceGrotesk.className} ${jetBrainsMono.variable} antialiased`} suppressHydrationWarning>
         <AuthProvider initialSession={session}>
           <div className="bg-shape bg-shape-a"></div>
           <div className="bg-shape bg-shape-b"></div>

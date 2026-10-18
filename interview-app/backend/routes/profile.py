@@ -17,7 +17,14 @@ from fastapi import APIRouter, Depends, File, HTTPException, Request, Response, 
 from PIL import Image, UnidentifiedImageError
 
 from limiter import limiter
-from models.schemas import ProfileResponse, ProfileUpdateRequest
+from models.schemas import (
+    DeleteAccountRequest,
+    DeleteAccountResponse,
+    ProfileResponse,
+    ProfileUpdateRequest,
+    ResetProgressResponse,
+    ResetProgressStats,
+)
 from routes.auth import get_current_user
 from services import rds_client, s3_storage_service
 
@@ -363,3 +370,228 @@ async def upload_profile_avatar(
         "key": upload_result.get("key"),
         "bucket": upload_result.get("bucket"),
     }
+
+
+def _run_transaction(statements: list[tuple[str, tuple | list | dict | None]]) -> list[int]:
+    """Execute statements atomically, preferring rds_client.execute_transaction with fallback to mutate."""
+    if hasattr(rds_client, "execute_transaction"):
+        try:
+            return rds_client.execute_transaction(statements)
+        except Exception:
+            raise
+    results = []
+    for sql, params in statements:
+        count = rds_client.mutate(sql, params)
+        results.append(count if isinstance(count, int) else 0)
+    return results
+
+
+def _delete_cognito_user(user_id: str, username: str | None = None) -> bool:
+    """Coordinate Cognito user deletion/disablement via AdminDeleteUser.
+
+    If Cognito User Pool is configured or permitted via IAM, call admin_delete_user.
+    Handles partial failure or absence gracefully.
+    """
+    user_pool_id = (
+        os.getenv("COGNITO_USER_POOL_ID")
+        or os.getenv("AWS_COGNITO_USER_POOL_ID")
+        or os.getenv("USER_POOL_ID")
+    )
+    if not user_pool_id:
+        logger.debug("Cognito user pool not configured; skipping Cognito deletion.")
+        return False
+
+    try:
+        import boto3
+        from botocore.exceptions import ClientError
+
+        region = (
+            os.getenv("AWS_REGION")
+            or os.getenv("AWS_DEFAULT_REGION")
+            or "ap-south-2"
+        )
+        cognito = boto3.client("cognito-idp", region_name=region)
+        target = username or user_id
+        try:
+            cognito.admin_delete_user(
+                UserPoolId=user_pool_id,
+                Username=target,
+            )
+            logger.info("Deleted user %s from Cognito User Pool %s", target, user_pool_id)
+            return True
+        except ClientError as ce:
+            err_code = ce.response.get("Error", {}).get("Code", "")
+            if err_code == "UserNotFoundException" and username and username != user_id:
+                cognito.admin_delete_user(
+                    UserPoolId=user_pool_id,
+                    Username=user_id,
+                )
+                logger.info("Deleted user %s (user_id) from Cognito User Pool %s", user_id, user_pool_id)
+                return True
+            elif err_code == "UserNotFoundException":
+                logger.info("User %s already removed or not found in Cognito User Pool %s", target, user_pool_id)
+                return True
+            else:
+                logger.warning("Cognito admin_delete_user partial failure for %s (Code: %s): %s", target, err_code, ce)
+                return False
+    except Exception as exc:
+        logger.warning("Gracefully handled Cognito deletion failure for %s: %s", user_id, exc)
+        return False
+
+
+def _delete_supabase_auth_user(user_id: str) -> bool:
+    """Coordinate Supabase Auth deletion if configured, handling partial failures gracefully."""
+    try:
+        from services.supabase_client import get_supabase_client
+        sb = get_supabase_client()
+        sb.auth.admin.delete_user(user_id)
+        logger.info("Deleted user %s from Supabase Auth.", user_id)
+        return True
+    except Exception as exc:
+        logger.debug("Supabase auth admin deletion skipped or handled gracefully: %s", exc)
+        return False
+
+
+def _delete_user_avatar_asset(user_id: str, avatar_url: str) -> bool:
+    """Best-effort cleanup of user avatar in S3."""
+    if not avatar_url:
+        return False
+    try:
+        if f"avatars/{user_id}/" in avatar_url:
+            key_part = "avatars/" + avatar_url.split("avatars/", 1)[1]
+            return s3_storage_service.delete_asset(key_part)
+    except Exception as exc:
+        logger.debug("S3 avatar deletion skipped/handled gracefully: %s", exc)
+    return False
+
+
+@router.post("/reset-progress", response_model=ResetProgressResponse)
+@limiter.limit("5000/minute")
+def reset_user_progress(
+    request: Request,
+    response: Response,
+    current_user: dict = Depends(get_current_user),
+):
+    """Reset question solving, learning track, and practice history progress for current user.
+
+    Preserves user_profiles, user_comments, course_lessons, and question_bank data.
+    Executes deletion transactionally in RDS.
+    """
+    request.state.rate_limit_user_id = current_user.get("id")
+    user_id = current_user["id"]
+
+    try:
+        statements = [
+            ("DELETE FROM user_progress WHERE user_id = %s;", (user_id,)),
+            ("DELETE FROM learning_track_progress WHERE user_id = %s;", (user_id,)),
+            ("DELETE FROM practice_history WHERE user_id = %s;", (user_id,)),
+        ]
+        counts = _run_transaction(statements)
+        user_progress_deleted = counts[0] if len(counts) > 0 else 0
+        learning_track_deleted = counts[1] if len(counts) > 1 else 0
+        practice_history_deleted = counts[2] if len(counts) > 2 else 0
+
+        logger.info(
+            "Reset progress for user %s: %d user_progress, %d learning_track, %d practice_history",
+            user_id,
+            user_progress_deleted,
+            learning_track_deleted,
+            practice_history_deleted,
+        )
+
+        return ResetProgressResponse(
+            success=True,
+            message="Progress reset successfully",
+            stats=ResetProgressStats(
+                user_progress_deleted=user_progress_deleted,
+                learning_track_progress_deleted=learning_track_deleted,
+                practice_history_deleted=practice_history_deleted,
+            ),
+        )
+    except Exception as exc:
+        logger.error("Failed to reset progress for user %s: %s", user_id, exc)
+        raise HTTPException(status_code=500, detail="Failed to reset user progress.") from exc
+
+
+@router.delete("/account", response_model=DeleteAccountResponse)
+@limiter.limit("5000/minute")
+def delete_user_account(
+    request: Request,
+    response: Response,
+    payload: DeleteAccountRequest,
+    current_user: dict = Depends(get_current_user),
+):
+    """Permanently delete user account and all associated user-owned records.
+
+    Transactionally deletes user records across RDS (user_identities, user_comments,
+    user_progress, learning_track_progress, practice_history, and user_profiles).
+    Coordinates Cognito user deletion/disablement and Supabase Auth cleanup.
+    """
+    request.state.rate_limit_user_id = current_user.get("id")
+    user_id = current_user["id"]
+
+    if not payload.confirm:
+        raise HTTPException(
+            status_code=400,
+            detail="Account deletion must be explicitly confirmed with confirm=true.",
+        )
+
+    # 1. Fetch profile to check avatar_url for cleanup before deleting row
+    avatar_url = ""
+    try:
+        profile_row = rds_client.query(
+            "SELECT avatar_url, username FROM user_profiles WHERE id = %s LIMIT 1;",
+            (user_id,),
+            fetch="one",
+        )
+        if profile_row:
+            avatar_url = profile_row.get("avatar_url") or ""
+    except Exception as exc:
+        logger.warning("Could not fetch user avatar before deletion: %s", exc)
+
+    # 2. Check if user_identities table exists in database
+    identities_table_exists = False
+    try:
+        identities_table_exists = bool(
+            rds_client.query(
+                "SELECT 1 FROM information_schema.tables WHERE table_schema = 'public' AND table_name = 'user_identities' LIMIT 1;",
+                fetch="scalar",
+            )
+        )
+    except Exception as exc:
+        logger.debug("user_identities table check skipped: %s", exc)
+
+    # 3. Assemble atomic transaction statements in strict dependency order:
+    # (user_identities, user_comments, user_progress, learning_track_progress, practice_history, and finally user_profiles)
+    statements = []
+    if identities_table_exists:
+        statements.append(("DELETE FROM user_identities WHERE user_id = %s;", (user_id,)))
+    statements.extend([
+        ("DELETE FROM user_comments WHERE user_id = %s;", (user_id,)),
+        ("DELETE FROM user_progress WHERE user_id = %s;", (user_id,)),
+        ("DELETE FROM learning_track_progress WHERE user_id = %s;", (user_id,)),
+        ("DELETE FROM practice_history WHERE user_id = %s;", (user_id,)),
+        ("DELETE FROM user_profiles WHERE id = %s;", (user_id,)),
+    ])
+
+    try:
+        _run_transaction(statements)
+        logger.info("Successfully deleted all RDS records for user %s", user_id)
+    except Exception as exc:
+        logger.error("Failed to delete user records in RDS for %s: %s", user_id, exc)
+        raise HTTPException(status_code=500, detail="Failed to delete account data.") from exc
+
+    # 4. Coordinate Cognito user deletion / disablement (graceful partial failure handling)
+    _delete_cognito_user(user_id=user_id, username=current_user.get("username"))
+
+    # 5. Coordinate Supabase Auth user deletion (graceful partial failure handling)
+    _delete_supabase_auth_user(user_id=user_id)
+
+    # 6. Best-effort avatar cleanup in S3
+    if avatar_url:
+        _delete_user_avatar_asset(user_id=user_id, avatar_url=avatar_url)
+
+    return DeleteAccountResponse(
+        success=True,
+        message="Account deleted successfully",
+    )

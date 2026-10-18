@@ -21,7 +21,7 @@ const DEFAULT_TOPIC_OPTIONS = [
 const FIELD_DEFS: Record<string, { label: string; values: string[] }> = {
   status: {
     label: "Status",
-    values: ["solved", "unsolved"],
+    values: ["solved", "unsolved", "attempted"],
   },
   difficulty: {
     label: "Difficulty",
@@ -70,6 +70,7 @@ export interface FilterBuilderProps {
   onChange?: (state: FilterState, queryObj: Record<string, any>) => void;
   companies?: string[];
   topics?: string[];
+  initialFilters?: FilterCondition[];
 }
 
 export function FilterBuilder({
@@ -78,6 +79,7 @@ export function FilterBuilder({
   onChange,
   companies = [],
   topics = [],
+  initialFilters,
 }: FilterBuilderProps) {
   const [state, setState] = useState<FilterState>({
     version: 3,
@@ -175,6 +177,17 @@ export function FilterBuilder({
 
   // Initial load
   useEffect(() => {
+    if (initialFilters && initialFilters.length > 0) {
+      const initialFromProps: FilterState = {
+        version: 3,
+        matchType: "all",
+        filters: initialFilters,
+      };
+      setState(sanitizeStateRef.current ? sanitizeStateRef.current(initialFromProps) : initialFromProps);
+      setIsLoaded(true);
+      return;
+    }
+
     let initialState: FilterState = { version: 3, matchType: "all", filters: [] };
     if (persist && typeof window !== "undefined") {
       try {
@@ -201,7 +214,7 @@ export function FilterBuilder({
     }
     setState(sanitizeStateRef.current ? sanitizeStateRef.current(initialState) : initialState);
     setIsLoaded(true);
-  }, [persist, storageKey]);
+  }, [persist, storageKey, initialFilters]);
 
   const onChangeRef = useRef(onChange);
   useEffect(() => {

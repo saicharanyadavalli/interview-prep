@@ -16,9 +16,10 @@ export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "dark";
+    const savedTheme = localStorage.getItem("theme") || document.documentElement.getAttribute("data-theme") || "dark";
     setTheme(savedTheme);
     document.documentElement.setAttribute("data-theme", savedTheme);
+    document.cookie = `theme=${savedTheme}; path=/; max-age=31536000; SameSite=Lax`;
 
     const savedCollapsed = localStorage.getItem("sidebarCollapsed") === "true";
     setIsCollapsed(savedCollapsed);
@@ -65,6 +66,7 @@ export function Sidebar() {
     setTheme(next);
     localStorage.setItem("theme", next);
     document.documentElement.setAttribute("data-theme", next);
+    document.cookie = `theme=${next}; path=/; max-age=31536000; SameSite=Lax`;
   };
 
   const closeMobile = () => setIsOpen(false);
@@ -81,8 +83,9 @@ export function Sidebar() {
       <button 
         className="sidebar-toggle" 
         type="button" 
-        aria-label="Toggle menu"
-        onClick={() => setIsOpen(true)}
+        aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={isOpen}
+        onClick={() => setIsOpen((prev) => !prev)}
       >
         <Menu size={20} />
       </button>
@@ -94,14 +97,23 @@ export function Sidebar() {
       <aside className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="sidebar-brand" style={{ position: 'relative' }}>
           <h2>
-            <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" width={24} height={24} /> 
-            <span className="sidebar-brand-text">Interview Assistant</span>
+            <Link
+              href="/dashboard"
+              className="sidebar-brand-link"
+              onClick={closeMobile}
+              aria-label="Interview Assistant Dashboard"
+              title="Interview Assistant - Go to Dashboard"
+            >
+              <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" width={24} height={24} />
+              <span className="sidebar-brand-text">Interview Assistant</span>
+            </Link>
           </h2>
           <button 
             type="button" 
             className="sidebar-collapse-btn"
             onClick={toggleCollapse}
             aria-label={isCollapsed ? "Expand sidebar" : "Collapse sidebar"}
+            aria-expanded={!isCollapsed}
             title={`${isCollapsed ? "Expand" : "Collapse"} sidebar`}
           >
             {isCollapsed ? <ChevronsRight size={14} /> : <ChevronsLeft size={14} />}
@@ -154,9 +166,9 @@ export function Sidebar() {
             <button 
               className="btn btn-sm btn-icon" 
               type="button" 
-              aria-label="Toggle theme"
+              aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
               onClick={toggleTheme}
-              title="Toggle Theme"
+              title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
             >
               {theme === "dark" ? <Sun size={16} /> : <Moon size={16} />}
             </button>

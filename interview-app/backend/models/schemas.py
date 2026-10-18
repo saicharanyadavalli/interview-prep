@@ -140,6 +140,33 @@ class ProfileUpdateRequest(BaseModel):
         )
 
 
+class ResetProgressStats(BaseModel):
+    """Statistics detailing deleted rows per progress table."""
+    user_progress_deleted: int = 0
+    learning_track_progress_deleted: int = 0
+    practice_history_deleted: int = 0
+
+
+class ResetProgressResponse(BaseModel):
+    """Response returned upon successful progress reset."""
+    success: bool = True
+    message: str = "Progress reset successfully"
+    stats: ResetProgressStats = Field(default_factory=ResetProgressStats)
+
+
+class DeleteAccountRequest(BaseModel):
+    """Payload to permanently delete current user account."""
+    model_config = ConfigDict(extra="forbid")
+
+    confirm: bool = Field(..., description="Explicit confirmation flag required to delete account.")
+
+
+class DeleteAccountResponse(BaseModel):
+    """Response returned upon permanent account deletion."""
+    success: bool = True
+    message: str = "Account deleted successfully"
+
+
 # ---------- Questions ----------
 
 class QuestionResponse(BaseModel):
@@ -509,4 +536,37 @@ class SeedTablesResponse(BaseModel):
     """Collection of SQL seed tables for sql.js execution."""
     course_slug: str
     tables: list[SeedTableDefinition] = Field(default_factory=list)
+
+
+# ---------- Custom Folders ----------
+
+class CustomFolderEntry(BaseModel):
+    """Custom question folder item."""
+    id: Optional[str] = None
+    name: str = Field(..., min_length=1, max_length=100)
+    qnums: list[int] = Field(default_factory=list)
+    count: int = 0
+    created_at: Optional[str] = None
+    updated_at: Optional[str] = None
+
+
+class CustomFolderListResponse(BaseModel):
+    """List of custom folders for the user."""
+    folders: list[CustomFolderEntry] = Field(default_factory=list)
+
+
+class CustomFolderCreateRequest(BaseModel):
+    """Payload to create or update a custom folder."""
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(..., min_length=1, max_length=100)
+    qnums: list[int] = Field(default_factory=list, max_length=5000)
+
+
+class CustomFolderQuestionActionRequest(BaseModel):
+    """Payload to add or remove a question from a folder."""
+    model_config = ConfigDict(extra="forbid")
+
+    folder_name: str = Field(..., min_length=1, max_length=100)
+    qnum: int = Field(..., ge=1, le=100_000)
 

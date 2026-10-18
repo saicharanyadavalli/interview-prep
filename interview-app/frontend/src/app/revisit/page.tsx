@@ -84,6 +84,22 @@ export default function RevisitPage() {
     return () => { mounted = false; };
   }, [user]);
 
+  // Synchronize immediately if revisit state is updated in preview or another tab/drawer
+  useEffect(() => {
+    const handleRevisitUpdate = (e: any) => {
+      const { qnum, revisit } = e.detail || {};
+      if (qnum) {
+        if (!revisit) {
+          setItems(prev => prev.filter(item => Number(item.qnum) !== Number(qnum)));
+        } else {
+          loadQueue();
+        }
+      }
+    };
+    window.addEventListener("ipp_revisit_updated", handleRevisitUpdate);
+    return () => window.removeEventListener("ipp_revisit_updated", handleRevisitUpdate);
+  }, []);
+
   const handleRemove = async (qnum: number) => {
     setRemovingIds(prev => new Set(prev).add(qnum));
     try {

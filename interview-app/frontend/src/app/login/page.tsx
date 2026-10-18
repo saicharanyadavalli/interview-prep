@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useAuth } from "@/lib/auth";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 
 export default function LoginPage() {
   const { session, signInWithGoogle, signInWithEmail, signUpWithEmail, loading } = useAuth();
@@ -158,8 +159,15 @@ export default function LoginPage() {
   return (
     <div className="login-page w-full">
       <div className="login-card mx-auto">
-        <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" width={48} height={48} />
-        <h1>Interview Assistant</h1>
+        <Link
+          href="/"
+          style={{ display: "inline-block", textDecoration: "none", color: "inherit" }}
+          aria-label="Return to home page"
+          title="Interview Assistant"
+        >
+          <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Interview Assistant logo" width={48} height={48} />
+          <h1>Interview Assistant</h1>
+        </Link>
         <p className="subtitle">Sharpen your coding interview skills with AI-powered guidance</p>
 
         {/* Tab Selection */}

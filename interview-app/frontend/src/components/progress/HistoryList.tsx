@@ -16,14 +16,7 @@ function titleCase(value: string) {
     .join(" ");
 }
 
-function formatDate(dateStr: string) {
-  if (!dateStr) return "Date unavailable";
-  try {
-    return new Date(dateStr).toLocaleDateString();
-  } catch (_) {
-    return String(dateStr);
-  }
-}
+import { formatDateDisplay } from "@/utils/streak-analytics";
 
 export function HistoryList({ recent }: { recent: any[] }) {
   if (!Array.isArray(recent) || !recent.length) {
@@ -63,7 +56,7 @@ export function HistoryList({ recent }: { recent: any[] }) {
               <h4>{entry.question_title || entry.question_id || "Untitled Question"}</h4>
               <span className={`pill progress-v3-diff-pill ${difficulty}`}>{difficultyLabel}</span>
             </div>
-            <p className="progress-v3-history-meta">{entry.company || "Unknown Company"} • {formatDate(entry.updated_at)}</p>
+            <p className="progress-v3-history-meta">{entry.company || "Unknown Company"} • {formatDateDisplay(entry.updated_at)}</p>
             <p className={`progress-v3-history-status ${statusClass}`}>{statusLabel}</p>
             <div className="progress-v3-history-actions">
               <Link href={`/solve?qnum=${encodeURIComponent(entry.qnum || "")}`} className="btn btn-sm btn-primary">Practice Again</Link>

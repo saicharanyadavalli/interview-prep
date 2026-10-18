@@ -315,6 +315,40 @@ class RDSConnectionPoolManager:
                 logger.error("Mutation execution error: %s [Query: %s]", exc, query[:200])
                 raise DatabaseQueryError(f"Database mutation failed: {exc}") from exc
 
+    def execute_transaction(
+        self,
+        statements: list[tuple[str, Optional[tuple | list | dict]]],
+    ) -> list[int]:
+        """Execute multiple SQL mutations atomically within a single transaction.
+
+        Rolls back the entire transaction if any mutation raises an error.
+        Returns a list of integer rowcounts corresponding to each executed statement.
+        """
+        results: list[int] = []
+        with self.get_connection() as conn:
+            cursor = None
+            try:
+                cursor = conn.cursor(cursor_factory=RealDictCursor)
+                for sql, params in statements:
+                    cursor.execute(sql, params)
+                    results.append(cursor.rowcount if cursor.rowcount is not None else 0)
+                conn.commit()
+                return results
+            except Exception as exc:
+                if conn and not conn.closed:
+                    try:
+                        conn.rollback()
+                    except Exception:
+                        pass
+                logger.error("Transaction execution error: %s", exc)
+                raise DatabaseQueryError(f"Database transaction failed: {exc}") from exc
+            finally:
+                if cursor:
+                    try:
+                        cursor.close()
+                    except Exception:
+                        pass
+
     def check_health(self) -> bool:
         """Check database health by running SELECT 1."""
         try:
@@ -346,6 +380,10 @@ def query(sql: str, params: Optional[tuple | list | dict] = None, fetch: str = "
 
 def mutate(sql: str, params: Optional[tuple | list | dict] = None, returning: bool = False) -> Any:
     return get_db_pool().execute_mutation(sql, params, returning=returning)
+
+
+def execute_transaction(statements: list[tuple[str, Optional[tuple | list | dict]]]) -> list[int]:
+    return get_db_pool().execute_transaction(statements)
 
 
 def check_rds_health() -> bool:

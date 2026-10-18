@@ -333,14 +333,22 @@ export default function LeetCodeExplorerPage() {
         style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
       >
         <h1 style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-          <Image
-            className="brand-logo"
-            src="/assets/logo-mark.svg"
-            alt="Logo"
-            width={24}
-            height={24}
-          />
-          <span>Interview Assistant</span>
+          <Link
+            href="/dashboard"
+            className="header-brand-link"
+            style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", color: "inherit", textDecoration: "none" }}
+            aria-label="Interview Assistant Dashboard"
+            title="Interview Assistant - Go to Dashboard"
+          >
+            <Image
+              className="brand-logo"
+              src="/assets/logo-mark.svg"
+              alt="Logo"
+              width={24}
+              height={24}
+            />
+            <span>Interview Assistant</span>
+          </Link>
           <span
             className="text-muted"
             style={{ fontSize: "0.9rem", fontWeight: 500, marginLeft: "0.5rem" }}
@@ -764,7 +772,7 @@ export default function LeetCodeExplorerPage() {
                     {selectedQuestion.topic_tags.slice(0, 6).map((tag, idx) => (
                       <span
                         key={idx}
-                        className="px-2 py-0.5 rounded-md bg-slate-800/80 text-teal-light text-[11px] border border-line/40 font-medium"
+                        className="px-2 py-0.5 rounded-md bg-teal/10 text-teal text-[11px] border border-teal/20 font-medium"
                       >
                         {tag}
                       </span>

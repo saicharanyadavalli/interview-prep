@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState, useRef, useCallback } from "react";
 import Script from "next/script";
@@ -145,7 +145,7 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
               className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all ${
                 activeTableTab === table.name
                   ? "bg-teal/20 text-teal border border-teal/40 font-semibold"
-                  : "bg-slate-800/60 text-gray-400 hover:text-white border border-line/30"
+                  : "bg-surface-chip text-muted hover:text-ink hover:bg-surface-soft border border-line"
               }`}
             >
               <Table size={14} />
@@ -157,23 +157,23 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
         {/* Selected Table columns & sample preview */}
         {selectedTable && (
           <div className="text-xs">
-            <div className="flex flex-wrap items-center gap-1.5 mb-2 font-mono text-gray-300">
-              <span className="text-gray-400 font-sans">Columns:</span>
+            <div className="flex flex-wrap items-center gap-1.5 mb-2 font-mono text-ink">
+              <span className="text-muted font-sans">Columns:</span>
               {selectedTable.columns.map((col, i) => (
-                <span key={i} className="bg-slate-800 text-teal-light px-2 py-0.5 rounded border border-teal/20">
+                <span key={i} className="bg-teal/10 text-teal px-2 py-0.5 rounded border border-teal/20">
                   {col}
                 </span>
               ))}
             </div>
 
             {/* Quick table data preview dropdown/container */}
-            <details className="mt-2 text-gray-400 cursor-pointer">
+            <details className="mt-2 text-muted cursor-pointer">
               <summary className="hover:text-teal transition-colors font-medium">
                 View {selectedTable.name} sample data ({selectedTable.rows.length} rows)
               </summary>
-              <div className="mt-2 overflow-x-auto rounded-lg border border-line/40 bg-slate-900/80">
+              <div className="mt-2 overflow-x-auto rounded-lg border border-line bg-paper">
                 <table className="w-full text-left font-mono text-[11px]">
-                  <thead className="bg-slate-800/80 text-teal">
+                  <thead className="bg-surface-soft text-teal">
                     <tr>
                       {selectedTable.columns.map((c, i) => (
                         <th key={i} className="px-3 py-1.5 border-r last:border-r-0 border-line/30">
@@ -184,10 +184,10 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
                   </thead>
                   <tbody>
                     {selectedTable.rows.slice(0, 5).map((row, rIdx) => (
-                      <tr key={rIdx} className="border-b last:border-b-0 border-line/20 hover:bg-slate-800/40">
+                      <tr key={rIdx} className="border-b last:border-b-0 border-line/20 hover:bg-sidebar-hover">
                         {row.map((cell: any, cIdx: number) => (
-                          <td key={cIdx} className="px-3 py-1 border-r last:border-r-0 border-line/20">
-                            {cell === null ? <span className="text-gray-500 italic">NULL</span> : String(cell)}
+                          <td key={cIdx} className="px-3 py-1 border-r last:border-r-0 border-line/20 text-ink">
+                            {cell === null ? <span className="text-muted italic">NULL</span> : String(cell)}
                           </td>
                         ))}
                       </tr>
@@ -272,12 +272,12 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
           </div>
         ) : queryResults && queryResults.length > 0 ? (
           queryResults.map((result, resIdx) => (
-            <div key={resIdx} className="overflow-x-auto rounded-lg border border-line/60 bg-slate-950">
-              <div className="px-3 py-1.5 bg-slate-900 text-xs text-teal font-mono border-b border-line/40 flex justify-between">
+            <div key={resIdx} className="overflow-x-auto rounded-lg border border-line bg-paper">
+              <div className="px-3 py-1.5 bg-surface-soft text-xs text-teal font-mono border-b border-line flex justify-between">
                 <span>{result.values.length} row(s) returned</span>
               </div>
               <table className="w-full text-left font-mono text-xs">
-                <thead className="bg-slate-900 text-teal-light font-semibold border-b border-line/40">
+                <thead className="bg-surface-soft text-teal font-semibold border-b border-line">
                   <tr>
                     {result.columns.map((col, cIdx) => (
                       <th key={cIdx} className="px-4 py-2 border-r last:border-r-0 border-line/30">
@@ -288,11 +288,11 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
                 </thead>
                 <tbody>
                   {result.values.map((row, rIdx) => (
-                    <tr key={rIdx} className="border-b last:border-b-0 border-line/20 hover:bg-slate-900/60 text-gray-200">
+                    <tr key={rIdx} className="border-b last:border-b-0 border-line/20 hover:bg-sidebar-hover text-ink">
                       {row.map((cell: any, cellIdx: number) => (
                         <td key={cellIdx} className="px-4 py-2 border-r last:border-r-0 border-line/20">
                           {cell === null ? (
-                            <span className="text-gray-500 italic font-sans">NULL</span>
+                            <span className="text-muted italic font-sans">NULL</span>
                           ) : (
                             String(cell)
                           )}
@@ -305,11 +305,11 @@ export function SqlRunner({ seedTables, defaultQuery = "SELECT * FROM Movies;" }
             </div>
           ))
         ) : queryResults && queryResults.length === 0 ? (
-          <div className="p-4 text-center text-xs text-gray-400 bg-slate-900/50 rounded-lg border border-line/30">
+          <div className="p-4 text-center text-xs text-muted bg-surface-soft rounded-lg border border-line">
             Query executed successfully. (0 rows returned or DDL/DML completed)
           </div>
         ) : (
-          <div className="p-6 text-center text-xs text-gray-500 italic bg-slate-900/30 rounded-lg border border-line/30">
+          <div className="p-6 text-center text-xs text-muted italic bg-surface-soft rounded-lg border border-line">
             Click &quot;Run Query&quot; to execute your SQL query against the in-memory SQLite database.
           </div>
         )}

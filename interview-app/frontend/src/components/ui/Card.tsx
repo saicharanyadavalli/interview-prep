@@ -15,10 +15,10 @@ export const Card: React.FC<CardProps> = ({
   const baseStyles = "rounded-xl border transition-all duration-200 backdrop-blur-sm";
 
   const variants = {
-    default: "bg-zinc-900/70 border-zinc-800/80 shadow-lg text-zinc-100",
-    subtle: "bg-zinc-900/40 border-zinc-800/50 text-zinc-200",
-    glow: "bg-zinc-900/80 border-cyan-500/30 shadow-[0_0_25px_-5px_rgba(6,182,212,0.15)] text-zinc-100",
-    interactive: "bg-zinc-900/70 border-zinc-800/80 hover:border-zinc-700 hover:bg-zinc-800/60 hover:-translate-y-0.5 cursor-pointer text-zinc-100 shadow-md",
+    default: "bg-paper border-line shadow-lg text-ink",
+    subtle: "bg-surface-soft border-line/60 text-ink",
+    glow: "bg-paper border-teal/40 shadow-[0_0_25px_-5px_rgba(15,118,110,0.15)] text-ink",
+    interactive: "bg-paper border-line hover:border-teal/50 hover:bg-sidebar-hover hover:-translate-y-0.5 cursor-pointer text-ink shadow-md",
   };
 
   const paddings = {

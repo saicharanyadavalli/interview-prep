@@ -22,12 +22,13 @@ export const Drawer: React.FC<DrawerProps> = ({
         onClose();
       }
     };
+    const originalOverflow = document.body.style.overflow;
     if (isOpen) {
       document.body.style.overflow = "hidden";
       window.addEventListener("keydown", handleKeyDown);
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = originalOverflow || "";
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [isOpen, onClose]);
@@ -45,17 +46,17 @@ export const Drawer: React.FC<DrawerProps> = ({
 
       {/* Content Sheet */}
       <aside
-        className={`relative z-10 w-full ${width} bg-zinc-900 border-l border-zinc-800 shadow-2xl flex flex-col h-full overflow-hidden animate-in slide-in-from-right duration-250 ease-out`}
+        className={`relative z-10 w-full ${width} bg-paper border-l border-line shadow-2xl flex flex-col h-full overflow-hidden animate-in slide-in-from-right duration-250 ease-out`}
         role="dialog"
         aria-modal="true"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800/80 bg-zinc-950/40">
-          <div className="font-semibold text-lg text-zinc-100">{title}</div>
+        <div className="flex items-center justify-between px-6 py-4 border-b border-line bg-surface-soft">
+          <div className="font-semibold text-lg text-ink">{title}</div>
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-zinc-400 hover:text-zinc-100 hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500"
+            className="p-1.5 rounded-lg text-muted hover:text-ink hover:bg-sidebar-hover transition-colors focus:outline-none focus:ring-2 focus:ring-teal"
             aria-label="Close drawer"
           >
             <X size={18} />

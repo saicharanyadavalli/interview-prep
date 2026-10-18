@@ -14,17 +14,17 @@ export const QuestionTable: React.FC<QuestionTableProps> = React.memo(
   ({ questions, onSelectQuestion, isLoading }) => {
     if (questions.length === 0 && !isLoading) {
       return (
-        <div className="p-12 text-center border border-zinc-800 rounded-xl bg-zinc-900/40 my-4">
-          <p className="text-zinc-400 font-medium text-sm">No questions found matching your filter criteria.</p>
+        <div className="p-12 text-center border border-line rounded-xl bg-paper my-4">
+          <p className="text-muted font-medium text-sm">No questions found matching your filter criteria.</p>
         </div>
       );
     }
 
     return (
-      <div className="w-full overflow-x-auto border border-zinc-800/80 rounded-xl bg-zinc-900/60 backdrop-blur-sm shadow-xl">
+      <div className="w-full overflow-x-auto border border-line rounded-xl bg-paper backdrop-blur-sm shadow-xl">
         <table className="w-full text-left border-collapse">
           <thead>
-            <tr className="border-b border-zinc-800 bg-zinc-950/60 text-xs font-semibold text-zinc-400 uppercase tracking-wider">
+            <tr className="border-b border-line bg-surface-soft text-xs font-semibold text-muted uppercase tracking-wider">
               <th className="py-3.5 px-4 w-16">#</th>
               <th className="py-3.5 px-4">Title</th>
               <th className="py-3.5 px-4 w-28">Difficulty</th>
@@ -32,7 +32,7 @@ export const QuestionTable: React.FC<QuestionTableProps> = React.memo(
               <th className="py-3.5 px-4 w-32 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-zinc-800/60 text-sm">
+          <tbody className="divide-y divide-line/60 text-sm">
             {questions.map((q) => {
               const qnum = q.qnum || q.question_number || q.id;
               const title = q.title || q.question_title || `Question #${qnum}`;
@@ -42,11 +42,11 @@ export const QuestionTable: React.FC<QuestionTableProps> = React.memo(
               return (
                 <tr
                   key={qnum}
-                  className="hover:bg-zinc-800/40 transition-colors group cursor-pointer"
+                  className="hover:bg-sidebar-hover transition-colors group cursor-pointer"
                   onClick={() => onSelectQuestion(qnum)}
                 >
-                  <td className="py-3 px-4 text-xs font-mono text-zinc-500 font-medium">{qnum}</td>
-                  <td className="py-3 px-4 font-medium text-zinc-200 group-hover:text-cyan-400 transition-colors">
+                  <td className="py-3 px-4 text-xs font-mono text-muted font-medium">{qnum}</td>
+                  <td className="py-3 px-4 font-medium text-ink group-hover:text-teal transition-colors">
                     {title}
                   </td>
                   <td className="py-3 px-4">

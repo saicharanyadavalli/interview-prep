@@ -34,8 +34,8 @@ export function formatLeetCodeMath(text: string): string {
     .replace(/\\pm\b/g, "±")
 
     // Big-O complexity notations
-    .replace(/\$\\mathcal\{O\}\(([^$]+)\)\$/g, "<span class='complexity-pill font-mono font-semibold text-cyan-400'>O($1)</span>")
-    .replace(/\$O\(([^$]+)\)\$/g, "<span class='complexity-pill font-mono font-semibold text-cyan-400'>O($1)</span>")
+    .replace(/\$\\mathcal\{O\}\(([^$]+)\)\$/g, "<span class='complexity-pill font-mono font-semibold text-teal dark:text-cyan-400'>O($1)</span>")
+    .replace(/\$O\(([^$]+)\)\$/g, "<span class='complexity-pill font-mono font-semibold text-teal dark:text-cyan-400'>O($1)</span>")
 
     // Exponents: e.g. 10^4 -> 10⁴, 2^{31} - 1 -> 2³¹ - 1
     .replace(/10\^(\d)/g, (_, exp) => `10<sup>${exp}</sup>`)
@@ -48,9 +48,9 @@ export function formatLeetCodeMath(text: string): string {
       const clean = math.trim();
       // If it looks like a variable or simple code
       if (/^[a-zA-Z0-9_[\]().+\-*=<>≤≥≠\s]+$/.test(clean)) {
-        return `<code class="bg-slate-800/80 text-cyan-300 px-1.5 py-0.5 rounded font-mono text-xs border border-cyan-500/20">${clean}</code>`;
+        return `<code class="bg-teal/10 text-teal dark:text-cyan-300 px-1.5 py-0.5 rounded font-mono text-xs border border-teal/20">${clean}</code>`;
       }
-      return `<em class="font-serif text-cyan-200">${clean}</em>`;
+      return `<em class="font-serif text-teal dark:text-cyan-200">${clean}</em>`;
     });
 }
 
@@ -67,10 +67,10 @@ export function LeetCodeRenderer({ content, className = "" }: LeetCodeRendererPr
   // Clean up existing raw tags and wrap examples in clean markdown/HTML structure
   formatted = formatted
     .replace(/<pre>([\s\S]*?)<\/pre>/gi, (match, inner) => {
-      return `<div class="my-4 rounded-xl border border-line/60 bg-slate-950 p-4 font-mono text-xs text-slate-200 overflow-x-auto leading-relaxed shadow-sm">${inner}</div>`;
+      return `<div class="my-4 rounded-xl border border-line bg-surface-soft p-4 font-mono text-xs text-ink overflow-x-auto leading-relaxed shadow-sm">${inner}</div>`;
     })
-    .replace(/<strong>Constraints:<\/strong>|Constraints:/gi, '<h3 class="text-base font-bold text-white mt-6 mb-3 flex items-center gap-2"><span class="text-cyan-400">❖</span> Constraints</h3>')
-    .replace(/<strong>Follow-up:?<\/strong>|Follow-up:?/gi, '<h3 class="text-base font-bold text-amber-300 mt-6 mb-2 flex items-center gap-2"><span class="text-amber-400">✦</span> Follow-up</h3>');
+    .replace(/<strong>Constraints:<\/strong>|Constraints:/gi, '<h3 class="text-base font-bold text-ink mt-6 mb-3 flex items-center gap-2"><span class="text-teal">❖</span> Constraints</h3>')
+    .replace(/<strong>Follow-up:?<\/strong>|Follow-up:?/gi, '<h3 class="text-base font-bold text-amber mt-6 mb-2 flex items-center gap-2"><span class="text-amber">✦</span> Follow-up</h3>');
 
   // Sanitize with DOMPurify
   const sanitizedHtml = DOMPurify.sanitize(formatted, {
@@ -80,7 +80,7 @@ export function LeetCodeRenderer({ content, className = "" }: LeetCodeRendererPr
 
   return (
     <div
-      className={`leetcode-content prose prose-invert max-w-none text-slate-300 text-sm leading-relaxed space-y-4 ${className}`}
+      className={`leetcode-content max-w-none text-ink text-sm leading-relaxed space-y-4 ${className}`}
       dangerouslySetInnerHTML={{ __html: sanitizedHtml }}
     />
   );

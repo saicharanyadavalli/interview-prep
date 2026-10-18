@@ -41,7 +41,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
   const flushList = (key: string) => {
     if (listBuffer.length > 0) {
       elements.push(
-        <ul key={key} className="list-disc list-inside space-y-1.5 my-3 text-gray-300">
+        <ul key={key} className="list-disc list-inside space-y-1.5 my-3 text-ink">
           {listBuffer.map((item, idx) => (
             <li key={idx} className="leading-relaxed">
               {renderFormattedText(item)}
@@ -67,10 +67,10 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
       const bodyRows = rows.slice(1).filter((r) => !r.every((cell) => /^[-:\s]+$/.test(cell)));
 
       elements.push(
-        <div key={key} className="my-4 overflow-x-auto rounded-xl border border-line/60 bg-paper/60 shadow-sm">
+        <div key={key} className="my-4 overflow-x-auto rounded-xl border border-line bg-paper shadow-sm">
           <table className="w-full text-left text-sm">
             {headerRow.length > 0 && (
-              <thead className="bg-slate-800/80 text-teal font-semibold border-b border-line/60">
+              <thead className="bg-surface-soft text-teal font-semibold border-b border-line">
                 <tr>
                   {headerRow.map((col, idx) => (
                     <th key={idx} className="px-4 py-2.5 border-r last:border-r-0 border-line/40">
@@ -82,9 +82,9 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
             )}
             <tbody>
               {bodyRows.map((row, rIdx) => (
-                <tr key={rIdx} className="border-b last:border-b-0 border-line/30 hover:bg-slate-800/40">
+                <tr key={rIdx} className="border-b last:border-b-0 border-line/30 hover:bg-sidebar-hover">
                   {row.map((cell, cIdx) => (
-                    <th key={cIdx} className="px-4 py-2 border-r last:border-r-0 border-line/30 font-normal text-gray-300">
+                    <th key={cIdx} className="px-4 py-2 border-r last:border-r-0 border-line/30 font-normal text-ink">
                       {cell}
                     </th>
                   ))}
@@ -104,14 +104,14 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     return parts.map((part, idx) => {
       if (part.startsWith("`") && part.endsWith("`")) {
         return (
-          <code key={idx} className="bg-slate-800 text-teal-light font-mono px-1.5 py-0.5 rounded text-xs border border-teal/20">
+          <code key={idx} className="bg-teal/10 text-teal dark:text-cyan-300 font-mono px-1.5 py-0.5 rounded text-xs border border-teal/20">
             {part.slice(1, -1)}
           </code>
         );
       }
       if (part.startsWith("**") && part.endsWith("**")) {
         return (
-          <strong key={idx} className="font-semibold text-white">
+          <strong key={idx} className="font-semibold text-ink">
             {part.slice(2, -2)}
           </strong>
         );
@@ -176,7 +176,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     // Headings
     if (trimmed.startsWith("# ")) {
       elements.push(
-        <h1 key={index} className="text-2xl font-bold text-white mt-6 mb-3 border-b border-line/40 pb-2">
+        <h1 key={index} className="text-2xl font-bold text-ink mt-6 mb-3 border-b border-line/40 pb-2">
           {renderFormattedText(trimmed.slice(2))}
         </h1>
       );
@@ -184,7 +184,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     }
     if (trimmed.startsWith("## ")) {
       elements.push(
-        <h2 key={index} className="text-xl font-bold text-white mt-5 mb-2">
+        <h2 key={index} className="text-xl font-bold text-ink mt-5 mb-2">
           {renderFormattedText(trimmed.slice(3))}
         </h2>
       );
@@ -192,7 +192,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     }
     if (trimmed.startsWith("### ")) {
       elements.push(
-        <h3 key={index} className="text-lg font-semibold text-white mt-4 mb-2">
+        <h3 key={index} className="text-lg font-semibold text-ink mt-4 mb-2">
           {renderFormattedText(trimmed.slice(4))}
         </h3>
       );
@@ -202,7 +202,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
     // Blockquote
     if (trimmed.startsWith("> ")) {
       elements.push(
-        <blockquote key={index} className="border-l-4 border-teal bg-teal-soft/10 p-3 my-3 text-gray-300 rounded-r-lg text-sm italic">
+        <blockquote key={index} className="border-l-4 border-teal bg-teal-soft/10 p-3 my-3 text-ink rounded-r-lg text-sm italic">
           {renderFormattedText(trimmed.slice(2))}
         </blockquote>
       );
@@ -216,7 +216,7 @@ export function MarkdownRenderer({ content }: MarkdownRendererProps) {
 
     // Standard Paragraph
     elements.push(
-      <p key={index} className="my-2.5 text-gray-300 text-sm leading-relaxed">
+      <p key={index} className="my-2.5 text-ink text-sm leading-relaxed">
         {renderFormattedText(trimmed)}
       </p>
     );

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState, useRef, useCallback } from "react";
+import React, { useEffect, useState, useRef, useCallback, Suspense, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { API } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { FilterBuilder } from "@/components/FilterBuilder";
@@ -15,10 +16,15 @@ import {
   CheckCircle2,
   Clock,
   Tag,
-  Building2
+  Building2,
+  Folder,
+  FolderCheck,
+  Check,
 } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { parseStatusFilterFromParams } from "@/utils/dashboard-navigation";
+import { CustomFolderModal, CustomFolderItem } from "@/components/questions/CustomFolderModal";
 
 const COMPANY_FILTER_OPTIONS = [
   "24*7 Innovation Labs", "ABCO", "Accenture", "Accolite", "Adobe", "Airtel", "Amazon", "Amdocs",
@@ -46,18 +52,38 @@ const COMPANY_FILTER_OPTIONS = [
 const PAGE_SIZE = 100;
 const UI_STATE_KEY = "questionsPageUiState";
 const PAGE_CACHE_KEY = "questionsPageListCache";
-const CUSTOM_FOLDER_KEY = "questionsCustomFolderV1";
+const CUSTOM_FOLDERS_STORAGE_KEY = "questionsCustomFolders_v2";
 const CACHE_TTL_MS = 15 * 60 * 1000;
+
+const DEFAULT_FOLDERS: CustomFolderItem[] = [
+  { name: "Favorites", qnums: [], count: 0 },
+  { name: "Striver SDE Sheet", qnums: [], count: 0 },
+  { name: "Must Revise", qnums: [], count: 0 },
+];
 
 function normalizeToken(t: any) {
   return String(t || "").trim().toLowerCase();
 }
 
-export default function QuestionsPage() {
+function QuestionsContent() {
   const { user } = useAuth();
+  const searchParams = useSearchParams();
+
+  const initialStatusFilter = useMemo(() => {
+    return parseStatusFilterFromParams(searchParams);
+  }, [searchParams]);
 
   const [search, setSearch] = useState("");
-  const [filterQuery, setFilterQuery] = useState<Record<string, any>>({ match: "all", status: [], difficulty: [], company: [], topic: [] });
+  const [filterQuery, setFilterQuery] = useState<Record<string, any>>(() => {
+    const parsed = parseStatusFilterFromParams(searchParams);
+    return {
+      match: "all",
+      status: parsed ? [parsed.value] : [],
+      difficulty: [],
+      company: [],
+      topic: []
+    };
+  });
 
   const [rows, setRows] = useState<any[]>([]);
   const [total, setTotal] = useState(0);
@@ -67,15 +93,43 @@ export default function QuestionsPage() {
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [errorMsg, setErrorMsg] = useState("");
 
+  // Preview Drawer & State
   const [selectedQnum, setSelectedQnum] = useState<number | null>(null);
+  const [isPreviewClosed, setIsPreviewClosed] = useState(false);
+  const isPreviewClosedRef = useRef(false);
+  isPreviewClosedRef.current = isPreviewClosed;
+
   const [fetchedQuestion, setFetchedQuestion] = useState<any>(null);
   const [isLoadingQuestion, setIsLoadingQuestion] = useState(false);
 
+  // Search Suggestions
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [suggestionIndex, setSuggestionIndex] = useState(-1);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
   const [hydratedTopics, setHydratedTopics] = useState<string[]>([]);
+
+  // Revisit State
+  const [revisitSet, setRevisitSet] = useState<Set<number>>(new Set());
+  const [isUpdatingRevisit, setIsUpdatingRevisit] = useState(false);
+
+  // Custom Folders State
+  const [folders, setFolders] = useState<CustomFolderItem[]>(DEFAULT_FOLDERS);
+  const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
+
+  // Toast Notification State
+  const [toastMsg, setToastMsg] = useState("");
+  const [toastType, setToastType] = useState<"info" | "success" | "error">("info");
+  const [showToast, setShowToast] = useState(false);
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  const displayToast = useCallback((msg: string, type: "info" | "success" | "error" = "info") => {
+    if (toastTimeoutRef.current) clearTimeout(toastTimeoutRef.current);
+    setToastMsg(msg);
+    setToastType(type);
+    setShowToast(true);
+    toastTimeoutRef.current = setTimeout(() => setShowToast(false), 2800);
+  }, []);
 
   const scrollerRef = useRef<HTMLElement>(null);
   const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -84,6 +138,16 @@ export default function QuestionsPage() {
   isLoadingRef.current = isLoading;
   const hasMoreRef = useRef(true);
   hasMoreRef.current = hasMore;
+
+  const handleClosePreview = useCallback(() => {
+    setSelectedQnum(null);
+    setIsPreviewClosed(true);
+  }, []);
+
+  const handleSelectQuestion = useCallback((qnum: number) => {
+    setSelectedQnum(qnum);
+    setIsPreviewClosed(false);
+  }, []);
 
   const getRequestOptions = useCallback((currentOffset: number, currentLimit: number, q: string, filters: Record<string, any>) => {
     const safeTokens = Array.isArray(filters.status) ? filters.status.filter(Boolean) : [];
@@ -168,8 +232,8 @@ export default function QuestionsPage() {
         });
       }
 
-      // Auto-select first question if none selected
-      if (!selectedQnum && combinedRows.length > 0) {
+      // Auto-select first question ONLY on initial page load if user hasn't explicitly closed preview and no question is selected
+      if (!selectedQnum && combinedRows.length > 0 && !isPreviewClosedRef.current && reset && isInitialLoad) {
         setSelectedQnum(Number(combinedRows[0].qnum || 0));
       }
 
@@ -183,7 +247,8 @@ export default function QuestionsPage() {
             total: newTotal,
             offset: nextOffset,
             hasMore: more,
-            selectedQnum: selectedQnum || (combinedRows.length ? Number(combinedRows[0].qnum) : null),
+            selectedQnum: isPreviewClosedRef.current ? null : (selectedQnum || (combinedRows.length ? Number(combinedRows[0].qnum) : null)),
+            isPreviewClosed: isPreviewClosedRef.current,
             scrollerTop: scrollerRef.current ? scrollerRef.current.scrollTop : window.scrollY,
             ts: Date.now(),
           })
@@ -196,12 +261,13 @@ export default function QuestionsPage() {
       setIsLoading(false);
       setIsInitialLoad(false);
     }
-  }, [offset, total, rows, selectedQnum, getRequestOptions, getRequestCacheKey]);
+  }, [offset, total, rows, selectedQnum, isInitialLoad, getRequestOptions, getRequestCacheKey, search, filterQuery]);
 
   // Initial Load & State Restoration
   useEffect(() => {
     let initialSearch = search;
     let initialQnum = selectedQnum;
+    let restoredClosed = false;
 
     // Restore UI State
     try {
@@ -212,9 +278,15 @@ export default function QuestionsPage() {
           initialSearch = parsed.search;
           setSearch(initialSearch);
         }
-        if (Number.isFinite(Number(parsed.selectedQnum))) {
+        if (parsed.isPreviewClosed === true || parsed.selectedQnum === null) {
+          restoredClosed = true;
+          setIsPreviewClosed(true);
+          setSelectedQnum(null);
+          initialQnum = null;
+        } else if (Number.isFinite(Number(parsed.selectedQnum))) {
           initialQnum = Number(parsed.selectedQnum);
           setSelectedQnum(initialQnum);
+          setIsPreviewClosed(false);
         }
       }
     } catch (_) {}
@@ -231,8 +303,12 @@ export default function QuestionsPage() {
           setTotal(Number(parsed.total || 0));
           setOffset(Number(parsed.offset || 0));
           setHasMore(Boolean(parsed.hasMore));
-          if (Number.isFinite(Number(parsed.selectedQnum))) {
+          if (parsed.isPreviewClosed === true || parsed.selectedQnum === null) {
+            setSelectedQnum(null);
+            setIsPreviewClosed(true);
+          } else if (Number.isFinite(Number(parsed.selectedQnum))) {
             setSelectedQnum(Number(parsed.selectedQnum));
+            setIsPreviewClosed(false);
           }
           setTimeout(() => {
             if (scrollerRef.current) scrollerRef.current.scrollTop = Number(parsed.scrollerTop || 0);
@@ -254,10 +330,82 @@ export default function QuestionsPage() {
       localStorage.setItem(UI_STATE_KEY, JSON.stringify({
         search,
         selectedQnum,
+        isPreviewClosed,
         ts: Date.now()
       }));
     } catch (_) {}
-  }, [search, selectedQnum]);
+  }, [search, selectedQnum, isPreviewClosed]);
+
+  // Window Escape key listener to close question preview or folder modal
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (isFolderModalOpen) {
+          setIsFolderModalOpen(false);
+        } else if (selectedQnum !== null) {
+          handleClosePreview();
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [selectedQnum, isFolderModalOpen, handleClosePreview]);
+
+  // Load Custom Folders
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(CUSTOM_FOLDERS_STORAGE_KEY);
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setFolders(parsed);
+        }
+      }
+    } catch (_) {}
+
+    API.getCustomFolders()
+      .then((res) => {
+        if (res && Array.isArray(res.folders) && res.folders.length > 0) {
+          setFolders(res.folders);
+          try {
+            localStorage.setItem(CUSTOM_FOLDERS_STORAGE_KEY, JSON.stringify(res.folders));
+          } catch (_) {}
+        }
+      })
+      .catch(() => {});
+  }, [user]);
+
+  // Load Revisit Queue
+  useEffect(() => {
+    if (!user) {
+      setRevisitSet(new Set());
+      return;
+    }
+    API.getRevisitQueue()
+      .then((res) => {
+        const items = Array.isArray(res?.items) ? res.items : [];
+        const qnums = items.map((it: any) => Number(it.qnum)).filter(Boolean);
+        setRevisitSet(new Set(qnums));
+      })
+      .catch(() => {});
+  }, [user]);
+
+  // Sync revisit state updates from across app
+  useEffect(() => {
+    const handleRevisitUpdate = (e: any) => {
+      const { qnum, revisit } = e.detail || {};
+      if (qnum) {
+        setRevisitSet((prev) => {
+          const next = new Set(prev);
+          if (revisit) next.add(Number(qnum));
+          else next.delete(Number(qnum));
+          return next;
+        });
+      }
+    };
+    window.addEventListener("ipp_revisit_updated", handleRevisitUpdate);
+    return () => window.removeEventListener("ipp_revisit_updated", handleRevisitUpdate);
+  }, []);
 
   // Handle Search Input (debounce, skipping initial mount to avoid duplicate fetch)
   useEffect(() => {
@@ -347,38 +495,141 @@ export default function QuestionsPage() {
     }
   }, [selectedQnum, rows]);
 
+  // Also check individual question revisit status when selected
+  useEffect(() => {
+    if (!selectedQnum) return;
+    API.getProgressStatus(String(selectedQnum))
+      .then((res) => {
+        if (res && typeof res.revisit === "boolean") {
+          setRevisitSet((prev) => {
+            const next = new Set(prev);
+            if (res.revisit) next.add(selectedQnum);
+            else next.delete(selectedQnum);
+            return next;
+          });
+        }
+      })
+      .catch(() => {});
+  }, [selectedQnum]);
+
   // Derived state for selected question
   const selectedQuestion = (selectedQnum ? rows.find(r => Number(r.qnum) === selectedQnum) : null) || fetchedQuestion || null;
 
-  // Actions
-  const addToCustomFolder = () => {
-    if (!selectedQuestion) return alert("Select a question first.");
+  // Containing custom folders for selected question
+  const containingFolders = useMemo(() => {
+    if (!selectedQuestion) return [];
+    const qnum = Number(selectedQuestion.qnum);
+    return folders.filter((f) => f.qnums.includes(qnum));
+  }, [selectedQuestion, folders]);
+
+  // Revisit toggle action
+  const toggleRevisit = async () => {
+    if (!selectedQuestion || isUpdatingRevisit) return;
+    const qnum = Number(selectedQuestion.qnum);
+    const isCurrentlyRevisit = revisitSet.has(qnum);
+    const nextState = !isCurrentlyRevisit;
+
+    setIsUpdatingRevisit(true);
+    setRevisitSet((prev) => {
+      const next = new Set(prev);
+      if (nextState) next.add(qnum);
+      else next.delete(qnum);
+      return next;
+    });
+
+    displayToast(
+      nextState ? `Question #${qnum} added to revisit queue.` : `Question #${qnum} removed from revisit queue.`,
+      "success"
+    );
+
     try {
-      const raw = localStorage.getItem(CUSTOM_FOLDER_KEY);
-      const parsed = JSON.parse(raw || "[]");
-      const existing = Array.isArray(parsed) ? parsed : [];
-      const normalized = Array.from(new Set(existing.map((item) => Number(item || 0)).filter((v) => v > 0)));
-      if (normalized.includes(Number(selectedQuestion.qnum))) {
-        alert("Question already in custom folder.");
-        return;
-      }
-      normalized.push(Number(selectedQuestion.qnum));
-      localStorage.setItem(CUSTOM_FOLDER_KEY, JSON.stringify(normalized));
-      alert("Added to custom folder.");
-    } catch (_) {
-      alert("Unable to save custom folder entry.");
+      await API.updateProgress(qnum, { revisit: nextState });
+      window.dispatchEvent(
+        new CustomEvent("ipp_revisit_updated", {
+          detail: { qnum, revisit: nextState },
+        })
+      );
+    } catch (err: any) {
+      // Revert optimistic update
+      setRevisitSet((prev) => {
+        const next = new Set(prev);
+        if (isCurrentlyRevisit) next.add(qnum);
+        else next.delete(qnum);
+        return next;
+      });
+      displayToast(`Failed to update revisit state: ${err.message}`, "error");
+    } finally {
+      setIsUpdatingRevisit(false);
     }
   };
 
-  const addToRevisitQueue = async () => {
-    if (!selectedQuestion) return alert("Select a question first.");
-    try {
-      await API.updateProgress(selectedQuestion.qnum, { revisit: true });
-      alert("Added to revisit queue.");
-    } catch (err: any) {
-      alert(`Failed to add revisit: ${err.message}`);
-    }
-  };
+  // Custom folder actions
+  const handleAddToFolder = useCallback(
+    async (folderName: string) => {
+      if (!selectedQuestion) return { success: false, message: "Select a question first." };
+      const qnum = Number(selectedQuestion.qnum);
+
+      const targetFolder = folders.find((f) => f.name.toLowerCase() === folderName.toLowerCase());
+      if (targetFolder && targetFolder.qnums.includes(qnum)) {
+        return { success: true, alreadyPresent: true };
+      }
+
+      const updated = folders.map((f) => {
+        if (f.name.toLowerCase() === folderName.toLowerCase()) {
+          const nextQnums = Array.from(new Set([...f.qnums, qnum]));
+          return { ...f, qnums: nextQnums, count: nextQnums.length };
+        }
+        return f;
+      });
+
+      setFolders(updated);
+      try {
+        localStorage.setItem(CUSTOM_FOLDERS_STORAGE_KEY, JSON.stringify(updated));
+      } catch (_) {}
+
+      displayToast(`Added Question #${qnum} to "${folderName}".`, "success");
+
+      try {
+        await API.addQuestionToFolder(folderName, qnum);
+      } catch (_) {}
+
+      return { success: true, alreadyPresent: false };
+    },
+    [selectedQuestion, folders, displayToast]
+  );
+
+  const handleCreateFolderAndAdd = useCallback(
+    async (folderName: string) => {
+      if (!selectedQuestion) return { success: false, message: "Select a question first." };
+      const qnum = Number(selectedQuestion.qnum);
+      const trimmed = folderName.trim();
+
+      const existing = folders.find((f) => f.name.toLowerCase() === trimmed.toLowerCase());
+      if (existing) {
+        return handleAddToFolder(existing.name);
+      }
+
+      const newFolder: CustomFolderItem = {
+        name: trimmed,
+        qnums: [qnum],
+        count: 1,
+      };
+      const updated = [...folders, newFolder];
+      setFolders(updated);
+      try {
+        localStorage.setItem(CUSTOM_FOLDERS_STORAGE_KEY, JSON.stringify(updated));
+      } catch (_) {}
+
+      displayToast(`Created folder "${trimmed}" and added Question #${qnum}.`, "success");
+
+      try {
+        await API.createCustomFolder(trimmed, [qnum]);
+      } catch (_) {}
+
+      return { success: true, alreadyPresent: false };
+    },
+    [selectedQuestion, folders, handleAddToFolder, displayToast]
+  );
 
   const estimateSuccessRate = (question: any) => {
     const diff = normalizeToken(question.difficulty);
@@ -395,12 +646,29 @@ export default function QuestionsPage() {
     return 'var(--sidebar-hover)';
   };
 
+  const isSelectedRevisit = Boolean(selectedQuestion && revisitSet.has(Number(selectedQuestion.qnum)));
+
   return (
     <main className="main-content questions-main-content">
+      {/* Toast Notification Container */}
+      {showToast && (
+        <div id="toast" className={`toast toast-${toastType} toast-show`}>
+          {toastMsg}
+        </div>
+      )}
+
       <header className="page-header section" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
         <h1 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-          <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Logo" width={24} height={24} />
-          <span>Interview Assistant</span>
+          <Link
+            href="/dashboard"
+            className="header-brand-link"
+            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'inherit', textDecoration: 'none' }}
+            aria-label="Interview Assistant Dashboard"
+            title="Interview Assistant - Go to Dashboard"
+          >
+            <Image className="brand-logo" src="/assets/logo-mark.svg" alt="Logo" width={24} height={24} />
+            <span>Interview Assistant</span>
+          </Link>
           <span className="text-muted" style={{ fontSize: '0.9rem', fontWeight: 500, marginLeft: '0.5rem' }}>Question Bank</span>
         </h1>
         <div className="page-header-actions" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -408,7 +676,7 @@ export default function QuestionsPage() {
           {selectedQnum && (
             <button
               className="btn btn-sm"
-              onClick={() => setSelectedQnum(null)}
+              onClick={handleClosePreview}
               title="Close preview drawer"
               style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
             >
@@ -447,10 +715,11 @@ export default function QuestionsPage() {
                   e.preventDefault();
                   const row = suggestions[suggestionIndex];
                   setSearch(row.problem_name || "");
-                  setSelectedQnum(Number(row.qnum));
+                  handleSelectQuestion(Number(row.qnum));
                   setShowSuggestions(false);
                   setSuggestionIndex(-1);
                 } else if (e.key === 'Escape') {
+                  e.stopPropagation();
                   setShowSuggestions(false);
                   setSuggestionIndex(-1);
                 }
@@ -471,7 +740,7 @@ export default function QuestionsPage() {
                     }}
                     onClick={() => {
                       setSearch(row.problem_name || "");
-                      setSelectedQnum(Number(row.qnum));
+                      handleSelectQuestion(Number(row.qnum));
                       setShowSuggestions(false);
                       setSuggestionIndex(-1);
                     }}
@@ -490,6 +759,7 @@ export default function QuestionsPage() {
             <FilterBuilder
               companies={COMPANY_FILTER_OPTIONS}
               topics={hydratedTopics}
+              initialFilters={initialStatusFilter ? [initialStatusFilter] : undefined}
               onChange={handleFilterChange}
             />
           </section>
@@ -510,6 +780,7 @@ export default function QuestionsPage() {
               {rows.map((row) => {
                 const isSelected = selectedQnum === Number(row.qnum);
                 const diffColor = getDifficultyColor(row.difficulty);
+                const isItemRevisit = revisitSet.has(Number(row.qnum));
 
                 return (
                   <div
@@ -524,11 +795,11 @@ export default function QuestionsPage() {
                       borderRadius: 'var(--radius)', border: isSelected ? '1px solid var(--teal)' : '1px solid var(--line)',
                       cursor: 'pointer', transition: 'all 150ms ease'
                     }}
-                    onClick={() => setSelectedQnum(Number(row.qnum))}
+                    onClick={() => handleSelectQuestion(Number(row.qnum))}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         e.preventDefault();
-                        setSelectedQnum(Number(row.qnum));
+                        handleSelectQuestion(Number(row.qnum));
                       }
                     }}
                   >
@@ -543,6 +814,26 @@ export default function QuestionsPage() {
                       {row.solved === 1 && (
                         <span className="pill pill-solved" style={{ background: 'var(--green)', color: 'white', padding: '0.2rem 0.5rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
                           <CheckCircle2 size={12} /> Solved
+                        </span>
+                      )}
+                      {isItemRevisit && (
+                        <span
+                          className="pill"
+                          title="In revisit queue"
+                          style={{
+                            background: "rgba(245, 158, 11, 0.15)",
+                            color: "var(--amber)",
+                            border: "1px solid rgba(245, 158, 11, 0.3)",
+                            padding: "0.2rem 0.5rem",
+                            borderRadius: "4px",
+                            fontSize: "0.75rem",
+                            fontWeight: 600,
+                            display: "inline-flex",
+                            alignItems: "center",
+                            gap: "0.25rem",
+                          }}
+                        >
+                          <RotateCcw size={11} /> Revisit
                         </span>
                       )}
                       <span className="pill" style={{
@@ -617,12 +908,30 @@ export default function QuestionsPage() {
                         <CheckCircle2 size={13} /> Solved
                       </span>
                     )}
+                    {isSelectedRevisit && (
+                      <span
+                        style={{
+                          color: "var(--amber)",
+                          fontSize: "0.75rem",
+                          fontWeight: 600,
+                          display: "inline-flex",
+                          alignItems: "center",
+                          gap: "0.25rem",
+                          background: "rgba(245, 158, 11, 0.12)",
+                          padding: "0.15rem 0.5rem",
+                          borderRadius: "4px",
+                          border: "1px solid rgba(245, 158, 11, 0.25)",
+                        }}
+                      >
+                        <RotateCcw size={12} /> Revisit
+                      </span>
+                    )}
                   </div>
                   <button
                     type="button"
-                    onClick={() => setSelectedQnum(null)}
+                    onClick={handleClosePreview}
                     aria-label="Close question preview"
-                    title="Close preview"
+                    title="Close preview (Escape)"
                     style={{ background: 'transparent', border: 'none', color: 'var(--muted)', cursor: 'pointer', padding: '0.2rem', display: 'flex', alignItems: 'center', borderRadius: '4px' }}
                   >
                     <X size={18} />
@@ -666,6 +975,29 @@ export default function QuestionsPage() {
                       {estimateSuccessRate(selectedQuestion)}%
                     </span>
                   </div>
+
+                  {/* Containing Custom Folders */}
+                  {containingFolders.length > 0 && (
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.82rem', flexWrap: 'wrap' }}>
+                      <Folder size={14} className="text-teal" style={{ flexShrink: 0 }} />
+                      <span style={{ fontWeight: 600, color: 'var(--ink)' }}>Folders:</span>
+                      {containingFolders.map((f) => (
+                        <span
+                          key={f.name}
+                          style={{
+                            fontSize: "0.75rem",
+                            padding: "0.1rem 0.45rem",
+                            borderRadius: "4px",
+                            background: "rgba(20, 184, 166, 0.12)",
+                            color: "var(--teal)",
+                            border: "1px solid rgba(20, 184, 166, 0.25)",
+                          }}
+                        >
+                          {f.name}
+                        </span>
+                      ))}
+                    </div>
+                  )}
                 </div>
               </article>
 
@@ -689,21 +1021,34 @@ export default function QuestionsPage() {
                   </Link>
 
                   <button
-                    className="btn"
+                    className={`btn ${isSelectedRevisit ? "btn-feedback-selected" : ""}`}
                     type="button"
-                    onClick={addToRevisitQueue}
-                    style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem' }}
+                    disabled={isUpdatingRevisit}
+                    onClick={toggleRevisit}
+                    style={{
+                      display: 'inline-flex',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      gap: '0.4rem',
+                      fontSize: '0.9rem',
+                      background: isSelectedRevisit ? 'rgba(245, 158, 11, 0.15)' : undefined,
+                      color: isSelectedRevisit ? 'var(--amber)' : undefined,
+                      borderColor: isSelectedRevisit ? 'var(--amber)' : undefined,
+                    }}
+                    title={isSelectedRevisit ? "Remove from revisit queue" : "Add to revisit queue"}
                   >
-                    <RotateCcw size={15} /> Add to Revisit Queue
+                    <RotateCcw size={15} />
+                    {isSelectedRevisit ? "Remove from Revisit Queue" : "Add to Revisit Queue"}
                   </button>
 
                   <button
                     className="btn"
                     type="button"
-                    onClick={addToCustomFolder}
+                    onClick={() => setIsFolderModalOpen(true)}
                     style={{ display: 'inline-flex', justifyContent: 'center', alignItems: 'center', gap: '0.4rem', fontSize: '0.9rem' }}
+                    title="Save question to custom folder"
                   >
-                    <FolderPlus size={15} /> Add to Custom Folder
+                    <FolderPlus size={15} /> Save to Custom Folder
                   </button>
                 </div>
               </article>
@@ -721,6 +1066,35 @@ export default function QuestionsPage() {
           )}
         </aside>
       </section>
+
+      {/* Interactive Custom Folder Picker Modal */}
+      {selectedQuestion && (
+        <CustomFolderModal
+          isOpen={isFolderModalOpen}
+          onClose={() => setIsFolderModalOpen(false)}
+          qnum={Number(selectedQuestion.qnum)}
+          questionTitle={selectedQuestion.problem_name || `Question #${selectedQuestion.qnum}`}
+          folders={folders}
+          onAddToFolder={handleAddToFolder}
+          onCreateFolderAndAdd={handleCreateFolderAndAdd}
+        />
+      )}
     </main>
+  );
+}
+
+export default function QuestionsPage() {
+  return (
+    <Suspense
+      fallback={
+        <main className="main-content questions-main-content">
+          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", height: "60vh" }}>
+            <Spinner text="Loading questions..." />
+          </div>
+        </main>
+      }
+    >
+      <QuestionsContent />
+    </Suspense>
   );
 }
