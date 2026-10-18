@@ -1,7 +1,7 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
-  AWS CloudFormation template provisioning an Amazon Cognito User Pool with Google OAuth 2.0 federation,
-  Cognito Hosted UI domain prefix, and public web client with PKCE for Interview Prep.
+  AWS CloudFormation template provisioning an Amazon Cognito User Pool with optional Google OAuth 2.0 federation,
+  Cognito Hosted UI domain prefix, and public web clients with PKCE for Interview Prep personal deployment.
 
 Parameters:
   Environment:
@@ -26,7 +26,7 @@ Parameters:
     Default: ''
     Description: >-
       Google OAuth 2.0 Web Client ID obtained from Google Cloud Console credentials.
-      If omitted, Cognito will deploy with native email/password auth and defer Google federation.
+      If omitted, Cognito deploys with native email/password authentication only.
 
   GoogleClientSecret:
     Type: String
@@ -34,28 +34,28 @@ Parameters:
     Default: ''
     Description: >-
       Google OAuth 2.0 Web Client Secret obtained from Google Cloud Console credentials.
-      Protected with NoEcho to prevent exposure in CloudFormation console and events.
+      If omitted, Cognito deploys with native email/password authentication only.
 
   CanonicalDomain:
     Type: String
-    Default: 'localhost:3000'
+    Default: '16.113.92.222'
     Description: >-
-      Domain for application web client (e.g. localhost:3000 for local/staging or
-      your personal domain for production). Do not assume custom domain or TLS exists.
+      Informational public application host. Set this to your real application hostname.
+      OAuth callbacks still must be supplied as exact URLs in CallbackURLs and LogoutURLs.
 
   CallbackURLs:
     Type: CommaDelimitedList
     Default: 'http://localhost:3000/auth/callback'
     Description: >-
-      Comma-delimited list of allowed OAuth 2.0 redirect and callback URLs for UserPoolClient.
-      Note: Amazon Cognito requires https:// for all callback URLs except http://localhost.
+      Exact application callback URLs. Override with your real HTTPS application callback URL
+      before enabling OAuth on the deployed app. Cognito permits HTTP only for localhost.
 
   LogoutURLs:
     Type: CommaDelimitedList
     Default: 'http://localhost:3000/login'
     Description: >-
-      Comma-delimited list of allowed OAuth 2.0 sign-out and logout URLs for UserPoolClient.
-      Note: Amazon Cognito requires https:// for all logout URLs except http://localhost.
+      Exact application sign-out URLs. Override with your real HTTPS application URL before
+      enabling OAuth on the deployed app. Cognito permits HTTP only for localhost.
 
   AdvancedSecurityMode:
     Type: String
@@ -66,8 +66,7 @@ Parameters:
       - ENFORCED
     Description: >-
       Advanced security mode for Cognito threat protection and compromised credential auditing.
-      Set to OFF by default to avoid unnecessary paid features (Cognito Plus Tier).
-      AUDIT evaluates risks and writes to CloudWatch without blocking requests.
+      Set to OFF by default to avoid enabling paid threat-protection features inadvertently.
 
   AccessTokenValidity:
     Type: Number
@@ -95,6 +94,9 @@ Conditions:
   HasGoogleFederation: !And
     - !Not [!Equals [!Ref GoogleClientId, '']]
     - !Not [!Equals [!Ref GoogleClientSecret, '']]
+  NoGoogleFederation: !Or
+    - !Equals [!Ref GoogleClientId, '']
+    - !Equals [!Ref GoogleClientSecret, '']
 
 Resources:
   # 1. Amazon Cognito User Pool
@@ -103,7 +105,7 @@ Resources:
     DeletionPolicy: Retain
     UpdateReplacePolicy: Retain
     Properties:
-      UserPoolName: !Sub "interview-prep-user-pool-${Environment}"
+      UserPoolName: !Sub 'interview-prep-user-pool-${Environment}'
       UsernameAttributes:
         - email
       AutoVerifiedAttributes:
@@ -120,8 +122,8 @@ Resources:
           TemporaryPasswordValidityDays: 7
       VerificationMessageTemplate:
         DefaultEmailOption: CONFIRM_WITH_CODE
-        EmailSubject: "Interview Prep - Verification Code"
-        EmailMessage: "Your verification code for Interview Prep is {####}."
+        EmailSubject: 'Interview Prep - Verification Code'
+        EmailMessage: 'Your verification code for Interview Prep is {####}.'
       EmailConfiguration:
         EmailSendingAccount: COGNITO_DEFAULT
       AccountRecoverySetting:
@@ -153,10 +155,10 @@ Resources:
       Domain: !If
         - HasCustomDomainPrefix
         - !Ref CognitoDomainPrefix
-        - !Sub "interview-prep-auth-${AWS::AccountId}-${Environment}"
+        - !Sub 'interview-prep-auth-${AWS::AccountId}-${Environment}'
       UserPoolId: !Ref UserPool
 
-  # 3. Google Identity Provider (Social Federation)
+  # 3. Google Identity Provider (created only when both Google credentials are supplied)
   GoogleIdentityProvider:
     Type: AWS::Cognito::UserPoolIdentityProvider
     Condition: HasGoogleFederation
@@ -167,15 +169,16 @@ Resources:
       ProviderDetails:
         client_id: !Ref GoogleClientId
         client_secret: !Ref GoogleClientSecret
-        authorize_scopes: "openid profile email"
+        authorize_scopes: 'openid profile email'
       AttributeMapping:
         email: email
         email_verified: email_verified
         name: name
 
-  # 4. Amazon Cognito User Pool App Client (Public Web Client with PKCE)
+  # 4. Native Cognito client for email/password auth when Google is not configured
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
+    Condition: NoGoogleFederation
     Properties:
       UserPoolId: !Ref UserPool
       ClientName: interview-prep-web-client
@@ -187,11 +190,44 @@ Resources:
         - openid
         - email
         - profile
-      SupportedIdentityProviders: !If
-        - HasGoogleFederation
-        - - COGNITO
-          - Google
-        - - COGNITO
+      SupportedIdentityProviders:
+        - COGNITO
+      CallbackURLs: !Ref CallbackURLs
+      LogoutURLs: !Ref LogoutURLs
+      AccessTokenValidity: !Ref AccessTokenValidity
+      IdTokenValidity: !Ref IdTokenValidity
+      RefreshTokenValidity: !Ref RefreshTokenValidity
+      TokenValidityUnits:
+        AccessToken: minutes
+        IdToken: minutes
+        RefreshToken: days
+      EnableTokenRevocation: true
+      PreventUserExistenceErrors: ENABLED
+      ExplicitAuthFlows:
+        - ALLOW_USER_PASSWORD_AUTH
+        - ALLOW_USER_SRP_AUTH
+        - ALLOW_REFRESH_TOKEN_AUTH
+
+  # 5. Federated Cognito client. Explicitly waits for Google provider creation.
+  UserPoolClientWithGoogle:
+    Type: AWS::Cognito::UserPoolClient
+    Condition: HasGoogleFederation
+    DependsOn:
+      - GoogleIdentityProvider
+    Properties:
+      UserPoolId: !Ref UserPool
+      ClientName: interview-prep-web-client
+      GenerateSecret: false
+      AllowedOAuthFlows:
+        - code
+      AllowedOAuthFlowsUserPoolClient: true
+      AllowedOAuthScopes:
+        - openid
+        - email
+        - profile
+      SupportedIdentityProviders:
+        - COGNITO
+        - Google
       CallbackURLs: !Ref CallbackURLs
       LogoutURLs: !Ref LogoutURLs
       AccessTokenValidity: !Ref AccessTokenValidity
@@ -210,55 +246,55 @@ Resources:
 
 Outputs:
   UserPoolId:
-    Description: Identifier of the Amazon Cognito User Pool
+    Description: Identifier of the Cognito User Pool
     Value: !Ref UserPool
     Export:
-      Name: !Sub "${AWS::StackName}-UserPoolId"
+      Name: !Sub '${AWS::StackName}-UserPoolId'
 
   UserPoolArn:
-    Description: Amazon Resource Name (ARN) of the Amazon Cognito User Pool
+    Description: Amazon Resource Name (ARN) of the Cognito User Pool
     Value: !GetAtt UserPool.Arn
     Export:
-      Name: !Sub "${AWS::StackName}-UserPoolArn"
+      Name: !Sub '${AWS::StackName}-UserPoolArn'
 
   UserPoolClientId:
-    Description: Client ID of the Cognito User Pool Client (public web client)
-    Value: !Ref UserPoolClient
+    Description: ID of the public web app client selected for the configured auth providers
+    Value: !If [HasGoogleFederation, !Ref UserPoolClientWithGoogle, !Ref UserPoolClient]
     Export:
-      Name: !Sub "${AWS::StackName}-UserPoolClientId"
+      Name: !Sub '${AWS::StackName}-UserPoolClientId'
 
   CognitoDomain:
     Description: Domain prefix configured for the Cognito Hosted UI
     Value: !Ref UserPoolDomain
     Export:
-      Name: !Sub "${AWS::StackName}-CognitoDomain"
+      Name: !Sub '${AWS::StackName}-CognitoDomain'
 
   UserPoolProviderURL:
     Description: OpenID Connect provider discovery base URL for the User Pool
     Value: !GetAtt UserPool.ProviderURL
     Export:
-      Name: !Sub "${AWS::StackName}-UserPoolProviderURL"
+      Name: !Sub '${AWS::StackName}-UserPoolProviderURL'
 
   HostedUIDomain:
     Description: Full HTTPS base URL for the Cognito Hosted UI
-    Value: !Sub "https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com"
+    Value: !Sub 'https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com'
     Export:
-      Name: !Sub "${AWS::StackName}-HostedUIDomain"
+      Name: !Sub '${AWS::StackName}-HostedUIDomain'
 
   GoogleOAuthRedirectUri:
-    Description: Authorized Redirect URI to register in Google Cloud Console OAuth 2.0 Client credentials
-    Value: !Sub "https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse"
+    Description: Authorized redirect URI to register in Google Cloud Console OAuth 2.0 Client credentials
+    Value: !Sub 'https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse'
     Export:
-      Name: !Sub "${AWS::StackName}-GoogleOAuthRedirectUri"
+      Name: !Sub '${AWS::StackName}-GoogleOAuthRedirectUri'
 
   OAuthAuthorizeUrl:
-    Description: OAuth 2.0 authorize endpoint URL for launching user login / federation flows
-    Value: !Sub "https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/authorize"
+    Description: OAuth 2.0 authorize endpoint URL for launching login and federation flows
+    Value: !Sub 'https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/authorize'
     Export:
-      Name: !Sub "${AWS::StackName}-OAuthAuthorizeUrl"
+      Name: !Sub '${AWS::StackName}-OAuthAuthorizeUrl'
 
   OAuthTokenUrl:
     Description: OAuth 2.0 token endpoint URL for Authorization Code Grant token exchange
-    Value: !Sub "https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/token"
+    Value: !Sub 'https://${UserPoolDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/token'
     Export:
-      Name: !Sub "${AWS::StackName}-OAuthTokenUrl"
+      Name: !Sub '${AWS::StackName}-OAuthTokenUrl'
