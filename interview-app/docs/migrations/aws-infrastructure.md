@@ -19,7 +19,7 @@ flowchart TD
 
     subgraph AWS_Region["AWS ap-south-2 (Hyderabad)"]
         subgraph Storage["Object Storage"]
-        S3["Private Amazon S3 Bucket\ninterview-prep-assets-808431466075-staging-ap-south-2\nBlockPublicAccess: 4/4 True\nBucketOwnerEnforced | SSE-AES256"]
+        S3["Private Amazon S3 Bucket\ninterview-prep-assets-808431466075-personal-ap-south-2\nBlockPublicAccess: 4/4 True\nBucketOwnerEnforced | SSE-AES256"]
             BucketPolicy["Bucket Policy\nAllow: cloudfront.amazonaws.com (SourceArn condition)\nDeny: Insecure HTTP (aws:SecureTransport: false)"]
         end
 
@@ -59,7 +59,7 @@ flowchart TD
 | **AWS Account ID** | `808431466075` | Target AWS account |
 | **AWS Region** | `ap-south-2` | Hyderabad, India (co-located with EC2 workload) |
 | **Bucket Naming Schema** | `interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}` | Predictable, collision-free naming pattern |
-| **Staging S3 Bucket Name** | `interview-prep-assets-808431466075-staging-ap-south-2` | Globally unique S3 bucket for staging environment |
+| **Personal S3 Bucket Name** | `interview-prep-assets-808431466075-personal-ap-south-2` | Globally unique S3 bucket for personal environment |
 | **Production S3 Bucket Name** | `interview-prep-assets-808431466075-production-ap-south-2` | Globally unique S3 bucket for production environment |
 | **Existing EC2 IAM Role** | `InterviewPrepEC2Role` | Host role attached to EC2 instance profile (not mutated automatically) |
 | **IAM Managed Policy** | `${AWS::StackName}-BackendEC2S3Policy` | Standalone IAM managed policy for review and attachment |
@@ -132,12 +132,17 @@ Enforces two mandatory security statements:
 1. `AllowCloudFrontServicePrincipalReadOnly`: Grants `s3:GetObject` strictly to principal `cloudfront.amazonaws.com` conditioned on `AWS:SourceArn` matching the specific CloudFront distribution ARN. This protects against the confused deputy vulnerability.
 2. `EnforceTlsRequestsOnly`: Explicit `Deny` on `s3:*` when `aws:SecureTransport` is `false`, ensuring that all communications to S3 use TLS 1.2+.
 
-#### 5. IAM Managed Policy (`BackendEC2S3Policy`)
+#### 5. IAM Managed Policy (`BackendEC2S3Policy` - Runtime)
 Created as a standalone `AWS::IAM::ManagedPolicy` with name `${AWS::StackName}-BackendEC2S3Policy`:
 * Statement 1 (`RuntimeAvatarObjectAccess`): Grants `s3:PutObject`, `s3:GetObject`, and `s3:DeleteObject` scoped strictly under `avatars/*`.
-* Statement 2 (`OneTimeMigrationObjectAccess`): Grants `s3:PutObject` across bucket objects for bulk migration scripts.
-* Statement 3 (`ScopedS3BucketListAccess`): Grants `s3:ListBucket` on the bucket root for object existence and 404 detection.
-* `Roles` Property: Conditional via `!If [ShouldAttachPolicyToRole, [!Ref EC2RoleName], !Ref "AWS::NoValue"]`. In staging, it is created unattached so engineers can review the policy independently.
+* Statement 2 (`ScopedS3BucketListAccess`): Grants `s3:ListBucket` on the bucket root for object existence and 404 detection.
+* `Roles` Property: Conditional via `!If [ShouldAttachPolicyToRole, [!Ref EC2RoleName], !Ref "AWS::NoValue"]`. Created unattached so engineers can review the policy independently.
+
+#### 6. IAM Managed Policy (`AssetMigrationS3Policy` - One-Time Migration)
+Created as a standalone `AWS::IAM::ManagedPolicy` with name `${AWS::StackName}-AssetMigrationS3Policy`:
+* Statement 1 (`MigrationScopedObjectAccess`): Grants `s3:GetObject` and `s3:PutObject` scoped strictly to `avatars/*`, `system-design/*`, and `static/*`.
+* Statement 2 (`MigrationScopedListAccess`): Grants `s3:ListBucket` on the bucket root.
+* Security Rule: Zero `s3:DeleteObject` permissions granted to the migration policy.
 
 ### Template Outputs
 
@@ -146,7 +151,8 @@ Created as a standalone `AWS::IAM::ManagedPolicy` with name `${AWS::StackName}-B
 * `CloudFrontDistributionId`: CloudFront distribution ID (used for cache invalidations).
 * `CloudFrontDomainName`: CloudFront FQDN (e.g., `d111111abcdef8.cloudfront.net`).
 * `AssetBaseUrl`: HTTPS base delivery URL (`https://${CloudFrontDomainName}`).
-* `BackendEC2S3PolicyArn`: Amazon Resource Name of the standalone IAM managed policy for review and manual attachment.
+* `BackendEC2S3PolicyArn`: Amazon Resource Name of the standalone IAM managed policy for runtime backend.
+* `AssetMigrationPolicyArn`: Amazon Resource Name of the standalone IAM managed policy for asset migration.
 
 ---
 
@@ -154,7 +160,7 @@ Created as a standalone `AWS::IAM::ManagedPolicy` with name `${AWS::StackName}-B
 
 ### Standalone IAM Managed Policy Structure
 
-The standalone managed policy (`BackendEC2S3Policy`) created by the CloudFormation stack contains three distinct, least-privilege statements:
+The runtime managed policy (`BackendEC2S3Policy`) created by the CloudFormation stack contains two distinct, least-privilege statements:
 
 ```json
 {
@@ -168,15 +174,7 @@ The standalone managed policy (`BackendEC2S3Policy`) created by the CloudFormati
         "s3:GetObject",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-staging-ap-south-2/avatars/*"
-    },
-    {
-      "Sid": "OneTimeMigrationObjectAccess",
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject"
-      ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-staging-ap-south-2/*"
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/avatars/*"
     },
     {
       "Sid": "ScopedS3BucketListAccess",
@@ -184,7 +182,38 @@ The standalone managed policy (`BackendEC2S3Policy`) created by the CloudFormati
       "Action": [
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-staging-ap-south-2"
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2"
+    }
+  ]
+}
+```
+
+The dedicated migration managed policy (`AssetMigrationS3Policy`) provides scoped read/write access without deletion:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "MigrationScopedObjectAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:GetObject",
+        "s3:PutObject"
+      ],
+      "Resource": [
+        "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/avatars/*",
+        "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/system-design/*",
+        "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/static/*"
+      ]
+    },
+    {
+      "Sid": "MigrationScopedListAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2"
     }
   ]
 }
@@ -211,7 +240,7 @@ Because `AttachPolicyToRole` defaults to `false`, the managed policy is provisio
 
 ```bash
 export BACKEND_POLICY_ARN=$(aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='BackendEC2S3PolicyArn'].OutputValue" \
   --output text)
@@ -300,17 +329,17 @@ aws cloudformation validate-template \
   --region ap-south-2
 ```
 
-### Step 2: Create and Review Change Set for Staging Stack
+### Step 2: Create and Review Change Set for Personal Stack
 
 Before applying changes, generate an inspection change set:
 
 ```bash
 aws cloudformation create-change-set \
-  --stack-name interview-prep-assets-staging \
-  --change-set-name staging-initial-setup \
+  --stack-name interview-prep-assets-personal \
+  --change-set-name personal-initial-setup \
   --template-body file://infrastructure/cloudformation/assets-s3-cloudfront.yaml \
   --parameters \
-      ParameterKey=Environment,ParameterValue=staging \
+      ParameterKey=Environment,ParameterValue=personal \
       ParameterKey=AttachPolicyToRole,ParameterValue=false \
       ParameterKey=PriceClass,ParameterValue=PriceClass_200 \
   --capabilities CAPABILITY_NAMED_IAM \
@@ -321,22 +350,22 @@ Inspect the pending changes:
 
 ```bash
 aws cloudformation describe-change-set \
-  --stack-name interview-prep-assets-staging \
-  --change-set-name staging-initial-setup \
+  --stack-name interview-prep-assets-personal \
+  --change-set-name personal-initial-setup \
   --region ap-south-2
 ```
 
 ### Step 3: Deploy CloudFormation Stack
 
 #### Staging Deployment (Default):
-Deploy the staging stack with explicit stack name `interview-prep-assets-staging`:
+Deploy the personal stack with explicit stack name `interview-prep-assets-personal`:
 
 ```bash
 aws cloudformation deploy \
   --template-file infrastructure/cloudformation/assets-s3-cloudfront.yaml \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --parameter-overrides \
-      Environment=staging \
+      Environment=personal \
       AttachPolicyToRole=false \
       PriceClass=PriceClass_200 \
   --capabilities CAPABILITY_NAMED_IAM \
@@ -366,11 +395,11 @@ aws cloudformation deploy \
 
 ### Step 4: Extract Stack Outputs
 
-Retrieve the deployed endpoints and bucket parameters from the staging stack:
+Retrieve the deployed endpoints and bucket parameters from the personal stack:
 
 ```bash
 aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs" \
   --output table
@@ -380,25 +409,25 @@ Export individual output values directly into shell environment variables:
 
 ```bash
 export S3_ASSETS_BUCKET=$(aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='BucketName'].OutputValue" \
   --output text)
 
 export ASSET_BASE_URL=$(aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='AssetBaseUrl'].OutputValue" \
   --output text)
 
 export CF_DISTRIBUTION_ID=$(aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='CloudFrontDistributionId'].OutputValue" \
   --output text)
 
 export BACKEND_POLICY_ARN=$(aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='BackendEC2S3PolicyArn'].OutputValue" \
   --output text)
@@ -411,11 +440,11 @@ echo "Policy ARN:        $BACKEND_POLICY_ARN"
 
 ### Step 5: Update Application Environment Variables
 
-Update the backend `.env` file on the staging EC2 host:
+Update the backend `.env` file on the personal EC2 host:
 
 ```bash
 # Add to backend .env / docker environment
-S3_ASSETS_BUCKET=interview-prep-assets-808431466075-staging-ap-south-2
+S3_ASSETS_BUCKET=interview-prep-assets-808431466075-personal-ap-south-2
 S3_ASSETS_REGION=ap-south-2
 ASSET_BASE_URL=https://<your-distribution-domain>.cloudfront.net
 ```
@@ -432,7 +461,7 @@ Verify that all 4 public access block parameters are strictly enforced:
 
 ```bash
 aws s3api get-public-access-block \
-  --bucket "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-staging-ap-south-2}" \
+  --bucket "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}" \
   --region ap-south-2
 ```
 
@@ -454,7 +483,7 @@ Verify that direct HTTP requests to the S3 bucket endpoint are denied:
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" \
-  "https://${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-staging-ap-south-2}.s3.ap-south-2.amazonaws.com/test-probe.txt"
+  "https://${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}.s3.ap-south-2.amazonaws.com/test-probe.txt"
 ```
 
 **Expected Result:**
@@ -472,7 +501,7 @@ aws ssm start-session --target <instance-id> --region ap-south-2
 python3 -c "
 import boto3, os
 
-bucket = os.getenv('S3_ASSETS_BUCKET', 'interview-prep-assets-808431466075-staging-ap-south-2')
+bucket = os.getenv('S3_ASSETS_BUCKET', 'interview-prep-assets-808431466075-personal-ap-south-2')
 s3 = boto3.client('s3', region_name='ap-south-2')
 key = 'avatars/test-user/probe.txt'
 
@@ -697,11 +726,11 @@ aws iam detach-role-policy \
 
 # 5. Delete CloudFormation stack
 aws cloudformation delete-stack \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2
 
 # 6. Wait for complete deletion
 aws cloudformation wait stack-delete-complete \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2
 ```

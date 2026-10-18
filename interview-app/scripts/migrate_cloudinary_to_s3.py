@@ -45,7 +45,7 @@ mimetypes.add_type("image/gif", ".gif")
 logger = logging.getLogger("migrate_cloudinary_to_s3")
 
 # Environment & Config Defaults (aligned with migration-contracts.md)
-DEFAULT_BUCKET = os.getenv("S3_ASSETS_BUCKET", "interview-prep-assets-808431466075-staging-ap-south-2")
+DEFAULT_BUCKET = os.getenv("S3_ASSETS_BUCKET", "interview-prep-assets-808431466075-personal-ap-south-2")
 DEFAULT_REGION = os.getenv("S3_ASSETS_REGION", "ap-south-2")
 # STRICT: ASSET_BASE_URL defaults to empty; fictitious hostnames (e.g. d123456abcdef8) are forbidden
 DEFAULT_CLOUDFRONT_BASE = os.getenv("ASSET_BASE_URL", "").strip()
@@ -635,6 +635,10 @@ def build_or_update_manifest(
             if set(entry.source_files) != set(files):
                 entry.source_files = files
                 changed = True
+            expected_s3_url = f"https://{bucket}.s3.{region}.amazonaws.com/{entry.s3_key}"
+            if entry.s3_url != expected_s3_url:
+                entry.s3_url = expected_s3_url
+                changed = True
             if validated_cf_base and (not entry.cloudfront_url or entry.cloudfront_url.startswith("https://")):
                 new_cf = f"{validated_cf_base}/{entry.s3_key}"
                 if entry.cloudfront_url != new_cf:
@@ -668,11 +672,18 @@ def build_or_update_manifest(
     discovered_urls = set(discovered.keys())
     for url, entry in existing_map.items():
         if url not in discovered_urls:
+            changed = False
+            expected_s3_url = f"https://{bucket}.s3.{region}.amazonaws.com/{entry.s3_key}"
+            if entry.s3_url != expected_s3_url:
+                entry.s3_url = expected_s3_url
+                changed = True
             if validated_cf_base and (not entry.cloudfront_url or entry.cloudfront_url.startswith("https://")):
                 new_cf = f"{validated_cf_base}/{entry.s3_key}"
                 if entry.cloudfront_url != new_cf:
                     entry.cloudfront_url = new_cf
-                    updated_count += 1
+                    changed = True
+            if changed:
+                updated_count += 1
             merged_entries.append(entry)
 
     # Check for key collisions
@@ -757,9 +768,42 @@ def check_s3_collision_or_existing(
     """
     try:
         resp = s3_client.head_object(Bucket=bucket, Key=key)
-    except Exception:
-        # Object does not exist in S3 (e.g. 404 NoSuchKey)
-        return False, None, None
+    except Exception as exc:
+        is_missing = False
+        error_code = None
+        http_status = None
+
+        err_str = str(exc).lower()
+        if hasattr(exc, "response") and isinstance(exc.response, dict):
+            error_code = str(exc.response.get("Error", {}).get("Code", "")).strip()
+            http_status = exc.response.get("ResponseMetadata", {}).get("HTTPStatusCode")
+            if error_code in {"404", "NoSuchKey", "NotFound"} or http_status == 404:
+                is_missing = True
+        elif type(exc).__name__ in {"NoSuchKey", "NotFound"}:
+            is_missing = True
+        elif any(token in err_str for token in ["404", "nosuchkey", "not found"]):
+            # Guardrail: Never recognize as missing if it contains auth, permission, timeout, or rate limit indicators
+            non_missing_indicators = [
+                "accessdenied", "access denied", "403", "forbidden", "unauthorized",
+                "credential", "slowdown", "throttl", "timeout", "timed out"
+            ]
+            if not any(token in err_str for token in non_missing_indicators):
+                is_missing = True
+
+        if is_missing:
+            # Verified that object is absent in S3
+            return False, None, None
+
+        # Never treat AccessDenied, credential failures, throttling, timeouts, or unexpected errors as object absent
+        logger.error(
+            "Unexpected error during S3 HeadObject check for s3://%s/%s (code=%s, status=%s): %s",
+            bucket,
+            key,
+            error_code,
+            http_status,
+            exc,
+        )
+        raise
 
     metadata = resp.get("Metadata", {})
     existing_sha = metadata.get("sha256", "").strip()

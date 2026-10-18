@@ -905,3 +905,105 @@ def test_cli_main_rollback_invocation(tmp_path):
             filepath=str(rollback_file),
             confirm=True,
         )
+
+
+# -----------------------------------------------------------------------------
+# 12. REGRESSION TESTS: STALE MANIFEST & S3 VERIFICATION PRECEDENCE
+# -----------------------------------------------------------------------------
+def test_stale_manifest_status_overridden_by_s3_head_object_failure(tmp_path):
+    """Verify that a stale manifest entry with status='verified' does NOT override S3 HeadObject failure."""
+    old_url = "https://res.cloudinary.com/demo/image/upload/v1/interview-prep/avatars/u1/avatar.png"
+    manifest_file = tmp_path / "stale_manifest.json"
+    manifest_file.write_text(json.dumps([
+        {
+            "original_url": old_url,
+            "s3_key": "avatars/u1/avatar.png",
+            "cloudfront_url": "https://d3xxxxxxxxxxxx.cloudfront.net/avatars/u1/avatar.png",
+            "status": "verified",
+            "sha256": "fakehash123",
+            "byte_count": 1024,
+        }
+    ]), encoding="utf-8")
+
+    mock_rows = [
+        {
+            "id": "u1",
+            "email": "u1@test.com",
+            "username": "u1",
+            "avatar_url": old_url,
+        }
+    ]
+
+    mock_client = MagicMock()
+    mock_client.query.return_value = mock_rows
+
+    mock_s3 = MagicMock()
+    # Live S3 check fails because object is absent in the actual S3 bucket
+    mock_s3.head_object.side_effect = Exception("NoSuchKey: The specified key does not exist.")
+
+    result = reconcile_avatars(
+        mode="dry-run",
+        confirm=False,
+        manifest_path=str(manifest_file),
+        asset_base_url="https://d3xxxxxxxxxxxx.cloudfront.net",
+        client=mock_client,
+        s3_client=mock_s3,
+    )
+
+    # S3 verification took precedence: object is missing in S3, so it is NOT eligible!
+    assert result["candidates"] == 1
+    assert result["verified_destinations"] == 0
+    assert result["missing_destinations"] == 1
+    assert result["eligible"] == 0
+    assert result["mappings"][0]["status"] == "missing_destination"
+    assert result["mappings"][0]["destination_verified"] is False
+    assert result["mappings"][0]["eligible"] is False
+
+
+def test_manifest_unverified_uploaded_status_rejected_without_s3_client(tmp_path):
+    """Verify that a manifest entry with status='uploaded' or 'pending' is NOT treated as verified."""
+    old_url = "https://res.cloudinary.com/demo/image/upload/v1/interview-prep/avatars/u2/avatar.png"
+    manifest_file = tmp_path / "unverified_manifest.json"
+    manifest_file.write_text(json.dumps([
+        {
+            "original_url": old_url,
+            "s3_key": "avatars/u2/avatar.png",
+            "cloudfront_url": "https://d3xxxxxxxxxxxx.cloudfront.net/avatars/u2/avatar.png",
+            "status": "uploaded",  # Not verified!
+        }
+    ]), encoding="utf-8")
+
+    mock_rows = [
+        {
+            "id": "u2",
+            "email": "u2@test.com",
+            "username": "u2",
+            "avatar_url": old_url,
+        }
+    ]
+
+    mock_client = MagicMock()
+    mock_client.query.return_value = mock_rows
+
+    result = reconcile_avatars(
+        mode="dry-run",
+        confirm=False,
+        manifest_path=str(manifest_file),
+        asset_base_url="https://d3xxxxxxxxxxxx.cloudfront.net",
+        client=mock_client,
+        s3_client=None,
+    )
+
+    assert result["candidates"] == 1
+    assert result["verified_destinations"] == 0
+    assert result["missing_destinations"] == 1
+    assert result["eligible"] == 0
+    assert result["mappings"][0]["status"] == "missing_destination"
+
+
+def test_personal_environment_default_bucket_configuration():
+    """Verify default bucket and region constants reflect personal environment."""
+    from reconcile_db_avatars import DEFAULT_S3_BUCKET, DEFAULT_S3_REGION
+    assert "personal" in DEFAULT_S3_BUCKET
+    assert "808431466075" in DEFAULT_S3_BUCKET
+    assert DEFAULT_S3_REGION == "ap-south-2"

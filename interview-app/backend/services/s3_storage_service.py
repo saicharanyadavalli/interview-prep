@@ -18,7 +18,7 @@ from botocore.exceptions import BotoCoreError, ClientError
 
 logger = logging.getLogger(__name__)
 
-DEFAULT_S3_BUCKET = "interview-prep-assets-808431466075-ap-south-2"
+DEFAULT_S3_BUCKET = "interview-prep-assets-808431466075-personal-ap-south-2"
 DEFAULT_S3_REGION = "ap-south-2"
 
 FORBIDDEN_BASE_URL_PATTERNS = [
@@ -37,14 +37,14 @@ class S3StorageError(Exception):
 
 
 def is_production_or_staging() -> bool:
-    """Return True if running in production or staging environment."""
+    """Return True if running in production, staging, or personal deployment environment."""
     env = (
         os.getenv("ENVIRONMENT")
         or os.getenv("APP_ENV")
         or os.getenv("ENV")
         or ""
     ).lower().strip()
-    return env in ("production", "prod", "staging")
+    return env in ("production", "prod", "staging", "personal")
 
 
 def is_test_mode() -> bool:

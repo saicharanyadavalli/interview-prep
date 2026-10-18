@@ -72,8 +72,8 @@ logger = logging.getLogger("reconcile_db_avatars")
 # -----------------------------------------------------------------------------
 # CONSTANTS & CONTRACT DEFAULTS
 # -----------------------------------------------------------------------------
-DEFAULT_S3_BUCKET = "interview-prep-assets-808431466075-ap-south-2"
-DEFAULT_S3_REGION = "ap-south-2"
+DEFAULT_S3_BUCKET = os.getenv("S3_ASSETS_BUCKET", "interview-prep-assets-808431466075-personal-ap-south-2")
+DEFAULT_S3_REGION = os.getenv("S3_ASSETS_REGION", "ap-south-2")
 
 PRESERVED_DOMAINS = (
     "googleusercontent.com",
@@ -269,7 +269,7 @@ def load_verified_manifest_entries(
             url_mappings[orig] = cf_url
 
         if orig:
-            if status in ("verified", "uploaded", "eligible") or item.get("verified") is True:
+            if status == "verified" or item.get("verified") is True:
                 verified_urls.add(orig)
                 if s3_key:
                     verified_s3_keys.add(s3_key)
@@ -663,6 +663,9 @@ def print_execution_report(
 # -----------------------------------------------------------------------------
 # MAIN RECONCILIATION WORKFLOW
 # -----------------------------------------------------------------------------
+_DEFAULT_S3_CLIENT = object()
+
+
 def reconcile_avatars(
     mode: str = "dry-run",
     confirm: bool = False,
@@ -673,7 +676,7 @@ def reconcile_avatars(
     s3_region: Optional[str] = None,
     scan_all: bool = False,
     client: Any = None,
-    s3_client: Any = None,
+    s3_client: Any = _DEFAULT_S3_CLIENT,
 ) -> Dict[str, Any]:
     """Core reconciliation logic orchestrating candidate scan, S3 verification, and execution.
 
@@ -712,15 +715,16 @@ def reconcile_avatars(
         load_verified_manifest_entries(manifest_path)
     )
 
-    # Initialize S3 client if not provided
-    active_s3_client = s3_client
-    if active_s3_client is None:
+    # Initialize S3 client if not explicitly passed
+    if s3_client is _DEFAULT_S3_CLIENT:
         try:
             import boto3
             active_s3_client = boto3.client("s3", region_name=target_region)
         except Exception as exc:
             logger.debug("boto3 S3 client could not be initialized automatically: %s", exc)
             active_s3_client = None
+    else:
+        active_s3_client = s3_client
 
     # 1. Query candidate rows from RDS
     rows = fetch_candidate_profiles(client=client, scan_all=scan_all)
@@ -835,11 +839,13 @@ def reconcile_avatars(
             continue
 
         # Strict Verification Gate: Destination S3 object MUST exist!
+        # Do not treat stale manifest status alone as sufficient evidence of object existence when S3 client is available
         is_verified = False
-        if raw_url in verified_manifest_urls or s3_key in verified_manifest_keys:
-            is_verified = True
-        elif active_s3_client is not None:
+        if active_s3_client is not None:
             is_verified = check_s3_destination_exists(active_s3_client, target_bucket, s3_key)
+        elif raw_url in verified_manifest_urls or s3_key in verified_manifest_keys:
+            # Fallback to verified manifest only when S3 client is unavailable (e.g. offline preview)
+            is_verified = True
 
         if is_verified:
             verified_destinations_count += 1

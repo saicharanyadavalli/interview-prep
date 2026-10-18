@@ -45,7 +45,7 @@ services:
       - RDS_POOL_MAX=${RDS_POOL_MAX:-10}
       - DATABASE_URL=${DATABASE_URL:-}
       # AWS S3 & CloudFront Static Asset Delivery
-      - S3_ASSETS_BUCKET=${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-staging-ap-south-2}
+      - S3_ASSETS_BUCKET=${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}
       - S3_ASSETS_REGION=${S3_ASSETS_REGION:-ap-south-2}
       - ASSET_BASE_URL=${ASSET_BASE_URL:-}
     volumes:

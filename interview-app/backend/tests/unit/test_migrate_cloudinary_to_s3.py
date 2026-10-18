@@ -1247,3 +1247,171 @@ def test_main_cli_no_args_shows_help(capsys):
     assert exit_code == 0
     captured = capsys.readouterr()
     assert "usage:" in captured.out or "usage:" in captured.err or "Migrate static assets" in captured.out
+
+
+# ==============================================================================
+# 10. Regression Tests: Authorization Failures, AWS Errors, Collisions & Manifest
+# ==============================================================================
+
+
+def test_check_s3_collision_access_denied_raises_exception():
+    """Verify AccessDenied (403) from HeadObject is NOT treated as missing object and raises exception."""
+    from botocore.exceptions import ClientError
+
+    mock_s3 = MagicMock()
+    error_response = {
+        "Error": {
+            "Code": "AccessDenied",
+            "Message": "User is not authorized to perform: s3:GetObject on resource",
+        },
+        "ResponseMetadata": {"HTTPStatusCode": 403},
+    }
+    mock_s3.head_object.side_effect = ClientError(error_response, "HeadObject")
+
+    with pytest.raises(ClientError) as exc_info:
+        check_s3_collision_or_existing(
+            s3_client=mock_s3,
+            bucket="test-bucket",
+            key="avatars/u1/avatar.png",
+            data_sha256="abc123",
+            data_size=1024,
+        )
+
+    assert exc_info.value.response["Error"]["Code"] == "AccessDenied"
+
+
+def test_check_s3_collision_unexpected_aws_errors_raise_exception():
+    """Verify throttling (SlowDown), timeouts, and credential errors raise exceptions rather than entering upload path."""
+    from botocore.exceptions import ClientError
+
+    mock_s3 = MagicMock()
+
+    # Throttling error (503 SlowDown)
+    slowdown_resp = {
+        "Error": {"Code": "SlowDown", "Message": "Please reduce your request rate."},
+        "ResponseMetadata": {"HTTPStatusCode": 503},
+    }
+    mock_s3.head_object.side_effect = ClientError(slowdown_resp, "HeadObject")
+    with pytest.raises(ClientError):
+        check_s3_collision_or_existing(mock_s3, "test-bucket", "k", "sha", 100)
+
+    # Generic connection timeout
+    mock_s3.head_object.side_effect = TimeoutError("Connection to S3 timed out after 30s")
+    with pytest.raises(TimeoutError):
+        check_s3_collision_or_existing(mock_s3, "test-bucket", "k", "sha", 100)
+
+    # Runtime permission error
+    mock_s3.head_object.side_effect = PermissionError("Local IAM credentials expired")
+    with pytest.raises(PermissionError):
+        check_s3_collision_or_existing(mock_s3, "test-bucket", "k", "sha", 100)
+
+
+def test_check_s3_collision_recognized_missing_object_returns_false():
+    """Verify only recognized missing-object responses (404, NoSuchKey, NotFound) return False, None, None."""
+    from botocore.exceptions import ClientError
+
+    mock_s3 = MagicMock()
+
+    for code in ["404", "NoSuchKey", "NotFound"]:
+        err_resp = {
+            "Error": {"Code": code, "Message": "The specified key does not exist."},
+            "ResponseMetadata": {"HTTPStatusCode": 404},
+        }
+        mock_s3.head_object.side_effect = ClientError(err_resp, "HeadObject")
+
+        exists, collision_err, resp = check_s3_collision_or_existing(
+            s3_client=mock_s3,
+            bucket="test-bucket",
+            key="system-design/01/diag.png",
+            data_sha256="abcdef123456",
+            data_size=2048,
+        )
+        assert exists is False
+        assert collision_err is None
+        assert resp is None
+
+
+def test_check_s3_collision_detection_and_idempotent_skip():
+    """Verify existing objects matching SHA-256 skip idempotently, while mismatching hashes report collision."""
+    mock_s3 = MagicMock()
+
+    # Matching SHA-256 -> Idempotent skip
+    mock_s3.head_object.return_value = {
+        "ContentLength": 2048,
+        "Metadata": {"sha256": "same_hash_123"},
+    }
+    exists, collision_err, resp = check_s3_collision_or_existing(
+        s3_client=mock_s3,
+        bucket="test-bucket",
+        key="system-design/01/diag.png",
+        data_sha256="same_hash_123",
+        data_size=2048,
+    )
+    assert exists is True
+    assert collision_err is None
+    assert resp["ContentLength"] == 2048
+
+    # Differing SHA-256 -> Collision error
+    mock_s3.head_object.return_value = {
+        "ContentLength": 2048,
+        "Metadata": {"sha256": "old_different_hash"},
+    }
+    exists, collision_err, resp = check_s3_collision_or_existing(
+        s3_client=mock_s3,
+        bucket="test-bucket",
+        key="system-design/01/diag.png",
+        data_sha256="new_incoming_hash",
+        data_size=2048,
+    )
+    assert exists is True
+    assert "Key collision detected" in collision_err
+    assert "old_different_hash" in collision_err
+    assert "new_incoming_hash" in collision_err
+
+
+def test_manifest_regeneration_updates_s3_and_cloudfront_urls(tmp_path):
+    """Verify build_or_update_manifest regenerates s3_url and cloudfront_url when switching environments."""
+    manifest_path = tmp_path / "migration-manifest.json"
+    initial_entries = [
+        ManifestEntry(
+            original_url="https://res.cloudinary.com/asdf12235464/image/upload/v1/interview-assistant/system-design/01/fig1.png",
+            source_cloud="asdf12235464",
+            canonical_id="interview-assistant/system-design/01/fig1",
+            s3_key="system-design/01/fig1.png",
+            s3_url="https://interview-prep-assets-808431466075-staging-ap-south-2.s3.ap-south-2.amazonaws.com/system-design/01/fig1.png",
+            cloudfront_url="https://d3oldstaging.cloudfront.net/system-design/01/fig1.png",
+            content_type="image/png",
+            byte_count=1024,
+            sha256="hash1",
+            source_files=["frontend/system-design/lessons/step-01.html"],
+            status="verified",
+        )
+    ]
+    save_manifest(manifest_path, initial_entries)
+
+    # Create dummy repo layout
+    lesson = tmp_path / "frontend" / "system-design" / "lessons" / "step-01.html"
+    lesson.parent.mkdir(parents=True)
+    lesson.write_text(
+        '<img src="https://res.cloudinary.com/asdf12235464/image/upload/v1/interview-assistant/system-design/01/fig1.png" />',
+        encoding="utf-8",
+    )
+
+    # Re-run build_or_update_manifest for personal environment
+    personal_bucket = "interview-prep-assets-808431466075-personal-ap-south-2"
+    personal_cf_base = "https://d123personalcdn.cloudfront.net"
+
+    entries, stats = build_or_update_manifest(
+        repo_root=tmp_path,
+        manifest_path=manifest_path,
+        bucket=personal_bucket,
+        region="ap-south-2",
+        cloudfront_base=personal_cf_base,
+        test_mode=True,
+    )
+
+    assert len(entries) == 1
+    assert stats["updated"] == 1
+    reloaded = load_manifest(manifest_path)
+    assert reloaded[0].s3_url == f"https://{personal_bucket}.s3.ap-south-2.amazonaws.com/system-design/01/fig1.png"
+    assert reloaded[0].cloudfront_url == f"{personal_cf_base}/system-design/01/fig1.png"

@@ -90,14 +90,14 @@ Reuse the existing security group `interview-prep-app-sg`. Ensure the **Inbound 
        "Version": "2012-10-17",
        "Statement": [
          {
-           "Sid": "ScopedS3BucketObjectAccess",
+           "Sid": "RuntimeAvatarObjectAccess",
            "Effect": "Allow",
            "Action": [
              "s3:PutObject",
              "s3:GetObject",
              "s3:DeleteObject"
            ],
-           "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2/*"
+           "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/avatars/*"
          },
          {
            "Sid": "ScopedS3BucketListAccess",
@@ -105,7 +105,36 @@ Reuse the existing security group `interview-prep-app-sg`. Ensure the **Inbound 
            "Action": [
              "s3:ListBucket"
            ],
-           "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2"
+           "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2"
+         }
+       ]
+     }
+     ```
+   - **`AssetMigrationS3Policy`** (Dedicated Migration Policy): Scoped read/write access for asset migration (no DeleteObject):
+     ```json
+     {
+       "Version": "2012-10-17",
+       "Statement": [
+         {
+           "Sid": "MigrationScopedObjectAccess",
+           "Effect": "Allow",
+           "Action": [
+             "s3:GetObject",
+             "s3:PutObject"
+           ],
+           "Resource": [
+             "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/avatars/*",
+             "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/system-design/*",
+             "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/static/*"
+           ]
+         },
+         {
+           "Sid": "MigrationScopedListAccess",
+           "Effect": "Allow",
+           "Action": [
+             "s3:ListBucket"
+           ],
+           "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2"
          }
        ]
      }
@@ -251,7 +280,7 @@ GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
 # ── 3b. AWS S3 & Amazon CloudFront (Static Assets & Avatars) ──
 # Authoritative S3 bucket and CloudFront CDN for profile avatars and system design diagrams.
 # On EC2, instance accesses S3 via InterviewPrepEC2Role (zero static credentials).
-S3_ASSETS_BUCKET=interview-prep-assets-808431466075-ap-south-2
+S3_ASSETS_BUCKET=interview-prep-assets-808431466075-personal-ap-south-2
 S3_ASSETS_REGION=ap-south-2
 ASSET_BASE_URL=https://<your-distribution-id>.cloudfront.net
 
@@ -523,7 +552,7 @@ The application delivers system design lesson diagrams and user profile avatars 
                └───────────────────────────┘
 ```
 
-1. **Private S3 Bucket (`interview-prep-assets-808431466075-ap-south-2`):**
+1. **Private S3 Bucket (`interview-prep-assets-808431466075-personal-ap-south-2`):**
    - **Public Access Block:** All four block settings (`BlockPublicAcls`, `IgnorePublicAcls`, `BlockPublicPolicy`, `RestrictPublicBuckets`) are active.
    - **Encryption:** Server-Side Encryption with Amazon S3 managed keys (`AES256` / SSE-S3) and S3 Bucket Keys enabled.
    - **Bucket Policy:** Denies all insecure requests (`aws:SecureTransport: 'false'`) and grants read access exclusively to the CloudFront distribution service principal (`cloudfront.amazonaws.com`) via Origin Access Control (OAC). Direct internet access to the S3 bucket is rejected with HTTP 403 Forbidden.
@@ -537,21 +566,21 @@ The application delivers system design lesson diagrams and user profile avatars 
 
 The FastAPI backend runs on the EC2 instance and utilizes the default AWS credential provider chain via `boto3`. No static AWS credentials (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`) are stored in `.env` or application code.
 
-The instance profile `InterviewPrepEC2Role` requires the following scoped permissions:
+The instance profile `InterviewPrepEC2Role` requires the following scoped permissions for runtime avatar operations:
 
 ```json
 {
   "Version": "2012-10-17",
   "Statement": [
     {
-      "Sid": "ScopedS3BucketObjectAccess",
+      "Sid": "RuntimeAvatarObjectAccess",
       "Effect": "Allow",
       "Action": [
         "s3:PutObject",
         "s3:GetObject",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2/*"
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/avatars/*"
     },
     {
       "Sid": "ScopedS3BucketListAccess",
@@ -559,28 +588,30 @@ The instance profile `InterviewPrepEC2Role` requires the following scoped permis
       "Action": [
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2"
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2"
     }
   ]
 }
 ```
 
-### C. CloudFormation Infrastructure Provisioning (Staging & Production)
+Asset migration operations are granted via the dedicated `AssetMigrationS3Policy` (`GetObject`, `PutObject` across `avatars/*`, `system-design/*`, `static/*`, without `DeleteObject`).
 
-The asset infrastructure (private S3 bucket, CloudFront OAC, and reviewable IAM policy) is deployed via CloudFormation with strict environment isolation:
+### C. CloudFormation Infrastructure Provisioning (Personal & Production)
 
-#### Staging Deployment (Default):
+The asset infrastructure (private S3 bucket, CloudFront OAC, and reviewable IAM policies) is deployed via CloudFormation with strict environment isolation:
+
+#### Personal Deployment (Default):
 ```bash
 aws cloudformation deploy \
   --template-file infrastructure/cloudformation/assets-s3-cloudfront.yaml \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --parameter-overrides \
-      Environment=staging \
+      Environment=personal \
       AttachPolicyToRole=false \
   --capabilities CAPABILITY_NAMED_IAM \
   --region ap-south-2
 ```
-*Note: In staging, `AttachPolicyToRole` defaults to `false` so the existing EC2 role is never mutated automatically. Review the generated policy prior to attachment.*
+*Note: `AttachPolicyToRole` defaults to `false` so the existing EC2 role is never mutated automatically. Review the generated policy prior to attachment.*
 
 #### Production Deployment:
 ```bash
@@ -597,13 +628,13 @@ aws cloudformation deploy \
 To retrieve and explicitly export the resolved bucket name and CloudFront Base URL for runtime child processes and migration scripts:
 ```bash
 export ASSET_BASE_URL=$(aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='AssetBaseUrl'].OutputValue" \
   --output text)
 
 export S3_ASSETS_BUCKET=$(aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets-staging \
+  --stack-name interview-prep-assets-personal \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='BucketName'].OutputValue" \
   --output text)

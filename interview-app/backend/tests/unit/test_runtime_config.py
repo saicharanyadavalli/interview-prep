@@ -396,7 +396,7 @@ def test_root_docker_compose_backend_s3_asset_environment_mapping():
             env_map[k.strip()] = v.strip()
 
     assert "S3_ASSETS_BUCKET" in env_map
-    assert env_map["S3_ASSETS_BUCKET"] == "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-staging-ap-south-2}"
+    assert env_map["S3_ASSETS_BUCKET"] == "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}"
 
     assert "S3_ASSETS_REGION" in env_map
     assert env_map["S3_ASSETS_REGION"] == "${S3_ASSETS_REGION:-ap-south-2}"
@@ -413,7 +413,7 @@ def test_root_docker_compose_backend_s3_asset_environment_mapping():
 
 
 def test_backend_docker_compose_s3_asset_environment_mapping():
-    """Verify backend/docker-compose.yml maps S3 and CloudFront variables with staging defaults."""
+    """Verify backend/docker-compose.yml maps S3 and CloudFront variables with personal defaults."""
     compose_file = BACKEND_DIR / "docker-compose.yml"
     raw_yaml = yaml.safe_load(compose_file.read_text(encoding="utf-8"))
     app_env = raw_yaml["services"]["app"]["environment"]
@@ -425,7 +425,7 @@ def test_backend_docker_compose_s3_asset_environment_mapping():
             env_map[k.strip()] = v.strip()
 
     assert "S3_ASSETS_BUCKET" in env_map
-    assert env_map["S3_ASSETS_BUCKET"] == "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-staging-ap-south-2}"
+    assert env_map["S3_ASSETS_BUCKET"] == "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}"
 
     assert "S3_ASSETS_REGION" in env_map
     assert env_map["S3_ASSETS_REGION"] == "${S3_ASSETS_REGION:-ap-south-2}"

@@ -6,9 +6,9 @@ Description: >
 Parameters:
   Environment:
     Type: String
-    Default: staging
+    Default: personal
     AllowedValues:
-      - staging
+      - personal
       - production
     Description: Environment stage for resource identification, bucket naming, and tagging.
 
@@ -56,6 +56,8 @@ Resources:
   # 1. Private Amazon S3 Bucket
   AssetsBucket:
     Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
     Properties:
       BucketName: !If
         - HasCustomBucketName
@@ -174,12 +176,12 @@ Resources:
               Bool:
                 aws:SecureTransport: 'false'
 
-  # 5. EC2 Backend Least-Privilege IAM Managed Policy
+  # 5. EC2 Backend Least-Privilege IAM Managed Policy (Runtime)
   BackendEC2S3Policy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
       ManagedPolicyName: !Sub "${AWS::StackName}-BackendEC2S3Policy"
-      Description: Standalone least-privilege IAM managed policy for EC2 backend runtime and asset migration.
+      Description: Standalone least-privilege IAM managed policy for EC2 backend runtime avatar operations.
       Roles: !If [ShouldAttachPolicyToRole, [!Ref EC2RoleName], !Ref "AWS::NoValue"]
       PolicyDocument:
         Version: '2012-10-17'
@@ -191,12 +193,31 @@ Resources:
               - s3:GetObject
               - s3:DeleteObject
             Resource: !Sub "${AssetsBucket.Arn}/avatars/*"
-          - Sid: OneTimeMigrationObjectAccess
+          - Sid: ScopedS3BucketListAccess
             Effect: Allow
             Action:
+              - s3:ListBucket
+            Resource: !GetAtt AssetsBucket.Arn
+
+  # 6. Standalone Asset Migration Least-Privilege IAM Managed Policy
+  AssetMigrationS3Policy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Sub "${AWS::StackName}-AssetMigrationS3Policy"
+      Description: Standalone least-privilege IAM managed policy for one-time asset migration.
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: MigrationScopedObjectAccess
+            Effect: Allow
+            Action:
+              - s3:GetObject
               - s3:PutObject
-            Resource: !Sub "${AssetsBucket.Arn}/*"
-          - Sid: ScopedS3BucketListAccess
+            Resource:
+              - !Sub "${AssetsBucket.Arn}/avatars/*"
+              - !Sub "${AssetsBucket.Arn}/system-design/*"
+              - !Sub "${AssetsBucket.Arn}/static/*"
+          - Sid: MigrationScopedListAccess
             Effect: Allow
             Action:
               - s3:ListBucket
@@ -238,3 +259,9 @@ Outputs:
     Value: !Ref BackendEC2S3Policy
     Export:
       Name: !Sub "${AWS::StackName}-BackendEC2S3PolicyArn"
+
+  AssetMigrationPolicyArn:
+    Description: ARN of the standalone Asset Migration S3 Managed Policy
+    Value: !Ref AssetMigrationS3Policy
+    Export:
+      Name: !Sub "${AWS::StackName}-AssetMigrationPolicyArn"
