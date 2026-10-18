@@ -32,6 +32,8 @@ from services.cognito_auth import (
     CognitoAuthError,
     get_cognito_client_id,
     get_cognito_region,
+    is_production_or_staging,
+    verify_cognito_id_token,
     verify_cognito_token,
 )
 
@@ -56,9 +58,9 @@ def resolve_user_identity(
     4. If no profile exists, create a new user_profiles record with a fresh UUID and link
        it into user_identities.
     """
-    provider_sub = str(claims.get("sub") or claims.get("id") or "").strip()
+    provider_sub = str(claims.get("sub") or "").strip()
     if not provider_sub:
-        raise ValueError("Missing 'sub' or user identifier in token claims.")
+        raise ValueError("Missing 'sub' identifier in verified token claims.")
 
     raw_email = str(claims.get("email") or "").strip()
     clean_email = raw_email.lower() if raw_email else ""
@@ -104,15 +106,13 @@ def resolve_user_identity(
             return dict(profile)
 
     # 3. If no mapping exists, check user_profiles WHERE LOWER(email) = LOWER(%s)
-    # Verified email linking policy: keep existing profile UUID and history intact,
-    # but never link to an existing account if the email is explicitly unverified.
+    # Verified email linking policy: keep existing profile UUID and history intact.
+    # CRITICAL: Missing, None, invalid, or False email_verified claim is NEVER treated as verified!
+    # Only an explicit email_verified is True authorizes automatic linking to an existing account.
     email_verified_claim = claims.get("email_verified")
-    is_email_verified = True
-    if email_verified_claim is not None:
-        if isinstance(email_verified_claim, bool):
-            is_email_verified = email_verified_claim
-        elif isinstance(email_verified_claim, str):
-            is_email_verified = email_verified_claim.lower() == "true"
+    is_email_verified = False
+    if email_verified_claim is True or (isinstance(email_verified_claim, str) and email_verified_claim.lower() == "true"):
+        is_email_verified = True
 
     if clean_email and is_email_verified:
         matching_profiles = rds_client.query(
@@ -125,59 +125,68 @@ def resolve_user_identity(
             fetch="all",
         )
         if matching_profiles:
-            if isinstance(matching_profiles, list) and len(matching_profiles) >= 1:
-                profile = dict(matching_profiles[0])
-            elif isinstance(matching_profiles, dict):
-                profile = dict(matching_profiles)
-            else:
-                profile = None
+            # Ambiguous email matches:
+            # If > 1 match (multiple profiles sharing email): REJECT automatic linking!
+            # Fail safely with descriptive log/error. Never arbitrarily pick the first result.
+            if len(matching_profiles) > 1:
+                logger.error(
+                    "Identity linking rejected: Ambiguous email match with %d user profiles found for %s (provider_sub: %s).",
+                    len(matching_profiles),
+                    clean_email,
+                    provider_sub,
+                )
+                raise ValueError(
+                    f"Ambiguous identity linking rejected: Multiple existing user profiles ({len(matching_profiles)}) match email."
+                )
+
+            # Exactly 1 eligible match: link under verified-email policy
+            profile = dict(matching_profiles[0])
 
             if profile and profile.get("id"):
                 user_id = str(profile["id"])
 
-                # Link into user_identities
-                rds_client.mutate(
+                # Prevent identity reassignment:
+                # Do NOT use ON CONFLICT DO UPDATE that silently reassigns an already-linked provider_sub to a different user_id!
+                # Insert with DO NOTHING and verify no conflicting mapping exists.
+                try:
+                    rds_client.mutate(
+                        """
+                        INSERT INTO user_identities (user_id, provider, provider_sub, email)
+                        VALUES (%s, %s, %s, %s)
+                        ON CONFLICT (provider, provider_sub) DO NOTHING;
+                        """,
+                        (user_id, provider, provider_sub, clean_email),
+                    )
+                except Exception as exc:
+                    logger.error("Failed inserting user_identity during email linking: %s", exc)
+                    raise
+
+                # Re-read mapping to verify or handle concurrent linking / reassignment attempt
+                existing_mapping = rds_client.query(
                     """
-                    INSERT INTO user_identities (user_id, provider, provider_sub, email)
-                    VALUES (%s, %s, %s, %s)
-                    ON CONFLICT (provider, provider_sub) DO UPDATE
-                    SET user_id = EXCLUDED.user_id,
-                        email = EXCLUDED.email,
-                        updated_at = now();
+                    SELECT user_id, email
+                    FROM user_identities
+                    WHERE provider = %s AND provider_sub = %s
+                    LIMIT 1;
                     """,
-                    (user_id, provider, provider_sub, clean_email),
+                    (provider, provider_sub),
+                    fetch="one",
                 )
+                if existing_mapping and str(existing_mapping.get("user_id")) != user_id:
+                    logger.error(
+                        "Identity reassignment conflict: provider_sub '%s' already mapped to user_id '%s', cannot reassign to '%s'.",
+                        provider_sub,
+                        existing_mapping.get("user_id"),
+                        user_id,
+                    )
+                    raise ValueError(
+                        f"Identity conflict: Identity '{provider_sub}' is already linked to another account."
+                    )
+
                 return profile
 
-    # If explicit user id provided (e.g. from existing profile or legacy caller), check by id as well
-    explicit_id = str(claims.get("id") or "").strip()
-    if explicit_id:
-        profile_by_id = rds_client.query(
-            """
-            SELECT id, email, username, name, phone, avatar_url, updated_at
-            FROM user_profiles
-            WHERE id = %s
-            LIMIT 1;
-            """,
-            (explicit_id,),
-            fetch="one",
-        )
-        if profile_by_id:
-            rds_client.mutate(
-                """
-                INSERT INTO user_identities (user_id, provider, provider_sub, email)
-                VALUES (%s, %s, %s, %s)
-                ON CONFLICT (provider, provider_sub) DO UPDATE
-                SET user_id = EXCLUDED.user_id,
-                    email = EXCLUDED.email,
-                    updated_at = now();
-                """,
-                (explicit_id, provider, provider_sub, clean_email),
-            )
-            return dict(profile_by_id)
-
     # 4. If no profile exists, create new user_profiles record with fresh UUID and link it
-    new_user_id = explicit_id or str(uuid.uuid4())
+    new_user_id = str(uuid.uuid4())
     raw_username = (
         username_claim
         or (clean_email.split("@")[0] if clean_email else f"user_{new_user_id[:8]}")
@@ -202,33 +211,46 @@ def resolve_user_identity(
         (new_user_id, clean_email, candidate_username, name_claim, avatar_claim),
     )
 
+    # Insert into user_identities with DO NOTHING to prevent silent reassignment
+    # and handle concurrent first-time sign-ins gracefully
     rds_client.mutate(
         """
         INSERT INTO user_identities (user_id, provider, provider_sub, email)
         VALUES (%s, %s, %s, %s)
-        ON CONFLICT (provider, provider_sub) DO UPDATE
-        SET user_id = EXCLUDED.user_id,
-            email = EXCLUDED.email,
-            updated_at = now();
+        ON CONFLICT (provider, provider_sub) DO NOTHING;
         """,
         (new_user_id, provider, provider_sub, clean_email),
     )
 
-    new_profile = rds_client.query(
+    # Re-read mapping on conflict or to ensure atomic identity resolution
+    existing_ident = rds_client.query(
+        """
+        SELECT user_id, email
+        FROM user_identities
+        WHERE provider = %s AND provider_sub = %s
+        LIMIT 1;
+        """,
+        (provider, provider_sub),
+        fetch="one",
+    )
+
+    resolved_id = str(existing_ident["user_id"]) if existing_ident and existing_ident.get("user_id") else new_user_id
+
+    resolved_profile = rds_client.query(
         """
         SELECT id, email, username, name, phone, avatar_url, updated_at
         FROM user_profiles
         WHERE id = %s
         LIMIT 1;
         """,
-        (new_user_id,),
+        (resolved_id,),
         fetch="one",
     )
-    if new_profile:
-        return dict(new_profile)
+    if resolved_profile:
+        return dict(resolved_profile)
 
     return {
-        "id": new_user_id,
+        "id": resolved_id,
         "email": clean_email,
         "username": candidate_username,
         "name": name_claim,
@@ -300,15 +322,14 @@ def get_current_user(authorization: str | None = Header(None)) -> dict:
     authoritative user dictionary. Raises 401 on authentication failure.
     """
     if os.getenv("DISABLE_AUTH") == "true":
-        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or os.getenv("ENV") or "").lower()
-        if env in ("production", "prod"):
-            logger.critical("SECURITY INVARIANT VIOLATION: DISABLE_AUTH is strictly forbidden in production!")
+        if is_production_or_staging():
+            logger.critical("SECURITY INVARIANT VIOLATION: DISABLE_AUTH is strictly forbidden in production and staging!")
             raise HTTPException(
                 status_code=500,
-                detail="Security misconfiguration: DISABLE_AUTH is forbidden in production environment.",
+                detail="Security misconfiguration: DISABLE_AUTH is forbidden in production/staging environment.",
             )
 
-        logger.warning("DISABLE_AUTH is enabled — all requests bypass authentication. DO NOT use in production.")
+        logger.warning("DISABLE_AUTH is enabled — all requests bypass authentication. DO NOT use in production/staging.")
         mock_user = {
             "id": "12345678-1234-1234-1234-123456789012",
             "email": "testuser@example.com",
@@ -508,12 +529,12 @@ def login_with_credentials(request: Request, response: Response, payload: LoginR
 
     if id_token:
         try:
-            id_claims = jwt.decode(id_token, options={"verify_signature": False})
+            id_claims = verify_cognito_id_token(id_token)
             for key in ("email", "email_verified", "name", "picture", "avatar_url"):
                 if key in id_claims and key not in claims:
                     claims[key] = id_claims[key]
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Cryptographic verification of Cognito ID token failed: %s", exc)
 
     try:
         db_user = resolve_user_identity(claims)

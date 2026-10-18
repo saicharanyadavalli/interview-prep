@@ -11,8 +11,7 @@ Tests:
     - Rejects unconfirmed ({"confirm": False}) requests with 400.
     - Atomically removes all user data across user_identities, user_comments,
       user_progress, learning_track_progress, practice_history, and user_profiles.
-    - Preserves other users' data.
-    - Coordinates Cognito admin_delete_user and Supabase Auth deletion gracefully.
+    - Coordinates Cognito admin_delete_user with identity resolution gracefully.
     - Cleans up S3 avatar assets.
     - Rejects unauthenticated requests with 401.
 """
@@ -155,8 +154,8 @@ def test_delete_account_deletes_all_user_records_transactionally(
         {"id": other_id, "email": mock_other_user["email"], "username": mock_other_user["username"]},
     ])
     mock_supabase.set_table_data("user_identities", [
-        {"id": "ident-1", "user_id": user_id},
-        {"id": "ident-2", "user_id": other_id},
+        {"id": "ident-1", "user_id": user_id, "provider": "cognito", "provider_sub": "cognito-sub-123", "email": mock_user["email"]},
+        {"id": "ident-2", "user_id": other_id, "provider": "cognito", "provider_sub": "cognito-sub-999", "email": mock_other_user["email"]},
     ])
     mock_supabase.set_table_data("user_comments", [
         {"id": "com-1", "user_id": user_id, "qnum": 10},
@@ -185,10 +184,10 @@ def test_delete_account_deletes_all_user_records_transactionally(
         assert data["success"] is True
         assert "deleted successfully" in data["message"].lower()
 
-        # Check Cognito AdminDeleteUser was called
+        # Check Cognito AdminDeleteUser was called with resolved provider_sub identity
         mock_cognito.admin_delete_user.assert_called_once_with(
             UserPoolId="ap-south-2_MockPool123",
-            Username=mock_user["username"],
+            Username="cognito-sub-123",
         )
 
     # Check that caller's records are gone from all tables
@@ -209,6 +208,30 @@ def test_delete_account_deletes_all_user_records_transactionally(
 
     assert len(mock_supabase._tables.get("practice_history", [])) == 1
     assert mock_supabase._tables["practice_history"][0]["user_id"] == other_id
+
+
+def test_delete_account_deletes_with_username_fallback_when_no_identities(
+    client: TestClient, mock_supabase, mock_user
+):
+    """Verify DELETE /profile/account falls back to username when user_identities has no rows."""
+    user_id = mock_user["id"]
+    mock_supabase.set_table_data("user_profiles", [
+        {"id": user_id, "email": mock_user["email"], "username": mock_user["username"]}
+    ])
+    mock_supabase.set_table_data("user_identities", [])
+
+    with patch("boto3.client") as mock_boto:
+        mock_cognito = MagicMock()
+        mock_boto.return_value = mock_cognito
+
+        res = client.request("DELETE", "/profile/account", json={"confirm": True})
+        assert res.status_code == 200
+        assert res.json()["success"] is True
+
+        mock_cognito.admin_delete_user.assert_called_once_with(
+            UserPoolId="ap-south-2_MockPool123",
+            Username=mock_user["username"],
+        )
 
 
 def test_delete_account_handles_cognito_failure_gracefully(client: TestClient, mock_supabase, mock_user):

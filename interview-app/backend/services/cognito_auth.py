@@ -399,7 +399,141 @@ def verify_cognito_token(
     return payload
 
 
+def verify_cognito_id_token(
+    token: str,
+    region: Optional[str] = None,
+    user_pool_id: Optional[str] = None,
+    client_id: Optional[str] = None,
+    allow_mock: bool = True,
+) -> Dict[str, Any]:
+    """Validate a Cognito ID token against authoritative User Pool JWKS.
+
+    Performs cryptographic RS256 signature verification, checks token_use == 'id',
+    validates 'aud' against expected COGNITO_CLIENT_ID, and validates 'iss', 'exp', 'nbf'.
+    """
+    if not token or not isinstance(token, str):
+        raise InvalidTokenError("Token must be a non-empty string.")
+
+    token = token.strip()
+
+    is_mock = (
+        token.startswith("mock-")
+        or token.startswith("mock:")
+        or token.startswith("test-")
+        or token == "mock_token"
+    )
+
+    if is_mock:
+        if is_production_or_staging() or not is_test_mode():
+            raise CognitoAuthError(
+                "Mock tokens are strictly forbidden in production and staging environments."
+            )
+        if not allow_mock:
+            raise CognitoAuthError("Mock tokens are not allowed for this operation.")
+
+        expected_pool = user_pool_id or get_cognito_user_pool_id()
+        expected_reg = region or get_cognito_region()
+        expected_client = client_id or get_cognito_client_id()
+        expected_iss = get_cognito_issuer(region=expected_reg, user_pool_id=expected_pool)
+
+        mock_sub = "11111111-2222-3333-4444-555555555555"
+        mock_email = "testuser@example.com"
+        mock_username = "testuser"
+
+        if token.startswith("mock:"):
+            parts = token.split(":")
+            if len(parts) >= 2 and parts[1]:
+                mock_sub = parts[1]
+            if len(parts) >= 3 and parts[2]:
+                mock_email = parts[2]
+            if len(parts) >= 4 and parts[3]:
+                mock_username = parts[3]
+
+        return {
+            "sub": mock_sub,
+            "email": mock_email,
+            "email_verified": True,
+            "cognito:username": mock_username,
+            "token_use": "id",
+            "aud": expected_client,
+            "iss": expected_iss,
+            "exp": int(time.time()) + 3600,
+        }
+
+    try:
+        unverified_headers = jwt.get_unverified_header(token)
+    except Exception as exc:
+        raise InvalidTokenError("Invalid token header format.") from exc
+
+    alg = unverified_headers.get("alg")
+    if alg != "RS256":
+        raise InvalidTokenError(f"Unsupported token algorithm '{alg}'. Only RS256 is supported.")
+
+    kid = unverified_headers.get("kid")
+    if not kid:
+        raise InvalidTokenError("Token header is missing 'kid' (key ID).")
+
+    expected_pool_id = user_pool_id or get_cognito_user_pool_id()
+    expected_reg = region or get_cognito_region()
+    expected_iss = get_cognito_issuer(region=expected_reg, user_pool_id=expected_pool_id)
+    expected_client_id = client_id or get_cognito_client_id()
+
+    jwk_dict: Optional[Dict[str, Any]] = None
+    with _JWKS_LOCK:
+        jwk_dict = _JWKS_CACHE.get((expected_pool_id, kid))
+
+    if not jwk_dict:
+        fresh_cache = fetch_jwks(region=expected_reg, user_pool_id=expected_pool_id, force_refresh=True)
+        jwk_dict = fresh_cache.get(kid)
+
+    if not jwk_dict:
+        raise InvalidTokenError("Public key for kid not found in Cognito JWKS.")
+
+    try:
+        public_key = RSAAlgorithm.from_jwk(jwk_dict)
+    except Exception as exc:
+        raise InvalidTokenError("Failed to parse public key from JWK.") from exc
+
+    try:
+        payload = jwt.decode(
+            token,
+            public_key,
+            algorithms=["RS256"],
+            issuer=expected_iss,
+            audience=expected_client_id,
+            options={
+                "verify_signature": True,
+                "verify_exp": True,
+                "verify_nbf": True,
+                "verify_iss": True,
+                "verify_aud": True,
+                "require": ["exp", "iss", "token_use", "aud", "sub"],
+            },
+        )
+    except jwt.ExpiredSignatureError as exc:
+        raise TokenExpiredError("Token has expired.") from exc
+    except jwt.ImmatureSignatureError as exc:
+        raise TokenNotBeforeError("Token is not yet active (nbf).") from exc
+    except jwt.InvalidIssuerError as exc:
+        raise InvalidIssuerError("Token issuer is invalid.") from exc
+    except jwt.InvalidAudienceError as exc:
+        raise InvalidClientIdError("Token audience does not match configured client_id.") from exc
+    except jwt.InvalidSignatureError as exc:
+        raise InvalidTokenError("Token signature verification failed.") from exc
+    except jwt.PyJWTError as exc:
+        raise InvalidTokenError("Token verification error.") from exc
+
+    token_use = payload.get("token_use")
+    if token_use != "id":
+        raise InvalidTokenUseError(
+            f"Invalid token_use '{token_use}'. ID token endpoints strictly require token_use='id'."
+        )
+
+    return payload
+
+
 def resolve_user_identity(*args: Any, **kwargs: Any) -> Dict[str, Any]:
     """Convenience alias delegating to routes.auth.resolve_user_identity."""
     from routes.auth import resolve_user_identity as _resolve
     return _resolve(*args, **kwargs)
+

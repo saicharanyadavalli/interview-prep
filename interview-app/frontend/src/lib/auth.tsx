@@ -126,29 +126,7 @@ export function AuthProvider({
     let isMounted = true;
 
     const initSession = async () => {
-      // 1. Mock session for test environments
-      if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
-        const mockUser: User = {
-          id: "12345678-1234-1234-1234-123456789012",
-          email: "testuser@example.com",
-          user_metadata: { full_name: "Test User", username: "testuser" },
-        };
-        const mockSession: Session = {
-          access_token: "mock-token",
-          token_type: "bearer",
-          user: mockUser,
-        };
-        if (isMounted) {
-          setSession(mockSession);
-          setLoading(false);
-          if (pathname === "/" || pathname === "/login") {
-            router.push("/dashboard");
-          }
-        }
-        return;
-      }
-
-      // 2. Authoritative server-side session check (Cognito cookies)
+      // Authoritative server-side session check (Cognito cookies)
       try {
         const { session: serverSession } = await getCurrentSession();
         if (isMounted) {
@@ -258,20 +236,6 @@ export function AuthProvider({
   }, [user]);
 
   const signInWithGoogle = async () => {
-    if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
-      setSession({
-        access_token: "mock-token",
-        token_type: "bearer",
-        user: {
-          id: "12345678-1234-1234-1234-123456789012",
-          email: "testuser@example.com",
-          user_metadata: { full_name: "Test User", username: "testuser" },
-        },
-      });
-      router.push("/dashboard");
-      return;
-    }
-
     // Initiate Cognito Google OAuth with PKCE
     try {
       const res = await initiateCognitoGoogleAuth("/dashboard");

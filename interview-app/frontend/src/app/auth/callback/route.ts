@@ -93,9 +93,8 @@ export async function GET(request: Request) {
 
     // 1. Handle OAuth error passed by identity provider / Cognito
     if (errorParam || errorDescription) {
-      const errMessage = errorDescription || errorParam || 'OAuth authentication failed.'
-      console.error('[auth/callback] Provider error:', errMessage)
-      return createErrorRedirect(baseOrigin, errMessage)
+      console.error('[auth/callback] Provider error reported')
+      return createErrorRedirect(baseOrigin, 'oauth_provider_error')
     }
 
     // Determine target redirect destination
@@ -114,22 +113,28 @@ export async function GET(request: Request) {
       return createErrorRedirect(baseOrigin, 'auth-code-error')
     }
 
-    // 3. Verify state cookie
+    // 3. Verify state cookie against state query param
     if (!storedState || !state || storedState !== state) {
       console.error('[auth/callback] State validation failed. Possible CSRF attack or expired session.')
       return createErrorRedirect(baseOrigin, 'invalid_state')
     }
 
-    // 4. Read stored PKCE verifier cookie
+    // 4. Require stored PKCE verifier cookie
     if (!storedVerifier) {
       console.error('[auth/callback] Missing PKCE verifier cookie.')
       return createErrorRedirect(baseOrigin, 'missing_pkce_verifier')
     }
 
+    // 5. Require stored nonce cookie
+    if (!storedNonce) {
+      console.error('[auth/callback] Missing nonce cookie.')
+      return createErrorRedirect(baseOrigin, 'missing_nonce')
+    }
+
     // Compute canonical redirect URI that was registered with Cognito
     const redirectUri = `${baseOrigin}/auth/callback`
 
-    // 5. Exchange code for tokens at /oauth2/token
+    // 6. Exchange code for tokens at ${COGNITO_DOMAIN}/oauth2/token using code_verifier
     let tokens
     try {
       tokens = await exchangeCodeForTokens({
@@ -137,25 +142,38 @@ export async function GET(request: Request) {
         redirectUri,
         codeVerifier: storedVerifier,
       })
-    } catch (exchangeErr: any) {
-      console.error('[auth/callback] Token exchange error:', exchangeErr)
-      const errorDesc = exchangeErr.message || 'Token exchange failed.'
-      return createErrorRedirect(baseOrigin, errorDesc)
+    } catch (_exchangeErr: any) {
+      console.error('[auth/callback] Token exchange failed.')
+      return createErrorRedirect(baseOrigin, 'token_exchange_failed')
     }
 
-    // 6. Cryptographically verify the ID token (issuer, audience/client_id, expiration, nonce)
+    if (!tokens || !tokens.access_token || !tokens.id_token) {
+      console.error('[auth/callback] Token exchange response missing required tokens.')
+      return createErrorRedirect(baseOrigin, 'invalid_token_response')
+    }
+
+    // 7. Cryptographically verify the ID token (signature, issuer, client_id/aud, exp, nonce, token_use === 'id')
     try {
-      await verifyCognitoIdToken({
+      const verifiedClaims = await verifyCognitoIdToken({
         idToken: tokens.id_token,
         expectedNonce: storedNonce,
       })
-    } catch (tokenVerifyErr: any) {
-      console.error('[auth/callback] ID token verification error:', tokenVerifyErr)
-      const errorDesc = tokenVerifyErr.message || 'ID token verification failed.'
-      return createErrorRedirect(baseOrigin, errorDesc)
+
+      // Strict validation of required claims
+      if (!verifiedClaims || !verifiedClaims.sub) {
+        console.error('[auth/callback] ID token missing sub claim.')
+        return createErrorRedirect(baseOrigin, 'invalid_id_token')
+      }
+      if (verifiedClaims.token_use !== 'id') {
+        console.error('[auth/callback] ID token token_use claim is not "id".')
+        return createErrorRedirect(baseOrigin, 'invalid_id_token')
+      }
+    } catch (_tokenVerifyErr: any) {
+      console.error('[auth/callback] ID token verification failed.')
+      return createErrorRedirect(baseOrigin, 'id_token_verification_failed')
     }
 
-    // 7. Synchronize with backend RDS via /auth/session
+    // 8. Synchronize with backend RDS via /auth/session using verified cognito_access_token
     // If /auth/session fails, DO NOT establish an authenticated session! Clean up temporary cookies and redirect to /login?error=sync_failed.
     try {
       const backendUrl = getInternalBackendUrl()
@@ -173,12 +191,12 @@ export async function GET(request: Request) {
         console.error(`[auth/callback] Backend RDS synchronization failed with status ${syncRes.status}`)
         return createErrorRedirect(baseOrigin, 'sync_failed')
       }
-    } catch (syncErr: any) {
-      console.error('[auth/callback] Backend RDS synchronization network error:', syncErr)
+    } catch (_syncErr: any) {
+      console.error('[auth/callback] Backend RDS synchronization network error.')
       return createErrorRedirect(baseOrigin, 'sync_failed')
     }
 
-    // 8. Establish secure session with HttpOnly cookies
+    // 9. Establish secure session cookies ONLY after validation and backend identity synchronization succeed
     const response = NextResponse.redirect(new URL(safeNext, baseOrigin))
 
     const cookieOptions = {
@@ -207,12 +225,12 @@ export async function GET(request: Request) {
       })
     }
 
-    // Delete temporary cookies on successful authentication
+    // Delete temporary cookies on both success and failure exit paths
     clearTemporaryCookies(response)
 
     return response
-  } catch (err: any) {
-    console.error('Auth callback top-level unexpected error:', err)
+  } catch (_err: any) {
+    console.error('[auth/callback] Top-level unexpected error occurred during auth callback flow.')
     return createErrorRedirect(baseOrigin, 'auth-code-error')
   }
 }

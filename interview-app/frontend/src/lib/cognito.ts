@@ -37,6 +37,21 @@ export interface CognitoIdentityClaim {
   dateCreated?: number | string;
 }
 
+export interface CognitoAccessTokenClaims {
+  sub: string;
+  client_id: string;
+  token_use: 'access';
+  scope?: string;
+  auth_time?: number;
+  iss: string;
+  exp: number;
+  iat: number;
+  jti?: string;
+  username?: string;
+  'cognito:groups'?: string[];
+  [key: string]: any;
+}
+
 export interface CognitoIdTokenClaims {
   sub: string;
   email?: string;
@@ -45,10 +60,12 @@ export interface CognitoIdTokenClaims {
   identities?: CognitoIdentityClaim[] | string;
   'cognito:username'?: string;
   'cognito:groups'?: string[];
-  aud?: string;
-  iss?: string;
+  aud: string;
+  iss: string;
+  token_use: 'id';
   iat?: number;
-  exp?: number;
+  nbf?: number;
+  exp: number;
   at_hash?: string;
   nonce?: string;
   [key: string]: any;
@@ -923,10 +940,14 @@ async function getCognitoJwks(
  * Cryptographically verifies a Cognito ID token against the User Pool's RS256 JWKS public keys.
  * Validates:
  * 1. RS256 signature using Web Crypto API (crypto.subtle) or Node crypto
- * 2. Issuer (iss) matching https://cognito-idp.${region}.amazonaws.com/${userPoolId}
- * 3. Audience (aud) matching client_id
- * 4. Expiration (exp) with clock tolerance
- * 5. Nonce parameter matching expectedNonce (if provided)
+ * 2. Exact Issuer (iss) matching https://cognito-idp.${region}.amazonaws.com/${userPoolId}
+ * 3. Exact Audience (aud) strictly matching configured COGNITO_CLIENT_ID
+ * 4. Token use claim strictly matching token_use === "id"
+ * 5. Valid time window: exp (with clock tolerance) and nbf (if present)
+ * 6. Nonce parameter matching expectedNonce (if expected)
+ * 7. Key rotation lookup: unknown signing keys rejected without unverified fallback outside test
+ * 8. Never skips signature verification in production/staging environments
+ * 9. Exceptions do not leak token strings or payload secrets
  */
 export async function verifyIdTokenCryptographically(
   tokenOrOptions: string | VerifyIdTokenOptions,
@@ -958,6 +979,9 @@ export async function verifyIdTokenCryptographically(
   if (!userPoolId) {
     throw new Error('COGNITO_USER_POOL_ID is not configured for token verification.');
   }
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for token verification.');
+  }
 
   const parts = idToken.split('.');
   if (parts.length !== 3) {
@@ -971,132 +995,161 @@ export async function verifyIdTokenCryptographically(
   try {
     header = JSON.parse(base64UrlDecode(rawHeader));
   } catch (err: any) {
-    throw new Error(`Failed to decode JWT header: ${err.message}`);
+    throw new Error('Failed to decode JWT header.');
   }
 
   if (header.alg !== 'RS256') {
-    throw new Error(`Unsupported JWT algorithm: expected RS256, received '${header.alg}'`);
+    throw new Error(`Unsupported JWT algorithm: expected RS256, received '${header.alg || 'unknown'}'`);
   }
 
   if (!header.kid) {
     throw new Error("Missing 'kid' in JWT header.");
   }
 
-  // 2. Cryptographic signature verification using Cognito public JWKS
-  if (!options.skipSignatureVerification) {
-    const isTest =
-      process.env.NODE_ENV === 'test' ||
-      process.env.TESTING === '1' ||
-      process.env.TESTING === 'true';
+  // Determine environment
+  const isTest =
+    process.env.NODE_ENV === 'test' ||
+    process.env.TESTING === '1' ||
+    process.env.TESTING === 'true' ||
+    process.env.npm_lifecycle_event === 'test' ||
+    Boolean(process.argv && process.argv.some((arg) => arg.includes('test')));
 
+  // NEVER allow signature verification to be skipped in production or staging environments
+  const currentEnv = (process.env.NODE_ENV as string | undefined) || '';
+  const isStagingOrProd =
+    currentEnv === 'production' ||
+    currentEnv === 'staging' ||
+    process.env.APP_ENV === 'production' ||
+    process.env.APP_ENV === 'staging' ||
+    process.env.ENVIRONMENT === 'production' ||
+    process.env.ENVIRONMENT === 'staging';
+
+  if (options.skipSignatureVerification && isStagingOrProd) {
+    throw new Error('Signature verification cannot be skipped in staging or production environments.');
+  }
+
+  const effectiveSkipSig = Boolean(options.skipSignatureVerification && isTest && !isStagingOrProd);
+  if (options.skipSignatureVerification && !effectiveSkipSig) {
+    throw new Error('Signature verification cannot be skipped outside isolated test environments.');
+  }
+
+  // 2. Cryptographic signature verification using Cognito public JWKS
+  if (!effectiveSkipSig) {
+    let matchedKey: CognitoJwkKey | undefined;
     try {
       const jwks = await getCognitoJwks(region, userPoolId, options.jwksUri);
-      let matchedKey = jwks.find((k) => k.kid === header.kid);
+      matchedKey = jwks.find((k) => k.kid === header.kid);
 
       if (!matchedKey) {
         // Retry once with cache bypass in case of key rotation
         const refreshedJwks = await getCognitoJwks(region, userPoolId, options.jwksUri, true);
         matchedKey = refreshedJwks.find((k) => k.kid === header.kid);
       }
+    } catch (fetchErr: any) {
+      throw new Error(`Failed to retrieve Cognito signing keys: ${fetchErr?.message || 'network error'}`);
+    }
 
-      if (!matchedKey) {
-        if (!isTest) {
-          throw new Error(`Public key for kid '${header.kid}' not found in Cognito JWKS.`);
-        }
-      } else {
-        // 3. Verify signature cryptographically
-        const dataString = `${rawHeader}.${rawPayload}`;
-        const sigBytes = base64UrlToUint8Array(rawSignature);
+    if (!matchedKey) {
+      throw new Error(`Public key for kid '${header.kid}' not found in Cognito JWKS.`);
+    }
 
-        let isSignatureValid = false;
-        if (typeof crypto !== 'undefined' && crypto.subtle) {
-          try {
-            const cryptoKey = await crypto.subtle.importKey(
-              'jwk',
-              {
-                kty: matchedKey.kty,
-                n: matchedKey.n,
-                e: matchedKey.e,
-                alg: 'RS256',
-                ext: true,
-              },
-              {
-                name: 'RSASSA-PKCS1-v1_5',
-                hash: { name: 'SHA-256' },
-              },
-              false,
-              ['verify']
-            );
-            const encoder = new TextEncoder();
-            const dataBytes = encoder.encode(dataString);
-            isSignatureValid = await crypto.subtle.verify(
-              'RSASSA-PKCS1-v1_5',
-              cryptoKey,
-              sigBytes as any,
-              dataBytes
-            );
-          } catch (e: any) {
-            throw new Error(`Web Crypto signature verification failed: ${e.message}`);
-          }
-        } else {
-          // Node.js crypto fallback
-          try {
-            const nodeCrypto = await import('crypto');
-            const publicKey = nodeCrypto.createPublicKey({
-              key: matchedKey as any,
-              format: 'jwk',
-            });
-            const verifier = nodeCrypto.createVerify('RSA-SHA256');
-            verifier.update(dataString);
-            isSignatureValid = verifier.verify(publicKey, Buffer.from(sigBytes));
-          } catch (e: any) {
-            throw new Error(`Node crypto signature verification failed: ${e.message}`);
-          }
-        }
+    // 3. Verify signature cryptographically
+    const dataString = `${rawHeader}.${rawPayload}`;
+    const sigBytes = base64UrlToUint8Array(rawSignature);
 
-        if (!isSignatureValid) {
-          throw new Error('Invalid token signature: cryptographic verification failed.');
-        }
+    let isSignatureValid = false;
+    if (typeof crypto !== 'undefined' && crypto.subtle) {
+      try {
+        const cryptoKey = await crypto.subtle.importKey(
+          'jwk',
+          {
+            kty: matchedKey.kty,
+            n: matchedKey.n,
+            e: matchedKey.e,
+            alg: 'RS256',
+            ext: true,
+          },
+          {
+            name: 'RSASSA-PKCS1-v1_5',
+            hash: { name: 'SHA-256' },
+          },
+          false,
+          ['verify']
+        );
+        const encoder = new TextEncoder();
+        const dataBytes = encoder.encode(dataString);
+        isSignatureValid = await crypto.subtle.verify(
+          'RSASSA-PKCS1-v1_5',
+          cryptoKey,
+          sigBytes as any,
+          dataBytes
+        );
+      } catch (e: any) {
+        throw new Error('Cryptographic signature verification failed.');
       }
-    } catch (fetchOrSigErr: any) {
-      if (!isTest) {
-        throw fetchOrSigErr;
+    } else {
+      // Node.js crypto fallback
+      try {
+        const nodeCrypto = await import('crypto');
+        const publicKey = nodeCrypto.createPublicKey({
+          key: matchedKey as any,
+          format: 'jwk',
+        });
+        const verifier = nodeCrypto.createVerify('RSA-SHA256');
+        verifier.update(dataString);
+        isSignatureValid = verifier.verify(publicKey, Buffer.from(sigBytes));
+      } catch (e: any) {
+        throw new Error('Cryptographic signature verification failed.');
       }
+    }
+
+    if (!isSignatureValid) {
+      throw new Error('Invalid token signature: cryptographic verification failed.');
     }
   }
 
   // 4. Decode payload
-  let claims: CognitoIdTokenClaims;
+  let claims: any;
   try {
     claims = JSON.parse(base64UrlDecode(rawPayload));
-  } catch (err: any) {
-    throw new Error(`Failed to decode JWT payload: ${err.message}`);
+  } catch (_) {
+    throw new Error('Failed to decode JWT payload.');
   }
 
-  // 5. Verify issuer
+  if (!claims || typeof claims !== 'object') {
+    throw new Error('Invalid JWT payload: payload is not a valid JSON object.');
+  }
+
+  // 5. Verify issuer exact match
   const expectedIssuer = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
   if (claims.iss !== expectedIssuer) {
     throw new Error(`Invalid token issuer: expected '${expectedIssuer}', got '${claims.iss}'`);
   }
 
-  // 6. Verify audience
-  if (clientId && claims.aud && claims.aud !== clientId) {
+  // 6. Verify audience strictly against configured COGNITO_CLIENT_ID
+  if (!claims.aud) {
+    throw new Error("Missing 'aud' claim in ID token.");
+  }
+  if (claims.aud !== clientId) {
     throw new Error(`Invalid token audience: expected '${clientId}', got '${claims.aud}'`);
   }
 
-  // 7. Verify token_use if specified
-  if (claims.token_use && claims.token_use !== 'id') {
-    throw new Error(`Invalid token_use claim: expected 'id', got '${claims.token_use}'`);
-  }
-
-  // 8. Verify expiration
+  // 7. Verify expiration (exp) and not-before (nbf)
   const now = Math.floor(Date.now() / 1000);
   const tolerance = options.clockToleranceSeconds ?? 60;
-  if (typeof claims.exp === 'number' && claims.exp + tolerance < now) {
+
+  if (typeof claims.exp !== 'number') {
+    throw new Error("Missing or invalid 'exp' claim in ID token.");
+  }
+  if (claims.exp + tolerance < now) {
     throw new Error(`Token has expired at ${new Date(claims.exp * 1000).toISOString()}`);
   }
 
-  // 9. Verify nonce if expected
+  if (typeof claims.nbf === 'number' && claims.nbf - tolerance > now) {
+    throw new Error(`Token is not valid before ${new Date(claims.nbf * 1000).toISOString()}`);
+  }
+
+  // 8. Verify nonce if expected
   if (options.expectedNonce) {
     if (!claims.nonce) {
       throw new Error("Missing 'nonce' claim in ID token when expectedNonce was provided.");
@@ -1106,6 +1159,11 @@ export async function verifyIdTokenCryptographically(
     }
   }
 
+  // 9. Verify token_use claim strictly equals "id"
+  if (claims.token_use !== 'id') {
+    throw new Error(`Invalid token_use claim: expected 'id', got '${claims.token_use}'`);
+  }
+
   // Parse identities claim if stringified
   if (typeof claims.identities === 'string') {
     try {
@@ -1113,7 +1171,217 @@ export async function verifyIdTokenCryptographically(
     } catch (_) {}
   }
 
-  return claims;
+  return claims as CognitoIdTokenClaims;
+}
+
+export interface VerifyAccessTokenOptions {
+  accessToken?: string;
+  userPoolId?: string;
+  region?: string;
+  clientId?: string;
+  clockToleranceSeconds?: number;
+  jwksUri?: string;
+  skipSignatureVerification?: boolean;
+}
+
+/**
+ * Cryptographically verifies a Cognito Access token against the User Pool's RS256 JWKS public keys.
+ * Validates:
+ * 1. RS256 signature using Web Crypto API or Node crypto
+ * 2. Exact Issuer (iss) matching https://cognito-idp.${region}.amazonaws.com/${userPoolId}
+ * 3. client_id claim matching COGNITO_CLIENT_ID
+ * 4. Token use claim strictly matching token_use === "access"
+ * 5. Expiration (exp) and not-before (nbf)
+ */
+export async function verifyAccessTokenCryptographically(
+  tokenOrOptions: string | VerifyAccessTokenOptions
+): Promise<CognitoAccessTokenClaims> {
+  let accessToken: string;
+  let options: VerifyAccessTokenOptions;
+
+  if (typeof tokenOrOptions === 'string') {
+    accessToken = tokenOrOptions;
+    options = {};
+  } else {
+    options = tokenOrOptions || {};
+    accessToken = options.accessToken || '';
+  }
+
+  if (!accessToken || typeof accessToken !== 'string') {
+    throw new Error('Invalid access token: token must be a non-empty string.');
+  }
+
+  const config = getCognitoConfig();
+  const region = options.region || config.region || 'ap-south-2';
+  const userPoolId = options.userPoolId || config.userPoolId;
+  const clientId = options.clientId || config.clientId;
+
+  if (!userPoolId) {
+    throw new Error('COGNITO_USER_POOL_ID is not configured for token verification.');
+  }
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for token verification.');
+  }
+
+  const parts = accessToken.split('.');
+  if (parts.length !== 3) {
+    throw new Error('Invalid JWT format: token must contain exactly three dot-separated components.');
+  }
+
+  const [rawHeader, rawPayload, rawSignature] = parts;
+
+  let header: { alg?: string; kid?: string };
+  try {
+    header = JSON.parse(base64UrlDecode(rawHeader));
+  } catch (_) {
+    throw new Error('Failed to decode JWT header.');
+  }
+
+  if (header.alg !== 'RS256') {
+    throw new Error(`Unsupported JWT algorithm: expected RS256, received '${header.alg || 'unknown'}'`);
+  }
+
+  if (!header.kid) {
+    throw new Error("Missing 'kid' in JWT header.");
+  }
+
+  const isTest =
+    process.env.NODE_ENV === 'test' ||
+    process.env.TESTING === '1' ||
+    process.env.TESTING === 'true' ||
+    process.env.npm_lifecycle_event === 'test' ||
+    Boolean(process.argv && process.argv.some((arg) => arg.includes('test')));
+
+  const currentEnv = (process.env.NODE_ENV as string | undefined) || '';
+  const isStagingOrProd =
+    currentEnv === 'production' ||
+    currentEnv === 'staging' ||
+    process.env.APP_ENV === 'production' ||
+    process.env.APP_ENV === 'staging' ||
+    process.env.ENVIRONMENT === 'production' ||
+    process.env.ENVIRONMENT === 'staging';
+
+  if (options.skipSignatureVerification && isStagingOrProd) {
+    throw new Error('Signature verification cannot be skipped in staging or production environments.');
+  }
+
+  const effectiveSkipSig = Boolean(options.skipSignatureVerification && isTest && !isStagingOrProd);
+  if (options.skipSignatureVerification && !effectiveSkipSig) {
+    throw new Error('Signature verification cannot be skipped outside isolated test environments.');
+  }
+
+  if (!effectiveSkipSig) {
+    let matchedKey: CognitoJwkKey | undefined;
+    try {
+      const jwks = await getCognitoJwks(region, userPoolId, options.jwksUri);
+      matchedKey = jwks.find((k) => k.kid === header.kid);
+      if (!matchedKey) {
+        const refreshedJwks = await getCognitoJwks(region, userPoolId, options.jwksUri, true);
+        matchedKey = refreshedJwks.find((k) => k.kid === header.kid);
+      }
+    } catch (fetchErr: any) {
+      throw new Error(`Failed to retrieve Cognito signing keys: ${fetchErr?.message || 'network error'}`);
+    }
+
+    if (!matchedKey) {
+      throw new Error(`Public key for kid '${header.kid}' not found in Cognito JWKS.`);
+    }
+
+    const dataString = `${rawHeader}.${rawPayload}`;
+    const sigBytes = base64UrlToUint8Array(rawSignature);
+    let isSignatureValid = false;
+
+    if (typeof crypto !== 'undefined' && crypto.subtle) {
+      try {
+        const cryptoKey = await crypto.subtle.importKey(
+          'jwk',
+          {
+            kty: matchedKey.kty,
+            n: matchedKey.n,
+            e: matchedKey.e,
+            alg: 'RS256',
+            ext: true,
+          },
+          {
+            name: 'RSASSA-PKCS1-v1_5',
+            hash: { name: 'SHA-256' },
+          },
+          false,
+          ['verify']
+        );
+        const encoder = new TextEncoder();
+        const dataBytes = encoder.encode(dataString);
+        isSignatureValid = await crypto.subtle.verify(
+          'RSASSA-PKCS1-v1_5',
+          cryptoKey,
+          sigBytes as any,
+          dataBytes
+        );
+      } catch (_) {
+        throw new Error('Cryptographic signature verification failed.');
+      }
+    } else {
+      try {
+        const nodeCrypto = await import('crypto');
+        const publicKey = nodeCrypto.createPublicKey({
+          key: matchedKey as any,
+          format: 'jwk',
+        });
+        const verifier = nodeCrypto.createVerify('RSA-SHA256');
+        verifier.update(dataString);
+        isSignatureValid = verifier.verify(publicKey, Buffer.from(sigBytes));
+      } catch (_) {
+        throw new Error('Cryptographic signature verification failed.');
+      }
+    }
+
+    if (!isSignatureValid) {
+      throw new Error('Invalid token signature: cryptographic verification failed.');
+    }
+  }
+
+  let claims: any;
+  try {
+    claims = JSON.parse(base64UrlDecode(rawPayload));
+  } catch (_) {
+    throw new Error('Failed to decode JWT payload.');
+  }
+
+  if (!claims || typeof claims !== 'object') {
+    throw new Error('Invalid JWT payload: payload is not a valid JSON object.');
+  }
+
+  const expectedIssuer = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
+  if (claims.iss !== expectedIssuer) {
+    throw new Error(`Invalid token issuer: expected '${expectedIssuer}', got '${claims.iss}'`);
+  }
+
+  if (!claims.client_id) {
+    throw new Error("Missing 'client_id' claim in access token.");
+  }
+  if (claims.client_id !== clientId) {
+    throw new Error(`Invalid token client_id: expected '${clientId}', got '${claims.client_id}'`);
+  }
+
+  if (claims.token_use !== 'access') {
+    throw new Error(`Invalid token_use claim: expected 'access', got '${claims.token_use}'`);
+  }
+
+  const now = Math.floor(Date.now() / 1000);
+  const tolerance = options.clockToleranceSeconds ?? 60;
+
+  if (typeof claims.exp !== 'number') {
+    throw new Error("Missing or invalid 'exp' claim in access token.");
+  }
+  if (claims.exp + tolerance < now) {
+    throw new Error(`Token has expired at ${new Date(claims.exp * 1000).toISOString()}`);
+  }
+
+  if (typeof claims.nbf === 'number' && claims.nbf - tolerance > now) {
+    throw new Error(`Token is not valid before ${new Date(claims.nbf * 1000).toISOString()}`);
+  }
+
+  return claims as CognitoAccessTokenClaims;
 }
 
 export { verifyIdTokenCryptographically as verifyCognitoIdToken };

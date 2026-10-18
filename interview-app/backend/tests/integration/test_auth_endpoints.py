@@ -145,6 +145,23 @@ def test_create_session_database_failure_returns_503(unauth_client: TestClient, 
         assert "temporarily unavailable" in res.json()["detail"].lower()
 
 
+def test_create_session_ambiguous_email_conflict_returns_503(unauth_client: TestClient, mock_user: dict):
+    """Verify POST /auth/session fails safely with 503 when ambiguous email match occurs."""
+    mock_claims = {
+        "sub": "some-sub",
+        "email": "ambiguous@example.com",
+        "token_use": "access",
+    }
+    with patch("routes.auth.verify_cognito_token", return_value=mock_claims), \
+         patch("routes.auth.resolve_user_identity", side_effect=ValueError("Ambiguous identity linking rejected: Multiple existing user profiles (2) match email.")):
+        res = unauth_client.post(
+            "/auth/session",
+            json={"access_token": "valid-token-string-at-least-10-chars"},
+        )
+        assert res.status_code == 503
+        assert "temporarily unavailable" in res.json()["detail"].lower()
+
+
 def test_disable_auth_in_production_raises_500(monkeypatch):
     """Verify get_current_user strictly blocks DISABLE_AUTH in production environment."""
     monkeypatch.setenv("DISABLE_AUTH", "true")
@@ -385,3 +402,59 @@ def test_check_username_too_short_returns_422(unauth_client: TestClient):
     """Verify GET /auth/check-username enforces minimum length of 3 chars."""
     res = unauth_client.get("/auth/check-username?username=ab")
     assert res.status_code == 422
+
+
+def test_disable_auth_in_staging_raises_500(monkeypatch):
+    """Verify get_current_user strictly blocks DISABLE_AUTH in staging environment."""
+    monkeypatch.setenv("DISABLE_AUTH", "true")
+    monkeypatch.setenv("ENVIRONMENT", "staging")
+
+    with pytest.raises(HTTPException) as exc_info:
+        get_current_user(authorization="Bearer any-token")
+    assert exc_info.value.status_code == 500
+    assert "forbidden in production/staging" in str(exc_info.value.detail).lower()
+
+
+def test_login_cryptographically_verifies_id_token(unauth_client: TestClient):
+    """Verify POST /auth/login verifies ID token using verify_cognito_id_token instead of unverified decode."""
+    mock_profile = {
+        "id": "12345678-1234-1234-1234-123456789012",
+        "email": "verified@example.com",
+        "username": "verified_coder",
+        "name": "Verified Coder",
+        "avatar_url": "",
+    }
+    mock_cognito_client = MagicMock()
+    mock_cognito_client.initiate_auth.return_value = {
+        "AuthenticationResult": {
+            "AccessToken": "mock-access-token",
+            "RefreshToken": "valid-refresh-token",
+            "IdToken": "mock-id-token",
+            "ExpiresIn": 3600,
+        }
+    }
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            return {"user_id": "12345678-1234-1234-1234-123456789012", "email": "verified@example.com"}
+        if "FROM user_profiles" in sql:
+            return mock_profile if fetch == "one" else [mock_profile]
+        return None
+
+    with patch("routes.auth.boto3.client", return_value=mock_cognito_client), \
+         patch("routes.auth.rds_client.query", side_effect=mock_query), \
+         patch("routes.auth.rds_client.mutate", return_value=None), \
+         patch("routes.auth.verify_cognito_id_token") as mock_verify_id:
+        mock_verify_id.return_value = {
+            "sub": "12345678-1234-1234-1234-123456789012",
+            "email": "verified@example.com",
+            "email_verified": True,
+            "name": "Verified Coder",
+        }
+        res = unauth_client.post(
+            "/auth/login",
+            json={"identifier": "verified@example.com", "password": "Password123!"},
+        )
+        assert res.status_code == 200
+        mock_verify_id.assert_called_once_with("mock-id-token")
+

@@ -367,6 +367,7 @@ def test_identity_resolution_email_link():
         claims = {
             "sub": "cognito-sub-bob",
             "email": "bob@example.com",
+            "email_verified": True,
             "username": "bob",
         }
         profile = resolve_user_identity(claims)
@@ -617,3 +618,212 @@ def test_unverified_email_linking_policy():
         assert len(mutations) == 2
         new_uuid = mutations[0][1][0]
         assert new_uuid != existing_uuid
+
+
+def test_missing_or_none_email_verified_rejected_for_linking():
+    """Task 1.A: Missing, None, or invalid email_verified claim is NEVER treated as verified.
+    
+    Automatic linking to an existing account is rejected, and a new account is provisioned.
+    """
+    existing_uuid = "11111111-2222-3333-4444-555555555555"
+    mock_existing_profile = {
+        "id": existing_uuid,
+        "email": "unverified@example.com",
+        "username": "unverified_user",
+        "name": "Legit User",
+        "avatar_url": "",
+    }
+
+    for invalid_claim in [None, "invalid_str", 123, False]:
+        claims = {
+            "sub": f"sub-test-{invalid_claim}",
+            "email": "unverified@example.com",
+            "username": "attacker",
+        }
+        if invalid_claim is not None:
+            claims["email_verified"] = invalid_claim
+
+        def mock_query(sql, params=None, fetch="all"):
+            if "FROM user_identities" in sql:
+                return None
+            if "FROM user_profiles" in sql and "LOWER(email) = LOWER(%s)" in sql:
+                return [mock_existing_profile]
+            if "FROM user_profiles" in sql and "LOWER(username) = LOWER(%s)" in sql:
+                return None
+            if "FROM user_profiles" in sql and "id = %s" in sql:
+                return {
+                    "id": params[0],
+                    "email": "unverified@example.com",
+                    "username": "attacker",
+                    "name": "",
+                    "avatar_url": "",
+                }
+            return None
+
+        mutations = []
+        with patch("services.rds_client.query", side_effect=mock_query), \
+             patch("services.rds_client.mutate", side_effect=lambda sql, params=None, returning=False: mutations.append((sql, params)) or 1):
+            profile = resolve_user_identity(claims)
+            # Must NOT link to existing_uuid!
+            assert profile["id"] != existing_uuid
+            # Fresh user profile must be provisioned
+            assert len(mutations) == 2
+            assert mutations[0][1][0] != existing_uuid
+
+
+def test_ambiguous_email_matches_rejected():
+    """Task 1.B: If > 1 profiles share the email, REJECT automatic linking with ValueError."""
+    mock_profiles = [
+        {"id": "user-uuid-1", "email": "shared@example.com", "username": "user1"},
+        {"id": "user-uuid-2", "email": "shared@example.com", "username": "user2"},
+    ]
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            return None
+        if "FROM user_profiles" in sql and "LOWER(email) = LOWER(%s)" in sql:
+            return mock_profiles
+        return None
+
+    with patch("services.rds_client.query", side_effect=mock_query), \
+         patch("services.rds_client.mutate") as mock_mutate:
+        claims = {
+            "sub": "cognito-sub-ambiguous",
+            "email": "shared@example.com",
+            "email_verified": True,
+            "username": "user_ambiguous",
+        }
+        with pytest.raises(ValueError) as exc_info:
+            resolve_user_identity(claims)
+
+        assert "ambiguous identity linking rejected" in str(exc_info.value).lower()
+        assert "multiple existing user profiles (2)" in str(exc_info.value).lower()
+        mock_mutate.assert_not_called()
+
+
+def test_prevent_identity_reassignment_conflict():
+    """Task 1.C: Prevent identity reassignment if mapping already links provider_sub to another user."""
+    target_uuid = "target-user-uuid-444"
+    other_uuid = "other-user-uuid-888"
+
+    mock_target_profile = {
+        "id": target_uuid,
+        "email": "target@example.com",
+        "username": "target_user",
+    }
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            # First check (before linking): None
+            # Second check (re-read after ON CONFLICT DO NOTHING): indicates provider_sub already belongs to other_uuid
+            if hasattr(mock_query, "called_once"):
+                return {"user_id": other_uuid, "email": "target@example.com"}
+            mock_query.called_once = True
+            return None
+        if "FROM user_profiles" in sql and "LOWER(email) = LOWER(%s)" in sql:
+            return [mock_target_profile]
+        return None
+
+    with patch("services.rds_client.query", side_effect=mock_query), \
+         patch("services.rds_client.mutate") as mock_mutate:
+        claims = {
+            "sub": "already-linked-sub",
+            "email": "target@example.com",
+            "email_verified": True,
+            "username": "target_user",
+        }
+        with pytest.raises(ValueError) as exc_info:
+            resolve_user_identity(claims)
+
+        assert "already linked to another account" in str(exc_info.value).lower()
+
+
+def test_concurrent_sign_in_race_handling():
+    """Task 1.D: First-time sign-in race condition resolves to existing identity on concurrent insert."""
+    existing_concurrent_uuid = "first-winner-uuid-999"
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            # Initial lookup: None
+            # Re-read lookup after INSERT DO NOTHING: returns the concurrently inserted winner
+            if hasattr(mock_query, "called_initial"):
+                return {"user_id": existing_concurrent_uuid, "email": "racer@example.com"}
+            mock_query.called_initial = True
+            return None
+        if "FROM user_profiles" in sql and "LOWER(email) = LOWER(%s)" in sql:
+            return []
+        if "FROM user_profiles" in sql and "LOWER(username) = LOWER(%s)" in sql:
+            return None
+        if "FROM user_profiles" in sql and "id = %s" in sql:
+            # Return winner profile
+            return {
+                "id": existing_concurrent_uuid,
+                "email": "racer@example.com",
+                "username": "racer",
+                "name": "Racer",
+                "avatar_url": "",
+            }
+        return None
+
+    with patch("services.rds_client.query", side_effect=mock_query), \
+         patch("services.rds_client.mutate") as mock_mutate:
+        claims = {
+            "sub": "racer-cognito-sub",
+            "email": "racer@example.com",
+            "email_verified": True,
+            "username": "racer",
+        }
+        profile = resolve_user_identity(claims)
+
+        # Should safely adopt the concurrently linked user_id
+        assert profile["id"] == existing_concurrent_uuid
+        assert profile["email"] == "racer@example.com"
+
+
+
+def test_verify_cognito_id_token_valid(rsa_key_pair):
+    """Verify that a valid RS256 Cognito ID token passes verification and enforces token_use='id'."""
+    token = make_test_token(
+        rsa_key_pair["private_key"],
+        token_use="id",
+        sub="user-id-token-sub",
+        extra_claims={"aud": "test-client-id-123"},
+    )
+    claims = cognito_auth.verify_cognito_id_token(token)
+    assert claims["sub"] == "user-id-token-sub"
+    assert claims["token_use"] == "id"
+    assert claims["aud"] == "test-client-id-123"
+
+
+def test_verify_cognito_id_token_rejects_access_token(rsa_key_pair):
+    """Verify that verify_cognito_id_token rejects access tokens (token_use='access')."""
+    token = make_test_token(
+        rsa_key_pair["private_key"],
+        token_use="access",
+        sub="user-access-sub",
+        extra_claims={"aud": "test-client-id-123"},
+    )
+    with pytest.raises(InvalidTokenUseError) as exc_info:
+        cognito_auth.verify_cognito_id_token(token)
+    assert "require token_use='id'" in str(exc_info.value).lower()
+
+
+def test_verify_cognito_id_token_rejects_wrong_audience(rsa_key_pair):
+    """Verify that verify_cognito_id_token rejects tokens with wrong aud."""
+    token = make_test_token(
+        rsa_key_pair["private_key"],
+        token_use="id",
+        extra_claims={"aud": "wrong-client-id"},
+    )
+    with pytest.raises(InvalidClientIdError) as exc_info:
+        cognito_auth.verify_cognito_id_token(token)
+    assert "audience does not match" in str(exc_info.value).lower()
+
+
+def test_auth_errors_do_not_leak_raw_tokens(rsa_key_pair):
+    """Verify that auth error exceptions do not expose the raw token string in their message."""
+    raw_token = make_test_token(rsa_key_pair["private_key"], exp_offset=-3600)
+    with pytest.raises(CognitoAuthError) as exc_info:
+        verify_cognito_token(raw_token)
+    assert raw_token not in str(exc_info.value)
+

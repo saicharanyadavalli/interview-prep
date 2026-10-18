@@ -386,11 +386,18 @@ def _run_transaction(statements: list[tuple[str, tuple | list | dict | None]]) -
     return results
 
 
-def _delete_cognito_user(user_id: str, username: str | None = None) -> bool:
-    """Coordinate Cognito user deletion/disablement via AdminDeleteUser.
+def _delete_cognito_user(
+    user_id: str,
+    username: str | None = None,
+    email: str | None = None,
+) -> bool:
+    """Coordinate Cognito user deletion via AdminDeleteUser.
 
-    If Cognito User Pool is configured or permitted via IAM, call admin_delete_user.
-    Handles partial failure or absence gracefully.
+    Resolves the authoritative Cognito username/identity from user_identities
+    (e.g. provider='cognito' or provider='google'), falling back to passed username,
+    email, or internal user_id.
+    Uses configured COGNITO_USER_POOL_ID and COGNITO_REGION.
+    Narrowly scopes error handling and handles missing/already-deleted users cleanly.
     """
     user_pool_id = (
         os.getenv("COGNITO_USER_POOL_ID")
@@ -401,55 +408,88 @@ def _delete_cognito_user(user_id: str, username: str | None = None) -> bool:
         logger.debug("Cognito user pool not configured; skipping Cognito deletion.")
         return False
 
+    # Resolve target usernames to attempt deleting from Cognito
+    candidate_targets: list[str] = []
+
+    # 1. Query user_identities for linked provider identities (e.g. cognito or google)
+    try:
+        identities = rds_client.query(
+            """
+            SELECT provider, provider_sub, email
+            FROM user_identities
+            WHERE user_id = %s;
+            """,
+            (user_id,),
+            fetch="all",
+        )
+        if identities and isinstance(identities, list):
+            for row in identities:
+                sub = (row.get("provider_sub") or "").strip()
+                if sub and sub not in candidate_targets:
+                    candidate_targets.append(sub)
+                ident_email = (row.get("email") or "").strip()
+                if ident_email and ident_email not in candidate_targets:
+                    candidate_targets.append(ident_email)
+    except Exception as exc:
+        logger.debug("Could not query user_identities for user %s: %s", user_id, exc)
+
+    # 2. Add username and email if known
+    if username and username.strip() and username.strip() not in candidate_targets:
+        candidate_targets.append(username.strip())
+
+    if email and email.strip() and email.strip() not in candidate_targets:
+        candidate_targets.append(email.strip())
+
+    # 3. Add internal user_id as final fallback
+    if user_id and user_id.strip() and user_id.strip() not in candidate_targets:
+        candidate_targets.append(user_id.strip())
+
+    if not candidate_targets:
+        logger.warning("No candidate identifiers found for Cognito deletion of user %s", user_id)
+        return False
+
+    region = (
+        os.getenv("COGNITO_REGION")
+        or os.getenv("AWS_REGION")
+        or os.getenv("AWS_DEFAULT_REGION")
+        or "ap-south-2"
+    ).strip()
+
     try:
         import boto3
         from botocore.exceptions import ClientError
 
-        region = (
-            os.getenv("AWS_REGION")
-            or os.getenv("AWS_DEFAULT_REGION")
-            or "ap-south-2"
-        )
         cognito = boto3.client("cognito-idp", region_name=region)
-        target = username or user_id
+    except Exception as exc:
+        logger.error("Failed to initialize boto3 cognito-idp client: %s", exc)
+        return False
+
+    deletion_succeeded = False
+    for target in candidate_targets:
         try:
             cognito.admin_delete_user(
                 UserPoolId=user_pool_id,
                 Username=target,
             )
             logger.info("Deleted user %s from Cognito User Pool %s", target, user_pool_id)
-            return True
+            deletion_succeeded = True
+            break
         except ClientError as ce:
             err_code = ce.response.get("Error", {}).get("Code", "")
-            if err_code == "UserNotFoundException" and username and username != user_id:
-                cognito.admin_delete_user(
-                    UserPoolId=user_pool_id,
-                    Username=user_id,
-                )
-                logger.info("Deleted user %s (user_id) from Cognito User Pool %s", user_id, user_pool_id)
-                return True
-            elif err_code == "UserNotFoundException":
-                logger.info("User %s already removed or not found in Cognito User Pool %s", target, user_pool_id)
-                return True
+            if err_code == "UserNotFoundException":
+                logger.info("Cognito user %s not found in pool %s; trying next target if any", target, user_pool_id)
+                continue
+            elif err_code in ("NotAuthorizedException", "ResourceNotFoundException", "InvalidParameterException"):
+                logger.warning("Cognito AdminDeleteUser client error for %s (Code: %s): %s", target, err_code, ce)
+                break
             else:
-                logger.warning("Cognito admin_delete_user partial failure for %s (Code: %s): %s", target, err_code, ce)
-                return False
-    except Exception as exc:
-        logger.warning("Gracefully handled Cognito deletion failure for %s: %s", user_id, exc)
-        return False
+                logger.warning("Cognito AdminDeleteUser unexpected ClientError for %s (Code: %s): %s", target, err_code, ce)
+                break
+        except Exception as exc:
+            logger.warning("Unexpected error during Cognito AdminDeleteUser for %s: %s", target, exc)
+            break
 
-
-def _delete_supabase_auth_user(user_id: str) -> bool:
-    """Coordinate Supabase Auth deletion if configured, handling partial failures gracefully."""
-    try:
-        from services.supabase_client import get_supabase_client
-        sb = get_supabase_client()
-        sb.auth.admin.delete_user(user_id)
-        logger.info("Deleted user %s from Supabase Auth.", user_id)
-        return True
-    except Exception as exc:
-        logger.debug("Supabase auth admin deletion skipped or handled gracefully: %s", exc)
-        return False
+    return deletion_succeeded
 
 
 def _delete_user_avatar_asset(user_id: str, avatar_url: str) -> bool:
@@ -525,7 +565,7 @@ def delete_user_account(
 
     Transactionally deletes user records across RDS (user_identities, user_comments,
     user_progress, learning_track_progress, practice_history, and user_profiles).
-    Coordinates Cognito user deletion/disablement and Supabase Auth cleanup.
+    Coordinates Cognito user deletion/disablement.
     """
     request.state.rate_limit_user_id = current_user.get("id")
     user_id = current_user["id"]
@@ -561,7 +601,16 @@ def delete_user_account(
     except Exception as exc:
         logger.debug("user_identities table check skipped: %s", exc)
 
-    # 3. Assemble atomic transaction statements in strict dependency order:
+    # 3. Coordinate Cognito user deletion / disablement (graceful partial failure handling).
+    # We resolve and coordinate Cognito deletion prior to clearing user_identities records
+    # so we can discover provider_sub and linked accounts.
+    _delete_cognito_user(
+        user_id=user_id,
+        username=current_user.get("username"),
+        email=current_user.get("email"),
+    )
+
+    # 4. Assemble atomic transaction statements in strict dependency order:
     # (user_identities, user_comments, user_progress, learning_track_progress, practice_history, and finally user_profiles)
     statements = []
     if identities_table_exists:
@@ -581,13 +630,7 @@ def delete_user_account(
         logger.error("Failed to delete user records in RDS for %s: %s", user_id, exc)
         raise HTTPException(status_code=500, detail="Failed to delete account data.") from exc
 
-    # 4. Coordinate Cognito user deletion / disablement (graceful partial failure handling)
-    _delete_cognito_user(user_id=user_id, username=current_user.get("username"))
-
-    # 5. Coordinate Supabase Auth user deletion (graceful partial failure handling)
-    _delete_supabase_auth_user(user_id=user_id)
-
-    # 6. Best-effort avatar cleanup in S3
+    # 5. Best-effort avatar cleanup in S3
     if avatar_url:
         _delete_user_avatar_asset(user_id=user_id, avatar_url=avatar_url)
 

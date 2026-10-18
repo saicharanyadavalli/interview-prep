@@ -219,6 +219,11 @@ class MockRDSStore:
             psub = str(params[1])
             rows = [r for r in rows if str(r.get("provider", "")).lower() == prov and str(r.get("provider_sub", "")) == psub]
 
+        if "user_id = %s" in sql_clean and params:
+            uid = str(params[0])
+            if any("user_id" in r for r in rows):
+                rows = [r for r in rows if str(r.get("user_id")) == uid]
+
         if "where id = %s" in sql_clean.lower() and params:
             target_id = str(params[0])
             rows = [r for r in rows if str(r.get("id")) == target_id]

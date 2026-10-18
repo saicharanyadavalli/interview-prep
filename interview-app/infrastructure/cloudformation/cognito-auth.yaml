@@ -38,28 +38,31 @@ Parameters:
 
   CanonicalDomain:
     Type: String
-    Default: app.interviewprep.com
-    Description: Canonical production HTTPS domain for application web client.
+    Default: 'localhost:3000'
+    Description: >-
+      Domain for application web client (e.g. localhost:3000 for local/staging or
+      app.interviewprep.com for production). Do not assume custom domain or TLS exists.
 
   CallbackURLs:
     Type: CommaDelimitedList
-    Default: 'https://app.interviewprep.com/auth/callback, http://localhost:3000/auth/callback'
-    Description: Comma-delimited list of allowed OAuth 2.0 redirect and callback URLs.
+    Default: 'http://localhost:3000/auth/callback, https://app.interviewprep.com/auth/callback'
+    Description: Comma-delimited list of allowed OAuth 2.0 redirect and callback URLs for UserPoolClient.
 
   LogoutURLs:
     Type: CommaDelimitedList
-    Default: 'https://app.interviewprep.com/login, http://localhost:3000/login'
-    Description: Comma-delimited list of allowed OAuth 2.0 sign-out and logout URLs.
+    Default: 'http://localhost:3000/login, https://app.interviewprep.com/login'
+    Description: Comma-delimited list of allowed OAuth 2.0 sign-out and logout URLs for UserPoolClient.
 
   AdvancedSecurityMode:
     Type: String
-    Default: AUDIT
+    Default: 'OFF'
     AllowedValues:
       - 'OFF'
       - AUDIT
       - ENFORCED
     Description: >-
       Advanced security mode for Cognito threat protection and compromised credential auditing.
+      Set to OFF by default to avoid unnecessary paid features (Cognito Plus Tier).
       AUDIT evaluates risks and writes to CloudWatch without blocking requests.
 
   AccessTokenValidity:
@@ -167,6 +170,7 @@ Resources:
         authorize_scopes: "openid profile email"
       AttributeMapping:
         email: email
+        email_verified: email_verified
         name: name
         username: sub
 

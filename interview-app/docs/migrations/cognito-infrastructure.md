@@ -19,7 +19,7 @@ flowchart TD
     subgraph AWS_Cognito["AWS ap-south-2 (Hyderabad) - Amazon Cognito"]
         UserPoolDomain["Cognito Hosted UI Domain\ninterview-prep-auth-<account>-<env>.auth.ap-south-2.amazoncognito.com"]
         
-        GoogleIdP["UserPoolIdentityProvider (Google)\nAttribute Mapping: email, name, sub"]
+        GoogleIdP["UserPoolIdentityProvider (Google)\nAttribute Mapping: email, email_verified, name, sub"]
         
         UserPoolClient["UserPoolClient (Public PKCE)\nExplicitAuthFlows: USER_PASSWORD_AUTH, USER_SRP_AUTH, REFRESH_TOKEN\nAllowedOAuthFlows: code\nScopes: openid, email, profile\nToken Revocation: Enabled"]
         
@@ -77,18 +77,19 @@ The Cognito User Pool Client (`interview-prep-web-client`) supports two compleme
 - **Federation Workflow**:
   1. The browser initiates login with Google via Hosted UI or direct federation link (`/oauth2/authorize?identity_provider=Google&...`).
   2. Google authenticates the user and posts the authorization response back to Cognito's callback endpoint: `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse`.
-  3. Cognito retrieves user claims from Google and maps `email`, `name`, and `username: sub` to create or update the user record in the User Pool.
-  4. Cognito issues an authorization code and redirects the browser back to the application callback URL (e.g. `https://app.interviewprep.com/auth/callback` or `http://localhost:3000/auth/callback`).
+  3. Cognito retrieves user claims from Google and maps `email`, `email_verified: email_verified`, `name`, and `username: sub` to create or update the user record in the User Pool.
+  4. Cognito issues an authorization code and redirects the browser back to the application callback URL (e.g. `http://localhost:3000/auth/callback` or `https://${CanonicalDomain}/auth/callback`).
   5. The web client exchanges the authorization code and PKCE `code_verifier` at `/oauth2/token` for Access, ID, and Refresh tokens.
 
 ### Key Security & Operational Principles
 
 1. **Authorization Code Grant with PKCE**: The web client uses OAuth 2.0 Authorization Code flow with Proof Key for Code Exchange (PKCE, RFC 7636). No client secret is stored in frontend assets (`GenerateSecret: false`).
-2. **Strict Attribute Mapping**: Google's unique subject identifier (`sub`) maps directly to the Cognito username handle, preventing account collision while guaranteeing stable user references across sessions.
+2. **Strict Attribute Mapping**: Google's unique subject identifier (`sub`) maps directly to the Cognito username handle, preventing account collision while guaranteeing stable user references across sessions. Verified email status is mapped directly (`email_verified -> email_verified`).
 3. **Canonical Identity & Verification**: Email is the primary sign-in handle (`UsernameAttributes: [email]`), with automatic verification code delivery (`AutoVerifiedAttributes: [email]`).
-4. **Threat Detection & Auditing**: Amazon Cognito Threat Protection / Advanced Security is parameterized (`AdvancedSecurityMode: AUDIT` default) to log credential stuffing and anomalous logins without blocking legitimate users during onboarding.
+4. **Threat Detection & Cost Optimization**: Amazon Cognito Threat Protection / Advanced Security is parameterized (`AdvancedSecurityMode: OFF` by default to avoid extra charges on Cognito Plus Tier, with `AUDIT` and `ENFORCED` options available).
 5. **Session Governance & Token Revocation**: Access and ID tokens remain valid for 60 minutes, while refresh tokens remain valid for 30 days. Token revocation (`EnableTokenRevocation: true`) enables immediate session invalidation upon user logout or incident mitigation.
 6. **Zero Accidental Data Loss**: User pool resources enforce `DeletionPolicy: Retain` and `UpdateReplacePolicy: Retain` so that user identity state is preserved even if the CloudFormation stack is updated or removed.
+7. **Strict Callback Whitelisting**: Open redirects and wildcard redirects are strictly prohibited. The UserPoolClient exclusively permits exact whitelisted callback URLs (`CallbackURLs`), preventing authorization code interception.
 
 ---
 
@@ -195,10 +196,10 @@ aws cloudformation deploy \
       Environment=personal \
       GoogleClientId="${GOOGLE_CLIENT_ID}" \
       GoogleClientSecret="${GOOGLE_CLIENT_SECRET}" \
-      CanonicalDomain="app.interviewprep.com" \
-      CallbackURLs="https://app.interviewprep.com/auth/callback,http://localhost:3000/auth/callback" \
-      LogoutURLs="https://app.interviewprep.com/login,http://localhost:3000/login" \
-      AdvancedSecurityMode="AUDIT" \
+      CanonicalDomain="localhost:3000" \
+      CallbackURLs="http://localhost:3000/auth/callback,https://app.interviewprep.com/auth/callback" \
+      LogoutURLs="http://localhost:3000/login,https://app.interviewprep.com/login" \
+      AdvancedSecurityMode="OFF" \
   --no-fail-on-empty-changeset
 ```
 
@@ -218,7 +219,7 @@ aws cloudformation deploy \
 Once Google credentials are created, re-run the command with `GoogleClientId` and `GoogleClientSecret` to activate Google federation.
 
 ### Step 4.4: Deploying Production Environment
-For production deployment, enforce `Environment=production`, configure strict production callback and logout URLs, and enable `AdvancedSecurityMode=ENFORCED`:
+For production deployment, enforce `Environment=production`, configure strict production callback and logout URLs, and optionally enable `AdvancedSecurityMode=AUDIT` or `ENFORCED`:
 
 ```bash
 export GOOGLE_CLIENT_ID="<production-client-id>.apps.googleusercontent.com"
@@ -237,7 +238,7 @@ aws cloudformation deploy \
       CanonicalDomain="app.interviewprep.com" \
       CallbackURLs="https://app.interviewprep.com/auth/callback" \
       LogoutURLs="https://app.interviewprep.com/login" \
-      AdvancedSecurityMode="ENFORCED" \
+      AdvancedSecurityMode="OFF" \
   --no-fail-on-empty-changeset
 ```
 
@@ -251,10 +252,10 @@ aws cloudformation deploy \
 | `CognitoDomainPrefix` | String | `""` (empty) | Custom Hosted UI domain prefix. If omitted, defaults to `interview-prep-auth-${AWS::AccountId}-${Environment}`. |
 | `GoogleClientId` | String | `""` (empty) | Google OAuth 2.0 Web Client ID. If omitted, stack deploys with native email/password auth. |
 | `GoogleClientSecret` | String (NoEcho) | `""` (empty) | Google OAuth 2.0 Web Client Secret. Masked in CloudFormation events and console. |
-| `CanonicalDomain` | String | `app.interviewprep.com` | Production canonical application domain. |
-| `CallbackURLs` | CommaDelimitedList | `https://app.interviewprep.com/auth/callback, http://localhost:3000/auth/callback` | Authorized redirect URIs for OAuth 2.0 Authorization Code flow. |
-| `LogoutURLs` | CommaDelimitedList | `https://app.interviewprep.com/login, http://localhost:3000/login` | Authorized redirect URIs for user sign-out. |
-| `AdvancedSecurityMode` | String | `AUDIT` | Threat detection mode (`OFF`, `AUDIT`, `ENFORCED`). |
+| `CanonicalDomain` | String | `localhost:3000` | Application domain (e.g. `localhost:3000` or `app.interviewprep.com`). Does not assume custom domain or TLS exists. |
+| `CallbackURLs` | CommaDelimitedList | `http://localhost:3000/auth/callback, https://app.interviewprep.com/auth/callback` | Authorized redirect URIs for OAuth 2.0 Authorization Code flow. |
+| `LogoutURLs` | CommaDelimitedList | `http://localhost:3000/login, https://app.interviewprep.com/login` | Authorized redirect URIs for user sign-out. |
+| `AdvancedSecurityMode` | String | `OFF` | Threat detection mode (`OFF`, `AUDIT`, `ENFORCED`). Default `OFF` prevents unintended Plus Tier charges. |
 | `AccessTokenValidity` | Number | `60` | Validity duration of Access Tokens in minutes (5 to 1440). |
 | `IdTokenValidity` | Number | `60` | Validity duration of ID Tokens in minutes (5 to 1440). |
 | `RefreshTokenValidity` | Number | `30` | Validity duration of Refresh Tokens in days (1 to 3650). |
@@ -378,10 +379,10 @@ If an update was applied successfully but unintended application behavior requir
          Environment=personal \
          GoogleClientId="${GOOGLE_CLIENT_ID}" \
          GoogleClientSecret="${GOOGLE_CLIENT_SECRET}" \
-         CanonicalDomain="app.interviewprep.com" \
-         CallbackURLs="https://app.interviewprep.com/auth/callback,http://localhost:3000/auth/callback" \
-         LogoutURLs="https://app.interviewprep.com/login,http://localhost:3000/login" \
-         AdvancedSecurityMode="AUDIT" \
+         CanonicalDomain="localhost:3000" \
+         CallbackURLs="http://localhost:3000/auth/callback,https://app.interviewprep.com/auth/callback" \
+         LogoutURLs="http://localhost:3000/login,https://app.interviewprep.com/login" \
+         AdvancedSecurityMode="OFF" \
      --no-fail-on-empty-changeset
    ```
 
@@ -425,10 +426,12 @@ Because the User Pool specifies `DeletionPolicy: Retain` and `UpdateReplacePolic
 - [ ] Schema contains mutable `email`, `name`, and `username` attributes.
 - [ ] Hosted UI domain prefix `interview-prep-auth-...` active and reachable over HTTPS.
 - [ ] Google OAuth 2.0 Web Client credentials created in Google Cloud Console.
-- [ ] Authorized redirect URI set to `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse`.
-- [ ] Google Identity Provider resource configured in User Pool with attribute mapping (`email`, `name`, `username: sub`).
+- [ ] Authorized redirect URI set to `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse` (Google Console).
+- [ ] App callback URLs whitelisted for web client: `http://localhost:3000/auth/callback` and `https://${CanonicalDomain}/auth/callback` (Cognito App Client).
+- [ ] Google Identity Provider resource configured in User Pool with attribute mapping (`email`, `email_verified`, `name`, `username: sub`).
 - [ ] App Client configured as public client with PKCE (`GenerateSecret: false`, `AllowedOAuthFlows: [code]`).
 - [ ] Explicit authentication flows configured: `ALLOW_USER_PASSWORD_AUTH`, `ALLOW_USER_SRP_AUTH`, `ALLOW_REFRESH_TOKEN_AUTH`.
 - [ ] Threat prevention enabled: `PreventUserExistenceErrors: ENABLED`.
+- [ ] Advanced security configured to `OFF` by default (avoiding unintended Plus Tier MAU charges).
 - [ ] Token validity configured to 60m (Access/ID) and 30d (Refresh) with token revocation enabled (`EnableTokenRevocation: true`).
 - [ ] Stack outputs exported with `${AWS::StackName}-<OutputName>` naming convention.

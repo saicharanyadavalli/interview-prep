@@ -1,7 +1,11 @@
 'use server'
 
 import { cookies, headers } from 'next/headers'
-import { CANONICAL_AWS_ORIGIN } from '@/utils/auth-redirect'
+import {
+  CANONICAL_AWS_ORIGIN,
+  getAllowedOrigins,
+  cleanEnvValue,
+} from '@/utils/auth-redirect'
 import {
   COGNITO_COOKIE_NAMES,
   generateState,
@@ -13,6 +17,7 @@ import {
   decodeIdTokenClaims,
   getCognitoConfig,
   refreshCognitoTokens,
+  verifyIdTokenCryptographically,
   signUpWithCognito,
   confirmSignUpWithCognito,
   resendConfirmationCodeWithCognito,
@@ -96,14 +101,44 @@ function getInternalBackendUrl(): string {
 }
 
 async function getRequestOrigin(): Promise<string> {
+  const config = getCognitoConfig()
+  const cleanAppOrigin = cleanEnvValue(process.env.PUBLIC_APP_ORIGIN) || cleanEnvValue(config.appOrigin)
+  const canonicalOrigin = cleanAppOrigin || CANONICAL_AWS_ORIGIN
+  const allowedOrigins = getAllowedOrigins(cleanAppOrigin)
+
   const headerList = await getRequestHeaders()
   const host = headerList.get('x-forwarded-host') || headerList.get('host')
   const proto = headerList.get('x-forwarded-proto') || 'http'
+
   if (host) {
-    return `${proto}://${host}`
+    try {
+      const candidate = new URL(`${proto}://${host}`).origin
+      const candidateHost = new URL(candidate).hostname
+
+      // Permit localhost / 127.0.0.1 in development or testing
+      if (candidateHost === 'localhost' || candidateHost === '127.0.0.1') {
+        return candidate
+      }
+
+      // In production or staging, require HTTPS and validate candidate against allowed origins
+      const isAllowed = allowedOrigins.some(
+        (allowed) => allowed.toLowerCase() === candidate.toLowerCase()
+      )
+      if (isAllowed) {
+        const isProdOrStaging =
+          process.env.NODE_ENV === 'production' ||
+          process.env.APP_ENV === 'staging' ||
+          process.env.ENVIRONMENT === 'staging'
+        if (isProdOrStaging && !candidate.startsWith('https:')) {
+          // Fall back to canonical secure origin if forwarded proto is insecure in production/staging
+          return canonicalOrigin.startsWith('https:') ? canonicalOrigin : `https://${new URL(canonicalOrigin).host}`
+        }
+        return candidate
+      }
+    } catch (_) {}
   }
-  const config = getCognitoConfig()
-  return config.appOrigin || CANONICAL_AWS_ORIGIN
+
+  return canonicalOrigin
 }
 
 /**
@@ -146,81 +181,120 @@ export async function initiateCognitoGoogleAuth(nextTarget: string = '/dashboard
 }
 
 /**
+ * Clears all Cognito session cookies.
+ */
+async function clearSessionCookies(cookieStore: any) {
+  try {
+    cookieStore.delete(COGNITO_COOKIE_NAMES.ACCESS_TOKEN)
+    cookieStore.delete(COGNITO_COOKIE_NAMES.ID_TOKEN)
+    cookieStore.delete(COGNITO_COOKIE_NAMES.REFRESH_TOKEN)
+  } catch (_) {}
+}
+
+/**
  * Retrieves the current session and user from Cognito cookies.
- * Decodes and verifies claims, refreshing expired tokens when a refresh token is present.
+ * Does NOT derive session solely from unverified tokens: verifies ID token cryptographically.
+ * Refreshes expired tokens via refresh token, storing and returning newly issued tokens.
+ * If refresh or verification fails, clears session cookies cleanly.
+ * Never exposes raw refresh tokens in returned session.
  */
 export async function getCurrentSession() {
   const cookieStore = await getCookieStore()
   const accessToken = cookieStore.get(COGNITO_COOKIE_NAMES.ACCESS_TOKEN)?.value
-  const idToken = cookieStore.get(COGNITO_COOKIE_NAMES.ID_TOKEN)?.value
+  let idToken = cookieStore.get(COGNITO_COOKIE_NAMES.ID_TOKEN)?.value
   const refreshToken = cookieStore.get(COGNITO_COOKIE_NAMES.REFRESH_TOKEN)?.value
 
-  if (accessToken || idToken) {
-    let claims = idToken ? decodeIdTokenClaims(idToken) : null
-
-    // Check expiration if exp claim is present
-    if (claims?.exp) {
-      const now = Math.floor(Date.now() / 1000)
-      if (claims.exp < now) {
-        // Token expired: attempt refresh if refreshToken exists
-        if (refreshToken) {
-          try {
-            const refreshed = await refreshCognitoTokens({ refreshToken })
-            const origin = await getRequestOrigin()
-            const isSecure = origin.startsWith('https:')
-            const cookieOpts = {
-              httpOnly: true,
-              secure: isSecure,
-              sameSite: 'lax' as const,
-              path: '/',
-              maxAge: refreshed.expires_in || 3600,
-            }
-
-            cookieStore.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, refreshed.access_token, cookieOpts)
-            if (refreshed.id_token) {
-              cookieStore.set(COGNITO_COOKIE_NAMES.ID_TOKEN, refreshed.id_token, cookieOpts)
-              claims = decodeIdTokenClaims(refreshed.id_token)
-            }
-          } catch (_) {
-            return { session: null, user: null }
-          }
-        } else {
-          return { session: null, user: null }
-        }
-      }
-    }
-
-    const userId = claims?.sub || 'user'
-    const email = claims?.email || ''
-    const name = claims?.name || ''
-    const username =
-      claims?.['cognito:username'] || claims?.username || (email ? email.split('@')[0] : '')
-
-    const user = {
-      id: userId,
-      email,
-      user_metadata: {
-        name,
-        full_name: name,
-        username,
-        avatar_url: claims?.picture || '',
-        email,
-      },
-    }
-
-    return {
-      session: {
-        access_token: accessToken || '',
-        id_token: idToken,
-        refresh_token: refreshToken,
-        token_type: 'Bearer',
-        user,
-      },
-      user,
-    }
+  if (!idToken && !accessToken) {
+    return { session: null, user: null }
   }
 
-  return { session: null, user: null }
+  // Pre-inspect claims to check expiration
+  let claims = idToken ? decodeIdTokenClaims(idToken) : null
+  const now = Math.floor(Date.now() / 1000)
+  const isExpired = Boolean(claims?.exp && claims.exp < now)
+
+  let activeAccessToken = accessToken || ''
+  let activeIdToken = idToken || ''
+
+  // If token is expired or ID token is missing, attempt refresh if refresh token exists
+  if ((isExpired || !idToken) && refreshToken) {
+    try {
+      const refreshed = await refreshCognitoTokens({ refreshToken })
+      const origin = await getRequestOrigin()
+      const isSecure = origin.startsWith('https:')
+      const cookieOpts = {
+        httpOnly: true,
+        secure: isSecure,
+        sameSite: 'lax' as const,
+        path: '/',
+        maxAge: refreshed.expires_in || 3600,
+      }
+
+      cookieStore.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, refreshed.access_token, cookieOpts)
+      activeAccessToken = refreshed.access_token
+
+      if (refreshed.id_token) {
+        cookieStore.set(COGNITO_COOKIE_NAMES.ID_TOKEN, refreshed.id_token, cookieOpts)
+        activeIdToken = refreshed.id_token
+        idToken = refreshed.id_token
+      }
+    } catch (_) {
+      // Refresh failed: clear session cookies cleanly to prevent stuck invalid sessions
+      await clearSessionCookies(cookieStore)
+      return { session: null, user: null }
+    }
+  } else if (isExpired && !refreshToken) {
+    // Expired without refresh token: clear cookies and fail closed
+    await clearSessionCookies(cookieStore)
+    return { session: null, user: null }
+  }
+
+  if (!activeIdToken) {
+    // Missing ID token and cannot refresh: fail closed
+    await clearSessionCookies(cookieStore)
+    return { session: null, user: null }
+  }
+
+  // Cryptographically verify ID token
+  let verifiedClaims: any
+  try {
+    verifiedClaims = await verifyIdTokenCryptographically(activeIdToken)
+  } catch (verifyErr) {
+    // Cryptographic verification failed: clear session cookies and fail closed
+    await clearSessionCookies(cookieStore)
+    return { session: null, user: null }
+  }
+
+  const userId = verifiedClaims.sub || 'user'
+  const email = verifiedClaims.email || ''
+  const name = verifiedClaims.name || ''
+  const username =
+    verifiedClaims['cognito:username'] ||
+    verifiedClaims.username ||
+    (email ? email.split('@')[0] : '')
+
+  const user = {
+    id: userId,
+    email,
+    user_metadata: {
+      name,
+      full_name: name,
+      username,
+      avatar_url: verifiedClaims.picture || '',
+      email,
+    },
+  }
+
+  // Never expose raw refresh token in returned value
+  return {
+    session: {
+      access_token: activeAccessToken,
+      id_token: activeIdToken,
+      token_type: 'Bearer',
+      user,
+    },
+    user,
+  }
 }
 
 /**
