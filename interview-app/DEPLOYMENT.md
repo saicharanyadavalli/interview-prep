@@ -565,30 +565,53 @@ The instance profile `InterviewPrepEC2Role` requires the following scoped permis
 }
 ```
 
-### C. CloudFormation Infrastructure Provisioning
+### C. CloudFormation Infrastructure Provisioning (Staging & Production)
 
-The infrastructure can be deployed or updated in a single CloudFormation command:
+The asset infrastructure (private S3 bucket, CloudFront OAC, and reviewable IAM policy) is deployed via CloudFormation with strict environment isolation:
 
+#### Staging Deployment (Default):
 ```bash
 aws cloudformation deploy \
   --template-file infrastructure/cloudformation/assets-s3-cloudfront.yaml \
-  --stack-name interview-prep-assets \
+  --stack-name interview-prep-assets-staging \
+  --parameter-overrides \
+      Environment=staging \
+      AttachPolicyToRole=false \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region ap-south-2
+```
+*Note: In staging, `AttachPolicyToRole` defaults to `false` so the existing EC2 role is never mutated automatically. Review the generated policy prior to attachment.*
+
+#### Production Deployment:
+```bash
+aws cloudformation deploy \
+  --template-file infrastructure/cloudformation/assets-s3-cloudfront.yaml \
+  --stack-name interview-prep-assets-production \
   --parameter-overrides \
       Environment=production \
-      BucketName=interview-prep-assets-808431466075-ap-south-2 \
-      EC2RoleName=InterviewPrepEC2Role \
-      AttachPolicyToRole=true \
+      AttachPolicyToRole=false \
   --capabilities CAPABILITY_NAMED_IAM \
   --region ap-south-2
 ```
 
-To retrieve the generated CloudFront domain and Base URL:
+To retrieve and explicitly export the resolved bucket name and CloudFront Base URL for runtime child processes and migration scripts:
 ```bash
-aws cloudformation describe-stacks \
-  --stack-name interview-prep-assets \
+export ASSET_BASE_URL=$(aws cloudformation describe-stacks \
+  --stack-name interview-prep-assets-staging \
   --region ap-south-2 \
   --query "Stacks[0].Outputs[?OutputKey=='AssetBaseUrl'].OutputValue" \
-  --output text
+  --output text)
+
+export S3_ASSETS_BUCKET=$(aws cloudformation describe-stacks \
+  --stack-name interview-prep-assets-staging \
+  --region ap-south-2 \
+  --query "Stacks[0].Outputs[?OutputKey=='BucketName'].OutputValue" \
+  --output text)
+
+export S3_ASSETS_REGION="ap-south-2"
+
+echo "Asset Base URL: ${ASSET_BASE_URL}"
+echo "S3 Assets Bucket: ${S3_ASSETS_BUCKET}"
 ```
 
 ### D. Frontend Next.js Configuration
@@ -622,13 +645,13 @@ Run these diagnostic checks on the EC2 instance or local development shell:
 
 1. **Verify Direct S3 Access is Blocked (Expected 403 Forbidden):**
    ```bash
-   curl -I https://interview-prep-assets-808431466075-ap-south-2.s3.ap-south-2.amazonaws.com/avatars/test.png
-   # Expected: HTTP/1.1 403 Forbidden
+   curl -I "https://${S3_ASSETS_BUCKET}.s3.${S3_ASSETS_REGION}.amazonaws.com/avatars/test.png"
+   # Expected: HTTP/1.1 403 Forbidden (verifying OAC enforcement)
    ```
 
 2. **Verify CloudFront CDN Delivery (HTTPS with CORS):**
    ```bash
-   curl -I https://<your-distribution-id>.cloudfront.net/system-design/01/system-architecture.png
+   curl -I "${ASSET_BASE_URL}/system-design/02/figure-1-1-WCFZBBLA.png"
    # Expected: HTTP/2 200 OK (or 404 if file does not exist yet)
    # Must include x-cache header (e.g. "Hit from cloudfront" or "Miss from cloudfront")
    ```
@@ -638,5 +661,27 @@ Run these diagnostic checks on the EC2 instance or local development shell:
    curl -X POST http://127.0.0.1:8000/profile/avatar/upload \
      -H "Authorization: Bearer <VALID_JWT_TOKEN>" \
      -F "file=@test-avatar.jpg"
-   # Expected JSON: {"avatar_url": "https://<distribution-id>.cloudfront.net/avatars/<user-id>/<uuid>.jpg"}
+   # Expected JSON: {"avatar_url": "${ASSET_BASE_URL}/avatars/<user-id>/<uuid>.jpg"}
    ```
+
+### F. Non-Destructive Rollback Procedures
+
+If an issue occurs during cutover, follow these non-destructive rollback instructions:
+
+1. **Static Lesson HTML Rollback:**
+   Do NOT use `git checkout HEAD~1`, which can overwrite newer unrelated commits. Revert only the specific lesson files:
+   ```bash
+   git restore frontend/system-design/lessons/
+   ```
+
+2. **Database Avatar Rollback:**
+   Restore exact original Cloudinary avatar URLs using the backup mapping generated prior to execution:
+   ```bash
+   python scripts/reconcile_db_avatars.py --rollback docs/migrations/avatar-rollback-map.json
+   ```
+
+3. **Application Runtime Rollback:**
+   If CloudFront asset delivery is temporarily impaired, roll back the backend container configuration to use previous settings or legacy endpoints without deleting S3 assets.
+
+4. **Infrastructure Rollback (Safe Cleanup):**
+   Do NOT delete the CloudFormation stack if S3 contains uploaded assets that must be preserved. S3 buckets containing objects will prevent stack deletion unless emptied. Retain the bucket or empty it only if an intentional complete reset is required.

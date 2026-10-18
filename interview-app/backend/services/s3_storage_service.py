@@ -21,6 +21,13 @@ logger = logging.getLogger(__name__)
 DEFAULT_S3_BUCKET = "interview-prep-assets-808431466075-ap-south-2"
 DEFAULT_S3_REGION = "ap-south-2"
 
+FORBIDDEN_BASE_URL_PATTERNS = [
+    r"d123456abcdef8",
+    r"<distribution[-_]id>",
+    r"<.*?>",
+    r"placeholder",
+]
+
 _s3_client: Optional[Any] = None
 
 
@@ -29,9 +36,73 @@ class S3StorageError(Exception):
     pass
 
 
+def is_production_or_staging() -> bool:
+    """Return True if running in production or staging environment."""
+    env = (
+        os.getenv("ENVIRONMENT")
+        or os.getenv("APP_ENV")
+        or os.getenv("ENV")
+        or ""
+    ).lower().strip()
+    return env in ("production", "prod", "staging")
+
+
+def is_test_mode() -> bool:
+    """Return True if running in explicit test mode."""
+    if is_production_or_staging():
+        return False
+    return (
+        os.getenv("TESTING") == "1"
+        or os.getenv("TESTING", "").lower() in ("true", "yes")
+        or (os.getenv("ENV") or "").lower() == "test"
+        or (os.getenv("ENVIRONMENT") or "").lower() == "test"
+        or (os.getenv("APP_ENV") or "").lower() == "test"
+    )
+
+
+def validate_asset_base_url(url: str) -> str:
+    """Validate asset base delivery URL format, protocol, and check against fictitious placeholders."""
+    clean_url = str(url or "").strip().rstrip("/")
+    if not clean_url:
+        raise S3StorageError("ASSET_BASE_URL cannot be empty.")
+    if not clean_url.startswith("https://"):
+        raise S3StorageError(f"ASSET_BASE_URL must use HTTPS protocol: '{clean_url}'")
+    for pattern in FORBIDDEN_BASE_URL_PATTERNS:
+        if re.search(pattern, clean_url, re.IGNORECASE):
+            raise S3StorageError(
+                f"ASSET_BASE_URL contains invalid placeholder or fictitious domain: '{clean_url}'"
+            )
+    return clean_url
+
+
+def validate_s3_bucket(bucket: str) -> str:
+    """Validate S3 bucket name format and prevent placeholders."""
+    clean_bucket = str(bucket or "").strip()
+    if not clean_bucket:
+        raise S3StorageError("S3 bucket name cannot be empty.")
+    if "<" in clean_bucket or ">" in clean_bucket or "placeholder" in clean_bucket.lower():
+        raise S3StorageError(f"S3 bucket name contains placeholder: '{clean_bucket}'")
+    if not re.match(r"^[a-z0-9][a-z0-9.\-]{1,61}[a-z0-9]$", clean_bucket):
+        raise S3StorageError(f"Invalid S3 bucket name syntax: '{clean_bucket}'")
+    return clean_bucket
+
+
 def get_s3_bucket() -> str:
-    """Return the configured S3 bucket name from environment."""
-    return (os.getenv("S3_ASSETS_BUCKET") or DEFAULT_S3_BUCKET).strip()
+    """Return the configured S3 bucket name from environment.
+
+    In production/staging, requires S3_ASSETS_BUCKET to be set and valid.
+    In development/testing, falls back to DEFAULT_S3_BUCKET if unset.
+    """
+    raw_bucket = os.getenv("S3_ASSETS_BUCKET")
+    if is_production_or_staging():
+        if not raw_bucket or not raw_bucket.strip():
+            raise S3StorageError(
+                "S3_ASSETS_BUCKET environment variable is required in production/staging and cannot be empty."
+            )
+        return validate_s3_bucket(raw_bucket.strip())
+
+    bucket = (raw_bucket or DEFAULT_S3_BUCKET).strip()
+    return validate_s3_bucket(bucket)
 
 
 def get_s3_region() -> str:
@@ -47,11 +118,31 @@ def get_asset_base_url() -> str:
     """Return the CDN/storage base delivery URL.
 
     Prefers ASSET_BASE_URL (CloudFront distribution domain).
-    Falls back to direct S3 regional endpoint: https://{bucket}.s3.{region}.amazonaws.com
+    Must be HTTPS and must not be a fictitious placeholder.
+
+    Direct S3 regional fallback is strictly forbidden in production and staging
+    (and outside explicit test mode) because private S3 buckets protected by OAC
+    will return 403 Forbidden to end users.
+
+    Fallback to regional S3 or mock URL is permitted ONLY when an explicit test flag
+    is set (TESTING=1 or ENV=test).
     """
     custom_base = (os.getenv("ASSET_BASE_URL") or "").strip().rstrip("/")
     if custom_base:
-        return custom_base
+        return validate_asset_base_url(custom_base)
+
+    if is_production_or_staging():
+        raise S3StorageError(
+            "ASSET_BASE_URL environment variable is required in production/staging. "
+            "Direct regional S3 fallback is forbidden for private buckets protected by OAC."
+        )
+
+    if not is_test_mode():
+        raise S3StorageError(
+            "ASSET_BASE_URL must be configured. "
+            "Direct regional S3 fallback is disabled to prevent 403 Forbidden errors with private OAC-protected buckets. "
+            "Set ASSET_BASE_URL or run in test mode (TESTING=1 or ENV=test)."
+        )
 
     bucket = get_s3_bucket()
     region = get_s3_region()
@@ -177,13 +268,13 @@ def delete_asset(key: str) -> bool:
         logger.warning("Attempted to delete asset with invalid key: %s", clean_key)
         return False
 
-    bucket = get_s3_bucket()
     try:
+        bucket = get_s3_bucket()
         client = get_s3_client()
         client.delete_object(Bucket=bucket, Key=clean_key)
         logger.info("Successfully deleted S3 asset key=%s bucket=%s", clean_key, bucket)
         return True
-    except (ClientError, BotoCoreError) as err:
+    except (ClientError, BotoCoreError, S3StorageError) as err:
         logger.error(
             "S3 delete_object failed for bucket=%s key=%s error=%s",
             bucket,

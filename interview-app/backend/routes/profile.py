@@ -7,15 +7,11 @@ using Pillow, uploads to Amazon S3 + CloudFront CDN, and updates RDS.
 
 from __future__ import annotations
 
-import base64
 import io
 import logging
 import os
 import re
-from typing import Tuple
 
-import cloudinary
-import cloudinary.uploader
 import filetype
 from fastapi import APIRouter, Depends, File, HTTPException, Request, Response, UploadFile
 from PIL import Image, UnidentifiedImageError
@@ -39,25 +35,6 @@ ALLOWED_IMAGE_MIMES = {
     "image/gif",
 }
 ALLOWED_PIL_FORMATS = {"JPEG", "PNG", "WEBP", "GIF"}
-
-
-def _configure_cloudinary() -> Tuple[bool, str]:
-    """Configure Cloudinary using backend environment variables if present."""
-    cloud_name = os.getenv("CLOUDINARY_CLOUD_NAME", "").strip()
-    api_key = os.getenv("CLOUDINARY_API_KEY", "").strip()
-    api_secret = os.getenv("CLOUDINARY_API_SECRET", "").strip()
-    folder = os.getenv("CLOUDINARY_AVATARS_FOLDER", "interview-prep/avatars").strip()
-
-    if not (cloud_name and api_key and api_secret):
-        return False, folder
-
-    cloudinary.config(
-        cloud_name=cloud_name,
-        api_key=api_key,
-        api_secret=api_secret,
-        secure=True,
-    )
-    return True, folder
 
 
 @router.get("/me", response_model=ProfileResponse)

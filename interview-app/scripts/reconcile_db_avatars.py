@@ -147,6 +147,146 @@ def should_migrate_avatar(url: Optional[str]) -> bool:
 
 
 # -----------------------------------------------------------------------------
+# -----------------------------------------------------------------------------
+# ASSET_BASE_URL VALIDATION & S3 / MANIFEST VERIFICATION
+# -----------------------------------------------------------------------------
+FORBIDDEN_BASE_URL_PATTERNS = (
+    r"d123456abcdef8",
+    r"<distribution[_-]id>",
+    r"your-distribution",
+    r"placeholder",
+    r"example\.(com|net|org)",
+)
+
+
+def validate_asset_base_url(url: Optional[str]) -> str:
+    """Validate that ASSET_BASE_URL is a valid, non-placeholder HTTPS URL.
+
+    Rejects:
+      - None, empty string, or whitespace
+      - Non-HTTPS URLs (e.g. http://...)
+      - Placeholder hostnames (e.g. d123456abcdef8.cloudfront.net, <distribution-id>)
+      - Incomplete or invalid domain names
+    """
+    if not url:
+        raise ValueError(
+            "ASSET_BASE_URL is required and must be configured as a valid HTTPS CloudFront URL."
+        )
+
+    clean_url = str(url).strip().rstrip("/")
+    if not clean_url:
+        raise ValueError(
+            "ASSET_BASE_URL is required and must be configured as a valid HTTPS CloudFront URL."
+        )
+
+    if not clean_url.startswith("https://"):
+        raise ValueError(
+            f"ASSET_BASE_URL must use HTTPS protocol: '{clean_url}'"
+        )
+
+    for pat in FORBIDDEN_BASE_URL_PATTERNS:
+        if re.search(pat, clean_url, re.IGNORECASE):
+            raise ValueError(
+                f"ASSET_BASE_URL '{clean_url}' contains forbidden placeholder pattern '{pat}'. "
+                "A real CloudFront distribution hostname is required."
+            )
+
+    parsed = urlparse(clean_url)
+    hostname = parsed.hostname
+    if not hostname or "." not in hostname:
+        raise ValueError(
+            f"ASSET_BASE_URL '{clean_url}' has an invalid hostname: '{hostname}'."
+        )
+
+    return clean_url
+
+
+def check_s3_destination_exists(
+    s3_client: Any,
+    bucket: str,
+    key: str,
+) -> bool:
+    """Check if destination object exists in S3 via HeadObject."""
+    if s3_client is None:
+        return False
+    try:
+        s3_client.head_object(Bucket=bucket, Key=key)
+        return True
+    except Exception as exc:
+        logger.debug("S3 head_object verification failed for s3://%s/%s: %s", bucket, key, exc)
+        return False
+
+
+def load_verified_manifest_entries(
+    manifest_path: Optional[Path | str] = None,
+) -> Tuple[Dict[str, str], Set[str], Set[str], Set[str]]:
+    """Load manifest and extract verified mappings, verified URLs/keys, and failed URLs.
+
+    Returns:
+      (url_mappings, verified_urls, verified_s3_keys, failed_urls)
+    """
+    url_mappings: Dict[str, str] = {}
+    verified_urls: Set[str] = set()
+    verified_s3_keys: Set[str] = set()
+    failed_urls: Set[str] = set()
+
+    if not manifest_path:
+        return url_mappings, verified_urls, verified_s3_keys, failed_urls
+
+    mp = Path(manifest_path).resolve()
+    if not mp.is_file():
+        raise FileNotFoundError(f"Manifest file not found at: {mp}")
+
+    try:
+        raw_data = json.loads(mp.read_text(encoding="utf-8"))
+    except Exception as err:
+        logger.warning("Could not parse manifest JSON file %s: %s", mp, err)
+        return url_mappings, verified_urls, verified_s3_keys, failed_urls
+
+    items: List[Dict[str, Any]] = []
+    if isinstance(raw_data, list):
+        items = [x for x in raw_data if isinstance(x, dict)]
+    elif isinstance(raw_data, dict):
+        if "manifest" in raw_data and isinstance(raw_data["manifest"], list):
+            items = [x for x in raw_data["manifest"] if isinstance(x, dict)]
+        elif "mappings" in raw_data and isinstance(raw_data["mappings"], list):
+            items = [x for x in raw_data["mappings"] if isinstance(x, dict)]
+        elif "url_mappings" in raw_data and isinstance(raw_data["url_mappings"], dict):
+            url_mappings.update(raw_data["url_mappings"])
+
+        if "verified_urls" in raw_data and isinstance(raw_data["verified_urls"], list):
+            verified_urls.update(raw_data["verified_urls"])
+        if "failed_urls" in raw_data and isinstance(raw_data["failed_urls"], list):
+            failed_urls.update(raw_data["failed_urls"])
+
+    for item in items:
+        orig = item.get("original_url") or item.get("old_avatar_url")
+        status = str(item.get("status", "")).lower()
+        cf_url = item.get("cloudfront_url") or item.get("new_avatar_url")
+        s3_key = item.get("s3_key")
+
+        if orig and cf_url:
+            url_mappings[orig] = cf_url
+
+        if orig:
+            if status in ("verified", "uploaded", "eligible") or item.get("verified") is True:
+                verified_urls.add(orig)
+                if s3_key:
+                    verified_s3_keys.add(s3_key)
+            elif status in ("failed", "unavailable", "404", "error"):
+                failed_urls.add(orig)
+
+    logger.info(
+        "Loaded manifest from %s: %d url mappings, %d verified assets, %d failed assets.",
+        mp,
+        len(url_mappings),
+        len(verified_urls),
+        len(failed_urls),
+    )
+    return url_mappings, verified_urls, verified_s3_keys, failed_urls
+
+
+# -----------------------------------------------------------------------------
 # URL MAPPING GENERATION
 # -----------------------------------------------------------------------------
 def extract_avatar_filename(url: str) -> str:
@@ -179,13 +319,14 @@ def build_mapped_avatar_url(
     s3_bucket: Optional[str] = None,
     s3_region: Optional[str] = None,
     manifest_mapping: Optional[Dict[str, str]] = None,
+    allow_s3_fallback: bool = True,
 ) -> str:
     """Construct destination CloudFront or S3 URL for a migrated avatar.
 
     Resolution order:
       1. Explicit manifest mapping if provided
       2. CloudFront ASSET_BASE_URL (env or arg) + key schema: avatars/{user_id}/{filename}
-      3. Direct S3 URL fallback: https://{bucket}.s3.{region}.amazonaws.com/avatars/{user_id}/{filename}
+      3. Direct S3 URL fallback (only when asset_base_url is empty and allow_s3_fallback=True)
     """
     # 1. Manifest lookup
     if manifest_mapping and old_url in manifest_mapping:
@@ -197,27 +338,29 @@ def build_mapped_avatar_url(
     s3_key = f"avatars/{uid_str}/{filename}"
 
     # 2. CloudFront / Custom Base URL
-    base_url = (
-        asset_base_url
-        or os.getenv("ASSET_BASE_URL", "")
-    ).strip().rstrip("/")
+    raw_base = asset_base_url
+    if raw_base is None:
+        raw_base = os.getenv("ASSET_BASE_URL", "")
 
-    if base_url:
-        return f"{base_url}/{s3_key}"
+    if raw_base != "":
+        validated_base = validate_asset_base_url(raw_base)
+        return f"{validated_base}/{s3_key}"
 
     # 3. Direct S3 URL fallback
-    bucket = (
-        s3_bucket
-        or os.getenv("S3_ASSETS_BUCKET", "")
-        or DEFAULT_S3_BUCKET
-    ).strip()
-    region = (
-        s3_region
-        or os.getenv("S3_ASSETS_REGION", "")
-        or DEFAULT_S3_REGION
-    ).strip()
+    if allow_s3_fallback:
+        bucket = (
+            s3_bucket
+            or os.getenv("S3_ASSETS_BUCKET", "")
+            or DEFAULT_S3_BUCKET
+        ).strip()
+        region = (
+            s3_region
+            or os.getenv("S3_ASSETS_REGION", "")
+            or DEFAULT_S3_REGION
+        ).strip()
+        return f"https://{bucket}.s3.{region}.amazonaws.com/{s3_key}"
 
-    return f"https://{bucket}.s3.{region}.amazonaws.com/{s3_key}"
+    raise ValueError("ASSET_BASE_URL is required and must be configured as a valid HTTPS CloudFront URL.")
 
 
 # -----------------------------------------------------------------------------
@@ -333,9 +476,11 @@ def _execute_updates_on_connection(
 def export_mapping_file(
     filepath: Path | str,
     mappings: Sequence[Dict[str, Any]],
+    eligible_mappings: Optional[Sequence[Dict[str, Any]]] = None,
     asset_base_url: Optional[str] = None,
     s3_bucket: Optional[str] = None,
     s3_region: Optional[str] = None,
+    breakdown: Optional[Dict[str, Any]] = None,
 ) -> Path:
     """Write reconciliation mapping to a JSON file for audit and rollback."""
     target_path = Path(filepath).resolve()
@@ -346,11 +491,14 @@ def export_mapping_file(
             "generated_at": datetime.datetime.now(datetime.timezone.utc).isoformat(),
             "generator": "scripts/reconcile_db_avatars.py",
             "total_records": len(mappings),
+            "eligible_records": len(eligible_mappings) if eligible_mappings is not None else len(mappings),
             "asset_base_url": asset_base_url or os.getenv("ASSET_BASE_URL", ""),
             "s3_bucket": s3_bucket or os.getenv("S3_ASSETS_BUCKET", DEFAULT_S3_BUCKET),
             "s3_region": s3_region or os.getenv("S3_ASSETS_REGION", DEFAULT_S3_REGION),
+            "breakdown": breakdown or {},
         },
         "mappings": list(mappings),
+        "eligible_mappings": list(eligible_mappings) if eligible_mappings is not None else list(mappings),
     }
 
     target_path.write_text(json.dumps(payload, indent=2), encoding="utf-8")
@@ -380,11 +528,17 @@ def load_rollback_mappings(filepath: Path | str) -> List[Dict[str, Any]]:
             raise ValueError(
                 f"Mapping item at index {idx} missing required 'id' or 'old_avatar_url'."
             )
+        status = item.get("status")
+        # If status is present and clearly un-migrated, skip it from rollback
+        if status and status in ("missing_destination", "unavailable_source", "invalid_mapping"):
+            continue
+
         valid_mappings.append({
             "id": str(user_id),
             "old_avatar_url": str(old_url),
             "new_avatar_url": item.get("new_avatar_url", ""),
             "email": item.get("email", ""),
+            "status": status or "eligible",
         })
 
     return valid_mappings
@@ -425,21 +579,24 @@ def execute_rollback(
 # REPORTING & FORMATTING
 # -----------------------------------------------------------------------------
 def format_summary_table(mappings: Sequence[Dict[str, Any]]) -> str:
-    """Format candidate mappings as an ASCII table."""
+    """Format candidate mappings as an ASCII table with status."""
     if not mappings:
         return "No migratable Cloudinary avatars found."
 
-    header = f"{'USER ID':<38} | {'CURRENT CLOUDINARY URL':<50} | {'MAPPED S3/CLOUDFRONT URL'}"
+    header = f"{'USER ID':<38} | {'CURRENT CLOUDINARY URL':<42} | {'MAPPED S3/CLOUDFRONT URL':<42} | {'STATUS'}"
     separator = "-" * len(header)
     lines = [separator, header, separator]
 
     for m in mappings:
         uid = str(m["id"])
         old_u = str(m["old_avatar_url"])
-        if len(old_u) > 48:
-            old_u = old_u[:45] + "..."
-        new_u = str(m["new_avatar_url"])
-        lines.append(f"{uid:<38} | {old_u:<50} | {new_u}")
+        if len(old_u) > 40:
+            old_u = old_u[:37] + "..."
+        new_u = str(m.get("new_avatar_url") or "")
+        if len(new_u) > 40:
+            new_u = new_u[:37] + "..."
+        status = str(m.get("status", "unknown")).upper()
+        lines.append(f"{uid:<38} | {old_u:<42} | {new_u:<42} | {status}")
 
     lines.append(separator)
     return "\n".join(lines)
@@ -465,27 +622,41 @@ def print_execution_report(
     mode: str,
     scanned_count: int,
     candidate_mappings: Sequence[Dict[str, Any]],
+    eligible_count: int,
+    verified_destination_count: int,
+    missing_destination_count: int,
+    unavailable_source_count: int,
+    invalid_mapping_count: int,
     preserved_counts: Dict[str, int],
     export_path: Optional[Path | str] = None,
     executed_count: Optional[int] = None,
 ) -> None:
-    """Print formatted reconciliation summary report."""
+    """Print formatted reconciliation summary report with explicit breakdown metrics."""
+    unchanged_count = scanned_count - eligible_count
+    preserved_total = sum(preserved_counts.values())
+
     print("\n" + "=" * 80)
     print(f"              DATABASE AVATAR RECONCILIATION REPORT ({mode.upper()})             ")
     print("=" * 80)
-    print(f"Execution Mode:             {mode}")
-    print(f"Total Profiles Scanned:     {scanned_count}")
-    print(f"Cloudinary Candidates:      {len(candidate_mappings)}")
+    print(f"Execution Mode:                                 {mode}")
+    print(f"Profiles scanned:                               {scanned_count}")
+    print(f"Cloudinary avatar candidates:                   {len(candidate_mappings)}")
+    print(f"Avatars whose destination objects are verified: {verified_destination_count}")
+    print(f"Missing destination objects:                    {missing_destination_count}")
+    print(f"Unavailable source assets:                      {unavailable_source_count}")
+    print(f"Invalid mappings:                               {invalid_mapping_count}")
+    print(f"Rows eligible for change:                       {eligible_count}")
+    print(f"Rows that must remain unchanged:                {unchanged_count}")
     if executed_count is not None:
-        print(f"Records Mutated in RDS:     {executed_count}")
-    print(f"Preserved Non-Cloudinary:   {sum(preserved_counts.values())}")
-    print(f"  - Google Avatars:         {preserved_counts.get('google', 0)}")
-    print(f"  - GitHub Avatars:         {preserved_counts.get('github', 0)}")
-    print(f"  - Inline Base64 Data:     {preserved_counts.get('inline_data', 0)}")
-    print(f"  - Empty / Null Avatars:   {preserved_counts.get('empty', 0)}")
-    print(f"  - Other / Preserved:      {preserved_counts.get('other', 0)}")
+        print(f"Records Mutated in RDS:                         {executed_count}")
+    print(f"Preserved Non-Cloudinary:                       {preserved_total}")
+    print(f"  - Google Avatars:                             {preserved_counts.get('google', 0)}")
+    print(f"  - GitHub Avatars:                             {preserved_counts.get('github', 0)}")
+    print(f"  - Inline Base64 Data:                         {preserved_counts.get('inline_data', 0)}")
+    print(f"  - Empty / Null Avatars:                       {preserved_counts.get('empty', 0)}")
+    print(f"  - Other / Preserved:                          {preserved_counts.get('other', 0)}")
     if export_path:
-        print(f"Exported Mapping File:      {export_path}")
+        print(f"Exported Mapping File:                          {export_path}")
     print("=" * 80)
 
 
@@ -502,28 +673,66 @@ def reconcile_avatars(
     s3_region: Optional[str] = None,
     scan_all: bool = False,
     client: Any = None,
+    s3_client: Any = None,
 ) -> Dict[str, Any]:
-    """Core reconciliation logic orchestrating candidate scan, URL mapping, and execution."""
+    """Core reconciliation logic orchestrating candidate scan, S3 verification, and execution.
+
+    Safety Contract:
+      - Valid non-placeholder HTTPS ASSET_BASE_URL is mandatory.
+      - A Cloudinary avatar is ELIGIBLE for database update ONLY IF its destination S3 object
+        is verified to exist (checked via s3_client.head_object() or a verified manifest entry).
+      - If destination object does not exist in S3, it is marked 'missing_destination' / 'pending_upload'
+        and CANNOT be updated in RDS.
+      - Non-Cloudinary avatars (Google, GitHub, inline base64, null/empty) are strictly preserved.
+      - Requires --execute AND --confirm for production writes.
+    """
     # Safety Check: --execute requires --confirm
     if mode == "execute" and not confirm:
         raise ValueError("CRITICAL: --execute requires explicit --confirm flag to perform database updates.")
 
-    # Load optional manifest mappings
-    manifest_map: Dict[str, str] = {}
-    if manifest_path:
-        mp = Path(manifest_path).resolve()
-        if mp.is_file():
-            try:
-                m_data = json.loads(mp.read_text(encoding="utf-8"))
-                manifest_map = m_data.get("url_mappings") or m_data.get("mappings") or {}
-                logger.info("Loaded %d manifest mappings from %s", len(manifest_map), mp)
-            except Exception as err:
-                logger.warning("Could not read manifest file %s: %s", mp, err)
+    # Validate ASSET_BASE_URL (Strict rule: reject placeholder hostnames)
+    effective_base_url = asset_base_url
+    if effective_base_url is None:
+        effective_base_url = os.getenv("ASSET_BASE_URL", "")
+    validated_base_url = validate_asset_base_url(effective_base_url)
+
+    target_bucket = (
+        s3_bucket
+        or os.getenv("S3_ASSETS_BUCKET", "")
+        or DEFAULT_S3_BUCKET
+    ).strip()
+    target_region = (
+        s3_region
+        or os.getenv("S3_ASSETS_REGION", "")
+        or DEFAULT_S3_REGION
+    ).strip()
+
+    # Load manifest mappings and verified entries
+    manifest_map, verified_manifest_urls, verified_manifest_keys, failed_manifest_urls = (
+        load_verified_manifest_entries(manifest_path)
+    )
+
+    # Initialize S3 client if not provided
+    active_s3_client = s3_client
+    if active_s3_client is None:
+        try:
+            import boto3
+            active_s3_client = boto3.client("s3", region_name=target_region)
+        except Exception as exc:
+            logger.debug("boto3 S3 client could not be initialized automatically: %s", exc)
+            active_s3_client = None
 
     # 1. Query candidate rows from RDS
     rows = fetch_candidate_profiles(client=client, scan_all=scan_all)
 
     candidate_mappings: List[Dict[str, Any]] = []
+    eligible_mappings: List[Dict[str, Any]] = []
+
+    verified_destinations_count = 0
+    missing_destinations_count = 0
+    unavailable_sources_count = 0
+    invalid_mappings_count = 0
+
     preserved_counts: Dict[str, int] = {
         "google": 0,
         "github": 0,
@@ -533,7 +742,7 @@ def reconcile_avatars(
     }
 
     for row in rows:
-        uid = str(row["id"])
+        uid = str(row.get("id") or "").strip()
         avatar_url = row.get("avatar_url")
 
         # Classify and enforce preservation guardrails
@@ -560,26 +769,128 @@ def reconcile_avatars(
             preserved_counts["other"] += 1
             continue
 
-        # Valid Cloudinary avatar to reconcile
-        new_url = build_mapped_avatar_url(
-            old_url=raw_url,
-            user_id=uid,
-            asset_base_url=asset_base_url,
-            s3_bucket=s3_bucket,
-            s3_region=s3_region,
-            manifest_mapping=manifest_map,
-        )
+        # Valid Cloudinary avatar candidate
+        # Validate mapping inputs
+        if not uid or not raw_url.startswith("http"):
+            invalid_mappings_count += 1
+            candidate_mappings.append({
+                "id": uid,
+                "email": row.get("email", ""),
+                "username": row.get("username", ""),
+                "old_avatar_url": raw_url,
+                "new_avatar_url": "",
+                "s3_key": "",
+                "status": "invalid_mapping",
+                "destination_verified": False,
+                "eligible": False,
+                "reason": "Invalid user ID or malformed source URL",
+            })
+            continue
 
-        candidate_mappings.append({
-            "id": uid,
-            "email": row.get("email", ""),
-            "username": row.get("username", ""),
-            "old_avatar_url": raw_url,
-            "new_avatar_url": new_url,
-        })
+        filename = extract_avatar_filename(raw_url)
+        s3_key = f"avatars/{uid}/{filename}"
 
-    # Print table of candidate mappings
+        # Generate destination CloudFront URL
+        try:
+            new_url = build_mapped_avatar_url(
+                old_url=raw_url,
+                user_id=uid,
+                asset_base_url=validated_base_url,
+                s3_bucket=target_bucket,
+                s3_region=target_region,
+                manifest_mapping=manifest_map,
+                allow_s3_fallback=False,
+            )
+        except Exception as map_err:
+            invalid_mappings_count += 1
+            candidate_mappings.append({
+                "id": uid,
+                "email": row.get("email", ""),
+                "username": row.get("username", ""),
+                "old_avatar_url": raw_url,
+                "new_avatar_url": "",
+                "s3_key": s3_key,
+                "status": "invalid_mapping",
+                "destination_verified": False,
+                "eligible": False,
+                "reason": f"URL mapping construction failed: {map_err}",
+            })
+            continue
+
+        # Check source availability
+        if raw_url in failed_manifest_urls:
+            unavailable_sources_count += 1
+            candidate_mappings.append({
+                "id": uid,
+                "email": row.get("email", ""),
+                "username": row.get("username", ""),
+                "old_avatar_url": raw_url,
+                "new_avatar_url": new_url,
+                "s3_key": s3_key,
+                "status": "unavailable_source",
+                "destination_verified": False,
+                "eligible": False,
+                "reason": "Cloudinary source asset unavailable or failed download",
+            })
+            continue
+
+        # Strict Verification Gate: Destination S3 object MUST exist!
+        is_verified = False
+        if raw_url in verified_manifest_urls or s3_key in verified_manifest_keys:
+            is_verified = True
+        elif active_s3_client is not None:
+            is_verified = check_s3_destination_exists(active_s3_client, target_bucket, s3_key)
+
+        if is_verified:
+            verified_destinations_count += 1
+            record = {
+                "id": uid,
+                "email": row.get("email", ""),
+                "username": row.get("username", ""),
+                "old_avatar_url": raw_url,
+                "new_avatar_url": new_url,
+                "s3_key": s3_key,
+                "status": "eligible",
+                "destination_verified": True,
+                "eligible": True,
+                "reason": "Destination S3 object verified",
+            }
+            candidate_mappings.append(record)
+            eligible_mappings.append(record)
+        else:
+            missing_destinations_count += 1
+            record = {
+                "id": uid,
+                "email": row.get("email", ""),
+                "username": row.get("username", ""),
+                "old_avatar_url": raw_url,
+                "new_avatar_url": new_url,
+                "s3_key": s3_key,
+                "status": "missing_destination",
+                "destination_verified": False,
+                "eligible": False,
+                "reason": f"Destination S3 object s3://{target_bucket}/{s3_key} does not exist or was not verified",
+            }
+            candidate_mappings.append(record)
+
+    # Print summary table
     print("\n" + format_summary_table(candidate_mappings))
+
+    scanned_count = len(rows)
+    candidate_count = len(candidate_mappings)
+    eligible_count = len(eligible_mappings)
+    unchanged_count = scanned_count - eligible_count
+
+    breakdown = {
+        "profiles_scanned": scanned_count,
+        "cloudinary_candidates": candidate_count,
+        "verified_destinations": verified_destinations_count,
+        "missing_destinations": missing_destinations_count,
+        "unavailable_sources": unavailable_sources_count,
+        "invalid_mappings": invalid_mappings_count,
+        "eligible_for_change": eligible_count,
+        "must_remain_unchanged": unchanged_count,
+    }
 
     # Optional export of mappings
     exported_file: Optional[Path] = None
@@ -587,21 +898,33 @@ def reconcile_avatars(
         exported_file = export_mapping_file(
             filepath=export_path,
             mappings=candidate_mappings,
-            asset_base_url=asset_base_url,
-            s3_bucket=s3_bucket,
-            s3_region=s3_region,
+            eligible_mappings=eligible_mappings,
+            asset_base_url=validated_base_url,
+            s3_bucket=target_bucket,
+            s3_region=target_region,
+            breakdown=breakdown,
         )
 
+    # Execute database updates (ONLY for eligible rows with verified destination S3 objects)
     executed_count = None
     if mode == "execute" and confirm:
-        updates = [(m["new_avatar_url"], m["id"]) for m in candidate_mappings]
-        executed_count = execute_avatar_updates(updates, client=client)
-        logger.info("Successfully migrated %d avatar URLs in RDS.", executed_count)
+        if eligible_mappings:
+            updates = [(m["new_avatar_url"], m["id"]) for m in eligible_mappings]
+            executed_count = execute_avatar_updates(updates, client=client)
+            logger.info("Successfully migrated %d verified avatar URLs in RDS.", executed_count)
+        else:
+            executed_count = 0
+            logger.warning("No eligible avatars with verified S3 objects found to update in RDS.")
 
     print_execution_report(
         mode="EXECUTE" if (mode == "execute" and confirm) else "DRY-RUN",
-        scanned_count=len(rows),
+        scanned_count=scanned_count,
         candidate_mappings=candidate_mappings,
+        eligible_count=eligible_count,
+        verified_destination_count=verified_destinations_count,
+        missing_destination_count=missing_destinations_count,
+        unavailable_source_count=unavailable_sources_count,
+        invalid_mapping_count=invalid_mappings_count,
         preserved_counts=preserved_counts,
         export_path=exported_file,
         executed_count=executed_count,
@@ -609,10 +932,18 @@ def reconcile_avatars(
 
     return {
         "mode": mode,
-        "scanned": len(rows),
-        "candidates": len(candidate_mappings),
+        "scanned": scanned_count,
+        "candidates": candidate_count,
+        "verified_destinations": verified_destinations_count,
+        "missing_destinations": missing_destinations_count,
+        "unavailable_sources": unavailable_sources_count,
+        "invalid_mappings": invalid_mappings_count,
+        "eligible": eligible_count,
+        "unchanged": unchanged_count,
         "executed": executed_count if executed_count is not None else 0,
         "mappings": candidate_mappings,
+        "eligible_mappings": eligible_mappings,
+        "breakdown": breakdown,
         "preserved_counts": preserved_counts,
         "export_file": str(exported_file) if exported_file else None,
     }

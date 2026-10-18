@@ -20,23 +20,37 @@ from services.s3_storage_service import (
     get_s3_region,
     reset_s3_client,
     upload_avatar,
+    validate_asset_base_url,
+    validate_s3_bucket,
 )
 
 
 @pytest.fixture(autouse=True)
 def clean_s3_env():
-    """Ensure clean S3 environment variables and reset client cache for every test."""
+    """Ensure clean S3 environment variables and reset client cache for every test.
+
+    Sets TESTING=1 by default so test helpers can use fallback without external AWS setup.
+    Tests asserting production/staging/non-test invariants can override or delete these.
+    """
     reset_s3_client()
-    old_env = {
-        "S3_ASSETS_BUCKET": os.environ.get("S3_ASSETS_BUCKET"),
-        "S3_ASSETS_REGION": os.environ.get("S3_ASSETS_REGION"),
-        "AWS_REGION": os.environ.get("AWS_REGION"),
-        "ASSET_BASE_URL": os.environ.get("ASSET_BASE_URL"),
-    }
-    # Clear test env vars
-    for k in old_env:
+    keys = (
+        "S3_ASSETS_BUCKET",
+        "S3_ASSETS_REGION",
+        "AWS_REGION",
+        "ASSET_BASE_URL",
+        "ENVIRONMENT",
+        "APP_ENV",
+        "ENV",
+        "TESTING",
+    )
+    old_env = {k: os.environ.get(k) for k in keys}
+
+    for k in keys:
         if k in os.environ:
             del os.environ[k]
+
+    # Explicit test mode enabled by default for unit tests
+    os.environ["TESTING"] = "1"
 
     yield
 
@@ -49,7 +63,7 @@ def clean_s3_env():
 
 
 def test_defaults_when_env_unset():
-    """Verify default bucket, region, and S3 fallback base URL."""
+    """Verify default bucket, region, and S3 fallback base URL in test mode."""
     assert get_s3_bucket() == DEFAULT_S3_BUCKET
     assert get_s3_region() == DEFAULT_S3_REGION
     expected_base = f"https://{DEFAULT_S3_BUCKET}.s3.{DEFAULT_S3_REGION}.amazonaws.com"
@@ -60,12 +74,104 @@ def test_custom_environment_configuration():
     """Verify custom bucket, region, and CloudFront asset base URL from environment."""
     os.environ["S3_ASSETS_BUCKET"] = "custom-test-bucket"
     os.environ["S3_ASSETS_REGION"] = "us-east-1"
-    os.environ["ASSET_BASE_URL"] = "https://d123456abcdef8.cloudfront.net/"
+    os.environ["ASSET_BASE_URL"] = "https://d29abcdef01234.cloudfront.net/"
 
     assert get_s3_bucket() == "custom-test-bucket"
     assert get_s3_region() == "us-east-1"
     # Trailing slash should be stripped
-    assert get_asset_base_url() == "https://d123456abcdef8.cloudfront.net"
+    assert get_asset_base_url() == "https://d29abcdef01234.cloudfront.net"
+
+
+def test_missing_asset_base_url_in_production_mode_raises():
+    """Verify get_asset_base_url raises S3StorageError in production when ASSET_BASE_URL is missing."""
+    os.environ["ENVIRONMENT"] = "production"
+    with pytest.raises(S3StorageError, match="ASSET_BASE_URL.*required in production/staging"):
+        get_asset_base_url()
+
+
+def test_missing_asset_base_url_in_staging_mode_raises():
+    """Verify get_asset_base_url raises S3StorageError in staging when ASSET_BASE_URL is missing."""
+    os.environ["ENVIRONMENT"] = "staging"
+    with pytest.raises(S3StorageError, match="ASSET_BASE_URL.*required in production/staging"):
+        get_asset_base_url()
+
+
+def test_missing_s3_assets_bucket_in_production_mode_raises():
+    """Verify get_s3_bucket raises S3StorageError in production when S3_ASSETS_BUCKET is absent."""
+    os.environ["ENVIRONMENT"] = "production"
+    with pytest.raises(S3StorageError, match="S3_ASSETS_BUCKET.*required in production/staging"):
+        get_s3_bucket()
+
+
+def test_missing_asset_base_url_without_test_flag_raises():
+    """Verify get_asset_base_url raises S3StorageError when no test flag is set."""
+    if "TESTING" in os.environ:
+        del os.environ["TESTING"]
+    if "ENV" in os.environ:
+        del os.environ["ENV"]
+
+    with pytest.raises(S3StorageError, match="ASSET_BASE_URL must be configured"):
+        get_asset_base_url()
+
+
+@pytest.mark.parametrize(
+    "placeholder_url",
+    [
+        "https://d123456abcdef8.cloudfront.net",
+        "https://d123456abcdef8.cloudfront.net/avatars",
+        "https://<distribution-id>.cloudfront.net",
+        "https://<distribution_id>.cloudfront.net",
+        "https://<your-distribution-id>.cloudfront.net",
+        "https://placeholder.cloudfront.net",
+        "http://d29abcdef01234.cloudfront.net",  # HTTP rejected, must be HTTPS
+    ],
+)
+def test_placeholder_and_invalid_asset_base_url_raises(placeholder_url: str):
+    """Verify fictitious placeholders and non-HTTPS URLs fail validation in get_asset_base_url."""
+    os.environ["ASSET_BASE_URL"] = placeholder_url
+    with pytest.raises(S3StorageError):
+        get_asset_base_url()
+
+
+def test_validate_asset_base_url_empty_raises():
+    """Verify validate_asset_base_url raises S3StorageError when given an empty or whitespace string."""
+    with pytest.raises(S3StorageError, match="cannot be empty"):
+        validate_asset_base_url("")
+    with pytest.raises(S3StorageError, match="cannot be empty"):
+        validate_asset_base_url("   ")
+
+
+@pytest.mark.parametrize(
+    "invalid_bucket",
+    [
+        "<bucket-name>",
+        "bucket_with_underscores",
+        "UPPERCASE-BUCKET",
+        "pl",  # too short (<3)
+        "placeholder-bucket",
+    ],
+)
+def test_invalid_s3_bucket_name_raises(invalid_bucket: str):
+    """Verify invalid S3 bucket syntax and placeholders raise S3StorageError."""
+    os.environ["S3_ASSETS_BUCKET"] = invalid_bucket
+    with pytest.raises(S3StorageError):
+        get_s3_bucket()
+
+
+def test_test_mode_fallback_with_testing_flag():
+    """Verify fallback to regional S3 URL works when TESTING=1 is set."""
+    os.environ["TESTING"] = "1"
+    expected = f"https://{DEFAULT_S3_BUCKET}.s3.{DEFAULT_S3_REGION}.amazonaws.com"
+    assert get_asset_base_url() == expected
+
+
+def test_test_mode_fallback_with_env_test():
+    """Verify fallback to regional S3 URL works when ENV=test is set."""
+    if "TESTING" in os.environ:
+        del os.environ["TESTING"]
+    os.environ["ENV"] = "test"
+    expected = f"https://{DEFAULT_S3_BUCKET}.s3.{DEFAULT_S3_REGION}.amazonaws.com"
+    assert get_asset_base_url() == expected
 
 
 def test_get_s3_client_caching_and_reset():
@@ -88,7 +194,7 @@ def test_get_s3_client_caching_and_reset():
 
 def test_upload_avatar_success_with_cloudfront_url():
     """Verify upload_avatar puts object to S3 with safe key and returns CloudFront URL."""
-    os.environ["ASSET_BASE_URL"] = "https://d123456abcdef8.cloudfront.net"
+    os.environ["ASSET_BASE_URL"] = "https://d29abcdef01234.cloudfront.net"
     mock_s3 = MagicMock()
 
     with patch.object(s3_storage_service, "get_s3_client", return_value=mock_s3):
@@ -112,7 +218,7 @@ def test_upload_avatar_success_with_cloudfront_url():
 
         assert res["bucket"] == DEFAULT_S3_BUCKET
         assert res["key"] == key
-        assert res["url"] == f"https://d123456abcdef8.cloudfront.net/{key}"
+        assert res["url"] == f"https://d29abcdef01234.cloudfront.net/{key}"
 
 
 def test_upload_avatar_extension_normalization_and_leading_dot():

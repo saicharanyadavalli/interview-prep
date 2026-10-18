@@ -1,35 +1,38 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Description: >
-  Production AWS CloudFormation template provisioning a private S3 bucket
+  AWS CloudFormation template provisioning a private S3 bucket
   and CloudFront distribution with Origin Access Control (OAC) for Interview Prep assets.
 
 Parameters:
   Environment:
     Type: String
-    Default: production
+    Default: staging
     AllowedValues:
-      - production
       - staging
-      - development
-    Description: Environment stage for resource identification and tagging.
+      - production
+    Description: Environment stage for resource identification, bucket naming, and tagging.
 
   BucketName:
     Type: String
-    Default: interview-prep-assets-808431466075-ap-south-2
-    Description: Globally unique name for the private assets S3 bucket.
+    Default: ''
+    Description: >-
+      Optional override for the private assets S3 bucket name. If omitted or empty,
+      defaults to interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}.
 
   EC2RoleName:
     Type: String
     Default: InterviewPrepEC2Role
-    Description: Existing EC2 IAM role name to attach the S3 least-privilege policy to.
+    Description: Existing EC2 IAM role name to conditionally attach the S3 least-privilege policy to.
 
   AttachPolicyToRole:
     Type: String
-    Default: 'true'
+    Default: 'false'
     AllowedValues:
       - 'true'
       - 'false'
-    Description: Whether to automatically attach the S3 access policy to the existing EC2 IAM role.
+    Description: >-
+      Whether to automatically attach the S3 managed policy to the existing EC2 IAM role.
+      Defaults to false in staging to avoid mutating existing roles.
 
   PriceClass:
     Type: String
@@ -46,6 +49,7 @@ Parameters:
     Description: AWS Managed Response Headers Policy ID for CORS support (defaults to Managed-SimpleCORS).
 
 Conditions:
+  HasCustomBucketName: !Not [!Equals [!Ref BucketName, '']]
   ShouldAttachPolicyToRole: !Equals [!Ref AttachPolicyToRole, 'true']
 
 Resources:
@@ -53,8 +57,10 @@ Resources:
   AssetsBucket:
     Type: AWS::S3::Bucket
     Properties:
-      BucketName: !Ref BucketName
-      AccessControl: Private
+      BucketName: !If
+        - HasCustomBucketName
+        - !Ref BucketName
+        - !Sub "interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}"
       PublicAccessBlockConfiguration:
         BlockPublicAcls: true
         IgnorePublicAcls: true
@@ -168,23 +174,27 @@ Resources:
               Bool:
                 aws:SecureTransport: 'false'
 
-  # 5. EC2 Backend Least-Privilege IAM Policy
+  # 5. EC2 Backend Least-Privilege IAM Managed Policy
   BackendEC2S3Policy:
-    Type: AWS::IAM::Policy
-    Condition: ShouldAttachPolicyToRole
+    Type: AWS::IAM::ManagedPolicy
     Properties:
-      PolicyName: !Sub "${AWS::StackName}-ec2-s3-access"
-      Roles:
-        - !Ref EC2RoleName
+      ManagedPolicyName: !Sub "${AWS::StackName}-BackendEC2S3Policy"
+      Description: Standalone least-privilege IAM managed policy for EC2 backend runtime and asset migration.
+      Roles: !If [ShouldAttachPolicyToRole, [!Ref EC2RoleName], !Ref "AWS::NoValue"]
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
-          - Sid: ScopedS3BucketObjectAccess
+          - Sid: RuntimeAvatarObjectAccess
             Effect: Allow
             Action:
               - s3:PutObject
               - s3:GetObject
               - s3:DeleteObject
+            Resource: !Sub "${AssetsBucket.Arn}/avatars/*"
+          - Sid: OneTimeMigrationObjectAccess
+            Effect: Allow
+            Action:
+              - s3:PutObject
             Resource: !Sub "${AssetsBucket.Arn}/*"
           - Sid: ScopedS3BucketListAccess
             Effect: Allow
@@ -222,3 +232,9 @@ Outputs:
     Value: !Sub "https://${AssetsDistribution.DomainName}"
     Export:
       Name: !Sub "${AWS::StackName}-AssetBaseUrl"
+
+  BackendEC2S3PolicyArn:
+    Description: ARN of the standalone Backend EC2 S3 Managed Policy
+    Value: !Ref BackendEC2S3Policy
+    Export:
+      Name: !Sub "${AWS::StackName}-BackendEC2S3PolicyArn"

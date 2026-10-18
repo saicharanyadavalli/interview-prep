@@ -69,7 +69,7 @@ def test_custom_rate_limit_exceeded_handler_returns_rfc7807(client: TestClient):
     # POST /profile/avatar/upload has strict 3/minute limit
     fake_png = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15c4\x00\x00\x00\rIDATx\x9cc`\x00\x00\x00\x02\x00\x01H\xaf\xa4q\x00\x00\x00\x00IEND\xaeB`\x82"
 
-    with patch("routes.profile.cloudinary.uploader.upload", return_value={"secure_url": "https://example.com/a.png"}), \
+    with patch("services.s3_storage_service.upload_avatar", return_value={"url": "https://example.com/a.png", "key": "avatars/1/a.png", "bucket": "test-bucket"}), \
          patch("routes.profile.rds_client.mutate", return_value={"avatar_url": "https://example.com/a.png"}):
         # Fire 5001 requests to exceed the 5000/min limit or artificially trigger 429
         # Let's test the exception handler directly or via burst on a limited route

@@ -2,11 +2,19 @@
 
 import io
 from unittest.mock import MagicMock, patch
+import pytest
 from fastapi.testclient import TestClient
 from PIL import Image
 
 from services import s3_storage_service
 from services.s3_storage_service import S3StorageError
+
+
+@pytest.fixture(autouse=True)
+def setup_profile_test_env(monkeypatch):
+    """Ensure explicit test mode and valid asset configuration for profile tests."""
+    monkeypatch.setenv("TESTING", "1")
+    monkeypatch.setenv("ASSET_BASE_URL", "https://d29abcdef01234.cloudfront.net")
 
 
 def _generate_valid_png(width: int = 32, height: int = 32) -> bytes:
@@ -113,7 +121,7 @@ def test_update_my_profile_invalid_name_returns_422(client: TestClient):
 def test_upload_avatar_valid_image_success(client: TestClient, mock_supabase, mock_user):
     """Verify POST /profile/avatar/upload accepts valid PNG and updates profile with S3 CloudFront URL."""
     valid_png = _generate_valid_png(32, 32)
-    expected_url = f"https://d123456abcdef8.cloudfront.net/avatars/{mock_user['id']}/sample-avatar.png"
+    expected_url = f"https://d29abcdef01234.cloudfront.net/avatars/{mock_user['id']}/sample-avatar.png"
 
     with patch(
         "services.s3_storage_service.upload_avatar",
