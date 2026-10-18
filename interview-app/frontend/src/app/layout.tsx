@@ -4,7 +4,7 @@ import { Space_Grotesk, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
 import { Sidebar } from "@/components/Sidebar";
-import { createClient } from "@/utils/supabase/server";
+import { getCurrentSession } from "@/app/actions/auth";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -31,14 +31,10 @@ export default async function RootLayout({
   const cookieStore = await cookies();
   const initialTheme = cookieStore.get("theme")?.value || "dark";
 
-  const supabase = await createClient();
   let session = null;
   try {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-      const { data } = await supabase.auth.getSession();
-      session = data?.session ?? null;
-    }
+    const sessionData = await getCurrentSession();
+    session = sessionData?.session ?? null;
   } catch (_) {}
 
   return (

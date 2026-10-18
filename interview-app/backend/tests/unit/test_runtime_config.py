@@ -317,8 +317,11 @@ def test_frontend_env_example_does_not_contain_backend_secrets():
             "PORT",
             "AUTH_REDIRECT_URL",
             "FRONTEND_URL",
-            "SUPABASE_URL",
-            "SUPABASE_ANON_KEY",
+            "COGNITO_REGION",
+            "COGNITO_USER_POOL_ID",
+            "COGNITO_CLIENT_ID",
+            "COGNITO_DOMAIN",
+            "PUBLIC_APP_ORIGIN",
         }
         if not var_name.startswith("NEXT_PUBLIC_"):
             assert var_name in allowed_non_public, (
@@ -406,10 +409,51 @@ def test_root_docker_compose_backend_s3_asset_environment_mapping():
 
     # Verify existing variables are preserved
     assert "GEMINI_API_KEY" in env_map
-    assert "SUPABASE_URL" in env_map
-    assert "SUPABASE_SERVICE_KEY" in env_map
     assert "RDS_SECRET_NAME" in env_map
     assert "AWS_REGION" in env_map
+
+    # Verify Cognito configuration is present
+    assert "COGNITO_REGION" in env_map
+    assert env_map["COGNITO_REGION"] == "${COGNITO_REGION:-ap-south-2}"
+    assert "COGNITO_USER_POOL_ID" in env_map
+    assert env_map["COGNITO_USER_POOL_ID"] == "${COGNITO_USER_POOL_ID}"
+    assert "COGNITO_CLIENT_ID" in env_map
+    assert env_map["COGNITO_CLIENT_ID"] == "${COGNITO_CLIENT_ID}"
+    assert "COGNITO_DOMAIN" in env_map
+    assert env_map["COGNITO_DOMAIN"] == "${COGNITO_DOMAIN:-}"
+
+    # Verify obsolete Supabase Auth variables are eliminated
+    assert "SUPABASE_URL" not in env_map
+    assert "SUPABASE_ANON_KEY" not in env_map
+    assert "SUPABASE_SERVICE_KEY" not in env_map
+
+
+def test_root_docker_compose_frontend_cognito_environment_mapping():
+    """Verify root docker-compose.yml maps Cognito and backend proxy variables to frontend container."""
+    compose_file = ROOT_DIR / "docker-compose.yml"
+    raw_yaml = yaml.safe_load(compose_file.read_text(encoding="utf-8"))
+    frontend_env = raw_yaml["services"]["frontend"]["environment"]
+
+    env_map = {}
+    for item in frontend_env:
+        if "=" in item:
+            k, v = item.split("=", 1)
+            env_map[k.strip()] = v.strip()
+
+    assert env_map["COGNITO_REGION"] == "${COGNITO_REGION:-ap-south-2}"
+    assert env_map["COGNITO_USER_POOL_ID"] == "${COGNITO_USER_POOL_ID}"
+    assert env_map["COGNITO_CLIENT_ID"] == "${COGNITO_CLIENT_ID}"
+    assert env_map["COGNITO_DOMAIN"] == "${COGNITO_DOMAIN:-}"
+    assert env_map["PUBLIC_APP_ORIGIN"] == "${PUBLIC_APP_ORIGIN:-https://app.interviewprep.com}"
+    assert env_map["NEXT_PUBLIC_API_BASE_URL"] == "/api/backend"
+    assert env_map["BACKEND_INTERNAL_URL"] == "http://backend:8000"
+
+    # Verify obsolete Supabase Auth variables are eliminated
+    assert "SUPABASE_URL" not in env_map
+    assert "SUPABASE_ANON_KEY" not in env_map
+    assert "NEXT_PUBLIC_SUPABASE_URL" not in env_map
+    assert "NEXT_PUBLIC_SUPABASE_ANON_KEY" not in env_map
+    assert "NEXT_PUBLIC_DISABLE_AUTH" not in env_map
 
 
 def test_backend_docker_compose_s3_asset_environment_mapping():
@@ -435,10 +479,23 @@ def test_backend_docker_compose_s3_asset_environment_mapping():
 
     # Verify existing variables are preserved
     assert "GEMINI_API_KEY" in env_map
-    assert "SUPABASE_URL" in env_map
-    assert "SUPABASE_SERVICE_KEY" in env_map
     assert "RDS_SECRET_NAME" in env_map
     assert "AWS_REGION" in env_map
+
+    # Verify Cognito configuration is present
+    assert "COGNITO_REGION" in env_map
+    assert env_map["COGNITO_REGION"] == "${COGNITO_REGION:-ap-south-2}"
+    assert "COGNITO_USER_POOL_ID" in env_map
+    assert env_map["COGNITO_USER_POOL_ID"] == "${COGNITO_USER_POOL_ID}"
+    assert "COGNITO_CLIENT_ID" in env_map
+    assert env_map["COGNITO_CLIENT_ID"] == "${COGNITO_CLIENT_ID}"
+    assert "COGNITO_DOMAIN" in env_map
+    assert env_map["COGNITO_DOMAIN"] == "${COGNITO_DOMAIN:-}"
+
+    # Verify obsolete Supabase Auth variables are eliminated
+    assert "SUPABASE_URL" not in env_map
+    assert "SUPABASE_ANON_KEY" not in env_map
+    assert "SUPABASE_SERVICE_KEY" not in env_map
 
 
 def test_no_fictitious_placeholder_default_in_example_files():

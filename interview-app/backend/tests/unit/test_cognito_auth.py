@@ -472,3 +472,148 @@ def test_identity_resolution_username_collision_handling():
         inserted_username = profile_params[2]
         # Should have appended suffix derived from UUID
         assert inserted_username == f"dave_{new_uuid[:6]}".lower()
+
+
+def test_unknown_kid_triggers_jwks_refresh_success(rsa_key_pair):
+    """When a token has an unknown kid, trigger a single force-refresh of JWKS.
+    If the refresh returns the key, verification should succeed.
+    """
+    key_2 = rsa.generate_private_key(public_exponent=65537, key_size=2048)
+    jwk_2 = json.loads(RSAAlgorithm.to_jwk(key_2.public_key()))
+    jwk_2["kid"] = "rotated-key-id-002"
+    jwk_2["use"] = "sig"
+    jwk_2["alg"] = "RS256"
+
+    # Cache only has key 1 initially
+    set_cached_jwks({"keys": [rsa_key_pair["jwk"]]})
+
+    token = make_test_token(key_2, kid="rotated-key-id-002", sub="user-rotated-key")
+
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"keys": [rsa_key_pair["jwk"], jwk_2]}
+    mock_resp.raise_for_status = MagicMock()
+
+    with patch("requests.get", return_value=mock_resp) as mock_get:
+        claims = verify_cognito_token(token)
+        assert claims["sub"] == "user-rotated-key"
+        assert mock_get.call_count == 1
+        expected_url = "https://cognito-idp.ap-south-2.amazonaws.com/ap-south-2_testPoolId/.well-known/jwks.json"
+        mock_get.assert_called_with(expected_url, timeout=5)
+
+
+def test_cross_pool_cache_isolation(rsa_key_pair):
+    """JWKS cache uses compound key (user_pool_id, kid); keys from pool A must not bleed into pool B."""
+    clear_jwks_cache()
+
+    pool_a = "ap-south-2_poolA"
+    pool_b = "ap-south-2_poolB"
+
+    # Populate cache for pool_a
+    set_cached_jwks({"keys": [rsa_key_pair["jwk"]]}, user_pool_id=pool_a)
+
+    # Token issued for pool_b with same kid
+    token_b = make_test_token(
+        rsa_key_pair["private_key"],
+        kid=rsa_key_pair["kid"],
+        iss=f"https://cognito-idp.ap-south-2.amazonaws.com/{pool_b}",
+    )
+
+    mock_resp = MagicMock()
+    mock_resp.json.return_value = {"keys": []}
+    mock_resp.raise_for_status = MagicMock()
+
+    with patch("requests.get", return_value=mock_resp) as mock_get:
+        with pytest.raises(InvalidTokenError) as exc_info:
+            verify_cognito_token(token_b, user_pool_id=pool_b)
+        assert "not found in cognito jwks" in str(exc_info.value).lower()
+        mock_get.assert_called_with(
+            f"https://cognito-idp.ap-south-2.amazonaws.com/{pool_b}/.well-known/jwks.json",
+            timeout=5,
+        )
+
+
+def test_strict_mock_guard_in_production(monkeypatch):
+    """In production environment, mock tokens must fail closed with CognitoAuthError."""
+    monkeypatch.setenv("ENVIRONMENT", "production")
+    monkeypatch.delenv("TESTING", raising=False)
+
+    with pytest.raises(CognitoAuthError) as exc_info:
+        verify_cognito_token("mock-access-token")
+    assert "forbidden in production" in str(exc_info.value).lower()
+
+
+def test_strict_mock_guard_when_not_in_test_mode(monkeypatch):
+    """When TESTING is false or unset, mock tokens must fail closed with CognitoAuthError."""
+    monkeypatch.delenv("TESTING", raising=False)
+    monkeypatch.delenv("ENV", raising=False)
+    monkeypatch.delenv("ENVIRONMENT", raising=False)
+
+    with pytest.raises(CognitoAuthError) as exc_info:
+        verify_cognito_token("mock:sub123:email@test.com:username")
+    assert "forbidden in production and staging" in str(exc_info.value).lower()
+
+
+def test_production_default_pool_and_client_id_eliminated(monkeypatch):
+    """In production environment, test default IDs are eliminated and raise CognitoAuthError."""
+    monkeypatch.setenv("ENVIRONMENT", "production")
+    monkeypatch.delenv("TESTING", raising=False)
+    monkeypatch.delenv("COGNITO_USER_POOL_ID", raising=False)
+    monkeypatch.delenv("COGNITO_CLIENT_ID", raising=False)
+
+    with pytest.raises(CognitoAuthError) as exc_pool:
+        get_cognito_user_pool_id()
+    assert "missing or invalid cognito_user_pool_id" in str(exc_pool.value).lower()
+
+    with pytest.raises(CognitoAuthError) as exc_client:
+        get_cognito_client_id()
+    assert "missing or invalid cognito_client_id" in str(exc_client.value).lower()
+
+    with pytest.raises(CognitoAuthError) as exc_attr:
+        _ = getattr(cognito_auth, "DEFAULT_USER_POOL_ID")
+    assert "forbidden in production/staging" in str(exc_attr.value).lower()
+
+
+def test_unverified_email_linking_policy():
+    """If email_verified is explicitly False in claims, do NOT link to existing profile."""
+    existing_uuid = "33333333-4444-5555-6666-777777777777"
+    mock_existing_profile = {
+        "id": existing_uuid,
+        "email": "eve@example.com",
+        "username": "eve",
+        "name": "Eve Real",
+        "avatar_url": "",
+    }
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            return None
+        if "FROM user_profiles" in sql and "LOWER(email) = LOWER(%s)" in sql:
+            return [mock_existing_profile]
+        if "FROM user_profiles" in sql and "LOWER(username) = LOWER(%s)" in sql:
+            return None
+        if "FROM user_profiles" in sql and "id = %s" in sql:
+            return {
+                "id": params[0],
+                "email": "eve@example.com",
+                "username": "eve_fake",
+                "name": "Eve Impostor",
+                "avatar_url": "",
+            }
+        return None
+
+    mutations = []
+    with patch("services.rds_client.query", side_effect=mock_query), \
+         patch("services.rds_client.mutate", side_effect=lambda sql, params=None, returning=False: mutations.append((sql, params)) or 1):
+        claims = {
+            "sub": "attacker-cognito-sub",
+            "email": "eve@example.com",
+            "email_verified": False,
+            "username": "eve_fake",
+            "name": "Eve Impostor",
+        }
+        profile = resolve_user_identity(claims)
+
+        assert profile["id"] != existing_uuid
+        assert len(mutations) == 2
+        new_uuid = mutations[0][1][0]
+        assert new_uuid != existing_uuid

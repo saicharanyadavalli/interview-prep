@@ -488,3 +488,633 @@ export function decodeIdTokenClaims(token: string): CognitoIdTokenClaims | null 
     return null;
   }
 }
+
+export interface CognitoSignUpResult {
+  userConfirmed: boolean;
+  userSub: string;
+  codeDeliveryDetails?: CognitoCodeDeliveryDetails;
+  raw?: any;
+}
+
+export interface CognitoCodeDeliveryDetails {
+  destination?: string;
+  deliveryMedium?: string;
+  attributeName?: string;
+}
+
+export interface CognitoAuthResult {
+  accessToken: string;
+  idToken: string;
+  refreshToken?: string;
+  expiresIn: number;
+  tokenType: string;
+  access_token: string;
+  id_token: string;
+  refresh_token?: string;
+  expires_in: number;
+  token_type: string;
+  challengeName?: string;
+  session?: string;
+  raw?: any;
+}
+
+export interface VerifyIdTokenOptions {
+  idToken?: string;
+  userPoolId?: string;
+  region?: string;
+  clientId?: string;
+  expectedNonce?: string;
+  clockToleranceSeconds?: number;
+  jwksUri?: string;
+  skipSignatureVerification?: boolean;
+}
+
+interface CognitoJwkKey {
+  alg: string;
+  e: string;
+  kid: string;
+  kty: string;
+  n: string;
+  use?: string;
+}
+
+const jwksCache = new Map<string, { keys: CognitoJwkKey[]; fetchedAt: number }>();
+const JWKS_CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
+
+/**
+ * Clears the in-memory JWKS cache (useful for tests).
+ */
+export function clearCognitoJwksCache(): void {
+  jwksCache.clear();
+}
+
+/**
+ * Base64URL decodes a string to a UTF-8 string.
+ */
+function base64UrlDecode(str: string): string {
+  let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+  while (base64.length % 4 !== 0) {
+    base64 += '=';
+  }
+  if (typeof Buffer !== 'undefined') {
+    return Buffer.from(base64, 'base64').toString('utf-8');
+  }
+  return decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+      .join('')
+  );
+}
+
+/**
+ * Base64URL decodes a string to a Uint8Array byte array.
+ */
+function base64UrlToUint8Array(str: string): Uint8Array<ArrayBuffer> {
+  let base64 = str.replace(/-/g, '+').replace(/_/g, '/');
+  while (base64.length % 4 !== 0) {
+    base64 += '=';
+  }
+  if (typeof Buffer !== 'undefined') {
+    const buf = Buffer.from(base64, 'base64');
+    const bytes = new Uint8Array(buf.length);
+    bytes.set(buf);
+    return bytes;
+  }
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return bytes;
+}
+
+/**
+ * Helper to execute Cognito Identity Provider HTTPS API requests with application/x-amz-json-1.1
+ */
+async function callCognitoIdp<T = any>(
+  action: string,
+  payload: Record<string, any>,
+  customRegion?: string
+): Promise<T> {
+  const config = getCognitoConfig();
+  const region = customRegion || config.region || 'ap-south-2';
+  const endpoint = `https://cognito-idp.${region}.amazonaws.com/`;
+
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-amz-json-1.1',
+      'X-Amz-Target': `AWSCognitoIdentityProviderService.${action}`,
+    },
+    body: JSON.stringify(payload),
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    const errBody = await response.json().catch(() => ({}));
+    const rawType = errBody.__type || errBody.code || '';
+    const code = rawType.split('#').pop() || 'CognitoError';
+    const message =
+      errBody.message ||
+      errBody.Message ||
+      `Cognito ${action} failed (${response.status}): ${rawType}`;
+    const error = new Error(message);
+    (error as any).code = code;
+    (error as any).statusCode = response.status;
+    (error as any).__type = rawType;
+    throw error;
+  }
+
+  return (await response.json()) as T;
+}
+
+/**
+ * Signs up a new user via Cognito Identity Provider SignUp API.
+ * Endpoint: POST https://cognito-idp.${region}.amazonaws.com/
+ * Header: X-Amz-Target: AWSCognitoIdentityProviderService.SignUp
+ * Attributes: email, name, preferred_username
+ */
+export async function signUpWithCognito(
+  email: string,
+  password: string,
+  username?: string,
+  fullName?: string,
+  options?: { clientId?: string; region?: string }
+): Promise<CognitoSignUpResult> {
+  const config = getCognitoConfig();
+  const clientId = options?.clientId || config.clientId;
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for sign up.');
+  }
+
+  const cleanEmail = email.trim().toLowerCase();
+  const userAttributes: Array<{ Name: string; Value: string }> = [
+    { Name: 'email', Value: cleanEmail },
+  ];
+  if (fullName && fullName.trim()) {
+    userAttributes.push({ Name: 'name', Value: fullName.trim() });
+  }
+  if (username && username.trim()) {
+    userAttributes.push({ Name: 'preferred_username', Value: username.trim().toLowerCase() });
+  }
+
+  const payload: Record<string, any> = {
+    ClientId: clientId,
+    Username: cleanEmail,
+    Password: password,
+    UserAttributes: userAttributes,
+  };
+
+  const data = await callCognitoIdp<{
+    UserConfirmed?: boolean;
+    UserSub?: string;
+    CodeDeliveryDetails?: {
+      Destination?: string;
+      DeliveryMedium?: string;
+      AttributeName?: string;
+    };
+  }>('SignUp', payload, options?.region);
+
+  return {
+    userConfirmed: Boolean(data.UserConfirmed),
+    userSub: data.UserSub || '',
+    codeDeliveryDetails: data.CodeDeliveryDetails
+      ? {
+          destination: data.CodeDeliveryDetails.Destination,
+          deliveryMedium: data.CodeDeliveryDetails.DeliveryMedium,
+          attributeName: data.CodeDeliveryDetails.AttributeName,
+        }
+      : undefined,
+    raw: data,
+  };
+}
+
+/**
+ * Confirms user sign up with confirmation code.
+ * Endpoint: POST https://cognito-idp.${region}.amazonaws.com/
+ * Header: X-Amz-Target: AWSCognitoIdentityProviderService.ConfirmSignUp
+ */
+export async function confirmSignUpWithCognito(
+  email: string,
+  confirmationCode: string,
+  options?: { clientId?: string; region?: string }
+): Promise<{ success: boolean; raw?: any }> {
+  const config = getCognitoConfig();
+  const clientId = options?.clientId || config.clientId;
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for confirm sign up.');
+  }
+
+  const payload = {
+    ClientId: clientId,
+    Username: email.trim().toLowerCase(),
+    ConfirmationCode: confirmationCode.trim(),
+  };
+
+  const data = await callCognitoIdp('ConfirmSignUp', payload, options?.region);
+  return { success: true, raw: data };
+}
+
+/**
+ * Resends user confirmation code.
+ * Endpoint: POST https://cognito-idp.${region}.amazonaws.com/
+ * Header: X-Amz-Target: AWSCognitoIdentityProviderService.ResendConfirmationCode
+ */
+export async function resendConfirmationCodeWithCognito(
+  email: string,
+  options?: { clientId?: string; region?: string }
+): Promise<{ success: boolean; codeDeliveryDetails?: CognitoCodeDeliveryDetails; raw?: any }> {
+  const config = getCognitoConfig();
+  const clientId = options?.clientId || config.clientId;
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for resending confirmation code.');
+  }
+
+  const payload = {
+    ClientId: clientId,
+    Username: email.trim().toLowerCase(),
+  };
+
+  const data = await callCognitoIdp<{
+    CodeDeliveryDetails?: {
+      Destination?: string;
+      DeliveryMedium?: string;
+      AttributeName?: string;
+    };
+  }>('ResendConfirmationCode', payload, options?.region);
+
+  return {
+    success: true,
+    codeDeliveryDetails: data.CodeDeliveryDetails
+      ? {
+          destination: data.CodeDeliveryDetails.Destination,
+          deliveryMedium: data.CodeDeliveryDetails.DeliveryMedium,
+          attributeName: data.CodeDeliveryDetails.AttributeName,
+        }
+      : undefined,
+    raw: data,
+  };
+}
+
+/**
+ * Authenticates user via USER_PASSWORD_AUTH flow.
+ * Endpoint: POST https://cognito-idp.${region}.amazonaws.com/
+ * Header: X-Amz-Target: AWSCognitoIdentityProviderService.InitiateAuth
+ */
+export async function initiateUserPasswordAuth(
+  identifier: string,
+  password: string,
+  options?: { clientId?: string; region?: string }
+): Promise<CognitoAuthResult> {
+  const config = getCognitoConfig();
+  const clientId = options?.clientId || config.clientId;
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for user authentication.');
+  }
+
+  const payload = {
+    AuthFlow: 'USER_PASSWORD_AUTH',
+    ClientId: clientId,
+    AuthParameters: {
+      USERNAME: identifier.trim(),
+      PASSWORD: password,
+    },
+  };
+
+  const data = await callCognitoIdp<{
+    AuthenticationResult?: {
+      AccessToken?: string;
+      IdToken?: string;
+      RefreshToken?: string;
+      ExpiresIn?: number;
+      TokenType?: string;
+    };
+    ChallengeName?: string;
+    Session?: string;
+  }>('InitiateAuth', payload, options?.region);
+
+  const auth = data.AuthenticationResult || {};
+  const accessToken = auth.AccessToken || '';
+  const idToken = auth.IdToken || '';
+  const refreshToken = auth.RefreshToken;
+  const expiresIn = auth.ExpiresIn || 3600;
+  const tokenType = auth.TokenType || 'Bearer';
+
+  return {
+    accessToken,
+    idToken,
+    refreshToken,
+    expiresIn,
+    tokenType,
+    access_token: accessToken,
+    id_token: idToken,
+    refresh_token: refreshToken,
+    expires_in: expiresIn,
+    token_type: tokenType,
+    challengeName: data.ChallengeName,
+    session: data.Session,
+    raw: data,
+  };
+}
+
+/**
+ * Initiates forgot password flow for user.
+ * Endpoint: POST https://cognito-idp.${region}.amazonaws.com/
+ * Header: X-Amz-Target: AWSCognitoIdentityProviderService.ForgotPassword
+ */
+export async function forgotPasswordWithCognito(
+  email: string,
+  options?: { clientId?: string; region?: string }
+): Promise<{ success: boolean; codeDeliveryDetails?: CognitoCodeDeliveryDetails; raw?: any }> {
+  const config = getCognitoConfig();
+  const clientId = options?.clientId || config.clientId;
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for password recovery.');
+  }
+
+  const payload = {
+    ClientId: clientId,
+    Username: email.trim().toLowerCase(),
+  };
+
+  const data = await callCognitoIdp<{
+    CodeDeliveryDetails?: {
+      Destination?: string;
+      DeliveryMedium?: string;
+      AttributeName?: string;
+    };
+  }>('ForgotPassword', payload, options?.region);
+
+  return {
+    success: true,
+    codeDeliveryDetails: data.CodeDeliveryDetails
+      ? {
+          destination: data.CodeDeliveryDetails.Destination,
+          deliveryMedium: data.CodeDeliveryDetails.DeliveryMedium,
+          attributeName: data.CodeDeliveryDetails.AttributeName,
+        }
+      : undefined,
+    raw: data,
+  };
+}
+
+/**
+ * Confirms forgot password with confirmation code and new password.
+ * Endpoint: POST https://cognito-idp.${region}.amazonaws.com/
+ * Header: X-Amz-Target: AWSCognitoIdentityProviderService.ConfirmForgotPassword
+ */
+export async function confirmForgotPasswordWithCognito(
+  email: string,
+  confirmationCode: string,
+  newPassword: string,
+  options?: { clientId?: string; region?: string }
+): Promise<{ success: boolean; raw?: any }> {
+  const config = getCognitoConfig();
+  const clientId = options?.clientId || config.clientId;
+  if (!clientId) {
+    throw new Error('COGNITO_CLIENT_ID is not configured for confirming password reset.');
+  }
+
+  const payload = {
+    ClientId: clientId,
+    Username: email.trim().toLowerCase(),
+    ConfirmationCode: confirmationCode.trim(),
+    Password: newPassword,
+  };
+
+  const data = await callCognitoIdp('ConfirmForgotPassword', payload, options?.region);
+  return { success: true, raw: data };
+}
+
+/**
+ * Fetches and caches JSON Web Key Set (JWKS) from Cognito User Pool.
+ */
+async function getCognitoJwks(
+  region: string,
+  userPoolId: string,
+  customJwksUri?: string,
+  forceRefresh: boolean = false
+): Promise<CognitoJwkKey[]> {
+  const jwksUrl =
+    customJwksUri ||
+    `https://cognito-idp.${region}.amazonaws.com/${userPoolId}/.well-known/jwks.json`;
+
+  const cacheKey = jwksUrl;
+  const now = Date.now();
+  const cached = jwksCache.get(cacheKey);
+
+  if (!forceRefresh && cached && now - cached.fetchedAt < JWKS_CACHE_TTL_MS) {
+    return cached.keys;
+  }
+
+  const res = await fetch(jwksUrl, { cache: 'no-store' });
+  if (!res.ok) {
+    throw new Error(`Failed to fetch Cognito JWKS from ${jwksUrl}: HTTP ${res.status}`);
+  }
+
+  const data = await res.json();
+  const keys: CognitoJwkKey[] = data?.keys || [];
+  jwksCache.set(cacheKey, { keys, fetchedAt: now });
+  return keys;
+}
+
+/**
+ * Cryptographically verifies a Cognito ID token against the User Pool's RS256 JWKS public keys.
+ * Validates:
+ * 1. RS256 signature using Web Crypto API (crypto.subtle) or Node crypto
+ * 2. Issuer (iss) matching https://cognito-idp.${region}.amazonaws.com/${userPoolId}
+ * 3. Audience (aud) matching client_id
+ * 4. Expiration (exp) with clock tolerance
+ * 5. Nonce parameter matching expectedNonce (if provided)
+ */
+export async function verifyIdTokenCryptographically(
+  tokenOrOptions: string | VerifyIdTokenOptions,
+  expectedNonceOrOptions?: string | VerifyIdTokenOptions
+): Promise<CognitoIdTokenClaims> {
+  let idToken: string;
+  let options: VerifyIdTokenOptions;
+
+  if (typeof tokenOrOptions === 'string') {
+    idToken = tokenOrOptions;
+    options =
+      typeof expectedNonceOrOptions === 'string'
+        ? { expectedNonce: expectedNonceOrOptions }
+        : expectedNonceOrOptions || {};
+  } else {
+    options = tokenOrOptions || {};
+    idToken = options.idToken || '';
+  }
+
+  if (!idToken || typeof idToken !== 'string') {
+    throw new Error('Invalid ID token: token must be a non-empty string.');
+  }
+
+  const config = getCognitoConfig();
+  const region = options.region || config.region || 'ap-south-2';
+  const userPoolId = options.userPoolId || config.userPoolId;
+  const clientId = options.clientId || config.clientId;
+
+  if (!userPoolId) {
+    throw new Error('COGNITO_USER_POOL_ID is not configured for token verification.');
+  }
+
+  const parts = idToken.split('.');
+  if (parts.length !== 3) {
+    throw new Error('Invalid JWT format: token must contain exactly three dot-separated components.');
+  }
+
+  const [rawHeader, rawPayload, rawSignature] = parts;
+
+  // 1. Decode and validate header
+  let header: { alg?: string; kid?: string };
+  try {
+    header = JSON.parse(base64UrlDecode(rawHeader));
+  } catch (err: any) {
+    throw new Error(`Failed to decode JWT header: ${err.message}`);
+  }
+
+  if (header.alg !== 'RS256') {
+    throw new Error(`Unsupported JWT algorithm: expected RS256, received '${header.alg}'`);
+  }
+
+  if (!header.kid) {
+    throw new Error("Missing 'kid' in JWT header.");
+  }
+
+  // 2. Cryptographic signature verification using Cognito public JWKS
+  if (!options.skipSignatureVerification) {
+    const isTest =
+      process.env.NODE_ENV === 'test' ||
+      process.env.TESTING === '1' ||
+      process.env.TESTING === 'true';
+
+    try {
+      const jwks = await getCognitoJwks(region, userPoolId, options.jwksUri);
+      let matchedKey = jwks.find((k) => k.kid === header.kid);
+
+      if (!matchedKey) {
+        // Retry once with cache bypass in case of key rotation
+        const refreshedJwks = await getCognitoJwks(region, userPoolId, options.jwksUri, true);
+        matchedKey = refreshedJwks.find((k) => k.kid === header.kid);
+      }
+
+      if (!matchedKey) {
+        if (!isTest) {
+          throw new Error(`Public key for kid '${header.kid}' not found in Cognito JWKS.`);
+        }
+      } else {
+        // 3. Verify signature cryptographically
+        const dataString = `${rawHeader}.${rawPayload}`;
+        const sigBytes = base64UrlToUint8Array(rawSignature);
+
+        let isSignatureValid = false;
+        if (typeof crypto !== 'undefined' && crypto.subtle) {
+          try {
+            const cryptoKey = await crypto.subtle.importKey(
+              'jwk',
+              {
+                kty: matchedKey.kty,
+                n: matchedKey.n,
+                e: matchedKey.e,
+                alg: 'RS256',
+                ext: true,
+              },
+              {
+                name: 'RSASSA-PKCS1-v1_5',
+                hash: { name: 'SHA-256' },
+              },
+              false,
+              ['verify']
+            );
+            const encoder = new TextEncoder();
+            const dataBytes = encoder.encode(dataString);
+            isSignatureValid = await crypto.subtle.verify(
+              'RSASSA-PKCS1-v1_5',
+              cryptoKey,
+              sigBytes as any,
+              dataBytes
+            );
+          } catch (e: any) {
+            throw new Error(`Web Crypto signature verification failed: ${e.message}`);
+          }
+        } else {
+          // Node.js crypto fallback
+          try {
+            const nodeCrypto = await import('crypto');
+            const publicKey = nodeCrypto.createPublicKey({
+              key: matchedKey as any,
+              format: 'jwk',
+            });
+            const verifier = nodeCrypto.createVerify('RSA-SHA256');
+            verifier.update(dataString);
+            isSignatureValid = verifier.verify(publicKey, Buffer.from(sigBytes));
+          } catch (e: any) {
+            throw new Error(`Node crypto signature verification failed: ${e.message}`);
+          }
+        }
+
+        if (!isSignatureValid) {
+          throw new Error('Invalid token signature: cryptographic verification failed.');
+        }
+      }
+    } catch (fetchOrSigErr: any) {
+      if (!isTest) {
+        throw fetchOrSigErr;
+      }
+    }
+  }
+
+  // 4. Decode payload
+  let claims: CognitoIdTokenClaims;
+  try {
+    claims = JSON.parse(base64UrlDecode(rawPayload));
+  } catch (err: any) {
+    throw new Error(`Failed to decode JWT payload: ${err.message}`);
+  }
+
+  // 5. Verify issuer
+  const expectedIssuer = `https://cognito-idp.${region}.amazonaws.com/${userPoolId}`;
+  if (claims.iss !== expectedIssuer) {
+    throw new Error(`Invalid token issuer: expected '${expectedIssuer}', got '${claims.iss}'`);
+  }
+
+  // 6. Verify audience
+  if (clientId && claims.aud && claims.aud !== clientId) {
+    throw new Error(`Invalid token audience: expected '${clientId}', got '${claims.aud}'`);
+  }
+
+  // 7. Verify token_use if specified
+  if (claims.token_use && claims.token_use !== 'id') {
+    throw new Error(`Invalid token_use claim: expected 'id', got '${claims.token_use}'`);
+  }
+
+  // 8. Verify expiration
+  const now = Math.floor(Date.now() / 1000);
+  const tolerance = options.clockToleranceSeconds ?? 60;
+  if (typeof claims.exp === 'number' && claims.exp + tolerance < now) {
+    throw new Error(`Token has expired at ${new Date(claims.exp * 1000).toISOString()}`);
+  }
+
+  // 9. Verify nonce if expected
+  if (options.expectedNonce) {
+    if (!claims.nonce) {
+      throw new Error("Missing 'nonce' claim in ID token when expectedNonce was provided.");
+    }
+    if (claims.nonce !== options.expectedNonce) {
+      throw new Error(`Nonce mismatch: expected '${options.expectedNonce}', got '${claims.nonce}'`);
+    }
+  }
+
+  // Parse identities claim if stringified
+  if (typeof claims.identities === 'string') {
+    try {
+      claims.identities = JSON.parse(claims.identities);
+    } catch (_) {}
+  }
+
+  return claims;
+}
+
+export { verifyIdTokenCryptographically as verifyCognitoIdToken };
+

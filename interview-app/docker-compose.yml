@@ -20,15 +20,17 @@ services:
       - UVICORN_WORKERS=${UVICORN_WORKERS:-2}
       # Required credentials & keys
       - GEMINI_API_KEY=${GEMINI_API_KEY}
-      - SUPABASE_URL=${SUPABASE_URL}
-      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY}
-      - SUPABASE_SERVICE_KEY=${SUPABASE_SERVICE_KEY}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
       - CLOUDINARY_CLOUD_NAME=${CLOUDINARY_CLOUD_NAME:-}
       - CLOUDINARY_API_KEY=${CLOUDINARY_API_KEY:-}
       - CLOUDINARY_API_SECRET=${CLOUDINARY_API_SECRET:-}
       - FRONTEND_URL=${FRONTEND_URL:-http://localhost:3000}
       - ALLOWED_ORIGINS=${ALLOWED_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+      # Amazon Cognito User Pool authentication
+      - COGNITO_REGION=${COGNITO_REGION:-ap-south-2}
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+      - COGNITO_DOMAIN=${COGNITO_DOMAIN:-}
       # Amazon RDS PostgreSQL & AWS Secrets Manager configuration
       - AWS_REGION=${AWS_REGION:-ap-south-2}
       - RDS_SECRET_NAME=${RDS_SECRET_NAME:-interview-prep/rds/app}
@@ -55,32 +57,33 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
       args:
-        - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:-/api/backend}
-        - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-${SUPABASE_URL}}
-        - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_ANON_KEY}}
-        - NEXT_PUBLIC_DISABLE_AUTH=${NEXT_PUBLIC_DISABLE_AUTH:-false}
-        - SUPABASE_URL=${SUPABASE_URL:-${NEXT_PUBLIC_SUPABASE_URL}}
-        - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-${NEXT_PUBLIC_SUPABASE_ANON_KEY}}
-        - AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL:-http://16.113.92.222/auth/callback?next=/dashboard}
-        - NEXT_PUBLIC_AUTH_REDIRECT_URL=${NEXT_PUBLIC_AUTH_REDIRECT_URL:-${AUTH_REDIRECT_URL:-http://16.113.92.222/auth/callback?next=/dashboard}}
-        - FRONTEND_URL=${FRONTEND_URL:-http://16.113.92.222}
-        - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-${FRONTEND_URL:-http://16.113.92.222}}
+        - NEXT_PUBLIC_API_BASE_URL=/api/backend
+        - COGNITO_REGION=${COGNITO_REGION:-ap-south-2}
+        - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+        - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+        - COGNITO_DOMAIN=${COGNITO_DOMAIN:-}
+        - PUBLIC_APP_ORIGIN=${PUBLIC_APP_ORIGIN:-https://app.interviewprep.com}
+        - AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL:-https://app.interviewprep.com/auth/callback?next=/dashboard}
+        - NEXT_PUBLIC_AUTH_REDIRECT_URL=${NEXT_PUBLIC_AUTH_REDIRECT_URL:-${AUTH_REDIRECT_URL:-https://app.interviewprep.com/auth/callback?next=/dashboard}}
+        - FRONTEND_URL=${FRONTEND_URL:-https://app.interviewprep.com}
+        - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-${FRONTEND_URL:-https://app.interviewprep.com}}
     container_name: interview-prep-frontend
     restart: unless-stopped
     ports:
       - "127.0.0.1:3000:3000"
     environment:
       - PORT=3000
-      - NEXT_PUBLIC_API_BASE_URL=${NEXT_PUBLIC_API_BASE_URL:-/api/backend}
+      - COGNITO_REGION=${COGNITO_REGION:-ap-south-2}
+      - COGNITO_USER_POOL_ID=${COGNITO_USER_POOL_ID}
+      - COGNITO_CLIENT_ID=${COGNITO_CLIENT_ID}
+      - COGNITO_DOMAIN=${COGNITO_DOMAIN:-}
+      - PUBLIC_APP_ORIGIN=${PUBLIC_APP_ORIGIN:-https://app.interviewprep.com}
+      - NEXT_PUBLIC_API_BASE_URL=/api/backend
       - BACKEND_INTERNAL_URL=http://backend:8000
-      - NEXT_PUBLIC_SUPABASE_URL=${NEXT_PUBLIC_SUPABASE_URL:-${SUPABASE_URL}}
-      - NEXT_PUBLIC_SUPABASE_ANON_KEY=${NEXT_PUBLIC_SUPABASE_ANON_KEY:-${SUPABASE_ANON_KEY}}
-      - SUPABASE_URL=${SUPABASE_URL:-${NEXT_PUBLIC_SUPABASE_URL}}
-      - SUPABASE_ANON_KEY=${SUPABASE_ANON_KEY:-${NEXT_PUBLIC_SUPABASE_ANON_KEY}}
-      - AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL:-http://16.113.92.222/auth/callback?next=/dashboard}
-      - NEXT_PUBLIC_AUTH_REDIRECT_URL=${NEXT_PUBLIC_AUTH_REDIRECT_URL:-${AUTH_REDIRECT_URL:-http://16.113.92.222/auth/callback?next=/dashboard}}
-      - FRONTEND_URL=${FRONTEND_URL:-http://16.113.92.222}
-      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-${FRONTEND_URL:-http://16.113.92.222}}
+      - AUTH_REDIRECT_URL=${AUTH_REDIRECT_URL:-https://app.interviewprep.com/auth/callback?next=/dashboard}
+      - NEXT_PUBLIC_AUTH_REDIRECT_URL=${NEXT_PUBLIC_AUTH_REDIRECT_URL:-${AUTH_REDIRECT_URL:-https://app.interviewprep.com/auth/callback?next=/dashboard}}
+      - FRONTEND_URL=${FRONTEND_URL:-https://app.interviewprep.com}
+      - NEXT_PUBLIC_APP_URL=${NEXT_PUBLIC_APP_URL:-${FRONTEND_URL:-https://app.interviewprep.com}}
     depends_on:
       backend:
         condition: service_healthy

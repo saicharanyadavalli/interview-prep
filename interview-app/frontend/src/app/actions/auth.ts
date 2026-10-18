@@ -1,8 +1,7 @@
 'use server'
 
 import { cookies, headers } from 'next/headers'
-import { createClient } from '@/utils/supabase/server'
-import { getAuthRedirectUrl, CANONICAL_AWS_ORIGIN } from '@/utils/auth-redirect'
+import { CANONICAL_AWS_ORIGIN } from '@/utils/auth-redirect'
 import {
   COGNITO_COOKIE_NAMES,
   generateState,
@@ -13,7 +12,80 @@ import {
   buildCognitoLogoutUrl,
   decodeIdTokenClaims,
   getCognitoConfig,
+  refreshCognitoTokens,
+  signUpWithCognito,
+  confirmSignUpWithCognito,
+  resendConfirmationCodeWithCognito,
+  initiateUserPasswordAuth,
+  forgotPasswordWithCognito,
+  confirmForgotPasswordWithCognito,
 } from '@/lib/cognito'
+
+class InMemoryCookieStore {
+  private cookies = new Map<string, string>()
+
+  get(name: string) {
+    const val = this.cookies.get(name)
+    return val !== undefined ? { name, value: val } : undefined
+  }
+
+  set(name: string, value: string, _options?: any) {
+    this.cookies.set(name, value)
+    return this
+  }
+
+  delete(name: string) {
+    this.cookies.delete(name)
+    return this
+  }
+
+  has(name: string) {
+    return this.cookies.has(name)
+  }
+
+  clear() {
+    this.cookies.clear()
+  }
+}
+
+let mockCookieStore: any = null
+let mockHeaderStore: any = null
+
+function __setMockCookieStore(store: any) {
+  mockCookieStore = store
+}
+
+function __setMockHeaderStore(store: any) {
+  mockHeaderStore = store
+}
+
+function __resetMockStores() {
+  mockCookieStore = null
+  mockHeaderStore = null
+}
+
+async function getCookieStore() {
+  if (mockCookieStore) return mockCookieStore
+  try {
+    return await cookies()
+  } catch (_) {
+    if (!mockCookieStore) {
+      mockCookieStore = new InMemoryCookieStore()
+    }
+    return mockCookieStore
+  }
+}
+
+async function getRequestHeaders() {
+  if (mockHeaderStore) return mockHeaderStore
+  try {
+    return await headers()
+  } catch (_) {
+    return {
+      get: (_name: string) => null,
+    }
+  }
+}
 
 function getInternalBackendUrl(): string {
   const envUrl = process.env.BACKEND_INTERNAL_URL || process.env.NEXT_PUBLIC_API_BASE_URL
@@ -24,7 +96,7 @@ function getInternalBackendUrl(): string {
 }
 
 async function getRequestOrigin(): Promise<string> {
-  const headerList = await headers()
+  const headerList = await getRequestHeaders()
   const host = headerList.get('x-forwarded-host') || headerList.get('host')
   const proto = headerList.get('x-forwarded-proto') || 'http'
   if (host) {
@@ -39,7 +111,7 @@ async function getRequestOrigin(): Promise<string> {
  * and generating the Cognito Hosted UI authorization URL.
  */
 export async function initiateCognitoGoogleAuth(nextTarget: string = '/dashboard') {
-  const cookieStore = await cookies()
+  const cookieStore = await getCookieStore()
   const origin = await getRequestOrigin()
   const redirectUri = `${origin}/auth/callback`
 
@@ -74,16 +146,50 @@ export async function initiateCognitoGoogleAuth(nextTarget: string = '/dashboard
 }
 
 /**
- * Retrieves the current session and user from Cognito cookies or Supabase fallback.
+ * Retrieves the current session and user from Cognito cookies.
+ * Decodes and verifies claims, refreshing expired tokens when a refresh token is present.
  */
 export async function getCurrentSession() {
-  const cookieStore = await cookies()
+  const cookieStore = await getCookieStore()
   const accessToken = cookieStore.get(COGNITO_COOKIE_NAMES.ACCESS_TOKEN)?.value
   const idToken = cookieStore.get(COGNITO_COOKIE_NAMES.ID_TOKEN)?.value
   const refreshToken = cookieStore.get(COGNITO_COOKIE_NAMES.REFRESH_TOKEN)?.value
 
   if (accessToken || idToken) {
-    const claims = idToken ? decodeIdTokenClaims(idToken) : null
+    let claims = idToken ? decodeIdTokenClaims(idToken) : null
+
+    // Check expiration if exp claim is present
+    if (claims?.exp) {
+      const now = Math.floor(Date.now() / 1000)
+      if (claims.exp < now) {
+        // Token expired: attempt refresh if refreshToken exists
+        if (refreshToken) {
+          try {
+            const refreshed = await refreshCognitoTokens({ refreshToken })
+            const origin = await getRequestOrigin()
+            const isSecure = origin.startsWith('https:')
+            const cookieOpts = {
+              httpOnly: true,
+              secure: isSecure,
+              sameSite: 'lax' as const,
+              path: '/',
+              maxAge: refreshed.expires_in || 3600,
+            }
+
+            cookieStore.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, refreshed.access_token, cookieOpts)
+            if (refreshed.id_token) {
+              cookieStore.set(COGNITO_COOKIE_NAMES.ID_TOKEN, refreshed.id_token, cookieOpts)
+              claims = decodeIdTokenClaims(refreshed.id_token)
+            }
+          } catch (_) {
+            return { session: null, user: null }
+          }
+        } else {
+          return { session: null, user: null }
+        }
+      }
+    }
+
     const userId = claims?.sub || 'user'
     const email = claims?.email || ''
     const name = claims?.name || ''
@@ -114,28 +220,13 @@ export async function getCurrentSession() {
     }
   }
 
-  // Fallback: check Supabase session if configured
-  try {
-    const supabase = await createClient()
-    const {
-      data: { session },
-    } = await supabase.auth.getSession()
-    if (session) {
-      return {
-        session: {
-          access_token: session.access_token,
-          refresh_token: session.refresh_token,
-          token_type: session.token_type || 'bearer',
-          user: session.user,
-        },
-        user: session.user,
-      }
-    }
-  } catch (_) {}
-
   return { session: null, user: null }
 }
 
+/**
+ * Authenticates user via Cognito native InitiateAuth or backend login proxy.
+ * Sets secure HttpOnly cookies for access, ID, and refresh tokens.
+ */
 export async function login(formData: FormData) {
   const rawIdentifier = (formData.get('identifier') || formData.get('email')) as string
   const password = formData.get('password') as string
@@ -147,97 +238,132 @@ export async function login(formData: FormData) {
   const cleanIdentifier = rawIdentifier.trim()
   const origin = await getRequestOrigin()
   const isSecure = origin.startsWith('https:')
-  const cookieStore = await cookies()
+  const cookieStore = await getCookieStore()
 
-  // 1. Try backend authentication proxy (/auth/login)
-  try {
-    const backendUrl = getInternalBackendUrl()
-    const res = await fetch(`${backendUrl}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ identifier: cleanIdentifier.toLowerCase(), password }),
-      cache: 'no-store',
+  const setCognitoCookies = (tokens: {
+    accessToken: string
+    idToken?: string
+    refreshToken?: string
+    expiresIn?: number
+  }) => {
+    cookieStore.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, tokens.accessToken, {
+      httpOnly: true,
+      secure: isSecure,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: tokens.expiresIn || 3600,
     })
-
-    if (res.ok) {
-      const data = await res.json()
-      if (data.access_token) {
-        cookieStore.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, data.access_token, {
-          httpOnly: true,
-          secure: isSecure,
-          sameSite: 'lax',
-          path: '/',
-          maxAge: 3600,
-        })
-        if (data.refresh_token) {
-          cookieStore.set(COGNITO_COOKIE_NAMES.REFRESH_TOKEN, data.refresh_token, {
-            httpOnly: true,
-            secure: isSecure,
-            sameSite: 'lax',
-            path: '/',
-            maxAge: 30 * 24 * 60 * 60,
-          })
-        }
-
-        // Also sync Supabase session if available
-        try {
-          const supabase = await createClient()
-          await supabase.auth.setSession({
-            access_token: data.access_token,
-            refresh_token: data.refresh_token || '',
-          })
-        } catch (_) {}
-
-        return { success: true }
-      }
-    } else if (!cleanIdentifier.includes('@')) {
-      const errorData = await res.json().catch(() => ({}))
-      return { error: errorData.detail || 'Invalid username or password.' }
-    }
-  } catch (_) {
-    if (!cleanIdentifier.includes('@')) {
-      return { error: 'Authentication service temporarily unavailable. Please try again.' }
-    }
-  }
-
-  // 2. Direct email authentication via Supabase fallback
-  try {
-    const supabase = await createClient()
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email: cleanIdentifier,
-      password,
-    })
-
-    if (error) {
-      return { error: error.message }
-    }
-
-    if (data?.session) {
-      cookieStore.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, data.session.access_token, {
+    if (tokens.idToken) {
+      cookieStore.set(COGNITO_COOKIE_NAMES.ID_TOKEN, tokens.idToken, {
         httpOnly: true,
         secure: isSecure,
         sameSite: 'lax',
         path: '/',
-        maxAge: 3600,
+        maxAge: tokens.expiresIn || 3600,
       })
-      if (data.session.refresh_token) {
-        cookieStore.set(COGNITO_COOKIE_NAMES.REFRESH_TOKEN, data.session.refresh_token, {
-          httpOnly: true,
-          secure: isSecure,
-          sameSite: 'lax',
-          path: '/',
-          maxAge: 30 * 24 * 60 * 60,
-        })
+    }
+    if (tokens.refreshToken) {
+      cookieStore.set(COGNITO_COOKIE_NAMES.REFRESH_TOKEN, tokens.refreshToken, {
+        httpOnly: true,
+        secure: isSecure,
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 30 * 24 * 60 * 60,
+      })
+    }
+  }
+
+  // Case 1: Identifier is a username (no '@') -> resolve via backend authentication proxy
+  if (!cleanIdentifier.includes('@')) {
+    try {
+      const backendUrl = getInternalBackendUrl()
+      const res = await fetch(`${backendUrl}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: cleanIdentifier.toLowerCase(), password }),
+        cache: 'no-store',
+      })
+
+      if (res.ok) {
+        const data = await res.json()
+        if (data.access_token) {
+          setCognitoCookies({
+            accessToken: data.access_token,
+            idToken: data.id_token,
+            refreshToken: data.refresh_token,
+            expiresIn: data.expires_in,
+          })
+          return { success: true }
+        }
+      } else {
+        const errorData = await res.json().catch(() => ({}))
+        return { error: errorData.detail || 'Invalid username or password.' }
       }
+    } catch (_) {
+      return { error: 'Authentication service temporarily unavailable. Please try again.' }
+    }
+  }
+
+  // Case 2: Identifier is an email -> authenticate with Cognito USER_PASSWORD_AUTH
+  try {
+    const authResult = await initiateUserPasswordAuth(cleanIdentifier.toLowerCase(), password)
+    if (authResult.accessToken) {
+      setCognitoCookies({
+        accessToken: authResult.accessToken,
+        idToken: authResult.idToken,
+        refreshToken: authResult.refreshToken,
+        expiresIn: authResult.expiresIn,
+      })
       return { success: true }
     }
-  } catch (err: any) {
-    return { error: err.message || 'Authentication failed.' }
+  } catch (cognitoErr: any) {
+    const code = cognitoErr.code || ''
+    if (code === 'UserNotConfirmedException') {
+      return {
+        error: 'User is not confirmed. Please check your email for a verification code.',
+        needsConfirmation: true,
+        email: cleanIdentifier.toLowerCase(),
+      }
+    }
+    if (code === 'NotAuthorizedException' || code === 'UserNotFoundException') {
+      return { error: 'Invalid email or password.' }
+    }
+
+    // Fallback: If direct Cognito endpoint returned network or configuration error, try backend proxy
+    try {
+      const backendUrl = getInternalBackendUrl()
+      const res = await fetch(`${backendUrl}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ identifier: cleanIdentifier.toLowerCase(), password }),
+        cache: 'no-store',
+      })
+      if (res.ok) {
+        const data = await res.json()
+        if (data.access_token) {
+          setCognitoCookies({
+            accessToken: data.access_token,
+            idToken: data.id_token,
+            refreshToken: data.refresh_token,
+            expiresIn: data.expires_in,
+          })
+          return { success: true }
+        }
+      } else {
+        const errorData = await res.json().catch(() => ({}))
+        return { error: errorData.detail || 'Invalid email or password.' }
+      }
+    } catch (_) {}
+
+    return { error: cognitoErr.message || 'Authentication failed.' }
   }
 
   return { error: 'Unknown authentication error occurred' }
 }
 
+/**
+ * Registers a new user via Amazon Cognito and validates username uniqueness in RDS.
+ */
 export async function signup(formData: FormData) {
   const email = formData.get('email') as string
   const password = formData.get('password') as string
@@ -250,8 +376,9 @@ export async function signup(formData: FormData) {
 
   const cleanEmail = email.trim().toLowerCase()
   const cleanUsername = username.trim().toLowerCase()
+  const cleanFullName = fullName.trim()
 
-  // First check if username exists in RDS (fail closed if check fails)
+  // 1. Check if username exists in RDS (fail closed if check fails)
   try {
     const backendUrl = getInternalBackendUrl()
     const checkRes = await fetch(
@@ -270,76 +397,134 @@ export async function signup(formData: FormData) {
     return { error: 'Unable to verify username availability. Please try again.' }
   }
 
-  const origin = await getRequestOrigin()
-  const emailRedirectTo = getAuthRedirectUrl({
-    fallbackOrigin: origin,
-    preserveParams: true,
-    next: '/dashboard',
-  })
-
-  const supabase = await createClient()
-
-  const { data, error } = await supabase.auth.signUp({
-    email: cleanEmail,
-    password,
-    options: {
-      emailRedirectTo,
-      data: {
-        full_name: fullName.trim(),
-        username: cleanUsername,
-      },
-    },
-  })
-
-  if (error) {
+  // 2. Register user with Cognito Identity Provider
+  try {
+    const result = await signUpWithCognito(cleanEmail, password, cleanUsername, cleanFullName)
+    if (!result.userConfirmed) {
+      return {
+        success: true,
+        needsConfirmation: true,
+        email: cleanEmail,
+        message: 'Please check your email for a verification code.',
+      }
+    }
+    return { success: true }
+  } catch (err: any) {
+    const code = err.code || err.name || ''
+    const msg = err.message || 'Signup failed'
     if (
-      error.message.toLowerCase().includes('already registered') ||
-      error.message.toLowerCase().includes('already exists')
+      code === 'UsernameExistsException' ||
+      msg.toLowerCase().includes('already exists') ||
+      msg.toLowerCase().includes('already registered')
     ) {
       return { error: `An account with email "${email}" already exists. Please sign in instead.` }
     }
-    return { error: error.message }
+    return { error: msg }
   }
-
-  if (data.user && Array.isArray(data.user.identities) && data.user.identities.length === 0) {
-    return { error: `An account with email "${email}" already exists. Please sign in instead.` }
-  }
-
-  // Auto sign-in if email confirmation is disabled
-  const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
-    email: cleanEmail,
-    password,
-  })
-
-  if (signInError) {
-    if (signInError.message.toLowerCase().includes('confirm')) {
-      return {
-        success: true,
-        message: 'Signup successful! Please check your email to confirm your account before logging in.',
-      }
-    }
-    return { error: signInError.message }
-  }
-
-  if (signInData?.session) {
-    const cookieStore = await cookies()
-    const isSecure = origin.startsWith('https:')
-    cookieStore.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, signInData.session.access_token, {
-      httpOnly: true,
-      secure: isSecure,
-      sameSite: 'lax',
-      path: '/',
-      maxAge: 3600,
-    })
-  }
-
-  return { success: true }
 }
 
-export async function logout() {
-  const cookieStore = await cookies()
+/**
+ * Confirms user email registration with a 6-digit confirmation code.
+ */
+export async function confirmEmail(email: string, code: string) {
+  if (!email || !code) {
+    return { error: 'Email and verification code are required.' }
+  }
+  const cleanEmail = email.trim().toLowerCase()
+  const cleanCode = code.trim()
 
-  // Clear Cognito session and OAuth cookies
+  try {
+    await confirmSignUpWithCognito(cleanEmail, cleanCode)
+    return { success: true, message: 'Email confirmed successfully. You can now sign in.' }
+  } catch (err: any) {
+    const errCode = err.code || ''
+    if (errCode === 'CodeMismatchException') {
+      return { error: 'Invalid verification code. Please check and try again.' }
+    }
+    if (errCode === 'ExpiredCodeException') {
+      return { error: 'Verification code has expired. Please request a new code.' }
+    }
+    return { error: err.message || 'Confirmation failed.' }
+  }
+}
+
+/**
+ * Resends user confirmation code to registered email address.
+ */
+export async function resendVerificationCode(email: string) {
+  if (!email) {
+    return { error: 'Email is required.' }
+  }
+  const cleanEmail = email.trim().toLowerCase()
+
+  try {
+    const result = await resendConfirmationCodeWithCognito(cleanEmail)
+    return {
+      success: true,
+      message: 'A new verification code has been sent to your email.',
+      deliveryDetails: result.codeDeliveryDetails,
+    }
+  } catch (err: any) {
+    return { error: err.message || 'Failed to resend verification code.' }
+  }
+}
+
+/**
+ * Requests a password reset code for the specified email address.
+ */
+export async function requestPasswordReset(email: string) {
+  if (!email) {
+    return { error: 'Email is required.' }
+  }
+  const cleanEmail = email.trim().toLowerCase()
+
+  try {
+    const result = await forgotPasswordWithCognito(cleanEmail)
+    return {
+      success: true,
+      message: 'Password reset code has been sent to your email.',
+      deliveryDetails: result.codeDeliveryDetails,
+    }
+  } catch (err: any) {
+    return { error: err.message || 'Failed to request password reset.' }
+  }
+}
+
+/**
+ * Confirms password reset using verification code and sets new password.
+ */
+export async function confirmPasswordReset(email: string, code: string, newPassword: string) {
+  if (!email || !code || !newPassword) {
+    return { error: 'Email, code, and new password are required.' }
+  }
+  const cleanEmail = email.trim().toLowerCase()
+  const cleanCode = code.trim()
+
+  try {
+    await confirmForgotPasswordWithCognito(cleanEmail, cleanCode, newPassword)
+    return {
+      success: true,
+      message: 'Password has been reset successfully. You can now sign in with your new password.',
+    }
+  } catch (err: any) {
+    const errCode = err.code || ''
+    if (errCode === 'CodeMismatchException') {
+      return { error: 'Invalid verification code. Please check and try again.' }
+    }
+    if (errCode === 'ExpiredCodeException') {
+      return { error: 'Verification code has expired. Please request a new code.' }
+    }
+    return { error: err.message || 'Password reset failed.' }
+  }
+}
+
+/**
+ * Clears all Cognito session cookies and returns Cognito Hosted UI logout URL.
+ */
+export async function logout() {
+  const cookieStore = await getCookieStore()
+
+  // Clear all Cognito session and OAuth cookies
   cookieStore.delete(COGNITO_COOKIE_NAMES.ACCESS_TOKEN)
   cookieStore.delete(COGNITO_COOKIE_NAMES.REFRESH_TOKEN)
   cookieStore.delete(COGNITO_COOKIE_NAMES.ID_TOKEN)
@@ -348,16 +533,27 @@ export async function logout() {
   cookieStore.delete(COGNITO_COOKIE_NAMES.NONCE)
   cookieStore.delete(COGNITO_COOKIE_NAMES.NEXT)
 
-  // Clear legacy Supabase session if present
-  try {
-    const supabase = await createClient()
-    await supabase.auth.signOut()
-  } catch (_) {}
-
   const origin = await getRequestOrigin()
   const logoutUrl = buildCognitoLogoutUrl({
     logoutUri: `${origin}/login`,
   })
 
   return { success: true, logoutUrl }
+}
+
+// Aliases for authentication action helpers
+export async function confirmSignUp(email: string, code: string) {
+  return confirmEmail(email, code)
+}
+
+export async function resendConfirmationCode(email: string) {
+  return resendVerificationCode(email)
+}
+
+export async function forgotPassword(email: string) {
+  return requestPasswordReset(email)
+}
+
+export async function confirmForgotPassword(email: string, code: string, newPassword: string) {
+  return confirmPasswordReset(email, code, newPassword)
 }

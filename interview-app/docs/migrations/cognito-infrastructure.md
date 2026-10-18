@@ -21,7 +21,7 @@ flowchart TD
         
         GoogleIdP["UserPoolIdentityProvider (Google)\nAttribute Mapping: email, name, sub"]
         
-        UserPoolClient["UserPoolClient (Public PKCE)\nAllowedOAuthFlows: code\nScopes: openid, email, profile\nToken Revocation: Enabled"]
+        UserPoolClient["UserPoolClient (Public PKCE)\nExplicitAuthFlows: USER_PASSWORD_AUTH, USER_SRP_AUTH, REFRESH_TOKEN\nAllowedOAuthFlows: code\nScopes: openid, email, profile\nToken Revocation: Enabled"]
         
         UserPool["Cognito User Pool\nUsernameAttributes: [email]\nAutoVerified: [email]\nPassword Policy & Advanced Security"]
     end
@@ -31,16 +31,55 @@ flowchart TD
         Postgres["Amazon RDS PostgreSQL\nTable: user_profiles (sub -> id)"]
     end
 
-    Browser -->|1. Initiate OAuth / Hosted UI Login| UserPoolDomain
-    UserPoolDomain -->|2. Redirect to Google Auth| Google
-    Google -->|3. Authorize & Callback to /oauth2/idpresponse| UserPoolDomain
-    UserPoolDomain -->|4. Map Google Claims & Create/Update User| UserPool
-    UserPoolDomain -->|5. Redirect with Authorization Code| Browser
-    Browser -->|6. Exchange Code + Code Verifier (PKCE) for JWTs| UserPoolClient
-    Browser -->|7. API Request with Bearer AccessToken| FastAPI
-    FastAPI -->|8. Verify JWT against Cognito JWKS Endpoint| UserPool
-    FastAPI -->|9. Lookup / Sync User Profile| Postgres
+    %% Method 1: Native Email & Password
+    Browser -.->|Method 1: Direct Sign-In (USER_PASSWORD_AUTH / SRP)| UserPoolClient
+    UserPoolClient -.->|Validate Password & Issue Tokens| UserPool
+    UserPool -.->|Return Access, ID, Refresh Tokens| Browser
+
+    %% Method 2: Google OAuth Federation
+    Browser -->|Method 2: Initiate OAuth / Hosted UI Login| UserPoolDomain
+    UserPoolDomain -->|Redirect to Google Auth| Google
+    Google -->|Authorize & Callback to /oauth2/idpresponse| UserPoolDomain
+    UserPoolDomain -->|Map Google Claims & Create/Update User| UserPool
+    UserPoolDomain -->|Redirect with Authorization Code| Browser
+    Browser -->|Exchange Code + PKCE Verifier for Tokens| UserPoolClient
+
+    %% Backend Verification
+    Browser ==>|API Request with Bearer AccessToken| FastAPI
+    FastAPI ==>|Verify JWT against Cognito JWKS Endpoint| UserPool
+    FastAPI ==>|Lookup / Sync User Profile| Postgres
 ```
+
+### Supported Authentication Methods
+
+The Cognito User Pool Client (`interview-prep-web-client`) supports two complementary authentication mechanisms configured through `ExplicitAuthFlows` and `AllowedOAuthFlows`:
+
+#### 1. Native Email & Password Authentication (USER_PASSWORD_AUTH / SRP)
+- **Enabled Flows (`ExplicitAuthFlows`)**:
+  - `ALLOW_USER_PASSWORD_AUTH`: Enables direct username (email) and password authentication over HTTPS TLS without requiring Hosted UI redirects. Ideal for standard in-app login forms, headless automation, and integration tests.
+  - `ALLOW_USER_SRP_AUTH`: Enables Secure Remote Password (SRP) protocol for zero-knowledge password verification, ensuring password hashes never cross the wire.
+  - `ALLOW_REFRESH_TOKEN_AUTH`: Allows the client to silently exchange a valid refresh token (30 days validity) for fresh access and ID tokens (60 minutes validity) via `InitiateAuth`.
+- **User Registration & Email Verification**:
+  - Sign-up is open (`AllowAdminCreateUserOnly: false`) with `email` as the primary username attribute.
+  - New user registrations receive a 6-digit confirmation code via email (`CONFIRM_WITH_CODE`) to verify email address ownership (`AutoVerifiedAttributes: [email]`).
+- **Self-Service Password Recovery**:
+  - Users can initiate password recovery via `ForgotPassword` and complete the reset using `ConfirmForgotPassword` with an emailed verification code.
+- **Enumeration Attack Prevention**:
+  - Configured with `PreventUserExistenceErrors: ENABLED` so that failed authentication or password recovery attempts do not disclose whether a user account exists.
+
+#### 2. Google OAuth 2.0 Social Identity Federation
+- **Protocol**: OAuth 2.0 Authorization Code Grant with Proof Key for Code Exchange (PKCE, RFC 7636).
+- **Client Configuration**: Public web client (`GenerateSecret: false`), `AllowedOAuthFlows: [code]`, `AllowedOAuthFlowsUserPoolClient: true`, `AllowedOAuthScopes: [openid, email, profile]`.
+- **Endpoints & Redirection**:
+  - Hosted UI / Authorization Endpoint: `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/authorize`
+  - Google Cloud Console Redirect URI: `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse`
+  - Token Exchange Endpoint: `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/token`
+- **Federation Workflow**:
+  1. The browser initiates login with Google via Hosted UI or direct federation link (`/oauth2/authorize?identity_provider=Google&...`).
+  2. Google authenticates the user and posts the authorization response back to Cognito's callback endpoint: `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse`.
+  3. Cognito retrieves user claims from Google and maps `email`, `name`, and `username: sub` to create or update the user record in the User Pool.
+  4. Cognito issues an authorization code and redirects the browser back to the application callback URL (e.g. `https://app.interviewprep.com/auth/callback` or `http://localhost:3000/auth/callback`).
+  5. The web client exchanges the authorization code and PKCE `code_verifier` at `/oauth2/token` for Access, ID, and Refresh tokens.
 
 ### Key Security & Operational Principles
 
@@ -61,9 +100,10 @@ flowchart TD
 | **AWS Region** | `ap-south-2` | Hyderabad, India |
 | **Cognito User Pool Name** | `interview-prep-user-pool-${Environment}` | Authoritative user identity store |
 | **Cognito Domain Prefix Pattern** | `interview-prep-auth-${AWS::AccountId}-${Environment}` | Hosted UI domain prefix |
-| **Cognito Hosted UI URL** | `https://<domain-prefix>.auth.ap-south-2.amazoncognito.com` | Base URL for Hosted UI and OAuth endpoints |
-| **Google IdP Response URI** | `https://<domain-prefix>.auth.ap-south-2.amazoncognito.com/oauth2/idpresponse` | Authorized redirect URI for Google OAuth |
+| **Cognito Hosted UI URL** | `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com` | Base URL for Hosted UI and OAuth endpoints |
+| **Google IdP Response URI** | `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse` | Authorized redirect URI for Google OAuth |
 | **App Client Name** | `interview-prep-web-client` | Public PKCE client for browser and SPA applications |
+| **Explicit Auth Flows** | `ALLOW_USER_PASSWORD_AUTH`, `ALLOW_USER_SRP_AUTH`, `ALLOW_REFRESH_TOKEN_AUTH` | Supported direct API authentication flows |
 | **Allowed OAuth Scopes** | `openid`, `email`, `profile` | Standard OpenID Connect claims |
 | **Supported Identity Providers** | `COGNITO`, `Google` | Multi-provider authentication matrix |
 
@@ -100,9 +140,13 @@ Before or during CloudFormation deployment, register an OAuth 2.0 Web Applicatio
    - `http://localhost:3000` (Local development environment)
    - `https://interview-prep-auth-808431466075-personal.auth.ap-south-2.amazoncognito.com` (Cognito Hosted UI domain)
 6. Under **Authorized redirect URIs**, add the exact Cognito IdP response endpoint:
-   - `https://interview-prep-auth-808431466075-personal.auth.ap-south-2.amazoncognito.com/oauth2/idpresponse`
-   - For production environments, substitute the production domain prefix:
+   - **Canonical Pattern**: `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse`
+   - **Personal Staging Environment**:
+     `https://interview-prep-auth-808431466075-personal.auth.ap-south-2.amazoncognito.com/oauth2/idpresponse`
+   - **Production Environment**:
      `https://interview-prep-auth-808431466075-production.auth.ap-south-2.amazoncognito.com/oauth2/idpresponse`
+   - **Custom Domain Prefix** (if `CognitoDomainPrefix` parameter is configured):
+     `https://<custom-prefix>.auth.<region>.amazoncognito.com/oauth2/idpresponse`
 7. Click **Create**.
 8. Copy the generated **Client ID** (e.g. `1234567890-abcdef.apps.googleusercontent.com`) and **Client Secret**.
 
@@ -172,6 +216,30 @@ aws cloudformation deploy \
 ```
 
 Once Google credentials are created, re-run the command with `GoogleClientId` and `GoogleClientSecret` to activate Google federation.
+
+### Step 4.4: Deploying Production Environment
+For production deployment, enforce `Environment=production`, configure strict production callback and logout URLs, and enable `AdvancedSecurityMode=ENFORCED`:
+
+```bash
+export GOOGLE_CLIENT_ID="<production-client-id>.apps.googleusercontent.com"
+export GOOGLE_CLIENT_SECRET="<production-client-secret>"
+export AWS_REGION="ap-south-2"
+export STACK_NAME="interview-prep-cognito-production"
+
+aws cloudformation deploy \
+  --template-file infrastructure/cloudformation/cognito-auth.yaml \
+  --stack-name "${STACK_NAME}" \
+  --region "${AWS_REGION}" \
+  --parameter-overrides \
+      Environment=production \
+      GoogleClientId="${GOOGLE_CLIENT_ID}" \
+      GoogleClientSecret="${GOOGLE_CLIENT_SECRET}" \
+      CanonicalDomain="app.interviewprep.com" \
+      CallbackURLs="https://app.interviewprep.com/auth/callback" \
+      LogoutURLs="https://app.interviewprep.com/login" \
+      AdvancedSecurityMode="ENFORCED" \
+  --no-fail-on-empty-changeset
+```
 
 ---
 
@@ -262,20 +330,63 @@ Claims verified on every protected request:
 
 ## 8. Rollback and Cleanup Procedures
 
-### Scenario A: Reverting a Failed Update
-If a template update fails (e.g. invalid Google credentials or invalid domain prefix), CloudFormation automatically triggers `UPDATE_ROLLBACK_IN_PROGRESS` and returns resources to their last known stable state.
+### Scenario A: Automated Stack Rollback Monitoring
+If a stack creation or update fails (e.g. invalid Google credentials, duplicate domain prefix, or quota limits), CloudFormation automatically triggers `ROLLBACK_IN_PROGRESS` or `UPDATE_ROLLBACK_IN_PROGRESS` and returns resources to their last known stable state.
 
-To monitor rollback status:
+To monitor rollback progress and diagnose the failure root cause:
 
 ```bash
 aws cloudformation describe-stack-events \
   --stack-name interview-prep-cognito-personal \
   --region ap-south-2 \
-  --max-items 20
+  --query "StackEvents[?ResourceStatusReason!=null].[LogicalResourceId,ResourceStatus,ResourceStatusReason]" \
+  --output table
 ```
 
-### Scenario B: Decommissioning the Personal / Staging Stack
-Because the User Pool specifies `DeletionPolicy: Retain`, deleting the stack removes the domain, client, and identity provider, while preserving user records in the User Pool.
+### Scenario B: Explicit Manual Stack Rollback CLI Command
+If a stack update is paused or in a rollback-failed state, or you need to explicitly trigger a rollback via the AWS CLI:
+
+```bash
+aws cloudformation rollback-stack \
+  --stack-name interview-prep-cognito-personal \
+  --region ap-south-2
+```
+
+Wait for the rollback to complete:
+
+```bash
+aws cloudformation wait stack-rollback-complete \
+  --stack-name interview-prep-cognito-personal \
+  --region ap-south-2
+```
+
+### Scenario C: Reverting to a Previous CloudFormation Template Version
+If an update was applied successfully but unintended application behavior requires rolling back to a previous configuration:
+
+1. Restore the previous stable template version from Git:
+   ```bash
+   git checkout HEAD~1 -- infrastructure/cloudformation/cognito-auth.yaml
+   ```
+
+2. Redeploy the previous template configuration:
+   ```bash
+   aws cloudformation deploy \
+     --template-file infrastructure/cloudformation/cognito-auth.yaml \
+     --stack-name interview-prep-cognito-personal \
+     --region ap-south-2 \
+     --parameter-overrides \
+         Environment=personal \
+         GoogleClientId="${GOOGLE_CLIENT_ID}" \
+         GoogleClientSecret="${GOOGLE_CLIENT_SECRET}" \
+         CanonicalDomain="app.interviewprep.com" \
+         CallbackURLs="https://app.interviewprep.com/auth/callback,http://localhost:3000/auth/callback" \
+         LogoutURLs="https://app.interviewprep.com/login,http://localhost:3000/login" \
+         AdvancedSecurityMode="AUDIT" \
+     --no-fail-on-empty-changeset
+   ```
+
+### Scenario D: Decommissioning the Personal / Staging Stack
+Because the User Pool specifies `DeletionPolicy: Retain` and `UpdateReplacePolicy: Retain`, deleting the CloudFormation stack removes the domain, client, and identity provider, while preserving user records in the User Pool.
 
 1. Delete the CloudFormation stack:
    ```bash
@@ -314,8 +425,10 @@ Because the User Pool specifies `DeletionPolicy: Retain`, deleting the stack rem
 - [ ] Schema contains mutable `email`, `name`, and `username` attributes.
 - [ ] Hosted UI domain prefix `interview-prep-auth-...` active and reachable over HTTPS.
 - [ ] Google OAuth 2.0 Web Client credentials created in Google Cloud Console.
-- [ ] Authorized redirect URI set to `https://<domain>.auth.ap-south-2.amazoncognito.com/oauth2/idpresponse`.
+- [ ] Authorized redirect URI set to `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse`.
 - [ ] Google Identity Provider resource configured in User Pool with attribute mapping (`email`, `name`, `username: sub`).
 - [ ] App Client configured as public client with PKCE (`GenerateSecret: false`, `AllowedOAuthFlows: [code]`).
-- [ ] Token validity configured to 60m (Access/ID) and 30d (Refresh) with token revocation enabled.
+- [ ] Explicit authentication flows configured: `ALLOW_USER_PASSWORD_AUTH`, `ALLOW_USER_SRP_AUTH`, `ALLOW_REFRESH_TOKEN_AUTH`.
+- [ ] Threat prevention enabled: `PreventUserExistenceErrors: ENABLED`.
+- [ ] Token validity configured to 60m (Access/ID) and 30d (Refresh) with token revocation enabled (`EnableTokenRevocation: true`).
 - [ ] Stack outputs exported with `${AWS::StackName}-<OutputName>` naming convention.

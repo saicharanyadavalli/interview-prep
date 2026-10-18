@@ -10,9 +10,11 @@ import {
   logout,
   initiateCognitoGoogleAuth,
   getCurrentSession,
+  confirmEmail as serverConfirmEmail,
+  resendVerificationCode as serverResendVerificationCode,
+  requestPasswordReset as serverRequestPasswordReset,
+  confirmPasswordReset as serverConfirmPasswordReset,
 } from "@/app/actions/auth";
-import { getSupabase } from "./supabase";
-import { getAuthRedirectUrl } from "@/utils/auth-redirect";
 
 export interface AuthUser {
   id: string;
@@ -65,7 +67,34 @@ export interface AuthContextType {
     password: string,
     username: string,
     fullName: string
-  ) => Promise<{ error: string | null; message?: string | null }>;
+  ) => Promise<{ error: string | null; message?: string | null; requiresConfirmation?: boolean }>;
+  confirmEmail: (
+    email: string,
+    code: string
+  ) => Promise<{ error: string | null; success?: boolean; message?: string }>;
+  resendVerificationCode: (
+    email: string
+  ) => Promise<{ error: string | null; success?: boolean; message?: string }>;
+  requestPasswordReset: (
+    email: string
+  ) => Promise<{ error: string | null; success?: boolean; message?: string }>;
+  confirmPasswordReset: (
+    email: string,
+    code: string,
+    newPassword: string
+  ) => Promise<{ error: string | null; success?: boolean; message?: string }>;
+  // Compatibility aliases
+  resendConfirmationCode: (
+    email: string
+  ) => Promise<{ error: string | null; success?: boolean; message?: string }>;
+  forgotPassword: (
+    email: string
+  ) => Promise<{ error: string | null; success?: boolean; message?: string }>;
+  resetPassword: (
+    email: string,
+    code: string,
+    newPassword: string
+  ) => Promise<{ error: string | null; success?: boolean; message?: string }>;
   signOut: () => Promise<void>;
   getUserMeta: () => { name: string; email: string; avatar: string; username: string };
 }
@@ -119,7 +148,7 @@ export function AuthProvider({
         return;
       }
 
-      // 2. Authoritative server-side session check (Cognito cookies & Supabase fallback)
+      // 2. Authoritative server-side session check (Cognito cookies)
       try {
         const { session: serverSession } = await getCurrentSession();
         if (isMounted) {
@@ -146,39 +175,8 @@ export function AuthProvider({
 
     initSession();
 
-    // 3. Fallback Supabase client listener if configured
-    const sb = getSupabase();
-    let unsubscribeSb: (() => void) | undefined = undefined;
-    if (sb) {
-      try {
-        const {
-          data: { subscription },
-        } = sb.auth.onAuthStateChange((event, newSession) => {
-          if (!isMounted) return;
-          if (newSession) {
-            setSession({
-              access_token: newSession.access_token,
-              refresh_token: newSession.refresh_token,
-              token_type: newSession.token_type || "bearer",
-              user: newSession.user,
-            });
-            setLoading(false);
-            if (
-              newSession.user &&
-              typeof window !== "undefined" &&
-              (window.location.pathname === "/" || window.location.pathname === "/login")
-            ) {
-              router.push("/dashboard");
-            }
-          }
-        });
-        unsubscribeSb = () => subscription.unsubscribe();
-      } catch (_) {}
-    }
-
     return () => {
       isMounted = false;
-      if (unsubscribeSb) unsubscribeSb();
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -274,54 +272,19 @@ export function AuthProvider({
       return;
     }
 
-    // 1. Primary: initiate Cognito Google OAuth with PKCE
+    // Initiate Cognito Google OAuth with PKCE
     try {
       const res = await initiateCognitoGoogleAuth("/dashboard");
       if (res?.url) {
         window.location.href = res.url;
         return;
       }
+      throw new Error("Unable to initialize Cognito Google authentication URL.");
     } catch (cognitoErr: any) {
-      console.warn("[Auth] Cognito Google sign-in initialization notice:", cognitoErr?.message);
+      console.error("[Auth] Cognito Google sign-in failed:", cognitoErr);
+      const msg = cognitoErr?.message || "Google sign-in is temporarily unavailable. Please try again.";
+      alert(msg);
     }
-
-    // 2. Fallback: Supabase OAuth if Cognito is not yet fully configured in environment
-    const sb = getSupabase();
-    if (sb) {
-      try {
-        const requestOrigin = typeof window !== "undefined" ? window.location.origin : null;
-        const redirectUrl = getAuthRedirectUrl({
-          fallbackOrigin: requestOrigin,
-          next: "/dashboard",
-        });
-        const { data, error } = await sb.auth.signInWithOAuth({
-          provider: "google",
-          options: {
-            redirectTo: redirectUrl,
-            queryParams: {
-              access_type: "offline",
-              prompt: "consent",
-            },
-          },
-        });
-
-        if (error) {
-          console.error("Sign-in error:", error.message);
-          alert("Sign-in failed: " + error.message);
-        } else if (data?.url) {
-          window.location.href = data.url;
-        }
-        return;
-      } catch (err: any) {
-        console.error("Unexpected sign-in error:", err);
-        alert("An unexpected error occurred during sign-in: " + (err.message || String(err)));
-        return;
-      }
-    }
-
-    alert(
-      "Authentication is not configured. Please ensure Amazon Cognito environment variables are provided."
-    );
   };
 
   const signInWithEmail = async (
@@ -362,7 +325,7 @@ export function AuthProvider({
     password: string,
     username: string,
     fullName: string
-  ): Promise<{ error: string | null; message?: string | null }> => {
+  ): Promise<{ error: string | null; message?: string | null; requiresConfirmation?: boolean }> => {
     const formData = new FormData();
     formData.append("email", email);
     formData.append("password", password);
@@ -373,6 +336,14 @@ export function AuthProvider({
 
     if (result.error) {
       return { error: result.error };
+    }
+
+    if ((result as any).requiresConfirmation || (result as any).needsConfirmation) {
+      return {
+        error: null,
+        message: (result as any).message,
+        requiresConfirmation: true,
+      };
     }
 
     if ((result as any).message) {
@@ -389,6 +360,81 @@ export function AuthProvider({
 
     window.location.replace("/dashboard");
     return { error: null };
+  };
+
+  const confirmEmail = async (
+    email: string,
+    code: string
+  ): Promise<{ error: string | null; success?: boolean; message?: string }> => {
+    try {
+      const res = await serverConfirmEmail(email, code);
+      return {
+        error: res.error || null,
+        success: res.success ?? !res.error,
+        message: res.message,
+      };
+    } catch (err: any) {
+      return {
+        error: err?.message || "Failed to confirm email.",
+        success: false,
+      };
+    }
+  };
+
+  const resendVerificationCode = async (
+    email: string
+  ): Promise<{ error: string | null; success?: boolean; message?: string }> => {
+    try {
+      const res = await serverResendVerificationCode(email);
+      return {
+        error: res.error || null,
+        success: res.success ?? !res.error,
+        message: res.message,
+      };
+    } catch (err: any) {
+      return {
+        error: err?.message || "Failed to resend verification code.",
+        success: false,
+      };
+    }
+  };
+
+  const requestPasswordReset = async (
+    email: string
+  ): Promise<{ error: string | null; success?: boolean; message?: string }> => {
+    try {
+      const res = await serverRequestPasswordReset(email);
+      return {
+        error: res.error || null,
+        success: res.success ?? !res.error,
+        message: res.message,
+      };
+    } catch (err: any) {
+      return {
+        error: err?.message || "Failed to request password reset.",
+        success: false,
+      };
+    }
+  };
+
+  const confirmPasswordReset = async (
+    email: string,
+    code: string,
+    newPassword: string
+  ): Promise<{ error: string | null; success?: boolean; message?: string }> => {
+    try {
+      const res = await serverConfirmPasswordReset(email, code, newPassword);
+      return {
+        error: res.error || null,
+        success: res.success ?? !res.error,
+        message: res.message,
+      };
+    } catch (err: any) {
+      return {
+        error: err?.message || "Failed to reset password.",
+        success: false,
+      };
+    }
   };
 
   const signOut = async () => {
@@ -460,6 +506,13 @@ export function AuthProvider({
         signInWithGoogle,
         signInWithEmail,
         signUpWithEmail,
+        confirmEmail,
+        resendVerificationCode,
+        requestPasswordReset,
+        confirmPasswordReset,
+        resendConfirmationCode: resendVerificationCode,
+        forgotPassword: requestPasswordReset,
+        resetPassword: confirmPasswordReset,
         signOut,
         getUserMeta,
       }}

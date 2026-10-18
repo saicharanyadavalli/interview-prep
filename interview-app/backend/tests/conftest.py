@@ -21,7 +21,11 @@ if "google.generativeai" not in sys.modules:
     sys.modules["google.generativeai"] = MagicMock()
 
 # Ensure test execution does not use live external credentials
+os.environ["TESTING"] = "1"
 os.environ["DISABLE_AUTH"] = "false"
+os.environ["COGNITO_REGION"] = "ap-south-2"
+os.environ["COGNITO_USER_POOL_ID"] = "ap-south-2_testPoolId"
+os.environ["COGNITO_CLIENT_ID"] = "test-client-id-123"
 os.environ["GEMINI_API_KEY"] = "mock-test-gemini-key"
 os.environ["SUPABASE_URL"] = "https://mock-test.supabase.co"
 os.environ["SUPABASE_SERVICE_KEY"] = "mock-test-supabase-service-key"

@@ -1,5 +1,4 @@
 import { CONFIG } from "./config";
-import { getSupabase } from "./supabase";
 
 export const COURSE_CATALOG_DATA: Record<
   string,
@@ -117,15 +116,8 @@ export const API = {
   },
 
   async _getAccessToken() {
-    try {
-      const sb = getSupabase();
-      if (sb) {
-        const { data } = await sb.auth.getSession();
-        if (data?.session?.access_token) return data.session.access_token;
-      }
-    } catch (_) {}
-
-    // Fallback: extract auth token from browser cookies if accessible
+    // In Cognito architecture with HttpOnly cookies, requests to /api/backend automatically forward
+    // cookies, but for direct cross-origin calls or non-HttpOnly fallbacks, inspect document.cookie:
     if (typeof document !== "undefined") {
       try {
         const cookies = document.cookie.split(";");
@@ -134,40 +126,6 @@ export const API = {
           if (trimmed.startsWith("cognito_access_token=")) {
             const rawVal = trimmed.split("=").slice(1).join("=");
             if (rawVal) return decodeURIComponent(rawVal);
-          }
-          if (trimmed.startsWith("sb-") && trimmed.includes("-auth-token=")) {
-            const rawVal = trimmed.split("=").slice(1).join("=");
-            if (rawVal) {
-              const decoded = decodeURIComponent(rawVal);
-              const val = decoded.startsWith("base64-")
-                ? atob(decoded.slice(7))
-                : decoded;
-              const parsed = JSON.parse(val);
-              if (parsed?.access_token) return parsed.access_token;
-            }
-          }
-        }
-        // Check chunked cookies: sb-*-auth-token.0, .1 ...
-        const chunks: Record<string, string[]> = {};
-        for (const c of cookies) {
-          const trimmed = c.trim();
-          const match = trimmed.match(/^(sb-[^=]+-auth-token)\.(\d+)=(.*)$/);
-          if (match) {
-            const prefix = match[1];
-            const idx = parseInt(match[2], 10);
-            if (!chunks[prefix]) chunks[prefix] = [];
-            chunks[prefix][idx] = match[3];
-          }
-        }
-        for (const prefix of Object.keys(chunks)) {
-          const combined = chunks[prefix].join("");
-          if (combined) {
-            const decoded = decodeURIComponent(combined);
-            const val = decoded.startsWith("base64-")
-              ? atob(decoded.slice(7))
-              : decoded;
-            const parsed = JSON.parse(val);
-            if (parsed?.access_token) return parsed.access_token;
           }
         }
       } catch (_) {}

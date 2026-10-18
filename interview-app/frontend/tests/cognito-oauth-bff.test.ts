@@ -1,5 +1,6 @@
 import { describe, it, beforeEach, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
+import crypto from 'node:crypto';
 import {
   getCognitoConfig,
   generateCodeVerifier,
@@ -12,6 +13,13 @@ import {
   decodeIdTokenClaims,
   exchangeCodeForTokens,
   refreshCognitoTokens,
+  verifyCognitoIdToken,
+  verifyIdTokenCryptographically,
+  clearCognitoJwksCache,
+  confirmSignUpWithCognito,
+  resendConfirmationCodeWithCognito,
+  forgotPasswordWithCognito,
+  confirmForgotPasswordWithCognito,
   COGNITO_COOKIE_NAMES,
 } from '../src/lib/cognito.ts';
 import {
@@ -19,6 +27,9 @@ import {
   POST as bffPost,
   PUT as bffPut,
   DELETE as bffDelete,
+  PATCH as bffPatch,
+  HEAD as bffHead,
+  OPTIONS as bffOptions,
 } from '../src/app/api/backend/[...path]/route.ts';
 
 describe('Amazon Cognito PKCE, OAuth & BFF Proxy Specialist Suite', () => {
@@ -364,6 +375,405 @@ describe('Amazon Cognito PKCE, OAuth & BFF Proxy Specialist Suite', () => {
       assert.equal(response.status, 503);
       const data = await response.json();
       assert.match(data.detail, /temporarily unavailable/i);
+    });
+
+    it('strictly strips unauthenticated client Authorization header when cognito_access_token cookie is absent', async () => {
+      let forwardedAuthHeader = 'NOT_SET';
+
+      globalThis.fetch = (async (_url: string | URL | Request, init?: RequestInit) => {
+        const headers = init?.headers as Headers;
+        forwardedAuthHeader = headers?.get ? headers.get('authorization') || '' : (headers as any)?.['authorization'] || '';
+        return new Response(JSON.stringify({ ok: true }), { status: 200 });
+      }) as any;
+
+      const req = new Request('http://16.113.92.222/api/backend/test/endpoint', {
+        method: 'GET',
+        headers: {
+          authorization: 'Bearer malicious-unauthenticated-token',
+        },
+      });
+
+      const response = await bffGet(req, {
+        params: Promise.resolve({ path: ['test', 'endpoint'] }),
+      });
+
+      assert.equal(response.status, 200);
+      assert.equal(forwardedAuthHeader, '', 'Unauthenticated client Authorization header must be stripped');
+    });
+
+    it('never forwards sb-access-token fallback when cognito_access_token is absent', async () => {
+      let forwardedAuthHeader = 'NOT_SET';
+
+      globalThis.fetch = (async (_url: string | URL | Request, init?: RequestInit) => {
+        const headers = init?.headers as Headers;
+        forwardedAuthHeader = headers?.get ? headers.get('authorization') || '' : (headers as any)?.['authorization'] || '';
+        return new Response(JSON.stringify({ ok: true }), { status: 200 });
+      }) as any;
+
+      const req = new Request('http://16.113.92.222/api/backend/test/endpoint', {
+        method: 'GET',
+        headers: {
+          cookie: 'sb-access-token=legacy-supabase-token-xyz',
+        },
+      });
+
+      const response = await bffGet(req, {
+        params: Promise.resolve({ path: ['test', 'endpoint'] }),
+      });
+
+      assert.equal(response.status, 200);
+      assert.equal(forwardedAuthHeader, '', 'sb-access-token must NEVER be forwarded as Authorization');
+    });
+
+    it('forwards PUT, DELETE, PATCH, and OPTIONS requests with cognito_access_token', async () => {
+      const methodsTested: string[] = [];
+
+      globalThis.fetch = (async (_url: string | URL | Request, init?: RequestInit) => {
+        methodsTested.push(init?.method || '');
+        const headers = init?.headers as Headers;
+        const auth = headers?.get ? headers.get('authorization') : (headers as any)?.['authorization'];
+        assert.equal(auth, 'Bearer valid-cognito-access-token');
+        return new Response(JSON.stringify({ success: true }), { status: 200 });
+      }) as any;
+
+      const cookieHeader = `${COGNITO_COOKIE_NAMES.ACCESS_TOKEN}=valid-cognito-access-token`;
+
+      // PUT
+      await bffPut(
+        new Request('http://16.113.92.222/api/backend/resource/1', {
+          method: 'PUT',
+          headers: { cookie: cookieHeader, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: 'updated' }),
+        }),
+        { params: Promise.resolve({ path: ['resource', '1'] }) }
+      );
+
+      // DELETE
+      await bffDelete(
+        new Request('http://16.113.92.222/api/backend/resource/1', {
+          method: 'DELETE',
+          headers: { cookie: cookieHeader },
+        }),
+        { params: Promise.resolve({ path: ['resource', '1'] }) }
+      );
+
+      // PATCH
+      await bffPatch(
+        new Request('http://16.113.92.222/api/backend/resource/1', {
+          method: 'PATCH',
+          headers: { cookie: cookieHeader, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ status: 'active' }),
+        }),
+        { params: Promise.resolve({ path: ['resource', '1'] }) }
+      );
+
+      // OPTIONS
+      await bffOptions(
+        new Request('http://16.113.92.222/api/backend/resource/1', {
+          method: 'OPTIONS',
+          headers: { cookie: cookieHeader },
+        }),
+        { params: Promise.resolve({ path: ['resource', '1'] }) }
+      );
+
+      assert.deepEqual(methodsTested, ['PUT', 'DELETE', 'PATCH', 'OPTIONS']);
+    });
+  });
+
+  describe('Cryptographic ID Token Verification (JWKS RS256)', () => {
+    let keyPair: { publicKey: crypto.KeyObject; privateKey: crypto.KeyObject };
+    let testJwk: any;
+    const testKid = 'test-kid-rs256-001';
+
+    beforeEach(() => {
+      clearCognitoJwksCache();
+      keyPair = crypto.generateKeyPairSync('rsa', { modulusLength: 2048 });
+      testJwk = keyPair.publicKey.export({ format: 'jwk' });
+      testJwk.kid = testKid;
+      testJwk.alg = 'RS256';
+      testJwk.use = 'sig';
+    });
+
+    function createSignedIdToken(payload: Record<string, any>, headerOverrides?: Record<string, any>): string {
+      const header = { alg: 'RS256', kid: testKid, ...headerOverrides };
+      const hB64 = Buffer.from(JSON.stringify(header)).toString('base64url');
+      const pB64 = Buffer.from(JSON.stringify(payload)).toString('base64url');
+      const data = `${hB64}.${pB64}`;
+      const sign = crypto.createSign('RSA-SHA256');
+      sign.update(data);
+      const sig = sign.sign(keyPair.privateKey, 'base64url');
+      return `${data}.${sig}`;
+    }
+
+    it('successfully verifies a valid RS256 Cognito ID token with correct claims and signature', async () => {
+      globalThis.fetch = (async (url: string | URL | Request) => {
+        if (String(url).includes('.well-known/jwks.json')) {
+          return new Response(JSON.stringify({ keys: [testJwk] }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+        return new Response('Not Found', { status: 404 });
+      }) as any;
+
+      const validPayload = {
+        sub: 'user-uuid-12345',
+        iss: 'https://cognito-idp.ap-south-2.amazonaws.com/ap-south-2_MockPool123',
+        aud: 'mock-client-id-abc',
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        token_use: 'id',
+        nonce: 'expected-nonce-xyz',
+        email: 'engineer@example.com',
+      };
+
+      const signedToken = createSignedIdToken(validPayload);
+      const claims = await verifyCognitoIdToken({
+        idToken: signedToken,
+        expectedNonce: 'expected-nonce-xyz',
+      });
+
+      assert.equal(claims.sub, 'user-uuid-12345');
+      assert.equal(claims.email, 'engineer@example.com');
+      assert.equal(claims.aud, 'mock-client-id-abc');
+      assert.equal(claims.nonce, 'expected-nonce-xyz');
+    });
+
+    it('rejects an ID token with tampered signature', async () => {
+      globalThis.fetch = (async (url: string | URL | Request) => {
+        if (String(url).includes('.well-known/jwks.json')) {
+          return new Response(JSON.stringify({ keys: [testJwk] }), { status: 200 });
+        }
+        return new Response('Not Found', { status: 404 });
+      }) as any;
+
+      const validPayload = {
+        sub: 'user-uuid-12345',
+        iss: 'https://cognito-idp.ap-south-2.amazonaws.com/ap-south-2_MockPool123',
+        aud: 'mock-client-id-abc',
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        token_use: 'id',
+      };
+
+      const signedToken = createSignedIdToken(validPayload);
+      const tampered = signedToken.slice(0, -6) + 'XXXXXX';
+
+      await assert.rejects(
+        async () => {
+          await verifyCognitoIdToken({ idToken: tampered });
+        },
+        /cryptographic verification failed/i
+      );
+    });
+
+    it('rejects an ID token with mismatched issuer', async () => {
+      const payload = {
+        sub: 'user-uuid-12345',
+        iss: 'https://cognito-idp.us-east-1.amazonaws.com/us-east-1_DifferentPool',
+        aud: 'mock-client-id-abc',
+        exp: Math.floor(Date.now() / 1000) + 3600,
+      };
+
+      const token = createSignedIdToken(payload);
+      await assert.rejects(
+        async () => {
+          await verifyCognitoIdToken({ idToken: token, skipSignatureVerification: true });
+        },
+        /Invalid token issuer/i
+      );
+    });
+
+    it('rejects an ID token with mismatched audience', async () => {
+      const payload = {
+        sub: 'user-uuid-12345',
+        iss: 'https://cognito-idp.ap-south-2.amazonaws.com/ap-south-2_MockPool123',
+        aud: 'unauthorized-client-id-999',
+        exp: Math.floor(Date.now() / 1000) + 3600,
+      };
+
+      const token = createSignedIdToken(payload);
+      await assert.rejects(
+        async () => {
+          await verifyCognitoIdToken({ idToken: token, skipSignatureVerification: true });
+        },
+        /Invalid token audience/i
+      );
+    });
+
+    it('rejects an expired ID token', async () => {
+      const payload = {
+        sub: 'user-uuid-12345',
+        iss: 'https://cognito-idp.ap-south-2.amazonaws.com/ap-south-2_MockPool123',
+        aud: 'mock-client-id-abc',
+        exp: Math.floor(Date.now() / 1000) - 300,
+      };
+
+      const token = createSignedIdToken(payload);
+      await assert.rejects(
+        async () => {
+          await verifyCognitoIdToken({ idToken: token, skipSignatureVerification: true });
+        },
+        /expired/i
+      );
+    });
+
+    it('rejects an ID token when nonce does not match expectedNonce', async () => {
+      const payload = {
+        sub: 'user-uuid-12345',
+        iss: 'https://cognito-idp.ap-south-2.amazonaws.com/ap-south-2_MockPool123',
+        aud: 'mock-client-id-abc',
+        exp: Math.floor(Date.now() / 1000) + 3600,
+        nonce: 'attacker-tampered-nonce',
+      };
+
+      const token = createSignedIdToken(payload);
+      await assert.rejects(
+        async () => {
+          await verifyCognitoIdToken({
+            idToken: token,
+            expectedNonce: 'legitimate-session-nonce',
+            skipSignatureVerification: true,
+          });
+        },
+        /Nonce mismatch/i
+      );
+    });
+
+    it('rejects non-RS256 algorithms such as HS256', async () => {
+      const hB64 = Buffer.from(JSON.stringify({ alg: 'HS256', kid: testKid })).toString('base64url');
+      const pB64 = Buffer.from(JSON.stringify({ sub: '123' })).toString('base64url');
+      const mockHs256Token = `${hB64}.${pB64}.fakesig`;
+
+      await assert.rejects(
+        async () => {
+          await verifyCognitoIdToken({ idToken: mockHs256Token });
+        },
+        /expected RS256/i
+      );
+    });
+  });
+
+  describe('Cognito Identity Provider API Operations', () => {
+    it('calls ConfirmSignUp with correct Cognito JSON-RPC target and parameters', async () => {
+      let targetHeader = '';
+      let requestBody: any = null;
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        targetHeader = (init?.headers as Record<string, string>)?.['X-Amz-Target'] || '';
+        requestBody = JSON.parse(String(init?.body || '{}'));
+        return new Response(JSON.stringify({}), { status: 200 });
+      }) as any;
+
+      const result = await confirmSignUpWithCognito('testuser@example.com', '123456');
+      assert.equal(result.success, true);
+      assert.equal(targetHeader, 'AWSCognitoIdentityProviderService.ConfirmSignUp');
+      assert.equal(requestBody.ClientId, 'mock-client-id-abc');
+      assert.equal(requestBody.Username, 'testuser@example.com');
+      assert.equal(requestBody.ConfirmationCode, '123456');
+    });
+
+    it('calls ResendConfirmationCode with correct target and returns code delivery details', async () => {
+      let targetHeader = '';
+      let requestBody: any = null;
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        targetHeader = (init?.headers as Record<string, string>)?.['X-Amz-Target'] || '';
+        requestBody = JSON.parse(String(init?.body || '{}'));
+        return new Response(
+          JSON.stringify({
+            CodeDeliveryDetails: {
+              Destination: 't***@e***.com',
+              DeliveryMedium: 'EMAIL',
+            },
+          }),
+          { status: 200 }
+        );
+      }) as any;
+
+      const result = await resendConfirmationCodeWithCognito('testuser@example.com');
+      assert.equal(result.success, true);
+      assert.equal(targetHeader, 'AWSCognitoIdentityProviderService.ResendConfirmationCode');
+      assert.equal(requestBody.Username, 'testuser@example.com');
+      assert.equal(result.codeDeliveryDetails?.destination, 't***@e***.com');
+    });
+
+    it('calls ForgotPassword with correct target', async () => {
+      let targetHeader = '';
+      let requestBody: any = null;
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        targetHeader = (init?.headers as Record<string, string>)?.['X-Amz-Target'] || '';
+        requestBody = JSON.parse(String(init?.body || '{}'));
+        return new Response(
+          JSON.stringify({
+            CodeDeliveryDetails: { Destination: 't***@e***.com', DeliveryMedium: 'EMAIL' },
+          }),
+          { status: 200 }
+        );
+      }) as any;
+
+      const result = await forgotPasswordWithCognito('testuser@example.com');
+      assert.equal(result.success, true);
+      assert.equal(targetHeader, 'AWSCognitoIdentityProviderService.ForgotPassword');
+      assert.equal(requestBody.Username, 'testuser@example.com');
+    });
+
+    it('calls ConfirmForgotPassword with code and new password', async () => {
+      let targetHeader = '';
+      let requestBody: any = null;
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        targetHeader = (init?.headers as Record<string, string>)?.['X-Amz-Target'] || '';
+        requestBody = JSON.parse(String(init?.body || '{}'));
+        return new Response(JSON.stringify({}), { status: 200 });
+      }) as any;
+
+      const result = await confirmForgotPasswordWithCognito(
+        'testuser@example.com',
+        '654321',
+        'NewSecurePass123!'
+      );
+      assert.equal(result.success, true);
+      assert.equal(targetHeader, 'AWSCognitoIdentityProviderService.ConfirmForgotPassword');
+      assert.equal(requestBody.ConfirmationCode, '654321');
+      assert.equal(requestBody.Password, 'NewSecurePass123!');
+    });
+  });
+
+  describe('Auth Callback & BFF Security Contracts Verification', () => {
+    it('verifies that Supabase is completely eliminated from auth/callback/route.ts', async () => {
+      const fs = await import('node:fs/promises');
+      const path = await import('node:path');
+      const callbackPath = path.resolve(process.cwd(), 'src/app/auth/callback/route.ts');
+      const content = await fs.readFile(callbackPath, 'utf-8');
+
+      assert.equal(content.includes('@supabase/ssr'), false, 'Must not import @supabase/ssr');
+      assert.equal(content.includes('createServerClient'), false, 'Must not reference createServerClient');
+      assert.equal(content.includes('supabase.auth'), false, 'Must not call supabase.auth methods');
+      assert.equal(content.includes('verifyOtp'), false, 'Must not have verifyOtp');
+      assert.equal(content.includes('exchangeCodeForSession'), false, 'Must not have exchangeCodeForSession');
+    });
+
+    it('verifies that /auth/session failure redirects to /login?error=sync_failed and deletes cookies', async () => {
+      const fs = await import('node:fs/promises');
+      const path = await import('node:path');
+      const callbackPath = path.resolve(process.cwd(), 'src/app/auth/callback/route.ts');
+      const content = await fs.readFile(callbackPath, 'utf-8');
+
+      assert.ok(content.includes('sync_failed'), 'Must redirect to sync_failed when backend sync fails');
+      assert.ok(content.includes('clearTemporaryCookies'), 'Must clear temporary cookies on exit');
+      assert.ok(content.includes('COGNITO_COOKIE_NAMES.ACCESS_TOKEN'), 'Must set cognito_access_token cookie');
+      assert.ok(content.includes('COGNITO_COOKIE_NAMES.REFRESH_TOKEN'), 'Must set cognito_refresh_token cookie');
+      assert.ok(content.includes('COGNITO_COOKIE_NAMES.ID_TOKEN'), 'Must set cognito_id_token cookie');
+    });
+
+    it('verifies that sb-access-token is completely eliminated from bff route', async () => {
+      const fs = await import('node:fs/promises');
+      const path = await import('node:path');
+      const bffPath = path.resolve(process.cwd(), 'src/app/api/backend/[...path]/route.ts');
+      const content = await fs.readFile(bffPath, 'utf-8');
+
+      assert.equal(content.includes('sb-access-token'), false, 'Must not reference sb-access-token');
+      assert.ok(content.includes("lower !== 'authorization'"), 'Must strip incoming unauthenticated authorization');
     });
   });
 });

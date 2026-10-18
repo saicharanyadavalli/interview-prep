@@ -84,23 +84,38 @@
 - [x] **Custom folder persistence & revisit queue synchronization.**
   - Schema migration `003_custom_folders.sql` provides robust database storage with `localStorage` fallback.
 - [x] **Zero force-pushes, zero changes to `main`.**
-  - Git history intact on `aws-migration`. All 375 backend tests and 178 frontend tests pass with 0 errors.
+  - Git history intact on `aws-migration`. All 386 backend tests and 218 frontend tests pass with 0 errors.
 
 ---
 
 ## 4. Test Suite Execution Summary
 
-- **Backend Pytest Suite:**
-  - Total tests: **375**
-  - Passed: **375 (100%)**
+- **Backend Pytest Suite (`pytest backend/tests/`):**
+  - Total tests: **386**
+  - Passed: **386 (100%)**
   - Failed: **0**
-  - Execution time: 36.44s
-- **Frontend Test Suite (`node:test` / Jest):**
-  - Total tests: **178**
-  - Passed: **178 (100%)**
+  - Execution time: ~20.13s
+  - Suites: 33 modules (including `test_cognito_auth.py`, `test_auth_endpoints.py`, `test_destructive_actions.py`, `test_runtime_config.py`, `test_s3_storage_service.py`, `test_migrate_cloudinary_to_s3.py`, `test_reconcile_db_avatars.py`)
+- **Frontend Test Suite (`node:test` in `frontend/`):**
+  - Total tests: **218**
+  - Passed: **218 (100%)**
   - Failed: **0**
-  - Suites: **36**
-- **TypeScript Typecheck (`npx tsc --noEmit`):**
-  - Errors: **0**
-- **Next.js Production Build (`npm run build`):**
-  - Status: **Compiled successfully in 6.0s (14/14 static & dynamic pages)**
+  - Suites: **47** (including `login-auth-ux.test.ts`, `cognito-oauth-bff.test.ts`, `themes-and-sidebar.test.ts`, `dashboard-navigation.test.ts`, `streak-analytics.test.ts`, `preview-folders-revisit.test.ts`)
+- **TypeScript Typecheck (`npx tsc --noEmit` in `frontend/`):**
+  - Errors: **0 (Exit code 0)**
+- **Next.js Production Build (`npm run build` in `frontend/`):**
+  - Status: **Compiled successfully in Turbopack (14/14 static & dynamic routes, 0 errors)**
+- **Visual QA Verification (Playwright MCP):**
+  - All 11 login & auth modes visually verified across Desktop (1440x900) and Mobile (390x844) in both Dark and Light themes:
+    - `desktop-dark-signin.png`
+    - `desktop-dark-signup.png`
+    - `desktop-dark-confirm.png`
+    - `desktop-dark-forgot-password.png`
+    - `desktop-dark-reset-password.png`
+    - `desktop-light-signin.png`
+    - `desktop-light-signup.png`
+    - `mobile-dark-signin.png`
+    - `mobile-dark-signup.png`
+    - `mobile-light-signin.png`
+    - `mobile-light-signup.png`
+

@@ -1,15 +1,59 @@
-"""Integration tests for /auth/session and authentication dependencies."""
+"""Integration tests for /auth/session, /auth/login, and authentication dependencies."""
 
-from unittest.mock import patch, MagicMock
+from unittest.mock import MagicMock, patch
+from botocore.exceptions import ClientError
 from fastapi import HTTPException
 from fastapi.testclient import TestClient
+import pytest
 
+import os
 from routes.auth import get_current_user, get_optional_current_user
+from services.cognito_auth import CognitoAuthError, InvalidTokenUseError, InvalidTokenError
+
+
+@pytest.fixture(autouse=True)
+def auth_endpoints_test_env():
+    """Ensure clean Cognito test environment variables for auth endpoint tests."""
+    old_env = {
+        k: os.environ.get(k)
+        for k in (
+            "TESTING",
+            "COGNITO_REGION",
+            "COGNITO_USER_POOL_ID",
+            "COGNITO_CLIENT_ID",
+            "DISABLE_AUTH",
+            "ENVIRONMENT",
+            "APP_ENV",
+            "ENV",
+        )
+    }
+    os.environ["TESTING"] = "1"
+    os.environ["COGNITO_REGION"] = "ap-south-2"
+    os.environ["COGNITO_USER_POOL_ID"] = "ap-south-2_testPoolId"
+    os.environ["COGNITO_CLIENT_ID"] = "test-client-id-123"
+    os.environ["DISABLE_AUTH"] = "false"
+    for k in ("ENVIRONMENT", "APP_ENV", "ENV"):
+        os.environ.pop(k, None)
+
+    yield
+
+    for k, v in old_env.items():
+        if v is not None:
+            os.environ[k] = v
+        elif k in os.environ:
+            del os.environ[k]
 
 
 def test_create_session_success(unauth_client: TestClient, mock_user: dict, mock_supabase):
     """Verify POST /auth/session validates token and returns user profile."""
-    with patch("routes.auth.verify_supabase_token", return_value=mock_user):
+    mock_claims = {
+        "sub": mock_user["id"],
+        "email": mock_user["email"],
+        "username": mock_user["username"],
+        "token_use": "access",
+    }
+    with patch("routes.auth.verify_cognito_token", return_value=mock_claims), \
+         patch("routes.auth.resolve_user_identity", return_value=mock_user):
         res = unauth_client.post(
             "/auth/session",
             json={"access_token": "valid-token-string-at-least-10-chars"},
@@ -23,7 +67,7 @@ def test_create_session_success(unauth_client: TestClient, mock_user: dict, mock
 
 def test_create_session_invalid_token_returns_401(unauth_client: TestClient):
     """Verify POST /auth/session returns 401 when token verification fails."""
-    with patch("routes.auth.verify_supabase_token", return_value=None):
+    with patch("routes.auth.verify_cognito_token", side_effect=CognitoAuthError("Invalid signature")):
         res = unauth_client.post(
             "/auth/session",
             json={"access_token": "invalid-token-string-12345"},
@@ -48,7 +92,6 @@ def test_create_session_extra_fields_returns_422(unauth_client: TestClient):
 
 def test_get_current_user_missing_header_raises_401():
     """Verify get_current_user raises 401 when Authorization header is missing."""
-    import pytest
     with pytest.raises(HTTPException) as exc:
         get_current_user(authorization=None)
     assert exc.value.status_code == 401
@@ -56,10 +99,26 @@ def test_get_current_user_missing_header_raises_401():
 
 def test_get_current_user_non_bearer_header_raises_401():
     """Verify get_current_user raises 401 when Authorization does not start with Bearer."""
-    import pytest
     with pytest.raises(HTTPException) as exc:
         get_current_user(authorization="Basic dXNlcjpwYXNz")
     assert exc.value.status_code == 401
+
+
+def test_get_current_user_with_id_token_raises_401():
+    """Verify get_current_user rejects ID tokens (token_use='id') and raises 401."""
+    with patch("routes.auth.verify_cognito_token", side_effect=InvalidTokenUseError("Protected API endpoints strictly require token_use='access'.")):
+        with pytest.raises(HTTPException) as exc:
+            get_current_user(authorization="Bearer eyJraWQiOiJpZFRva2VuIn0...")
+        assert exc.value.status_code == 401
+        assert "token_use='access'" in str(exc.value.detail)
+
+
+def test_get_current_user_with_invalid_token_raises_401():
+    """Verify get_current_user immediately raises 401 with no legacy fallback on invalid token."""
+    with patch("routes.auth.verify_cognito_token", side_effect=InvalidTokenError("Token signature verification failed")):
+        with pytest.raises(HTTPException) as exc:
+            get_current_user(authorization="Bearer corrupted-token")
+        assert exc.value.status_code == 401
 
 
 def test_get_optional_current_user_missing_returns_none():
@@ -70,8 +129,14 @@ def test_get_optional_current_user_missing_returns_none():
 
 def test_create_session_database_failure_returns_503(unauth_client: TestClient, mock_user: dict):
     """Verify POST /auth/session fails fast with 503 instead of fabricating success when RDS fails."""
-    with patch("routes.auth.verify_supabase_token", return_value=mock_user), \
-         patch("routes.auth.rds_client.mutate", side_effect=Exception("RDS Connection Refused")):
+    mock_claims = {
+        "sub": mock_user["id"],
+        "email": mock_user["email"],
+        "username": mock_user["username"],
+        "token_use": "access",
+    }
+    with patch("routes.auth.verify_cognito_token", return_value=mock_claims), \
+         patch("routes.auth.resolve_user_identity", side_effect=Exception("RDS Connection Refused")):
         res = unauth_client.post(
             "/auth/session",
             json={"access_token": "valid-token-string-at-least-10-chars"},
@@ -82,7 +147,6 @@ def test_create_session_database_failure_returns_503(unauth_client: TestClient, 
 
 def test_disable_auth_in_production_raises_500(monkeypatch):
     """Verify get_current_user strictly blocks DISABLE_AUTH in production environment."""
-    import pytest
     monkeypatch.setenv("DISABLE_AUTH", "true")
     monkeypatch.setenv("ENVIRONMENT", "production")
 
@@ -92,21 +156,10 @@ def test_disable_auth_in_production_raises_500(monkeypatch):
     assert "forbidden in production" in str(exc_info.value.detail).lower()
 
 
-# ── Username Privacy, Availability & Secure Login Tests ────────────────────────
+# ── Username Privacy, Availability & Secure Cognito Login Tests ──────────────────
 
 def test_login_with_username_success(unauth_client: TestClient):
-    """Verify POST /auth/login resolves username to email in RDS and returns tokens."""
-    mock_auth_res = {
-        "access_token": "valid-access-token",
-        "refresh_token": "valid-refresh-token",
-        "user": {
-            "id": "12345678-1234-1234-1234-123456789012",
-            "email": "alpha@example.com",
-            "username": "alpha_coder",
-            "name": "Alpha Coder",
-            "avatar_url": "",
-        },
-    }
+    """Verify POST /auth/login resolves username to email in RDS and authenticates via Cognito USER_PASSWORD_AUTH."""
     mock_profile = {
         "id": "12345678-1234-1234-1234-123456789012",
         "email": "alpha@example.com",
@@ -114,8 +167,27 @@ def test_login_with_username_success(unauth_client: TestClient):
         "name": "Alpha Coder",
         "avatar_url": "",
     }
-    with patch("routes.auth.rds_client.query", side_effect=[{"email": "alpha@example.com"}, mock_profile]), \
-         patch("routes.auth.authenticate_user_credentials", return_value=mock_auth_res), \
+    mock_cognito_client = MagicMock()
+    mock_cognito_client.initiate_auth.return_value = {
+        "AuthenticationResult": {
+            "AccessToken": "mock-access-token",
+            "RefreshToken": "valid-refresh-token",
+            "IdToken": "valid-id-token",
+            "ExpiresIn": 3600,
+        }
+    }
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "WHERE LOWER(username) = LOWER(%s)" in sql:
+            return {"email": "alpha@example.com"}
+        if "FROM user_identities" in sql:
+            return {"user_id": "12345678-1234-1234-1234-123456789012", "email": "alpha@example.com"}
+        if "FROM user_profiles" in sql:
+            return mock_profile if fetch == "one" else [mock_profile]
+        return None
+
+    with patch("routes.auth.boto3.client", return_value=mock_cognito_client), \
+         patch("routes.auth.rds_client.query", side_effect=mock_query), \
          patch("routes.auth.rds_client.mutate", return_value=None):
         res = unauth_client.post(
             "/auth/login",
@@ -123,25 +195,23 @@ def test_login_with_username_success(unauth_client: TestClient):
         )
         assert res.status_code == 200
         data = res.json()
-        assert data["access_token"] == "valid-access-token"
+        assert data["access_token"] == "mock-access-token"
         assert data["refresh_token"] == "valid-refresh-token"
         assert data["user"]["id"] == "12345678-1234-1234-1234-123456789012"
         assert data["user"]["username"] == "alpha_coder"
 
+        mock_cognito_client.initiate_auth.assert_called_once_with(
+            ClientId="test-client-id-123",
+            AuthFlow="USER_PASSWORD_AUTH",
+            AuthParameters={
+                "USERNAME": "alpha@example.com",
+                "PASSWORD": "SecurePassword123!",
+            },
+        )
+
 
 def test_login_with_email_success(unauth_client: TestClient):
-    """Verify POST /auth/login authenticates email directly without querying RDS username."""
-    mock_auth_res = {
-        "access_token": "valid-access-token",
-        "refresh_token": "valid-refresh-token",
-        "user": {
-            "id": "12345678-1234-1234-1234-123456789012",
-            "email": "beta@example.com",
-            "username": "beta_coder",
-            "name": "Beta Coder",
-            "avatar_url": "",
-        },
-    }
+    """Verify POST /auth/login authenticates email directly via Cognito without querying RDS username."""
     mock_profile = {
         "id": "12345678-1234-1234-1234-123456789012",
         "email": "beta@example.com",
@@ -149,8 +219,28 @@ def test_login_with_email_success(unauth_client: TestClient):
         "name": "Beta Coder",
         "avatar_url": "",
     }
-    with patch("routes.auth.rds_client.query", return_value=mock_profile) as mock_rds, \
-         patch("routes.auth.authenticate_user_credentials", return_value=mock_auth_res), \
+    mock_cognito_client = MagicMock()
+    mock_cognito_client.initiate_auth.return_value = {
+        "AuthenticationResult": {
+            "AccessToken": "mock-access-token",
+            "RefreshToken": "valid-refresh-token",
+            "IdToken": "valid-id-token",
+            "ExpiresIn": 3600,
+        }
+    }
+
+    queries = []
+
+    def mock_query(sql, params=None, fetch="all"):
+        queries.append((sql, params))
+        if "FROM user_identities" in sql:
+            return {"user_id": "12345678-1234-1234-1234-123456789012", "email": "beta@example.com"}
+        if "FROM user_profiles" in sql:
+            return mock_profile if fetch == "one" else [mock_profile]
+        return None
+
+    with patch("routes.auth.boto3.client", return_value=mock_cognito_client), \
+         patch("routes.auth.rds_client.query", side_effect=mock_query), \
          patch("routes.auth.rds_client.mutate", return_value=None):
         res = unauth_client.post(
             "/auth/login",
@@ -158,22 +248,77 @@ def test_login_with_email_success(unauth_client: TestClient):
         )
         assert res.status_code == 200
         data = res.json()
-        assert data["access_token"] == "valid-access-token"
-        # RDS query should only be called for fetching user profile by ID, not for username lookup
-        for call_args in mock_rds.call_args_list:
-            assert "WHERE username = %s" not in call_args[0][0]
+        assert data["access_token"] == "mock-access-token"
+        assert data["user"]["id"] == "12345678-1234-1234-1234-123456789012"
+
+        # RDS query should NOT be called for username lookup
+        for sql, _ in queries:
+            assert "WHERE username = %s" not in sql
+            assert "WHERE LOWER(username) = LOWER(%s)" not in sql
+
+        mock_cognito_client.initiate_auth.assert_called_once_with(
+            ClientId="test-client-id-123",
+            AuthFlow="USER_PASSWORD_AUTH",
+            AuthParameters={
+                "USERNAME": "beta@example.com",
+                "PASSWORD": "SecurePassword123!",
+            },
+        )
 
 
 def test_login_invalid_password_returns_401(unauth_client: TestClient):
-    """Verify POST /auth/login returns uniform 401 when password check fails."""
-    with patch("routes.auth.rds_client.query", return_value={"email": "alpha@example.com"}), \
-         patch("routes.auth.authenticate_user_credentials", return_value=None):
+    """Verify POST /auth/login returns uniform 401 when Cognito returns NotAuthorizedException."""
+    mock_cognito_client = MagicMock()
+    mock_cognito_client.initiate_auth.side_effect = ClientError(
+        {"Error": {"Code": "NotAuthorizedException", "Message": "Incorrect username or password."}},
+        "initiate_auth",
+    )
+
+    with patch("routes.auth.boto3.client", return_value=mock_cognito_client), \
+         patch("routes.auth.rds_client.query", return_value={"email": "alpha@example.com"}):
         res = unauth_client.post(
             "/auth/login",
             json={"identifier": "alpha_coder", "password": "WrongPassword"},
         )
         assert res.status_code == 401
         assert "Invalid email/username or password" in res.json()["detail"]
+
+
+def test_login_user_not_found_returns_401(unauth_client: TestClient):
+    """Verify POST /auth/login returns uniform 401 when Cognito returns UserNotFoundException."""
+    mock_cognito_client = MagicMock()
+    mock_cognito_client.initiate_auth.side_effect = ClientError(
+        {"Error": {"Code": "UserNotFoundException", "Message": "User does not exist."}},
+        "initiate_auth",
+    )
+
+    with patch("routes.auth.boto3.client", return_value=mock_cognito_client):
+        res = unauth_client.post(
+            "/auth/login",
+            json={"identifier": "nonexistent@example.com", "password": "AnyPassword123!"},
+        )
+        assert res.status_code == 401
+        assert "Invalid email/username or password" in res.json()["detail"]
+
+
+def test_login_user_not_confirmed_returns_403(unauth_client: TestClient):
+    """Verify POST /auth/login returns 403 with needs_confirmation: true on UserNotConfirmedException."""
+    mock_cognito_client = MagicMock()
+    mock_cognito_client.initiate_auth.side_effect = ClientError(
+        {"Error": {"Code": "UserNotConfirmedException", "Message": "User is not confirmed."}},
+        "initiate_auth",
+    )
+
+    with patch("routes.auth.boto3.client", return_value=mock_cognito_client), \
+         patch("routes.auth.rds_client.query", return_value={"email": "unconfirmed@example.com"}):
+        res = unauth_client.post(
+            "/auth/login",
+            json={"identifier": "unconfirmed@example.com", "password": "Password123!"},
+        )
+        assert res.status_code == 403
+        body = res.json()
+        assert "User is not confirmed" in body["detail"]
+        assert body["needs_confirmation"] is True
 
 
 def test_login_nonexistent_username_returns_401(unauth_client: TestClient):

@@ -12,7 +12,11 @@ import os
 import uuid
 from typing import Any, Optional
 
+import boto3
+from botocore.exceptions import BotoCoreError, ClientError
 from fastapi import APIRouter, Header, HTTPException, Query, Request, Response
+from fastapi.responses import JSONResponse
+import jwt
 from limiter import limiter
 
 from models.schemas import (
@@ -24,8 +28,12 @@ from models.schemas import (
     ResolveUsernameResponse,
 )
 from services import rds_client
-from services.cognito_auth import verify_cognito_token, CognitoAuthError
-from services.supabase_client import verify_supabase_token, authenticate_user_credentials
+from services.cognito_auth import (
+    CognitoAuthError,
+    get_cognito_client_id,
+    get_cognito_region,
+    verify_cognito_token,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -96,7 +104,17 @@ def resolve_user_identity(
             return dict(profile)
 
     # 3. If no mapping exists, check user_profiles WHERE LOWER(email) = LOWER(%s)
-    if clean_email:
+    # Verified email linking policy: keep existing profile UUID and history intact,
+    # but never link to an existing account if the email is explicitly unverified.
+    email_verified_claim = claims.get("email_verified")
+    is_email_verified = True
+    if email_verified_claim is not None:
+        if isinstance(email_verified_claim, bool):
+            is_email_verified = email_verified_claim
+        elif isinstance(email_verified_claim, str):
+            is_email_verified = email_verified_claim.lower() == "true"
+
+    if clean_email and is_email_verified:
         matching_profiles = rds_client.query(
             """
             SELECT id, email, username, name, phone, avatar_url, updated_at
@@ -106,23 +124,30 @@ def resolve_user_identity(
             (clean_email,),
             fetch="all",
         )
-        if matching_profiles and len(matching_profiles) == 1:
-            profile = dict(matching_profiles[0])
-            user_id = str(profile["id"])
+        if matching_profiles:
+            if isinstance(matching_profiles, list) and len(matching_profiles) >= 1:
+                profile = dict(matching_profiles[0])
+            elif isinstance(matching_profiles, dict):
+                profile = dict(matching_profiles)
+            else:
+                profile = None
 
-            # Link into user_identities
-            rds_client.mutate(
-                """
-                INSERT INTO user_identities (user_id, provider, provider_sub, email)
-                VALUES (%s, %s, %s, %s)
-                ON CONFLICT (provider, provider_sub) DO UPDATE
-                SET user_id = EXCLUDED.user_id,
-                    email = EXCLUDED.email,
-                    updated_at = now();
-                """,
-                (user_id, provider, provider_sub, clean_email),
-            )
-            return profile
+            if profile and profile.get("id"):
+                user_id = str(profile["id"])
+
+                # Link into user_identities
+                rds_client.mutate(
+                    """
+                    INSERT INTO user_identities (user_id, provider, provider_sub, email)
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (provider, provider_sub) DO UPDATE
+                    SET user_id = EXCLUDED.user_id,
+                        email = EXCLUDED.email,
+                        updated_at = now();
+                    """,
+                    (user_id, provider, provider_sub, clean_email),
+                )
+                return profile
 
     # If explicit user id provided (e.g. from existing profile or legacy caller), check by id as well
     explicit_id = str(claims.get("id") or "").strip()
@@ -301,24 +326,14 @@ def get_current_user(authorization: str | None = Header(None)) -> dict:
     if not token:
         raise HTTPException(status_code=401, detail="Invalid authorization header.")
 
-    claims: dict | None = None
     try:
         claims = verify_cognito_token(token)
     except CognitoAuthError as exc:
         logger.warning("Cognito token verification failed: %s", exc)
         raise HTTPException(status_code=401, detail=f"Invalid or expired token: {exc}")
     except Exception as exc:
-        # Check if legacy verify_supabase_token was patched for testing
-        if "verify_supabase_token" in globals() and verify_supabase_token:
-            try:
-                legacy_user = verify_supabase_token(token)
-                if legacy_user:
-                    claims = legacy_user
-            except Exception:
-                pass
-        if not claims:
-            logger.warning("Token verification failed: %s", exc)
-            raise HTTPException(status_code=401, detail="Invalid or expired token.")
+        logger.warning("Token verification failed: %s", exc)
+        raise HTTPException(status_code=401, detail="Invalid or expired token.")
 
     try:
         user = resolve_user_identity(claims)
@@ -347,15 +362,7 @@ def get_optional_current_user(authorization: str | None = Header(None)) -> dict 
         if claims:
             return resolve_user_identity(claims)
     except Exception:
-        # Fallback for legacy test patches
-        if "verify_supabase_token" in globals() and verify_supabase_token:
-            try:
-                legacy_user = verify_supabase_token(token)
-                if legacy_user:
-                    _ensure_user_in_rds(legacy_user)
-                    return legacy_user
-            except Exception:
-                pass
+        pass
     return None
 
 
@@ -363,17 +370,10 @@ def get_optional_current_user(authorization: str | None = Header(None)) -> dict 
 @limiter.limit("5000/minute")
 def create_session(request: Request, response: Response, payload: SessionRequest):
     """Validate Cognito token and synchronize/resolve user into RDS."""
-    claims = None
     try:
         claims = verify_cognito_token(payload.access_token)
-    except Exception:
-        if "verify_supabase_token" in globals() and verify_supabase_token:
-            try:
-                claims = verify_supabase_token(payload.access_token)
-            except Exception:
-                pass
-
-    if not claims:
+    except Exception as exc:
+        logger.warning("Session token verification failed: %s", exc)
         raise HTTPException(status_code=401, detail="Invalid or expired token.")
 
     try:
@@ -403,6 +403,8 @@ def login_with_credentials(request: Request, response: Response, payload: LoginR
     SECURITY INVARIANTS:
     - Never exposes registered email addresses to unauthenticated callers.
     - Resolves username -> email privately within RDS.
+    - Authenticates against Amazon Cognito using USER_PASSWORD_AUTH flow.
+    - Handles unconfirmed users with 403 and needs_confirmation: true.
     - Returns uniform 401 'Invalid email/username or password.' for both non-existent
       users and incorrect passwords to prevent account enumeration.
     """
@@ -427,34 +429,114 @@ def login_with_credentials(request: Request, response: Response, payload: LoginR
             raise HTTPException(status_code=401, detail="Invalid email/username or password.")
         target_email = row["email"].lower()
 
-    auth_data = authenticate_user_credentials(target_email, payload.password)
-    if not auth_data:
+    region = get_cognito_region()
+    client_id = get_cognito_client_id()
+    cognito_client = boto3.client("cognito-idp", region_name=region)
+
+    try:
+        auth_res = cognito_client.initiate_auth(
+            ClientId=client_id,
+            AuthFlow="USER_PASSWORD_AUTH",
+            AuthParameters={
+                "USERNAME": target_email,
+                "PASSWORD": payload.password,
+            },
+        )
+    except ClientError as exc:
+        error_code = exc.response.get("Error", {}).get("Code", "")
+        if error_code == "UserNotConfirmedException":
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "detail": "User is not confirmed. Please verify your email with the confirmation code.",
+                    "needs_confirmation": True,
+                },
+            )
+        elif error_code in ("NotAuthorizedException", "UserNotFoundException"):
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email/username or password.",
+            )
+        else:
+            logger.warning("Cognito initiate_auth ClientError (%s): %s", error_code, exc)
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email/username or password.",
+            )
+    except Exception as exc:
+        exc_type = type(exc).__name__
+        if exc_type == "UserNotConfirmedException":
+            return JSONResponse(
+                status_code=403,
+                content={
+                    "detail": "User is not confirmed. Please verify your email with the confirmation code.",
+                    "needs_confirmation": True,
+                },
+            )
+        elif exc_type in ("NotAuthorizedException", "UserNotFoundException"):
+            raise HTTPException(
+                status_code=401,
+                detail="Invalid email/username or password.",
+            )
+        logger.error("Cognito initiate_auth unexpected error: %s", exc)
+        raise HTTPException(
+            status_code=503,
+            detail="Authentication service temporarily unavailable.",
+        ) from exc
+
+    auth_result = auth_res.get("AuthenticationResult")
+    if not auth_result or "AccessToken" not in auth_result:
+        logger.warning("Cognito initiate_auth succeeded but missing AuthenticationResult: %s", auth_res)
         raise HTTPException(status_code=401, detail="Invalid email/username or password.")
 
-    user_dict = auth_data["user"]
-    _ensure_user_in_rds(user_dict)
+    access_token = auth_result["AccessToken"]
+    refresh_token = auth_result.get("RefreshToken", "")
+    id_token = auth_result.get("IdToken", "")
+    expires_in = auth_result.get("ExpiresIn", 3600)
 
-    db_user = None
     try:
-        db_user = rds_client.query(
-            "SELECT id, email, username, name, avatar_url FROM user_profiles WHERE id = %s LIMIT 1;",
-            (user_dict["id"],),
-            fetch="one",
-        )
-    except Exception:
-        pass
+        claims = verify_cognito_token(access_token)
+    except Exception as exc:
+        logger.error("Failed to verify access token returned by Cognito: %s", exc)
+        raise HTTPException(
+            status_code=500,
+            detail="Authentication token validation failed.",
+        ) from exc
+
+    if not claims.get("email"):
+        claims["email"] = target_email
+
+    if id_token:
+        try:
+            id_claims = jwt.decode(id_token, options={"verify_signature": False})
+            for key in ("email", "email_verified", "name", "picture", "avatar_url"):
+                if key in id_claims and key not in claims:
+                    claims[key] = id_claims[key]
+        except Exception:
+            pass
+
+    try:
+        db_user = resolve_user_identity(claims)
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.error("Session RDS user sync error during login: %s", exc)
+        raise HTTPException(
+            status_code=503,
+            detail="Database service temporarily unavailable. Could not synchronize user session.",
+        ) from exc
 
     user_resp = UserResponse(
-        id=str((db_user.get("id") if db_user else None) or user_dict.get("id") or ""),
-        email=str((db_user.get("email") if db_user else None) or user_dict.get("email") or ""),
-        username=str((db_user.get("username") if db_user else None) or user_dict.get("username") or ""),
-        name=str((db_user.get("name") if db_user else None) or user_dict.get("name") or ""),
-        avatar_url=str((db_user.get("avatar_url") if db_user else None) or user_dict.get("avatar_url") or ""),
+        id=str(db_user["id"]),
+        email=str(db_user["email"]),
+        username=db_user.get("username"),
+        name=db_user.get("name"),
+        avatar_url=db_user.get("avatar_url"),
     )
 
     return LoginResponse(
-        access_token=auth_data["access_token"],
-        refresh_token=auth_data["refresh_token"],
+        access_token=access_token,
+        refresh_token=refresh_token,
         token_type="bearer",
         user=user_resp,
     )

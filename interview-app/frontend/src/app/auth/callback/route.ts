@@ -1,12 +1,9 @@
 import { cookies } from 'next/headers'
 import { NextResponse } from 'next/server'
-import { createServerClient } from '@supabase/ssr'
-import { CONFIG } from '@/lib/config'
 import {
   COGNITO_COOKIE_NAMES,
   exchangeCodeForTokens,
-  decodeIdTokenClaims,
-  getCognitoConfig,
+  verifyCognitoIdToken,
 } from '@/lib/cognito'
 import {
   getAllowedOrigins,
@@ -25,6 +22,20 @@ function getInternalBackendUrl(): string {
   return 'http://127.0.0.1:8000'
 }
 
+function clearTemporaryCookies(response: NextResponse) {
+  response.cookies.delete(COGNITO_COOKIE_NAMES.STATE)
+  response.cookies.delete(COGNITO_COOKIE_NAMES.VERIFIER)
+  response.cookies.delete(COGNITO_COOKIE_NAMES.NONCE)
+  response.cookies.delete(COGNITO_COOKIE_NAMES.NEXT)
+}
+
+function createErrorRedirect(baseOrigin: string, errorCode: string): NextResponse {
+  const redirectUrl = new URL(`/login?error=${encodeURIComponent(errorCode)}`, baseOrigin)
+  const res = NextResponse.redirect(redirectUrl)
+  clearTemporaryCookies(res)
+  return res
+}
+
 export async function GET(request: Request) {
   let baseOrigin = CANONICAL_AWS_ORIGIN
 
@@ -35,8 +46,6 @@ export async function GET(request: Request) {
     const state = searchParams.get('state')
     const errorParam = searchParams.get('error')
     const errorDescription = searchParams.get('error_description')
-    const token_hash = searchParams.get('token_hash')
-    const type = searchParams.get('type')
     const rawNextQuery = searchParams.get('next')
 
     const cleanAuthRedirect = cleanEnvValue(process.env.AUTH_REDIRECT_URL)
@@ -82,18 +91,11 @@ export async function GET(request: Request) {
 
     const cookieStore = await cookies()
 
-    // Handle OAuth error passed by identity provider / Cognito
+    // 1. Handle OAuth error passed by identity provider / Cognito
     if (errorParam || errorDescription) {
       const errMessage = errorDescription || errorParam || 'OAuth authentication failed.'
       console.error('[auth/callback] Provider error:', errMessage)
-      const redirectUrl = new URL(`/login?error=${encodeURIComponent(errMessage)}`, baseOrigin)
-      const res = NextResponse.redirect(redirectUrl)
-      // Clear temporary OAuth cookies
-      res.cookies.delete(COGNITO_COOKIE_NAMES.STATE)
-      res.cookies.delete(COGNITO_COOKIE_NAMES.VERIFIER)
-      res.cookies.delete(COGNITO_COOKIE_NAMES.NONCE)
-      res.cookies.delete(COGNITO_COOKIE_NAMES.NEXT)
-      return res
+      return createErrorRedirect(baseOrigin, errMessage)
     }
 
     // Determine target redirect destination
@@ -102,182 +104,115 @@ export async function GET(request: Request) {
 
     const isSecure = baseOrigin.startsWith('https:')
 
-    // ── Cognito OAuth PKCE Flow ─────────────────────────────────────────────
+    // 2. Read stored OAuth PKCE cookies
     const storedState = cookieStore.get(COGNITO_COOKIE_NAMES.STATE)?.value
     const storedVerifier = cookieStore.get(COGNITO_COOKIE_NAMES.VERIFIER)?.value
+    const storedNonce = cookieStore.get(COGNITO_COOKIE_NAMES.NONCE)?.value
 
-    // If PKCE verifier or state is present, or if state param was supplied, process Cognito flow
-    if (code && (storedVerifier || storedState || state)) {
-      if (!storedState || !state || storedState !== state) {
-        console.error('[auth/callback] State validation failed. Possible CSRF attack or expired session.')
-        const errUrl = new URL('/login?error=invalid_state', baseOrigin)
-        const res = NextResponse.redirect(errUrl)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.STATE)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.VERIFIER)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.NONCE)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.NEXT)
-        return res
-      }
-
-      if (!storedVerifier) {
-        console.error('[auth/callback] Missing PKCE verifier cookie.')
-        const errUrl = new URL('/login?error=missing_pkce_verifier', baseOrigin)
-        const res = NextResponse.redirect(errUrl)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.STATE)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.VERIFIER)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.NONCE)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.NEXT)
-        return res
-      }
-
-      // Compute canonical redirect URI that was registered with Cognito
-      const redirectUri = `${baseOrigin}/auth/callback`
-
-      try {
-        const tokens = await exchangeCodeForTokens({
-          code,
-          redirectUri,
-          codeVerifier: storedVerifier,
-        })
-
-        // Decode ID token claims (sub, email, name, identities)
-        const claims = decodeIdTokenClaims(tokens.id_token)
-        const userId = claims?.sub || ''
-        const userEmail = claims?.email || ''
-        const userName = claims?.name || ''
-
-        // Synchronize authenticated user with backend RDS via /auth/session
-        try {
-          const backendUrl = getInternalBackendUrl()
-          await fetch(`${backendUrl}/auth/session`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${tokens.access_token}`,
-            },
-            body: JSON.stringify({ access_token: tokens.access_token }),
-            cache: 'no-store',
-          })
-        } catch (syncErr) {
-          console.warn('[auth/callback] Backend RDS synchronization notice:', syncErr)
-        }
-
-        // Establish secure session with HttpOnly cookies
-        const response = NextResponse.redirect(new URL(safeNext, baseOrigin))
-
-        const cookieOptions = {
-          httpOnly: true,
-          secure: isSecure,
-          sameSite: 'lax' as const,
-          path: '/',
-        }
-
-        response.cookies.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, tokens.access_token, {
-          ...cookieOptions,
-          maxAge: tokens.expires_in || 3600,
-        })
-
-        if (tokens.refresh_token) {
-          response.cookies.set(COGNITO_COOKIE_NAMES.REFRESH_TOKEN, tokens.refresh_token, {
-            ...cookieOptions,
-            maxAge: 30 * 24 * 60 * 60, // 30 days
-          })
-        }
-
-        if (tokens.id_token) {
-          response.cookies.set(COGNITO_COOKIE_NAMES.ID_TOKEN, tokens.id_token, {
-            ...cookieOptions,
-            maxAge: tokens.expires_in || 3600,
-          })
-        }
-
-        // Clear temporary OAuth cookies
-        response.cookies.delete(COGNITO_COOKIE_NAMES.STATE)
-        response.cookies.delete(COGNITO_COOKIE_NAMES.VERIFIER)
-        response.cookies.delete(COGNITO_COOKIE_NAMES.NONCE)
-        response.cookies.delete(COGNITO_COOKIE_NAMES.NEXT)
-
-        return response
-      } catch (exchangeErr: any) {
-        console.error('[auth/callback] Token exchange error:', exchangeErr)
-        const errorDesc = exchangeErr.message || 'Token exchange failed.'
-        const errUrl = new URL(`/login?error=${encodeURIComponent(errorDesc)}`, baseOrigin)
-        const res = NextResponse.redirect(errUrl)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.STATE)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.VERIFIER)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.NONCE)
-        res.cookies.delete(COGNITO_COOKIE_NAMES.NEXT)
-        return res
-      }
+    // If code is missing, terminal error exit
+    if (!code) {
+      return createErrorRedirect(baseOrigin, 'auth-code-error')
     }
 
-    // ── Supabase Fallback Flow (for legacy OTP or code verification) ─────────
-    if (code || (token_hash && type)) {
-      if (CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY) {
-        const redirectTarget = new URL(safeNext, baseOrigin)
-        const response = NextResponse.redirect(redirectTarget)
-
-        const supabase = createServerClient(
-          CONFIG.SUPABASE_URL,
-          CONFIG.SUPABASE_ANON_KEY,
-          {
-            cookies: {
-              getAll() {
-                return cookieStore.getAll()
-              },
-              setAll(cookiesToSet) {
-                cookiesToSet.forEach(({ name, value, options }) => {
-                  try {
-                    cookieStore.set(name, value, options)
-                  } catch (_) {}
-                  try {
-                    response.cookies.set(name, value, options)
-                  } catch (_) {}
-                })
-              },
-            },
-          }
-        )
-
-        if (token_hash && type) {
-          const { error } = await supabase.auth.verifyOtp({
-            type: type as any,
-            token_hash,
-          })
-          if (!error) {
-            return response
-          }
-          console.error('Auth callback OTP verify error:', error.message)
-          return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error.message)}`, baseOrigin))
-        } else if (code) {
-          const { data, error } = await supabase.auth.exchangeCodeForSession(code)
-          if (!error && data?.session) {
-            // Also call backend /auth/session to ensure RDS sync
-            try {
-              const backendUrl = getInternalBackendUrl()
-              await fetch(`${backendUrl}/auth/session`, {
-                method: 'POST',
-                headers: {
-                  'Content-Type': 'application/json',
-                  Authorization: `Bearer ${data.session.access_token}`,
-                },
-                body: JSON.stringify({ access_token: data.session.access_token }),
-                cache: 'no-store',
-              })
-            } catch (_) {}
-            return response
-          }
-          console.error('Auth callback Supabase code exchange error:', error?.message)
-          return NextResponse.redirect(new URL(`/login?error=${encodeURIComponent(error?.message || 'Exchange failed')}`, baseOrigin))
-        }
-      }
+    // 3. Verify state cookie
+    if (!storedState || !state || storedState !== state) {
+      console.error('[auth/callback] State validation failed. Possible CSRF attack or expired session.')
+      return createErrorRedirect(baseOrigin, 'invalid_state')
     }
 
-    // Default error redirect
-    const url = new URL('/login?error=auth-code-error', baseOrigin)
-    return NextResponse.redirect(url)
+    // 4. Read stored PKCE verifier cookie
+    if (!storedVerifier) {
+      console.error('[auth/callback] Missing PKCE verifier cookie.')
+      return createErrorRedirect(baseOrigin, 'missing_pkce_verifier')
+    }
+
+    // Compute canonical redirect URI that was registered with Cognito
+    const redirectUri = `${baseOrigin}/auth/callback`
+
+    // 5. Exchange code for tokens at /oauth2/token
+    let tokens
+    try {
+      tokens = await exchangeCodeForTokens({
+        code,
+        redirectUri,
+        codeVerifier: storedVerifier,
+      })
+    } catch (exchangeErr: any) {
+      console.error('[auth/callback] Token exchange error:', exchangeErr)
+      const errorDesc = exchangeErr.message || 'Token exchange failed.'
+      return createErrorRedirect(baseOrigin, errorDesc)
+    }
+
+    // 6. Cryptographically verify the ID token (issuer, audience/client_id, expiration, nonce)
+    try {
+      await verifyCognitoIdToken({
+        idToken: tokens.id_token,
+        expectedNonce: storedNonce,
+      })
+    } catch (tokenVerifyErr: any) {
+      console.error('[auth/callback] ID token verification error:', tokenVerifyErr)
+      const errorDesc = tokenVerifyErr.message || 'ID token verification failed.'
+      return createErrorRedirect(baseOrigin, errorDesc)
+    }
+
+    // 7. Synchronize with backend RDS via /auth/session
+    // If /auth/session fails, DO NOT establish an authenticated session! Clean up temporary cookies and redirect to /login?error=sync_failed.
+    try {
+      const backendUrl = getInternalBackendUrl()
+      const syncRes = await fetch(`${backendUrl}/auth/session`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${tokens.access_token}`,
+        },
+        body: JSON.stringify({ access_token: tokens.access_token }),
+        cache: 'no-store',
+      })
+
+      if (!syncRes.ok) {
+        console.error(`[auth/callback] Backend RDS synchronization failed with status ${syncRes.status}`)
+        return createErrorRedirect(baseOrigin, 'sync_failed')
+      }
+    } catch (syncErr: any) {
+      console.error('[auth/callback] Backend RDS synchronization network error:', syncErr)
+      return createErrorRedirect(baseOrigin, 'sync_failed')
+    }
+
+    // 8. Establish secure session with HttpOnly cookies
+    const response = NextResponse.redirect(new URL(safeNext, baseOrigin))
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: isSecure,
+      sameSite: 'lax' as const,
+      path: '/',
+    }
+
+    response.cookies.set(COGNITO_COOKIE_NAMES.ACCESS_TOKEN, tokens.access_token, {
+      ...cookieOptions,
+      maxAge: tokens.expires_in || 3600,
+    })
+
+    if (tokens.refresh_token) {
+      response.cookies.set(COGNITO_COOKIE_NAMES.REFRESH_TOKEN, tokens.refresh_token, {
+        ...cookieOptions,
+        maxAge: 30 * 24 * 60 * 60, // 30 days
+      })
+    }
+
+    if (tokens.id_token) {
+      response.cookies.set(COGNITO_COOKIE_NAMES.ID_TOKEN, tokens.id_token, {
+        ...cookieOptions,
+        maxAge: tokens.expires_in || 3600,
+      })
+    }
+
+    // Delete temporary cookies on successful authentication
+    clearTemporaryCookies(response)
+
+    return response
   } catch (err: any) {
     console.error('Auth callback top-level unexpected error:', err)
-    return NextResponse.redirect(new URL('/login?error=auth-code-error', baseOrigin))
+    return createErrorRedirect(baseOrigin, 'auth-code-error')
   }
 }

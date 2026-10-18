@@ -62,10 +62,6 @@ async function resolveAccessToken(request: Request): Promise<string | null> {
     }
   } catch (_) {}
 
-  // Legacy Supabase fallback
-  const sbToken = getCookieFromHeader(request, 'sb-access-token')
-  if (sbToken) return sbToken
-
   return null
 }
 
@@ -81,22 +77,21 @@ async function handleProxy(request: Request, context: RouteContext): Promise<Res
 
   const forwardedHeaders = new Headers()
 
-  // Copy allowable request headers
+  // Copy allowable request headers, stripping unauthenticated or hop-by-hop authorization headers
   request.headers.forEach((value, key) => {
     const lower = key.toLowerCase()
-    if (!HOP_BY_HOP_HEADERS.has(lower)) {
+    if (!HOP_BY_HOP_HEADERS.has(lower) && lower !== 'authorization') {
       forwardedHeaders.set(key, value)
     }
   })
 
-  // Read session token from secure HttpOnly cookie and inject Authorization header
+  // Forward ONLY cognito_access_token as Authorization: Bearer <token>
   const cognitoAccessToken = await resolveAccessToken(request)
-
   if (cognitoAccessToken) {
     forwardedHeaders.set('Authorization', `Bearer ${cognitoAccessToken}`)
   }
 
-  // Read request body for non-GET/HEAD methods
+  // Read request body for non-GET/HEAD methods (supports JSON, multipart form data, etc.)
   let bodyBuffer: ArrayBuffer | undefined = undefined
   if (request.method !== 'GET' && request.method !== 'HEAD') {
     try {
