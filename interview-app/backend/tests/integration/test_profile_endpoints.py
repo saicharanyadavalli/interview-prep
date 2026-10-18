@@ -1,9 +1,12 @@
 """Integration tests for /profile user management and avatar upload endpoints."""
 
 import io
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 from PIL import Image
+
+from services import s3_storage_service
+from services.s3_storage_service import S3StorageError
 
 
 def _generate_valid_png(width: int = 32, height: int = 32) -> bytes:
@@ -107,34 +110,52 @@ def test_update_my_profile_invalid_name_returns_422(client: TestClient):
     assert res.status_code == 422
 
 
-def test_upload_avatar_valid_image_success(client: TestClient, mock_cloudinary, mock_supabase):
-    """Verify POST /profile/avatar/upload accepts valid PNG and updates profile."""
+def test_upload_avatar_valid_image_success(client: TestClient, mock_supabase, mock_user):
+    """Verify POST /profile/avatar/upload accepts valid PNG and updates profile with S3 CloudFront URL."""
     valid_png = _generate_valid_png(32, 32)
+    expected_url = f"https://d123456abcdef8.cloudfront.net/avatars/{mock_user['id']}/sample-avatar.png"
 
-    with patch("routes.profile._configure_cloudinary", return_value=(True, "interview-prep/avatars")):
+    with patch(
+        "services.s3_storage_service.upload_avatar",
+        return_value={
+            "url": expected_url,
+            "key": f"avatars/{mock_user['id']}/sample-avatar.png",
+            "bucket": "interview-prep-assets-808431466075-ap-south-2",
+        },
+    ):
         res = client.post(
             "/profile/avatar/upload",
             files={"file": ("avatar.png", valid_png, "image/png")},
         )
         assert res.status_code == 200
         data = res.json()
+        assert data["avatar_url"] == expected_url
+        assert data["storage"] == "s3"
+        assert data["key"] == f"avatars/{mock_user['id']}/sample-avatar.png"
+        assert data["bucket"] == "interview-prep-assets-808431466075-ap-south-2"
+
+
+def test_upload_avatar_end_to_end_persists_to_rds(client: TestClient, mock_supabase, mock_user):
+    """Verify POST /profile/avatar/upload end-to-end puts object to S3 and updates RDS user_profiles."""
+    valid_png = _generate_valid_png(32, 32)
+    mock_s3 = MagicMock()
+
+    with patch.object(s3_storage_service, "get_s3_client", return_value=mock_s3):
+        res = client.post(
+            "/profile/avatar/upload",
+            files={"file": ("avatar.png", valid_png, "image/png")},
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["storage"] == "s3"
         assert "avatar_url" in data
-        assert data["storage"] == "cloudinary"
+        assert mock_user["id"] in data["avatar_url"]
+        assert mock_s3.put_object.call_count == 1
 
-
-def test_upload_avatar_inline_fallback_when_cloudinary_not_configured(client: TestClient, mock_supabase):
-    """Verify POST /profile/avatar/upload uses inline data URL when Cloudinary is not configured."""
-    valid_png = _generate_valid_png(16, 16)
-
-    with patch("routes.profile._configure_cloudinary", return_value=(False, "interview-prep/avatars")):
-        res = client.post(
-            "/profile/avatar/upload",
-            files={"file": ("avatar.png", valid_png, "image/png")},
-        )
-        assert res.status_code == 200
-        data = res.json()
-        assert data["storage"] == "inline"
-        assert data["avatar_url"].startswith("data:image/png;base64,")
+        # Verify GET /profile/me returns updated avatar_url
+        me_res = client.get("/profile/me")
+        assert me_res.status_code == 200
+        assert me_res.json()["avatar_url"] == data["avatar_url"]
 
 
 def test_upload_avatar_empty_file_fails_400(client: TestClient):
@@ -188,15 +209,30 @@ def test_upload_avatar_oversized_file_fails_400(client: TestClient):
     assert res.status_code == 400
 
 
-def test_upload_avatar_cloudinary_failure_returns_502(client: TestClient, mock_supabase):
-    """Verify POST /profile/avatar/upload returns 502 when Cloudinary raises an error."""
+def test_upload_avatar_s3_storage_failure_returns_503(client: TestClient, mock_supabase):
+    """Verify POST /profile/avatar/upload returns 503 fail-clean when S3 upload fails."""
     valid_png = _generate_valid_png(32, 32)
 
-    with patch("routes.profile._configure_cloudinary", return_value=(True, "interview-prep/avatars")), \
-         patch("cloudinary.uploader.upload", side_effect=RuntimeError("Cloudinary connection reset")):
+    with patch(
+        "services.s3_storage_service.upload_avatar",
+        side_effect=S3StorageError("S3 connection reset"),
+    ):
         res = client.post(
             "/profile/avatar/upload",
             files={"file": ("avatar.png", valid_png, "image/png")},
         )
-        assert res.status_code == 502
+        assert res.status_code == 503
         assert "storage service failed" in res.json()["detail"].lower()
+
+
+def test_upload_avatar_unexpected_failure_returns_500(client: TestClient, mock_supabase):
+    """Verify POST /profile/avatar/upload returns 500 when an unexpected exception occurs."""
+    valid_png = _generate_valid_png(32, 32)
+
+    with patch("services.s3_storage_service.upload_avatar", side_effect=RuntimeError("System memory error")):
+        res = client.post(
+            "/profile/avatar/upload",
+            files={"file": ("avatar.png", valid_png, "image/png")},
+        )
+        assert res.status_code == 500
+        assert "failed to upload avatar" in res.json()["detail"].lower()

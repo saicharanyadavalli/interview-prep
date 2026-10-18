@@ -19,7 +19,7 @@ export interface UserAvatarProps {
  * Robust UserAvatar component with:
  * - Deterministic fallback to initials SVG if avatarUrl is missing, empty, or fails to load
  * - Prevention of broken image icons, infinite error loops, and flicker
- * - Support for data: URLs, Cloudinary URLs, and remote URLs via unoptimized flag
+ * - Support for data: URLs, CloudFront/S3 URLs, Cloudinary (legacy) URLs, and remote URLs via unoptimized flag
  * - Auto-reset of error state when src changes
  */
 export function UserAvatar({

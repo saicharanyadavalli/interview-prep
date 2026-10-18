@@ -2,7 +2,7 @@
 
 Persists authoritative application profile data directly to Amazon RDS PostgreSQL.
 Validates input, checks username uniqueness (409 Conflict), validates avatar images
-using Pillow, uploads to Cloudinary with inline data URI fallback, and updates RDS.
+using Pillow, uploads to Amazon S3 + CloudFront CDN, and updates RDS.
 """
 
 from __future__ import annotations
@@ -23,7 +23,7 @@ from PIL import Image, UnidentifiedImageError
 from limiter import limiter
 from models.schemas import ProfileResponse, ProfileUpdateRequest
 from routes.auth import get_current_user
-from services import rds_client
+from services import rds_client, s3_storage_service
 
 logger = logging.getLogger(__name__)
 
@@ -275,7 +275,7 @@ async def upload_profile_avatar(
     file: UploadFile = File(...),
     current_user: dict = Depends(get_current_user),
 ):
-    """Validate, decode, upload avatar to Cloudinary, and persist secure URL in RDS user_profiles."""
+    """Validate, decode, upload avatar to Amazon S3 + CloudFront CDN, and persist in RDS user_profiles."""
     request.state.rate_limit_user_id = current_user.get("id")
 
     if not file or not file.filename:
@@ -341,36 +341,30 @@ async def upload_profile_avatar(
             detail="Corrupted or undecodable image data.",
         ) from err
 
-    is_cloudinary_configured, folder = _configure_cloudinary()
-
-    avatar_url = ""
-    storage_mode = ""
-
-    if is_cloudinary_configured:
-        try:
-            result = cloudinary.uploader.upload(
-                file_bytes,
-                folder=f"{folder}/{current_user['id']}",
-                public_id="avatar",
-                overwrite=True,
-                resource_type="image",
-            )
-            avatar_url = result.get("secure_url") or result.get("url") or ""
-            storage_mode = "cloudinary"
-        except Exception as c_err:
-            logger.error("Cloudinary upload failed for user %s: %s", current_user.get("id"), type(c_err).__name__)
-            raise HTTPException(
-                status_code=502,
-                detail="External image storage service failed to upload image.",
-            ) from c_err
-    else:
-        # Fallback inline data URL when external cloud storage is not configured
-        encoded = base64.b64encode(file_bytes).decode("ascii")
-        avatar_url = f"data:{kind.mime};base64,{encoded}"
-        storage_mode = "inline"
-
-    if not avatar_url:
-        raise HTTPException(status_code=500, detail="Avatar storage did not return a valid URL.")
+    # Upload avatar to Amazon S3
+    file_ext = kind.extension if kind and kind.extension else "png"
+    try:
+        upload_result = s3_storage_service.upload_avatar(
+            user_id=current_user["id"],
+            file_bytes=file_bytes,
+            content_type=kind.mime,
+            file_ext=file_ext,
+        )
+        avatar_url = upload_result.get("url") or ""
+        if not avatar_url:
+            raise s3_storage_service.S3StorageError("S3 storage did not return a valid URL.")
+    except s3_storage_service.S3StorageError as s3_err:
+        logger.error("S3 upload failed for user %s: %s", current_user.get("id"), type(s3_err).__name__)
+        raise HTTPException(
+            status_code=503,
+            detail="External image storage service failed to upload image.",
+        ) from s3_err
+    except Exception as exc:
+        logger.error("Unexpected error during avatar upload for user %s: %s", current_user.get("id"), type(exc).__name__)
+        raise HTTPException(
+            status_code=500,
+            detail="Failed to upload avatar.",
+        ) from exc
 
     try:
         rds_client.mutate(
@@ -386,4 +380,9 @@ async def upload_profile_avatar(
         logger.error("Failed to persist avatar_url in RDS: %s", db_err)
         raise HTTPException(status_code=500, detail="Failed to persist avatar URL in database.") from db_err
 
-    return {"avatar_url": avatar_url, "storage": storage_mode}
+    return {
+        "avatar_url": avatar_url,
+        "storage": "s3",
+        "key": upload_result.get("key"),
+        "bucket": upload_result.get("bucket"),
+    }

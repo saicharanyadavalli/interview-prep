@@ -1,0 +1,3558 @@
+[
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887006/interview-assistant/system-design/02/figure-1-1-WCFZBBLA.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-1-WCFZBBLA.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887045/interview-assistant/system-design/02/figure-1-10-E6HDAMPH.webp",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/02/figure-1-10-E6HDAMPH.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887047/interview-assistant/system-design/02/figure-1-11-VI5Z74Q2.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-11-VI5Z74Q2.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887049/interview-assistant/system-design/02/figure-1-12-WTWFBLWX.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-12-WTWFBLWX.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887050/interview-assistant/system-design/02/figure-1-13-WILHQ2SA.webp",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/02/figure-1-13-WILHQ2SA.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887052/interview-assistant/system-design/02/figure-1-14-CCBCQMO6.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-14-CCBCQMO6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887072/interview-assistant/system-design/02/figure-1-15-GICUI26J.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-15-GICUI26J.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887074/interview-assistant/system-design/02/figure-1-16-DUWJTBCU.webp",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/02/figure-1-16-DUWJTBCU.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887093/interview-assistant/system-design/02/figure-1-17-J2NLNRNY.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-17-J2NLNRNY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887096/interview-assistant/system-design/02/figure-1-18-P3WDK5LN.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-18-P3WDK5LN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887099/interview-assistant/system-design/02/figure-1-19-MOPDW7TD.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-19-MOPDW7TD.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887025/interview-assistant/system-design/02/figure-1-2-GPY73ZNO.webp",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/02/figure-1-2-GPY73ZNO.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887101/interview-assistant/system-design/02/figure-1-20-VLGHMELC.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-20-VLGHMELC.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887105/interview-assistant/system-design/02/figure-1-21-ZDWDWEO5.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-21-ZDWDWEO5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887108/interview-assistant/system-design/02/figure-1-22-FI2MHR5M.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-22-FI2MHR5M.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887129/interview-assistant/system-design/02/figure-1-23-3IYFN6Q6.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-23-3IYFN6Q6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887027/interview-assistant/system-design/02/figure-1-3-2P4MNG7C.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-3-2P4MNG7C.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887029/interview-assistant/system-design/02/figure-1-4-2EGRRANZ.webp",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/02/figure-1-4-2EGRRANZ.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887031/interview-assistant/system-design/02/figure-1-5-TJLQVE5N.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-5-TJLQVE5N.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887035/interview-assistant/system-design/02/figure-1-6-L2YNDDKF.png",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/02/figure-1-6-L2YNDDKF.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887036/interview-assistant/system-design/02/figure-1-7-GGNXNZX6.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-7-GGNXNZX6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887040/interview-assistant/system-design/02/figure-1-8-AVKYQBAQ.webp",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/02/figure-1-8-AVKYQBAQ.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887042/interview-assistant/system-design/02/figure-1-9-SA7OOP7O.svg",
+    "source_file": "frontend/system-design/lessons/step-02.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/02/figure-1-9-SA7OOP7O.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887132/interview-assistant/system-design/03/figure-2-1-E4JWSLDE.svg",
+    "source_file": "frontend/system-design/lessons/step-03.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/03/figure-2-1-E4JWSLDE.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887136/interview-assistant/system-design/04/figure-3-1-ZIAGKIG7.png",
+    "source_file": "frontend/system-design/lessons/step-04.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/04/figure-3-1-ZIAGKIG7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887137/interview-assistant/system-design/04/figure-3-2-4TY6XZV7.png",
+    "source_file": "frontend/system-design/lessons/step-04.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/04/figure-3-2-4TY6XZV7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887140/interview-assistant/system-design/04/figure-3-3-OEFRG37K.webp",
+    "source_file": "frontend/system-design/lessons/step-04.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/04/figure-3-3-OEFRG37K.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887142/interview-assistant/system-design/04/figure-3-4-4ZXFIXDU.png",
+    "source_file": "frontend/system-design/lessons/step-04.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/04/figure-3-4-4ZXFIXDU.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887220/interview-assistant/system-design/05/figure-4-10-AI6H6IIX.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-10-AI6H6IIX.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887223/interview-assistant/system-design/05/figure-4-11-R2MDCFXL.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-11-R2MDCFXL.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887226/interview-assistant/system-design/05/figure-4-14-VGQOSEYS.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-14-VGQOSEYS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887144/interview-assistant/system-design/05/figure-4-4-37HFRAED.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-4-37HFRAED.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887147/interview-assistant/system-design/05/figure-4-5-FGZ35C5S.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-5-FGZ35C5S.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887151/interview-assistant/system-design/05/figure-4-6-STPNU6NF.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-6-STPNU6NF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887154/interview-assistant/system-design/05/figure-4-7-AI26NI2Y.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-7-AI26NI2Y.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887158/interview-assistant/system-design/05/figure-4-8-WZZYUXFU.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-8-WZZYUXFU.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887199/interview-assistant/system-design/05/figure-4-9-52MK6L22.svg",
+    "source_file": "frontend/system-design/lessons/step-05.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/05/figure-4-9-52MK6L22.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887247/interview-assistant/system-design/06/figure-5-1-JYB5LSFH.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-1-JYB5LSFH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887308/interview-assistant/system-design/06/figure-5-10-FCDAIIM2.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-10-FCDAIIM2.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887310/interview-assistant/system-design/06/figure-5-11-BZXRZPW7.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-11-BZXRZPW7.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887313/interview-assistant/system-design/06/figure-5-12-JS3PL6KQ.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-12-JS3PL6KQ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887315/interview-assistant/system-design/06/figure-5-13-EH76K4PV.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-13-EH76K4PV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887318/interview-assistant/system-design/06/figure-5-14-HZNKA3J3.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-14-HZNKA3J3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887339/interview-assistant/system-design/06/figure-5-15-PNWYOYZO.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-15-PNWYOYZO.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887266/interview-assistant/system-design/06/figure-5-2-25DSOGUM.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-2-25DSOGUM.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887269/interview-assistant/system-design/06/figure-5-3-REYWWCBF.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-3-REYWWCBF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887272/interview-assistant/system-design/06/figure-5-4-IYSYQWO7.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-4-IYSYQWO7.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887275/interview-assistant/system-design/06/figure-5-5-4LOAYCHE.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-5-4LOAYCHE.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887296/interview-assistant/system-design/06/figure-5-6-SDSBYUI6.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-6-SDSBYUI6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887298/interview-assistant/system-design/06/figure-5-7-OIUSEHJP.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-7-OIUSEHJP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887302/interview-assistant/system-design/06/figure-5-8-OBPLVFJF.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-8-OBPLVFJF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887305/interview-assistant/system-design/06/figure-5-9-NK63F2OI.svg",
+    "source_file": "frontend/system-design/lessons/step-06.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/06/figure-5-9-NK63F2OI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887341/interview-assistant/system-design/07/figure-6-1-D3AZLP5W.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-1-D3AZLP5W.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887388/interview-assistant/system-design/07/figure-6-10-U4WMW34H.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-10-U4WMW34H.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887391/interview-assistant/system-design/07/figure-6-11-SHKPJFQN.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-11-SHKPJFQN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887393/interview-assistant/system-design/07/figure-6-12-TCHVLATH.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-12-TCHVLATH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887397/interview-assistant/system-design/07/figure-6-13-2LCEPIWQ.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-13-2LCEPIWQ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887400/interview-assistant/system-design/07/figure-6-14-S2QAQ6NW.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-14-S2QAQ6NW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887403/interview-assistant/system-design/07/figure-6-15-I46TOGGB.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-15-I46TOGGB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887425/interview-assistant/system-design/07/figure-6-16-5GFGLUJW.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-16-5GFGLUJW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887428/interview-assistant/system-design/07/figure-6-17-727LAZC5.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-17-727LAZC5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887431/interview-assistant/system-design/07/figure-6-18-VIXXZUFG.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-18-VIXXZUFG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887433/interview-assistant/system-design/07/figure-6-19-L5VIQL76.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-19-L5VIQL76.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887344/interview-assistant/system-design/07/figure-6-2-KZYRLJFF.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-2-KZYRLJFF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887455/interview-assistant/system-design/07/figure-6-20-CMQ6VUZJ.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-20-CMQ6VUZJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887457/interview-assistant/system-design/07/figure-6-21-WBKMXPRG.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-21-WBKMXPRG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887346/interview-assistant/system-design/07/figure-6-3-3AXO446L.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-3-3AXO446L.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887349/interview-assistant/system-design/07/figure-6-4-SVUGPDYI.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-4-SVUGPDYI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887353/interview-assistant/system-design/07/figure-6-5-NG3WIQQO.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-5-NG3WIQQO.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887357/interview-assistant/system-design/07/figure-6-6-RNMG7AUI.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-6-RNMG7AUI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887360/interview-assistant/system-design/07/figure-6-7-MX7NGSSF.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-7-MX7NGSSF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887364/interview-assistant/system-design/07/figure-6-8-WXAQYDBT.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-8-WXAQYDBT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887385/interview-assistant/system-design/07/figure-6-9-APUHGGQW.svg",
+    "source_file": "frontend/system-design/lessons/step-07.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/07/figure-6-9-APUHGGQW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887461/interview-assistant/system-design/08/figure-7-1-VGKGPLH3.svg",
+    "source_file": "frontend/system-design/lessons/step-08.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/08/figure-7-1-VGKGPLH3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887464/interview-assistant/system-design/08/figure-7-2-4ZOIVNTR.svg",
+    "source_file": "frontend/system-design/lessons/step-08.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/08/figure-7-2-4ZOIVNTR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887467/interview-assistant/system-design/08/figure-7-3-Y3ZNPIH3.svg",
+    "source_file": "frontend/system-design/lessons/step-08.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/08/figure-7-3-Y3ZNPIH3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887469/interview-assistant/system-design/08/figure-7-4-TJJLCKSS.svg",
+    "source_file": "frontend/system-design/lessons/step-08.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/08/figure-7-4-TJJLCKSS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887489/interview-assistant/system-design/08/figure-7-5-R4B5RGNK.svg",
+    "source_file": "frontend/system-design/lessons/step-08.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/08/figure-7-5-R4B5RGNK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887491/interview-assistant/system-design/08/figure-7-6-33JFUIC3.svg",
+    "source_file": "frontend/system-design/lessons/step-08.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/08/figure-7-6-33JFUIC3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887494/interview-assistant/system-design/08/figure-7-7-PNNDQIF5.svg",
+    "source_file": "frontend/system-design/lessons/step-08.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/08/figure-7-7-PNNDQIF5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887498/interview-assistant/system-design/09/figure-8-1-GSSWK66W.svg",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/09/figure-8-1-GSSWK66W.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887501/interview-assistant/system-design/09/figure-8-2-KMMJ65HT.png",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/09/figure-8-2-KMMJ65HT.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887503/interview-assistant/system-design/09/figure-8-3-YHOCRGSP.svg",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/09/figure-8-3-YHOCRGSP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887505/interview-assistant/system-design/09/figure-8-4-3R6D55TD.svg",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/09/figure-8-4-3R6D55TD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887508/interview-assistant/system-design/09/figure-8-5-KWG6EFZC.svg",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/09/figure-8-5-KWG6EFZC.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887511/interview-assistant/system-design/09/figure-8-6-OHTOBFS7.svg",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/09/figure-8-6-OHTOBFS7.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887531/interview-assistant/system-design/09/figure-8-7-A3ZKM2XP.svg",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/09/figure-8-7-A3ZKM2XP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887534/interview-assistant/system-design/09/figure-8-8-VBPJ6PXY.png",
+    "source_file": "frontend/system-design/lessons/step-09.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/09/figure-8-8-VBPJ6PXY.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887536/interview-assistant/system-design/10/figure-9-1-SY5VC26X.png",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/10/figure-9-1-SY5VC26X.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887619/interview-assistant/system-design/10/figure-9-10-5LXJJMYX.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-10-5LXJJMYX.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887538/interview-assistant/system-design/10/figure-9-2-U6DZBW26.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-2-U6DZBW26.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887542/interview-assistant/system-design/10/figure-9-3-NSRQJPYK.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-3-NSRQJPYK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887547/interview-assistant/system-design/10/figure-9-4-OKNDJITV.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-4-OKNDJITV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887550/interview-assistant/system-design/10/figure-9-5-65ZDPY5L.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-5-65ZDPY5L.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887589/interview-assistant/system-design/10/figure-9-6-4NQUTTWR.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-6-4NQUTTWR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887610/interview-assistant/system-design/10/figure-9-7-H7KUNVWF.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-7-H7KUNVWF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887612/interview-assistant/system-design/10/figure-9-8-Y4EGITZY.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-8-Y4EGITZY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887616/interview-assistant/system-design/10/figure-9-9-TCZ34KRE.svg",
+    "source_file": "frontend/system-design/lessons/step-10.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/10/figure-9-9-TCZ34KRE.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887623/interview-assistant/system-design/11/figure-10-1-4EEWILYD.svg",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/11/figure-10-1-4EEWILYD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887698/interview-assistant/system-design/11/figure-10-10-VPOYUWTG.png",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/11/figure-10-10-VPOYUWTG.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887700/interview-assistant/system-design/11/figure-10-11-IAFMAASK.svg",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/11/figure-10-11-IAFMAASK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887703/interview-assistant/system-design/11/figure-10-12-WMFNVPQI.svg",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/11/figure-10-12-WMFNVPQI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887706/interview-assistant/system-design/11/figure-10-13-LUL4UIPV.svg",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/11/figure-10-13-LUL4UIPV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887709/interview-assistant/system-design/11/figure-10-14-XSG2DEDM.webp",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/11/figure-10-14-XSG2DEDM.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887626/interview-assistant/system-design/11/figure-10-2-LRDI5SEA.png",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/11/figure-10-2-LRDI5SEA.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887645/interview-assistant/system-design/11/figure-10-3-5PEUMLEX.png",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/11/figure-10-3-5PEUMLEX.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887646/interview-assistant/system-design/11/figure-10-4-VBM7JWLQ.png",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/11/figure-10-4-VBM7JWLQ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887648/interview-assistant/system-design/11/figure-10-5-XJUEYKYB.png",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/11/figure-10-5-XJUEYKYB.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887650/interview-assistant/system-design/11/figure-10-6-OWRSE4LF.png",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/11/figure-10-6-OWRSE4LF.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887652/interview-assistant/system-design/11/figure-10-7-W32A7UNW.png",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/11/figure-10-7-W32A7UNW.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887691/interview-assistant/system-design/11/figure-10-8-GYVHLNWP.svg",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/11/figure-10-8-GYVHLNWP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887696/interview-assistant/system-design/11/figure-10-9-62C2GFUU.webp",
+    "source_file": "frontend/system-design/lessons/step-11.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/11/figure-10-9-62C2GFUU.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887712/interview-assistant/system-design/12/figure-11-1-UFCYN5DT.svg",
+    "source_file": "frontend/system-design/lessons/step-12.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/12/figure-11-1-UFCYN5DT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887715/interview-assistant/system-design/12/figure-11-2-DHBRUF3G.png",
+    "source_file": "frontend/system-design/lessons/step-12.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/12/figure-11-2-DHBRUF3G.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887720/interview-assistant/system-design/12/figure-11-3-DJSVC462.png",
+    "source_file": "frontend/system-design/lessons/step-12.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/12/figure-11-3-DJSVC462.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887723/interview-assistant/system-design/12/figure-11-4-XQVJN6AJ.png",
+    "source_file": "frontend/system-design/lessons/step-12.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/12/figure-11-4-XQVJN6AJ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887762/interview-assistant/system-design/12/figure-11-5-RFHWCGXD.svg",
+    "source_file": "frontend/system-design/lessons/step-12.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/12/figure-11-5-RFHWCGXD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887766/interview-assistant/system-design/12/figure-11-7-VBGEYZ3E.png",
+    "source_file": "frontend/system-design/lessons/step-12.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/12/figure-11-7-VBGEYZ3E.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887769/interview-assistant/system-design/12/figure-11-8-XPCIBE53.svg",
+    "source_file": "frontend/system-design/lessons/step-12.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/12/figure-11-8-XPCIBE53.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887772/interview-assistant/system-design/13/figure-12-1-J3Z5T7TL.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-1-J3Z5T7TL.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887793/interview-assistant/system-design/13/figure-12-10-2TIQVS3D.webp",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/13/figure-12-10-2TIQVS3D.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887832/interview-assistant/system-design/13/figure-12-11-FGGY42QW.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-11-FGGY42QW.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887834/interview-assistant/system-design/13/figure-12-12-5BTRQZRL.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-12-5BTRQZRL.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887836/interview-assistant/system-design/13/figure-12-13-YB54XAJ3.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-13-YB54XAJ3.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887838/interview-assistant/system-design/13/figure-12-14-DRZR5QM7.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-14-DRZR5QM7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887839/interview-assistant/system-design/13/figure-12-15-WJ6BSAG2.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-15-WJ6BSAG2.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887842/interview-assistant/system-design/13/figure-12-16-IUZRWUV6.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-16-IUZRWUV6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887844/interview-assistant/system-design/13/figure-12-17-GJTW7H57.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-17-GJTW7H57.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887845/interview-assistant/system-design/13/figure-12-18-CTDI4PAJ.svg",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/13/figure-12-18-CTDI4PAJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887851/interview-assistant/system-design/13/figure-12-19-KY63S3WN.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-19-KY63S3WN.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887774/interview-assistant/system-design/13/figure-12-2-CA3ZOSQI.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-2-CA3ZOSQI.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887776/interview-assistant/system-design/13/figure-12-3-WYSR7WB4.svg",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/13/figure-12-3-WYSR7WB4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887779/interview-assistant/system-design/13/figure-12-4-6KL7KY4X.svg",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/13/figure-12-4-6KL7KY4X.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887782/interview-assistant/system-design/13/figure-12-5-VPDI2T2E.svg",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/13/figure-12-5-VPDI2T2E.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887785/interview-assistant/system-design/13/figure-12-6-6UUW2AUS.webp",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/13/figure-12-6-6UUW2AUS.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887787/interview-assistant/system-design/13/figure-12-7-YA7UWFS6.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-7-YA7UWFS6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887790/interview-assistant/system-design/13/figure-12-8-3R5ORNVB.png",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/13/figure-12-8-3R5ORNVB.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887791/interview-assistant/system-design/13/figure-12-9-356WMC2A.webp",
+    "source_file": "frontend/system-design/lessons/step-13.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/13/figure-12-9-356WMC2A.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887853/interview-assistant/system-design/14/figure-13-1-KCZCT7DP.png",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/14/figure-13-1-KCZCT7DP.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887895/interview-assistant/system-design/14/figure-13-10-JX4JXRHK.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-10-JX4JXRHK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887899/interview-assistant/system-design/14/figure-13-11-S7BTGS2A.png",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/14/figure-13-11-S7BTGS2A.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887901/interview-assistant/system-design/14/figure-13-12-IKMFWP5J.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-12-IKMFWP5J.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887904/interview-assistant/system-design/14/figure-13-13-IHQGNBZV.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-13-IHQGNBZV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887907/interview-assistant/system-design/14/figure-13-14-TDM2D22J.jpg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/14/figure-13-14-TDM2D22J.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887909/interview-assistant/system-design/14/figure-13-15-6H4WZOA6.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-15-6H4WZOA6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887854/interview-assistant/system-design/14/figure-13-2-5FQ3SDWF.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-2-5FQ3SDWF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887857/interview-assistant/system-design/14/figure-13-3-P3IEBIJH.png",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/14/figure-13-3-P3IEBIJH.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887859/interview-assistant/system-design/14/figure-13-4-QFNBMQOX.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-4-QFNBMQOX.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887879/interview-assistant/system-design/14/figure-13-5-6HIZZOES.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-5-6HIZZOES.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887882/interview-assistant/system-design/14/figure-13-6-M5EZD5SL.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-6-M5EZD5SL.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887885/interview-assistant/system-design/14/figure-13-7-KXYAA5K3.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-7-KXYAA5K3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887888/interview-assistant/system-design/14/figure-13-8-4HDDZCTY.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-8-4HDDZCTY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887891/interview-assistant/system-design/14/figure-13-9-O7NXHK4L.svg",
+    "source_file": "frontend/system-design/lessons/step-14.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/14/figure-13-9-O7NXHK4L.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887913/interview-assistant/system-design/15/figure-14-1-POM4N7ME.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-1-POM4N7ME.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887949/interview-assistant/system-design/15/figure-14-10-YWOCJMVV.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-10-YWOCJMVV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887951/interview-assistant/system-design/15/figure-14-11-VKQRKCM2.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-11-VKQRKCM2.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887971/interview-assistant/system-design/15/figure-14-12-FKWX3DRN.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-12-FKWX3DRN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888011/interview-assistant/system-design/15/figure-14-13-LRTFEHXK.webp",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/15/figure-14-13-LRTFEHXK.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888013/interview-assistant/system-design/15/figure-14-14-TZNQCING.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-14-TZNQCING.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888016/interview-assistant/system-design/15/figure-14-15-DBQMPINY.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-15-DBQMPINY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888018/interview-assistant/system-design/15/figure-14-16-D65ZJKSR.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-16-D65ZJKSR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888021/interview-assistant/system-design/15/figure-14-17-RHMGJC6L.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-17-RHMGJC6L.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888042/interview-assistant/system-design/15/figure-14-18-24OH4P2W.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-18-24OH4P2W.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888045/interview-assistant/system-design/15/figure-14-19-Y5ZPZAJT.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-19-Y5ZPZAJT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887915/interview-assistant/system-design/15/figure-14-2-DVJHFDA4.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-2-DVJHFDA4.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888048/interview-assistant/system-design/15/figure-14-20-VAG7ZAYZ.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-20-VAG7ZAYZ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888052/interview-assistant/system-design/15/figure-14-21-AZ4TQFF2.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-21-AZ4TQFF2.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888054/interview-assistant/system-design/15/figure-14-22-3EM25VLA.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-22-3EM25VLA.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888057/interview-assistant/system-design/15/figure-14-23-YQDZDVEV.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-23-YQDZDVEV.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888060/interview-assistant/system-design/15/figure-14-24-LIPZPHHR.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-24-LIPZPHHR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888063/interview-assistant/system-design/15/figure-14-25-4VSMBFLW.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-25-4VSMBFLW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888085/interview-assistant/system-design/15/figure-14-26-DQ2B7KIJ.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-26-DQ2B7KIJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888089/interview-assistant/system-design/15/figure-14-27-GVQ6JW3A.webp",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/15/figure-14-27-GVQ6JW3A.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888090/interview-assistant/system-design/15/figure-14-28-Q7VI7TYL.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-28-Q7VI7TYL.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887916/interview-assistant/system-design/15/figure-14-3-S2A555CM.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-3-S2A555CM.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887918/interview-assistant/system-design/15/figure-14-4-ADSJBRI3.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-4-ADSJBRI3.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887920/interview-assistant/system-design/15/figure-14-5-PWL5A5PM.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-5-PWL5A5PM.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887922/interview-assistant/system-design/15/figure-14-6-IK5S43FH.png",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/15/figure-14-6-IK5S43FH.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887924/interview-assistant/system-design/15/figure-14-7-25E4UND4.webp",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/15/figure-14-7-25E4UND4.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887944/interview-assistant/system-design/15/figure-14-8-6TUJKWRP.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-8-6TUJKWRP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776887946/interview-assistant/system-design/15/figure-14-9-363XWSRP.svg",
+    "source_file": "frontend/system-design/lessons/step-15.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/15/figure-14-9-363XWSRP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888096/interview-assistant/system-design/16/figure-15-1-VUB67E7Q.png",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/16/figure-15-1-VUB67E7Q.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888135/interview-assistant/system-design/16/figure-15-10-2WLH5XOU.png",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/16/figure-15-10-2WLH5XOU.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888137/interview-assistant/system-design/16/figure-15-11-BEAEA7OA.png",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/16/figure-15-11-BEAEA7OA.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888139/interview-assistant/system-design/16/figure-15-12-D5XZ44NY.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-12-D5XZ44NY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888143/interview-assistant/system-design/16/figure-15-13-CIXDH45A.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-13-CIXDH45A.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888146/interview-assistant/system-design/16/figure-15-14-5VZHP7AD.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-14-5VZHP7AD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888150/interview-assistant/system-design/16/figure-15-15-UVIR3ZHW.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-15-UVIR3ZHW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888093/interview-assistant/system-design/16/figure-15-2-P45WHNY7.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-2-P45WHNY7.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888098/interview-assistant/system-design/16/figure-15-3-UCYFVHR2.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-3-UCYFVHR2.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888118/interview-assistant/system-design/16/figure-15-4-VPBWB2FK.png",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/16/figure-15-4-VPBWB2FK.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888119/interview-assistant/system-design/16/figure-15-5-JX5ZE3VR.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-5-JX5ZE3VR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888122/interview-assistant/system-design/16/figure-15-6-CUJNKWVX.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-6-CUJNKWVX.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888125/interview-assistant/system-design/16/figure-15-7-FNASJ54U.png",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/16/figure-15-7-FNASJ54U.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888128/interview-assistant/system-design/16/figure-15-8-E3QIHG3J.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-8-E3QIHG3J.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888132/interview-assistant/system-design/16/figure-15-9-K34FLC6R.svg",
+    "source_file": "frontend/system-design/lessons/step-16.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/16/figure-15-9-K34FLC6R.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888276/interview-assistant/system-design/17/chapter-summary-CNKPFTKZ.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/chapter-summary-CNKPFTKZ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888153/interview-assistant/system-design/17/figure-1-neary-search-on-yelp-PIX55ZBV.jpg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/17/figure-1-neary-search-on-yelp-PIX55ZBV.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888176/interview-assistant/system-design/17/figure-10-no-shared-prefix-MFLTKKDZ.jpg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/17/figure-10-no-shared-prefix-MFLTKKDZ.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888178/interview-assistant/system-design/17/figure-11-boundary-issue-XJWRE2EX.webp",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/17/figure-11-boundary-issue-XJWRE2EX.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888197/interview-assistant/system-design/17/figure-12-expand-the-search-process-ZN5TJYNX.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-12-expand-the-search-process-ZN5TJYNX.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888199/interview-assistant/system-design/17/figure-13-quadtree-MWKA5XCK.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-13-quadtree-MWKA5XCK.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888201/interview-assistant/system-design/17/figure-14-build-quadtree-ZV3JS35E.svg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/17/figure-14-build-quadtree-ZV3JS35E.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888204/interview-assistant/system-design/17/figure-15-real-world-example-of-a-quadtree-WENVCDJ2.webp",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/17/figure-15-real-world-example-of-a-quadtree-WENVCDJ2.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888207/interview-assistant/system-design/17/figure-16-hilbert-curve-A42ZBOV2.jpg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/17/figure-16-hilbert-curve-A42ZBOV2.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888208/interview-assistant/system-design/17/figure-17-geofence-PIWNFXYE.jpg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/17/figure-17-geofence-PIWNFXYE.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888210/interview-assistant/system-design/17/figure-18-remove-a-business-ELAJOMXR.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-18-remove-a-business-ELAJOMXR.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888212/interview-assistant/system-design/17/figure-19-update-quadtree-OCBKLCXE.svg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/17/figure-19-update-quadtree-OCBKLCXE.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888156/interview-assistant/system-design/17/figure-2-high-level-design-OLWE4F2G.svg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/17/figure-2-high-level-design-OLWE4F2G.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888235/interview-assistant/system-design/17/figure-20-deploy-lbs-closer-to-the-user-OVZHVKZ6.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-20-deploy-lbs-closer-to-the-user-OVZHVKZ6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888237/interview-assistant/system-design/17/figure-21-design-diagram-ORKTOGMW.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-21-design-diagram-ORKTOGMW.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888160/interview-assistant/system-design/17/figure-3-two-dimensional-search-UCK2KWKU.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-3-two-dimensional-search-UCK2KWKU.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888162/interview-assistant/system-design/17/figure-4-intersect-two-datasets-XGXW3FF3.jpg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/17/figure-4-intersect-two-datasets-XGXW3FF3.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888164/interview-assistant/system-design/17/figure-5-different-types-of-geospatial-indexes-FFADHPSV.svg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/17/figure-5-different-types-of-geospatial-indexes-FFADHPSV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888167/interview-assistant/system-design/17/figure-6-global-map-NWAMEPOX.jpg",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/17/figure-6-global-map-NWAMEPOX.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888169/interview-assistant/system-design/17/figure-7-geohash-XY4L6XHV.webp",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/17/figure-7-geohash-XY4L6XHV.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888171/interview-assistant/system-design/17/figure-8-divide-grid-Z5AJ3TFS.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-8-divide-grid-Z5AJ3TFS.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888174/interview-assistant/system-design/17/figure-9-shared-prefix-K37LAGTS.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/figure-9-shared-prefix-K37LAGTS.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888216/interview-assistant/system-design/17/table-10-business_id-is-a-single-id-3ZNAELVH.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/table-10-business_id-is-a-single-id-3ZNAELVH.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888154/interview-assistant/system-design/17/table-3-business-table-72LHQZZP.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/table-3-business-table-72LHQZZP.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888214/interview-assistant/system-design/17/table-9-list_of_business_ids-is-a-json-array-HUAEOYZJ.png",
+    "source_file": "frontend/system-design/lessons/step-17.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/17/table-9-list_of_business_ids-is-a-json-array-HUAEOYZJ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888454/interview-assistant/system-design/18/chapter-summary-YIHPTBWL.webp",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/18/chapter-summary-YIHPTBWL.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888279/interview-assistant/system-design/18/figure-1-facebook-nearby-friends-XALOYO46.webp",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/18/figure-1-facebook-nearby-friends-XALOYO46.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888405/interview-assistant/system-design/18/figure-10-figure-out-the-correct-redis-pub-sub-server-2WS7WJK6.png",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/18/figure-10-figure-out-the-correct-redis-pub-sub-server-2WS7WJK6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888407/interview-assistant/system-design/18/figure-11-replace-pub-sub-server-CIN6EUJH.png",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/18/figure-11-replace-pub-sub-server-CIN6EUJH.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888410/interview-assistant/system-design/18/figure-12-redis-pub-sub-channels-AHZA4ALB.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-12-redis-pub-sub-channels-AHZA4ALB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888430/interview-assistant/system-design/18/figure-13-publish-location-update-to-random-nearby-person-F2B3VI3L.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-13-publish-location-update-to-random-nearby-person-F2B3VI3L.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888435/interview-assistant/system-design/18/figure-14-nine-geohash-grids-IGQKWUYU.png",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/18/figure-14-nine-geohash-grids-IGQKWUYU.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888281/interview-assistant/system-design/18/figure-2-peer-to-peer-TDFPCCFK.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-2-peer-to-peer-TDFPCCFK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888284/interview-assistant/system-design/18/figure-3-shared-backend-JI6MRFAF.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-3-shared-backend-JI6MRFAF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888288/interview-assistant/system-design/18/figure-4-high-level-design-35BO5JE4.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-4-high-level-design-35BO5JE4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888309/interview-assistant/system-design/18/figure-5-restful-api-request-flow-SL4EZ27Z.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-5-restful-api-request-flow-SL4EZ27Z.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888312/interview-assistant/system-design/18/figure-6-redis-pub-sub-KDAMADYD.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-6-redis-pub-sub-KDAMADYD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888397/interview-assistant/system-design/18/figure-7-periodic-location-update-KBIO53BB.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-7-periodic-location-update-KBIO53BB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888400/interview-assistant/system-design/18/figure-8-send-location-update-to-friends-DUUPBXZN.svg",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/18/figure-8-send-location-update-to-friends-DUUPBXZN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888403/interview-assistant/system-design/18/figure-9-consistent-hashing-LKSFU4ZN.png",
+    "source_file": "frontend/system-design/lessons/step-18.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/18/figure-9-consistent-hashing-LKSFU4ZN.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888602/interview-assistant/system-design/19/chapter-summary-PQLESOHW.png",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/19/chapter-summary-PQLESOHW.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888456/interview-assistant/system-design/19/figure-1-latitude-and-longitude-3HRLJEPU.jpg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/19/figure-1-latitude-and-longitude-3HRLJEPU.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888554/interview-assistant/system-design/19/figure-10-cdn-RT3AMXIB.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-10-cdn-RT3AMXIB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888557/interview-assistant/system-design/19/figure-11-without-cdn-vs-with-cdn-SHVP3SHZ.png",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/19/figure-11-without-cdn-vs-with-cdn-SHVP3SHZ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888576/interview-assistant/system-design/19/figure-12-map-rendering-CHTHBLFS.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-12-map-rendering-CHTHBLFS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888580/interview-assistant/system-design/19/figure-13-precomputed-tiles-WXTG5KSB.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-13-precomputed-tiles-WXTG5KSB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888583/interview-assistant/system-design/19/figure-15-location-data-is-used-by-other-services-EREYYC3G.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-15-location-data-is-used-by-other-services-EREYYC3G.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888587/interview-assistant/system-design/19/figure-16-zoom-levels-QGEJ7C5F.jpg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/19/figure-16-zoom-levels-QGEJ7C5F.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888588/interview-assistant/system-design/19/figure-17-navigation-service-MW336TYJ.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-17-navigation-service-MW336TYJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888592/interview-assistant/system-design/19/figure-18-graph-traversal-32VJU57E.jpg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/19/figure-18-graph-traversal-32VJU57E.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888593/interview-assistant/system-design/19/figure-19-navigation-route-SM4SJVK3.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-19-navigation-route-SM4SJVK3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888476/interview-assistant/system-design/19/figure-2-map-projectionse-BEFJVLCR.png",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/19/figure-2-map-projectionse-BEFJVLCR.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888597/interview-assistant/system-design/19/figure-20-build-routing-tiles-F7ZG5KH4.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-20-build-routing-tiles-F7ZG5KH4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888599/interview-assistant/system-design/19/figure-21-final-design-IORF6NBL.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-21-final-design-IORF6NBL.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888478/interview-assistant/system-design/19/figure-3-geohashing-LXRUGRGR.jpg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/19/figure-3-geohashing-LXRUGRGR.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888519/interview-assistant/system-design/19/figure-4-map-as-a-graph-DP2SPNZU.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-4-map-as-a-graph-DP2SPNZU.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888523/interview-assistant/system-design/19/figure-5-routing-tiles-BDKBAEUR.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-5-routing-tiles-BDKBAEUR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888527/interview-assistant/system-design/19/figure-6-routing-tiles-of-varying-sizes-T5ONSL2L.jpg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "jpg",
+    "proposed_s3_key": "system-design/19/figure-6-routing-tiles-of-varying-sizes-T5ONSL2L.jpg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888546/interview-assistant/system-design/19/figure-7-high-level-design-QJSXR6J4.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-7-high-level-design-QJSXR6J4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888549/interview-assistant/system-design/19/figure-8-location-service-OYEBRJD3.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-8-location-service-OYEBRJD3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888552/interview-assistant/system-design/19/figure-9-batch-requests-JJ26U6BQ.svg",
+    "source_file": "frontend/system-design/lessons/step-19.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/19/figure-9-batch-requests-JJ26U6BQ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888884/interview-assistant/system-design/20/chapter-summary-CUMXKARP.png",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/20/chapter-summary-CUMXKARP.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888604/interview-assistant/system-design/20/figure-1-popular-distributed-message-queues-NHCVSN5F.png",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/20/figure-1-popular-distributed-message-queues-NHCVSN5F.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888703/interview-assistant/system-design/20/figure-10-data-segment-file-distribution-in-topic-partitions-TZBXX5CG.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-10-data-segment-file-distribution-in-topic-partitions-TZBXX5CG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888706/interview-assistant/system-design/20/figure-11-routing-layer-LA4CPIQY.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-11-routing-layer-LA4CPIQY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888726/interview-assistant/system-design/20/figure-12-producer-with-buffer-and-routing-TEGPFRV4.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-12-producer-with-buffer-and-routing-TEGPFRV4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888729/interview-assistant/system-design/20/figure-13-the-choice-of-the-batch-size-EERC6LE5.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-13-the-choice-of-the-batch-size-EERC6LE5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888731/interview-assistant/system-design/20/figure-14-consumer-flow-R7FTOUWG.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-14-consumer-flow-R7FTOUWG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888734/interview-assistant/system-design/20/figure-15-pull-model-R7AR2RKW.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-15-pull-model-R7AR2RKW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888754/interview-assistant/system-design/20/figure-16-coordinator-of-consumer-groups-NBLTTJF7.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-16-coordinator-of-consumer-groups-NBLTTJF7.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888757/interview-assistant/system-design/20/figure-17-consumer-rebalance-TXRF6U5L.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-17-consumer-rebalance-TXRF6U5L.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888760/interview-assistant/system-design/20/figure-18-new-consumer-joins-RTLIWBQS.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-18-new-consumer-joins-RTLIWBQS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888763/interview-assistant/system-design/20/figure-19-existing-consumer-leaves-THOA2BTG.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-19-existing-consumer-leaves-THOA2BTG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888606/interview-assistant/system-design/20/figure-2-key-components-in-a-message-queue-EVGQ4EYZ.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-2-key-components-in-a-message-queue-EVGQ4EYZ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888765/interview-assistant/system-design/20/figure-20-existing-consumer-crashes-TCUIE3U5.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-20-existing-consumer-crashes-TCUIE3U5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888768/interview-assistant/system-design/20/figure-21-last-consumed-offset-of-consumer-groups-VMQCMBNR.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-21-last-consumed-offset-of-consumer-groups-VMQCMBNR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888771/interview-assistant/system-design/20/figure-22-zookeeper-UZGQ22ZY.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-22-zookeeper-UZGQ22ZY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888774/interview-assistant/system-design/20/figure-23-replication-7QLW3XIH.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-23-replication-7QLW3XIH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888776/interview-assistant/system-design/20/figure-24-how-isr-works-QVUWXQ6W.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-24-how-isr-works-QVUWXQ6W.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888796/interview-assistant/system-design/20/figure-25-ack-all-O4UUVPX5.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-25-ack-all-O4UUVPX5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888799/interview-assistant/system-design/20/figure-26-ack-1-MPIADGCG.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-26-ack-1-MPIADGCG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888839/interview-assistant/system-design/20/figure-27-ack-0-KMQEZDTJ.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-27-ack-0-KMQEZDTJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888842/interview-assistant/system-design/20/figure-28-broker-node-crashes-AVEQQUXB.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-28-broker-node-crashes-AVEQQUXB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888846/interview-assistant/system-design/20/figure-29-add-new-broker-node-M6LJQ27W.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-29-add-new-broker-node-M6LJQ27W.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888608/interview-assistant/system-design/20/figure-3-point-to-point-model-RKDLREMI.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-3-point-to-point-model-RKDLREMI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888848/interview-assistant/system-design/20/figure-30-partition-increase-GHEZJURI.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-30-partition-increase-GHEZJURI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888851/interview-assistant/system-design/20/figure-31-partition-decrease-5BIKBEGT.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-31-partition-decrease-5BIKBEGT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888853/interview-assistant/system-design/20/figure-32-at-most-once-K2T4LCNS.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-32-at-most-once-K2T4LCNS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888856/interview-assistant/system-design/20/figure-33-at-least-once-RET6CWUQ.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-33-at-least-once-RET6CWUQ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888859/interview-assistant/system-design/20/figure-34-exactly-once-TVG4DWIJ.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-34-exactly-once-TVG4DWIJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888862/interview-assistant/system-design/20/figure-35-message-filtering-by-tags-KGQRK6OD.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-35-message-filtering-by-tags-KGQRK6OD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888864/interview-assistant/system-design/20/figure-36-delayed-messages-DVK62AVT.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-36-delayed-messages-DVK62AVT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888647/interview-assistant/system-design/20/figure-4-publish-subscribe-model-HKA6TRGS.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-4-publish-subscribe-model-HKA6TRGS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888686/interview-assistant/system-design/20/figure-5-partitions-53G6JYSP.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-5-partitions-53G6JYSP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888689/interview-assistant/system-design/20/figure-6-message-queue-cluster-B3TAY3V2.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-6-message-queue-cluster-B3TAY3V2.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888693/interview-assistant/system-design/20/figure-7-consumer-groups-BBTZB7CF.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-7-consumer-groups-BBTZB7CF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888696/interview-assistant/system-design/20/figure-8-high-level-design-5GF6PDU2.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-8-high-level-design-5GF6PDU2.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888700/interview-assistant/system-design/20/figure-9-append-new-messages-7IQA6BDN.svg",
+    "source_file": "frontend/system-design/lessons/step-20.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/20/figure-9-append-new-messages-7IQA6BDN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888997/interview-assistant/system-design/21/chapter-summary-W7L5LHM3.png",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/21/chapter-summary-W7L5LHM3.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888887/interview-assistant/system-design/21/figure-1-popular-metrics-monitoring-and-alerting-services-TAZBQ5OC.png",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/21/figure-1-popular-metrics-monitoring-and-alerting-services-TAZBQ5OC.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888927/interview-assistant/system-design/21/figure-10-pull-model-in-detail-DLFOSFKN.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-10-pull-model-in-detail-DLFOSFKN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888930/interview-assistant/system-design/21/figure-11-consistent-hashing-ZNCJBMK3.png",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/21/figure-11-consistent-hashing-ZNCJBMK3.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888931/interview-assistant/system-design/21/figure-12-push-model-BT4OPMTB.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-12-push-model-BT4OPMTB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888934/interview-assistant/system-design/21/figure-13-load-balancer-PRCVTUJJ.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-13-load-balancer-PRCVTUJJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888938/interview-assistant/system-design/21/figure-14-metrics-transmission-pipeline-UCGFUXRF.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-14-metrics-transmission-pipeline-UCGFUXRF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888941/interview-assistant/system-design/21/figure-15-add-queues-X32N6UM5.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-15-add-queues-X32N6UM5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888943/interview-assistant/system-design/21/figure-16-kafka-partition-YTQUBKKN.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-16-kafka-partition-YTQUBKKN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888946/interview-assistant/system-design/21/figure-17-cache-layer-QNXQFTQK.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-17-cache-layer-QNXQFTQK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888966/interview-assistant/system-design/21/figure-18-data-encoding-B45QOSIH.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-18-data-encoding-B45QOSIH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888968/interview-assistant/system-design/21/figure-19-alerting-system-HCBLCMMP.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-19-alerting-system-HCBLCMMP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888906/interview-assistant/system-design/21/figure-2-five-components-of-the-system-4UF4TGR7.png",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/21/figure-2-five-components-of-the-system-4UF4TGR7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888989/interview-assistant/system-design/21/figure-20-merge-alerts-NZGFQ4S3.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-20-merge-alerts-NZGFQ4S3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888992/interview-assistant/system-design/21/figure-21-grafana-ui-NWP2X5V6.png",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/21/figure-21-grafana-ui-NWP2X5V6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888994/interview-assistant/system-design/21/figure-22-final-design-777Y6AAM.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-22-final-design-777Y6AAM.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888908/interview-assistant/system-design/21/figure-3-cpu-load-7S6NAAND.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-3-cpu-load-7S6NAAND.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888911/interview-assistant/system-design/21/figure-4-data-access-pattern-6W53MWUY.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-4-data-access-pattern-6W53MWUY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888914/interview-assistant/system-design/21/figure-5-influxdb-benchmarking-THBHSESS.png",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/21/figure-5-influxdb-benchmarking-THBHSESS.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888915/interview-assistant/system-design/21/figure-6-high-level-design-NO6K42P6.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-6-high-level-design-NO6K42P6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888919/interview-assistant/system-design/21/figure-7-metrics-collection-flow-AERNBFZG.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-7-metrics-collection-flow-AERNBFZG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888922/interview-assistant/system-design/21/figure-8-pull-model-JCYTADKY.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-8-pull-model-JCYTADKY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888925/interview-assistant/system-design/21/figure-9-service-discovery-DXWPRSYP.svg",
+    "source_file": "frontend/system-design/lessons/step-21.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/21/figure-9-service-discovery-DXWPRSYP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889229/interview-assistant/system-design/22/chapter-summary-3GZY2XSW.png",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/22/chapter-summary-3GZY2XSW.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776888999/interview-assistant/system-design/22/figure-1-rtb-process-5E2OUEKS.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-1-rtb-process-5E2OUEKS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889094/interview-assistant/system-design/22/figure-10-lambda-and-kappa-architectures-QONSAGXY.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-10-lambda-and-kappa-architectures-QONSAGXY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889156/interview-assistant/system-design/22/figure-11-recalculation-service-TBQYOE5V.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-11-recalculation-service-TBQYOE5V.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889159/interview-assistant/system-design/22/figure-12-late-events-XK3WSQ7H.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-12-late-events-XK3WSQ7H.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889162/interview-assistant/system-design/22/figure-13-miss-events-in-an-aggregation-window-2BY3C3JD.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-13-miss-events-in-an-aggregation-window-2BY3C3JD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889165/interview-assistant/system-design/22/figure-14-watermark-ATBVC4CB.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-14-watermark-ATBVC4CB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889168/interview-assistant/system-design/22/figure-15-tumbling-window-2JXIXGIH.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-15-tumbling-window-2JXIXGIH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889172/interview-assistant/system-design/22/figure-16-sliding-window-OTVSYTQA.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-16-sliding-window-OTVSYTQA.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889193/interview-assistant/system-design/22/figure-17-duplicate-data-3OV4V7EK.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-17-duplicate-data-3OV4V7EK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889196/interview-assistant/system-design/22/figure-18-record-the-offset-S65QC3DH.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-18-record-the-offset-S65QC3DH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889199/interview-assistant/system-design/22/figure-19-save-offset-after-receiving-ack-ISTJJLCH.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-19-save-offset-after-receiving-ack-ISTJJLCH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889001/interview-assistant/system-design/22/figure-2-aggregation-workflow-ILOBUVRV.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-2-aggregation-workflow-ILOBUVRV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889202/interview-assistant/system-design/22/figure-20-distributed-transaction-7V2ITRYZ.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-20-distributed-transaction-7V2ITRYZ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889204/interview-assistant/system-design/22/figure-21-add-consumers-BXUUD54I.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-21-add-consumers-BXUUD54I.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889207/interview-assistant/system-design/22/figure-22-aggregation-service-BW4ELD2M.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-22-aggregation-service-BW4ELD2M.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889210/interview-assistant/system-design/22/figure-23-multi-threading-5R7SCVSP.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-23-multi-threading-5R7SCVSP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889213/interview-assistant/system-design/22/figure-24-virtual-nodes-MDUN2MVN.png",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/22/figure-24-virtual-nodes-MDUN2MVN.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889215/interview-assistant/system-design/22/figure-25-allocate-more-aggregation-nodes-KLEMMHRW.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-25-allocate-more-aggregation-nodes-KLEMMHRW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889218/interview-assistant/system-design/22/figure-26-data-in-a-snapshot-LYYIZPTJ.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-26-data-in-a-snapshot-LYYIZPTJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889221/interview-assistant/system-design/22/figure-27-aggregation-node-failover-XJC6Z35G.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-27-aggregation-node-failover-XJC6Z35G.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889223/interview-assistant/system-design/22/figure-28-final-design-Z676QMSA.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-28-final-design-Z676QMSA.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889226/interview-assistant/system-design/22/figure-29-alternative-design-PS4NXR5P.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-29-alternative-design-PS4NXR5P.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889041/interview-assistant/system-design/22/figure-3-high-level-design-IPIRUMTL.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-3-high-level-design-IPIRUMTL.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889044/interview-assistant/system-design/22/figure-4-end-to-end-exactly-once-TJGYUBWJ.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-4-end-to-end-exactly-once-TJGYUBWJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889046/interview-assistant/system-design/22/figure-5-aggregation-service-EDCFAVGD.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-5-aggregation-service-EDCFAVGD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889066/interview-assistant/system-design/22/figure-6-map-operation-VBQHMZF6.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-6-map-operation-VBQHMZF6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889068/interview-assistant/system-design/22/figure-7-reduce-node-7MQQ64OQ.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-7-reduce-node-7MQQ64OQ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889088/interview-assistant/system-design/22/figure-8-aggregate-the-number-of-clicks-GC2SNO2T.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-8-aggregate-the-number-of-clicks-GC2SNO2T.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889091/interview-assistant/system-design/22/figure-9-return-top-n-most-clicked-ads-OAIQEEIN.svg",
+    "source_file": "frontend/system-design/lessons/step-22.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/22/figure-9-return-top-n-most-clicked-ads-OAIQEEIN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889334/interview-assistant/system-design/23/chapter-summary-HKFZ3FPJ.png",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/23/chapter-summary-HKFZ3FPJ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889230/interview-assistant/system-design/23/figure-1-qps-distribution-4LPSPNX4.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-1-qps-distribution-4LPSPNX4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889271/interview-assistant/system-design/23/figure-10-unique-constraint-violation-DHYT3GIN.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-10-unique-constraint-violation-DHYT3GIN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889274/interview-assistant/system-design/23/figure-11-race-condition-7TTL5LW7.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-11-race-condition-7TTL5LW7.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889277/interview-assistant/system-design/23/figure-12-pessimistic-locking-DLAKLD67.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-12-pessimistic-locking-DLAKLD67.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889279/interview-assistant/system-design/23/figure-13-optimistic-locking-KQUA2477.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-13-optimistic-locking-KQUA2477.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889283/interview-assistant/system-design/23/figure-14-database-constraint-GWRAPFAG.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-14-database-constraint-GWRAPFAG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889303/interview-assistant/system-design/23/figure-15-database-sharding-GER3MC5O.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-15-database-sharding-GER3MC5O.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889306/interview-assistant/system-design/23/figure-16-caching-LQA6WZX7.png",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/23/figure-16-caching-LQA6WZX7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889308/interview-assistant/system-design/23/figure-17-monolithic-vs-microservice-5V7CXVAI.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-17-monolithic-vs-microservice-5V7CXVAI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889310/interview-assistant/system-design/23/figure-18-monolithic-architecture-4WZWZO7V.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-18-monolithic-architecture-4WZWZO7V.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889313/interview-assistant/system-design/23/figure-19-microservice-architecture-7FGGR4AA.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-19-microservice-architecture-7FGGR4AA.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889233/interview-assistant/system-design/23/figure-2-database-schema-3WL3FJJ5.png",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/23/figure-2-database-schema-3WL3FJJ5.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889234/interview-assistant/system-design/23/figure-3-reservation-status-J57N4ZZV.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-3-reservation-status-J57N4ZZV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889237/interview-assistant/system-design/23/figure-4-high-level-design-4TSKHYJP.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-4-high-level-design-4TSKHYJP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889240/interview-assistant/system-design/23/figure-5-connections-between-services-7TQS6ISN.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-5-connections-between-services-7TQS6ISN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889244/interview-assistant/system-design/23/figure-6-updated-schema-UUO2LOBS.png",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/23/figure-6-updated-schema-UUO2LOBS.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889246/interview-assistant/system-design/23/figure-7-two-reservations-are-made-ZWW4GV4K.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-7-two-reservations-are-made-ZWW4GV4K.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889248/interview-assistant/system-design/23/figure-8-unique-constraint-PN2XNUXS.svg",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/23/figure-8-unique-constraint-PN2XNUXS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889252/interview-assistant/system-design/23/figure-9-confirmation-page-EUDNWWUU.webp",
+    "source_file": "frontend/system-design/lessons/step-23.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/23/figure-9-confirmation-page-EUDNWWUU.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889389/interview-assistant/system-design/24/chapter-summary-MSPMW4ME.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/chapter-summary-MSPMW4ME.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889336/interview-assistant/system-design/24/figure-1-popular-email-providers-3H2F466J.webp",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/24/figure-1-popular-email-providers-3H2F466J.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889381/interview-assistant/system-design/24/figure-10-elasticsearch-MNL6TTHR.svg",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/24/figure-10-elasticsearch-MNL6TTHR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889384/interview-assistant/system-design/24/figure-11-lsm-tree-QD2BNIN2.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/figure-11-lsm-tree-QD2BNIN2.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889386/interview-assistant/system-design/24/figure-12-multi-data-center-setup-FMIYSNFF.svg",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/24/figure-12-multi-data-center-setup-FMIYSNFF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889338/interview-assistant/system-design/24/figure-2-mx-records-BAWCU7VV.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/figure-2-mx-records-BAWCU7VV.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889341/interview-assistant/system-design/24/figure-3-traditional-mail-servers-F4GDMZFR.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/figure-3-traditional-mail-servers-F4GDMZFR.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889360/interview-assistant/system-design/24/figure-4-maildir-CI7G42PH.svg",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/24/figure-4-maildir-CI7G42PH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889363/interview-assistant/system-design/24/figure-5-high-level-design-AZNVIABQ.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/figure-5-high-level-design-AZNVIABQ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889365/interview-assistant/system-design/24/figure-6-email-sending-flow-U5I4QIEM.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/figure-6-email-sending-flow-U5I4QIEM.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889368/interview-assistant/system-design/24/figure-7-email-receiving-flow-HRTYUDLO.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/figure-7-email-receiving-flow-HRTYUDLO.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889377/interview-assistant/system-design/24/figure-8-handle-feedback-loop-PFZ6YW6X.svg",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/24/figure-8-handle-feedback-loop-PFZ6YW6X.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889380/interview-assistant/system-design/24/figure-9-an-example-of-a-gmail-header-OW5IKA3C.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/figure-9-an-example-of-a-gmail-header-OW5IKA3C.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889369/interview-assistant/system-design/24/table-1-folders-by-user-Q23KYRQB.webp",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/24/table-1-folders-by-user-Q23KYRQB.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889371/interview-assistant/system-design/24/table-2-emails-by-folder-Y3QS42Z5.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/table-2-emails-by-folder-Y3QS42Z5.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889373/interview-assistant/system-design/24/table-3-emails-by-user-TDJAPLOC.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/table-3-emails-by-user-TDJAPLOC.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889375/interview-assistant/system-design/24/table-4-read-and-unread-emails-I5YQBZY7.png",
+    "source_file": "frontend/system-design/lessons/step-24.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/24/table-4-read-and-unread-emails-I5YQBZY7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889597/interview-assistant/system-design/25/chapter-summary-CM6JBEGR.webp",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/25/chapter-summary-CM6JBEGR.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889391/interview-assistant/system-design/25/figure-1-three-different-storage-options-WEC7EEGI.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-1-three-different-storage-options-WEC7EEGI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889456/interview-assistant/system-design/25/figure-10-data-persistence-flow-7TJ7KRXK.webp",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/25/figure-10-data-persistence-flow-7TJ7KRXK.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889457/interview-assistant/system-design/25/figure-11-trade-off-between-consistency-and-latency-M5BFWVFW.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-11-trade-off-between-consistency-and-latency-M5BFWVFW.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889478/interview-assistant/system-design/25/figure-12-store-multiple-small-objects-in-one-big-file-VOZCHVGT.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-12-store-multiple-small-objects-in-one-big-file-VOZCHVGT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889482/interview-assistant/system-design/25/figure-13-updated-data-persistence-flow-WV6KYPEI.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-13-updated-data-persistence-flow-WV6KYPEI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889503/interview-assistant/system-design/25/figure-14-multi-datacenter-replication-NTRDXDU5.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-14-multi-datacenter-replication-NTRDXDU5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889505/interview-assistant/system-design/25/figure-15-erasure-coding-WXEDUOMP.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-15-erasure-coding-WXEDUOMP.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889509/interview-assistant/system-design/25/figure-16-8-4-erasure-coding-SPQ6N2I3.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-16-8-4-erasure-coding-SPQ6N2I3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889512/interview-assistant/system-design/25/figure-17-extra-space-for-replication-and-erasure-coding-JXD3Y3GX.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-17-extra-space-for-replication-and-erasure-coding-JXD3Y3GX.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889516/interview-assistant/system-design/25/figure-18-generate-checksum-TOHMO3NC.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-18-generate-checksum-TOHMO3NC.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889519/interview-assistant/system-design/25/figure-19-compare-checksums-CQGRDK6J.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-19-compare-checksums-CQGRDK6J.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889395/interview-assistant/system-design/25/figure-2-unix-file-system-and-object-store-DCHSEP2D.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-2-unix-file-system-and-object-store-DCHSEP2D.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889522/interview-assistant/system-design/25/figure-20-add-checksum-to-data-node-ICOVBL6G.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-20-add-checksum-to-data-node-ICOVBL6G.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889525/interview-assistant/system-design/25/figure-21-database-tables-DAGCX3WM.png",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/25/figure-21-database-tables-DAGCX3WM.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889526/interview-assistant/system-design/25/figure-22-object-versioning-RHMOOBIT.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-22-object-versioning-RHMOOBIT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889566/interview-assistant/system-design/25/figure-23-versioned-metadata-RKJ5JZER.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-23-versioned-metadata-RKJ5JZER.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889569/interview-assistant/system-design/25/figure-24-delete-object-by-inserting-a-delete-marker-NTTDXHAH.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-24-delete-object-by-inserting-a-delete-marker-NTTDXHAH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889572/interview-assistant/system-design/25/figure-25-multipart-upload-KDHGYB2U.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-25-multipart-upload-KDHGYB2U.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889576/interview-assistant/system-design/25/figure-26-compaction-GGRMBRFH.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-26-compaction-GGRMBRFH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889398/interview-assistant/system-design/25/figure-3-bucket-and-object-A4GTINXY.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-3-bucket-and-object-A4GTINXY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889438/interview-assistant/system-design/25/figure-4-high-level-design-JIVBP5X2.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-4-high-level-design-JIVBP5X2.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889441/interview-assistant/system-design/25/figure-5-uploading-an-object-ASOV6ZCY.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-5-uploading-an-object-ASOV6ZCY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889444/interview-assistant/system-design/25/figure-6-downloading-an-object-V3F76264.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-6-downloading-an-object-V3F76264.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889448/interview-assistant/system-design/25/figure-7-upload-and-download-an-object-YPKTXFPC.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-7-upload-and-download-an-object-YPKTXFPC.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889451/interview-assistant/system-design/25/figure-8-data-store-components-BMATQ3EZ.png",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/25/figure-8-data-store-components-BMATQ3EZ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889453/interview-assistant/system-design/25/figure-9-virtual-cluster-map-ESBSZKSE.svg",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/25/figure-9-virtual-cluster-map-ESBSZKSE.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889480/interview-assistant/system-design/25/table-3-object_mapping-table-N2BUA76T.webp",
+    "source_file": "frontend/system-design/lessons/step-25.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/25/table-3-object_mapping-table-N2BUA76T.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889729/interview-assistant/system-design/26/chapter-summary-DXV7IGUO.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/chapter-summary-DXV7IGUO.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889598/interview-assistant/system-design/26/figure-1-leaderboard-NWJTV4ZV.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-1-leaderboard-NWJTV4ZV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889638/interview-assistant/system-design/26/figure-10-skip-list-with-5-levels-of-indexes-K5QMZDBC.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-10-skip-list-with-5-levels-of-indexes-K5QMZDBC.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889641/interview-assistant/system-design/26/figure-11-a-user-scores-a-point-XGFZPTLE.webp",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/26/figure-11-a-user-scores-a-point-XGFZPTLE.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889642/interview-assistant/system-design/26/figure-12-fetch-top-10-global-leaderboard-KOUPGTUC.webp",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/26/figure-12-fetch-top-10-global-leaderboard-KOUPGTUC.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889661/interview-assistant/system-design/26/figure-13-fetch-a-users-leaderboard-position-YUJM3G3J.webp",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/26/figure-13-fetch-a-users-leaderboard-position-YUJM3G3J.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889663/interview-assistant/system-design/26/figure-14-fetch-4-players-above-and-below-DNN7J5ML.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-14-fetch-4-players-above-and-below-DNN7J5ML.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889672/interview-assistant/system-design/26/figure-15-manage-our-own-services-T3VHGXIJ.webp",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/26/figure-15-manage-our-own-services-T3VHGXIJ.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889673/interview-assistant/system-design/26/figure-16-score-a-point-TJAYZUVE.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-16-score-a-point-TJAYZUVE.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889675/interview-assistant/system-design/26/figure-17-retrieve-leaderboard-4UMUHLST.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-17-retrieve-leaderboard-4UMUHLST.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889677/interview-assistant/system-design/26/figure-18-fixed-partition-2DM4XVL6.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-18-fixed-partition-2DM4XVL6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889681/interview-assistant/system-design/26/figure-19-hash-partition-BNBRIQB7.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-19-hash-partition-BNBRIQB7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889601/interview-assistant/system-design/26/figure-2-high-level-design-XQWDCF72.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-2-high-level-design-XQWDCF72.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889700/interview-assistant/system-design/26/figure-20-scatter-gather-KXBJYDNB.webp",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/26/figure-20-scatter-gather-KXBJYDNB.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889702/interview-assistant/system-design/26/figure-21-dynamodb-solution-QSI6N2FT.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-21-dynamodb-solution-QSI6N2FT.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889704/interview-assistant/system-design/26/figure-22-denormalized-view-of-the-leaderboard-and-user-tables-PGST2M7Z.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-22-denormalized-view-of-the-leaderboard-and-user-tables-PGST2M7Z.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889706/interview-assistant/system-design/26/figure-23-partition-key-and-sort-key-NMM4PK4Z.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-23-partition-key-and-sort-key-NMM4PK4Z.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889708/interview-assistant/system-design/26/figure-24-updated-partition-key-WDZGBZGP.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-24-updated-partition-key-WDZGBZGP.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889727/interview-assistant/system-design/26/figure-25-scatter-gather-TTZSXIYA.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-25-scatter-gather-TTZSXIYA.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889603/interview-assistant/system-design/26/figure-3-who-sets-the-leaderboard-score-O6AIP5UI.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-3-who-sets-the-leaderboard-score-O6AIP5UI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889606/interview-assistant/system-design/26/figure-4-game-scores-are-used-by-multiple-services-UWBWILEE.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-4-game-scores-are-used-by-multiple-services-UWBWILEE.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889609/interview-assistant/system-design/26/figure-5-leaderboard-table-WGJD5HTB.png",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/26/figure-5-leaderboard-table-WGJD5HTB.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889610/interview-assistant/system-design/26/figure-6-a-user-wins-a-point-FN3VKT66.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-6-a-user-wins-a-point-FN3VKT66.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889613/interview-assistant/system-design/26/figure-7-find-a-users-leaderboard-position-6WVQDZK3.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-7-find-a-users-leaderboard-position-6WVQDZK3.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889615/interview-assistant/system-design/26/figure-8-february-leaderboard-is-represented-by-the-sorted-set-G3APTESM.webp",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/26/figure-8-february-leaderboard-is-represented-by-the-sorted-set-G3APTESM.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889617/interview-assistant/system-design/26/figure-9-skip-list-WNOCIURA.svg",
+    "source_file": "frontend/system-design/lessons/step-26.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/26/figure-9-skip-list-WNOCIURA.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889778/interview-assistant/system-design/27/chapter-summary-IBDWNX6M.png",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/27/chapter-summary-IBDWNX6M.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889731/interview-assistant/system-design/27/figure-1-simplified-pay-in-and-pay-out-flow-3FEH6LGJ.svg",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/27/figure-1-simplified-pay-in-and-pay-out-flow-3FEH6LGJ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889768/interview-assistant/system-design/27/figure-10-handle-failed-payments-ZFR5VAJK.svg",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/27/figure-10-handle-failed-payments-ZFR5VAJK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889772/interview-assistant/system-design/27/figure-11-retry-SUMHMG67.svg",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/27/figure-11-retry-SUMHMG67.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889775/interview-assistant/system-design/27/figure-12-idempotency-DC3RCILB.svg",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/27/figure-12-idempotency-DC3RCILB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889734/interview-assistant/system-design/27/figure-2-pay-in-flow-5S6II6AU.png",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/27/figure-2-pay-in-flow-5S6II6AU.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889736/interview-assistant/system-design/27/figure-3-hosted-pay-with-paypal-page-EZOP6LZ2.png",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/27/figure-3-hosted-pay-with-paypal-page-EZOP6LZ2.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889738/interview-assistant/system-design/27/figure-4-hosted-payment-flow-EL5HSZY6.png",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/27/figure-4-hosted-payment-flow-EL5HSZY6.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889740/interview-assistant/system-design/27/figure-5-hosted-payment-page-by-stripe-A4FT5636.png",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/27/figure-5-hosted-payment-page-by-stripe-A4FT5636.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889742/interview-assistant/system-design/27/figure-6-reconciliation-HZKEQ3KA.webp",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/27/figure-6-reconciliation-HZKEQ3KA.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889761/interview-assistant/system-design/27/figure-7-message-queue-7BXIY252.svg",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/27/figure-7-message-queue-7BXIY252.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889764/interview-assistant/system-design/27/figure-8-single-receiver-for-each-message-OZR5UDDF.svg",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/27/figure-8-single-receiver-for-each-message-OZR5UDDF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889766/interview-assistant/system-design/27/figure-9-multiple-receivers-for-the-same-message-FKQDW57G.svg",
+    "source_file": "frontend/system-design/lessons/step-27.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/27/figure-9-multiple-receivers-for-the-same-message-FKQDW57G.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889957/interview-assistant/system-design/28/chapter-summary-HVK66BBF.webp",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "webp",
+    "proposed_s3_key": "system-design/28/chapter-summary-HVK66BBF.webp"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889780/interview-assistant/system-design/28/figure-1-digital-wallet-UNQ6753B.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-1-digital-wallet-UNQ6753B.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889824/interview-assistant/system-design/28/figure-10-phase-status-table-45KR4FXX.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-10-phase-status-table-45KR4FXX.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889826/interview-assistant/system-design/28/figure-11-unbalanced-state-ESMXLPTG.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-11-unbalanced-state-ESMXLPTG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889830/interview-assistant/system-design/28/figure-12-out-of-order-execution-OSSZ5U7M.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-12-out-of-order-execution-OSSZ5U7M.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889833/interview-assistant/system-design/28/figure-13-saga-workflow-Y7UCCTUD.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-13-saga-workflow-Y7UCCTUD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889836/interview-assistant/system-design/28/figure-14-static-view-of-event-sourcing-3BMIV7QG.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-14-static-view-of-event-sourcing-3BMIV7QG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889838/interview-assistant/system-design/28/figure-15-dynamic-view-of-event-sourcing-2C2OZVDV.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-15-dynamic-view-of-event-sourcing-2C2OZVDV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889840/interview-assistant/system-design/28/figure-16-command-queue-WXJN4Y22.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-16-command-queue-WXJN4Y22.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889843/interview-assistant/system-design/28/figure-17-how-state-machine-works-67HWC4DZ.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-17-how-state-machine-works-67HWC4DZ.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889846/interview-assistant/system-design/28/figure-18-reproduce-states-VHMK3NBY.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-18-reproduce-states-VHMK3NBY.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889867/interview-assistant/system-design/28/figure-19-cqrs-architecture-KIHA24BO.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-19-cqrs-architecture-KIHA24BO.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889783/interview-assistant/system-design/28/figure-2-cross-wallet-balance-transfer-2TDVWONK.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-2-cross-wallet-balance-transfer-2TDVWONK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889870/interview-assistant/system-design/28/figure-20-file-based-command-and-event-storage-LLKHXZ5X.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-20-file-based-command-and-event-storage-LLKHXZ5X.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889873/interview-assistant/system-design/28/figure-21-file-based-solution-for-command-event-and-state-TBSB5CJG.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-21-file-based-solution-for-command-event-and-state-TBSB5CJG.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889876/interview-assistant/system-design/28/figure-22-snapshot-2B35C27A.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-22-snapshot-2B35C27A.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889879/interview-assistant/system-design/28/figure-23-raft-YUKRLGJR.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-23-raft-YUKRLGJR.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889882/interview-assistant/system-design/28/figure-24-raft-node-group-EFJORSSU.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-24-raft-node-group-EFJORSSU.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889885/interview-assistant/system-design/28/figure-25-periodical-pulling-CFHWDXCB.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-25-periodical-pulling-CFHWDXCB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889888/interview-assistant/system-design/28/figure-26-pull-model-with-reverse-proxy-S7JBWCC6.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-26-pull-model-with-reverse-proxy-S7JBWCC6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889909/interview-assistant/system-design/28/figure-27-push-model-C7LYOOFM.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-27-push-model-C7LYOOFM.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889912/interview-assistant/system-design/28/figure-28-final-design-36NRH5KI.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-28-final-design-36NRH5KI.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889953/interview-assistant/system-design/28/figure-29-final-design-in-a-numbered-sequence-RLSHN3GF.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-29-final-design-in-a-numbered-sequence-RLSHN3GF.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889787/interview-assistant/system-design/28/figure-3-in-memory-solution-3RY7RCB4.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-3-in-memory-solution-3RY7RCB4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889789/interview-assistant/system-design/28/figure-4-relational-database-L3DEQYTB.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-4-relational-database-L3DEQYTB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889792/interview-assistant/system-design/28/figure-5-two-phase-commit-W3HB4IJO.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-5-two-phase-commit-W3HB4IJO.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889795/interview-assistant/system-design/28/figure-6-coordinator-crashes-MTPFFNSD.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-6-coordinator-crashes-MTPFFNSD.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889797/interview-assistant/system-design/28/figure-7-try-phase-PCD3MQ6F.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-7-try-phase-PCD3MQ6F.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889800/interview-assistant/system-design/28/figure-8-confirm-phase-LJRYUDAO.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-8-confirm-phase-LJRYUDAO.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889803/interview-assistant/system-design/28/figure-9-cancel-phase-4VJNJGDS.svg",
+    "source_file": "frontend/system-design/lessons/step-28.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/28/figure-9-cancel-phase-4VJNJGDS.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890076/interview-assistant/system-design/29/chapter-summary-KL4KCPJZ.png",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/29/chapter-summary-KL4KCPJZ.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889960/interview-assistant/system-design/29/figure-1-largest-stock-exchanges-VOCAUYH7.png",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/29/figure-1-largest-stock-exchanges-VOCAUYH7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890019/interview-assistant/system-design/29/figure-10-market-data-publisher-NW4AZKEC.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-10-market-data-publisher-NW4AZKEC.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890022/interview-assistant/system-design/29/figure-11-reporter-OKUG5GXU.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-11-reporter-OKUG5GXU.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890025/interview-assistant/system-design/29/figure-12-product-order-execution-CMK5RE7H.png",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/29/figure-12-product-order-execution-CMK5RE7H.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890027/interview-assistant/system-design/29/figure-13-limit-order-book-illustrated-4HLSPSXB.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-13-limit-order-book-illustrated-4HLSPSXB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890031/interview-assistant/system-design/29/figure-14-place-match-and-cancel-an-order-in-o1-GG4SP5FK.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-14-place-match-and-cancel-an-order-in-o1-GG4SP5FK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890035/interview-assistant/system-design/29/figure-15-a-low-latency-single-server-exchange-design-T5ZFOSZB.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-15-a-low-latency-single-server-exchange-design-T5ZFOSZB.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890037/interview-assistant/system-design/29/figure-16-application-loop-thread-in-order-manager-F76ALFG4.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-16-application-loop-thread-in-order-manager-F76ALFG4.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890039/interview-assistant/system-design/29/figure-17-non-event-sourcing-vs-event-sourcing-J5HGKUDM.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-17-non-event-sourcing-vs-event-sourcing-J5HGKUDM.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890042/interview-assistant/system-design/29/figure-18-an-event-sourcing-design-VUZUWA5X.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-18-an-event-sourcing-design-VUZUWA5X.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890045/interview-assistant/system-design/29/figure-19-sample-design-of-sequencer-XIKDOBN7.png",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/29/figure-19-sample-design-of-sequencer-XIKDOBN7.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889962/interview-assistant/system-design/29/figure-2-level-1-data-A5YJ6H3X.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-2-level-1-data-A5YJ6H3X.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890046/interview-assistant/system-design/29/figure-20-hot-warm-matching-engine-QHSZ5QAN.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-20-hot-warm-matching-engine-QHSZ5QAN.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890049/interview-assistant/system-design/29/figure-21-event-replication-in-raft-cluster-PVVZDWHT.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-21-event-replication-in-raft-cluster-PVVZDWHT.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890069/interview-assistant/system-design/29/figure-22-raft-terms-PGF2N5J6.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-22-raft-terms-PGF2N5J6.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890072/interview-assistant/system-design/29/figure-23-time-in-event-sourcing-ZUOQYUVH.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-23-time-in-event-sourcing-ZUOQYUVH.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890075/interview-assistant/system-design/29/figure-24-market-data-publisher-UJ7LL7ZE.png",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/29/figure-24-market-data-publisher-UJ7LL7ZE.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889983/interview-assistant/system-design/29/figure-3-level-2-data-7KGI4YP5.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-3-level-2-data-7KGI4YP5.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889986/interview-assistant/system-design/29/figure-4-level-3-data-BSBEFO33.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-4-level-3-data-BSBEFO33.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889989/interview-assistant/system-design/29/figure-5-a-single-candlestick-chart-4FUB4O22.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-5-a-single-candlestick-chart-4FUB4O22.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776889992/interview-assistant/system-design/29/figure-6-high-level-design-A3NJ5JVE.png",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "png",
+    "proposed_s3_key": "system-design/29/figure-6-high-level-design-A3NJ5JVE.png"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890011/interview-assistant/system-design/29/figure-7-inbound_and_outbound_sequencers-3MF75AIL.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-7-inbound_and_outbound_sequencers-3MF75AIL.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890014/interview-assistant/system-design/29/figure-8-client-gateway-components-COTYQAOK.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-8-client-gateway-components-COTYQAOK.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/asdf12235464/image/upload/v1776890016/interview-assistant/system-design/29/figure-9-client-gateway-W5TCL3VV.svg",
+    "source_file": "frontend/system-design/lessons/step-29.html",
+    "cloud_name": "asdf12235464",
+    "asset_type": "svg",
+    "proposed_s3_key": "system-design/29/figure-9-client-gateway-W5TCL3VV.svg"
+  },
+  {
+    "url": "https://res.cloudinary.com/demo/image/upload/avatar.png",
+    "source_file": "backend/tests/conftest.py",
+    "cloud_name": "demo",
+    "asset_type": "png",
+    "proposed_s3_key": "avatars/demo/avatar.png"
+  },
+  {
+    "url": "http://res.cloudinary.com/demo/image/upload/avatar.png",
+    "source_file": "backend/tests/conftest.py",
+    "cloud_name": "demo",
+    "asset_type": "png",
+    "proposed_s3_key": "avatars/demo/avatar.png"
+  }
+]

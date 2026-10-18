@@ -11,34 +11,37 @@
 ## 1. Architecture Overview
 
 ```
-                      Internet Client (Browser)
-                                 │
-                     Port 80 (HTTP) / 443 (HTTPS)
-                                 ▼
-                     ┌───────────────────────┐
-                     │  Nginx Reverse Proxy  │ (Host System Service)
-                     └───────────┬───────────┘
-                                 │
-               ┌─────────────────┴─────────────────┐
-               │ /                                 │ /api/backend/
-               ▼                                   ▼
-      ┌───────────────────┐               ┌───────────────────┐
-      │ Next.js Frontend  │               │  FastAPI Backend  │
-      │ (127.0.0.1:3000)  │               │ (127.0.0.1:8000)  │
-      └─────────┬─────────┘               └─────────┬─────────┘
-                │                                   │
-                │ Client Auth                       │ Server-Side APIs
-                ▼                                   ▼
-         Supabase Cloud                      ┌──────┴──────┐
-        (Auth & Database)                    ▼             ▼
-                                       Google Gemini   Cloudinary
-                                            (AI)        (Media)
+                                    Internet Client (Browser)
+                                     │                     │
+                       Port 80/443   │                     │ HTTPS CDN Requests
+                       (App Traffic) │                     │ (*.cloudfront.net)
+                                     ▼                     ▼
+                         ┌───────────────────────┐   ┌───────────────────────┐
+                         │  Nginx Reverse Proxy  │   │ Amazon CloudFront CDN │
+                         │ (Host System Service) │   │ (OAC Secured Delivery)│
+                         └───────────┬───────────┘   └───────────┬───────────┘
+                                     │                           │
+                   ┌─────────────────┴─────────────────┐         │ S3 Read (OAC)
+                   │ /                                 │         ▼
+                   ▼                                   ▼   ┌───────────────────┐
+          ┌───────────────────┐               ┌────────┴───┴──────┐   │ Amazon S3 Bucket  │
+          │ Next.js Frontend  │               │  FastAPI Backend  ├──►│ (Private Storage) │
+          │ (127.0.0.1:3000)  │               │ (127.0.0.1:8000)  │   │ avatars & diagrams│
+          └─────────┬─────────┘               └─────────┬─────────┘   └───────────────────┘
+                    │                                   │ (IAM Role Auth)
+                    │ Client Auth                       │ Server-Side APIs
+                    ▼                                   ▼
+             Supabase Cloud                      ┌──────┴──────┐
+             (User Auth Only)                    ▼             ▼
+                                           Google Gemini   RDS Postgres
+                                                (AI)        (App Data)
 ```
 
 - **Next.js Frontend:** Port `3000` bound exclusively to host loopback `127.0.0.1`.
 - **FastAPI Backend:** Port `8000` bound exclusively to host loopback `127.0.0.1`.
 - **Nginx Reverse Proxy:** Public ports `80` (HTTP) and `443` (HTTPS), terminating external connections and proxying traffic to loopback containers.
 - **Internal Network:** Docker bridge network `interview-prep-network` connects Next.js to FastAPI (`http://backend:8000`).
+- **Amazon S3 & CloudFront CDN:** Static media (system design diagrams) and user uploads (profile avatars) are stored in private Amazon S3 and delivered globally via Amazon CloudFront with Origin Access Control (OAC). The FastAPI backend writes to S3 via instance IAM role without long-lived static credentials.
 
 ---
 
@@ -79,8 +82,51 @@ Reuse the existing security group `interview-prep-app-sg`. Ensure the **Inbound 
 1. Go to **IAM Console > Roles > Create role**.
 2. Select **Trusted entity type**: `AWS service`.
 3. Select **Use case**: `EC2`.
-4. Attach permission policy: **`AmazonSSMManagedInstanceCore`** (AWS-managed).
-   - *Security rule:* Do not attach `AdministratorAccess` or unnecessary permissions.
+4. Attach permission policies:
+   - **`AmazonSSMManagedInstanceCore`** (AWS-managed): Enables Session Manager access without open inbound SSH ports.
+   - **`InterviewPrepEC2S3Policy`** (Customer-managed / Inline): Grants least-privilege access to the private assets S3 bucket:
+     ```json
+     {
+       "Version": "2012-10-17",
+       "Statement": [
+         {
+           "Sid": "ScopedS3BucketObjectAccess",
+           "Effect": "Allow",
+           "Action": [
+             "s3:PutObject",
+             "s3:GetObject",
+             "s3:DeleteObject"
+           ],
+           "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2/*"
+         },
+         {
+           "Sid": "ScopedS3BucketListAccess",
+           "Effect": "Allow",
+           "Action": [
+             "s3:ListBucket"
+           ],
+           "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2"
+         }
+       ]
+     }
+     ```
+   - **`InterviewPrepSecretsPolicy`** (Customer-managed / Inline): Scoped access to RDS PostgreSQL credentials in AWS Secrets Manager:
+     ```json
+     {
+       "Version": "2012-10-17",
+       "Statement": [
+         {
+           "Sid": "ResolveRDSSecretValue",
+           "Effect": "Allow",
+           "Action": "secretsmanager:GetSecretValue",
+           "Resource": "arn:aws:secretsmanager:ap-south-2:808431466075:secret:interview-prep/rds/app-*"
+         }
+       ]
+     }
+     ```
+   > [!IMPORTANT]
+   > - *Security rule:* Do not attach `AdministratorAccess` or broad wildcard policies.
+   > - *Automated Provisioning:* If deploying with CloudFormation (`infrastructure/cloudformation/assets-s3-cloudfront.yaml`), setting parameter `AttachPolicyToRole='true'` automatically generates and attaches `BackendEC2S3Policy` to `InterviewPrepEC2Role`.
 5. Set Role Name: **`InterviewPrepEC2Role`** and click **Create role**.
 
 ---
@@ -199,11 +245,25 @@ RDS_SECRET_NAME=interview-prep/rds/app
 RDS_POOL_MIN=2
 RDS_POOL_MAX=10
 
-# ── 3. Google OAuth & Cloudinary ────────────────────────────
+# ── 3. Google OAuth ─────────────────────────────────────────
 GOOGLE_CLIENT_ID=your_google_client_id.apps.googleusercontent.com
-CLOUDINARY_CLOUD_NAME=your_cloud_name
-CLOUDINARY_API_KEY=your_cloudinary_key
-CLOUDINARY_API_SECRET=your_cloudinary_secret
+
+# ── 3b. AWS S3 & Amazon CloudFront (Static Assets & Avatars) ──
+# Authoritative S3 bucket and CloudFront CDN for profile avatars and system design diagrams.
+# On EC2, instance accesses S3 via InterviewPrepEC2Role (zero static credentials).
+S3_ASSETS_BUCKET=interview-prep-assets-808431466075-ap-south-2
+S3_ASSETS_REGION=ap-south-2
+ASSET_BASE_URL=https://<your-distribution-id>.cloudfront.net
+
+# Optional asset folder prefixes (defaults shown)
+S3_AVATAR_PREFIX=avatars
+S3_SYSTEM_DESIGN_PREFIX=system-design
+
+# ── 3c. Cloudinary (Media Storage - DEPRECATED) ───────────────
+# Replaced by Amazon S3 + CloudFront CDN. Retained temporarily for backward compatibility.
+# CLOUDINARY_CLOUD_NAME=your_cloud_name
+# CLOUDINARY_API_KEY=your_cloudinary_key
+# CLOUDINARY_API_SECRET=your_cloudinary_secret
 
 # ── 4. Host Networking & CORS ───────────────────────────────
 # Set to your EC2 Public IP for initial staging (e.g. http://16.113.92.222)
@@ -429,3 +489,154 @@ curl -fsS http://127.0.0.1/api/backend/courses/sql-course/lessons/select_queries
 # 4. Frontend root
 curl -fsS http://127.0.0.1/ | head -n 20
 ```
+
+---
+
+## 8. Static Media & Asset Delivery via Amazon CloudFront and S3
+
+The application delivers system design lesson diagrams and user profile avatars using a private Amazon S3 bucket paired with Amazon CloudFront CDN.
+
+### A. Security & Storage Architecture
+
+```
+                      Browser / Client
+                             │
+            HTTPS Request    │ (*.cloudfront.net)
+                             ▼
+               ┌───────────────────────────┐
+               │   Amazon CloudFront CDN   │ (Origin Access Control)
+               └─────────────┬─────────────┘
+                             │
+            AWS SigV4 Signed │ (s3:GetObject)
+                             ▼
+               ┌───────────────────────────┐
+               │    Amazon S3 Bucket       │ (Block Public Access: ENABLED)
+               │ interview-prep-assets-... │ (SSE-AES256, TLS 1.2+ Only)
+               └─────────────▲─────────────┘
+                             │
+            Instance Profile │ s3:PutObject / s3:DeleteObject
+            (IMDSv2 Assumed) │ (No static AWS keys in code/env)
+                             │
+               ┌─────────────┴─────────────┐
+               │  FastAPI Backend on EC2   │
+               │ (InterviewPrepEC2Role)    │
+               └───────────────────────────┘
+```
+
+1. **Private S3 Bucket (`interview-prep-assets-808431466075-ap-south-2`):**
+   - **Public Access Block:** All four block settings (`BlockPublicAcls`, `IgnorePublicAcls`, `BlockPublicPolicy`, `RestrictPublicBuckets`) are active.
+   - **Encryption:** Server-Side Encryption with Amazon S3 managed keys (`AES256` / SSE-S3) and S3 Bucket Keys enabled.
+   - **Bucket Policy:** Denies all insecure requests (`aws:SecureTransport: 'false'`) and grants read access exclusively to the CloudFront distribution service principal (`cloudfront.amazonaws.com`) via Origin Access Control (OAC). Direct internet access to the S3 bucket is rejected with HTTP 403 Forbidden.
+
+2. **CloudFront CDN Distribution:**
+   - **Protocol Policy:** Redirects all HTTP traffic to HTTPS (`redirect-to-https`).
+   - **Caching Policy:** Uses AWS Managed `CachingOptimized` (`658327ea-f89d-4fab-a63d-7e88639e58f6`) for high cache-hit ratios and minimal origin latency.
+   - **CORS Headers:** Uses AWS Managed `SimpleCORS` (`60669652-455b-4ae9-85a4-c4c02393f86c`) ensuring secure cross-origin asset rendering.
+
+### B. EC2 IAM Role Configuration (`InterviewPrepEC2Role`)
+
+The FastAPI backend runs on the EC2 instance and utilizes the default AWS credential provider chain via `boto3`. No static AWS credentials (`AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY`) are stored in `.env` or application code.
+
+The instance profile `InterviewPrepEC2Role` requires the following scoped permissions:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ScopedS3BucketObjectAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:PutObject",
+        "s3:GetObject",
+        "s3:DeleteObject"
+      ],
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2/*"
+    },
+    {
+      "Sid": "ScopedS3BucketListAccess",
+      "Effect": "Allow",
+      "Action": [
+        "s3:ListBucket"
+      ],
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-ap-south-2"
+    }
+  ]
+}
+```
+
+### C. CloudFormation Infrastructure Provisioning
+
+The infrastructure can be deployed or updated in a single CloudFormation command:
+
+```bash
+aws cloudformation deploy \
+  --template-file infrastructure/cloudformation/assets-s3-cloudfront.yaml \
+  --stack-name interview-prep-assets \
+  --parameter-overrides \
+      Environment=production \
+      BucketName=interview-prep-assets-808431466075-ap-south-2 \
+      EC2RoleName=InterviewPrepEC2Role \
+      AttachPolicyToRole=true \
+  --capabilities CAPABILITY_NAMED_IAM \
+  --region ap-south-2
+```
+
+To retrieve the generated CloudFront domain and Base URL:
+```bash
+aws cloudformation describe-stacks \
+  --stack-name interview-prep-assets \
+  --region ap-south-2 \
+  --query "Stacks[0].Outputs[?OutputKey=='AssetBaseUrl'].OutputValue" \
+  --output text
+```
+
+### D. Frontend Next.js Configuration
+
+The Next.js frontend (`frontend/next.config.ts`) is configured with authorized remote image hostnames:
+
+```typescript
+const nextConfig: NextConfig = {
+  images: {
+    remotePatterns: [
+      { protocol: "https", hostname: "*.cloudfront.net" },
+      { protocol: "https", hostname: "d*.cloudfront.net" },
+      { protocol: "https", hostname: "res.cloudinary.com" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" },
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+      { protocol: "https", hostname: "ui-avatars.com" },
+    ],
+  },
+  // ...
+};
+```
+
+- **CloudFront CDN:** Matches any CloudFront distribution hostname (`*.cloudfront.net` or `d*.cloudfront.net`) over HTTPS.
+- **OAuth Providers:** Preserves Google (`lh3.googleusercontent.com`) and GitHub (`avatars.githubusercontent.com`) avatar URLs.
+- **Deterministic Avatar Fallbacks:** The `UserAvatar` component renders initials SVG data URIs deterministically whenever an avatar image is absent, empty, or fails to load.
+- **Migration Backward-Compatibility:** Retains `res.cloudinary.com` during the transition phase.
+
+### E. Asset Verification & Health Checks
+
+Run these diagnostic checks on the EC2 instance or local development shell:
+
+1. **Verify Direct S3 Access is Blocked (Expected 403 Forbidden):**
+   ```bash
+   curl -I https://interview-prep-assets-808431466075-ap-south-2.s3.ap-south-2.amazonaws.com/avatars/test.png
+   # Expected: HTTP/1.1 403 Forbidden
+   ```
+
+2. **Verify CloudFront CDN Delivery (HTTPS with CORS):**
+   ```bash
+   curl -I https://<your-distribution-id>.cloudfront.net/system-design/01/system-architecture.png
+   # Expected: HTTP/2 200 OK (or 404 if file does not exist yet)
+   # Must include x-cache header (e.g. "Hit from cloudfront" or "Miss from cloudfront")
+   ```
+
+3. **Verify Avatar Upload Endpoint via Backend:**
+   ```bash
+   curl -X POST http://127.0.0.1:8000/profile/avatar/upload \
+     -H "Authorization: Bearer <VALID_JWT_TOKEN>" \
+     -F "file=@test-avatar.jpg"
+   # Expected JSON: {"avatar_url": "https://<distribution-id>.cloudfront.net/avatars/<user-id>/<uuid>.jpg"}
+   ```

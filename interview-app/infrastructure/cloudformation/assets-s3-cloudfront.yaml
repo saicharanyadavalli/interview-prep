@@ -1,0 +1,224 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  Production AWS CloudFormation template provisioning a private S3 bucket
+  and CloudFront distribution with Origin Access Control (OAC) for Interview Prep assets.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: production
+    AllowedValues:
+      - production
+      - staging
+      - development
+    Description: Environment stage for resource identification and tagging.
+
+  BucketName:
+    Type: String
+    Default: interview-prep-assets-808431466075-ap-south-2
+    Description: Globally unique name for the private assets S3 bucket.
+
+  EC2RoleName:
+    Type: String
+    Default: InterviewPrepEC2Role
+    Description: Existing EC2 IAM role name to attach the S3 least-privilege policy to.
+
+  AttachPolicyToRole:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Whether to automatically attach the S3 access policy to the existing EC2 IAM role.
+
+  PriceClass:
+    Type: String
+    Default: PriceClass_200
+    AllowedValues:
+      - PriceClass_100
+      - PriceClass_200
+      - PriceClass_All
+    Description: CloudFront price class determining edge location geographic distribution.
+
+  ResponseHeadersPolicyId:
+    Type: String
+    Default: 60669652-455b-4ae9-85a4-c4c02393f86c
+    Description: AWS Managed Response Headers Policy ID for CORS support (defaults to Managed-SimpleCORS).
+
+Conditions:
+  ShouldAttachPolicyToRole: !Equals [!Ref AttachPolicyToRole, 'true']
+
+Resources:
+  # 1. Private Amazon S3 Bucket
+  AssetsBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Ref BucketName
+      AccessControl: Private
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        IgnorePublicAcls: true
+        BlockPublicPolicy: true
+        RestrictPublicBuckets: true
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+            BucketKeyEnabled: true
+      CorsConfiguration:
+        CorsRules:
+          - AllowedHeaders:
+              - '*'
+            AllowedMethods:
+              - GET
+              - HEAD
+            AllowedOrigins:
+              - '*'
+            MaxAge: 3600
+      LifecycleConfiguration:
+        Rules:
+          - Id: AbortIncompleteMultipartUploads
+            Status: Enabled
+            AbortIncompleteMultipartUpload:
+              DaysAfterInitiation: 7
+      Tags:
+        - Key: Application
+          Value: InterviewPrep
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # 2. CloudFront Origin Access Control (OAC)
+  AssetsOriginAccessControl:
+    Type: AWS::CloudFront::OriginAccessControl
+    Properties:
+      OriginAccessControlConfig:
+        Name: !Sub "${AWS::StackName}-s3-oac"
+        Description: Origin Access Control for secure S3 asset origin signing
+        OriginAccessControlOriginType: s3
+        SigningBehavior: always
+        SigningProtocol: sigv4
+
+  # 3. CloudFront Distribution
+  AssetsDistribution:
+    Type: AWS::CloudFront::Distribution
+    Properties:
+      DistributionConfig:
+        Enabled: true
+        Comment: CloudFront CDN for Interview Prep static and user-uploaded assets
+        HttpVersion: http2and3
+        PriceClass: !Ref PriceClass
+        Origins:
+          - Id: S3AssetsOrigin
+            DomainName: !GetAtt AssetsBucket.RegionalDomainName
+            OriginAccessControlId: !GetAtt AssetsOriginAccessControl.Id
+            S3OriginConfig:
+              OriginAccessIdentity: ''
+        DefaultCacheBehavior:
+          TargetOriginId: S3AssetsOrigin
+          ViewerProtocolPolicy: redirect-to-https
+          AllowedMethods:
+            - GET
+            - HEAD
+          CachedMethods:
+            - GET
+            - HEAD
+          Compress: true
+          CachePolicyId: 658327ea-f89d-4fab-a63d-7e88639e58f6 # Managed-CachingOptimized
+          ResponseHeadersPolicyId: !Ref ResponseHeadersPolicyId
+        ViewerCertificate:
+          CloudFrontDefaultCertificate: true
+      Tags:
+        - Key: Application
+          Value: InterviewPrep
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # 4. S3 Bucket Policy (Restricting read access to CloudFront OAC + Enforcing TLS)
+  AssetsBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref AssetsBucket
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: AllowCloudFrontServicePrincipalReadOnly
+            Effect: Allow
+            Principal:
+              Service: cloudfront.amazonaws.com
+            Action: s3:GetObject
+            Resource: !Sub "${AssetsBucket.Arn}/*"
+            Condition:
+              StringEquals:
+                AWS:SourceArn: !Sub "arn:aws:cloudfront::${AWS::AccountId}:distribution/${AssetsDistribution}"
+          - Sid: EnforceTlsRequestsOnly
+            Effect: Deny
+            Principal: '*'
+            Action: 's3:*'
+            Resource:
+              - !GetAtt AssetsBucket.Arn
+              - !Sub "${AssetsBucket.Arn}/*"
+            Condition:
+              Bool:
+                aws:SecureTransport: 'false'
+
+  # 5. EC2 Backend Least-Privilege IAM Policy
+  BackendEC2S3Policy:
+    Type: AWS::IAM::Policy
+    Condition: ShouldAttachPolicyToRole
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-ec2-s3-access"
+      Roles:
+        - !Ref EC2RoleName
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ScopedS3BucketObjectAccess
+            Effect: Allow
+            Action:
+              - s3:PutObject
+              - s3:GetObject
+              - s3:DeleteObject
+            Resource: !Sub "${AssetsBucket.Arn}/*"
+          - Sid: ScopedS3BucketListAccess
+            Effect: Allow
+            Action:
+              - s3:ListBucket
+            Resource: !GetAtt AssetsBucket.Arn
+
+Outputs:
+  BucketName:
+    Description: Globally unique name of the S3 assets bucket
+    Value: !Ref AssetsBucket
+    Export:
+      Name: !Sub "${AWS::StackName}-BucketName"
+
+  BucketArn:
+    Description: Amazon Resource Name (ARN) of the S3 assets bucket
+    Value: !GetAtt AssetsBucket.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-BucketArn"
+
+  CloudFrontDistributionId:
+    Description: Identifier of the CloudFront distribution
+    Value: !Ref AssetsDistribution
+    Export:
+      Name: !Sub "${AWS::StackName}-DistributionId"
+
+  CloudFrontDomainName:
+    Description: Fully qualified domain name of the CloudFront distribution
+    Value: !GetAtt AssetsDistribution.DomainName
+    Export:
+      Name: !Sub "${AWS::StackName}-DistributionDomainName"
+
+  AssetBaseUrl:
+    Description: Base HTTPS delivery URL for assets routed through CloudFront CDN
+    Value: !Sub "https://${AssetsDistribution.DomainName}"
+    Export:
+      Name: !Sub "${AWS::StackName}-AssetBaseUrl"
