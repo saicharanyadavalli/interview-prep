@@ -197,25 +197,50 @@ export default function ProgressPage() {
         }
       });
       
-    API.getLearningTracks().then(res => {
-      if (!mounted) return;
-      const tracks = res?.tracks || [];
-      Promise.all(
-        tracks.map((t: any) => API.getLearningTrackProgress(t.track_id).catch(() => null))
-      ).then(progressResults => {
+    API.getCourses()
+      .then((coursesList) => {
         if (!mounted) return;
-        const valid = progressResults.filter(Boolean);
-        // attach display name from tracks
-        const enriched = valid.map(p => {
-          const t = tracks.find((tr: any) => tr.track_id === p.track_id);
-          return { ...p, display_name: t?.display_name || p.track_id };
-        });
-        setCourseProgress(enriched);
-        setLoadingCourses(false);
+        if (Array.isArray(coursesList) && coursesList.length > 0) {
+          const mapped = coursesList.map((c) => ({
+            track_id: c.slug,
+            slug: c.slug,
+            display_name: c.title,
+            total_steps: c.total_lessons,
+            completed_steps: c.completed_lessons,
+            completion_percent: c.progress_percentage,
+          }));
+          setCourseProgress(mapped);
+          setLoadingCourses(false);
+        } else {
+          API.getLearningTracks()
+            .then((res) => {
+              if (!mounted) return;
+              const tracks = res?.tracks || [];
+              Promise.all(
+                tracks.map((t: any) => API.getLearningTrackProgress(t.track_id).catch(() => null))
+              ).then((progressResults) => {
+                if (!mounted) return;
+                const valid = progressResults.filter(Boolean);
+                const enriched = valid.map((p) => {
+                  const t = tracks.find((tr: any) => tr.track_id === p.track_id);
+                  return {
+                    ...p,
+                    slug: p.track_id,
+                    display_name: t?.display_name || p.track_id,
+                  };
+                });
+                setCourseProgress(enriched);
+                setLoadingCourses(false);
+              });
+            })
+            .catch(() => {
+              if (mounted) setLoadingCourses(false);
+            });
+        }
+      })
+      .catch(() => {
+        if (mounted) setLoadingCourses(false);
       });
-    }).catch(() => {
-      if (mounted) setLoadingCourses(false);
-    });
       
     return () => { mounted = false; };
   }, [user]);
@@ -356,32 +381,40 @@ export default function ProgressPage() {
         ) : courseProgress.length > 0 ? (
           <div className="grid gap-4 mt-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))' }}>
             {courseProgress.map((course) => {
-              const isPlaceholder = course.completion_percent === 0 && course.completed_steps === 0;
+              const slug = course.slug || course.track_id;
+              const totalSteps = Number(course.total_steps || 0);
+              const completedSteps = Number(course.completed_steps || 0);
+              const percent = course.completion_percent !== undefined
+                ? Number(course.completion_percent)
+                : (totalSteps > 0 ? Math.round((completedSteps / totalSteps) * 100) : 0);
+              const isStarted = completedSteps > 0 || percent > 0;
+
               return (
                 <Link 
-                  key={course.track_id} 
-                  href={`/${course.track_id}`}
-                  className={`card-flat block transition-all ${isPlaceholder ? 'opacity-60 hover:opacity-80' : 'hover-card'}`}
+                  key={slug} 
+                  href={`/courses/${slug}`}
+                  className="card-flat hover-card block transition-all"
                   style={{ textDecoration: 'none' }}
+                  aria-label={`Go to ${course.display_name} course`}
                 >
                   <div className="flex justify-between items-center mb-3">
                     <div className="flex items-center gap-2">
                       <h4 className="font-semibold text-white text-lg">{course.display_name}</h4>
-                      {isPlaceholder && (
-                        <span className="text-[10px] uppercase tracking-wider bg-gray-800 text-gray-400 px-2 py-0.5 rounded-full border border-gray-700">
-                          Coming Soon
+                      {!isStarted && (
+                        <span className="text-[10px] uppercase tracking-wider bg-teal/10 text-teal px-2 py-0.5 rounded-full border border-teal/20">
+                          {totalSteps} Chapters
                         </span>
                       )}
                     </div>
-                    {!isPlaceholder && <span className="text-teal font-bold">{course.completion_percent}%</span>}
+                    {isStarted && <span className="text-teal font-bold">{percent}%</span>}
                   </div>
                   <div className="w-full bg-background rounded-full h-2 mb-2 overflow-hidden">
-                    <div className={`h-full rounded-full ${isPlaceholder ? 'bg-gray-600' : 'bg-teal'}`} style={{ width: `${isPlaceholder ? 0 : course.completion_percent}%` }}></div>
+                    <div className="h-full rounded-full bg-teal transition-all duration-500" style={{ width: `${percent}%` }}></div>
                   </div>
                   <p className="text-xs text-gray-400">
-                    {isPlaceholder 
-                      ? "Content currently being prepared" 
-                      : `${course.completed_steps} of ${course.total_steps} chapters completed`
+                    {isStarted 
+                      ? `${completedSteps} of ${totalSteps} chapters completed`
+                      : `${totalSteps} chapters available`
                     }
                   </p>
                 </Link>

@@ -27,6 +27,36 @@ const nextConfig: NextConfig = {
         destination: '/login?mode=signup',
         permanent: false,
       },
+      {
+        source: '/system-design',
+        destination: '/courses/system-design',
+        permanent: true,
+      },
+      {
+        source: '/genai-system-design',
+        destination: '/courses/genai-system-design',
+        permanent: true,
+      },
+      {
+        source: '/ml-system-design',
+        destination: '/courses/ml-system-design',
+        permanent: true,
+      },
+      {
+        source: '/mobile-system-design',
+        destination: '/courses/mobile-system-design',
+        permanent: true,
+      },
+      {
+        source: '/object-oriented-design',
+        destination: '/courses/object-oriented-design',
+        permanent: true,
+      },
+      {
+        source: '/sql-course',
+        destination: '/courses/sql-course',
+        permanent: true,
+      },
     ];
   },
 };

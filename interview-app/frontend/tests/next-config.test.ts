@@ -65,4 +65,26 @@ describe("Next.js Configuration & Remote Patterns", () => {
     const decodedSvg = decodeURIComponent(effectiveWithEmpty);
     assert.ok(decodedSvg.includes("JD"));
   });
+
+  it("should configure canonical course redirects from legacy tracks to /courses/:slug", async () => {
+    assert.ok(typeof nextConfig.redirects === "function");
+    const redirects = await nextConfig.redirects();
+    assert.ok(Array.isArray(redirects));
+
+    const expectedRedirects = [
+      { source: "/system-design", destination: "/courses/system-design" },
+      { source: "/genai-system-design", destination: "/courses/genai-system-design" },
+      { source: "/ml-system-design", destination: "/courses/ml-system-design" },
+      { source: "/mobile-system-design", destination: "/courses/mobile-system-design" },
+      { source: "/object-oriented-design", destination: "/courses/object-oriented-design" },
+      { source: "/sql-course", destination: "/courses/sql-course" },
+    ];
+
+    for (const expected of expectedRedirects) {
+      const match = redirects.find((r: any) => r.source === expected.source);
+      assert.ok(match, `Redirect for ${expected.source} must exist`);
+      assert.equal(match.destination, expected.destination);
+      assert.equal(match.permanent, true);
+    }
+  });
 });
