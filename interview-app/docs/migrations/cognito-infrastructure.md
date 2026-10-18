@@ -77,19 +77,19 @@ The Cognito User Pool Client (`interview-prep-web-client`) supports two compleme
 - **Federation Workflow**:
   1. The browser initiates login with Google via Hosted UI or direct federation link (`/oauth2/authorize?identity_provider=Google&...`).
   2. Google authenticates the user and posts the authorization response back to Cognito's callback endpoint: `https://${CognitoDomain}.auth.${AWS::Region}.amazoncognito.com/oauth2/idpresponse`.
-  3. Cognito retrieves user claims from Google and maps `email`, `email_verified: email_verified`, `name`, and `username: sub` to create or update the user record in the User Pool.
+  3. Cognito retrieves user claims from Google and maps `email`, `email_verified`, and `name`. Cognito automatically provisions the federated user with a unique provider username (e.g. `Google_<sub-id>`).
   4. Cognito issues an authorization code and redirects the browser back to the application callback URL (e.g. `http://localhost:3000/auth/callback` or `https://${CanonicalDomain}/auth/callback`).
   5. The web client exchanges the authorization code and PKCE `code_verifier` at `/oauth2/token` for Access, ID, and Refresh tokens.
 
 ### Key Security & Operational Principles
 
 1. **Authorization Code Grant with PKCE**: The web client uses OAuth 2.0 Authorization Code flow with Proof Key for Code Exchange (PKCE, RFC 7636). No client secret is stored in frontend assets (`GenerateSecret: false`).
-2. **Strict Attribute Mapping**: Google's unique subject identifier (`sub`) maps directly to the Cognito username handle, preventing account collision while guaranteeing stable user references across sessions. Verified email status is mapped directly (`email_verified -> email_verified`).
+2. **Federated Identity & Attribute Mapping**: Cognito automatically generates stable, collision-free usernames for federated identities. Verified email status is mapped directly (`email_verified -> email_verified`) and user profile attributes (`email`, `name`) are synchronized.
 3. **Canonical Identity & Verification**: Email is the primary sign-in handle (`UsernameAttributes: [email]`), with automatic verification code delivery (`AutoVerifiedAttributes: [email]`).
 4. **Threat Detection & Cost Optimization**: Amazon Cognito Threat Protection / Advanced Security is parameterized (`AdvancedSecurityMode: OFF` by default to avoid extra charges on Cognito Plus Tier, with `AUDIT` and `ENFORCED` options available).
 5. **Session Governance & Token Revocation**: Access and ID tokens remain valid for 60 minutes, while refresh tokens remain valid for 30 days. Token revocation (`EnableTokenRevocation: true`) enables immediate session invalidation upon user logout or incident mitigation.
 6. **Zero Accidental Data Loss**: User pool resources enforce `DeletionPolicy: Retain` and `UpdateReplacePolicy: Retain` so that user identity state is preserved even if the CloudFormation stack is updated or removed.
-7. **Strict Callback Whitelisting**: Open redirects and wildcard redirects are strictly prohibited. The UserPoolClient exclusively permits exact whitelisted callback URLs (`CallbackURLs`), preventing authorization code interception.
+7. **Strict Callback Whitelisting**: Open redirects and wildcard redirects are strictly prohibited. The UserPoolClient exclusively permits exact whitelisted callback URLs (`CallbackURLs`), preventing authorization code interception. Note that Cognito requires HTTPS for all callback URLs except `http://localhost`.
 
 ---
 

@@ -41,17 +41,21 @@ Parameters:
     Default: 'localhost:3000'
     Description: >-
       Domain for application web client (e.g. localhost:3000 for local/staging or
-      app.interviewprep.com for production). Do not assume custom domain or TLS exists.
+      your personal domain for production). Do not assume custom domain or TLS exists.
 
   CallbackURLs:
     Type: CommaDelimitedList
-    Default: 'http://localhost:3000/auth/callback, https://app.interviewprep.com/auth/callback'
-    Description: Comma-delimited list of allowed OAuth 2.0 redirect and callback URLs for UserPoolClient.
+    Default: 'http://localhost:3000/auth/callback'
+    Description: >-
+      Comma-delimited list of allowed OAuth 2.0 redirect and callback URLs for UserPoolClient.
+      Note: Amazon Cognito requires https:// for all callback URLs except http://localhost.
 
   LogoutURLs:
     Type: CommaDelimitedList
-    Default: 'http://localhost:3000/login, https://app.interviewprep.com/login'
-    Description: Comma-delimited list of allowed OAuth 2.0 sign-out and logout URLs for UserPoolClient.
+    Default: 'http://localhost:3000/login'
+    Description: >-
+      Comma-delimited list of allowed OAuth 2.0 sign-out and logout URLs for UserPoolClient.
+      Note: Amazon Cognito requires https:// for all logout URLs except http://localhost.
 
   AdvancedSecurityMode:
     Type: String
@@ -135,10 +139,6 @@ Resources:
           AttributeDataType: String
           Required: false
           Mutable: true
-        - Name: username
-          AttributeDataType: String
-          Required: false
-          Mutable: true
       UserPoolAddOns:
         AdvancedSecurityMode: !Ref AdvancedSecurityMode
       UserPoolTags:
@@ -172,13 +172,10 @@ Resources:
         email: email
         email_verified: email_verified
         name: name
-        username: sub
 
   # 4. Amazon Cognito User Pool App Client (Public Web Client with PKCE)
   UserPoolClient:
     Type: AWS::Cognito::UserPoolClient
-    DependsOn:
-      - GoogleIdentityProvider
     Properties:
       UserPoolId: !Ref UserPool
       ClientName: interview-prep-web-client
