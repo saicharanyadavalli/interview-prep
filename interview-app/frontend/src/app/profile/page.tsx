@@ -1,9 +1,11 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import { API } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { UserAvatar } from "@/components/UserAvatar";
+import { Spinner } from "@/components/Spinner";
 import {
   validateAvatarFile,
   optimizeAvatarImage,
@@ -25,7 +27,8 @@ import {
 type UploadState = "idle" | "validating" | "preview_ready" | "uploading" | "success" | "error";
 
 export default function ProfilePage() {
-  const { user, refreshProfile, signOut } = useAuth();
+  const router = useRouter();
+  const { user, loading: authLoading, refreshProfile, signOut } = useAuth();
 
   const [name, setName] = useState("");
   const [username, setUsername] = useState("");
@@ -73,9 +76,10 @@ export default function ProfilePage() {
   // Load user profile on mount
   useEffect(() => {
     let mounted = true;
+    if (authLoading) return;
+
     if (!user) {
-      setStatusText("Not signed in.");
-      setStatusType("info");
+      router.replace("/login?next=/profile");
       return;
     }
 
@@ -120,7 +124,7 @@ export default function ProfilePage() {
     return () => {
       mounted = false;
     };
-  }, [user]);
+  }, [user, authLoading, router]);
 
   // Username validation
   const handleUsernameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -318,6 +322,14 @@ export default function ProfilePage() {
   };
 
   const isBusy = isSaving || uploadState === "validating" || uploadState === "uploading" || isResetting || isDeleting;
+
+  if (authLoading || !user) {
+    return (
+      <main className="main-content" style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Spinner text="Loading profile..." />
+      </main>
+    );
+  }
 
   return (
     <main className="main-content">

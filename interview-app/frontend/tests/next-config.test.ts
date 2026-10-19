@@ -87,4 +87,27 @@ describe("Next.js Configuration & Remote Patterns", () => {
       assert.equal(match.permanent, true);
     }
   });
+
+  it("should NOT configure rewrites that shadow the App Router BFF proxy (/api/backend)", async () => {
+    // In Next.js App Router, rewrites shadow dynamic route handlers like app/api/backend/[...path]/route.ts
+    // Confirm rewrites() is removed so cookies are forwarded as Authorization Bearer tokens
+    if (typeof (nextConfig as any).rewrites === "function") {
+      const rewrites = await (nextConfig as any).rewrites();
+      const list = Array.isArray(rewrites)
+        ? rewrites
+        : [
+            ...((rewrites as any)?.beforeFiles || []),
+            ...((rewrites as any)?.afterFiles || []),
+            ...((rewrites as any)?.fallback || []),
+          ];
+      const backendRewrite = list.find((r: any) => r.source?.includes("/api/backend"));
+      assert.equal(backendRewrite, undefined, "rewrites must not shadow /api/backend catch-all route handler");
+    } else {
+      assert.equal(
+        (nextConfig as any).rewrites,
+        undefined,
+        "rewrites should be undefined to allow App Router BFF proxy to handle /api/backend"
+      );
+    }
+  });
 });

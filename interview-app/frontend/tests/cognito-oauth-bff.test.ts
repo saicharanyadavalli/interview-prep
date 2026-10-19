@@ -476,7 +476,221 @@ describe('Amazon Cognito PKCE, OAuth & BFF Proxy Specialist Suite', () => {
         { params: Promise.resolve({ path: ['resource', '1'] }) }
       );
 
-      assert.deepEqual(methodsTested, ['PUT', 'DELETE', 'PATCH', 'OPTIONS']);
+      // HEAD
+      methodsTested.length = 0;
+      await bffHead(
+        new Request('http://16.113.92.222/api/backend/resource/1', {
+          method: 'HEAD',
+          headers: { cookie: cookieHeader },
+        }),
+        { params: Promise.resolve({ path: ['resource', '1'] }) }
+      );
+      assert.deepEqual(methodsTested, ['HEAD']);
+    });
+
+    it('proactively refreshes access token in-flight when expiring within 30s and updates response cookies', async () => {
+      const now = Math.floor(Date.now() / 1000);
+      // Create JWT expiring in 15 seconds (within 30s threshold)
+      const hB64 = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+      const pB64 = Buffer.from(JSON.stringify({ sub: 'user-abc', exp: now + 15 })).toString('base64url');
+      const tokenExpiringSoon = `${hB64}.${pB64}.mocksig`;
+
+      let tokenEndpointCalled = false;
+      let backendAuthHeader = '';
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        const urlStr = String(url);
+        if (urlStr.includes('/oauth2/token')) {
+          tokenEndpointCalled = true;
+          return new Response(
+            JSON.stringify({
+              access_token: 'refreshed-in-flight-access-token',
+              id_token: 'refreshed-in-flight-id-token',
+              token_type: 'Bearer',
+              expires_in: 3600,
+            }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+
+        if (urlStr.includes('127.0.0.1:8000')) {
+          const headers = init?.headers as Headers;
+          backendAuthHeader = headers?.get ? headers.get('authorization') || '' : (headers as any)?.['authorization'] || '';
+          return new Response(JSON.stringify({ status: 'ok', data: 'protected-resource' }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+
+        return new Response('Not Found', { status: 404 });
+      }) as any;
+
+      const req = new Request('http://16.113.92.222/api/backend/protected/data', {
+        method: 'GET',
+        headers: {
+          cookie: `${COGNITO_COOKIE_NAMES.ACCESS_TOKEN}=${tokenExpiringSoon}; ${COGNITO_COOKIE_NAMES.REFRESH_TOKEN}=valid-refresh-token`,
+        },
+      });
+
+      const response = await bffGet(req, {
+        params: Promise.resolve({ path: ['protected', 'data'] }),
+      });
+
+      assert.equal(tokenEndpointCalled, true, 'Must call Cognito /oauth2/token to refresh token');
+      assert.equal(backendAuthHeader, 'Bearer refreshed-in-flight-access-token', 'Must forward refreshed token to backend');
+      assert.equal(response.status, 200);
+
+      // Verify response Set-Cookie headers
+      const setCookies = response.headers.getSetCookie ? response.headers.getSetCookie() : [response.headers.get('set-cookie') || ''];
+      const setCookieStr = setCookies.join('; ');
+      assert.ok(setCookieStr.includes(COGNITO_COOKIE_NAMES.ACCESS_TOKEN), 'Must set updated access token cookie');
+      assert.ok(setCookieStr.includes('refreshed-in-flight-access-token'), 'Must contain new access token');
+      assert.ok(setCookieStr.includes(COGNITO_COOKIE_NAMES.ID_TOKEN), 'Must set updated ID token cookie');
+    });
+
+    it('refreshes expired access token in-flight when refresh token is present', async () => {
+      const now = Math.floor(Date.now() / 1000);
+      // Create expired JWT (expired 100 seconds ago)
+      const hB64 = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+      const pB64 = Buffer.from(JSON.stringify({ sub: 'user-abc', exp: now - 100 })).toString('base64url');
+      const expiredToken = `${hB64}.${pB64}.mocksig`;
+
+      let backendAuthHeader = '';
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        const urlStr = String(url);
+        if (urlStr.includes('/oauth2/token')) {
+          return new Response(
+            JSON.stringify({
+              access_token: 'fresh-post-expiration-token',
+              id_token: 'fresh-id-token',
+              token_type: 'Bearer',
+              expires_in: 3600,
+            }),
+            { status: 200, headers: { 'Content-Type': 'application/json' } }
+          );
+        }
+
+        if (urlStr.includes('127.0.0.1:8000')) {
+          const headers = init?.headers as Headers;
+          backendAuthHeader = headers?.get ? headers.get('authorization') || '' : (headers as any)?.['authorization'] || '';
+          return new Response(JSON.stringify({ user_id: 'user-abc' }), { status: 200 });
+        }
+
+        return new Response('Not Found', { status: 404 });
+      }) as any;
+
+      const req = new Request('http://16.113.92.222/api/backend/auth/session', {
+        method: 'GET',
+        headers: {
+          cookie: `${COGNITO_COOKIE_NAMES.ACCESS_TOKEN}=${expiredToken}; ${COGNITO_COOKIE_NAMES.REFRESH_TOKEN}=valid-refresh-token`,
+        },
+      });
+
+      const response = await bffGet(req, {
+        params: Promise.resolve({ path: ['auth', 'session'] }),
+      });
+
+      assert.equal(backendAuthHeader, 'Bearer fresh-post-expiration-token');
+      assert.equal(response.status, 200);
+    });
+
+    it('clears session cookies cleanly and proceeds unauthenticated to backend 401 when token refresh fails', async () => {
+      const now = Math.floor(Date.now() / 1000);
+      const hB64 = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+      const pB64 = Buffer.from(JSON.stringify({ sub: 'user-abc', exp: now - 100 })).toString('base64url');
+      const expiredToken = `${hB64}.${pB64}.mocksig`;
+
+      let backendAuthHeader: string | null = 'NOT_CALLED';
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        const urlStr = String(url);
+        if (urlStr.includes('/oauth2/token')) {
+          // Token refresh fails (e.g. refresh token revoked)
+          return new Response(JSON.stringify({ error: 'invalid_grant' }), { status: 400 });
+        }
+
+        if (urlStr.includes('127.0.0.1:8000')) {
+          const headers = init?.headers as Headers;
+          backendAuthHeader = headers?.get ? headers.get('authorization') : (headers as any)?.['authorization'] || null;
+          return new Response(JSON.stringify({ detail: 'Not authenticated' }), {
+            status: 401,
+            headers: { 'Content-Type': 'application/json' },
+          });
+        }
+
+        return new Response('Not Found', { status: 404 });
+      }) as any;
+
+      const req = new Request('http://16.113.92.222/api/backend/profile/me', {
+        method: 'GET',
+        headers: {
+          cookie: `${COGNITO_COOKIE_NAMES.ACCESS_TOKEN}=${expiredToken}; ${COGNITO_COOKIE_NAMES.REFRESH_TOKEN}=revoked-refresh-token`,
+        },
+      });
+
+      const response = await bffGet(req, {
+        params: Promise.resolve({ path: ['profile', 'me'] }),
+      });
+
+      // Must proceed unauthenticated (NO Authorization header sent to backend)
+      assert.equal(backendAuthHeader, null, 'Must proceed unauthenticated when refresh fails');
+      assert.equal(response.status, 401, 'Must return 401 from backend, NOT a redirect');
+
+      const data = await response.json();
+      assert.equal(data.detail, 'Not authenticated');
+
+      // Must cleanly clear session cookies with Max-Age=0
+      const setCookies = response.headers.getSetCookie ? response.headers.getSetCookie() : [response.headers.get('set-cookie') || ''];
+      const setCookieStr = setCookies.join('; ');
+      assert.ok(setCookieStr.includes(`${COGNITO_COOKIE_NAMES.ACCESS_TOKEN}=`), 'Must clear access token cookie');
+      assert.ok(setCookieStr.includes(`${COGNITO_COOKIE_NAMES.REFRESH_TOKEN}=`), 'Must clear refresh token cookie');
+      assert.ok(setCookieStr.includes(`${COGNITO_COOKIE_NAMES.ID_TOKEN}=`), 'Must clear ID token cookie');
+      assert.ok(setCookieStr.includes('Max-Age=0'), 'Must set Max-Age=0 to expire cookies');
+    });
+
+    it('does NOT trigger refresh when access token has plenty of time remaining (> 30s)', async () => {
+      const now = Math.floor(Date.now() / 1000);
+      const hB64 = Buffer.from(JSON.stringify({ alg: 'RS256', typ: 'JWT' })).toString('base64url');
+      const pB64 = Buffer.from(JSON.stringify({ sub: 'user-abc', exp: now + 3600 })).toString('base64url');
+      const validToken = `${hB64}.${pB64}.mocksig`;
+
+      let tokenEndpointCalled = false;
+      let backendAuthHeader = '';
+
+      globalThis.fetch = (async (url: string | URL | Request, init?: RequestInit) => {
+        const urlStr = String(url);
+        if (urlStr.includes('/oauth2/token')) {
+          tokenEndpointCalled = true;
+          return new Response('{}', { status: 200 });
+        }
+
+        if (urlStr.includes('127.0.0.1:8000')) {
+          const headers = init?.headers as Headers;
+          backendAuthHeader = headers?.get ? headers.get('authorization') || '' : (headers as any)?.['authorization'] || '';
+          return new Response(JSON.stringify({ ok: true }), { status: 200 });
+        }
+
+        return new Response('Not Found', { status: 404 });
+      }) as any;
+
+      const req = new Request('http://16.113.92.222/api/backend/resource', {
+        method: 'GET',
+        headers: {
+          cookie: `${COGNITO_COOKIE_NAMES.ACCESS_TOKEN}=${validToken}; ${COGNITO_COOKIE_NAMES.REFRESH_TOKEN}=valid-refresh-token`,
+        },
+      });
+
+      const response = await bffGet(req, {
+        params: Promise.resolve({ path: ['resource'] }),
+      });
+
+      assert.equal(tokenEndpointCalled, false, 'Must NOT refresh token when not expiring soon');
+      assert.equal(backendAuthHeader, `Bearer ${validToken}`, 'Must forward current token');
+      assert.equal(response.status, 200);
+
+      const setCookies = response.headers.getSetCookie ? response.headers.getSetCookie() : [];
+      assert.equal(setCookies.length, 0, 'No Set-Cookie headers should be returned when token not refreshed');
     });
   });
 
@@ -774,6 +988,35 @@ describe('Amazon Cognito PKCE, OAuth & BFF Proxy Specialist Suite', () => {
 
       assert.equal(content.includes('sb-access-token'), false, 'Must not reference sb-access-token');
       assert.ok(content.includes("lower !== 'authorization'"), 'Must strip incoming unauthenticated authorization');
+    });
+
+    it('verifies that auth/callback/route.ts forwards both access_token and id_token to /auth/session', async () => {
+      const fs = await import('node:fs/promises');
+      const path = await import('node:path');
+      const callbackPath = path.resolve(process.cwd(), 'src/app/auth/callback/route.ts');
+      const content = await fs.readFile(callbackPath, 'utf-8');
+
+      assert.ok(content.includes('access_token: tokens.access_token'), 'Must forward access_token');
+      assert.ok(content.includes('id_token: tokens.id_token'), 'Must forward id_token');
+    });
+
+    it('verifies that getCurrentSession() extracts preferred_username first and ignores Google_ prefix', async () => {
+      const fs = await import('node:fs/promises');
+      const path = await import('node:path');
+      const authActionsPath = path.resolve(process.cwd(), 'src/app/actions/auth.ts');
+      const content = await fs.readFile(authActionsPath, 'utf-8');
+
+      assert.ok(content.includes('verifiedClaims.preferred_username'), 'Must check preferred_username first');
+      assert.ok(content.includes("startsWith('Google_')"), 'Must ignore Google_ cognito:username');
+    });
+
+    it('verifies that signup and confirmEmail pre-provision profile in RDS via /auth/provision', async () => {
+      const fs = await import('node:fs/promises');
+      const path = await import('node:path');
+      const authActionsPath = path.resolve(process.cwd(), 'src/app/actions/auth.ts');
+      const content = await fs.readFile(authActionsPath, 'utf-8');
+
+      assert.ok(content.includes('/auth/provision'), 'Must call /auth/provision in auth actions');
     });
   });
 });

@@ -183,7 +183,10 @@ export async function GET(request: Request) {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${tokens.access_token}`,
         },
-        body: JSON.stringify({ access_token: tokens.access_token }),
+        body: JSON.stringify({
+          access_token: tokens.access_token,
+          id_token: tokens.id_token,
+        }),
         cache: 'no-store',
       })
 

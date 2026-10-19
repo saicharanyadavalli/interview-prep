@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { API } from "@/lib/api";
 import Link from "next/link";
 import {
@@ -16,8 +17,10 @@ import {
 } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { calculateStreak } from "@/components/progress/Milestones";
+import { Spinner } from "@/components/Spinner";
 
 export default function DashboardPage() {
+  const router = useRouter();
   const { user, session, loading: authLoading } = useAuth();
   const [stats, setStats] = useState({
     total_attempted: 0,
@@ -34,11 +37,7 @@ export default function DashboardPage() {
     if (authLoading) return;
 
     if (!user || !session) {
-      setLoadingProgress(false);
-      setLoadingRevisit(false);
-      setStats({ total_attempted: 0, solved_count: 0, revisit_count: 0, current_streak: 0 });
-      setRecent([]);
-      setRevisit([]);
+      router.replace("/login?next=/dashboard");
       return;
     }
 
@@ -76,7 +75,7 @@ export default function DashboardPage() {
       setLoadingProgress(false);
       setLoadingRevisit(false);
     });
-  }, [user, session, authLoading]);
+  }, [user, session, authLoading, router]);
 
   const renderRecentList = () => {
     if (loadingProgress) {
@@ -227,6 +226,14 @@ export default function DashboardPage() {
       </>
     );
   };
+
+  if (authLoading || !user || !session) {
+    return (
+      <main className="main-content" style={{ minHeight: "60vh", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <Spinner text="Loading dashboard..." />
+      </main>
+    );
+  }
 
   return (
     <main className="main-content">

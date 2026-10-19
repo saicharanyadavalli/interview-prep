@@ -458,3 +458,168 @@ def test_login_cryptographically_verifies_id_token(unauth_client: TestClient):
         assert res.status_code == 200
         mock_verify_id.assert_called_once_with("mock-id-token")
 
+
+def test_create_session_with_id_token_merges_claims(unauth_client: TestClient, mock_user: dict):
+    """Verify POST /auth/session merges verified ID token claims into claims before resolving identity."""
+    mock_access_claims = {
+        "sub": "google-sub-123",
+        "token_use": "access",
+    }
+    mock_id_claims = {
+        "sub": "google-sub-123",
+        "email": "googleuser@gmail.com",
+        "email_verified": True,
+        "name": "Google User",
+        "preferred_username": "googler",
+        "picture": "https://avatar.url/pic.jpg",
+    }
+    captured_claims = {}
+
+    def mock_resolve(claims, provider="cognito"):
+        captured_claims.update(claims)
+        return {
+            "id": "11111111-2222-3333-4444-555555555555",
+            "email": claims["email"],
+            "username": claims.get("preferred_username"),
+            "name": claims.get("name"),
+            "avatar_url": claims.get("picture"),
+        }
+
+    with patch("routes.auth.verify_cognito_token", return_value=mock_access_claims), \
+         patch("routes.auth.verify_cognito_id_token", return_value=mock_id_claims), \
+         patch("routes.auth.resolve_user_identity", side_effect=mock_resolve):
+        res = unauth_client.post(
+            "/auth/session",
+            json={
+                "access_token": "valid-access-token-12345",
+                "id_token": "valid-id-token-67890",
+            },
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["email"] == "googleuser@gmail.com"
+        assert data["username"] == "googler"
+        assert data["name"] == "Google User"
+        assert data["avatar_url"] == "https://avatar.url/pic.jpg"
+        assert captured_claims["email_verified"] is True
+        assert captured_claims["preferred_username"] == "googler"
+
+
+def test_create_session_with_invalid_id_token_returns_401(unauth_client: TestClient):
+    """Verify POST /auth/session returns 401 when ID token cryptographic verification fails."""
+    mock_access_claims = {"sub": "sub-123", "token_use": "access"}
+
+    with patch("routes.auth.verify_cognito_token", return_value=mock_access_claims), \
+         patch("routes.auth.verify_cognito_id_token", side_effect=CognitoAuthError("Invalid signature")):
+        res = unauth_client.post(
+            "/auth/session",
+            json={
+                "access_token": "valid-access-token-12345",
+                "id_token": "corrupt-id-token-99999",
+            },
+        )
+        assert res.status_code == 401
+        assert "Invalid or expired ID token" in res.json()["detail"]
+
+
+def test_provision_user_profile_success(unauth_client: TestClient):
+    """Verify POST /auth/provision pre-provisions new user profile and links identity."""
+    mutations = []
+
+    def mock_query(sql, params=None, fetch="one"):
+        # Username not taken, email does not exist yet
+        return None
+
+    def mock_mutate(sql, params=None):
+        mutations.append((sql, params))
+        return 1
+
+    with patch("routes.auth.rds_client.query", side_effect=mock_query), \
+         patch("routes.auth.rds_client.mutate", side_effect=mock_mutate):
+        res = unauth_client.post(
+            "/auth/provision",
+            json={
+                "email": "newbie@example.com",
+                "username": "newbie",
+                "name": "New User",
+                "user_id": "12345678-1234-1234-1234-123456789012",
+            },
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["email"] == "newbie@example.com"
+        assert data["username"] == "newbie"
+        assert data["name"] == "New User"
+        assert data["id"] == "12345678-1234-1234-1234-123456789012"
+        assert len(mutations) == 2
+        assert "INSERT INTO user_profiles" in mutations[0][0]
+        assert "INSERT INTO user_identities" in mutations[1][0]
+
+
+def test_provision_user_profile_idempotent_existing_preserves_username(unauth_client: TestClient):
+    """Verify POST /auth/provision is idempotent and does not overwrite existing valid username."""
+    mutations = []
+
+    def mock_query(sql, params=None, fetch="one"):
+        if "LOWER(username) = LOWER(%s)" in sql:
+            return {"id": "uuid-1", "email": "existing@example.com"}
+        if "LOWER(email) = LOWER(%s)" in sql:
+            return {
+                "id": "uuid-1",
+                "email": "existing@example.com",
+                "username": "original_uname",
+                "name": "Original Name",
+                "phone": "",
+                "avatar_url": "",
+            }
+        return None
+
+    with patch("routes.auth.rds_client.query", side_effect=mock_query), \
+         patch("routes.auth.rds_client.mutate", side_effect=lambda s, p: mutations.append((s, p)) or 1):
+        res = unauth_client.post(
+            "/auth/provision",
+            json={
+                "email": "existing@example.com",
+                "username": "different_uname",
+                "name": "Updated Name",
+            },
+        )
+        assert res.status_code == 200
+        data = res.json()
+        assert data["username"] == "original_uname"
+        assert data["name"] == "Original Name"
+
+
+def test_provision_user_profile_username_taken_returns_409(unauth_client: TestClient):
+    """Verify POST /auth/provision returns 409 Conflict when username belongs to another email."""
+    def mock_query(sql, params=None, fetch="one"):
+        if "LOWER(username) = LOWER(%s)" in sql:
+            return {"id": "other-uuid", "email": "other@example.com"}
+        return None
+
+    with patch("routes.auth.rds_client.query", side_effect=mock_query):
+        res = unauth_client.post(
+            "/auth/provision",
+            json={
+                "email": "me@example.com",
+                "username": "taken_handle",
+                "name": "My Name",
+            },
+        )
+        assert res.status_code == 409
+        assert "already taken" in res.json()["detail"].lower()
+
+
+def test_provision_user_profile_rejects_extra_fields(unauth_client: TestClient):
+    """Verify POST /auth/provision rejects forbidden fields like password or role."""
+    res = unauth_client.post(
+        "/auth/provision",
+        json={
+            "email": "safe@example.com",
+            "username": "safeuser",
+            "password": "Password123!",  # strictly forbidden!
+        },
+    )
+    assert res.status_code == 422
+
+

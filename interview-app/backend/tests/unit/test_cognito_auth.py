@@ -827,3 +827,107 @@ def test_auth_errors_do_not_leak_raw_tokens(rsa_key_pair):
         verify_cognito_token(raw_token)
     assert raw_token not in str(exc_info.value)
 
+
+def test_resolve_user_identity_extracts_preferred_username_first():
+    """Verify resolve_user_identity prioritizes preferred_username over cognito:username or username."""
+    mutations = []
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            return None
+        if "FROM user_profiles" in sql and "LOWER(email) = LOWER(%s)" in sql:
+            return []
+        if "FROM user_profiles" in sql and "LOWER(username) = LOWER(%s)" in sql:
+            return None
+        if "FROM user_profiles" in sql and "id = %s" in sql:
+            return {
+                "id": params[0],
+                "email": "primary@example.com",
+                "username": "chosen_handle",
+                "name": "Preferred Name",
+                "avatar_url": "",
+            }
+        return None
+
+    with patch("services.rds_client.query", side_effect=mock_query), \
+         patch("services.rds_client.mutate", side_effect=lambda s, p: mutations.append((s, p)) or 1):
+        claims = {
+            "sub": "cognito-sub-uuid-1234",
+            "email": "primary@example.com",
+            "cognito:username": "internal-cognito-uuid-5678",
+            "username": "fallback_username",
+            "preferred_username": "chosen_handle",
+            "name": "Preferred Name",
+        }
+        profile = resolve_user_identity(claims)
+        assert profile["username"] == "chosen_handle"
+        assert mutations[0][1][2] == "chosen_handle"
+
+
+def test_resolve_user_identity_google_oauth_fallback():
+    """Verify resolve_user_identity rejects Google_ prefix and falls back to email prefix."""
+    mutations = []
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            return None
+        if "FROM user_profiles" in sql and "LOWER(email) = LOWER(%s)" in sql:
+            return []
+        if "FROM user_profiles" in sql and "LOWER(username) = LOWER(%s)" in sql:
+            return None
+        if "FROM user_profiles" in sql and "id = %s" in sql:
+            return {
+                "id": params[0],
+                "email": "google.dev@example.com",
+                "username": "google.dev",
+                "name": "Google Dev",
+                "avatar_url": "",
+            }
+        return None
+
+    with patch("services.rds_client.query", side_effect=mock_query), \
+         patch("services.rds_client.mutate", side_effect=lambda s, p: mutations.append((s, p)) or 1):
+        claims = {
+            "sub": "google-sub-9999",
+            "email": "google.dev@example.com",
+            "cognito:username": "Google_10283491823901",
+            "name": "Google Dev",
+        }
+        profile = resolve_user_identity(claims)
+        assert profile["username"] == "google.dev"
+        assert not profile["username"].lower().startswith("google_")
+        assert mutations[0][1][2] == "google.dev"
+
+
+def test_resolve_user_identity_never_overwrites_existing_valid_username():
+    """Verify resolve_user_identity never overwrites an existing valid username in RDS."""
+    existing_uuid = "22222222-3333-4444-5555-666666666666"
+    mock_existing_profile = {
+        "id": existing_uuid,
+        "email": "veteran@example.com",
+        "username": "veteran_coder",
+        "name": "Veteran Coder",
+        "avatar_url": "",
+    }
+    mutations = []
+
+    def mock_query(sql, params=None, fetch="all"):
+        if "FROM user_identities" in sql:
+            return {"user_id": existing_uuid, "email": "veteran@example.com"}
+        if "FROM user_profiles" in sql and "id = %s" in sql:
+            return mock_existing_profile
+        return None
+
+    with patch("services.rds_client.query", side_effect=mock_query), \
+         patch("services.rds_client.mutate", side_effect=lambda s, p: mutations.append((s, p)) or 1):
+        claims = {
+            "sub": "veteran-sub-555",
+            "email": "veteran@example.com",
+            "cognito:username": "Google_88888888",
+        }
+        profile = resolve_user_identity(claims)
+        assert profile["username"] == "veteran_coder"
+        for sql, params in mutations:
+            assert "Google_88888888" not in str(params)
+
+

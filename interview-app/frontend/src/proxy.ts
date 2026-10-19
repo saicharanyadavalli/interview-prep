@@ -1,75 +1,78 @@
-import { createServerClient } from '@supabase/ssr';
-import { NextResponse, type NextRequest } from 'next/server';
-import { CONFIG } from '@/lib/config';
+import { NextResponse, type NextRequest } from 'next/server.js';
+export const COGNITO_COOKIE_NAMES = {
+  STATE: 'cognito_oauth_state',
+  VERIFIER: 'cognito_pkce_verifier',
+  NONCE: 'cognito_nonce',
+  NEXT: 'cognito_oauth_next',
+  ACCESS_TOKEN: 'cognito_access_token',
+  REFRESH_TOKEN: 'cognito_refresh_token',
+  ID_TOKEN: 'cognito_id_token',
+} as const;
 
-const PROTECTED_ROUTES = [
-  "/dashboard",
-  "/practice",
-  "/questions",
-  "/solve",
-  "/profile",
-  "/progress",
-  "/revisit",
-  "/dsa"
+export const PROTECTED_ROUTES = [
+  '/dashboard',
+  '/profile',
+  '/progress',
+  '/revisit',
+  '/solve',
+  '/practice',
 ];
 
-export async function proxy(request: NextRequest) {
-  if (process.env.NEXT_PUBLIC_DISABLE_AUTH === "true") {
-    return NextResponse.next();
-  }
+export const PUBLIC_ROUTES = [
+  '/',
+  '/login',
+  '/signup',
+  '/courses',
+  '/dsa/leetcode',
+  '/questions',
+  '/auth',
+  '/api',
+];
 
-  let supabaseResponse = NextResponse.next({
-    request: {
-      headers: request.headers,
-    },
-  });
+/**
+ * Checks unverified exp claim to ensure the JWT token has not expired.
+ */
+export function isTokenActive(token?: string | null): boolean {
+  if (!token || typeof token !== 'string') return false;
 
-  const supabaseUrl = (process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL || CONFIG.SUPABASE_URL || '').trim().replace(/^["']|["']$/g, '');
-  const supabaseAnonKey = (process.env.SUPABASE_ANON_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || CONFIG.SUPABASE_ANON_KEY || '').trim().replace(/^["']|["']$/g, '');
-
-  if (!supabaseUrl || !supabaseAnonKey) {
-    return supabaseResponse;
-  }
-
-  const supabase = createServerClient(
-    supabaseUrl,
-    supabaseAnonKey,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll();
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => {
-            request.cookies.set(name, value);
-          });
-
-          supabaseResponse = NextResponse.next({
-            request: {
-              headers: request.headers,
-            },
-          });
-
-          cookiesToSet.forEach(({ name, value, options }) => {
-            supabaseResponse.cookies.set(name, value, options);
-          });
-        },
-      },
-    }
-  );
-
-  // Authenticate & refresh user token using getUser() per Supabase SSR best practices
-  let user = null;
   try {
-    const {
-      data,
-      error,
-    } = await supabase.auth.getUser();
-    if (!error && data) {
-      user = data.user;
+    const parts = token.split('.');
+    if (parts.length < 2) return false;
+
+    let base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    while (base64.length % 4 !== 0) {
+      base64 += '=';
     }
-  } catch (err) {
-    console.warn('Supabase auth.getUser() check failed in proxy:', err);
+
+    const jsonString =
+      typeof Buffer !== 'undefined'
+        ? Buffer.from(base64, 'base64').toString('utf-8')
+        : atob(base64);
+
+    const payload = JSON.parse(jsonString);
+    if (!payload || typeof payload !== 'object') return false;
+    if (typeof payload.exp !== 'number') return false;
+
+    const now = Math.floor(Date.now() / 1000);
+    return payload.exp > now;
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Inspects cookies for an active, unexpired Amazon Cognito access or ID token.
+ */
+export function isUserAuthenticated(request: NextRequest): boolean {
+  const accessToken = request.cookies.get(COGNITO_COOKIE_NAMES.ACCESS_TOKEN)?.value;
+  const idToken = request.cookies.get(COGNITO_COOKIE_NAMES.ID_TOKEN)?.value;
+
+  return isTokenActive(accessToken) || isTokenActive(idToken);
+}
+
+export async function proxy(request: NextRequest) {
+  if (process.env.NEXT_PUBLIC_DISABLE_AUTH === 'true') {
+    return NextResponse.next();
   }
 
   const pathname = request.nextUrl.pathname;
@@ -85,29 +88,43 @@ export async function proxy(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  // Gracefully handle /signup route by redirecting to /login in signup mode
+  const isAuthenticated = isUserAuthenticated(request);
+
+  // Handle /signup route by redirecting to /login in signup mode (or /dashboard if authenticated)
   if (pathname === '/signup') {
     const url = request.nextUrl.clone();
-    url.pathname = '/login';
-    url.searchParams.set('mode', 'signup');
+    if (isAuthenticated) {
+      url.pathname = '/dashboard';
+      url.search = '';
+    } else {
+      url.pathname = '/login';
+      url.searchParams.set('mode', 'signup');
+    }
     return NextResponse.redirect(url);
   }
 
-  const isProtected = PROTECTED_ROUTES.some(route => pathname.startsWith(route));
+  const isProtected = PROTECTED_ROUTES.some(
+    (route) => pathname === route || pathname.startsWith(`${route}/`)
+  );
 
-  if (isProtected && !user) {
+  // If unauthenticated user requests a protected route, preserve destination and redirect to /login
+  if (isProtected && !isAuthenticated) {
+    const next = request.nextUrl.pathname + request.nextUrl.search;
     const url = request.nextUrl.clone();
     url.pathname = '/login';
+    url.search = `?next=${encodeURIComponent(next)}`;
     return NextResponse.redirect(url);
   }
 
-  if (user && (pathname === '/login' || pathname === '/')) {
+  // If authenticated user visits /login or root /, redirect to /dashboard
+  if (isAuthenticated && (pathname === '/login' || pathname === '/')) {
     const url = request.nextUrl.clone();
     url.pathname = '/dashboard';
+    url.search = '';
     return NextResponse.redirect(url);
   }
 
-  return supabaseResponse;
+  return NextResponse.next();
 }
 
 export const middleware = proxy;

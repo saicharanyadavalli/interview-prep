@@ -23,10 +23,22 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator
 # ---------- Auth ----------
 
 class SessionRequest(BaseModel):
-    """Frontend sends the Supabase access token after login."""
+    """Frontend sends Cognito access token and optional ID token after login or OAuth."""
     model_config = ConfigDict(extra="forbid")
 
-    access_token: str = Field(..., min_length=10, max_length=2048)
+    access_token: str = Field(..., min_length=10, max_length=4096)
+    id_token: Optional[str] = Field(None, max_length=8192)
+
+
+class ProvisionRequest(BaseModel):
+    """Payload to safely pre-provision or reconcile a user profile upon registration."""
+    model_config = ConfigDict(extra="forbid")
+
+    email: str = Field(..., min_length=3, max_length=254)
+    username: str = Field(..., min_length=1, max_length=50)
+    name: Optional[str] = Field(default="", max_length=120)
+    user_id: Optional[str] = Field(default=None, max_length=64)
+
 
 
 class LoginRequest(BaseModel):

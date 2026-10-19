@@ -21,6 +21,7 @@ from limiter import limiter
 
 from models.schemas import (
     SessionRequest,
+    ProvisionRequest,
     UserResponse,
     LoginRequest,
     LoginResponse,
@@ -64,7 +65,14 @@ def resolve_user_identity(
 
     raw_email = str(claims.get("email") or "").strip()
     clean_email = raw_email.lower() if raw_email else ""
-    username_claim = str(claims.get("username") or claims.get("cognito:username") or "").strip()
+    username_claim = str(
+        claims.get("preferred_username")
+        or claims.get("username")
+        or claims.get("cognito:username")
+        or ""
+    ).strip()
+    if username_claim.lower().startswith("google_"):
+        username_claim = ""
     name_claim = str(claims.get("name") or claims.get("full_name") or claims.get("given_name") or "").strip()
     avatar_claim = str(claims.get("avatar_url") or claims.get("picture") or "").strip()
 
@@ -103,6 +111,28 @@ def resolve_user_identity(
                     )
                 except Exception:
                     pass
+            # If username in RDS was empty or provider ID, populate it safely (never overwrite existing valid username)
+            existing_uname = (profile.get("username") or "").strip()
+            if not existing_uname or existing_uname.lower().startswith("google_"):
+                fallback_username = (
+                    username_claim
+                    or (clean_email.split("@")[0] if clean_email else f"user_{user_id[:8]}")
+                ).lower()
+                if fallback_username and not fallback_username.startswith("google_"):
+                    try:
+                        taken = rds_client.query(
+                            "SELECT id FROM user_profiles WHERE LOWER(username) = LOWER(%s) AND id != %s LIMIT 1;",
+                            (fallback_username, user_id),
+                            fetch="one",
+                        )
+                        if not taken:
+                            rds_client.mutate(
+                                "UPDATE user_profiles SET username = %s, updated_at = now() WHERE id = %s;",
+                                (fallback_username, user_id),
+                            )
+                            profile["username"] = fallback_username
+                    except Exception:
+                        pass
             return dict(profile)
 
     # 3. If no mapping exists, check user_profiles WHERE LOWER(email) = LOWER(%s)
@@ -182,6 +212,29 @@ def resolve_user_identity(
                     raise ValueError(
                         f"Identity conflict: Identity '{provider_sub}' is already linked to another account."
                     )
+
+                # If username in RDS was empty or provider ID, populate it safely (never overwrite existing valid username)
+                existing_uname = (profile.get("username") or "").strip()
+                if not existing_uname or existing_uname.lower().startswith("google_"):
+                    fallback_username = (
+                        username_claim
+                        or (clean_email.split("@")[0] if clean_email else f"user_{user_id[:8]}")
+                    ).lower()
+                    if fallback_username and not fallback_username.startswith("google_"):
+                        try:
+                            taken = rds_client.query(
+                                "SELECT id FROM user_profiles WHERE LOWER(username) = LOWER(%s) AND id != %s LIMIT 1;",
+                                (fallback_username, user_id),
+                                fetch="one",
+                            )
+                            if not taken:
+                                rds_client.mutate(
+                                    "UPDATE user_profiles SET username = %s, updated_at = now() WHERE id = %s;",
+                                    (fallback_username, user_id),
+                                )
+                                profile["username"] = fallback_username
+                        except Exception:
+                            pass
 
                 return profile
 
@@ -397,6 +450,17 @@ def create_session(request: Request, response: Response, payload: SessionRequest
         logger.warning("Session token verification failed: %s", exc)
         raise HTTPException(status_code=401, detail="Invalid or expired token.")
 
+    if payload.id_token:
+        try:
+            id_claims = verify_cognito_id_token(payload.id_token)
+            for key in ("email", "email_verified", "name", "preferred_username", "picture", "avatar_url"):
+                if key in id_claims:
+                    if key not in claims or not claims[key] or key == "email_verified":
+                        claims[key] = id_claims[key]
+        except Exception as exc:
+            logger.warning("Session ID token verification failed: %s", exc)
+            raise HTTPException(status_code=401, detail="Invalid or expired ID token.")
+
     try:
         db_user = resolve_user_identity(claims)
         return UserResponse(
@@ -530,9 +594,10 @@ def login_with_credentials(request: Request, response: Response, payload: LoginR
     if id_token:
         try:
             id_claims = verify_cognito_id_token(id_token)
-            for key in ("email", "email_verified", "name", "picture", "avatar_url"):
-                if key in id_claims and key not in claims:
-                    claims[key] = id_claims[key]
+            for key in ("email", "email_verified", "name", "preferred_username", "picture", "avatar_url"):
+                if key in id_claims:
+                    if key not in claims or not claims[key] or key == "email_verified":
+                        claims[key] = id_claims[key]
         except Exception as exc:
             logger.warning("Cryptographic verification of Cognito ID token failed: %s", exc)
 
@@ -546,6 +611,19 @@ def login_with_credentials(request: Request, response: Response, payload: LoginR
             status_code=503,
             detail="Database service temporarily unavailable. Could not synchronize user session.",
         ) from exc
+
+    # If login was performed with email, ensure RDS profile has preferred_username persisted
+    if "@" in raw_ident and not db_user.get("username") and claims.get("preferred_username"):
+        uname = str(claims["preferred_username"]).strip().lower()
+        if uname and not uname.startswith("google_"):
+            try:
+                rds_client.mutate(
+                    "UPDATE user_profiles SET username = %s, updated_at = now() WHERE id = %s AND (username IS NULL OR username = '');",
+                    (uname, str(db_user["id"])),
+                )
+                db_user["username"] = uname
+            except Exception:
+                pass
 
     user_resp = UserResponse(
         id=str(db_user["id"]),
@@ -591,3 +669,140 @@ def check_username_availability(request: Request, response: Response, username: 
             status_code=503,
             detail="Database check failed. Unable to verify username availability.",
         )
+
+
+@router.post("/provision", response_model=UserResponse)
+@limiter.limit("120/minute")
+def provision_user_profile(request: Request, response: Response, payload: ProvisionRequest):
+    """Pre-provision or reconcile a user profile in RDS during registration.
+
+    SECURITY INVARIANTS:
+    - Never accepts or stores passwords in RDS.
+    - Idempotent: safe for retries via ON CONFLICT handling.
+    - Validates email and username format.
+    - Preserves existing valid usernames (never overwrites an existing username with empty/provider ID).
+    - Links user_identities if user_id (Cognito sub) is provided.
+    """
+    clean_email = payload.email.strip().lower()
+    clean_username = payload.username.strip().lower()
+    clean_name = payload.name.strip() if payload.name else ""
+    provided_sub = payload.user_id.strip() if payload.user_id else ""
+
+    if "@" not in clean_email or "." not in clean_email.split("@")[-1]:
+        raise HTTPException(status_code=400, detail="Invalid email format.")
+
+    # Check if username is taken by a different email
+    try:
+        taken = rds_client.query(
+            "SELECT id, email FROM user_profiles WHERE LOWER(username) = LOWER(%s) LIMIT 1;",
+            (clean_username,),
+            fetch="one",
+        )
+    except Exception as exc:
+        logger.error("Database error checking username availability during provision: %s", exc)
+        raise HTTPException(status_code=503, detail="Database service temporarily unavailable.") from exc
+
+    if taken and taken.get("email", "").lower() != clean_email:
+        raise HTTPException(
+            status_code=409,
+            detail=f"Username '{clean_username}' is already taken. Please choose another username.",
+        )
+
+    # Check if a profile already exists for this email
+    try:
+        existing = rds_client.query(
+            "SELECT id, email, username, name, phone, avatar_url FROM user_profiles WHERE LOWER(email) = LOWER(%s) LIMIT 1;",
+            (clean_email,),
+            fetch="one",
+        )
+    except Exception as exc:
+        logger.error("Database error checking existing profile during provision: %s", exc)
+        raise HTTPException(status_code=503, detail="Database service temporarily unavailable.") from exc
+
+    if existing:
+        user_id = str(existing["id"])
+        existing_username = (existing.get("username") or "").strip()
+        final_username = (
+            existing_username
+            if (existing_username and not existing_username.lower().startswith("google_"))
+            else clean_username
+        )
+        final_name = existing.get("name") or clean_name
+
+        try:
+            rds_client.mutate(
+                """
+                UPDATE user_profiles
+                SET username = %s,
+                    name = COALESCE(NULLIF(name, ''), %s),
+                    updated_at = now()
+                WHERE id = %s;
+                """,
+                (final_username, final_name, user_id),
+            )
+
+            if provided_sub:
+                rds_client.mutate(
+                    """
+                    INSERT INTO user_identities (user_id, provider, provider_sub, email)
+                    VALUES (%s, 'cognito', %s, %s)
+                    ON CONFLICT (provider, provider_sub) DO NOTHING;
+                    """,
+                    (user_id, provided_sub, clean_email),
+                )
+        except Exception as exc:
+            logger.error("Database error updating profile during provision: %s", exc)
+            raise HTTPException(status_code=503, detail="Database service temporarily unavailable.") from exc
+
+        return UserResponse(
+            id=user_id,
+            email=clean_email,
+            username=final_username,
+            name=final_name,
+            avatar_url=existing.get("avatar_url") or "",
+        )
+
+    # Create new profile
+    profile_id = ""
+    if provided_sub:
+        try:
+            profile_id = str(uuid.UUID(provided_sub))
+        except (ValueError, TypeError, AttributeError):
+            profile_id = ""
+    if not profile_id:
+        profile_id = str(uuid.uuid4())
+
+    try:
+        rds_client.mutate(
+            """
+            INSERT INTO user_profiles (id, email, username, name, avatar_url)
+            VALUES (%s, %s, %s, %s, '')
+            ON CONFLICT (id) DO UPDATE
+            SET email = EXCLUDED.email,
+                username = COALESCE(NULLIF(user_profiles.username, ''), EXCLUDED.username),
+                name = COALESCE(NULLIF(user_profiles.name, ''), EXCLUDED.name);
+            """,
+            (profile_id, clean_email, clean_username, clean_name),
+        )
+
+        if provided_sub:
+            rds_client.mutate(
+                """
+                INSERT INTO user_identities (user_id, provider, provider_sub, email)
+                VALUES (%s, 'cognito', %s, %s)
+                ON CONFLICT (provider, provider_sub) DO NOTHING;
+                """,
+                (profile_id, provided_sub, clean_email),
+            )
+    except Exception as exc:
+        logger.error("Database error inserting profile during provision: %s", exc)
+        raise HTTPException(status_code=503, detail="Database service temporarily unavailable.") from exc
+
+    return UserResponse(
+        id=profile_id,
+        email=clean_email,
+        username=clean_username,
+        name=clean_name,
+        avatar_url="",
+    )
+

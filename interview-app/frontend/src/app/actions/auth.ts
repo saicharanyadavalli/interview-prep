@@ -269,7 +269,12 @@ export async function getCurrentSession() {
   const email = verifiedClaims.email || ''
   const name = verifiedClaims.name || ''
   const username =
-    verifiedClaims['cognito:username'] ||
+    verifiedClaims.preferred_username ||
+    (verifiedClaims['cognito:username'] &&
+    !verifiedClaims['cognito:username'].startsWith('Google_') &&
+    !verifiedClaims['cognito:username'].startsWith('google_')
+      ? verifiedClaims['cognito:username']
+      : '') ||
     verifiedClaims.username ||
     (email ? email.split('@')[0] : '')
 
@@ -474,6 +479,25 @@ export async function signup(formData: FormData) {
   // 2. Register user with Cognito Identity Provider
   try {
     const result = await signUpWithCognito(cleanEmail, password, cleanUsername, cleanFullName)
+
+    // Pre-provision profile in RDS so username-based login at /auth/login works immediately
+    try {
+      const backendUrl = getInternalBackendUrl()
+      await fetch(`${backendUrl}/auth/provision`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: cleanEmail,
+          username: cleanUsername,
+          name: cleanFullName,
+          user_id: result.userSub || undefined,
+        }),
+        cache: 'no-store',
+      })
+    } catch (provisionErr) {
+      console.warn('[signup] Pre-provisioning profile in RDS warning:', provisionErr)
+    }
+
     if (!result.userConfirmed) {
       return {
         success: true,
@@ -500,7 +524,7 @@ export async function signup(formData: FormData) {
 /**
  * Confirms user email registration with a 6-digit confirmation code.
  */
-export async function confirmEmail(email: string, code: string) {
+export async function confirmEmail(email: string, code: string, username?: string) {
   if (!email || !code) {
     return { error: 'Email and verification code are required.' }
   }
@@ -509,6 +533,21 @@ export async function confirmEmail(email: string, code: string) {
 
   try {
     await confirmSignUpWithCognito(cleanEmail, cleanCode)
+
+    // Safely reconcile profile in RDS on confirmation as an idempotent safety net
+    try {
+      const backendUrl = getInternalBackendUrl()
+      await fetch(`${backendUrl}/auth/provision`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: cleanEmail,
+          username: username ? username.trim().toLowerCase() : cleanEmail.split('@')[0],
+        }),
+        cache: 'no-store',
+      })
+    } catch (_) {}
+
     return { success: true, message: 'Email confirmed successfully. You can now sign in.' }
   } catch (err: any) {
     const errCode = err.code || ''

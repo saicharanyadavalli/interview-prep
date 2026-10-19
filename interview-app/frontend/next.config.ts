@@ -11,15 +11,6 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "ui-avatars.com" },
     ],
   },
-  async rewrites() {
-    const backendUrl = process.env.BACKEND_INTERNAL_URL || "http://127.0.0.1:8000";
-    return [
-      {
-        source: '/api/backend/:path*',
-        destination: `${backendUrl}/:path*`,
-      },
-    ];
-  },
   async redirects() {
     return [
       {
