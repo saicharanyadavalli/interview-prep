@@ -60,7 +60,7 @@ services:
       - ASSET_BASE_URL=${ASSET_BASE_URL:-}
       # Centralized Cache & Distributed Rate Limiting (Amazon ElastiCache / Local Redis)
       - CACHE_ENABLED=${CACHE_ENABLED:-true}
-      - CACHE_URL=${CACHE_URL:-redis://redis:6379/0}
+      - CACHE_URL=${CACHE_URL-redis://redis:6379/0}
       - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-}
     depends_on:
       redis:

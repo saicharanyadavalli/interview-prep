@@ -71,7 +71,7 @@ services:
       - S3_ASSETS_REGION=${S3_ASSETS_REGION:-ap-south-2}
       - ASSET_BASE_URL=${ASSET_BASE_URL:-}
       # In-Memory Caching & Distributed Rate Limiting
-      - CACHE_URL=${CACHE_URL:-redis://redis:6379/0}
+      - CACHE_URL=${CACHE_URL-redis://redis:6379/0}
       - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-}
     depends_on:
       redis:
