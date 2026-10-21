@@ -9,6 +9,26 @@ version: "3.9"
 
 services:
   # ==========================================
+  # In-Memory Cache & Distributed Rate Limiting
+  # ==========================================
+  redis:
+    image: redis:7-alpine
+    container_name: interview-backend-redis
+    restart: unless-stopped
+    command: ["redis-server", "--maxmemory", "256mb", "--maxmemory-policy", "allkeys-lru", "--save", ""]
+    ports:
+      # Bound strictly to loopback interface for security
+      - "127.0.0.1:6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+    networks:
+      - backend-network
+
+  # ==========================================
   # FastAPI Backend Application
   # ==========================================
   app:
@@ -50,6 +70,12 @@ services:
       - S3_ASSETS_BUCKET=${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}
       - S3_ASSETS_REGION=${S3_ASSETS_REGION:-ap-south-2}
       - ASSET_BASE_URL=${ASSET_BASE_URL:-}
+      # In-Memory Caching & Distributed Rate Limiting
+      - CACHE_URL=${CACHE_URL:-redis://redis:6379/0}
+      - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-redis://redis:6379/1}
+    depends_on:
+      redis:
+        condition: service_healthy
     volumes:
       # Read-only mount for any static assets if needed
       - ./assets:/app/assets:ro

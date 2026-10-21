@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import logging
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 
-from models.schemas import RevisitResponse, RevisitEntry
+from limiter import limiter
+from models.schemas import RevisitEntry, RevisitResponse
 from routes.auth import get_current_user
 from services import rds_client
 from services.questions_service import get_question_summary_by_qnum
@@ -16,7 +17,8 @@ router = APIRouter(prefix="/revisit", tags=["revisit"])
 
 
 @router.get("", response_model=RevisitResponse)
-def get_revisit_queue(user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def get_revisit_queue(request: Request, user: dict = Depends(get_current_user)):
     """Return all questions in the user's revisit queue from RDS."""
     try:
         entries = rds_client.query(
@@ -51,7 +53,8 @@ def get_revisit_queue(user: dict = Depends(get_current_user)):
 
 
 @router.delete("/{qnum}")
-def remove_from_revisit(qnum: int, user: dict = Depends(get_current_user)):
+@limiter.limit("30/minute")
+def remove_from_revisit(request: Request, qnum: int, user: dict = Depends(get_current_user)):
     """Remove a question from revisit in RDS while preserving solved state."""
     try:
         rds_client.mutate(

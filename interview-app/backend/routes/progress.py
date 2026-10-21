@@ -4,7 +4,8 @@ from __future__ import annotations
 
 from datetime import datetime, timezone, timedelta
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
+from limiter import limiter
 
 from models.schemas import (
     ProgressUpdateRequest,
@@ -79,7 +80,8 @@ def _coerce_state_from_payload(payload: ProgressUpdateRequest, current_is_solved
 
 
 @router.post("/update")
-def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def update_progress(request: Request, payload: ProgressUpdateRequest, user: dict = Depends(get_current_user)):
     """Update question progress in RDS using is_solved/revisit values."""
     qnum = payload.qnum
     if qnum is None and payload.question_id:
@@ -139,7 +141,8 @@ def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_cur
 
 
 @router.get("/user", response_model=UserProgressResponse)
-def get_user_progress(summary_only: bool = False, user: dict | None = Depends(get_optional_current_user)):
+@limiter.limit("60/minute")
+def get_user_progress(request: Request, summary_only: bool = False, user: dict | None = Depends(get_optional_current_user)):
     """Return aggregated progress stats and recent progress entries."""
     if not user:
         return UserProgressResponse(
@@ -432,7 +435,8 @@ def get_user_progress(summary_only: bool = False, user: dict | None = Depends(ge
 
 
 @router.get("/status/{qnum}", response_model=ProgressStatusResponse)
-def get_question_progress_status(qnum: int, user: dict | None = Depends(get_optional_current_user)):
+@limiter.limit("120/minute")
+def get_question_progress_status(request: Request, qnum: int, user: dict | None = Depends(get_optional_current_user)):
     """Return saved progress state for one question from RDS."""
     if qnum <= 0:
         raise HTTPException(status_code=422, detail="qnum must be greater than 0")
@@ -456,7 +460,8 @@ def get_question_progress_status(qnum: int, user: dict | None = Depends(get_opti
 
 
 @router.delete("/{qnum}")
-def clear_question_progress(qnum: int, user: dict = Depends(get_current_user)):
+@limiter.limit("30/minute")
+def clear_question_progress(request: Request, qnum: int, user: dict = Depends(get_current_user)):
     """Clear saved progress for a question in RDS (manual not-solved/reset)."""
     if qnum <= 0:
         raise HTTPException(status_code=422, detail="qnum must be greater than 0")
@@ -495,7 +500,8 @@ def _ensure_folders_table():
 
 
 @router.get("/folders", response_model=CustomFolderListResponse)
-def get_user_custom_folders(user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def get_user_custom_folders(request: Request, user: dict = Depends(get_current_user)):
     """Return all custom question folders for current user."""
     _ensure_folders_table()
     try:
@@ -530,7 +536,8 @@ def get_user_custom_folders(user: dict = Depends(get_current_user)):
 
 
 @router.post("/folders", response_model=CustomFolderEntry)
-def create_or_update_custom_folder(payload: CustomFolderCreateRequest, user: dict = Depends(get_current_user)):
+@limiter.limit("20/minute")
+def create_or_update_custom_folder(request: Request, payload: CustomFolderCreateRequest, user: dict = Depends(get_current_user)):
     """Create or overwrite a custom question folder."""
     _ensure_folders_table()
     name = payload.name.strip()
@@ -570,7 +577,8 @@ def create_or_update_custom_folder(payload: CustomFolderCreateRequest, user: dic
 
 
 @router.post("/folders/add-question")
-def add_question_to_custom_folder(payload: CustomFolderQuestionActionRequest, user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def add_question_to_custom_folder(request: Request, payload: CustomFolderQuestionActionRequest, user: dict = Depends(get_current_user)):
     """Add a question to a custom folder, creating the folder if needed."""
     _ensure_folders_table()
     folder_name = payload.folder_name.strip()
@@ -634,7 +642,8 @@ def add_question_to_custom_folder(payload: CustomFolderQuestionActionRequest, us
 
 
 @router.post("/folders/remove-question")
-def remove_question_from_custom_folder(payload: CustomFolderQuestionActionRequest, user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def remove_question_from_custom_folder(request: Request, payload: CustomFolderQuestionActionRequest, user: dict = Depends(get_current_user)):
     """Remove a question from a custom folder."""
     _ensure_folders_table()
     folder_name = payload.folder_name.strip()
@@ -670,7 +679,8 @@ def remove_question_from_custom_folder(payload: CustomFolderQuestionActionReques
 
 
 @router.delete("/folders/{folder_name}")
-def delete_custom_folder(folder_name: str, user: dict = Depends(get_current_user)):
+@limiter.limit("20/minute")
+def delete_custom_folder(request: Request, folder_name: str, user: dict = Depends(get_current_user)):
     """Delete a custom folder."""
     _ensure_folders_table()
     clean_name = folder_name.strip()

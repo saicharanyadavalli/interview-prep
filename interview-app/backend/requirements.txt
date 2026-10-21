@@ -107,6 +107,10 @@ idna==3.18
     #   yarl
 limits==5.8.0
     # via slowapi
+redis==5.0.8
+    # via
+    #   limits
+    #   backend cache service
 multidict==6.7.1
     # via yarl
 packaging==26.3

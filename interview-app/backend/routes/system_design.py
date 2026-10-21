@@ -15,7 +15,9 @@ from __future__ import annotations
 
 from datetime import datetime, timezone
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
+from limiter import limiter
+from services.cache_service import cache_aside, TTL_STATIC_METADATA
 
 from models.schemas import (
     LearningTrackMeta,
@@ -149,7 +151,9 @@ def _update_learning_track_progress(
 # ── routes ───────────────────────────────────────────────────────────
 
 @router.get("/learning-tracks", response_model=LearningTracksResponse)
-def get_learning_tracks_meta(_: Optional[dict] = Depends(get_optional_current_user)):
+@limiter.limit("60/minute")
+@cache_aside(key_builder=lambda request, *a, **k: "learning_tracks:meta", ttl=TTL_STATIC_METADATA)
+def get_learning_tracks_meta(request: Request, _: Optional[dict] = Depends(get_optional_current_user)):
     """Return all configured learning-track metadata."""
     tracks = [
         LearningTrackMeta(
@@ -165,13 +169,16 @@ def get_learning_tracks_meta(_: Optional[dict] = Depends(get_optional_current_us
 
 
 @router.get("/learning-tracks/{track_id}/progress", response_model=LearningTrackProgressResponse)
-def get_learning_track_progress(track_id: str, user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def get_learning_track_progress(request: Request, track_id: str, user: dict = Depends(get_current_user)):
     """Return per-step completion state for one learning track."""
     return _build_learning_track_progress(track_id, user)
 
 
 @router.post("/learning-tracks/{track_id}/progress", response_model=LearningTrackStepProgress)
+@limiter.limit("60/minute")
 def update_learning_track_progress(
+    request: Request,
     track_id: str,
     payload: LearningTrackProgressUpdateRequest,
     user: dict = Depends(get_current_user),
@@ -181,7 +188,9 @@ def update_learning_track_progress(
 
 
 @router.get("/learning-tracks/{track_id}/lessons/{step_no}")
+@limiter.limit("60/minute")
 def get_learning_track_lesson(
+    request: Request,
     track_id: str,
     step_no: int,
     user: dict = Depends(get_current_user),
@@ -214,7 +223,8 @@ def get_learning_track_lesson(
 # ── legacy system-design endpoints (backward compat) ─────────────
 
 @router.get("/system-design/progress", response_model=SystemDesignProgressResponse)
-def get_system_design_progress_legacy(user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def get_system_design_progress_legacy(request: Request, user: dict = Depends(get_current_user)):
     """Compatibility endpoint for older frontend versions."""
     progress = _build_learning_track_progress("system-design", user)
     return SystemDesignProgressResponse(
@@ -235,7 +245,9 @@ def get_system_design_progress_legacy(user: dict = Depends(get_current_user)):
 
 @router.post("/system-design/progress", response_model=SystemDesignStepProgress)
 @router.post("/system-design/progress/update", response_model=SystemDesignStepProgress)
+@limiter.limit("60/minute")
 def update_system_design_progress_legacy(
+    request: Request,
     payload: SystemDesignProgressUpdateRequest,
     user: dict = Depends(get_current_user),
 ):

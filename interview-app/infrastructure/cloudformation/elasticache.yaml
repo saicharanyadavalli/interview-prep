@@ -1,0 +1,326 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS CloudFormation template provisioning a secure, private Amazon ElastiCache cluster
+  (Serverless or Node-Based Replication Group) for Valkey or Redis OSS, with TLS encryption in transit,
+  Redis AUTH token in AWS Secrets Manager, private VPC security groups, and least-privilege EC2 IAM access.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: personal
+    AllowedValues:
+      - personal
+      - staging
+      - production
+    Description: Deployment stage for resource naming, isolation, and tagging.
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Description: Existing VPC ID where the ElastiCache cluster and subnets reside (e.g. interview-prep-vpc).
+
+  CacheSubnetIds:
+    Type: List<AWS::EC2::Subnet::Id>
+    Description: >-
+      List of at least two private subnet IDs across distinct Availability Zones in the VPC
+      (e.g. interview-prep-db-a and interview-prep-db-b, or dedicated cache subnets).
+
+  AppSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Description: Security Group ID of the EC2 application instance (interview-prep-app-sg) permitted to access port 6379.
+
+  DeploymentType:
+    Type: String
+    Default: Serverless
+    AllowedValues:
+      - Serverless
+      - NodeBased
+    Description: >-
+      Deployment topology. 'Serverless' provides automatic scaling, Multi-AZ resilience, and zero maintenance windows
+      (100 MB floor for Valkey). 'NodeBased' provisions dedicated cache.t4g.micro/small nodes for predictable static budgeting.
+
+  Engine:
+    Type: String
+    Default: valkey
+    AllowedValues:
+      - valkey
+      - redis
+    Description: >-
+      Caching engine. 'valkey' is strongly recommended for lower cost (up to 33% discount vs Redis OSS),
+      100 MB serverless storage floor, open-source longevity, and drop-in protocol compatibility.
+
+  NodeCacheType:
+    Type: String
+    Default: cache.t4g.micro
+    AllowedValues:
+      - cache.t4g.micro
+      - cache.t4g.small
+      - cache.m7g.large
+    Description: Node instance type when DeploymentType is 'NodeBased'. Ignored for Serverless.
+
+  NumCacheNodes:
+    Type: Number
+    Default: 1
+    AllowedValues:
+      - 1
+      - 2
+    Description: >-
+      Number of cache clusters when DeploymentType is 'NodeBased'.
+      1 = standalone primary node (lowest cost). 2 = primary + replica with automatic failover enabled.
+
+  EC2RoleName:
+    Type: String
+    Default: InterviewPrepEC2Role
+    Description: Existing EC2 IAM role name to conditionally attach the ElastiCache secrets resolution policy to.
+
+  AttachPolicyToRole:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: >-
+      Whether to automatically attach the ElastiCache managed policy to the existing EC2 IAM role.
+      Defaults to false to guarantee safety during review.
+
+Conditions:
+  IsServerless: !Equals [!Ref DeploymentType, 'Serverless']
+  IsNodeBased: !Equals [!Ref DeploymentType, 'NodeBased']
+  IsMultiNode: !And
+    - !Condition IsNodeBased
+    - !Equals [!Ref NumCacheNodes, 2]
+  ShouldAttachPolicyToRole: !Equals [!Ref AttachPolicyToRole, 'true']
+
+Resources:
+  # ── 1. Cache Security Group (Restricted to EC2 SG Only) ──────────────────────
+  CacheSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for Interview Prep ElastiCache Valkey/Redis cluster
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 6379
+          ToPort: 6379
+          SourceSecurityGroupId: !Ref AppSecurityGroupId
+          Description: Allow inbound Redis/Valkey cache traffic from EC2 application security group only
+      Tags:
+        - Key: Name
+          Value: !Sub "interview-prep-cache-sg-${Environment}"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: interview-prep
+
+  # ── 2. Cache Subnet Group (Private Multi-AZ Subnets) ─────────────────────────
+  CacheSubnetGroup:
+    Type: AWS::ElastiCache::SubnetGroup
+    Properties:
+      Description: Subnet group for Interview Prep ElastiCache cluster
+      SubnetIds: !Ref CacheSubnetIds
+      CacheSubnetGroupName: !Sub "interview-prep-cache-subnets-${Environment}"
+      Tags:
+        - Key: Name
+          Value: !Sub "interview-prep-cache-subnets-${Environment}"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: interview-prep
+
+  # ── 3. Secrets Manager Secret for Redis AUTH Token ───────────────────────────
+  AuthSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub "interview-prep/elasticache/auth-${Environment}"
+      Description: Redis AUTH token password for Interview Prep ElastiCache cluster
+      GenerateSecretString:
+        SecretStringTemplate: '{"engine": "valkey", "username": "default"}'
+        GenerateStringKey: auth_token
+        PasswordLength: 32
+        ExcludePunctuation: true
+      Tags:
+        - Key: Name
+          Value: !Sub "interview-prep-elasticache-auth-${Environment}"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: interview-prep
+
+  # ── 4. RBAC User for Serverless Cache ────────────────────────────────────────
+  CacheUser:
+    Type: AWS::ElastiCache::User
+    Condition: IsServerless
+    Properties:
+      UserId: !Sub "interview-prep-user-${Environment}"
+      UserName: default
+      Engine: !Ref Engine
+      AccessString: "on ~* +@all"
+      AuthenticationMode:
+        Type: password
+        Passwords:
+          - !Sub "{{resolve:secretsmanager:${AuthSecret}:SecretString:auth_token}}"
+      Tags:
+        - Key: Name
+          Value: !Sub "interview-prep-user-${Environment}"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: interview-prep
+
+  # ── 5. RBAC User Group for Serverless Cache ──────────────────────────────────
+  CacheUserGroup:
+    Type: AWS::ElastiCache::UserGroup
+    Condition: IsServerless
+    Properties:
+      UserGroupId: !Sub "interview-prep-ug-${Environment}"
+      Engine: !Ref Engine
+      UserIds:
+        - !Ref CacheUser
+      Tags:
+        - Key: Name
+          Value: !Sub "interview-prep-ug-${Environment}"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: interview-prep
+
+  # ── 6. ElastiCache Serverless Cache Resource ─────────────────────────────────
+  ServerlessCache:
+    Type: AWS::ElastiCache::ServerlessCache
+    Condition: IsServerless
+    Properties:
+      ServerlessCacheName: !Sub "interview-prep-cache-${Environment}"
+      Description: Interview Prep ElastiCache Serverless cache cluster
+      Engine: !Ref Engine
+      SubnetIds: !Ref CacheSubnetIds
+      SecurityGroupIds:
+        - !GetAtt CacheSecurityGroup.GroupId
+      UserGroupId: !Ref CacheUserGroup
+      DailySnapshotTime: "03:00"
+      SnapshotRetentionLimit: 7
+      CacheUsageLimits:
+        DataStorage:
+          Maximum: 5
+          Unit: GB
+        ECPUPerSecond:
+          Maximum: 5000
+      Tags:
+        - Key: Name
+          Value: !Sub "interview-prep-cache-${Environment}"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: interview-prep
+
+  # ── 7. ElastiCache Node-Based Replication Group Resource ────────────────────
+  NodeReplicationGroup:
+    Type: AWS::ElastiCache::ReplicationGroup
+    Condition: IsNodeBased
+    Properties:
+      ReplicationGroupId: !Sub "interview-prep-node-${Environment}"
+      ReplicationGroupDescription: Interview Prep ElastiCache Node-Based Replication Group
+      Engine: !Ref Engine
+      EngineVersion: "7.2"
+      CacheNodeType: !Ref NodeCacheType
+      NumCacheClusters: !Ref NumCacheNodes
+      AutomaticFailoverEnabled: !If [IsMultiNode, true, false]
+      TransitEncryptionEnabled: true
+      AtRestEncryptionEnabled: true
+      AuthToken: !Sub "{{resolve:secretsmanager:${AuthSecret}:SecretString:auth_token}}"
+      CacheSubnetGroupName: !Ref CacheSubnetGroup
+      SecurityGroupIds:
+        - !GetAtt CacheSecurityGroup.GroupId
+      Port: 6379
+      SnapshotRetentionLimit: 7
+      SnapshotWindow: "03:00-04:00"
+      PreferredMaintenanceWindow: "sun:04:30-sun:05:30"
+      Tags:
+        - Key: Name
+          Value: !Sub "interview-prep-node-${Environment}"
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Project
+          Value: interview-prep
+
+  # ── 8. Standalone IAM Managed Policy for EC2 Least-Privilege Access ──────────
+  BackendEC2ElastiCachePolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Sub "${AWS::StackName}-BackendEC2ElastiCachePolicy"
+      Description: Standalone least-privilege IAM managed policy allowing EC2 backend to read ElastiCache auth credentials.
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ResolveElastiCacheAuthSecret
+            Effect: Allow
+            Action:
+              - secretsmanager:GetSecretValue
+              - secretsmanager:DescribeSecret
+            Resource: !Ref AuthSecret
+
+  # ── 9. Optional Direct Role Attachment ───────────────────────────────────────
+  EC2RolePolicyAttachment:
+    Type: AWS::IAM::Policy
+    Condition: ShouldAttachPolicyToRole
+    Properties:
+      PolicyName: !Sub "${AWS::StackName}-EC2ElastiCacheInlinePolicy"
+      Roles:
+        - !Ref EC2RoleName
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ResolveElastiCacheAuthSecretInline
+            Effect: Allow
+            Action:
+              - secretsmanager:GetSecretValue
+              - secretsmanager:DescribeSecret
+            Resource: !Ref AuthSecret
+
+Outputs:
+  CacheEndpointAddress:
+    Description: Primary DNS address for ElastiCache cluster connection
+    Value: !If
+      - IsServerless
+      - !GetAtt ServerlessCache.Endpoint.Address
+      - !GetAtt NodeReplicationGroup.PrimaryEndPoint.Address
+    Export:
+      Name: !Sub "${AWS::StackName}-CacheEndpointAddress"
+
+  CacheEndpointPort:
+    Description: TCP Port for ElastiCache cluster connection
+    Value: !If
+      - IsServerless
+      - !GetAtt ServerlessCache.Endpoint.Port
+      - !GetAtt NodeReplicationGroup.PrimaryEndPoint.Port
+    Export:
+      Name: !Sub "${AWS::StackName}-CacheEndpointPort"
+
+  CacheSecurityGroupId:
+    Description: Security Group ID protecting the ElastiCache cluster
+    Value: !GetAtt CacheSecurityGroup.GroupId
+    Export:
+      Name: !Sub "${AWS::StackName}-CacheSecurityGroupId"
+
+  CacheSubnetGroupName:
+    Description: Name of the ElastiCache Subnet Group
+    Value: !Ref CacheSubnetGroup
+    Export:
+      Name: !Sub "${AWS::StackName}-CacheSubnetGroupName"
+
+  AuthSecretArn:
+    Description: ARN of the AWS Secrets Manager secret storing the Redis AUTH token
+    Value: !Ref AuthSecret
+    Export:
+      Name: !Sub "${AWS::StackName}-AuthSecretArn"
+
+  BackendEC2ElastiCachePolicyArn:
+    Description: ARN of the standalone IAM managed policy granting EC2 access to cache secrets
+    Value: !Ref BackendEC2ElastiCachePolicy
+    Export:
+      Name: !Sub "${AWS::StackName}-BackendEC2ElastiCachePolicyArn"
+
+  RateLimitStorageUriExample:
+    Description: Template URI format for RATE_LIMIT_STORAGE_URI
+    Value: !If
+      - IsServerless
+      - !Sub "rediss://:<AUTH_TOKEN>@${ServerlessCache.Endpoint.Address}:6379/0"
+      - !Sub "rediss://:<AUTH_TOKEN>@${NodeReplicationGroup.PrimaryEndPoint.Address}:6379/0"

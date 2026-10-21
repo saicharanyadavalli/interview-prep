@@ -64,5 +64,6 @@ LABEL org.opencontainers.image.title="Interview Practice Platform"
 LABEL org.opencontainers.image.description="FastAPI backend for interview practice"
 LABEL org.opencontainers.image.version="1.0.0"
 
-# Production startup command - Use PORT and UVICORN_WORKERS env vars
-CMD uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-2}
+# Production startup command - Use exec to replace shell as PID 1 for clean SIGTERM graceful shutdown
+# Enables proxy headers to properly extract remote IP addresses behind Nginx and Next.js reverse proxies
+CMD exec uvicorn main:app --host 0.0.0.0 --port ${PORT:-8000} --workers ${UVICORN_WORKERS:-2} --proxy-headers --forwarded-allow-ips="${FORWARDED_ALLOW_IPS:-*}"

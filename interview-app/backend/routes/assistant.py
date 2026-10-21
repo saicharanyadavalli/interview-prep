@@ -9,19 +9,23 @@ Rate limiting strategy:
 from __future__ import annotations
 
 import json
-from fastapi import APIRouter, HTTPException, Request, Depends, Response
+import logging
+from fastapi import APIRouter, Depends, HTTPException, Request, Response
 from fastapi.responses import StreamingResponse
-from routes.auth import get_current_user
 
-from models.schemas import AskRequest, AskResponse
-from services.gemini_service import ask_gemini_stream, is_in_scope
 from limiter import limiter
+from models.schemas import AskRequest, AskResponse
+from routes.auth import get_current_user
+from services.gemini_service import ask_gemini_stream, is_in_scope
+
+logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/assistant", tags=["assistant"])
 
 
 @router.post("/ask")
-@limiter.limit("5000/minute")
+@limiter.limit("5/minute")
+@limiter.limit("20/hour")
 def ask_assistant(
     request: Request,
     response: Response,
@@ -37,16 +41,18 @@ def ask_assistant(
       - 5 requests / minute  (burst guard)
       - 20 requests / hour   (credit drain guard)
     """
-    request.state.rate_limit_user_id = current_user.get("id")
-
     # Check if the doubt is related to DSA / the question
     history_dump = [m.model_dump() for m in payload.conversation_history]
 
     if not is_in_scope(payload.interview_question, payload.user_doubt, history_dump):
         def out_of_scope_gen():
             yield "data: " + json.dumps(
-                {"text": "I can only help with DSA interview topics related to the current question. "
-                         "Please ask about algorithm ideas, edge cases, complexity, or hints for this problem."}
+                {
+                    "text": (
+                        "I can only help with DSA interview topics related to the current question. "
+                        "Please ask about algorithm ideas, edge cases, complexity, or hints for this problem."
+                    )
+                }
             ) + "\n\n"
         return StreamingResponse(out_of_scope_gen(), media_type="text/event-stream")
 
@@ -59,8 +65,10 @@ def ask_assistant(
             ):
                 yield "data: " + json.dumps({"text": chunk}) + "\n\n"
         except RuntimeError as exc:
-            yield "data: " + json.dumps({"error": str(exc)}) + "\n\n"
+            logger.warning("Assistant runtime error: %s", exc)
+            yield "data: " + json.dumps({"error": str(exc), "code": "AI_RUNTIME_ERROR"}) + "\n\n"
         except Exception as exc:
-            yield "data: " + json.dumps({"error": f"Gemini API call failed: {exc}"}) + "\n\n"
+            logger.error("Gemini API call failed: %s", exc, exc_info=True)
+            yield "data: " + json.dumps({"error": "AI assistant temporarily unavailable. Please try again.", "code": "AI_SERVICE_ERROR"}) + "\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")

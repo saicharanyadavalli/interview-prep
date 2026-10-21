@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from typing import Optional
 
-from fastapi import APIRouter, Query, Depends, HTTPException
+from fastapi import APIRouter, Query, Depends, HTTPException, Request
+from limiter import limiter
+from services.cache_service import cache_aside, TTL_STATIC_METADATA
 
 from models.schemas import QuestionResponse, CompaniesResponse
 from routes.auth import get_current_user, get_optional_current_user
@@ -160,13 +162,17 @@ def _apply_pagination(rows: list[dict], offset: int, limit: int) -> list[dict]:
 
 
 @router.get("/companies", response_model=CompaniesResponse)
-def list_companies(current_user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+@cache_aside(key_builder=lambda request, *a, **k: "questions:companies", ttl=TTL_STATIC_METADATA)
+def list_companies(request: Request, current_user: dict = Depends(get_current_user)):
     """Return all available company names."""
     return CompaniesResponse(companies=get_companies())
 
 
 @router.get("/random", response_model=QuestionResponse)
+@limiter.limit("60/minute")
 def random_question(
+    request: Request,
     company: str = Query(..., min_length=1),
     difficulty: str = Query(..., pattern="^(easy|medium|hard)$"),
     topic: Optional[str] = Query(None, description="Topic filter, supports !value for is-not"),
@@ -205,7 +211,9 @@ def random_question(
 
 
 @router.get("/recommend", response_model=QuestionResponse)
+@limiter.limit("60/minute")
 def recommend_question(
+    request: Request,
     company: str = Query(..., min_length=1),
     difficulty: str = Query(..., pattern="^(easy|medium|hard)$"),
     topic: Optional[str] = Query(None, description="Topic filter, supports !value for is-not"),
@@ -239,7 +247,9 @@ def recommend_question(
 
 
 @router.get("/all")
+@limiter.limit("30/minute")
 def all_questions(
+    request: Request,
     company: str = Query(..., min_length=1),
     difficulty: str = Query(..., pattern="^(easy|medium|hard)$"),
     topic: Optional[str] = Query(None, description="Topic filter, supports !value for is-not"),
@@ -262,7 +272,9 @@ def all_questions(
 
 
 @router.get("/catalog")
+@limiter.limit("30/minute")
 def all_questions_catalog(
+    request: Request,
     q: Optional[str] = Query(None, description="Search by question/company/difficulty/tags"),
     solved: str = Query("all", pattern="^(all|solved|unsolved)$"),
     difficulty: Optional[str] = Query(None, description="Difficulty filter, supports !value for is-not"),
@@ -319,7 +331,9 @@ def all_questions_catalog(
 
 
 @router.get("/catalog/user")
+@limiter.limit("30/minute")
 def all_questions_catalog_user(
+    request: Request,
     q: Optional[str] = Query(None, description="Search by question/company/difficulty/tags"),
     solved: str = Query("all", pattern="^(all|solved|unsolved)$"),
     difficulty: Optional[str] = Query(None, description="Difficulty filter, supports !value for is-not"),
@@ -369,7 +383,9 @@ def all_questions_catalog_user(
 
 
 @router.get("/by-qnum/{qnum}", response_model=QuestionResponse)
-def question_by_qnum(qnum: int, current_user: Optional[dict] = Depends(get_optional_current_user)):
+@limiter.limit("120/minute")
+@cache_aside(key_builder=lambda request, qnum, *a, **k: f"questions:qnum:{qnum}", ttl=TTL_STATIC_METADATA)
+def question_by_qnum(request: Request, qnum: int, current_user: Optional[dict] = Depends(get_optional_current_user)):
     """Return one question by qnum."""
     question = get_question_by_qnum(qnum)
     if not question:
@@ -378,14 +394,16 @@ def question_by_qnum(qnum: int, current_user: Optional[dict] = Depends(get_optio
 
 
 @router.get("/folders")
-def get_question_folders_alias(user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def get_question_folders_alias(request: Request, user: dict = Depends(get_current_user)):
     """Convenience alias for /progress/folders."""
     from routes.progress import get_user_custom_folders
     return get_user_custom_folders(user)
 
 
 @router.post("/folders/add-question")
-def add_question_to_folder_alias(payload: dict, user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def add_question_to_folder_alias(request: Request, payload: dict, user: dict = Depends(get_current_user)):
     """Convenience alias for /progress/folders/add-question."""
     from routes.progress import add_question_to_custom_folder
     from models.schemas import CustomFolderQuestionActionRequest

@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import logging
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 
-from models.schemas import CommentRequest, CommentEntry, CommentsResponse
+from limiter import limiter
+from models.schemas import CommentEntry, CommentRequest, CommentsResponse
 from routes.auth import get_current_user
 from services import rds_client
 from services.questions_service import find_qnum_by_question_id
@@ -16,7 +17,8 @@ router = APIRouter(prefix="/comments", tags=["comments"])
 
 
 @router.post("/add")
-def add_comment(payload: CommentRequest, user: dict = Depends(get_current_user)):
+@limiter.limit("30/minute")
+def add_comment(request: Request, payload: CommentRequest, user: dict = Depends(get_current_user)):
     """Save or update a comment/note for a question in RDS."""
     qnum = payload.qnum
     if qnum is None and payload.question_id:
@@ -50,7 +52,8 @@ def add_comment(payload: CommentRequest, user: dict = Depends(get_current_user))
 
 
 @router.get("/{qnum}", response_model=CommentsResponse)
-def get_comments(qnum: int, user: dict = Depends(get_current_user)):
+@limiter.limit("60/minute")
+def get_comments(request: Request, qnum: int, user: dict = Depends(get_current_user)):
     """Get all comments for a question by the current user from RDS."""
     try:
         entries = rds_client.query(
@@ -75,7 +78,8 @@ def get_comments(qnum: int, user: dict = Depends(get_current_user)):
 
 
 @router.delete("/{comment_id}")
-def delete_comment(comment_id: str, user: dict = Depends(get_current_user)):
+@limiter.limit("30/minute")
+def delete_comment(request: Request, comment_id: str, user: dict = Depends(get_current_user)):
     """Delete a specific comment owned by the current user in RDS."""
     try:
         count = rds_client.mutate(

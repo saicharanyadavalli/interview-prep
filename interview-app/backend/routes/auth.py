@@ -441,7 +441,8 @@ def get_optional_current_user(authorization: str | None = Header(None)) -> dict 
 
 
 @router.post("/session", response_model=UserResponse)
-@limiter.limit("5000/minute")
+@limiter.limit("10/minute")
+@limiter.limit("60/hour")
 def create_session(request: Request, response: Response, payload: SessionRequest):
     """Validate Cognito token and synchronize/resolve user into RDS."""
     try:
@@ -481,7 +482,8 @@ def create_session(request: Request, response: Response, payload: SessionRequest
 
 
 @router.post("/login", response_model=LoginResponse)
-@limiter.limit("30/minute")
+@limiter.limit("5/minute")
+@limiter.limit("20/hour")
 def login_with_credentials(request: Request, response: Response, payload: LoginRequest):
     """Authenticate user with username or email and password without disclosing emails.
 
@@ -652,7 +654,7 @@ def resolve_username(request: Request, response: Response, payload: ResolveUsern
 
 
 @router.get("/check-username")
-@limiter.limit("120/minute")
+@limiter.limit("30/minute")
 def check_username_availability(request: Request, response: Response, username: str = Query(..., min_length=3, max_length=50)):
     """Check if a username is available in RDS user_profiles (for client-side signup validation)."""
     try:
@@ -672,7 +674,7 @@ def check_username_availability(request: Request, response: Response, username: 
 
 
 @router.post("/provision", response_model=UserResponse)
-@limiter.limit("120/minute")
+@limiter.limit("10/minute")
 def provision_user_profile(request: Request, response: Response, payload: ProvisionRequest):
     """Pre-provision or reconcile a user profile in RDS during registration.
 

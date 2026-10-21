@@ -11,10 +11,12 @@ from __future__ import annotations
 
 import logging
 from typing import List, Optional
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, Request
 from pydantic import BaseModel
 
+from limiter import limiter
 from services import rds_client
+from services.cache_service import TTL_LEETCODE_DETAIL, TTL_LEETCODE_LIST, cache_aside
 
 logger = logging.getLogger(__name__)
 
@@ -46,8 +48,26 @@ class ApproachItem(BaseModel):
     explanation_md: str
 
 
+def _normalize_param(val: Optional[str], default: str) -> str:
+    if val and isinstance(val, str) and val.strip():
+        return val.strip().lower()
+    return default
+
+
 @router.get("/problems", response_model=LeetCodeProblemListResponse)
+@limiter.limit("60/minute")
+@cache_aside(
+    key_builder=lambda request, page=1, limit=20, difficulty=None, search=None, tag=None, sort_by=None: (
+        f"leetcode:problems:p={page}:lim={limit}:"
+        f"diff={_normalize_param(difficulty, 'all')}:"
+        f"s={_normalize_param(search, 'none')}:"
+        f"tag={_normalize_param(tag, 'all')}:"
+        f"sort={_normalize_param(sort_by, 'qnum')}"
+    ),
+    ttl=TTL_LEETCODE_LIST,
+)
 def get_leetcode_problems(
+    request: Request,
     page: int = Query(1, ge=1, description="Page number"),
     limit: int = Query(20, ge=1, le=100, description="Items per page"),
     difficulty: Optional[str] = Query(None, description="Easy, Medium, or Hard"),
@@ -138,7 +158,12 @@ def get_leetcode_problems(
 
 
 @router.get("/problems/{qnum}")
-def get_leetcode_problem_detail(qnum: int):
+@limiter.limit("120/minute")
+@cache_aside(
+    key_builder=lambda request, qnum: f"leetcode:problem:{qnum}",
+    ttl=TTL_LEETCODE_DETAIL,
+)
+def get_leetcode_problem_detail(request: Request, qnum: int):
     """Get single LeetCode problem description from RDS by question number."""
     try:
         row = rds_client.query(
@@ -175,7 +200,12 @@ def get_leetcode_problem_detail(qnum: int):
 
 
 @router.get("/problems/{qnum}/approaches", response_model=List[ApproachItem])
-def get_leetcode_problem_approaches(qnum: int):
+@limiter.limit("120/minute")
+@cache_aside(
+    key_builder=lambda request, qnum: f"leetcode:approaches:{qnum}",
+    ttl=TTL_LEETCODE_DETAIL,
+)
+def get_leetcode_problem_approaches(request: Request, qnum: int):
     """Get solution explanation approaches for the Solution Accordion dropdown from RDS."""
     try:
         rows = rds_client.query(
@@ -205,7 +235,12 @@ def get_leetcode_problem_approaches(qnum: int):
 
 
 @router.get("/problems/{qnum}/code")
-def get_leetcode_problem_code(qnum: int, language: Optional[str] = Query(None)):
+@limiter.limit("120/minute")
+@cache_aside(
+    key_builder=lambda request, qnum, language=None: f"leetcode:code:{qnum}:lang={language or 'all'}",
+    ttl=TTL_LEETCODE_DETAIL,
+)
+def get_leetcode_problem_code(request: Request, qnum: int, language: Optional[str] = Query(None)):
     """Get code solution snippets for the Code Language Dropdown from RDS."""
     try:
         if language and isinstance(language, str):

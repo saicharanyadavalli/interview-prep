@@ -1,7 +1,7 @@
 """Integration tests for root health endpoints, CORS headers, and rate limiting handler."""
 
 import os
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 
 
@@ -16,7 +16,7 @@ def test_root_health_check_returns_200_ok(unauth_client: TestClient):
 
 
 def test_health_check_returns_status_and_checks(unauth_client: TestClient):
-    """Verify GET /health checks environment configuration and RDS status."""
+    """Verify GET /health checks environment configuration, cache, and RDS status."""
     with patch("main.check_rds_health", return_value=True):
         res = unauth_client.get("/health")
         assert res.status_code == 200
@@ -24,8 +24,21 @@ def test_health_check_returns_status_and_checks(unauth_client: TestClient):
         assert data["status"] in ("ok", "degraded", "partial")
         assert "checks" in data
         assert "gemini_key_set" in data["checks"]
-        assert "supabase_url_set" in data["checks"]
         assert "rds_connected" in data["checks"]
+        assert "redis_connected" in data["checks"]
+        assert "cognito_configured" in data["checks"]
+
+
+def test_health_cache_diagnostics_endpoint(unauth_client: TestClient):
+    """Verify GET /health/cache returns cache metrics and telemetry."""
+    res = unauth_client.get("/health/cache")
+    assert res.status_code == 200
+    data = res.json()
+    assert "available" in data
+    assert "ping_ok" in data
+    assert "metrics" in data
+    assert "hits" in data["metrics"]
+    assert "misses" in data["metrics"]
 
 
 def test_health_live_endpoint(unauth_client: TestClient):
@@ -66,16 +79,30 @@ def test_cors_headers_present_on_response(unauth_client: TestClient):
 
 def test_custom_rate_limit_exceeded_handler_returns_rfc7807(client: TestClient):
     """Verify triggering rate limit returns RFC-7807 429 response with headers."""
-    # POST /profile/avatar/upload has strict 3/minute limit
-    fake_png = b"\x89PNG\r\n\x1a\n\x00\x00\x00\rIHDR\x00\x00\x00\x01\x00\x00\x00\x01\x08\x06\x00\x00\x00\x1f\x15c4\x00\x00\x00\rIDATx\x9cc`\x00\x00\x00\x02\x00\x01H\xaf\xa4q\x00\x00\x00\x00IEND\xaeB`\x82"
+    from limiter import limiter
+    limiter.reset()
 
-    with patch("services.s3_storage_service.upload_avatar", return_value={"url": "https://example.com/a.png", "key": "avatars/1/a.png", "bucket": "test-bucket"}), \
-         patch("routes.profile.rds_client.mutate", return_value={"avatar_url": "https://example.com/a.png"}):
-        # Fire 5001 requests to exceed the 5000/min limit or artificially trigger 429
-        # Let's test the exception handler directly or via burst on a limited route
-        from slowapi.errors import RateLimitExceeded
-        from limiter import limiter
-        
-        # We can also verify that rate limit headers and JSON response format match specs
-        res = client.get("/")
-        assert res.status_code == 200
+    def dummy_stream(*args, **kwargs):
+        yield "Dummy response"
+
+    with patch("routes.assistant.ask_gemini_stream", side_effect=dummy_stream):
+        payload = {
+            "interview_question": "Two Sum",
+            "user_doubt": "Complexity hint?",
+            "conversation_history": [],
+        }
+
+        # 5 allowed calls
+        for _ in range(5):
+            client.post("/assistant/ask", json=payload)
+
+        # 6th call hits rate limit
+        res = client.post("/assistant/ask", json=payload)
+        assert res.status_code == 429
+        data = res.json()
+        assert data["error"] == "rate_limit_exceeded"
+        assert "detail" in data
+        assert "retry_after_seconds" in data
+        assert "Retry-After" in res.headers
+        assert "X-RateLimit-Limit" in res.headers
+        assert "X-Request-ID" in res.headers

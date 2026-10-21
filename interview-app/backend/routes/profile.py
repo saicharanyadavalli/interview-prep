@@ -45,7 +45,7 @@ ALLOWED_PIL_FORMATS = {"JPEG", "PNG", "WEBP", "GIF"}
 
 
 @router.get("/me", response_model=ProfileResponse)
-@limiter.limit("5000/minute")
+@limiter.limit("60/minute")
 def get_my_profile(request: Request, response: Response, current_user: dict = Depends(get_current_user)):
     """Return profile row for current user from RDS, auto-creating one if missing."""
     request.state.rate_limit_user_id = current_user.get("id")
@@ -118,7 +118,7 @@ def get_my_profile(request: Request, response: Response, current_user: dict = De
 
 
 @router.put("/me", response_model=ProfileResponse)
-@limiter.limit("5000/minute")
+@limiter.limit("15/minute")
 def update_my_profile(
     request: Request,
     response: Response,
@@ -252,7 +252,8 @@ def update_my_profile(
 
 
 @router.post("/avatar/upload")
-@limiter.limit("5000/minute")
+@limiter.limit("3/minute")
+@limiter.limit("15/hour")
 async def upload_profile_avatar(
     request: Request,
     response: Response,
@@ -506,7 +507,7 @@ def _delete_user_avatar_asset(user_id: str, avatar_url: str) -> bool:
 
 
 @router.post("/reset-progress", response_model=ResetProgressResponse)
-@limiter.limit("5000/minute")
+@limiter.limit("2/hour")
 def reset_user_progress(
     request: Request,
     response: Response,
@@ -554,7 +555,7 @@ def reset_user_progress(
 
 
 @router.delete("/account", response_model=DeleteAccountResponse)
-@limiter.limit("5000/minute")
+@limiter.limit("2/hour")
 def delete_user_account(
     request: Request,
     response: Response,
