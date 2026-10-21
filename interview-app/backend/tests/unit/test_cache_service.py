@@ -17,7 +17,9 @@ from services.cache_service import (
     cache_aside,
     deserialize_data,
     get_cache_service,
+    get_redis_connection_config,
     mask_redis_url,
+    resolve_secret_auth_token,
     serialize_data,
 )
 
@@ -140,3 +142,163 @@ async def test_invalidate_pattern_uses_scan_iter():
         "ip:cache:v1:leetcode:problem:1",
         "ip:cache:v1:leetcode:problem:2",
     )
+
+
+def test_resolve_secret_auth_token_json_success():
+    """Verify Secrets Manager JSON parsing extracts auth_token."""
+    with patch("boto3.client") as mock_boto:
+        mock_sm = MagicMock()
+        mock_sm.get_secret_value.return_value = {
+            "SecretString": '{"engine": "valkey", "username": "default", "auth_token": "secret-xyz-token"}'
+        }
+        mock_boto.return_value = mock_sm
+
+        res = resolve_secret_auth_token("interview-prep/elasticache/auth-personal", "ap-south-2")
+        assert res is not None
+        assert res.get("auth_token") == "secret-xyz-token"
+        mock_sm.get_secret_value.assert_called_once_with(SecretId="interview-prep/elasticache/auth-personal")
+
+
+def test_resolve_secret_auth_token_plain_string():
+    """Verify Secrets Manager plain-text token fallback."""
+    with patch("boto3.client") as mock_boto:
+        mock_sm = MagicMock()
+        mock_sm.get_secret_value.return_value = {"SecretString": "raw-plain-token-999"}
+        mock_boto.return_value = mock_sm
+
+        res = resolve_secret_auth_token("interview-prep/elasticache/auth-personal", "ap-south-2")
+        assert res is not None
+        assert res.get("auth_token") == "raw-plain-token-999"
+
+
+def test_resolve_secret_auth_token_failure_handled_gracefully():
+    """Verify Secrets Manager lookup exceptions are caught without raising."""
+    with patch("boto3.client") as mock_boto:
+        mock_sm = MagicMock()
+        mock_sm.get_secret_value.side_effect = Exception("AccessDeniedException: User is not authorized")
+        mock_boto.return_value = mock_sm
+
+        res = resolve_secret_auth_token("interview-prep/elasticache/auth-personal", "ap-south-2")
+        assert res is None
+
+
+def test_get_redis_connection_config_direct_url_precedence():
+    """Verify explicit CACHE_URL overrides host and secret configuration."""
+    with patch.dict(
+        "os.environ",
+        {
+            "CACHE_URL": "redis://custom-cache:6379/0",
+            "CACHE_HOST": "aws.cache.internal",
+            "CACHE_SECRET_NAME": "secret-name",
+        },
+        clear=False,
+    ):
+        config = get_redis_connection_config()
+        assert config["source"] == "DIRECT_URL"
+        assert config["connection_url"] == "redis://custom-cache:6379/0"
+
+
+def test_get_redis_connection_config_host_and_secrets_manager():
+    """Verify CACHE_HOST combined with CACHE_SECRET_NAME extracts token and detects TLS."""
+    with patch.dict(
+        "os.environ",
+        {
+            "CACHE_URL": "",
+            "REDIS_URL": "",
+            "CACHE_REDIS_URL": "",
+            "CACHE_HOST": "interview-prep-cache.xxxxxx.0001.aps2.cache.amazonaws.com",
+            "CACHE_SECRET_NAME": "interview-prep/elasticache/auth-personal",
+            "CACHE_PORT": "6379",
+            "CACHE_DB": "0",
+        },
+        clear=False,
+    ), patch(
+        "services.cache_service.resolve_secret_auth_token",
+        return_value={"auth_token": "resolved-secret-pwd"},
+    ):
+        config = get_redis_connection_config()
+        assert config["source"] == "SECRETS_MANAGER"
+        assert "rediss://:resolved-secret-pwd@interview-prep-cache" in config["connection_url"]
+        assert config["connection_url"].endswith(":6379/0")
+        assert "rediss://:****@interview-prep-cache" in config["masked_url"]
+
+
+def test_get_redis_connection_config_local_docker_without_aws():
+    """Verify local discrete host configuration operates without Secrets Manager or TLS."""
+    with patch.dict(
+        "os.environ",
+        {
+            "CACHE_URL": "",
+            "REDIS_URL": "",
+            "CACHE_REDIS_URL": "",
+            "CACHE_SECRET_NAME": "",
+            "REDIS_SECRET_ARN": "",
+            "REDIS_SECRET_NAME": "",
+            "CACHE_HOST": "redis",
+            "CACHE_PORT": "6379",
+            "CACHE_TLS_ENABLED": "false",
+        },
+        clear=False,
+    ):
+        config = get_redis_connection_config()
+        assert config["source"] == "ENV_DISCRETE"
+        assert config["connection_url"] == "redis://redis:6379/0"
+
+
+@pytest.mark.asyncio
+async def test_failed_connection_reinitialization_does_not_retain_stale_client():
+    """Verify that when initial ping fails, _client and _pool are cleaned up so later retry succeeds."""
+    CacheService.reset_instance()
+    service = CacheService.get_instance()
+    service._enabled = True
+
+    # 1. First initialization attempt fails on ping
+    mock_failing_client = AsyncMock()
+    mock_failing_client.ping.side_effect = ConnectionError("Could not connect to Redis")
+
+    with patch("redis.asyncio.connection.ConnectionPool.from_url"), \
+         patch("redis.asyncio.Redis", return_value=mock_failing_client):
+        await service.initialize()
+        assert service.is_available is False
+        assert service._client is None
+        assert service._pool is None
+
+    # 2. Second initialization attempt succeeds
+    mock_working_client = AsyncMock()
+    mock_working_client.ping.return_value = True
+
+    with patch("redis.asyncio.connection.ConnectionPool.from_url"), \
+         patch("redis.asyncio.Redis", return_value=mock_working_client):
+        await service.initialize()
+        assert service.is_available is True
+        assert service._client is not None
+    CacheService.reset_instance()
+
+
+@pytest.mark.asyncio
+async def test_cache_aside_bypasses_when_cache_unavailable():
+    """Verify that when cache is unavailable, outcome is BYPASS and underlying function runs directly."""
+    service = get_cache_service()
+    service._is_available = False
+
+    mock_db = AsyncMock(return_value={"data": "fresh_from_db"})
+    mock_request = MagicMock()
+    mock_request.state = MagicMock()
+
+    @cache_aside(key_builder=lambda req: "test:key")
+    async def get_resource(req):
+        return await mock_db()
+
+    result = await get_resource(mock_request)
+    assert result == {"data": "fresh_from_db"}
+    assert mock_request.state.cache_outcome == "BYPASS"
+    assert mock_db.call_count == 1
+
+
+def test_environment_scoped_key_prefix():
+    """Verify format_key scopes default prefix with environment name."""
+    with patch.dict("os.environ", {"ENVIRONMENT": "staging", "CACHE_KEY_PREFIX": ""}, clear=False):
+        svc = CacheService()
+        key = svc.format_key("sample:item")
+        assert key == "ip:staging:cache:v1:sample:item"
+        assert svc.format_key(key) == key  # Idempotent formatting

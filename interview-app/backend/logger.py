@@ -15,7 +15,7 @@ request_id_var: contextvars.ContextVar[str] = contextvars.ContextVar("request_id
 # Regular expressions for string-level redaction
 _REGEX_PATTERNS = [
     (re.compile(r"(postgres(?:ql)?://[^:]+:)([^@]+)(@)", re.IGNORECASE), r"\1****\3"),
-    (re.compile(r"(redis(?:s)?://:[^:]+)(@)", re.IGNORECASE), r"redis://:****\2"),
+    (re.compile(r"(redis(?:s)?://:)([^@]+)(@)", re.IGNORECASE), r"\1****\3"),
     (re.compile(r"(redis(?:s)?://[^:]+:)([^@]+)(@)", re.IGNORECASE), r"\1****\3"),
     (re.compile(r"(Bearer\s+)[A-Za-z0-9\-._~+/]+=*", re.IGNORECASE), r"\1***"),
     (re.compile(r"AKIA[0-9A-Z]{16}"), r"AKIA****"),

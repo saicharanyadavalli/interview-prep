@@ -409,10 +409,21 @@ class LeetCodeSyncService:
                 "details": str(exc),
             }
 
+    def get_delivery_status(self, delivery_id: str) -> Optional[str]:
+        """Retrieve current processing status for a delivery ID from leetcode_sync_history."""
+        sql = "SELECT status FROM public.leetcode_sync_history WHERE delivery_id = %s;"
+        row = self._execute_query(sql, (delivery_id,), fetch="one")
+        if row and row.get("status"):
+            return str(row["status"])
+        return None
+
     def record_sync_start(
         self, delivery_id: str, commit_sha: str, repo: str, branch: str
     ) -> None:
-        """Record the start of a synchronization pipeline run in leetcode_sync_history."""
+        """Record the start of a synchronization pipeline run in leetcode_sync_history.
+
+        Preserves existing terminal 'success' status if a duplicate delivery arrives.
+        """
         sql = """
         INSERT INTO public.leetcode_sync_history (
             delivery_id, source_repo, source_branch, commit_sha, status,
@@ -425,8 +436,14 @@ class LeetCodeSyncService:
             source_repo = EXCLUDED.source_repo,
             source_branch = EXCLUDED.source_branch,
             commit_sha = EXCLUDED.commit_sha,
-            status = 'in_progress',
-            created_at = now();
+            status = CASE
+                WHEN public.leetcode_sync_history.status = 'success' THEN public.leetcode_sync_history.status
+                ELSE 'in_progress'
+            END,
+            created_at = CASE
+                WHEN public.leetcode_sync_history.status = 'success' THEN public.leetcode_sync_history.created_at
+                ELSE now()
+            END;
         """
         self._execute_mutation(sql, (delivery_id, repo, branch, commit_sha))
 

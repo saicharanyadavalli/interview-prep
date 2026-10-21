@@ -61,7 +61,7 @@ services:
       # Centralized Cache & Distributed Rate Limiting (Amazon ElastiCache / Local Redis)
       - CACHE_ENABLED=${CACHE_ENABLED:-true}
       - CACHE_URL=${CACHE_URL:-redis://redis:6379/0}
-      - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-redis://redis:6379/1}
+      - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-}
     depends_on:
       redis:
         condition: service_healthy
@@ -81,8 +81,15 @@ services:
       dockerfile: Dockerfile
       target: runtime
     container_name: interview-prep-leetcode-sync-worker
-    restart: unless-stopped
-    command: ["python", "-m", "workers.leetcode_sync_worker"]
+    restart: on-failure:5
+    command: >
+      sh -c '
+        if [ -z "$$LEETCODE_SYNC_QUEUE_URL" ]; then
+          echo "LEETCODE_SYNC_QUEUE_URL is not configured. Sync worker is disabled.";
+          exit 0;
+        fi;
+        exec python -m workers.leetcode_sync_worker
+      '
     environment:
       - PYTHONUNBUFFERED=1
       - AWS_REGION=${AWS_REGION:-ap-south-2}
@@ -93,7 +100,7 @@ services:
       - LEETCODE_SOURCE_BRANCH=${LEETCODE_SOURCE_BRANCH:-main}
       - LEETCODE_QUESTIONS_PATH=${LEETCODE_QUESTIONS_PATH:-solution}
       - GITHUB_TOKEN_SECRET_ARN=${GITHUB_TOKEN_SECRET_ARN:-}
-      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - ENVIRONMENT=${ENVIRONMENT:-personal}
     networks:
       - app-network
 

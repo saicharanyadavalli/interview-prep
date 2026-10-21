@@ -33,7 +33,12 @@ from logger import get_logger, request_id_var, setup_logging
 setup_logging()
 logger = get_logger("main")
 
-from limiter import limiter
+from limiter import (
+    close_rate_limiter,
+    get_rate_limiter_storage_info,
+    init_rate_limiter,
+    limiter,
+)
 from middleware.rate_limit_middleware import RateLimitAuthMiddleware
 from middleware.request_tracing import AccessLoggingMiddleware, RequestIdMiddleware
 from routes.assistant import router as assistant_router
@@ -72,6 +77,21 @@ async def lifespan(app: FastAPI):
     cache_svc = get_cache_service()
     await cache_svc.initialize()
 
+    # 3. Initialize & Log Rate Limiter Storage Strategy
+    try:
+        init_rate_limiter()
+    except Exception as exc:
+        logger.warning("Error initializing rate limiter storage: %s", exc)
+    limiter_info = get_rate_limiter_storage_info()
+    logger.info(
+        "Rate limiter initialized (mode=%s, operational_mode=%s, engine=%s, prefix=%s) -> %s",
+        limiter_info["mode"],
+        limiter_info.get("operational_mode"),
+        limiter_info["engine"],
+        limiter_info["key_prefix"],
+        limiter_info["storage_target"],
+    )
+
     yield
 
     # ── Shutdown Phase ─────────────────────────────────────────────────────────
@@ -85,15 +105,7 @@ async def lifespan(app: FastAPI):
 
     # 2. Disconnect Limiter Storage Pool
     try:
-        storage = getattr(limiter, "_storage", None)
-        if storage:
-            raw_storage = getattr(storage, "storage", None)
-            if raw_storage and hasattr(raw_storage, "close"):
-                raw_storage.close()
-            elif hasattr(storage, "close"):
-                storage.close()
-            if hasattr(storage, "connection_pool") and hasattr(storage.connection_pool, "disconnect"):
-                storage.connection_pool.disconnect()
+        close_rate_limiter()
     except Exception as exc:
         logger.warning("Error closing rate limiter storage: %s", exc)
 
@@ -350,6 +362,7 @@ async def health(response: Response):
         "rds_connected": rds_ok,
         "redis_connected": redis_ok,
         "redis_cache_enabled": cache_svc.is_available,
+        "rate_limiter_distributed": get_rate_limiter_storage_info()["is_distributed"],
         "gemini_key_set": bool(os.getenv("GEMINI_API_KEY", "").strip()),
         "cognito_configured": bool(os.getenv("COGNITO_USER_POOL_ID", "").strip()),
     }
@@ -375,9 +388,12 @@ async def cache_diagnostics(request: Request):
     cache_svc = get_cache_service()
     is_live = await cache_svc.ping()
     return {
-        "available": cache_svc.is_available,
-        "ping_ok": is_live,
-        "metrics": cache_svc.metrics.to_dict(),
+        "cache": {
+            "available": cache_svc.is_available,
+            "ping_ok": is_live,
+            "metrics": cache_svc.metrics.to_dict(),
+        },
+        "rate_limiter": get_rate_limiter_storage_info(),
     }
 
 

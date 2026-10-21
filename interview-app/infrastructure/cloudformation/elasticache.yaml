@@ -85,6 +85,7 @@ Parameters:
 Conditions:
   IsServerless: !Equals [!Ref DeploymentType, 'Serverless']
   IsNodeBased: !Equals [!Ref DeploymentType, 'NodeBased']
+  IsValkey: !Equals [!Ref Engine, 'valkey']
   IsMultiNode: !And
     - !Condition IsNodeBased
     - !Equals [!Ref NumCacheNodes, 2]
@@ -219,7 +220,7 @@ Resources:
       ReplicationGroupId: !Sub "interview-prep-node-${Environment}"
       ReplicationGroupDescription: Interview Prep ElastiCache Node-Based Replication Group
       Engine: !Ref Engine
-      EngineVersion: "7.2"
+      EngineVersion: !If [IsValkey, "7.2", "7.1"]
       CacheNodeType: !Ref NodeCacheType
       NumCacheClusters: !Ref NumCacheNodes
       AutomaticFailoverEnabled: !If [IsMultiNode, true, false]

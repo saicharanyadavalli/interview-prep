@@ -47,8 +47,31 @@ CREATE INDEX IF NOT EXISTS idx_leetcode_sync_history_created_at ON public.leetco
 CREATE INDEX IF NOT EXISTS idx_leetcode_sync_history_repo_branch ON public.leetcode_sync_history(source_repo, source_branch);
 
 -- -----------------------------------------------------------------------------
--- 4. TRIGGERS
+-- 4. UTILITY FUNCTIONS & TRIGGERS
+-- Conditional definition: leaves existing function definition and ownership untouched.
+-- Only creates the shared function if it does not already exist in the public schema.
+-- Note: The executing migration role still requires CREATE permission on schema public,
+-- and TRIGGER / REFERENCES permissions on public.leetcode_sync_state.
 -- -----------------------------------------------------------------------------
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_proc p
+    JOIN pg_namespace n ON p.pronamespace = n.oid
+    WHERE n.nspname = 'public' AND p.proname = 'set_current_timestamp_updated_at'
+  ) THEN
+    CREATE FUNCTION public.set_current_timestamp_updated_at()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+    AS $fn$
+    BEGIN
+      NEW.updated_at = now();
+      RETURN NEW;
+    END;
+    $fn$;
+  END IF;
+END $$;
+
 DROP TRIGGER IF EXISTS trg_leetcode_sync_state_updated_at ON public.leetcode_sync_state;
 CREATE TRIGGER trg_leetcode_sync_state_updated_at
   BEFORE UPDATE ON public.leetcode_sync_state

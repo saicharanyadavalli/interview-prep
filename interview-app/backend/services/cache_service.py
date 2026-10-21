@@ -82,14 +82,68 @@ def deserialize_data(payload: Union[str, bytes]) -> Any:
     return json.loads(payload)
 
 
+def resolve_secret_auth_token(secret_id: str, region: Optional[str] = None) -> Optional[dict[str, Any]]:
+    """Retrieve secret string or JSON payload from AWS Secrets Manager safely.
+
+    Handles both JSON documents (e.g. {"auth_token": "..."}) and plain-text token strings.
+    Fails safely without raising exceptions or logging sensitive token values.
+    """
+    if not secret_id or not secret_id.strip():
+        return None
+
+    secret_clean = secret_id.strip()
+    arn_region = None
+    if secret_clean.startswith("arn:aws:secretsmanager:"):
+        arn_parts = secret_clean.split(":")
+        if len(arn_parts) >= 4 and arn_parts[3]:
+            arn_region = arn_parts[3]
+
+    effective_region = (
+        region
+        or os.getenv("AWS_REGION")
+        or os.getenv("AWS_DEFAULT_REGION")
+        or arn_region
+        or "ap-south-2"
+    ).strip()
+
+    try:
+        import boto3
+
+        client = boto3.client("secretsmanager", region_name=effective_region)
+        response = client.get_secret_value(SecretId=secret_clean)
+        secret_str = response.get("SecretString")
+        if not secret_str:
+            return None
+
+        try:
+            parsed = json.loads(secret_str)
+            if isinstance(parsed, dict):
+                return parsed
+            return {"auth_token": str(parsed)}
+        except json.JSONDecodeError:
+            return {"auth_token": secret_str.strip()}
+    except Exception as exc:
+        logger.warning(
+            "Could not resolve Redis secret '%s' from Secrets Manager in '%s': %s",
+            secret_clean,
+            effective_region,
+            type(exc).__name__,
+        )
+        return None
+
+
 def get_redis_connection_config() -> dict[str, Any]:
     """Resolve Redis connection parameters from environment or AWS Secrets Manager.
 
-    Priority:
-    1. REDIS_URL or CACHE_URL or CACHE_REDIS_URL environment variable
-    2. Discrete environment variables (CACHE_HOST/REDIS_HOST, CACHE_PORT/REDIS_PORT, etc.)
-    3. AWS Secrets Manager secret (CACHE_SECRET_NAME or REDIS_SECRET_NAME)
-    4. Localhost fallback
+    Resolution Strategy:
+    1. Direct URL Override (CACHE_URL / REDIS_URL / CACHE_REDIS_URL) - used for local Docker or explicit override.
+    2. Host-based resolution (CACHE_HOST / REDIS_HOST):
+       - If CACHE_SECRET_NAME / REDIS_SECRET_ARN / REDIS_SECRET_NAME is provided, resolves auth_token from Secrets Manager.
+       - Otherwise falls back to environment variable CACHE_AUTH_TOKEN / REDIS_PASSWORD.
+       - Resolves TLS: explicit CACHE_TLS_ENABLED / REDIS_SSL, or auto-detects true for AWS ElastiCache endpoints (*.cache.amazonaws.com).
+       - Resolves DB: CACHE_DB (defaults to '0' for Valkey/ElastiCache Serverless & Cluster compatibility).
+    3. Standalone Secrets Manager resolution (when host is packaged inside the secret document).
+    4. Localhost fallback (redis://localhost:6379/0).
     """
     # 1. Direct URL Override
     direct_url = os.getenv("CACHE_URL") or os.getenv("REDIS_URL") or os.getenv("CACHE_REDIS_URL")
@@ -101,72 +155,73 @@ def get_redis_connection_config() -> dict[str, Any]:
             "masked_url": mask_redis_url(url),
         }
 
-    # 2. Discrete environment variables
-    host = os.getenv("CACHE_HOST") or os.getenv("REDIS_HOST")
-    if host and host.strip():
-        port = int(os.getenv("CACHE_PORT", os.getenv("REDIS_PORT", "6379")))
-        password = (os.getenv("CACHE_AUTH_TOKEN") or os.getenv("REDIS_PASSWORD") or "").strip()
-        ssl_enabled = (os.getenv("CACHE_TLS_ENABLED") or os.getenv("REDIS_SSL", "false")).lower() in ("true", "1", "yes")
-        scheme = "rediss" if ssl_enabled else "redis"
-        db = os.getenv("CACHE_DB", "0").strip()
-        auth = f":{quote_plus(password)}@" if password else ""
-        url = f"{scheme}://{auth}{host.strip()}:{port}/{db}"
-        return {
-            "connection_url": url,
-            "source": "ENV_DISCRETE",
-            "masked_url": mask_redis_url(url),
-        }
-
-    # 3. AWS Secrets Manager resolution
-    secret_id = (
+    secret_name = (
         os.getenv("CACHE_SECRET_NAME")
         or os.getenv("REDIS_SECRET_ARN")
         or os.getenv("REDIS_SECRET_NAME")
     )
 
-    if secret_id and secret_id.strip():
-        secret_id = secret_id.strip()
-        arn_region = None
-        if secret_id.startswith("arn:aws:secretsmanager:"):
-            arn_parts = secret_id.split(":")
-            if len(arn_parts) >= 4 and arn_parts[3]:
-                arn_region = arn_parts[3]
+    # 2. Host-based resolution (Primary AWS ElastiCache & Discrete Configuration)
+    host = os.getenv("CACHE_HOST") or os.getenv("REDIS_HOST")
+    if host and host.strip():
+        host_clean = host.strip()
+        port = int(os.getenv("CACHE_PORT", os.getenv("REDIS_PORT", "6379")))
+        db = os.getenv("CACHE_DB", "0").strip()
 
-        region = (
-            os.getenv("AWS_REGION")
-            or os.getenv("AWS_DEFAULT_REGION")
-            or arn_region
-            or "ap-south-2"
-        ).strip()
+        # Token resolution: Secrets Manager prioritized, followed by discrete env var
+        password = ""
+        source = "ENV_DISCRETE"
+        if secret_name:
+            secret_data = resolve_secret_auth_token(secret_name)
+            if secret_data:
+                password = (
+                    secret_data.get("auth_token")
+                    or secret_data.get("password")
+                    or secret_data.get("token")
+                    or ""
+                ).strip()
+                source = "SECRETS_MANAGER"
 
-        try:
-            import boto3
+        if not password:
+            password = (os.getenv("CACHE_AUTH_TOKEN") or os.getenv("REDIS_PASSWORD") or "").strip()
 
-            client = boto3.client("secretsmanager", region_name=region)
-            response = client.get_secret_value(SecretId=secret_id)
-            secret_str = response.get("SecretString")
-            if secret_str:
-                secret_data = json.loads(secret_str)
-                host = secret_data.get("host") or secret_data.get("engine_endpoint") or "localhost"
-                port = int(secret_data.get("port", 6379))
-                password = secret_data.get("auth_token") or secret_data.get("password") or ""
+        # Auto-detect TLS for AWS ElastiCache endpoints or explicit flag
+        ssl_env = os.getenv("CACHE_TLS_ENABLED") or os.getenv("REDIS_SSL")
+        if ssl_env is not None:
+            ssl_enabled = ssl_env.lower() in ("true", "1", "yes")
+        else:
+            ssl_enabled = ".cache.amazonaws.com" in host_clean.lower()
+
+        scheme = "rediss" if ssl_enabled else "redis"
+        auth = f":{quote_plus(password)}@" if password else ""
+        url = f"{scheme}://{auth}{host_clean}:{port}/{db}"
+        return {
+            "connection_url": url,
+            "source": source,
+            "masked_url": mask_redis_url(url),
+        }
+
+    # 3. Standalone Secrets Manager resolution (when host is embedded in secret)
+    if secret_name:
+        secret_data = resolve_secret_auth_token(secret_name)
+        if secret_data:
+            sec_host = secret_data.get("host") or secret_data.get("engine_endpoint")
+            if sec_host:
+                sec_port = int(secret_data.get("port", 6379))
+                sec_password = (
+                    secret_data.get("auth_token")
+                    or secret_data.get("password")
+                    or ""
+                ).strip()
                 ssl = str(secret_data.get("ssl", "true")).lower() in ("true", "1", "yes")
                 scheme = "rediss" if ssl else "redis"
-                auth = f":{quote_plus(password)}@" if password else ""
-                url = f"{scheme}://{auth}{host}:{port}/0"
-
-                logger.info("Resolved Redis configuration from Secrets Manager '%s' in '%s'", secret_id, region)
+                auth = f":{quote_plus(sec_password)}@" if sec_password else ""
+                url = f"{scheme}://{auth}{sec_host}:{sec_port}/0"
                 return {
                     "connection_url": url,
                     "source": "SECRETS_MANAGER",
                     "masked_url": mask_redis_url(url),
                 }
-        except Exception as exc:
-            logger.warning(
-                "Could not resolve Redis secret '%s' from Secrets Manager (%s). Defaulting to localhost fallback.",
-                secret_id,
-                exc,
-            )
 
     # 4. Local Fallback
     fallback_url = "redis://localhost:6379/0"
@@ -225,7 +280,9 @@ class CacheService:
         self._loop: Optional[asyncio.AbstractEventLoop] = None
         self._is_available: bool = False
         self._metrics = CacheMetrics()
-        self._prefix: str = os.getenv("CACHE_KEY_PREFIX", "ip:cache:v1:")
+        env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or "local").lower()
+        default_prefix = f"ip:{env}:cache:v1:"
+        self._prefix: str = os.getenv("CACHE_KEY_PREFIX") or default_prefix
         self._enabled: bool = os.getenv("CACHE_ENABLED", "true").lower() in ("true", "1", "yes")
         self._connect_timeout: float = float(os.getenv("CACHE_CONNECT_TIMEOUT", os.getenv("REDIS_CONNECT_TIMEOUT", "2.0")))
         self._socket_timeout: float = float(os.getenv("CACHE_SOCKET_TIMEOUT", os.getenv("REDIS_SOCKET_TIMEOUT", "2.0")))
@@ -257,8 +314,28 @@ class CacheService:
             return clean
         return f"{self._prefix}{clean}"
 
+    async def _cleanup(self) -> None:
+        """Disconnect and reset client and pool resources."""
+        self._is_available = False
+        if self._client is not None:
+            try:
+                await self._client.aclose()
+            except Exception:
+                pass
+            self._client = None
+        if self._pool is not None:
+            try:
+                await self._pool.disconnect()
+            except Exception:
+                pass
+            self._pool = None
+
     async def initialize(self) -> None:
-        """Initialize connection pool and ping Redis with fail-open safety."""
+        """Initialize connection pool and ping Redis with fail-open safety.
+
+        Guarantees that failed initialization does not retain a stale client/pool,
+        allowing clean subsequent retry attempts.
+        """
         try:
             self._loop = asyncio.get_running_loop()
         except RuntimeError:
@@ -269,8 +346,11 @@ class CacheService:
             self._is_available = False
             return
 
-        if self._client is not None:
+        if self._client is not None and self._is_available:
             return
+
+        # Always clean up any stale or partially initialized resources before attempting connection
+        await self._cleanup()
 
         try:
             config = get_redis_connection_config()
@@ -298,26 +378,17 @@ class CacheService:
         except Exception as exc:
             self._is_available = False
             self._metrics.record_error()
+            # Clean up immediately on error so failed state does not prevent later retry
+            await self._cleanup()
             logger.warning(
-                "Failed to connect to Redis during startup: %s. Platform will operate in fail-open mode.",
+                "Failed to connect to Redis during startup: %s (%s). Platform will operate in fail-open mode.",
                 type(exc).__name__,
+                exc,
             )
 
     async def close(self) -> None:
         """Gracefully close Redis client and connection pool."""
-        self._is_available = False
-        if self._client:
-            try:
-                await self._client.aclose()
-            except Exception:
-                pass
-            self._client = None
-        if self._pool:
-            try:
-                await self._pool.disconnect()
-            except Exception:
-                pass
-            self._pool = None
+        await self._cleanup()
         logger.info("Redis/Valkey CacheService pool disconnected.")
 
     async def get(self, key: str) -> Optional[Any]:
@@ -458,6 +529,12 @@ def cache_aside(
                 req = _extract_request(*args, **kwargs)
                 cache = get_cache_service()
 
+                # Fail-open / bypass check when cache is not running or disabled
+                if not cache.is_available:
+                    if req is not None:
+                        req.state.cache_outcome = "BYPASS"
+                    return await func(*args, **kwargs)
+
                 # Evaluate skip condition (e.g. bypass if user_id is present)
                 if condition and not condition(*args, **kwargs):
                     if req is not None:
@@ -488,6 +565,12 @@ def cache_aside(
             def sync_wrapper(*args, **kwargs):
                 req = _extract_request(*args, **kwargs)
                 cache = get_cache_service()
+
+                # Fail-open / bypass check when cache is not running or disabled
+                if not cache.is_available:
+                    if req is not None:
+                        req.state.cache_outcome = "BYPASS"
+                    return func(*args, **kwargs)
 
                 if condition and not condition(*args, **kwargs):
                     if req is not None:

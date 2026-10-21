@@ -77,7 +77,7 @@ flowchart TD
 | Variable Name | Required | Default Value | Description |
 |---|---|---|---|
 | `AWS_REGION` | Yes | `ap-south-2` | Target AWS region (Hyderabad). |
-| `ENVIRONMENT` | Yes | `production` | Deployment stage (`personal`, `staging`, `production`). |
+| `ENVIRONMENT` | Yes | `personal` | Deployment stage (`personal`, `production`). Defaults to `personal`. |
 | `LEETCODE_SYNC_QUEUE_URL` | Yes (Worker) | *None* | SQS Queue URL provisioned by CloudFormation. |
 | `LEETCODE_SOURCE_REPO` | Yes | `doocs/leetcode` | Upstream GitHub repository identifier (`owner/repo`). |
 | `LEETCODE_SOURCE_BRANCH` | Yes | `main` | Upstream branch tracked for changes. |
@@ -135,7 +135,28 @@ CREATE INDEX IF NOT EXISTS idx_leetcode_sync_history_commit ON public.leetcode_s
 CREATE INDEX IF NOT EXISTS idx_leetcode_sync_history_created_at ON public.leetcode_sync_history(created_at);
 CREATE INDEX IF NOT EXISTS idx_leetcode_sync_history_repo_branch ON public.leetcode_sync_history(source_repo, source_branch);
 
--- 4. Trigger for automatic updated_at timestamping
+-- 4. UTILITY FUNCTIONS & TRIGGERS
+-- Conditional definition: leaves existing function definition and ownership untouched.
+-- Only creates the shared function if it does not already exist in the public schema.
+DO $$
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1 FROM pg_proc p
+    JOIN pg_namespace n ON p.pronamespace = n.oid
+    WHERE n.nspname = 'public' AND p.proname = 'set_current_timestamp_updated_at'
+  ) THEN
+    CREATE FUNCTION public.set_current_timestamp_updated_at()
+    RETURNS TRIGGER
+    LANGUAGE plpgsql
+    AS $fn$
+    BEGIN
+      NEW.updated_at = now();
+      RETURN NEW;
+    END;
+    $fn$;
+  END IF;
+END $$;
+
 DROP TRIGGER IF EXISTS trg_leetcode_sync_state_updated_at ON public.leetcode_sync_state;
 CREATE TRIGGER trg_leetcode_sync_state_updated_at
   BEFORE UPDATE ON public.leetcode_sync_state
@@ -172,16 +193,16 @@ Before deploying the CloudFormation stack, store the secret in Secrets Manager:
 WEBHOOK_SECRET=$(openssl rand -hex 32)
 echo "Generated Secret: $WEBHOOK_SECRET"
 
-# 2. Store in AWS Secrets Manager in ap-south-2
+# 2. Store in AWS Secrets Manager in ap-south-2 (personal stage)
 aws secretsmanager create-secret \
-  --name "interview-prep/github/webhook-secret-production" \
-  --description "GitHub Webhook HMAC Secret for LeetCode Synchronization Pipeline" \
+  --name "interview-prep/github/webhook-secret-personal" \
+  --description "GitHub Webhook HMAC Secret for LeetCode Synchronization Pipeline (Personal)" \
   --secret-string "$WEBHOOK_SECRET" \
   --region ap-south-2
 
 # 3. Retrieve Secret ARN for CloudFormation deployment
 WEBHOOK_SECRET_ARN=$(aws secretsmanager describe-secret \
-  --secret-id "interview-prep/github/webhook-secret-production" \
+  --secret-id "interview-prep/github/webhook-secret-personal" \
   --region ap-south-2 \
   --query 'ARN' \
   --output text)
@@ -210,9 +231,10 @@ cd interview-app/infrastructure/lambda/github_webhook_receiver
 # Package handler into deployment zip
 zip -r ../../../../lambda-webhook-receiver.zip handler.py __init__.py
 
-# Upload zip to existing assets S3 bucket
+# Upload zip to assets S3 bucket (ap-south-2 Hyderabad)
 ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-BUCKET="interview-prep-assets-${ACCOUNT_ID}-production-ap-south-2"
+# E.g., interview-prep-assets-808431466075-personal-ap-south-2
+BUCKET="interview-prep-assets-${ACCOUNT_ID}-personal-ap-south-2"
 
 aws s3 cp ../../../../lambda-webhook-receiver.zip "s3://${BUCKET}/lambda/github-webhook-receiver.zip" \
   --region ap-south-2
@@ -223,13 +245,15 @@ aws s3 cp ../../../../lambda-webhook-receiver.zip "s3://${BUCKET}/lambda/github-
 ```bash
 cd interview-app/infrastructure/cloudformation
 
+# Note: AttachPolicyToRole defaults to 'false' to prevent unreviewed modifications to existing IAM roles.
+# Set AttachPolicyToRole=true only when authorized to attach the managed policy directly to EC2RoleName.
 aws cloudformation deploy \
   --template-file leetcode-sync-pipeline.yaml \
-  --stack-name interview-prep-leetcode-sync-production \
+  --stack-name interview-prep-leetcode-sync-personal \
   --parameter-overrides \
-      Environment=production \
+      Environment=personal \
       EC2RoleName=InterviewPrepEC2Role \
-      AttachPolicyToRole=true \
+      AttachPolicyToRole=false \
       SourceRepo=doocs/leetcode \
       SourceBranch=main \
       QuestionsPath=solution \
@@ -242,7 +266,7 @@ aws cloudformation deploy \
 
 ```bash
 aws cloudformation describe-stacks \
-  --stack-name interview-prep-leetcode-sync-production \
+  --stack-name interview-prep-leetcode-sync-personal \
   --region ap-south-2 \
   --query 'Stacks[0].Outputs' \
   --output table
@@ -250,25 +274,41 @@ aws cloudformation describe-stacks \
 
 Key outputs:
 - `ApiEndpoint`: `https://<api-id>.execute-api.ap-south-2.amazonaws.com/github/webhook`
-- `SqsQueueUrl`: `https://sqs.ap-south-2.amazonaws.com/<account-id>/interview-prep-leetcode-sync-queue-production`
-- `SqsDlqArn`: `arn:aws:sqs:ap-south-2:<account-id>:interview-prep-leetcode-sync-dlq-production`
-- `EC2WorkerPolicyArn`: `arn:aws:iam::<account-id>:policy/interview-prep-leetcode-sync-production-EC2LeetCodeSyncWorkerPolicy`
+- `SqsQueueUrl`: `https://sqs.ap-south-2.amazonaws.com/<account-id>/interview-prep-leetcode-sync-queue-personal`
+- `SqsDlqArn`: `arn:aws:sqs:ap-south-2:<account-id>:interview-prep-leetcode-sync-dlq-personal`
+- `EC2WorkerPolicyArn`: `arn:aws:iam::<account-id>:policy/interview-prep-leetcode-sync-personal-EC2LeetCodeSyncWorkerPolicy`
 
 ---
 
-## 6. Configuring GitHub Webhook
+## 6. Configuring GitHub Webhook & Operational Alternatives
 
-1. Navigate to upstream repository settings: `https://github.com/<owner>/<repo>/settings/hooks`.
-2. Click **Add webhook**.
-3. Fill out fields:
-   - **Payload URL**: Paste `ApiEndpoint` output from CloudFormation (e.g. `https://<api-id>.execute-api.ap-south-2.amazonaws.com/github/webhook`).
-   - **Content type**: `application/json`.
-   - **Secret**: The secret value generated and stored in Secrets Manager.
-   - **SSL verification**: Enable SSL verification.
-   - **Which events would you like to trigger this webhook?**: Select **Just the push event**.
-   - **Active**: Checked.
+> [!IMPORTANT]
+> **Repository Permissions Notice:**
+> Configuring a repository webhook requires repository **Administrator** or **Owner** rights.
+> Public upstream repositories such as `doocs/leetcode` do not allow external consumers to add webhooks to their repository settings.
+>
+> If you do not have administrative access to the upstream repository, choose one of the two authorized production alternatives below.
+
+### Option A: Fork Upstream with Automated Fork Sync (Webhook-Driven)
+1. Fork `https://github.com/doocs/leetcode` into your personal GitHub organization or account (e.g., `https://github.com/<your-account>/leetcode`).
+2. Enable GitHub's automated fork synchronization (or GitHub Actions scheduled fork sync).
+3. Navigate to your fork repository settings: `https://github.com/<your-account>/leetcode/settings/hooks`.
 4. Click **Add webhook**.
-5. GitHub sends an initial `ping` event. In the GitHub Webhooks UI, verify the delivery displays a green checkmark (`HTTP 200: {"message": "pong", ...}`).
+5. Configure:
+   - **Payload URL**: Paste `ApiEndpoint` output (e.g. `https://<api-id>.execute-api.ap-south-2.amazonaws.com/github/webhook`).
+   - **Content type**: `application/json`.
+   - **Secret**: The secret stored in Secrets Manager.
+   - **Events**: Select **Just the push event**.
+   - **Active**: Checked.
+6. When your fork receives synced commits from upstream, GitHub triggers your webhook pipeline automatically.
+
+### Option B: Scheduled EventBridge / Cron Polling (Zero Webhook Permissions Needed)
+If you prefer not to maintain a fork, execute the worker periodically against the upstream repository without webhooks:
+- Configure an EC2 cron job or AWS EventBridge Rule that invokes the sync worker:
+  ```bash
+  docker compose exec leetcode-sync-worker python -m workers.leetcode_sync_worker --once --full-sync
+  ```
+- The worker uses the GitHub Git Tree API to discover new or modified files under `solution/` and atomically updates `leetcode_sync_state` to the newly resolved immutable commit SHA.
 
 ---
 
@@ -298,7 +338,7 @@ The EC2 worker requires scoped permissions to interact with the SQS queue:
 
 If `AttachPolicyToRole=true` was specified during CloudFormation deploy, this policy is automatically attached to `InterviewPrepEC2Role`.
 
-To verify or attach manually:
+To attach manually when ready:
 
 ```bash
 aws iam attach-role-policy \
@@ -321,8 +361,15 @@ In `interview-app/docker-compose.yml`:
       dockerfile: Dockerfile
       target: runtime
     container_name: interview-prep-leetcode-sync-worker
-    restart: unless-stopped
-    command: ["python", "-m", "workers.leetcode_sync_worker"]
+    restart: on-failure:5
+    command: >
+      sh -c '
+        if [ -z "$$LEETCODE_SYNC_QUEUE_URL" ]; then
+          echo "LEETCODE_SYNC_QUEUE_URL is not configured. Sync worker is disabled.";
+          exit 0;
+        fi;
+        exec python -m workers.leetcode_sync_worker
+      '
     environment:
       - PYTHONUNBUFFERED=1
       - AWS_REGION=${AWS_REGION:-ap-south-2}
@@ -333,7 +380,7 @@ In `interview-app/docker-compose.yml`:
       - LEETCODE_SOURCE_BRANCH=${LEETCODE_SOURCE_BRANCH:-main}
       - LEETCODE_QUESTIONS_PATH=${LEETCODE_QUESTIONS_PATH:-solution}
       - GITHUB_TOKEN_SECRET_ARN=${GITHUB_TOKEN_SECRET_ARN:-}
-      - ENVIRONMENT=${ENVIRONMENT:-production}
+      - ENVIRONMENT=${ENVIRONMENT:-personal}
     networks:
       - app-network
 ```

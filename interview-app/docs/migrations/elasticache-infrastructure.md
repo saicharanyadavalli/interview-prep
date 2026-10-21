@@ -501,14 +501,14 @@ aws cloudformation deploy \
   --stack-name interview-prep-elasticache-personal \
   --parameter-overrides \
       Environment=personal \
-      VpcId=vpc-0123456789abcdef0 \
-      CacheSubnetIds=subnet-01111111111111111,subnet-02222222222222222 \
-      AppSecurityGroupId=sg-03333333333333333 \
+      VpcId=<YOUR_VPC_ID> \
+      CacheSubnetIds=<PRIVATE_SUBNET_A>,<PRIVATE_SUBNET_B> \
+      AppSecurityGroupId=<APP_SECURITY_GROUP_ID> \
       DeploymentType=NodeBased \
       Engine=valkey \
       NodeCacheType=cache.t4g.micro \
       NumCacheNodes=1 \
-      AttachPolicyToRole=true \
+      AttachPolicyToRole=false \
       EC2RoleName=InterviewPrepEC2Role \
   --capabilities CAPABILITY_NAMED_IAM \
   --region ap-south-2

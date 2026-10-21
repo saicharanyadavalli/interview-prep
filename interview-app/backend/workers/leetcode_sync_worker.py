@@ -12,6 +12,7 @@ import argparse
 import json
 import logging
 import os
+import re
 import signal
 import sys
 import time
@@ -40,9 +41,60 @@ from services.leetcode_parser import parse_leetcode_markdown, validate_problem
 from services.leetcode_sync_service import LeetCodeSyncService
 
 
-def filter_and_prioritize_markdown_files(paths: list[str]) -> list[str]:
-    """Filter files ending in .md and prioritize README_EN.md over README.md per question directory."""
-    md_paths = [p for p in paths if p.lower().endswith(".md")]
+def is_candidate_question_file(path: str, questions_path: str = "solution") -> bool:
+    """Determine whether a repository path is a potential LeetCode problem solution markdown file.
+
+    Excludes root/template markdown files (e.g., solution/README.md, template.md) and range-index READMEs
+    (e.g., solution/0000-0099/README.md) while including actual problem solutions
+    (e.g., solution/0000-0099/0001.Two Sum/README_EN.md or solution/0001.Two Sum/README.md).
+    """
+    if not path or not path.lower().endswith(".md"):
+        return False
+
+    norm = path.replace("\\", "/").strip("/")
+    q_prefix = questions_path.strip("/") + "/" if questions_path.strip("/") else ""
+
+    if q_prefix and norm.startswith(q_prefix):
+        rel_path = norm[len(q_prefix):]
+    elif q_prefix and not norm.startswith(q_prefix):
+        # Path is outside questions_path
+        # But if it's already a relative question path without questions_path prefix, check if it looks like a question
+        # e.g. starts with range like 0000-0099/ or problem folder like 0001.Two Sum/
+        if re.match(r"^(?:\d+-\d+/)?(?:\d{1,5}[\.-]|\d{1,5}\s*-\s*)", norm):
+            rel_path = norm
+        else:
+            return False
+    else:
+        rel_path = norm
+
+    rel_lower = rel_path.lower()
+
+    # Exclude root and non-question documentation files
+    if rel_lower in (
+        "readme.md",
+        "readme_en.md",
+        "template.md",
+        "contributing.md",
+        "license.md",
+        "summary.md",
+        "todo.md",
+        "changelog.md",
+    ):
+        return False
+
+    # Exclude range index READMEs e.g. "0000-0099/readme.md" or "0000-0099/readme_en.md"
+    parts = rel_path.split("/")
+    if len(parts) == 2 and re.match(r"^\d+-\d+$", parts[0]) and parts[1].lower() in ("readme.md", "readme_en.md"):
+        return False
+
+    return True
+
+
+def filter_and_prioritize_markdown_files(
+    paths: list[str], questions_path: str = "solution"
+) -> list[str]:
+    """Filter candidate problem files ending in .md and prioritize README_EN.md over README.md per directory."""
+    md_paths = [p for p in paths if is_candidate_question_file(p, questions_path)]
 
     # Identify directories that contain a README_EN.md
     dirs_with_en: set[str] = set()
@@ -62,6 +114,13 @@ def filter_and_prioritize_markdown_files(paths: list[str]) -> list[str]:
         final_paths.append(p)
 
     return final_paths
+
+
+class CommitStaleness:
+    """Distinct outcomes for commit staleness evaluation."""
+    CONFIRMED_STALE = "confirmed_stale"
+    CONFIRMED_NOT_STALE = "confirmed_not_stale"
+    UNDETERMINED = "undetermined"
 
 
 class LeetCodeSyncWorker:
@@ -160,6 +219,114 @@ class LeetCodeSyncWorker:
         if token:
             headers["Authorization"] = f"Bearer {token}"
         return headers
+
+    def resolve_commit_sha(self, ref_or_branch: str) -> Optional[str]:
+        """Resolve a branch name, ref, or short SHA to a concrete 40-character commit SHA via GitHub API."""
+        if not ref_or_branch:
+            return None
+
+        clean_ref = ref_or_branch.strip()
+        # If already a full 40-character hex SHA, return lowercase
+        if len(clean_ref) == 40 and all(c in "0123456789abcdefABCDEF" for c in clean_ref):
+            return clean_ref.lower()
+
+        query_ref = clean_ref
+        if query_ref.startswith("refs/heads/"):
+            query_ref = query_ref[len("refs/heads/"):]
+
+        url = f"https://api.github.com/repos/{self.source_repo}/commits/{query_ref}"
+        headers = self.get_github_headers()
+
+        try:
+            resp = requests.get(url, headers=headers, timeout=20)
+            if resp.status_code == 200:
+                data = resp.json()
+                concrete_sha = data.get("sha")
+                if concrete_sha and len(concrete_sha) == 40:
+                    logger.info("Resolved ref '%s' to concrete SHA: %s", ref_or_branch, concrete_sha)
+                    return str(concrete_sha).lower()
+            logger.error(
+                "GitHub Commits API returned HTTP %d for ref '%s': %s",
+                resp.status_code,
+                ref_or_branch,
+                resp.text[:200],
+            )
+        except Exception as exc:
+            logger.error("Exception resolving commit SHA for '%s': %s", ref_or_branch, exc)
+
+        return None
+
+    def check_commit_staleness(self, commit_sha: str, last_synced_sha: str) -> str:
+        """Check if incoming commit_sha is stale compared to last_synced_sha.
+
+        Returns:
+            CommitStaleness.CONFIRMED_STALE: Commit is definitely older than or identical to last_synced_sha.
+            CommitStaleness.CONFIRMED_NOT_STALE: Commit is definitely newer than last_synced_sha.
+            CommitStaleness.UNDETERMINED: Transient API failure, network timeout, rate limiting, or server error.
+        """
+        if not commit_sha or not last_synced_sha:
+            return CommitStaleness.CONFIRMED_NOT_STALE
+
+        if commit_sha.lower() == last_synced_sha.lower():
+            return CommitStaleness.CONFIRMED_STALE
+
+        url = f"https://api.github.com/repos/{self.source_repo}/compare/{commit_sha}...{last_synced_sha}"
+        headers = self.get_github_headers()
+
+        try:
+            resp = requests.get(url, headers=headers, timeout=20)
+            if resp.status_code == 200:
+                data = resp.json()
+                cmp_status = data.get("status")  # 'ahead', 'behind', 'diverged', 'identical'
+                if cmp_status in ("ahead", "identical"):
+                    logger.info(
+                        "Incoming commit %s is an ancestor of or identical to last synced commit %s (compare status: %s). Mark as stale.",
+                        commit_sha,
+                        last_synced_sha,
+                        cmp_status,
+                    )
+                    return CommitStaleness.CONFIRMED_STALE
+                elif cmp_status == "behind":
+                    logger.info(
+                        "Incoming commit %s is newer than last synced commit %s (compare status: %s).",
+                        commit_sha,
+                        last_synced_sha,
+                        cmp_status,
+                    )
+                    return CommitStaleness.CONFIRMED_NOT_STALE
+                elif cmp_status == "diverged":
+                    logger.warning(
+                        "Incoming commit %s and last synced commit %s have diverged. Checking current branch head.",
+                        commit_sha,
+                        last_synced_sha,
+                    )
+                    current_head = self.resolve_commit_sha(self.source_branch)
+                    if current_head and current_head.lower() == commit_sha.lower():
+                        return CommitStaleness.CONFIRMED_NOT_STALE
+                    if current_head:
+                        head_cmp_url = f"https://api.github.com/repos/{self.source_repo}/compare/{commit_sha}...{current_head}"
+                        head_resp = requests.get(head_cmp_url, headers=headers, timeout=20)
+                        if head_resp.status_code == 200:
+                            head_status = head_resp.json().get("status")
+                            if head_status in ("ahead", "identical"):
+                                return CommitStaleness.CONFIRMED_STALE
+                            elif head_status == "behind":
+                                return CommitStaleness.CONFIRMED_NOT_STALE
+                    return CommitStaleness.UNDETERMINED
+
+            logger.warning(
+                "GitHub compare API returned HTTP %d while checking stale commit: %s",
+                resp.status_code,
+                resp.text[:200],
+            )
+            return CommitStaleness.UNDETERMINED
+        except Exception as exc:
+            logger.warning("Failed to check commit staleness via GitHub compare API: %s", exc)
+            return CommitStaleness.UNDETERMINED
+
+    def is_commit_stale(self, commit_sha: str, last_synced_sha: str) -> bool:
+        """Backward-compatible helper returning True only if confirmed stale."""
+        return self.check_commit_staleness(commit_sha, last_synced_sha) == CommitStaleness.CONFIRMED_STALE
 
     def compare_commits(self, before_sha: str, after_sha: str) -> tuple[list[str], list[str]]:
         """Compare commits using GitHub REST compare API.
@@ -274,6 +441,7 @@ class LeetCodeSyncWorker:
 
         Returns:
             bool: True if message was successfully processed or safely skipped (eligible for SQS ACK).
+                  False if any failure occurred, preventing SQS acknowledgment so message can retry.
         """
         delivery_id = str(payload.get("delivery_id") or f"manual-{int(time.time())}")
         repository = payload.get("repository", self.source_repo)
@@ -306,18 +474,40 @@ class LeetCodeSyncWorker:
             logger.info("Skipping message for ref '%s' (configured: '%s')", ref, self.source_branch)
             return True
 
-        # 3. Check for stale commit
-        last_synced_sha = self.sync_service.get_last_sync_sha(self.source_repo, self.source_branch)
-        if after_sha and last_synced_sha and after_sha == last_synced_sha:
-            logger.info(
-                "Commit %s has already been synchronized for %s/%s. Skipping.",
-                after_sha,
-                self.source_repo,
-                self.source_branch,
-            )
-            return True
+        # 3. Check for duplicate delivery ID
+        if delivery_id:
+            prior_status = self.sync_service.get_delivery_status(delivery_id)
+            if prior_status == "success":
+                logger.info(
+                    "Delivery %s has already been processed successfully. Skipping and acknowledging.",
+                    delivery_id,
+                )
+                return True
 
-        # 4. Resolve changed files
+        # 4. Check for stale commit
+        last_synced_sha = self.sync_service.get_last_sync_sha(self.source_repo, self.source_branch)
+        if after_sha and last_synced_sha:
+            staleness = self.check_commit_staleness(after_sha, last_synced_sha)
+            if staleness == CommitStaleness.CONFIRMED_STALE:
+                logger.info(
+                    "Commit %s is older than or equal to last synced commit %s for %s/%s. Skipping.",
+                    after_sha,
+                    last_synced_sha,
+                    self.source_repo,
+                    self.source_branch,
+                )
+                return True
+            elif staleness == CommitStaleness.UNDETERMINED:
+                logger.warning(
+                    "Unable to determine commit staleness for %s against %s (GitHub Compare API error/timeout). "
+                    "Refusing to process message to prevent potential checkpoint regression. "
+                    "Leaving in SQS for retry.",
+                    after_sha,
+                    last_synced_sha,
+                )
+                return False
+
+        # 5. Resolve changed files
         added_or_modified: list[str] = []
         removed: list[str] = []
 
@@ -325,7 +515,7 @@ class LeetCodeSyncWorker:
         if changed_paths and not needs_investigation:
             added_or_modified = [
                 p for p in changed_paths
-                if p.startswith(prefix) or p == self.questions_path
+                if is_candidate_question_file(p, self.questions_path)
             ]
         else:
             if before_sha and after_sha:
@@ -333,7 +523,12 @@ class LeetCodeSyncWorker:
             elif after_sha:
                 added_or_modified = self.fetch_tree_files(after_sha)
 
-        # 5. Handle upstream removals (do NOT delete records from database)
+            added_or_modified = [
+                p for p in added_or_modified
+                if is_candidate_question_file(p, self.questions_path)
+            ]
+
+        # 6. Handle upstream removals (do NOT delete records from database)
         for removed_path in removed:
             if removed_path.startswith(prefix) or removed_path == self.questions_path:
                 logger.warning(
@@ -341,7 +536,9 @@ class LeetCodeSyncWorker:
                     removed_path,
                 )
 
-        candidate_files = filter_and_prioritize_markdown_files(added_or_modified)
+        candidate_files = filter_and_prioritize_markdown_files(
+            added_or_modified, questions_path=self.questions_path
+        )
         logger.info(
             "Synchronizing %d question file(s) for commit %s (delivery_id: %s, dry_run: %s)",
             len(candidate_files),
@@ -350,7 +547,7 @@ class LeetCodeSyncWorker:
             dry_run,
         )
 
-        # 6. Record sync start
+        # 7. Record sync start
         if not dry_run and delivery_id and after_sha:
             try:
                 self.sync_service.record_sync_start(
@@ -369,24 +566,27 @@ class LeetCodeSyncWorker:
         files_failed = 0
         error_summaries: list[str] = []
 
-        # 7. Fetch, parse, and synchronize each question file
+        # 8. Fetch, parse, and synchronize each question file
         for file_path in candidate_files:
             content = self.fetch_file_content(file_path, after_sha)
             if not content:
                 logger.warning("Could not fetch content for question file: %s", file_path)
                 files_failed += 1
+                error_summaries.append(f"{file_path}: Failed to fetch file content")
                 continue
 
             parsed = parse_leetcode_markdown(content, filename_or_path=file_path)
             if parsed is None:
                 logger.warning("Markdown parser returned None for file: %s", file_path)
                 files_failed += 1
+                error_summaries.append(f"{file_path}: Failed to parse markdown")
                 continue
 
             is_valid, reason = validate_problem(parsed)
             if not is_valid:
                 logger.warning("Problem validation failed for file %s: %s", file_path, reason)
                 files_failed += 1
+                error_summaries.append(f"{file_path}: {reason}")
                 continue
 
             sync_res = self.sync_service.sync_problem(parsed, dry_run=dry_run)
@@ -404,8 +604,8 @@ class LeetCodeSyncWorker:
 
             files_processed += 1
 
-        # 8. Record sync completion
-        final_status = "failed" if (files_failed > 0 and files_added == 0 and files_updated == 0 and files_ignored == 0) else "success"
+        # 9. Record sync completion and enforce all-or-nothing terminal success
+        final_status = "failed" if files_failed > 0 else "success"
         error_str = "; ".join(error_summaries[:10])
 
         if not dry_run and delivery_id and after_sha:
@@ -437,13 +637,23 @@ class LeetCodeSyncWorker:
             files_failed,
         )
 
+        # Incomplete processing must prevent SQS ACK so message remains available for retry/DLQ
+        if files_failed > 0:
+            logger.warning(
+                "Sync run for delivery %s encountered %d failure(s). Incomplete run; leaving message for retry.",
+                delivery_id,
+                files_failed,
+            )
+            return False
+
         return True
 
     def process_message(self, message: dict[str, Any], dry_run: bool = False) -> bool:
         """Process an individual SQS message.
 
         Deletes message upon successful processing or safe skip.
-        Does NOT delete message on unexpected exceptions, allowing visibility timeout to expire for DLQ redrive.
+        Does NOT delete message on unexpected exceptions or incomplete processing,
+        allowing visibility timeout to expire for DLQ redrive.
         """
         receipt_handle = message.get("ReceiptHandle")
         body = message.get("Body", "")
@@ -468,6 +678,13 @@ class LeetCodeSyncWorker:
                     QueueUrl=self.queue_url, ReceiptHandle=receipt_handle
                 )
                 logger.info("Successfully deleted message from SQS (MessageId: %s)", message.get("MessageId"))
+                return True
+            elif not should_ack:
+                logger.warning(
+                    "Message processing incomplete or failed (MessageId: %s); leaving in SQS for retry / DLQ redrive",
+                    message.get("MessageId"),
+                )
+                return False
             return True
         except Exception as exc:
             logger.error(
@@ -534,13 +751,18 @@ class LeetCodeSyncWorker:
 
         logger.info("LeetCode sync worker stopped cleanly.")
 
-    def run_full_sync(self, dry_run: bool = False) -> None:
+    def run_full_sync(self, dry_run: bool = False) -> bool:
         """Bypass SQS and perform full sync from the upstream repository tree."""
         logger.info("Initiating full synchronization of %s branch '%s'", self.source_repo, self.source_branch)
-        tree_files = self.fetch_tree_files(self.source_branch)
+        concrete_sha = self.resolve_commit_sha(self.source_branch)
+        if not concrete_sha:
+            logger.error("Could not resolve concrete commit SHA for branch '%s'. Aborting full sync.", self.source_branch)
+            return False
+
+        tree_files = self.fetch_tree_files(concrete_sha)
         if not tree_files:
-            logger.error("No files found in git tree for branch '%s'", self.source_branch)
-            return
+            logger.error("No files found in git tree for commit '%s'", concrete_sha)
+            return False
 
         payload = {
             "delivery_id": f"full-sync-{int(time.time())}",
@@ -548,26 +770,27 @@ class LeetCodeSyncWorker:
             "repository": self.source_repo,
             "ref": f"refs/heads/{self.source_branch}",
             "before_sha": "",
-            "after_sha": self.source_branch,
+            "after_sha": concrete_sha,
             "changed_paths": tree_files,
             "needs_investigation": False,
         }
-        self.process_message_payload(payload, dry_run=dry_run)
+        return self.process_message_payload(payload, dry_run=dry_run)
 
-    def run_commit_sync(self, commit_sha: str, dry_run: bool = False) -> None:
-        """Bypass SQS and sync against a specific commit SHA."""
-        logger.info("Initiating manual sync for commit %s in %s", commit_sha, self.source_repo)
+    def run_commit_sync(self, commit_sha: str, dry_run: bool = False) -> bool:
+        """Bypass SQS and sync against a specific commit SHA or reference."""
+        logger.info("Initiating manual sync for ref/commit %s in %s", commit_sha, self.source_repo)
+        concrete_sha = self.resolve_commit_sha(commit_sha) or commit_sha
         payload = {
-            "delivery_id": f"manual-commit-{commit_sha[:8]}-{int(time.time())}",
+            "delivery_id": f"manual-commit-{concrete_sha[:8]}-{int(time.time())}",
             "event": "manual_push",
             "repository": self.source_repo,
             "ref": f"refs/heads/{self.source_branch}",
             "before_sha": "",
-            "after_sha": commit_sha,
+            "after_sha": concrete_sha,
             "changed_paths": [],
             "needs_investigation": True,
         }
-        self.process_message_payload(payload, dry_run=dry_run)
+        return self.process_message_payload(payload, dry_run=dry_run)
 
 
 def main() -> None:

@@ -456,3 +456,42 @@ def test_get_last_sync_sha():
     conn_none = MockConnection(cursor_none)
     service_none = LeetCodeSyncService(rds_client_module=MockRDSClient(conn_none))
     assert service_none.get_last_sync_sha("doocs/leetcode", "dev") is None
+
+
+def test_get_delivery_status():
+    """Verify get_delivery_status queries leetcode_sync_history for status."""
+    cursor = MockCursor(
+        handlers={
+            "SELECT status FROM public.leetcode_sync_history WHERE delivery_id = %s;": {
+                "status": "success"
+            }
+        }
+    )
+    conn = MockConnection(cursor)
+    service = LeetCodeSyncService(rds_client_module=MockRDSClient(conn))
+
+    status = service.get_delivery_status("del-12345")
+    assert status == "success"
+    assert len(cursor.executed) == 1
+    assert cursor.executed[0][1] == ("del-12345",)
+
+    # When not found
+    cursor_missing = MockCursor(handlers={"SELECT status FROM public.leetcode_sync_history": None})
+    conn_missing = MockConnection(cursor_missing)
+    service_missing = LeetCodeSyncService(rds_client_module=MockRDSClient(conn_missing))
+    assert service_missing.get_delivery_status("del-nonexistent") is None
+
+
+def test_record_sync_start_preserves_existing_success():
+    """Verify record_sync_start query includes CASE WHEN status = 'success' to guard idempotency."""
+    cursor = MockCursor()
+    conn = MockConnection(cursor)
+    service = LeetCodeSyncService(rds_client_module=MockRDSClient(conn))
+
+    service.record_sync_start("del-abc", "sha-123", "doocs/leetcode", "main")
+    assert len(cursor.executed) == 1
+    sql, params = cursor.executed[0]
+    normalized_sql = " ".join(sql.split())
+    assert "INSERT INTO public.leetcode_sync_history" in normalized_sql
+    assert "CASE WHEN public.leetcode_sync_history.status = 'success'" in normalized_sql
+    assert params == ("del-abc", "doocs/leetcode", "main", "sha-123")
