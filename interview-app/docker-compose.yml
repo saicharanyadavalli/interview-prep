@@ -51,6 +51,29 @@ services:
     networks:
       - app-network
 
+  # ── LeetCode Sync Pipeline Worker ───────────────────────────────────────────
+  leetcode-sync-worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+      target: runtime
+    container_name: interview-prep-leetcode-sync-worker
+    restart: unless-stopped
+    command: ["python", "-m", "workers.leetcode_sync_worker"]
+    environment:
+      - PYTHONUNBUFFERED=1
+      - AWS_REGION=${AWS_REGION:-ap-south-2}
+      - RDS_SECRET_NAME=${RDS_SECRET_NAME:-interview-prep/rds/app}
+      - RDS_SECRET_ARN=${RDS_SECRET_ARN:-}
+      - LEETCODE_SYNC_QUEUE_URL=${LEETCODE_SYNC_QUEUE_URL:-}
+      - LEETCODE_SOURCE_REPO=${LEETCODE_SOURCE_REPO:-doocs/leetcode}
+      - LEETCODE_SOURCE_BRANCH=${LEETCODE_SOURCE_BRANCH:-main}
+      - LEETCODE_QUESTIONS_PATH=${LEETCODE_QUESTIONS_PATH:-solution}
+      - GITHUB_TOKEN_SECRET_ARN=${GITHUB_TOKEN_SECRET_ARN:-}
+      - ENVIRONMENT=${ENVIRONMENT:-production}
+    networks:
+      - app-network
+
   # ── Next.js Frontend ─────────────────────────────────────────────────────────
   frontend:
     build:

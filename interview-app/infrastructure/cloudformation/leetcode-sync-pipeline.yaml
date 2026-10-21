@@ -1,0 +1,310 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS CloudFormation template provisioning the LeetCode synchronization pipeline:
+  API Gateway HTTP API, AWS Lambda webhook receiver, Amazon SQS queue with DLQ,
+  and scoped EC2 worker IAM policy.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: personal
+    AllowedValues:
+      - personal
+      - production
+    Description: Environment stage for resource naming, isolation, and tagging.
+
+  EC2RoleName:
+    Type: String
+    Default: InterviewPrepEC2Role
+    Description: Existing EC2 IAM role name to conditionally attach the SQS worker policy to.
+
+  AttachPolicyToRole:
+    Type: String
+    Default: 'false'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: >-
+      Whether to automatically attach the SQS worker managed policy to the existing EC2 IAM role.
+      Defaults to false to avoid mutating existing roles unintentionally.
+
+  SourceRepo:
+    Type: String
+    Default: doocs/leetcode
+    Description: Expected GitHub repository full name (e.g. owner/repo).
+
+  SourceBranch:
+    Type: String
+    Default: main
+    Description: Target branch to track for question synchronizations (e.g. main).
+
+  QuestionsPath:
+    Type: String
+    Default: solution/
+    Description: Relative directory path inside repository containing question solutions.
+
+  WebhookSecretArn:
+    Type: String
+    Description: ARN of existing AWS Secrets Manager secret containing the GitHub webhook secret.
+
+  QueueRetentionPeriod:
+    Type: Number
+    Default: 1209600
+    Description: SQS message retention period in seconds (default 1209600 = 14 days).
+
+  MessageVisibilityTimeout:
+    Type: Number
+    Default: 300
+    Description: SQS message visibility timeout in seconds (default 300 = 5 minutes).
+
+  LambdaCodeS3Bucket:
+    Type: String
+    Default: ''
+    Description: >-
+      Optional S3 bucket containing the packaged Lambda deployment zip. If omitted or empty,
+      defaults to interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}.
+
+  LambdaCodeS3Key:
+    Type: String
+    Default: lambda/github-webhook-receiver.zip
+    Description: S3 object key for the packaged Lambda deployment zip file.
+
+Conditions:
+  ShouldAttachPolicyToRole: !Equals [!Ref AttachPolicyToRole, 'true']
+  HasCustomLambdaBucket: !Not [!Equals [!Ref LambdaCodeS3Bucket, '']]
+
+Resources:
+  # 1. Dead-Letter Queue (DLQ) for failed sync messages
+  SqsDlq:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub "interview-prep-leetcode-sync-dlq-${Environment}"
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+      Tags:
+        - Key: Application
+          Value: InterviewPrep
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # 2. Main SQS Queue with RedrivePolicy pointing to DLQ
+  SqsQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub "interview-prep-leetcode-sync-queue-${Environment}"
+      MessageRetentionPeriod: !Ref QueueRetentionPeriod
+      VisibilityTimeout: !Ref MessageVisibilityTimeout
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt SqsDlq.Arn
+        maxReceiveCount: 5
+      SqsManagedSseEnabled: true
+      Tags:
+        - Key: Application
+          Value: InterviewPrep
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # 3. Dedicated CloudWatch Log Group for Lambda Webhook Receiver
+  WebhookReceiverLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/interview-prep-leetcode-webhook-${Environment}"
+      RetentionInDays: 14
+      Tags:
+        - Key: Application
+          Value: InterviewPrep
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # 4. IAM Execution Role for Webhook Receiver Lambda Function
+  WebhookReceiverRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "interview-prep-leetcode-webhook-lambda-role-${Environment}"
+      Description: Execution role for LeetCode GitHub webhook receiver Lambda function.
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: WebhookReceiverExecutionPolicy
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Sid: LambdaCloudWatchLogsAccess
+                Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource:
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/interview-prep-leetcode-webhook-${Environment}:*"
+              - Sid: SqsSendMessageAccess
+                Effect: Allow
+                Action:
+                  - sqs:SendMessage
+                Resource: !GetAtt SqsQueue.Arn
+              - Sid: SecretsManagerGetSecretAccess
+                Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource: !Ref WebhookSecretArn
+      Tags:
+        - Key: Application
+          Value: InterviewPrep
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # 5. Webhook Receiver Lambda Function (Python 3.12)
+  WebhookReceiverFunction:
+    Type: AWS::Lambda::Function
+    DependsOn:
+      - WebhookReceiverLogGroup
+      - WebhookReceiverRole
+    Properties:
+      FunctionName: !Sub "interview-prep-leetcode-webhook-${Environment}"
+      Description: Receives GitHub webhooks for LeetCode repository updates and enqueues to SQS.
+      Runtime: python3.12
+      Handler: handler.lambda_handler
+      Role: !GetAtt WebhookReceiverRole.Arn
+      Code:
+        S3Bucket: !If
+          - HasCustomLambdaBucket
+          - !Ref LambdaCodeS3Bucket
+          - !Sub "interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}"
+        S3Key: !Ref LambdaCodeS3Key
+      Timeout: 15
+      MemorySize: 256
+      Environment:
+        Variables:
+          WEBHOOK_SECRET_ARN: !Ref WebhookSecretArn
+          SQS_QUEUE_URL: !Ref SqsQueue
+          CONFIGURED_REPO: !Ref SourceRepo
+          CONFIGURED_BRANCH: !Sub "refs/heads/${SourceBranch}"
+          QUESTIONS_PATH: !Ref QuestionsPath
+      Tags:
+        - Key: Application
+          Value: InterviewPrep
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  # 6. Amazon API Gateway HTTP API (v2)
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: !Sub "interview-prep-leetcode-webhook-api-${Environment}"
+      ProtocolType: HTTP
+      Description: HTTP API Gateway receiving GitHub webhooks for LeetCode sync pipeline.
+      Tags:
+        Application: InterviewPrep
+        Environment: !Ref Environment
+        ManagedBy: CloudFormation
+
+  # 7. Lambda Proxy Integration for HTTP API
+  HttpApiLambdaIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub "arn:aws:apigateway:${AWS::Region}:lambda:path/2015-03-31/functions/${WebhookReceiverFunction.Arn}/invocations"
+      PayloadFormatVersion: '2.0'
+      Description: Lambda proxy integration for GitHub webhook receiver function.
+
+  # 8. Webhook Route (POST /github/webhook)
+  HttpApiWebhookRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: 'POST /github/webhook'
+      Target: !Sub "integrations/${HttpApiLambdaIntegration}"
+
+  # 9. Default Stage with AutoDeploy enabled
+  HttpApiDefaultStage:
+    Type: AWS::ApiGatewayV2::Stage
+    Properties:
+      ApiId: !Ref HttpApi
+      StageName: '$default'
+      AutoDeploy: true
+      Description: Default stage with auto-deployment enabled for HTTP API.
+      Tags:
+        Application: InterviewPrep
+        Environment: !Ref Environment
+        ManagedBy: CloudFormation
+
+  # 10. Lambda Invoke Permission for API Gateway
+  LambdaApiGatewayPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref WebhookReceiverFunction
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*/github/webhook"
+
+  # 11. Scoped EC2 Worker Managed Policy for SQS queue operations
+  EC2WorkerManagedPolicy:
+    Type: AWS::IAM::ManagedPolicy
+    Properties:
+      ManagedPolicyName: !Sub "${AWS::StackName}-EC2LeetCodeSyncWorkerPolicy"
+      Description: Scoped IAM policy granting EC2 worker permissions to consume from the LeetCode sync SQS queue.
+      Roles: !If [ShouldAttachPolicyToRole, [!Ref EC2RoleName], !Ref "AWS::NoValue"]
+      PolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Sid: ScopedSqsWorkerAccess
+            Effect: Allow
+            Action:
+              - sqs:ReceiveMessage
+              - sqs:DeleteMessage
+              - sqs:ChangeMessageVisibility
+              - sqs:GetQueueAttributes
+              - sqs:GetQueueUrl
+            Resource: !GetAtt SqsQueue.Arn
+
+Outputs:
+  ApiEndpoint:
+    Description: Full webhook URL for GitHub webhook configuration
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com/github/webhook"
+    Export:
+      Name: !Sub "${AWS::StackName}-ApiEndpoint"
+
+  SqsQueueUrl:
+    Description: URL of the primary LeetCode sync SQS queue
+    Value: !Ref SqsQueue
+    Export:
+      Name: !Sub "${AWS::StackName}-SqsQueueUrl"
+
+  SqsQueueArn:
+    Description: ARN of the primary LeetCode sync SQS queue
+    Value: !GetAtt SqsQueue.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-SqsQueueArn"
+
+  SqsDlqArn:
+    Description: ARN of the dead-letter queue (DLQ) for failed sync messages
+    Value: !GetAtt SqsDlq.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-SqsDlqArn"
+
+  WebhookReceiverLambdaArn:
+    Description: ARN of the GitHub webhook receiver Lambda function
+    Value: !GetAtt WebhookReceiverFunction.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-WebhookReceiverLambdaArn"
+
+  EC2WorkerPolicyArn:
+    Description: ARN of the scoped IAM managed policy for EC2 worker SQS access
+    Value: !Ref EC2WorkerManagedPolicy
+    Export:
+      Name: !Sub "${AWS::StackName}-EC2WorkerPolicyArn"
