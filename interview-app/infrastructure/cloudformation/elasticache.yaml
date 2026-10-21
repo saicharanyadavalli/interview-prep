@@ -243,6 +243,12 @@ Resources:
           Value: interview-prep
 
   # ── 8. Standalone IAM Managed Policy for EC2 Least-Privilege Access ──────────
+  # Scoped strictly to the Valkey auth secret ARN (!Ref AuthSecret).
+  # Actions are restricted to secretsmanager:GetSecretValue and secretsmanager:DescribeSecret.
+  # KMS Decryption Guidance:
+  # - Default encryption uses the AWS-managed key (aws/secretsmanager). No additional KMS policy is required.
+  # - If a customer-managed key (CMK) is used, an additional statement granting kms:Decrypt on that CMK ARN is required.
+  # Role Safety: Existing S3 (BackendEC2S3Policy), RDS, and SSM permissions on InterviewPrepEC2Role remain completely intact.
   BackendEC2ElastiCachePolicy:
     Type: AWS::IAM::ManagedPolicy
     Properties:
@@ -259,6 +265,9 @@ Resources:
             Resource: !Ref AuthSecret
 
   # ── 9. Optional Direct Role Attachment ───────────────────────────────────────
+  # Conditionally attaches an inline least-privilege policy to EC2RoleName (default: InterviewPrepEC2Role)
+  # when AttachPolicyToRole is 'true'. Scoped strictly to the exact AuthSecret ARN without wildcards.
+  # Verified on EC2 via: aws iam get-role-policy --role-name InterviewPrepEC2Role --policy-name <StackName>-EC2ElastiCacheInlinePolicy
   EC2RolePolicyAttachment:
     Type: AWS::IAM::Policy
     Condition: ShouldAttachPolicyToRole

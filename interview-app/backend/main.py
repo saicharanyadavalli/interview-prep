@@ -34,6 +34,7 @@ setup_logging()
 logger = get_logger("main")
 
 from limiter import (
+    check_rate_limiter_health,
     close_rate_limiter,
     get_rate_limiter_storage_info,
     init_rate_limiter,
@@ -357,12 +358,16 @@ async def health(response: Response):
     rds_ok = check_rds_health()
     cache_svc = get_cache_service()
     redis_ok = await cache_svc.ping()
+    check_rate_limiter_health()
+    limiter_info = get_rate_limiter_storage_info()
 
     checks = {
         "rds_connected": rds_ok,
         "redis_connected": redis_ok,
         "redis_cache_enabled": cache_svc.is_available,
-        "rate_limiter_distributed": get_rate_limiter_storage_info()["is_distributed"],
+        "rate_limiter_distributed": limiter_info["is_distributed"],
+        "rate_limiter_mode": limiter_info["operational_mode"],
+        "rate_limiter_status": limiter_info["status"],
         "gemini_key_set": bool(os.getenv("GEMINI_API_KEY", "").strip()),
         "cognito_configured": bool(os.getenv("COGNITO_USER_POOL_ID", "").strip()),
     }
@@ -387,13 +392,19 @@ async def cache_diagnostics(request: Request):
     """Diagnostic telemetry endpoint for Redis/Valkey cache performance."""
     cache_svc = get_cache_service()
     is_live = await cache_svc.ping()
+    check_rate_limiter_health()
+    cache_metrics = cache_svc.metrics.to_dict()
+    limiter_info = get_rate_limiter_storage_info()
     return {
+        "available": cache_svc.is_available,
+        "ping_ok": is_live,
+        "metrics": cache_metrics,
         "cache": {
             "available": cache_svc.is_available,
             "ping_ok": is_live,
-            "metrics": cache_svc.metrics.to_dict(),
+            "metrics": cache_metrics,
         },
-        "rate_limiter": get_rate_limiter_storage_info(),
+        "rate_limiter": limiter_info,
     }
 
 

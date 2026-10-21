@@ -20,8 +20,6 @@ from unittest.mock import patch, MagicMock
 import pytest
 from fastapi.testclient import TestClient
 
-os.environ["DISABLE_AUTH"] = "true"
-
 from main import app
 from limiter import limiter
 
@@ -36,12 +34,15 @@ def _reset_rate_limits():
 
 @pytest.fixture(autouse=True)
 def _mock_external_services():
-    """Mock Gemini API and Cloudinary/Supabase calls for instant deterministic tests."""
+    """Mock Gemini API, S3 storage, and RDS calls for instant deterministic tests."""
     def dummy_stream(*args, **kwargs):
         yield "Mocked AI Response"
 
-    with patch("routes.assistant.ask_gemini_stream", side_effect=dummy_stream), \
-         patch("routes.profile.cloudinary.uploader.upload", return_value={"secure_url": "http://example.com/avatar.png"}):
+    with patch.dict(os.environ, {"DISABLE_AUTH": "true"}), \
+         patch("routes.assistant.ask_gemini_stream", side_effect=dummy_stream), \
+         patch("services.s3_storage_service.upload_avatar", return_value="https://cdn.example.com/avatar.png"), \
+         patch("services.rds_client.mutate", return_value=[{"id": "user-1", "email": "test@example.com", "username": "user1", "name": "User 1", "phone": "", "avatar_url": "https://cdn.example.com/avatar.png"}]), \
+         patch("services.rds_client.query", return_value=[{"id": "user-1", "email": "test@example.com", "username": "user1", "name": "User 1", "phone": "", "avatar_url": "https://cdn.example.com/avatar.png"}]):
         yield
 
 
@@ -99,15 +100,15 @@ def test_avatar_upload_rate_limit_triggers_429():
 
 
 def test_session_auth_rate_limit_triggers_429():
-    """Verify login/session creation endpoint caps burst attacks at 5 req/min."""
-    for i in range(5):
+    """Verify login/session creation endpoint caps burst attacks at 10 req/min."""
+    for i in range(10):
         resp = client.post(
             "/auth/session",
             json={"access_token": "fake_token"},
         )
         assert resp.status_code in (200, 401)
 
-    # 6th attempt blocked by rate limiter
+    # 11th attempt blocked by rate limiter
     resp_blocked = client.post(
         "/auth/session",
         json={"access_token": "fake_token"},

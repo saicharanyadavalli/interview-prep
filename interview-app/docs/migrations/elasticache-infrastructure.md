@@ -135,9 +135,9 @@ AWS announced first-class support for **Amazon ElastiCache for Valkey** with sig
    - With an average cached JSON payload of 4 KB (e.g. course lesson or question summary), 420 MB stores over **100,000 cached objects** simultaneously, far exceeding the current requirements of the application.
 2. **Connection Limits**:
    - `cache.t4g.micro` supports up to **65,000 concurrent client connections**.
-   - With 2 Uvicorn workers and connection pool size capped at 10–20 connections per worker, total persistent connections will not exceed **40 connections** (under 0.1% of capacity).
+   - With 2 Uvicorn workers and connection pool size capped at 10-20 connections per worker, total persistent connections will not exceed **40 connections** (under 0.1% of capacity).
 3. **Maintenance Windows**:
-   - Node-based single-instance clusters require a weekly maintenance window (e.g., `sun:04:30-sun:05:30 UTC`). Operating system or engine patches may cause a 15–60 second transient disconnect. The application's graceful cache-aside retry pattern handles this without dropping user requests.
+   - Node-based single-instance clusters require a weekly maintenance window (e.g., `sun:04:30-sun:05:30 UTC`). Operating system or engine patches may cause a 15-60 second transient disconnect. The application's graceful cache-aside retry pattern handles this without dropping user requests.
    - Serverless clusters apply updates seamlessly in the background with **zero application downtime**.
 
 ### 2.5 Recommended Environment Progression
@@ -262,64 +262,70 @@ The FastAPI backend uses SlowAPI (`slowapi==0.1.10`), which wraps the Python `li
 
 ### 5.1 Parameter Reference
 
-| Variable Name | Required | Default Value | Example (Production) | Description |
+| Variable Name | Required | Default Value | Example (Personal / Staging) | Description |
 | :--- | :--- | :--- | :--- | :--- |
 | `CACHE_ENABLED` | No | `false` | `true` | Master feature flag. If `false`, caching layer degrades to direct DB queries. |
 | `CACHE_ENGINE` | No | `valkey` | `valkey` | Caching engine type (`valkey` or `redis`). |
-| `CACHE_HOST` | Conditional | `localhost` | `interview-prep-cache.xxxxxx.aps2.cache.amazonaws.com` | ElastiCache primary or configuration endpoint DNS. |
+| `CACHE_HOST` | Conditional | `localhost` | `master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com` | ElastiCache primary or configuration endpoint DNS. |
 | `CACHE_PORT` | No | `6379` | `6379` | TCP port of the ElastiCache cluster. |
+| `CACHE_URL` | No | `""` | `""` (Empty in EC2 staging/prod) | Direct Redis URL override. MUST be empty (`CACHE_URL=`) on EC2 to unblock dynamic resolution via `CACHE_HOST` + `CACHE_SECRET_NAME`. |
 | `CACHE_DB` | No | `0` | `0` | Redis logical database index (0-15). |
 | `CACHE_TLS_ENABLED` | No | `false` | `true` | Must be `true` for ElastiCache (`rediss://`), `false` for local docker. |
-| `CACHE_AUTH_TOKEN` | Conditional | `""` | `v4lk3yS3cur3T0k3nP4ssw0rd999!` | Redis AUTH token. In production, resolved from Secrets Manager. |
-| `CACHE_SECRET_NAME` | No | `interview-prep/elasticache/auth` | `interview-prep/elasticache/auth-production` | Secrets Manager secret name for dynamic resolution on EC2. |
+| `CACHE_AUTH_TOKEN` | Conditional | `""` | `""` | Redis AUTH token. In production/staging, resolved dynamically from Secrets Manager (leave unset in `.env`). |
+| `CACHE_SECRET_NAME` | No | `interview-prep/elasticache/auth` | `interview-prep/elasticache/auth-personal` | Secrets Manager secret name for dynamic resolution on EC2. |
 | `CACHE_CONNECT_TIMEOUT`| No | `5.0` | `5.0` | Socket connection timeout in seconds. |
 | `CACHE_SOCKET_TIMEOUT` | No | `2.0` | `2.0` | Socket read/write timeout in seconds. |
-| `RATE_LIMIT_STORAGE_URI`| Yes | `memory://` | `rediss://:token@host:6379/0` | Canonical SlowAPI storage URI. |
-| `CACHE_DEFAULT_TTL` | No | `3600` | `3600` | Default cache expiration time in seconds (1 hour). |
-| `CACHE_KEY_PREFIX` | No | `interview_prep:personal:` | `interview_prep:prod:` | Namespace prefix prepended to all Redis keys. |
+| `RATE_LIMIT_STORAGE_URI`| No | `""` | `""` | Canonical SlowAPI storage URI. Leave blank in production/staging to automatically inherit `CACHE_HOST` + Secrets Manager token over TLS (`rediss://`). |
+| `CACHE_KEY_PREFIX` | No | `ip:personal:cache:v1:` | `ip:personal:cache:v1:` | Namespace prefix prepended to all Redis cache keys. |
+| `RATE_LIMIT_KEY_PREFIX` | No | `ip:personal:rl:` | `ip:personal:rl:` | Namespace prefix prepended to all SlowAPI rate limit keys. |
+| `AWS_REGION` | No | `ap-south-2` | `ap-south-2` | AWS Region for Secrets Manager and ElastiCache. |
+| `ENVIRONMENT` | No | `personal` | `personal` | Deployment stage (`personal`, `staging`, `production`). |
 
 ### 5.2 Environment Configurations by Tier
 
 #### Local Development (`backend/.env` or root `.env`)
 ```env
 # In local development, use Docker Compose Redis (no TLS, no auth)
+ENVIRONMENT=local
+AWS_REGION=ap-south-2
 CACHE_ENABLED=true
 CACHE_ENGINE=valkey
-CACHE_HOST=localhost
-CACHE_PORT=6379
-CACHE_DB=0
-CACHE_TLS_ENABLED=false
-CACHE_AUTH_TOKEN=
-RATE_LIMIT_STORAGE_URI=redis://localhost:6379/0
-CACHE_KEY_PREFIX=interview_prep:local:
+CACHE_URL=redis://localhost:6379/0
+RATE_LIMIT_STORAGE_URI=
+CACHE_KEY_PREFIX=ip:local:cache:v1:
+RATE_LIMIT_KEY_PREFIX=ip:local:rl:
 ```
 
 #### Docker Compose Full-Stack (`interview-app/docker-compose.yml`)
 ```yaml
   # Inside backend environment:
-  - CACHE_ENABLED=true
-  - CACHE_ENGINE=valkey
-  - CACHE_HOST=redis
-  - CACHE_PORT=6379
-  - CACHE_TLS_ENABLED=false
-  - RATE_LIMIT_STORAGE_URI=redis://redis:6379/0
-  - CACHE_KEY_PREFIX=interview_prep:docker:
+  - CACHE_ENABLED=${CACHE_ENABLED:-true}
+  - CACHE_HOST=${CACHE_HOST:-}
+  - CACHE_PORT=${CACHE_PORT:-6379}
+  - CACHE_URL=${CACHE_URL-redis://redis:6379/0}
+  - CACHE_TLS_ENABLED=${CACHE_TLS_ENABLED:-false}
+  - CACHE_SECRET_NAME=${CACHE_SECRET_NAME:-}
+  - CACHE_KEY_PREFIX=${CACHE_KEY_PREFIX:-}
+  - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-}
+  - RATE_LIMIT_KEY_PREFIX=${RATE_LIMIT_KEY_PREFIX:-}
+  - AWS_REGION=${AWS_REGION:-ap-south-2}
+  - ENVIRONMENT=${ENVIRONMENT:-production}
 ```
 
-#### EC2 Staging / Production (`interview-app/.env`)
+#### EC2 Personal Staging (`/home/ubuntu/interview-prep/interview-app/.env`)
 ```env
-# AWS EC2 Production Configuration
+# AWS EC2 Personal Staging Configuration (ap-south-2 Hyderabad)
+ENVIRONMENT=personal
+AWS_REGION=ap-south-2
 CACHE_ENABLED=true
-CACHE_ENGINE=valkey
-CACHE_HOST=interview-prep-cache-personal.xxxxxx.0001.aps2.cache.amazonaws.com
+CACHE_URL=
+CACHE_HOST=master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com
 CACHE_PORT=6379
-CACHE_DB=0
 CACHE_TLS_ENABLED=true
 CACHE_SECRET_NAME=interview-prep/elasticache/auth-personal
-CACHE_CONNECT_TIMEOUT=5.0
-CACHE_SOCKET_TIMEOUT=2.0
-RATE_LIMIT_STORAGE_URI=rediss://:{{resolve:secretsmanager:interview-prep/elasticache/auth-personal:SecretString:auth_token}}@interview-prep-cache-personal.xxxxxx.0001.aps2.cache.amazonaws.com:6379/0
-CACHE_KEY_PREFIX=interview_prep:personal:
+RATE_LIMIT_STORAGE_URI=
+CACHE_KEY_PREFIX=ip:personal:cache:v1:
+RATE_LIMIT_KEY_PREFIX=ip:personal:rl:
 ```
 
 ---
@@ -393,7 +399,7 @@ async def cache_get(key: str) -> Optional[Any]:
         client = await get_redis_client()
         if not client:
             return None
-        prefix = os.getenv("CACHE_KEY_PREFIX", "interview_prep:")
+        prefix = os.getenv("CACHE_KEY_PREFIX", "ip:personal:cache:v1:")
         raw = await client.get(f"{prefix}{key}")
         return json.loads(raw) if raw else None
     except Exception as exc:
@@ -407,7 +413,7 @@ async def cache_set(key: str, value: Any, ttl_seconds: int = 3600) -> bool:
         client = await get_redis_client()
         if not client:
             return False
-        prefix = os.getenv("CACHE_KEY_PREFIX", "interview_prep:")
+        prefix = os.getenv("CACHE_KEY_PREFIX", "ip:personal:cache:v1:")
         raw = json.dumps(value, default=str)
         await client.set(f"{prefix}{key}", raw, ex=ttl_seconds)
         return True
@@ -568,6 +574,16 @@ aws cloudformation deploy \
 5. Secret name: `interview-prep/elasticache/auth-personal`.
 6. Leave automatic rotation disabled (can be enabled post-launch). Click **Store**.
 
+#### Validation CLI Command (Secret Metadata Check)
+Verify that the secret was created successfully without exposing the plaintext token value:
+```bash
+aws secretsmanager describe-secret \
+  --secret-id interview-prep/elasticache/auth-personal \
+  --region ap-south-2
+```
+> [!NOTE]
+> `describe-secret` retrieves ARN, secret name, last changed timestamp, and tags. In compliance with security standards, it validates availability and permissions without fetching or logging the sensitive `SecretString` to the terminal or shell history.
+
 ---
 
 ### Step 5: Provision the ElastiCache Cluster via AWS Console
@@ -607,14 +623,14 @@ aws cloudformation deploy \
    - Encryption in-transit: **Check "Enable"**.
    - Redis AUTH default user password: Input the `auth_token` from Step 4.
    - Encryption at-rest: **Check "Enable"**.
-7. Click **Create**. Provisioning completes in 5–8 minutes.
+7. Click **Create**. Provisioning completes in 5-8 minutes.
 
 ---
 
 ### Step 6: Update EC2 IAM Permissions
-Ensure the EC2 instance role (`InterviewPrepEC2Role`) has permissions to read the ElastiCache secret:
+Ensure the EC2 instance role (`InterviewPrepEC2Role`) has least-privilege permissions to resolve the ElastiCache secret:
 1. In the **IAM Console > Roles > InterviewPrepEC2Role**.
-2. Add inline policy `ElastiCacheSecretPolicy`:
+2. Add inline policy `ElastiCacheSecretPolicy` (or review the CloudFormation-attached policy):
    ```json
    {
      "Version": "2012-10-17",
@@ -626,11 +642,52 @@ Ensure the EC2 instance role (`InterviewPrepEC2Role`) has permissions to read th
            "secretsmanager:GetSecretValue",
            "secretsmanager:DescribeSecret"
          ],
-         "Resource": "arn:aws:secretsmanager:ap-south-2:808431466075:secret:interview-prep/elasticache/*"
+         "Resource": "arn:aws:secretsmanager:ap-south-2:808431466075:secret:interview-prep/elasticache/auth-personal*"
        }
      ]
    }
    ```
+
+#### Verification CLI Commands
+Verify policy attachment on `InterviewPrepEC2Role`:
+```bash
+# Verify inline policy attached via CloudFormation (when AttachPolicyToRole=true)
+aws iam get-role-policy \
+  --role-name InterviewPrepEC2Role \
+  --policy-name interview-prep-elasticache-personal-EC2ElastiCacheInlinePolicy \
+  --region ap-south-2
+
+# Or verify manual inline policy if added via AWS Console
+aws iam get-role-policy \
+  --role-name InterviewPrepEC2Role \
+  --policy-name ElastiCacheSecretPolicy \
+  --region ap-south-2
+
+# If attached as a standalone customer-managed policy
+aws iam list-attached-role-policies \
+  --role-name InterviewPrepEC2Role \
+  --region ap-south-2
+```
+
+#### KMS Decryption Guidance
+- **AWS Managed Key (`aws/secretsmanager`)**: Default encryption for Secrets Manager. AWS handles decryption under the service role when accessed by authorized IAM principals. **No additional KMS policy is required.**
+- **Customer Managed Key (CMK)**: If the secret is encrypted with a custom KMS CMK, append an explicit `kms:Decrypt` statement to the IAM policy:
+  ```json
+  {
+    "Sid": "KmsDecryptElastiCacheSecretKey",
+    "Effect": "Allow",
+    "Action": [
+      "kms:Decrypt"
+    ],
+    "Resource": "arn:aws:kms:ap-south-2:808431466075:key/<KMS_KEY_ID>"
+  }
+  ```
+
+#### Role Safety & Blast Radius Verification
+- **S3 Permissions**: `BackendEC2S3Policy` (`s3:PutObject`, `s3:GetObject`, `s3:DeleteObject` on `interview-prep-assets-.../avatars/*`) remains completely intact.
+- **RDS Access**: PostgreSQL database access inside the VPC (`10.0.0.0/16`) on port `5432` remains governed by `interview-prep-rds-sg` and is unimpacted.
+- **SQS Permissions**: `EC2LeetCodeSyncWorkerPolicy` remains completely intact.
+- **SSM Session Manager**: `AmazonSSMManagedInstanceCore` remains active for secure SSH-free shell management.
 
 ---
 
@@ -643,22 +700,54 @@ sudo su - ubuntu
 cd /home/ubuntu/interview-prep/interview-app
 
 # 2. Test TLS socket connectivity using OpenSSL
-openssl s_client -connect <CACHE_HOST>:6379 -starttls redis </dev/null
-# Expected: Verify return code: 0 (ok) and SSL handshake completed
+# For Node-Based Replication Group:
+openssl s_client -connect master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379 -starttls redis </dev/null
 
-# 3. Test Redis AUTH ping using redis-cli (inside container or host)
+# Or for Serverless Valkey:
+openssl s_client -connect interview-prep-cache-personal.xxxxxx.serverless.aps2.cache.amazonaws.com:6379 </dev/null
+# Expected output indicators:
+# - CONNECTED(00000003)
+# - SSL handshake completed
+# - Verify return code: 0 (ok)
+
+# 3. Test Redis resolution & connectivity using backend cache service
+# Dynamically resolves the AUTH token from Secrets Manager via IAM role (zero hardcoded secrets)
 docker compose exec backend python -c "
-import redis, os
-r = redis.Redis(
-    host='<CACHE_HOST>',
-    port=6379,
-    password='<AUTH_TOKEN>',
-    ssl=True,
-    ssl_cert_reqs='required'
-)
-print('Redis PING response:', r.ping())
+import asyncio
+from services.cache_service import get_cache_service, get_redis_connection_config
+
+config = get_redis_connection_config()
+print('Resolved Cache URL source:', config['source'])
+print('Masked Cache URL:', config['masked_url'])
+
+async def test():
+    cs = get_cache_service()
+    await cs.initialize()
+    print('Redis PING response:', await cs.ping())
+    await cs.close()
+
+asyncio.run(test())
 "
-# Expected: Redis PING response: True
+# Expected:
+# Resolved Cache URL source: SECRETS_MANAGER
+# Masked Cache URL: rediss://:****@master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379/0
+# Redis PING response: True
+```
+
+#### Safe Verification Telemetry Probe
+Inspect cache status via the application's telemetry endpoint without exposing secrets:
+```bash
+curl -fsS http://127.0.0.1:8000/health/cache
+```
+Expected output:
+```json
+{
+  "status": "ok",
+  "mode": "distributed",
+  "connected": true,
+  "backend": "redis_async",
+  "storage_target": "rediss://:****@master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379/0"
+}
 ```
 
 ---
@@ -669,17 +758,25 @@ Update `/home/ubuntu/interview-prep/interview-app/.env`:
 ```bash
 nano .env
 ```
-Append the cache configuration:
+Append or update the cache configuration:
 ```env
+ENVIRONMENT=personal
+AWS_REGION=ap-south-2
 CACHE_ENABLED=true
-CACHE_ENGINE=valkey
-CACHE_HOST=<CACHE_ENDPOINT_ADDRESS>
+CACHE_URL=
+CACHE_HOST=master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com
 CACHE_PORT=6379
 CACHE_TLS_ENABLED=true
 CACHE_SECRET_NAME=interview-prep/elasticache/auth-personal
-RATE_LIMIT_STORAGE_URI=rediss://:<AUTH_TOKEN>@<CACHE_ENDPOINT_ADDRESS>:6379/0
-CACHE_KEY_PREFIX=interview_prep:personal:
+RATE_LIMIT_STORAGE_URI=
+CACHE_KEY_PREFIX=ip:personal:cache:v1:
+RATE_LIMIT_KEY_PREFIX=ip:personal:rl:
 ```
+
+> [!IMPORTANT]
+> - `CACHE_URL=` MUST be set to empty (blank) so that `CACHE_URL=${CACHE_URL-redis://redis:6379/0}` expands to empty, unblocking `CACHE_HOST` and Secrets Manager resolution.
+> - `RATE_LIMIT_STORAGE_URI=` MUST be left blank so SlowAPI automatically inherits the resolved TLS `rediss://` URI and Secrets Manager auth token.
+> - No plaintext auth token or password is ever stored on disk or committed to git.
 
 Restart containers cleanly:
 ```bash
@@ -707,14 +804,90 @@ Expected output:
 
 ## 9. Rollback & Disaster Recovery Procedures
 
-1. **Immediate Cache Bypass**:
-   If the cache cluster becomes unresponsive, set `CACHE_ENABLED=false` and `RATE_LIMIT_STORAGE_URI=memory://` in `.env`, then execute `docker compose up -d --no-deps backend`. The backend immediately falls back to direct database execution with zero downtime.
-2. **Data Durability**:
-   ElastiCache stores transient data (rate-limit counters and cached query results). No authoritative user data, progress records, or credentials reside exclusively in the cache. Evacuating or deleting the cache causes zero data loss.
-3. **Clean Teardown**:
-   To delete the cluster via CloudFormation without leaving orphaned resources:
+### 9.1 Immediate Application Rollback (Zero-Downtime Cache Bypass)
+If the Valkey/ElastiCache cluster becomes unreachable, experiences network degradation, or throws connection errors, execute an immediate graceful fallback without taking down the application or PostgreSQL database:
+
+1. **Update EC2 Environment Configuration**:
+   Edit `/home/ubuntu/interview-prep/interview-app/.env`:
    ```bash
-   aws cloudformation delete-stack \
-     --stack-name interview-prep-elasticache-personal \
+   nano /home/ubuntu/interview-prep/interview-app/.env
+   ```
+   Set the cache feature flag to false and force the rate limiter to use in-memory storage:
+   ```env
+   CACHE_ENABLED=false
+   RATE_LIMIT_STORAGE_URI=memory://
+   ```
+
+2. **Reload Backend Container**:
+   Reload the FastAPI backend container cleanly:
+   ```bash
+   docker compose up -d --no-deps backend
+   ```
+
+3. **Verify Degraded Operation**:
+   Confirm that the application responds normally:
+   ```bash
+   curl -fsS http://127.0.0.1/api/backend/health
+   curl -fsS http://127.0.0.1/api/backend/health/cache
+   ```
+   - SlowAPI automatically uses in-memory tracking per Uvicorn worker.
+   - Cache-aside queries bypass Redis and read directly from Amazon RDS PostgreSQL.
+   - Zero HTTP 500 errors or dropped user requests occur during this fallback.
+
+### 9.2 Network & Infrastructure Diagnostic Checklist
+Before taking destructive action or tearing down infrastructure, execute the following triage steps from the EC2 host:
+
+1. **Verify Security Group Ingress**:
+   Ensure `interview-prep-cache-sg` has an ingress rule permitting TCP `6379` from `interview-prep-app-sg`:
+   ```bash
+   aws ec2 describe-security-groups \
+     --filters "Name=group-name,Values=interview-prep-cache-sg-personal" \
+     --region ap-south-2 \
+     --query "SecurityGroups[0].IpPermissions"
+   ```
+   Confirm `UserIdGroupPairs` contains the GroupId of `interview-prep-app-sg`.
+
+2. **Verify VPC DNS Resolution**:
+   Ensure that the EC2 instance resolves the ElastiCache endpoint DNS:
+   ```bash
+   nslookup master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com
+   ```
+   If resolution fails, verify that `enableDnsHostnames` and `enableDnsSupport` are enabled on `interview-prep-vpc`.
+
+3. **Verify TLS Handshake**:
+   Isolate network routing from application authentication:
+   ```bash
+   openssl s_client -connect master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379 -starttls redis </dev/null
+   ```
+   If the TLS handshake completes (`Verify return code: 0 (ok)`), the network path is healthy and any failure is related to Redis AUTH or application configuration.
+
+4. **Verify IAM Secrets Manager Access**:
+   Ensure the EC2 instance role can access secret metadata:
+   ```bash
+   aws secretsmanager describe-secret \
+     --secret-id interview-prep/elasticache/auth-personal \
      --region ap-south-2
    ```
+
+### 9.3 Data Durability Invariant
+ElastiCache stores transient data:
+- SlowAPI rate-limiting token-bucket counters.
+- Cache-aside query results (with automatic DB fallback).
+
+No user profile data, LeetCode submissions, authentication sessions, or system design diagrams reside exclusively in the cache. Evacuating, restarting, or deleting the cache causes **zero data loss**.
+
+### 9.4 Clean Infrastructure Teardown
+If rolling back the CloudFormation deployment completely:
+```bash
+aws cloudformation delete-stack \
+  --stack-name interview-prep-elasticache-personal \
+  --region ap-south-2
+```
+To monitor stack deletion progress:
+```bash
+aws cloudformation describe-stack-events \
+  --stack-name interview-prep-elasticache-personal \
+  --region ap-south-2 \
+  --query "StackEvents[?ResourceStatus=='DELETE_IN_PROGRESS' || ResourceStatus=='DELETE_COMPLETE']" \
+  --max-items 10
+```

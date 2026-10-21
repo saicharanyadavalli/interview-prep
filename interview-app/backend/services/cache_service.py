@@ -35,18 +35,21 @@ TTL_SHORT = 300                # 5 minutes: Semi-dynamic lists
 
 
 def mask_redis_url(url: str) -> str:
-    """Mask password credentials in Redis connection strings for safe logging."""
+    """Mask password credentials in Redis connection strings or log messages for safe logging."""
     if not url:
         return ""
     try:
         parsed = urlparse(url)
         if parsed.password:
             user = parsed.username or ""
-            netloc = f"{user}:****@{parsed.hostname}:{parsed.port or 6379}"
+            port_part = f":{parsed.port}" if parsed.port else ""
+            host_part = parsed.hostname or ""
+            netloc = f"{user}:****@{host_part}{port_part}"
             return parsed._replace(netloc=netloc).geturl()
     except Exception:
         pass
-    return re.sub(r"(://[^:]+:)([^@]+)(@)", r"\1****\3", url)
+    masked = re.sub(r"(://[^:]*:)([^@]+)(@)", r"\g<1>****\g<3>", url)
+    return re.sub(r"(:\s*)([^@\s/:]{4,})(@[a-zA-Z0-9.-]+)", r"\g<1>****\g<3>", masked)
 
 
 class SafeCacheJSONEncoder(json.JSONEncoder):
@@ -82,16 +85,34 @@ def deserialize_data(payload: Union[str, bytes]) -> Any:
     return json.loads(payload)
 
 
-def resolve_secret_auth_token(secret_id: str, region: Optional[str] = None) -> Optional[dict[str, Any]]:
-    """Retrieve secret string or JSON payload from AWS Secrets Manager safely.
+# In-process cache for resolved Secrets Manager payloads: (secret_id, region) -> (payload, expiry_timestamp)
+_SECRET_CACHE: dict[tuple[str, str], tuple[dict[str, Any], float]] = {}
+DEFAULT_SECRET_CACHE_TTL: float = 300.0  # 5 minutes TTL
+
+
+def clear_secret_cache() -> None:
+    """Clear the in-process cache of Secrets Manager secrets (for tests & credential rotation)."""
+    _SECRET_CACHE.clear()
+
+
+def resolve_secret_auth_token(
+    secret_id: str,
+    region: Optional[str] = None,
+    force_refresh: bool = False,
+    cache_ttl: Optional[float] = None,
+) -> Optional[dict[str, Any]]:
+    """Retrieve secret string or JSON payload from AWS Secrets Manager safely with in-process caching.
+
+    Caches resolved secrets in-process with a configurable TTL (default 300s) to prevent
+    redundant Secrets Manager API calls during cache operations and rate-limit checks.
 
     Handles both JSON documents (e.g. {"auth_token": "..."}) and plain-text token strings.
     Fails safely without raising exceptions or logging sensitive token values.
     """
-    if not secret_id or not secret_id.strip():
+    if not secret_id or not str(secret_id).strip():
         return None
 
-    secret_clean = secret_id.strip()
+    secret_clean = str(secret_id).strip()
     arn_region = None
     if secret_clean.startswith("arn:aws:secretsmanager:"):
         arn_parts = secret_clean.split(":")
@@ -100,11 +121,26 @@ def resolve_secret_auth_token(secret_id: str, region: Optional[str] = None) -> O
 
     effective_region = (
         region
+        or arn_region
         or os.getenv("AWS_REGION")
         or os.getenv("AWS_DEFAULT_REGION")
-        or arn_region
         or "ap-south-2"
     ).strip()
+
+    cache_key = (secret_clean, effective_region)
+    now = time.monotonic()
+    try:
+        ttl = cache_ttl if cache_ttl is not None else float(
+            os.getenv("CACHE_SECRET_CACHE_TTL", str(DEFAULT_SECRET_CACHE_TTL))
+        )
+    except (ValueError, TypeError):
+        ttl = DEFAULT_SECRET_CACHE_TTL
+
+    # 1. Return in-process cached payload if still valid and refresh not forced
+    if not force_refresh and cache_key in _SECRET_CACHE:
+        cached_val, expiry = _SECRET_CACHE[cache_key]
+        if now < expiry:
+            return cached_val
 
     try:
         import boto3
@@ -113,22 +149,42 @@ def resolve_secret_auth_token(secret_id: str, region: Optional[str] = None) -> O
         response = client.get_secret_value(SecretId=secret_clean)
         secret_str = response.get("SecretString")
         if not secret_str:
-            return None
+            secret_binary = response.get("SecretBinary")
+            if secret_binary:
+                if isinstance(secret_binary, bytes):
+                    secret_str = secret_binary.decode("utf-8")
+                else:
+                    secret_str = str(secret_binary)
+            else:
+                return None
 
+        result: dict[str, Any]
         try:
             parsed = json.loads(secret_str)
             if isinstance(parsed, dict):
-                return parsed
-            return {"auth_token": str(parsed)}
+                result = parsed
+            else:
+                result = {"auth_token": str(parsed)}
         except json.JSONDecodeError:
-            return {"auth_token": secret_str.strip()}
+            result = {"auth_token": secret_str.strip()}
+
+        _SECRET_CACHE[cache_key] = (result, now + ttl)
+        return result
     except Exception as exc:
         logger.warning(
             "Could not resolve Redis secret '%s' from Secrets Manager in '%s': %s",
             secret_clean,
             effective_region,
-            type(exc).__name__,
+            mask_redis_url(str(exc)),
         )
+        # Resilient fallback: If cached value exists (even if expired), use it during transient outages
+        if cache_key in _SECRET_CACHE:
+            cached_val, _ = _SECRET_CACHE[cache_key]
+            logger.info(
+                "Falling back to in-process cached secret for '%s' following Secrets Manager lookup failure",
+                secret_clean,
+            )
+            return cached_val
         return None
 
 
@@ -140,8 +196,8 @@ def get_redis_connection_config() -> dict[str, Any]:
     2. Host-based resolution (CACHE_HOST / REDIS_HOST):
        - If CACHE_SECRET_NAME / REDIS_SECRET_ARN / REDIS_SECRET_NAME is provided, resolves auth_token from Secrets Manager.
        - Otherwise falls back to environment variable CACHE_AUTH_TOKEN / REDIS_PASSWORD.
-       - Resolves TLS: explicit CACHE_TLS_ENABLED / REDIS_SSL, or auto-detects true for AWS ElastiCache endpoints (*.cache.amazonaws.com).
-       - Resolves DB: CACHE_DB (defaults to '0' for Valkey/ElastiCache Serverless & Cluster compatibility).
+       - Resolves TLS: Enforces SSL/TLS for AWS ElastiCache / Valkey endpoints (*.cache.amazonaws.com) or explicit CACHE_TLS_ENABLED / REDIS_SSL.
+       - Resolves DB: CACHE_DB (enforces '0' for Valkey/ElastiCache endpoints for cluster compatibility).
     3. Standalone Secrets Manager resolution (when host is packaged inside the secret document).
     4. Localhost fallback (redis://localhost:6379/0).
     """
@@ -149,6 +205,16 @@ def get_redis_connection_config() -> dict[str, Any]:
     direct_url = os.getenv("CACHE_URL") or os.getenv("REDIS_URL") or os.getenv("CACHE_REDIS_URL")
     if direct_url and direct_url.strip():
         url = direct_url.strip()
+        # Enforce rediss:// and db 0 for AWS ElastiCache / Valkey endpoints
+        if ".cache.amazonaws.com" in url.lower():
+            if url.lower().startswith("redis://"):
+                url = "rediss://" + url[len("redis://"):]
+            try:
+                parsed = urlparse(url)
+                if parsed.path != "/0":
+                    url = parsed._replace(path="/0").geturl()
+            except Exception:
+                pass
         return {
             "connection_url": url,
             "source": "DIRECT_URL",
@@ -165,8 +231,31 @@ def get_redis_connection_config() -> dict[str, Any]:
     host = os.getenv("CACHE_HOST") or os.getenv("REDIS_HOST")
     if host and host.strip():
         host_clean = host.strip()
+        if "://" in host_clean:
+            host_clean = host_clean.split("://", 1)[1]
+        host_clean = host_clean.rstrip("/")
+
         port = int(os.getenv("CACHE_PORT", os.getenv("REDIS_PORT", "6379")))
-        db = os.getenv("CACHE_DB", "0").strip()
+
+        # If host string includes port (e.g. "endpoint.cache.amazonaws.com:6379"), extract cleanly
+        if ":" in host_clean:
+            h_part, p_part = host_clean.rsplit(":", 1)
+            if p_part.isdigit():
+                host_clean = h_part
+                port = int(p_part)
+
+        is_aws_cache = ".cache.amazonaws.com" in host_clean.lower()
+        if is_aws_cache:
+            # Valkey and ElastiCache Cluster require logical DB 0
+            db = "0"
+            ssl_enabled = True
+        else:
+            db = os.getenv("CACHE_DB", "0").strip()
+            ssl_env = os.getenv("CACHE_TLS_ENABLED") or os.getenv("REDIS_SSL")
+            if ssl_env is not None:
+                ssl_enabled = ssl_env.lower() in ("true", "1", "yes")
+            else:
+                ssl_enabled = False
 
         # Token resolution: Secrets Manager prioritized, followed by discrete env var
         password = ""
@@ -174,23 +263,22 @@ def get_redis_connection_config() -> dict[str, Any]:
         if secret_name:
             secret_data = resolve_secret_auth_token(secret_name)
             if secret_data:
-                password = (
+                raw_pwd = (
                     secret_data.get("auth_token")
                     or secret_data.get("password")
                     or secret_data.get("token")
                     or ""
-                ).strip()
+                )
+                password = str(raw_pwd).strip()
                 source = "SECRETS_MANAGER"
+                if "port" in secret_data and not (os.getenv("CACHE_PORT") or os.getenv("REDIS_PORT")):
+                    try:
+                        port = int(secret_data["port"])
+                    except (ValueError, TypeError):
+                        pass
 
         if not password:
             password = (os.getenv("CACHE_AUTH_TOKEN") or os.getenv("REDIS_PASSWORD") or "").strip()
-
-        # Auto-detect TLS for AWS ElastiCache endpoints or explicit flag
-        ssl_env = os.getenv("CACHE_TLS_ENABLED") or os.getenv("REDIS_SSL")
-        if ssl_env is not None:
-            ssl_enabled = ssl_env.lower() in ("true", "1", "yes")
-        else:
-            ssl_enabled = ".cache.amazonaws.com" in host_clean.lower()
 
         scheme = "rediss" if ssl_enabled else "redis"
         auth = f":{quote_plus(password)}@" if password else ""
@@ -205,18 +293,40 @@ def get_redis_connection_config() -> dict[str, Any]:
     if secret_name:
         secret_data = resolve_secret_auth_token(secret_name)
         if secret_data:
-            sec_host = secret_data.get("host") or secret_data.get("engine_endpoint")
+            sec_host = (
+                secret_data.get("host")
+                or secret_data.get("engine_endpoint")
+                or secret_data.get("hostname")
+                or secret_data.get("endpoint")
+            )
             if sec_host:
+                sec_host = str(sec_host).strip()
+                if "://" in sec_host:
+                    sec_host = sec_host.split("://", 1)[1]
+                sec_host = sec_host.rstrip("/")
                 sec_port = int(secret_data.get("port", 6379))
-                sec_password = (
+                if ":" in sec_host:
+                    h_part, p_part = sec_host.rsplit(":", 1)
+                    if p_part.isdigit():
+                        sec_host = h_part
+                        sec_port = int(p_part)
+                raw_pwd = (
                     secret_data.get("auth_token")
                     or secret_data.get("password")
+                    or secret_data.get("token")
                     or ""
-                ).strip()
-                ssl = str(secret_data.get("ssl", "true")).lower() in ("true", "1", "yes")
+                )
+                sec_password = str(raw_pwd).strip()
+                is_aws_cache = ".cache.amazonaws.com" in sec_host.lower()
+                if is_aws_cache:
+                    ssl = True
+                    db = "0"
+                else:
+                    ssl = str(secret_data.get("ssl", "true")).lower() in ("true", "1", "yes")
+                    db = str(secret_data.get("db", "0")).strip()
                 scheme = "rediss" if ssl else "redis"
                 auth = f":{quote_plus(sec_password)}@" if sec_password else ""
-                url = f"{scheme}://{auth}{sec_host}:{sec_port}/0"
+                url = f"{scheme}://{auth}{sec_host}:{sec_port}/{db}"
                 return {
                     "connection_url": url,
                     "source": "SECRETS_MANAGER",
@@ -286,6 +396,7 @@ class CacheService:
         self._enabled: bool = os.getenv("CACHE_ENABLED", "true").lower() in ("true", "1", "yes")
         self._connect_timeout: float = float(os.getenv("CACHE_CONNECT_TIMEOUT", os.getenv("REDIS_CONNECT_TIMEOUT", "2.0")))
         self._socket_timeout: float = float(os.getenv("CACHE_SOCKET_TIMEOUT", os.getenv("REDIS_SOCKET_TIMEOUT", "2.0")))
+        self._health_check_interval: int = int(os.getenv("CACHE_HEALTH_CHECK_INTERVAL", "30"))
         self._max_connections: int = int(os.getenv("CACHE_POOL_MAX", os.getenv("REDIS_POOL_MAX", "20")))
 
     @classmethod
@@ -298,6 +409,7 @@ class CacheService:
     def reset_instance(cls) -> None:
         """Reset singleton (for test environments)."""
         cls._instance = None
+        clear_secret_cache()
 
     @property
     def is_available(self) -> bool:
@@ -361,7 +473,9 @@ class CacheService:
                 max_connections=self._max_connections,
                 socket_connect_timeout=self._connect_timeout,
                 socket_timeout=self._socket_timeout,
-                health_check_interval=30,
+                health_check_interval=self._health_check_interval,
+                socket_keepalive=True,
+                retry_on_timeout=True,
                 decode_responses=False,
             )
             self._client = aioredis.Redis(connection_pool=self._pool)
@@ -380,10 +494,12 @@ class CacheService:
             self._metrics.record_error()
             # Clean up immediately on error so failed state does not prevent later retry
             await self._cleanup()
+            masked_target = config.get("masked_url", "unknown") if "config" in locals() else "unresolved"
             logger.warning(
-                "Failed to connect to Redis during startup: %s (%s). Platform will operate in fail-open mode.",
+                "Failed to connect to Redis/Valkey (%s) during startup: %s (%s). Platform will operate in fail-open mode.",
+                masked_target,
                 type(exc).__name__,
-                exc,
+                mask_redis_url(str(exc)),
             )
 
     async def close(self) -> None:
@@ -411,11 +527,11 @@ class CacheService:
             return data
         except (RedisError, TimeoutError, ConnectionError) as exc:
             self._metrics.record_error()
-            logger.warning("Redis GET failed for key '%s': %s (failing open)", formatted_key, exc)
+            logger.warning("Redis GET failed for key '%s': %s (failing open)", formatted_key, mask_redis_url(str(exc)))
             return None
         except Exception as exc:
             self._metrics.record_error()
-            logger.warning("Unexpected error during Redis GET '%s': %s", formatted_key, exc)
+            logger.warning("Unexpected error during Redis GET '%s': %s", formatted_key, mask_redis_url(str(exc)))
             return None
 
     async def set(self, key: str, value: Any, ttl: Optional[int] = None) -> bool:
@@ -431,11 +547,11 @@ class CacheService:
             return True
         except (RedisError, TimeoutError, ConnectionError) as exc:
             self._metrics.record_error()
-            logger.warning("Redis SET failed for key '%s': %s (skipping cache write)", formatted_key, exc)
+            logger.warning("Redis SET failed for key '%s': %s (skipping cache write)", formatted_key, mask_redis_url(str(exc)))
             return False
         except Exception as exc:
             self._metrics.record_error()
-            logger.warning("Serialization/Redis error during SET '%s': %s", formatted_key, exc)
+            logger.warning("Serialization/Redis error during SET '%s': %s", formatted_key, mask_redis_url(str(exc)))
             return False
 
     async def invalidate(self, key: str) -> bool:
@@ -449,7 +565,7 @@ class CacheService:
             return True
         except Exception as exc:
             self._metrics.record_error()
-            logger.warning("Redis UNLINK failed for key '%s': %s", formatted_key, exc)
+            logger.warning("Redis UNLINK failed for key '%s': %s", formatted_key, mask_redis_url(str(exc)))
             return False
 
     async def invalidate_pattern(self, pattern: str) -> int:
@@ -476,7 +592,7 @@ class CacheService:
             return deleted_count
         except Exception as exc:
             self._metrics.record_error()
-            logger.warning("Redis SCAN/UNLINK failed for pattern '%s': %s", formatted_pattern, exc)
+            logger.warning("Redis SCAN/UNLINK failed for pattern '%s': %s", formatted_pattern, mask_redis_url(str(exc)))
             return deleted_count
 
     async def ping(self) -> bool:

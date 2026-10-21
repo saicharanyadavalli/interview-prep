@@ -5,8 +5,6 @@
 # This file is retained only for isolated backend development.
 # ============================================
 
-version: "3.9"
-
 services:
   # ==========================================
   # In-Memory Cache & Distributed Rate Limiting
@@ -66,13 +64,22 @@ services:
       - RDS_POOL_MIN=${RDS_POOL_MIN:-2}
       - RDS_POOL_MAX=${RDS_POOL_MAX:-10}
       - DATABASE_URL=${DATABASE_URL:-}
+      - ENVIRONMENT=${ENVIRONMENT:-local}
       # AWS S3 & CloudFront Static Asset Delivery
       - S3_ASSETS_BUCKET=${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}
       - S3_ASSETS_REGION=${S3_ASSETS_REGION:-ap-south-2}
       - ASSET_BASE_URL=${ASSET_BASE_URL:-}
-      # In-Memory Caching & Distributed Rate Limiting
+      # In-Memory Caching & Distributed Rate Limiting (Amazon ElastiCache / Local Redis)
+      - CACHE_ENABLED=${CACHE_ENABLED:-true}
+      - CACHE_HOST=${CACHE_HOST:-}
+      - CACHE_PORT=${CACHE_PORT:-6379}
       - CACHE_URL=${CACHE_URL-redis://redis:6379/0}
+      - CACHE_TLS_ENABLED=${CACHE_TLS_ENABLED:-false}
+      - CACHE_SECRET_NAME=${CACHE_SECRET_NAME:-}
+      - CACHE_DB=${CACHE_DB:-0}
+      - CACHE_KEY_PREFIX=${CACHE_KEY_PREFIX:-}
       - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-}
+      - RATE_LIMIT_KEY_PREFIX=${RATE_LIMIT_KEY_PREFIX:-}
     depends_on:
       redis:
         condition: service_healthy
