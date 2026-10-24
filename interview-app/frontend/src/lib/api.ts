@@ -156,7 +156,7 @@ export const API = {
         }
       } catch (_) {}
 
-      const response = await fetch(url, { ...options, headers });
+      const response = await fetch(url, { ...options, headers, credentials: "include" });
 
       if (response.status === 401) {
         // Return null gracefully - don't redirect to /login as this causes an
@@ -241,6 +241,7 @@ export const API = {
     const response = await fetch(url, {
       method: "POST",
       headers,
+      credentials: "include",
       body: JSON.stringify({
         interview_question: interviewQuestion,
         user_doubt: userDoubt,

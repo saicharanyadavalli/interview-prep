@@ -367,7 +367,10 @@ def _ensure_user_in_rds(user: dict) -> None:
         ) from exc
 
 
-def get_current_user(authorization: str | None = Header(None)) -> dict:
+def get_current_user(
+    request: Request = None,
+    authorization: str | None = Header(None),
+) -> dict:
     """Extract and verify the Bearer token from the Authorization header.
 
     Validates against Amazon Cognito User Pool via RS256 JWKS verification,
@@ -393,12 +396,14 @@ def get_current_user(authorization: str | None = Header(None)) -> dict:
         _ensure_user_in_rds(mock_user)
         return mock_user
 
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Invalid authorization header.")
+    token = None
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.removeprefix("Bearer ").strip()
+    elif request and hasattr(request, "cookies") and request.cookies.get("cognito_access_token"):
+        token = request.cookies.get("cognito_access_token").strip()
 
-    token = authorization.removeprefix("Bearer ").strip()
     if not token:
-        raise HTTPException(status_code=401, detail="Invalid authorization header.")
+        raise HTTPException(status_code=401, detail="Invalid authorization header or missing session cookie.")
 
     try:
         claims = verify_cognito_token(token)
@@ -422,12 +427,17 @@ def get_current_user(authorization: str | None = Header(None)) -> dict:
         ) from exc
 
 
-def get_optional_current_user(authorization: str | None = Header(None)) -> dict | None:
+def get_optional_current_user(
+    request: Request = None,
+    authorization: str | None = Header(None),
+) -> dict | None:
     """Return current user when Authorization header is valid, else None."""
-    if not authorization or not authorization.startswith("Bearer "):
-        return None
+    token = None
+    if authorization and authorization.startswith("Bearer "):
+        token = authorization.removeprefix("Bearer ").strip()
+    elif request and hasattr(request, "cookies") and request.cookies.get("cognito_access_token"):
+        token = request.cookies.get("cognito_access_token").strip()
 
-    token = authorization.removeprefix("Bearer ").strip()
     if not token:
         return None
 
