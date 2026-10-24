@@ -315,8 +315,8 @@ def test_logger_redacts_bearer_tokens_and_aws_keys():
     assert "AKIAIOSFODNN7EXAMPLE" not in redact_string(raw_aws)
     assert "AKIA****" in redact_string(raw_aws)
 
-    raw_gemini = "Gemini API initialized with AIzaSyCiK_pWDZozfTM1tn02kPExfCjwbSzVjEI"
-    assert "AIzaSyCiK_pWDZozfTM1tn02kPExfCjwbSzVjEI" not in redact_string(raw_gemini)
+    raw_gemini = "Gemini API initialized with AIzaSyFakeTestDummyKeyPatternForSanitiz"
+    assert "AIzaSyFakeTestDummyKeyPatternForSanitiz" not in redact_string(raw_gemini)
     assert "AIza****" in redact_string(raw_gemini)
 
 

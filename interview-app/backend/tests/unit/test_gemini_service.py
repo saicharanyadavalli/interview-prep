@@ -96,3 +96,80 @@ def test_extract_text_from_candidate_parts_fallback():
         candidates = [FakeCandidate()]
 
     assert _extract_text(FakeResponse()) == "Chunk part 1"
+
+
+
+# ── Rate Limit Fallback Tests (Offline Mocked) ────────────────────────────────
+
+def test_ask_gemini_falls_back_on_rate_limit(monkeypatch):
+    """Verify ask_gemini automatically falls back to gemini-3.1-flash-lite on 429 / ResourceExhausted."""
+    from unittest.mock import MagicMock
+    from services.gemini_service import ask_gemini
+    import google.generativeai as genai
+
+    monkeypatch.setenv("GEMINI_API_KEY", "mock-test-key")
+    monkeypatch.setenv("GEMINI_PRIMARY_MODEL", "gemini-3.5-flash-lite")
+    monkeypatch.setenv("GEMINI_FALLBACK_MODEL", "gemini-3.1-flash-lite")
+
+    models_called = []
+
+    def mock_generative_model(model_name):
+        models_called.append(model_name)
+        mock_instance = MagicMock()
+        if model_name == "gemini-3.5-flash-lite":
+            # Simulate 429 / ResourceExhausted exception
+            exc = Exception("429 ResourceExhausted: Quota exceeded for gemini-3.5-flash-lite")
+            mock_instance.generate_content.side_effect = exc
+        else:
+            # Fallback model succeeds
+            resp = MagicMock()
+            resp.text = "Fallback model response successful"
+            mock_instance.generate_content.return_value = resp
+        return mock_instance
+
+    monkeypatch.setattr(genai, "GenerativeModel", mock_generative_model)
+
+    result = ask_gemini(
+        interview_question="Two Sum",
+        user_doubt="How to use hashmap?",
+    )
+
+    assert models_called == ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"]
+    assert result == "Fallback model response successful"
+
+
+def test_ask_gemini_stream_falls_back_on_rate_limit(monkeypatch):
+    """Verify ask_gemini_stream automatically falls back to gemini-3.1-flash-lite on 429."""
+    from unittest.mock import MagicMock
+    from services.gemini_service import ask_gemini_stream
+    import google.generativeai as genai
+
+    monkeypatch.setenv("GEMINI_API_KEY", "mock-test-key")
+    monkeypatch.setenv("GEMINI_PRIMARY_MODEL", "gemini-3.5-flash-lite")
+    monkeypatch.setenv("GEMINI_FALLBACK_MODEL", "gemini-3.1-flash-lite")
+
+    models_called = []
+
+    def mock_generative_model(model_name):
+        models_called.append(model_name)
+        mock_instance = MagicMock()
+        if model_name == "gemini-3.5-flash-lite":
+            exc = Exception("429 ResourceExhausted: Quota exceeded")
+            mock_instance.generate_content.side_effect = exc
+        else:
+            chunk1 = MagicMock()
+            chunk1.text = "Streaming "
+            chunk2 = MagicMock()
+            chunk2.text = "from fallback"
+            mock_instance.generate_content.return_value = [chunk1, chunk2]
+        return mock_instance
+
+    monkeypatch.setattr(genai, "GenerativeModel", mock_generative_model)
+
+    chunks = list(ask_gemini_stream(
+        interview_question="Two Sum",
+        user_doubt="How to use hashmap?",
+    ))
+
+    assert models_called == ["gemini-3.5-flash-lite", "gemini-3.1-flash-lite"]
+    assert "".join(chunks) == "Streaming from fallback"

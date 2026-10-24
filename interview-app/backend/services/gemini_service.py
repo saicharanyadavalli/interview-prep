@@ -6,14 +6,18 @@ in the original prototype.
 
 from __future__ import annotations
 
+import logging
 import os
 import re
 from typing import Optional, Generator
 
 import google.generativeai as genai
 
+logger = logging.getLogger(__name__)
 
-MODEL_NAME = "gemini-2.5-flash"
+PRIMARY_MODEL_NAME = os.getenv("GEMINI_PRIMARY_MODEL", "gemini-3.5-flash-lite")
+FALLBACK_MODEL_NAME = os.getenv("GEMINI_FALLBACK_MODEL", "gemini-3.1-flash-lite")
+MODEL_NAME = PRIMARY_MODEL_NAME
 
 # ---------------------------------------------------------------------------
 # Scope-checking keyword sets (from the original prototype)
@@ -244,43 +248,118 @@ def _extract_text(response: object) -> str:
     return "I could not generate a response. Please try again."
 
 
+def _is_rate_limit_error(exc: Exception) -> bool:
+    """Check if exception represents a rate limit / 429 / ResourceExhausted condition."""
+    exc_type = type(exc).__name__
+    if exc_type in ('ResourceExhausted', 'TooManyRequests', 'RateLimitExceeded'):
+        return True
+
+    status_code = getattr(exc, 'status_code', None) or getattr(exc, 'code', None)
+    if status_code in (429, '429', 'RESOURCE_EXHAUSTED'):
+        return True
+
+    msg = str(exc).lower()
+    return '429' in msg or 'resource_exhausted' in msg or 'resourceexhausted' in msg or 'rate limit' in msg or 'quota' in msg
+
+
 def ask_gemini(
     interview_question: str,
     user_doubt: str,
     conversation_history: list[dict[str, str]] | None = None,
 ) -> str:
-    """Send a prompt to Gemini and return the plain-text answer."""
+    """Send a prompt to Gemini and return the plain-text answer.
+
+    Uses PRIMARY_MODEL_NAME (gemini-3.5-flash-lite). If rate limit (429 / ResourceExhausted)
+    is encountered, automatically falls back to FALLBACK_MODEL_NAME (gemini-3.1-flash-lite).
+    """
     api_key = _get_api_key()
     genai.configure(api_key=api_key)
 
     prompt = build_prompt(interview_question, user_doubt, conversation_history)
 
-    model = genai.GenerativeModel(MODEL_NAME)
-    response = model.generate_content(prompt)
-    return _extract_text(response)
+    primary_model = os.getenv('GEMINI_PRIMARY_MODEL', PRIMARY_MODEL_NAME)
+    fallback_model = os.getenv('GEMINI_FALLBACK_MODEL', FALLBACK_MODEL_NAME)
+
+    try:
+        model = genai.GenerativeModel(primary_model)
+        response = model.generate_content(prompt)
+        return _extract_text(response)
+    except Exception as exc:
+        if _is_rate_limit_error(exc):
+            logger.warning(
+                'Gemini primary model %s rate limit exceeded (%s). Falling back to %s',
+                primary_model,
+                exc,
+                fallback_model,
+            )
+            model_fallback = genai.GenerativeModel(fallback_model)
+            response = model_fallback.generate_content(prompt)
+            return _extract_text(response)
+        raise
+
 
 def ask_gemini_stream(
     interview_question: str,
     user_doubt: str,
     conversation_history: list[dict[str, str]] | None = None,
 ) -> Generator[str, None, None]:
-    """Send a prompt to Gemini and yield chunks for SSE."""
+    """Send a prompt to Gemini and yield chunks for SSE.
+
+    Uses PRIMARY_MODEL_NAME (gemini-3.5-flash-lite). If rate limit is encountered
+    before streaming starts, automatically falls back to FALLBACK_MODEL_NAME (gemini-3.1-flash-lite).
+    """
     api_key = _get_api_key()
     genai.configure(api_key=api_key)
 
     prompt = build_prompt(interview_question, user_doubt, conversation_history)
 
-    model = genai.GenerativeModel(MODEL_NAME)
+    primary_model = os.getenv('GEMINI_PRIMARY_MODEL', PRIMARY_MODEL_NAME)
+    fallback_model = os.getenv('GEMINI_FALLBACK_MODEL', FALLBACK_MODEL_NAME)
+
+    target_model = primary_model
     try:
+        model = genai.GenerativeModel(target_model)
         response = model.generate_content(prompt, stream=True)
-        for chunk in response:
-            text_value: Optional[str] = getattr(chunk, "text", None)
+        iterator = iter(response)
+        first_chunk = next(iterator, None)
+        if first_chunk is not None:
+            text_value = getattr(first_chunk, 'text', None)
+            if text_value:
+                yield text_value
+            else:
+                text_ext = _extract_text(first_chunk)
+                if text_ext and text_ext != 'I could not generate a response. Please try again.':
+                    yield text_ext
+
+        for chunk in iterator:
+            text_value = getattr(chunk, 'text', None)
             if text_value:
                 yield text_value
             else:
                 text_ext = _extract_text(chunk)
-                if text_ext and text_ext != "I could not generate a response. Please try again.":
+                if text_ext and text_ext != 'I could not generate a response. Please try again.':
                     yield text_ext
     except Exception as exc:
-        yield f"\\n\\n[Error: {str(exc)}]"
-
+        if _is_rate_limit_error(exc) and target_model == primary_model:
+            logger.warning(
+                'Gemini streaming primary model %s rate limited (%s). Falling back to %s',
+                primary_model,
+                exc,
+                fallback_model,
+            )
+            try:
+                model_fallback = genai.GenerativeModel(fallback_model)
+                response_fallback = model_fallback.generate_content(prompt, stream=True)
+                for chunk in response_fallback:
+                    text_value = getattr(chunk, 'text', None)
+                    if text_value:
+                        yield text_value
+                    else:
+                        text_ext = _extract_text(chunk)
+                        if text_ext and text_ext != 'I could not generate a response. Please try again.':
+                            yield text_ext
+                return
+            except Exception as fb_exc:
+                yield f"\n\n[Error: {str(fb_exc)}]"
+                return
+        yield f"\n\n[Error: {str(exc)}]"

@@ -46,6 +46,8 @@ services:
       - UVICORN_WORKERS=${UVICORN_WORKERS:-2}
       # Secrets from .env file
       - GEMINI_API_KEY=${GEMINI_API_KEY:?GEMINI_API_KEY is required}
+      - GEMINI_PRIMARY_MODEL=${GEMINI_PRIMARY_MODEL:-gemini-3.5-flash-lite}
+      - GEMINI_FALLBACK_MODEL=${GEMINI_FALLBACK_MODEL:-gemini-3.1-flash-lite}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
       # Amazon Cognito User Pool authentication
       - COGNITO_REGION=${COGNITO_REGION:-ap-south-2}
