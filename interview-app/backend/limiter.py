@@ -87,9 +87,10 @@ class ResilientLimiterStorage(
 
         # If an explicit non-empty Redis URI is provided, configure it lazily without import-time network calls
         if uri is not None:
-            explicit = uri.strip()
+            explicit = uri.strip().strip("'\"")
         else:
-            explicit = os.getenv("RATE_LIMIT_STORAGE_URI", "").strip()
+            raw_explicit = os.getenv("RATE_LIMIT_STORAGE_URI")
+            explicit = raw_explicit.strip().strip("'\"") if raw_explicit else ""
         if explicit and not explicit.startswith("memory://") and not explicit.startswith("resilient://"):
             self.configure(explicit, test_connection=False)
 
@@ -442,9 +443,10 @@ def resolve_rate_limit_storage_uri() -> str:
        and Secrets Manager authentication token resolved by get_redis_connection_config().
     3. memory:// fallback if no Redis endpoint is explicitly configured or on resolution error.
     """
-    explicit = os.getenv("RATE_LIMIT_STORAGE_URI")
-    if explicit and explicit.strip():
-        url = explicit.strip()
+    raw_explicit = os.getenv("RATE_LIMIT_STORAGE_URI")
+    explicit = raw_explicit.strip().strip("'\"") if raw_explicit else ""
+    if explicit:
+        url = explicit
         url = re.sub(r":(\d+):\1", r":\1", url)
         # Enforce rediss:// and logical db 0 for AWS ElastiCache / Valkey endpoints
         if ".cache.amazonaws.com" in url.lower():
@@ -504,7 +506,8 @@ def init_rate_limiter(uri: Optional[str] = None, test_connection: bool = True) -
     """
     global _KEY_PREFIX
     env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or "local").lower()
-    _KEY_PREFIX = os.getenv("RATE_LIMIT_KEY_PREFIX") or f"ip:{env}:rl:"
+    raw_prefix = os.getenv("RATE_LIMIT_KEY_PREFIX")
+    _KEY_PREFIX = raw_prefix.strip().strip("'\"") if raw_prefix else f"ip:{env}:rl:"
     if hasattr(limiter, "_key_prefix"):
         limiter._key_prefix = _KEY_PREFIX
 

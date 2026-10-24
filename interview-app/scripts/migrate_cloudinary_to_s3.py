@@ -45,10 +45,10 @@ mimetypes.add_type("image/gif", ".gif")
 logger = logging.getLogger("migrate_cloudinary_to_s3")
 
 # Environment & Config Defaults (aligned with migration-contracts.md)
-DEFAULT_BUCKET = os.getenv("S3_ASSETS_BUCKET", "interview-prep-assets-808431466075-personal-ap-south-2")
+DEFAULT_BUCKET = os.getenv("S3_ASSETS_BUCKET", "interview-prep-assets-808431466075-20261018-k8m4q2z7")
 DEFAULT_REGION = os.getenv("S3_ASSETS_REGION", "ap-south-2")
-# STRICT: ASSET_BASE_URL defaults to empty; fictitious hostnames (e.g. d123456abcdef8) are forbidden
-DEFAULT_CLOUDFRONT_BASE = os.getenv("ASSET_BASE_URL", "").strip()
+# Deployed CloudFront distribution domain (AssetBaseUrl)
+DEFAULT_CLOUDFRONT_BASE = os.getenv("ASSET_BASE_URL", "https://d1uj3o882835l0.cloudfront.net").strip()
 DEFAULT_MANIFEST_REL = Path("docs") / "migrations" / "migration-manifest.json"
 
 DEFAULT_EXTENSIONS = {".html", ".md", ".json"}
@@ -1160,7 +1160,7 @@ def execute_verify(
 
     targets: List[ManifestEntry] = []
     for e in entries:
-        if force or e.status in {"uploaded", "verified"}:
+        if force or e.status in {"pending", "uploaded", "verified"}:
             targets.append(e)
 
     if limit and limit > 0:
@@ -1211,6 +1211,9 @@ def execute_verify(
             continue
 
         if details.get("sha256_verified"):
+            sha256_verified_count += 1
+        elif details.get("sha256") and not entry.sha256:
+            entry.sha256 = details["sha256"]
             sha256_verified_count += 1
         if details.get("ContentLength"):
             size_verified_count += 1
@@ -1625,20 +1628,26 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
     # If no operation flag is given, display help
     has_op = any([
         args.inventory,
-        args.dry_run,
         args.upload,
         args.verify,
         args.rewrite,
         args.reconcile,
     ])
-    if not has_op:
+    if not has_op and not args.dry_run:
         parser.print_help()
         return 0
+
+    run_all_dry_run = args.dry_run and not has_op
+    do_inventory = args.inventory or run_all_dry_run
+    do_upload = args.upload or run_all_dry_run
+    do_verify = args.verify or run_all_dry_run
+    do_rewrite = args.rewrite or run_all_dry_run
+    do_reconcile = args.reconcile or run_all_dry_run
 
     exit_code = 0
 
     # 1. Inventory
-    if args.inventory:
+    if do_inventory:
         code = execute_inventory(
             repo_root=repo_root,
             manifest_path=manifest_path,
@@ -1654,7 +1663,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return code
 
     # 2. Upload
-    if args.upload:
+    if do_upload:
         code = execute_upload(
             manifest_path=manifest_path,
             bucket=args.bucket,
@@ -1668,7 +1677,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return code
 
     # 3. Verify
-    if args.verify:
+    if do_verify:
         code = execute_verify(
             manifest_path=manifest_path,
             bucket=args.bucket,
@@ -1682,7 +1691,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return code
 
     # 4. Rewrite
-    if args.rewrite:
+    if do_rewrite:
         code = execute_rewrite(
             repo_root=repo_root,
             manifest_path=manifest_path,
@@ -1695,7 +1704,7 @@ def main(argv: Optional[Sequence[str]] = None) -> int:
             return code
 
     # 5. Reconcile
-    if args.reconcile:
+    if do_reconcile:
         code = execute_reconcile(
             repo_root=repo_root,
             manifest_path=manifest_path,

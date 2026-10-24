@@ -69,6 +69,24 @@ services:
       - CACHE_KEY_PREFIX=${CACHE_KEY_PREFIX:-}
       - RATE_LIMIT_STORAGE_URI=${RATE_LIMIT_STORAGE_URI:-}
       - RATE_LIMIT_KEY_PREFIX=${RATE_LIMIT_KEY_PREFIX:-}
+      # Bytecode caching on writable tmpfs to prevent write failures on read-only rootfs
+      - PYTHONPYCACHEPREFIX=/tmp/pycache
+    read_only: true
+    tmpfs:
+      - /tmp:size=128M,mode=1777,noexec,nodev,nosuid
+      - /app/logs:size=32M,uid=1000,gid=1000,mode=0755,noexec,nodev,nosuid
+    cap_drop:
+      - ALL
+    security_opt:
+      - "no-new-privileges:true"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.5'
+          memory: 1536M
+        reservations:
+          cpus: '0.25'
+          memory: 256M
     depends_on:
       redis:
         condition: service_healthy

@@ -18,6 +18,7 @@ Parameters:
     Description: >-
       Optional override for the private assets S3 bucket name. If omitted or empty,
       defaults to interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}.
+      Active personal bucket override: interview-prep-assets-808431466075-20261018-k8m4q2z7.
 
   EC2RoleName:
     Type: String
@@ -32,7 +33,7 @@ Parameters:
       - 'false'
     Description: >-
       Whether to automatically attach the S3 managed policy to the existing EC2 IAM role.
-      Defaults to false in staging to avoid mutating existing roles.
+      Defaults to false in personal/staging to avoid mutating existing roles.
 
   PriceClass:
     Type: String

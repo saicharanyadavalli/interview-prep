@@ -8,9 +8,12 @@ from unittest.mock import MagicMock, patch
 from fastapi import Request
 
 from limiter import (
+    ResilientLimiterStorage,
     get_client_ip,
     get_rate_limit_key,
     get_rate_limiter_storage_info,
+    get_resilient_storage,
+    init_rate_limiter,
     resolve_rate_limit_storage_uri,
 )
 
@@ -557,6 +560,49 @@ def test_multi_worker_sliding_window_atomic_concurrency():
 
     assert sum(results) == limit
 
+
+def test_resolve_rate_limit_storage_uri_empty_inherits_aws_cache_config():
+    """Verify that when RATE_LIMIT_STORAGE_URI is empty (''), it inherits CACHE_HOST + Secrets Manager resolution."""
+    mock_config = {
+        "connection_url": "rediss://:secret-valkey-token@master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379/0",
+        "source": "SECRETS_MANAGER",
+        "masked_url": "rediss://:****@master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379/0",
+    }
+    with patch.dict(os.environ, {"RATE_LIMIT_STORAGE_URI": ""}, clear=False), \
+         patch("services.cache_service.get_redis_connection_config", return_value=mock_config):
+        uri = resolve_rate_limit_storage_uri()
+        assert uri == "rediss://:secret-valkey-token@master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379/0"
+        assert uri.startswith("rediss://")
+
+
+def test_init_rate_limiter_distinguishes_distributed_and_degraded_fallback():
+    """Verify rate limiter telemetry accurately reports distributed vs degraded/in_memory_fallback."""
+    storage = get_resilient_storage()
+    assert storage is not None
+
+    mock_backend = MagicMock()
+    # 1. Success check -> distributed & healthy
+    mock_backend.check.return_value = True
+
+    with patch("limits.storage.storage_from_string", return_value=mock_backend):
+        info = init_rate_limiter("rediss://:token@cache.aws:6379/0", test_connection=True)
+        assert info["is_distributed"] is True
+        assert info["operational_mode"] == "distributed"
+        assert info["mode"] == "distributed"
+        assert info["status"] == "healthy"
+
+    # 2. Failing check -> degraded & in_memory_fallback
+    mock_backend.check.return_value = False
+    with patch("limits.storage.storage_from_string", return_value=mock_backend):
+        info = init_rate_limiter("rediss://:token@cache.aws:6379/0", test_connection=True)
+        assert info["is_distributed"] is False
+        assert info["operational_mode"] == "in_memory_fallback"
+        assert info["status"] == "degraded"
+        # Must NOT masquerade as distributed!
+        assert info["mode"] == "in_memory"
+
+    # Reset back to memory://
+    init_rate_limiter("memory://", test_connection=False)
 
 
 class patch_env:

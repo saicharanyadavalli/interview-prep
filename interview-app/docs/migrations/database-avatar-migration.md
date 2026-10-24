@@ -39,7 +39,8 @@ CREATE TRIGGER trg_user_profiles_updated_at
 
 ### 2.2 S3 & CloudFront Key Schema
 As codified in `docs/migrations/migration-contracts.md`:
-- **Personal S3 Bucket:** `interview-prep-assets-808431466075-personal-ap-south-2`
+- **Personal S3 Bucket:** `interview-prep-assets-808431466075-20261018-k8m4q2z7` (active deployed personal bucket)
+- **Personal CloudFront Domain:** `d1uj3o882835l0.cloudfront.net`
 - **Production S3 Bucket:** `interview-prep-assets-808431466075-production-ap-south-2`
 - **Region:** `ap-south-2` (Hyderabad)
 - **Avatar S3 Key Schema:** `avatars/{user_id}/{filename_or_uuid}.{ext}`
@@ -95,10 +96,10 @@ Before running the reconciliation tool on EC2 or during maintenance windows, ens
 export DATABASE_URL="postgresql://interview_prep_app:PASSWORD@rds-endpoint.ap-south-2.rds.amazonaws.com:5432/interview_prep_db"
 
 # Asset Delivery Origin (Validated CloudFront distribution URL)
-export ASSET_BASE_URL="https://d3xxxxxxxxxxxx.cloudfront.net"
+export ASSET_BASE_URL="https://d1uj3o882835l0.cloudfront.net"
 
 # Target S3 Bucket & Region (Fallbacks)
-export S3_ASSETS_BUCKET="interview-prep-assets-808431466075-personal-ap-south-2"
+export S3_ASSETS_BUCKET="interview-prep-assets-808431466075-20261018-k8m4q2z7"
 export S3_ASSETS_REGION="ap-south-2"
 ```
 
@@ -178,7 +179,7 @@ Structure of the mapping file:
     "total_records": 42,
     "eligible_records": 40,
     "asset_base_url": "https://d3xxxxxxxxxxxx.cloudfront.net",
-    "s3_bucket": "interview-prep-assets-808431466075-personal-ap-south-2",
+    "s3_bucket": "interview-prep-assets-808431466075-20261018-k8m4q2z7",
     "s3_region": "ap-south-2",
     "breakdown": {
       "profiles_scanned": 150,
@@ -212,7 +213,7 @@ Structure of the mapping file:
 Verify missing destination objects (if any) and upload them before proceeding:
 ```bash
 # Verify missing objects in S3
-aws s3 ls s3://interview-prep-assets-808431466075-personal-ap-south-2/avatars/ --recursive
+aws s3 ls s3://interview-prep-assets-808431466075-20261018-k8m4q2z7/avatars/ --recursive
 ```
 
 ### Step 3: Execute Live Transactional Migration

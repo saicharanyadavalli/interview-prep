@@ -13,13 +13,13 @@ flowchart TD
     end
 
     subgraph CDN["Edge Network (Global)"]
-        CF["CloudFront Distribution\nPriceClass_200 (Includes India Edge POPs)\nManaged-CachingOptimized\nManaged-SimpleCORS"]
-        OAC["Origin Access Control (OAC)\nSigning Protocol: SigV4\nSigning Behavior: Always"]
+        CF["CloudFront Distribution: E290EV66LAZPM3\nDomain: d1uj3o882835l0.cloudfront.net\nPriceClass_200 (Includes India Edge POPs)\nManaged-CachingOptimized | Managed-SimpleCORS"]
+        OAC["Origin Access Control (OAC): EUIJVUMXS4U2B\nSigning Protocol: SigV4\nSigning Behavior: Always"]
     end
 
     subgraph AWS_Region["AWS ap-south-2 (Hyderabad)"]
         subgraph Storage["Object Storage"]
-        S3["Private Amazon S3 Bucket\ninterview-prep-assets-808431466075-personal-ap-south-2\nBlockPublicAccess: 4/4 True\nBucketOwnerEnforced | SSE-AES256"]
+        S3["Private Amazon S3 Bucket\ninterview-prep-assets-808431466075-20261018-k8m4q2z7\nBlockPublicAccess: 4/4 True\nBucketOwnerEnforced | SSE-AES256"]
             BucketPolicy["Bucket Policy\nAllow: cloudfront.amazonaws.com (SourceArn condition)\nDeny: Insecure HTTP (aws:SecureTransport: false)"]
         end
 
@@ -58,11 +58,17 @@ flowchart TD
 |---|---|---|
 | **AWS Account ID** | `808431466075` | Target AWS account |
 | **AWS Region** | `ap-south-2` | Hyderabad, India (co-located with EC2 workload) |
+| **Stack Name (Personal)** | `interview-prep-assets-personal` | Active deployed CloudFormation stack |
 | **Bucket Naming Schema** | `interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}` | Predictable, collision-free naming pattern |
-| **Personal S3 Bucket Name** | `interview-prep-assets-808431466075-personal-ap-south-2` | Globally unique S3 bucket for personal environment |
+| **Personal S3 Bucket Name** | `interview-prep-assets-808431466075-20261018-k8m4q2z7` | Globally unique deployed S3 bucket for personal environment |
+| **Personal CloudFront Distribution ID** | `E290EV66LAZPM3` | Live CloudFront distribution ID |
+| **Personal CloudFront Domain** | `d1uj3o882835l0.cloudfront.net` | Live CloudFront CDN distribution domain |
+| **Personal Asset Base URL** | `https://d1uj3o882835l0.cloudfront.net` | Base HTTPS delivery URL for assets routed through CloudFront |
+| **Personal Origin Access Control (OAC)** | `EUIJVUMXS4U2B` | OAC ID (`interview-prep-assets-personal-s3-oac`) |
 | **Production S3 Bucket Name** | `interview-prep-assets-808431466075-production-ap-south-2` | Globally unique S3 bucket for production environment |
 | **Existing EC2 IAM Role** | `InterviewPrepEC2Role` | Host role attached to EC2 instance profile (not mutated automatically) |
-| **IAM Managed Policy** | `${AWS::StackName}-BackendEC2S3Policy` | Standalone IAM managed policy for review and attachment |
+| **IAM Managed Policy (Runtime)** | `arn:aws:iam::808431466075:policy/interview-prep-assets-personal-BackendEC2S3Policy` | Standalone IAM managed policy for runtime backend avatar operations |
+| **IAM Managed Policy (Migration)** | `arn:aws:iam::808431466075:policy/interview-prep-assets-personal-AssetMigrationS3Policy` | Standalone IAM managed policy for one-time asset migration |
 | **CloudFront Price Class** | `PriceClass_200` | Covers North America, Europe, Asia, Middle East, Africa (includes Indian Edge locations) |
 | **CloudFront Cache Policy** | `658327ea-f89d-4fab-a63d-7e88639e58f6` | Managed-CachingOptimized |
 | **CloudFront Response Headers** | `60669652-455b-4ae9-85a4-c4c02393f86c` | Managed-SimpleCORS |
@@ -84,10 +90,10 @@ The CloudFormation template is located at:
 
 ### Template Parameters
 
-* **`Environment`**: Defaults to `staging` (AllowedValues: `staging`, `production`). Eliminates hardcoded production defaults.
-* **`BucketName`**: Defaults to `''` (empty string). When left empty, dynamically evaluates to `interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}`.
+* **`Environment`**: Defaults to `personal` (AllowedValues: `personal`, `production`). Eliminates hardcoded production defaults.
+* **`BucketName`**: Defaults to `''` (empty string). When left empty, dynamically evaluates to `interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}`. For the personal environment, the deployed bucket name override is `interview-prep-assets-808431466075-20261018-k8m4q2z7`.
 * **`EC2RoleName`**: Defaults to `InterviewPrepEC2Role`.
-* **`AttachPolicyToRole`**: Defaults to `'false'` (AllowedValues: `'true'`, `'false'`). In staging, guarantees that the existing EC2 role is not modified during stack provisioning.
+* **`AttachPolicyToRole`**: Defaults to `'false'` (AllowedValues: `'true'`, `'false'`). In personal/staging, guarantees that the existing EC2 role is not modified during stack provisioning.
 * **`PriceClass`**: Defaults to `PriceClass_200` (AllowedValues: `PriceClass_100`, `PriceClass_200`, `PriceClass_All`).
 * **`ResponseHeadersPolicyId`**: Defaults to `60669652-455b-4ae9-85a4-c4c02393f86c` (`Managed-SimpleCORS`).
 
@@ -144,15 +150,15 @@ Created as a standalone `AWS::IAM::ManagedPolicy` with name `${AWS::StackName}-A
 * Statement 2 (`MigrationScopedListAccess`): Grants `s3:ListBucket` on the bucket root.
 * Security Rule: Zero `s3:DeleteObject` permissions granted to the migration policy.
 
-### Template Outputs
+### Template Outputs (Personal Deployed Values)
 
-* `BucketName`: Physical name of the S3 bucket (`interview-prep-assets-${AWS::AccountId}-${Environment}-${AWS::Region}`).
-* `BucketArn`: ARN of the S3 bucket (`arn:aws:s3:::interview-prep-assets-...`).
-* `CloudFrontDistributionId`: CloudFront distribution ID (used for cache invalidations).
-* `CloudFrontDomainName`: CloudFront FQDN (e.g., `d111111abcdef8.cloudfront.net`).
-* `AssetBaseUrl`: HTTPS base delivery URL (`https://${CloudFrontDomainName}`).
-* `BackendEC2S3PolicyArn`: Amazon Resource Name of the standalone IAM managed policy for runtime backend.
-* `AssetMigrationPolicyArn`: Amazon Resource Name of the standalone IAM managed policy for asset migration.
+* `BucketName`: Physical name of the S3 bucket (`interview-prep-assets-808431466075-20261018-k8m4q2z7`).
+* `BucketArn`: ARN of the S3 bucket (`arn:aws:s3:::interview-prep-assets-808431466075-20261018-k8m4q2z7`).
+* `CloudFrontDistributionId`: CloudFront distribution ID (`E290EV66LAZPM3`).
+* `CloudFrontDomainName`: CloudFront FQDN (`d1uj3o882835l0.cloudfront.net`).
+* `AssetBaseUrl`: HTTPS base delivery URL (`https://d1uj3o882835l0.cloudfront.net`).
+* `BackendEC2S3PolicyArn`: ARN of the standalone IAM managed policy for runtime backend (`arn:aws:iam::808431466075:policy/interview-prep-assets-personal-BackendEC2S3Policy`).
+* `AssetMigrationPolicyArn`: ARN of the standalone IAM managed policy for asset migration (`arn:aws:iam::808431466075:policy/interview-prep-assets-personal-AssetMigrationS3Policy`).
 
 ---
 
@@ -174,7 +180,7 @@ The runtime managed policy (`BackendEC2S3Policy`) created by the CloudFormation 
         "s3:GetObject",
         "s3:DeleteObject"
       ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/avatars/*"
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-20261018-k8m4q2z7/avatars/*"
     },
     {
       "Sid": "ScopedS3BucketListAccess",
@@ -182,7 +188,7 @@ The runtime managed policy (`BackendEC2S3Policy`) created by the CloudFormation 
       "Action": [
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2"
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-20261018-k8m4q2z7"
     }
   ]
 }
@@ -202,9 +208,9 @@ The dedicated migration managed policy (`AssetMigrationS3Policy`) provides scope
         "s3:PutObject"
       ],
       "Resource": [
-        "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/avatars/*",
-        "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/system-design/*",
-        "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2/static/*"
+        "arn:aws:s3:::interview-prep-assets-808431466075-20261018-k8m4q2z7/avatars/*",
+        "arn:aws:s3:::interview-prep-assets-808431466075-20261018-k8m4q2z7/system-design/*",
+        "arn:aws:s3:::interview-prep-assets-808431466075-20261018-k8m4q2z7/static/*"
       ]
     },
     {
@@ -213,11 +219,17 @@ The dedicated migration managed policy (`AssetMigrationS3Policy`) provides scope
       "Action": [
         "s3:ListBucket"
       ],
-      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-personal-ap-south-2"
+      "Resource": "arn:aws:s3:::interview-prep-assets-808431466075-20261018-k8m4q2z7"
     }
   ]
 }
 ```
+
+> [!NOTE] Live IAM Audit Verification
+> - **BackendEC2S3Policy** (`arn:aws:iam::808431466075:policy/interview-prep-assets-personal-BackendEC2S3Policy`): Successfully created by CloudFormation. `AttachmentCount: 0` (unattached by default due to `AttachPolicyToRole: false`).
+> - **AssetMigrationS3Policy** (`arn:aws:iam::808431466075:policy/interview-prep-assets-personal-AssetMigrationS3Policy`): Successfully created by CloudFormation. `AttachmentCount: 1` (currently attached to `InterviewPrepEC2Role` for asset migration operations).
+> - **InterviewPrepEC2Role**: Currently has `AssetMigrationS3Policy` and an inline policy `InterviewPrepAvatarS3Access`.
+> - **Actionable Recommendation**: Attach `BackendEC2S3Policy` to `InterviewPrepEC2Role` for least-privilege runtime avatar management, retire redundant inline policy `InterviewPrepAvatarS3Access`, and detach `AssetMigrationS3Policy` after migration validation.
 
 ### Technical Note on `HeadObject` and IAM Permissions
 
@@ -340,8 +352,11 @@ aws cloudformation create-change-set \
   --template-body file://infrastructure/cloudformation/assets-s3-cloudfront.yaml \
   --parameters \
       ParameterKey=Environment,ParameterValue=personal \
+      ParameterKey=BucketName,ParameterValue=interview-prep-assets-808431466075-20261018-k8m4q2z7 \
+      ParameterKey=EC2RoleName,ParameterValue=InterviewPrepEC2Role \
       ParameterKey=AttachPolicyToRole,ParameterValue=false \
       ParameterKey=PriceClass,ParameterValue=PriceClass_200 \
+      ParameterKey=ResponseHeadersPolicyId,ParameterValue=60669652-455b-4ae9-85a4-c4c02393f86c \
   --capabilities CAPABILITY_NAMED_IAM \
   --region ap-south-2
 ```
@@ -366,8 +381,11 @@ aws cloudformation deploy \
   --stack-name interview-prep-assets-personal \
   --parameter-overrides \
       Environment=personal \
+      BucketName=interview-prep-assets-808431466075-20261018-k8m4q2z7 \
+      EC2RoleName=InterviewPrepEC2Role \
       AttachPolicyToRole=false \
       PriceClass=PriceClass_200 \
+      ResponseHeadersPolicyId=60669652-455b-4ae9-85a4-c4c02393f86c \
   --capabilities CAPABILITY_NAMED_IAM \
   --region ap-south-2 \
   --no-fail-on-empty-changeset
@@ -444,9 +462,9 @@ Update the backend `.env` file on the personal EC2 host:
 
 ```bash
 # Add to backend .env / docker environment
-S3_ASSETS_BUCKET=interview-prep-assets-808431466075-personal-ap-south-2
+S3_ASSETS_BUCKET=interview-prep-assets-808431466075-20261018-k8m4q2z7
 S3_ASSETS_REGION=ap-south-2
-ASSET_BASE_URL=https://<your-distribution-domain>.cloudfront.net
+ASSET_BASE_URL=https://d1uj3o882835l0.cloudfront.net
 ```
 
 ---
@@ -461,7 +479,7 @@ Verify that all 4 public access block parameters are strictly enforced:
 
 ```bash
 aws s3api get-public-access-block \
-  --bucket "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}" \
+  --bucket "${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-20261018-k8m4q2z7}" \
   --region ap-south-2
 ```
 
@@ -483,7 +501,7 @@ Verify that direct HTTP requests to the S3 bucket endpoint are denied:
 
 ```bash
 curl -s -o /dev/null -w "%{http_code}\n" \
-  "https://${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-personal-ap-south-2}.s3.ap-south-2.amazonaws.com/test-probe.txt"
+  "https://${S3_ASSETS_BUCKET:-interview-prep-assets-808431466075-20261018-k8m4q2z7}.s3.ap-south-2.amazonaws.com/test-probe.txt"
 ```
 
 **Expected Result:**
@@ -501,7 +519,7 @@ aws ssm start-session --target <instance-id> --region ap-south-2
 python3 -c "
 import boto3, os
 
-bucket = os.getenv('S3_ASSETS_BUCKET', 'interview-prep-assets-808431466075-personal-ap-south-2')
+bucket = os.getenv('S3_ASSETS_BUCKET', 'interview-prep-assets-808431466075-20261018-k8m4q2z7')
 s3 = boto3.client('s3', region_name='ap-south-2')
 key = 'avatars/test-user/probe.txt'
 

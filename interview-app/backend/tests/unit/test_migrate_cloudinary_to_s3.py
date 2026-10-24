@@ -1241,6 +1241,26 @@ def test_main_cli_test_mode_flag(tmp_path):
     assert manifest_file.exists()
 
 
+def test_main_cli_standalone_dry_run_executes_pipeline_safely(tmp_path):
+    """Verify running CLI with --dry-run previews pipeline safely without mutating disk."""
+    lesson = tmp_path / "frontend" / "system-design" / "lessons" / "test.html"
+    lesson.parent.mkdir(parents=True)
+    orig_html = '<img src="https://res.cloudinary.com/asdf12235464/image/upload/v1/interview-assistant/system-design/01/a.png"/>'
+    lesson.write_text(orig_html, encoding="utf-8")
+    manifest_file = tmp_path / "manifest.json"
+
+    exit_code = main([
+        "--dry-run",
+        "--repo-root", str(tmp_path),
+        "--manifest", str(manifest_file),
+        "--asset-base-url", "https://d1uj3o882835l0.cloudfront.net",
+    ])
+    # In dry-run mode, manifest must NOT be written to disk
+    assert not manifest_file.exists()
+    # Lesson HTML must remain completely untouched
+    assert lesson.read_text(encoding="utf-8") == orig_html
+
+
 def test_main_cli_no_args_shows_help(capsys):
     """Verify running CLI with no operations prints help and exits 0."""
     exit_code = main([])

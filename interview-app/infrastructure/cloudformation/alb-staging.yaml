@@ -1,0 +1,284 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: >
+  AWS CloudFormation template provisioning a staging Application Load Balancer (ALB)
+  in front of EC2 instance i-05a744fb11e56780b, integrating regional AWS WAFv2 WebACL
+  interview-prep-waf, and maintaining zero-disruption dual ingress during testing.
+
+Parameters:
+  Environment:
+    Type: String
+    Default: staging
+    AllowedValues:
+      - staging
+      - production
+      - personal
+    Description: Deployment stage identifier.
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-07be8b7ccec39f3af
+    Description: VPC ID where the EC2 instance and subnets reside (interview-prep-vpc).
+
+  PublicSubnetA:
+    Type: AWS::EC2::Subnet::Id
+    Default: subnet-0939a69b5ce10001b
+    Description: Existing public subnet in Availability Zone ap-south-2a (interview-prep-public-a).
+
+  CreatePublicSubnetB:
+    Type: String
+    Default: 'true'
+    AllowedValues:
+      - 'true'
+      - 'false'
+    Description: Whether to create a second public subnet in Availability Zone ap-south-2b for ALB Multi-AZ compliance.
+
+  PublicSubnetBId:
+    Type: String
+    Default: ''
+    Description: Existing public subnet in ap-south-2b (only used if CreatePublicSubnetB is false).
+
+  PublicSubnetBCidr:
+    Type: String
+    Default: 10.0.20.0/24
+    Description: CIDR block for the new public subnet in ap-south-2b (must not overlap existing VPC subnets).
+
+  PublicRouteTableId:
+    Type: String
+    Default: rtb-09e37b81b070b81e7
+    Description: Route table with Internet Gateway route (0.0.0.0/0 -> igw) to associate with PublicSubnetB.
+
+  Ec2InstanceId:
+    Type: String
+    Default: i-05a744fb11e56780b
+    Description: Target EC2 instance ID running the interview-prep application.
+
+  TargetPort:
+    Type: Number
+    Default: 80
+    AllowedValues:
+      - 80
+      - 8000
+    Description: Port on EC2 instance to which the ALB forwards traffic (80 for Nginx reverse proxy, 8000 for FastAPI).
+
+  HealthCheckPath:
+    Type: String
+    Default: /
+    Description: HTTP path for ALB target group health checks (e.g. / or /api/health).
+
+  AppSecurityGroupId:
+    Type: AWS::EC2::SecurityGroup::Id
+    Default: sg-030dbf65a5cc16140
+    Description: Security Group of the application EC2 instance (interview-prep-app-sg).
+
+  WafWebAclArn:
+    Type: String
+    Default: arn:aws:wafv2:ap-south-2:808431466075:regional/webacl/interview-prep-waf/28ec66d8-1561-48ec-9a0a-42eff60fc459
+    Description: ARN of the regional AWS WAFv2 WebACL to associate with the ALB.
+
+  AcmCertificateArn:
+    Type: String
+    Default: ''
+    Description: Optional ACM Certificate ARN in ap-south-2 for HTTPS listener on port 443. Leave empty for HTTP only.
+
+Conditions:
+  CreateSubnetBCondition: !Equals [!Ref CreatePublicSubnetB, 'true']
+  HasCertificateArn: !Not [!Equals [!Ref AcmCertificateArn, '']]
+
+Resources:
+  # ----------------------------------------------------------------------
+  # Second Public Subnet (ap-south-2b) for ALB Multi-AZ Requirement
+  # ----------------------------------------------------------------------
+  PublicSubnetB:
+    Type: AWS::EC2::Subnet
+    Condition: CreateSubnetBCondition
+    Properties:
+      VpcId: !Ref VpcId
+      CidrBlock: !Ref PublicSubnetBCidr
+      AvailabilityZone: !Sub '${AWS::Region}b'
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub '${Environment}-interview-prep-public-b'
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: ManagedBy
+          Value: CloudFormation
+
+  PublicSubnetBRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Condition: CreateSubnetBCondition
+    Properties:
+      SubnetId: !Ref PublicSubnetB
+      RouteTableId: !Ref PublicRouteTableId
+
+  # ----------------------------------------------------------------------
+  # ALB Security Group
+  # ----------------------------------------------------------------------
+  AlbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Security group for staging Application Load Balancer
+      GroupName: !Sub '${Environment}-interview-prep-alb-sg'
+      VpcId: !Ref VpcId
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+          Description: Allow HTTP ingress from internet
+        - IpProtocol: tcp
+          FromPort: 443
+          ToPort: 443
+          CidrIp: 0.0.0.0/0
+          Description: Allow HTTPS ingress from internet
+      SecurityGroupEgress:
+        - IpProtocol: tcp
+          FromPort: !Ref TargetPort
+          ToPort: !Ref TargetPort
+          SourceSecurityGroupId: !Ref AppSecurityGroupId
+          Description: Allow outbound to EC2 application instance
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+          Description: Allow general outbound
+      Tags:
+        - Key: Name
+          Value: !Sub '${Environment}-interview-prep-alb-sg'
+        - Key: Environment
+          Value: !Ref Environment
+
+  # Ingress rule allowing ALB traffic into the EC2 Application Security Group
+  AppSecurityGroupIngressFromAlb:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId: !Ref AppSecurityGroupId
+      IpProtocol: tcp
+      FromPort: !Ref TargetPort
+      ToPort: !Ref TargetPort
+      SourceSecurityGroupId: !Ref AlbSecurityGroup
+      Description: Inbound from staging ALB security group (zero downtime dual-ingress)
+
+  # ----------------------------------------------------------------------
+  # Application Load Balancer
+  # ----------------------------------------------------------------------
+  ApplicationLoadBalancer:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub '${Environment}-interview-prep-alb'
+      Scheme: internet-facing
+      Type: application
+      IpAddressType: ipv4
+      SecurityGroups:
+        - !Ref AlbSecurityGroup
+      Subnets:
+        - !Ref PublicSubnetA
+        - !If [CreateSubnetBCondition, !Ref PublicSubnetB, !Ref PublicSubnetBId]
+      Tags:
+        - Key: Name
+          Value: !Sub '${Environment}-interview-prep-alb'
+        - Key: Environment
+          Value: !Ref Environment
+
+  # ----------------------------------------------------------------------
+  # Target Group (routing to EC2 instance)
+  # ----------------------------------------------------------------------
+  AlbTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub '${Environment}-interview-tg'
+      Port: !Ref TargetPort
+      Protocol: HTTP
+      VpcId: !Ref VpcId
+      TargetType: instance
+      Targets:
+        - Id: !Ref Ec2InstanceId
+          Port: !Ref TargetPort
+      HealthCheckEnabled: true
+      HealthCheckPath: !Ref HealthCheckPath
+      HealthCheckProtocol: HTTP
+      HealthCheckIntervalSeconds: 30
+      HealthCheckTimeoutSeconds: 5
+      HealthyThresholdCount: 2
+      UnhealthyThresholdCount: 3
+      Matcher:
+        HttpCode: '200-399'
+      TargetGroupAttributes:
+        - Key: deregistration_delay.timeout_seconds
+          Value: '30'
+      Tags:
+        - Key: Name
+          Value: !Sub '${Environment}-interview-tg'
+        - Key: Environment
+          Value: !Ref Environment
+
+  # ----------------------------------------------------------------------
+  # HTTP Port 80 Listener
+  # ----------------------------------------------------------------------
+  AlbHttpListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref AlbTargetGroup
+
+  # ----------------------------------------------------------------------
+  # HTTPS Port 443 Listener (Optional: only if CertificateArn is provided)
+  # ----------------------------------------------------------------------
+  AlbHttpsListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Condition: HasCertificateArn
+    Properties:
+      LoadBalancerArn: !Ref ApplicationLoadBalancer
+      Port: 443
+      Protocol: HTTPS
+      Certificates:
+        - CertificateArn: !Ref AcmCertificateArn
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref AlbTargetGroup
+
+  # ----------------------------------------------------------------------
+  # AWS WAFv2 WebACL Association
+  # ----------------------------------------------------------------------
+  WafWebAclAssociation:
+    Type: AWS::WAFv2::WebACLAssociation
+    Properties:
+      ResourceArn: !Ref ApplicationLoadBalancer
+      WebACLArn: !Ref WafWebAclArn
+
+Outputs:
+  LoadBalancerArn:
+    Description: ARN of the staging Application Load Balancer
+    Value: !Ref ApplicationLoadBalancer
+    Export:
+      Name: !Sub '${AWS::StackName}-AlbArn'
+
+  LoadBalancerDnsName:
+    Description: Public DNS name of the staging Application Load Balancer
+    Value: !GetAtt ApplicationLoadBalancer.DNSName
+    Export:
+      Name: !Sub '${AWS::StackName}-AlbDnsName'
+
+  TargetGroupArn:
+    Description: ARN of the target group pointing to the EC2 application instance
+    Value: !Ref AlbTargetGroup
+    Export:
+      Name: !Sub '${AWS::StackName}-TargetGroupArn'
+
+  AlbSecurityGroupId:
+    Description: Security Group ID of the ALB
+    Value: !Ref AlbSecurityGroup
+    Export:
+      Name: !Sub '${AWS::StackName}-AlbSecurityGroupId'
+
+  WafWebAclArn:
+    Description: Associated AWS WAFv2 WebACL ARN
+    Value: !Ref WafWebAclArn
+
+  PublicSubnetBId:
+    Description: ID of the public subnet in ap-south-2b
+    Value: !If [CreateSubnetBCondition, !Ref PublicSubnetB, !Ref PublicSubnetBId]
+    Export:
+      Name: !Sub '${AWS::StackName}-PublicSubnetBId'

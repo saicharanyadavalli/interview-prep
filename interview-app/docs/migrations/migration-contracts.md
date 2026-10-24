@@ -13,9 +13,10 @@
 ## 2. Shared Environment & Naming Conventions
 
 ### Staging vs. Production Naming
-- **Personal Bucket:** `interview-prep-assets-808431466075-personal-ap-south-2`
+- **Personal Bucket:** `interview-prep-assets-808431466075-20261018-k8m4q2z7` (active deployed personal bucket)
+- **Personal CloudFront Distribution:** `E290EV66LAZPM3` (`d1uj3o882835l0.cloudfront.net`)
 - **Production Bucket:** `interview-prep-assets-808431466075-production-ap-south-2`
-- **CloudFormation Parameter `Environment`:** Defaults to `staging`.
+- **CloudFormation Parameter `Environment`:** Defaults to `personal`.
 - **CloudFormation Parameter `AttachPolicyToRole`:** Defaults to `false` (isolated reviewable policy, no auto-attachment to existing EC2 role).
 
 ### Environment Variables

@@ -14,6 +14,8 @@ from redis.exceptions import ConnectionError, TimeoutError
 from services.cache_service import (
     CacheService,
     SafeCacheJSONEncoder,
+    _safe_float_env,
+    _safe_int_env,
     cache_aside,
     clear_secret_cache,
     deserialize_data,
@@ -925,3 +927,84 @@ async def test_initialize_logs_do_not_leak_passwords(caplog):
         assert raw_password not in caplog.text
         # Masked password must appear instead
         assert ":****@" in caplog.text
+
+
+def test_get_redis_connection_config_empty_cache_url_with_host_and_secret():
+    """Verify that when CACHE_URL is explicitly empty (''), the resolver properly uses CACHE_HOST + CACHE_SECRET_NAME with TLS."""
+    with patch.dict(
+        "os.environ",
+        {
+            "CACHE_URL": "",
+            "REDIS_URL": "",
+            "CACHE_REDIS_URL": "",
+            "CACHE_HOST": "master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com",
+            "CACHE_PORT": "6379",
+            "CACHE_SECRET_NAME": "interview-prep/elasticache/auth-personal",
+        },
+        clear=False,
+    ), patch(
+        "services.cache_service.resolve_secret_auth_token",
+        return_value={"auth_token": "resolved-valkey-auth-token"},
+    ) as mock_resolve:
+        config = get_redis_connection_config()
+        assert config["source"] == "SECRETS_MANAGER"
+        assert config["connection_url"] == (
+            "rediss://:resolved-valkey-auth-token@master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379/0"
+        )
+        assert config["masked_url"] == (
+            "rediss://:****@master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com:6379/0"
+        )
+        mock_resolve.assert_called_once_with("interview-prep/elasticache/auth-personal")
+
+
+def test_get_redis_connection_config_quoted_empty_cache_url():
+    """Verify quoted empty string CACHE_URL='""' falls back properly to host-based resolution."""
+    with patch.dict(
+        "os.environ",
+        {
+            "CACHE_URL": '""',
+            "REDIS_URL": "",
+            "CACHE_REDIS_URL": "",
+            "CACHE_HOST": "master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com",
+            "CACHE_PORT": "6379",
+            "CACHE_SECRET_NAME": "interview-prep/elasticache/auth-personal",
+        },
+        clear=False,
+    ), patch(
+        "services.cache_service.resolve_secret_auth_token",
+        return_value={"auth_token": "token-xyz"},
+    ):
+        config = get_redis_connection_config()
+        assert config["source"] == "SECRETS_MANAGER"
+        assert config["connection_url"].startswith("rediss://:token-xyz@master.interview-prep-node-personal")
+
+
+def test_get_redis_connection_config_generic_local_url_with_aws_host_prefers_aws():
+    """Verify that if CACHE_URL defaults to redis://redis:6379/0 but CACHE_HOST is an AWS ElastiCache host, AWS host is preferred."""
+    with patch.dict(
+        "os.environ",
+        {
+            "CACHE_URL": "redis://redis:6379/0",
+            "CACHE_HOST": "master.interview-prep-node-personal.gmgjlz.aps2.cache.amazonaws.com",
+            "CACHE_PORT": "6379",
+            "CACHE_SECRET_NAME": "interview-prep/elasticache/auth-personal",
+        },
+        clear=False,
+    ), patch(
+        "services.cache_service.resolve_secret_auth_token",
+        return_value={"auth_token": "prefer-aws-token"},
+    ):
+        config = get_redis_connection_config()
+        assert config["source"] == "SECRETS_MANAGER"
+        assert "master.interview-prep-node-personal" in config["connection_url"]
+        assert config["connection_url"].startswith("rediss://")
+
+
+def test_safe_env_parsers():
+    """Verify _safe_float_env and _safe_int_env return default values on malformed inputs."""
+    with patch.dict("os.environ", {"TEST_FLOAT": "invalid", "TEST_INT": "xyz", "TEST_VALID": "42"}, clear=False):
+        assert _safe_float_env("TEST_FLOAT", 2.5) == 2.5
+        assert _safe_float_env("NON_EXISTENT", 3.0) == 3.0
+        assert _safe_int_env("TEST_INT", 10) == 10
+        assert _safe_int_env("TEST_VALID", 0) == 42
+        assert _safe_int_env("NON_EXISTENT", 99) == 99

@@ -2,10 +2,10 @@
 
 > **Migration:** Cloudinary to Amazon S3 + CloudFront  
 > **Repository:** `saicharanyadavalli/interview-prep`  
-> **Branch:** `feature/cloudinary-s3-migration`  
+> **Branch:** `feature/aws-migration-staging-reconciliation`  
 > **AWS Region:** `ap-south-2` (Hyderabad)  
-> **S3 Bucket:** `interview-prep-assets-808431466075-ap-south-2`  
-> **CloudFront Origin:** `${ASSET_BASE_URL}` (e.g. `https://d123456abcdef8.cloudfront.net`)  
+> **S3 Bucket:** `interview-prep-assets-808431466075-20261018-k8m4q2z7`  
+> **CloudFront Origin:** `https://d1uj3o882835l0.cloudfront.net` (AssetBaseUrl)  
 
 ---
 
@@ -180,9 +180,9 @@ To ensure seamless, repeatable, and collision-free asset resolution across S3 an
 - **Deterministic S3 Object Key:**  
   `system-design/{chapter_number}/{filename_slug}.{ext}`
 - **Target S3 URI:**  
-  `s3://interview-prep-assets-808431466075-ap-south-2/system-design/{chapter_number}/{filename_slug}.{ext}`
+  `s3://interview-prep-assets-808431466075-20261018-k8m4q2z7/system-design/{chapter_number}/{filename_slug}.{ext}`
 - **CloudFront Delivery URL:**  
-  `${ASSET_BASE_URL}/system-design/{chapter_number}/{filename_slug}.{ext}`
+  `https://d1uj3o882835l0.cloudfront.net/system-design/{chapter_number}/{filename_slug}.{ext}`
 
 #### Naming Guarantees:
 1. **Chapter Number Consistency:** Preserves the exact 2-digit zero-padded numbers for chapters 02 through 16 (`system-design/02/`, `system-design/16/`) and unpadded numbers for chapters 17 through 29 (`system-design/17/`, `system-design/29/`). This matches the existing folder structure in Cloudinary and the HTML file numbering (`step-02.html` to `step-29.html`).
@@ -195,9 +195,9 @@ To ensure seamless, repeatable, and collision-free asset resolution across S3 an
 - **New S3 Key Convention:**  
   `avatars/{user_id}/{unique_uuid}.{ext}`
 - **Target S3 URI:**  
-  `s3://interview-prep-assets-808431466075-ap-south-2/avatars/{user_id}/{unique_uuid}.{ext}`
+  `s3://interview-prep-assets-808431466075-20261018-k8m4q2z7/avatars/{user_id}/{unique_uuid}.{ext}`
 - **CloudFront Delivery URL:**  
-  `${ASSET_BASE_URL}/avatars/{user_id}/{unique_uuid}.{ext}`
+  `https://d1uj3o882835l0.cloudfront.net/avatars/{user_id}/{unique_uuid}.{ext}`
 
 #### Avatar Design Guarantees:
 1. **Cache Busting via UUID:** Including a `{unique_uuid}` in the S3 key guarantees that subsequent avatar updates by the same user do not serve stale cached images from CloudFront or browser caches.

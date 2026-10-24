@@ -85,6 +85,28 @@ def deserialize_data(payload: Union[str, bytes]) -> Any:
     return json.loads(payload)
 
 
+def _safe_float_env(key: str, default: float) -> float:
+    """Safely extract float from environment variable, falling back gracefully on ValueError/TypeError."""
+    val = os.getenv(key)
+    if not val:
+        return default
+    try:
+        return float(val.strip().strip("'\""))
+    except (ValueError, TypeError):
+        return default
+
+
+def _safe_int_env(key: str, default: int) -> int:
+    """Safely extract integer from environment variable, falling back gracefully on ValueError/TypeError."""
+    val = os.getenv(key)
+    if not val:
+        return default
+    try:
+        return int(val.strip().strip("'\""))
+    except (ValueError, TypeError):
+        return default
+
+
 # In-process cache for resolved Secrets Manager payloads: (secret_id, region) -> (payload, expiry_timestamp)
 _SECRET_CACHE: dict[tuple[str, str], tuple[dict[str, Any], float]] = {}
 DEFAULT_SECRET_CACHE_TTL: float = 300.0  # 5 minutes TTL
@@ -112,7 +134,7 @@ def resolve_secret_auth_token(
     if not secret_id or not str(secret_id).strip():
         return None
 
-    secret_clean = str(secret_id).strip()
+    secret_clean = str(secret_id).strip().strip("'\"")
     arn_region = None
     if secret_clean.startswith("arn:aws:secretsmanager:"):
         arn_parts = secret_clean.split(":")
@@ -122,10 +144,11 @@ def resolve_secret_auth_token(
     effective_region = (
         region
         or arn_region
+        or os.getenv("CACHE_REGION")
         or os.getenv("AWS_REGION")
         or os.getenv("AWS_DEFAULT_REGION")
         or "ap-south-2"
-    ).strip()
+    ).strip().strip("'\"")
 
     cache_key = (secret_clean, effective_region)
     now = time.monotonic()
@@ -202,40 +225,53 @@ def get_redis_connection_config() -> dict[str, Any]:
     4. Localhost fallback (redis://localhost:6379/0).
     """
     # 1. Direct URL Override
-    direct_url = os.getenv("CACHE_URL") or os.getenv("REDIS_URL") or os.getenv("CACHE_REDIS_URL")
-    if direct_url and direct_url.strip():
-        url = direct_url.strip()
-        # Enforce rediss:// and db 0 for AWS ElastiCache / Valkey endpoints
-        if ".cache.amazonaws.com" in url.lower():
-            if url.lower().startswith("redis://"):
-                url = "rediss://" + url[len("redis://"):]
-            try:
-                parsed = urlparse(url)
-                if parsed.path != "/0":
-                    url = parsed._replace(path="/0").geturl()
-            except Exception:
-                pass
-        return {
-            "connection_url": url,
-            "source": "DIRECT_URL",
-            "masked_url": mask_redis_url(url),
-        }
+    raw_direct = os.getenv("CACHE_URL") or os.getenv("REDIS_URL") or os.getenv("CACHE_REDIS_URL")
+    direct_url = raw_direct.strip().strip("'\"") if raw_direct else ""
+
+    raw_host = os.getenv("CACHE_HOST") or os.getenv("REDIS_HOST")
+    host_candidate = raw_host.strip().strip("'\"") if raw_host else ""
+    is_aws_host = bool(host_candidate and ".cache.amazonaws.com" in host_candidate.lower())
+
+    if direct_url:
+        # If direct_url is the generic default (redis://redis:... or redis://localhost:...)
+        # but an explicit AWS ElastiCache host is configured, prefer host-based AWS resolution.
+        is_generic_local_url = bool(
+            re.match(r"^redis://(redis|localhost|127\.0\.0\.1)(:\d+)?(/.*)?$", direct_url.lower())
+        )
+        if not (is_generic_local_url and is_aws_host):
+            url = direct_url
+            # Enforce rediss:// and db 0 for AWS ElastiCache / Valkey endpoints
+            if ".cache.amazonaws.com" in url.lower():
+                if url.lower().startswith("redis://"):
+                    url = "rediss://" + url[len("redis://"):]
+                try:
+                    parsed = urlparse(url)
+                    if parsed.path != "/0":
+                        url = parsed._replace(path="/0").geturl()
+                except Exception:
+                    pass
+            return {
+                "connection_url": url,
+                "source": "DIRECT_URL",
+                "masked_url": mask_redis_url(url),
+            }
 
     secret_name = (
         os.getenv("CACHE_SECRET_NAME")
         or os.getenv("REDIS_SECRET_ARN")
         or os.getenv("REDIS_SECRET_NAME")
     )
+    if secret_name:
+        secret_name = secret_name.strip().strip("'\"")
 
     # 2. Host-based resolution (Primary AWS ElastiCache & Discrete Configuration)
-    host = os.getenv("CACHE_HOST") or os.getenv("REDIS_HOST")
-    if host and host.strip():
-        host_clean = host.strip()
+    if host_candidate:
+        host_clean = host_candidate
         if "://" in host_clean:
             host_clean = host_clean.split("://", 1)[1]
         host_clean = host_clean.rstrip("/")
 
-        port = int(os.getenv("CACHE_PORT", os.getenv("REDIS_PORT", "6379")))
+        port = _safe_int_env("CACHE_PORT", _safe_int_env("REDIS_PORT", 6379))
 
         # If host string includes port (e.g. "endpoint.cache.amazonaws.com:6379"), extract cleanly
         if ":" in host_clean:
@@ -250,8 +286,10 @@ def get_redis_connection_config() -> dict[str, Any]:
             db = "0"
             ssl_enabled = True
         else:
-            db = os.getenv("CACHE_DB", "0").strip()
-            ssl_env = os.getenv("CACHE_TLS_ENABLED") or os.getenv("REDIS_SSL")
+            raw_db = (os.getenv("CACHE_DB") or "0").strip().strip("'\"")
+            db = raw_db if raw_db else "0"
+            raw_ssl = os.getenv("CACHE_TLS_ENABLED") or os.getenv("REDIS_SSL")
+            ssl_env = raw_ssl.strip().strip("'\"") if raw_ssl else None
             if ssl_env is not None:
                 ssl_enabled = ssl_env.lower() in ("true", "1", "yes")
             else:
@@ -278,7 +316,8 @@ def get_redis_connection_config() -> dict[str, Any]:
                         pass
 
         if not password:
-            password = (os.getenv("CACHE_AUTH_TOKEN") or os.getenv("REDIS_PASSWORD") or "").strip()
+            raw_pwd = os.getenv("CACHE_AUTH_TOKEN") or os.getenv("REDIS_PASSWORD")
+            password = raw_pwd.strip().strip("'\"") if raw_pwd else ""
 
         scheme = "rediss" if ssl_enabled else "redis"
         auth = f":{quote_plus(password)}@" if password else ""
@@ -300,7 +339,7 @@ def get_redis_connection_config() -> dict[str, Any]:
                 or secret_data.get("endpoint")
             )
             if sec_host:
-                sec_host = str(sec_host).strip()
+                sec_host = str(sec_host).strip().strip("'\"")
                 if "://" in sec_host:
                     sec_host = sec_host.split("://", 1)[1]
                 sec_host = sec_host.rstrip("/")
@@ -323,7 +362,8 @@ def get_redis_connection_config() -> dict[str, Any]:
                     db = "0"
                 else:
                     ssl = str(secret_data.get("ssl", "true")).lower() in ("true", "1", "yes")
-                    db = str(secret_data.get("db", "0")).strip()
+                    raw_sec_db = str(secret_data.get("db", "0")).strip().strip("'\"")
+                    db = raw_sec_db if raw_sec_db else "0"
                 scheme = "rediss" if ssl else "redis"
                 auth = f":{quote_plus(sec_password)}@" if sec_password else ""
                 url = f"{scheme}://{auth}{sec_host}:{sec_port}/{db}"
@@ -392,12 +432,14 @@ class CacheService:
         self._metrics = CacheMetrics()
         env = (os.getenv("ENVIRONMENT") or os.getenv("APP_ENV") or "local").lower()
         default_prefix = f"ip:{env}:cache:v1:"
-        self._prefix: str = os.getenv("CACHE_KEY_PREFIX") or default_prefix
-        self._enabled: bool = os.getenv("CACHE_ENABLED", "true").lower() in ("true", "1", "yes")
-        self._connect_timeout: float = float(os.getenv("CACHE_CONNECT_TIMEOUT", os.getenv("REDIS_CONNECT_TIMEOUT", "2.0")))
-        self._socket_timeout: float = float(os.getenv("CACHE_SOCKET_TIMEOUT", os.getenv("REDIS_SOCKET_TIMEOUT", "2.0")))
-        self._health_check_interval: int = int(os.getenv("CACHE_HEALTH_CHECK_INTERVAL", "30"))
-        self._max_connections: int = int(os.getenv("CACHE_POOL_MAX", os.getenv("REDIS_POOL_MAX", "20")))
+        raw_prefix = os.getenv("CACHE_KEY_PREFIX")
+        self._prefix: str = raw_prefix.strip().strip("'\"") if raw_prefix else default_prefix
+        raw_enabled = os.getenv("CACHE_ENABLED", "true")
+        self._enabled: bool = (raw_enabled.strip().strip("'\"").lower() in ("true", "1", "yes")) if raw_enabled else True
+        self._connect_timeout: float = _safe_float_env("CACHE_CONNECT_TIMEOUT", _safe_float_env("REDIS_CONNECT_TIMEOUT", 2.0))
+        self._socket_timeout: float = _safe_float_env("CACHE_SOCKET_TIMEOUT", _safe_float_env("REDIS_SOCKET_TIMEOUT", 2.0))
+        self._health_check_interval: int = _safe_int_env("CACHE_HEALTH_CHECK_INTERVAL", 30)
+        self._max_connections: int = _safe_int_env("CACHE_POOL_MAX", _safe_int_env("REDIS_POOL_MAX", 20))
 
     @classmethod
     def get_instance(cls) -> CacheService:
