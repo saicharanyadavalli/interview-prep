@@ -62,8 +62,8 @@ Parameters:
 
   HealthCheckPath:
     Type: String
-    Default: /
-    Description: HTTP path for ALB target group health checks (e.g. / or /api/health).
+    Default: /health
+    Description: HTTP path for ALB target group health checks (e.g. /health proxied by Nginx to FastAPI).
 
   AppSecurityGroupId:
     Type: AWS::EC2::SecurityGroup::Id

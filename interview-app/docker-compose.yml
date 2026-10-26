@@ -108,11 +108,15 @@ services:
       dockerfile: Dockerfile
       target: runtime
     container_name: interview-prep-leetcode-sync-worker
-    restart: on-failure:5
+    restart: unless-stopped
     command: >
       sh -c '
         if [ -z "$$LEETCODE_SYNC_QUEUE_URL" ]; then
-          echo "LEETCODE_SYNC_QUEUE_URL is not configured. Sync worker is disabled.";
+          if [ "$$ENVIRONMENT" = "production" ]; then
+            echo "[FATAL] LEETCODE_SYNC_QUEUE_URL is required in production! Worker failing closed." >&2;
+            exit 1;
+          fi;
+          echo "[INFO] LEETCODE_SYNC_QUEUE_URL not configured. Sync worker disabled in $$ENVIRONMENT environment.";
           exit 0;
         fi;
         exec python -m workers.leetcode_sync_worker
@@ -128,6 +132,28 @@ services:
       - LEETCODE_QUESTIONS_PATH=${LEETCODE_QUESTIONS_PATH:-solution}
       - GITHUB_TOKEN_SECRET_ARN=${GITHUB_TOKEN_SECRET_ARN:-}
       - ENVIRONMENT=${ENVIRONMENT:-personal}
+      - PYTHONPYCACHEPREFIX=/tmp/pycache
+    read_only: true
+    tmpfs:
+      - /tmp:size=64M,mode=1777,noexec,nodev,nosuid
+      - /app/logs:size=16M,uid=1000,gid=1000,mode=0755,noexec,nodev,nosuid
+    cap_drop:
+      - ALL
+    security_opt:
+      - "no-new-privileges:true"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.75'
+          memory: 512M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "20m"
+        max-file: "5"
     networks:
       - app-network
 

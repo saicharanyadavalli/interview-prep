@@ -377,7 +377,9 @@ def lambda_handler(event: dict[str, Any], context: Any = None) -> dict[str, Any]
         return make_response(200, {"message": "branch deletion ignored"})
 
     # 10. Inspect paths
-    questions_path = os.environ.get("QUESTIONS_PATH", "solution/")
+    questions_path = os.environ.get("QUESTIONS_PATH", "solution/").strip()
+    if questions_path and not questions_path.endswith("/"):
+        questions_path = f"{questions_path}/"
     has_question_changes, matching_paths, needs_investigation = inspect_commits(
         payload, questions_path
     )
