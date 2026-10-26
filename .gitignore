@@ -87,6 +87,7 @@ interview-app/frontend-legacy.zip
 *REPORT*.md
 *_REPORT.md
 *_report.json
+!docs/aws/*.md
 TEST_PLAN.md
 TEST_RESULTS.md
 interview-app/backend/SQL_SEED_DATA.md
