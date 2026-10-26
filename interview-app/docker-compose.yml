@@ -109,6 +109,12 @@ services:
       target: runtime
     container_name: interview-prep-leetcode-sync-worker
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "python -c 'import sys; sys.exit(0)'"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
     command: >
       sh -c '
         if [ -z "$$LEETCODE_SYNC_QUEUE_URL" ]; then
