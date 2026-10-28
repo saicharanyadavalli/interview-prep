@@ -70,6 +70,6 @@ def remove_from_revisit(qnum: int, user: dict = Depends(get_current_user)):
             {"is_revisit": False, "is_solved": is_solved}
         ).eq("user_id", user["id"]).eq("qnum", qnum).execute()
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while updating revisit list.") from exc
 
     return {"success": True}

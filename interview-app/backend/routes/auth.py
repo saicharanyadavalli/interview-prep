@@ -26,6 +26,9 @@ def get_current_user(authorization: str | None = Header(None)) -> dict:
     """
     import os
     if os.getenv("DISABLE_AUTH") == "true":
+        env = (os.getenv("ENVIRONMENT") or os.getenv("NODE_ENV") or "").lower()
+        if env in ("production", "prod"):
+            raise HTTPException(status_code=500, detail="DISABLE_AUTH is not permitted in production.")
         import logging
         logging.getLogger(__name__).warning("DISABLE_AUTH is enabled — all requests bypass authentication. DO NOT use in production.")
         return {
@@ -62,7 +65,8 @@ def get_optional_current_user(authorization: str | None = Header(None)) -> dict 
 
 
 @router.post("/session", response_model=UserResponse)
-@limiter.limit("5000/minute")
+@limiter.limit("5/minute")
+@limiter.limit("30/hour")
 def create_session(request: Request, response: Response, payload: SessionRequest):
     """Validate the access token and upsert the user in our users & user_profiles tables.
 
@@ -102,16 +106,11 @@ def create_session(request: Request, response: Response, payload: SessionRequest
     )
 
 
-@router.post("/resolve-username", response_model=ResolveUsernameResponse)
-@limiter.limit("60/minute")
+@router.post("/resolve-username")
+@limiter.limit("30/minute")
 def resolve_username(request: Request, response: Response, payload: ResolveUsernameRequest):
-    """Look up the email associated with a username using Supabase RPC."""
-    try:
-        supabase = get_supabase_client()
-        res = supabase.rpc("get_email_by_username", {"p_username": payload.username.strip().lower()}).execute()
-        if res.data and len(res.data) > 0 and res.data[0].get("email"):
-            return ResolveUsernameResponse(email=res.data[0]["email"], exists=True)
-    except Exception as e:
-        import logging
-        logging.getLogger(__name__).warning(f"Error resolving username {payload.username}: {e}")
-    return ResolveUsernameResponse(email=None, exists=False)
+    """Deprecated endpoint disabled to prevent unauthenticated email harvesting."""
+    raise HTTPException(
+        status_code=404,
+        detail="Deprecated: Unauthenticated username-to-email resolution has been removed for privacy protection.",
+    )

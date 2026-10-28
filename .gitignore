@@ -1,11 +1,18 @@
 # Environment & Secrets
 .env
+.env.*
 *.env
 *.env.local
 *.env.*.local
 backend/.env
 interview-app/.env
 interview-app/backend/.env
+interview-app/frontend/.env.local
+interview-app/frontend/.env*.local
+!.env.example
+!interview-app/.env.example
+!interview-app/backend/.env.example
+!interview-app/frontend/.env.example
 
 # Caches & Temporary Files
 .cloudinary_upload_cache.json

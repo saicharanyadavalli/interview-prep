@@ -127,7 +127,7 @@ def update_progress(payload: ProgressUpdateRequest, user: dict = Depends(get_cur
             }
         ).execute()
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
     return {
         "success": True,
@@ -452,7 +452,7 @@ def get_question_progress_status(qnum: int, user: dict | None = Depends(get_opti
         is_solved = bool(rows[0].get("is_solved", False)) if rows else None
         revisit = bool(rows[0].get("is_revisit", False)) if rows else False
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
     return ProgressStatusResponse(qnum=qnum, is_solved=is_solved, revisit=revisit)
 
@@ -473,6 +473,6 @@ def clear_question_progress(qnum: int, user: dict = Depends(get_current_user)):
             .execute()
         )
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
     return {"success": True, "qnum": qnum}

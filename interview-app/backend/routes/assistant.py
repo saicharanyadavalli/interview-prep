@@ -21,7 +21,8 @@ router = APIRouter(prefix="/assistant", tags=["assistant"])
 
 
 @router.post("/ask")
-@limiter.limit("5000/minute")
+@limiter.limit("5/minute")
+@limiter.limit("20/hour")
 def ask_assistant(
     request: Request,
     response: Response,
