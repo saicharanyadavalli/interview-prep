@@ -70,3 +70,25 @@ async def test_middleware_sets_none_when_no_auth_header():
 
     await middleware.dispatch(request, call_next)
     assert request.state.rate_limit_user_id is None
+
+
+@pytest.mark.asyncio
+async def test_middleware_extracts_user_id_from_session_cookie():
+    """SECURITY REGRESSION: Verify middleware extracts user_id from cognito_access_token cookie when no Authorization header is present."""
+    middleware = RateLimitAuthMiddleware(app=MagicMock())
+
+    scope = {
+        "type": "http",
+        "method": "GET",
+        "path": "/test",
+        "headers": [(b"cookie", b"cognito_access_token=cookie-cognito-jwt-888")],
+    }
+    request = Request(scope)
+
+    async def call_next(req: Request) -> Response:
+        return Response("ok", status_code=200)
+
+    with patch("middleware.rate_limit_middleware.verify_cognito_token", return_value={"sub": "cookie-user-sub-888"}):
+        await middleware.dispatch(request, call_next)
+
+    assert request.state.rate_limit_user_id == "cookie-user-sub-888"

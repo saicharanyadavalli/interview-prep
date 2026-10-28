@@ -130,7 +130,7 @@ def update_progress(request: Request, payload: ProgressUpdateRequest, user: dict
         )
     except Exception as exc:
         logger.error("update_progress RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
     return {
         "success": True,
@@ -454,7 +454,7 @@ def get_question_progress_status(request: Request, qnum: int, user: dict | None 
         revisit = bool(row.get("is_revisit", False)) if row else False
     except Exception as exc:
         logger.error("get_question_progress_status RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
     return ProgressStatusResponse(qnum=qnum, is_solved=is_solved, revisit=revisit)
 
@@ -473,7 +473,7 @@ def clear_question_progress(request: Request, qnum: int, user: dict = Depends(ge
         )
     except Exception as exc:
         logger.error("clear_question_progress RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
     return {"success": True, "qnum": qnum}
 
@@ -564,7 +564,7 @@ def create_or_update_custom_folder(request: Request, payload: CustomFolderCreate
         ) or {}
     except Exception as exc:
         logger.error("create_or_update_custom_folder RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
     return CustomFolderEntry(
         id=str(row.get("id", "")),
@@ -638,7 +638,7 @@ def add_question_to_custom_folder(request: Request, payload: CustomFolderQuestio
         }
     except Exception as exc:
         logger.error("add_question_to_custom_folder RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
 
 @router.post("/folders/remove-question")
@@ -675,7 +675,7 @@ def remove_question_from_custom_folder(request: Request, payload: CustomFolderQu
         return {"success": True, "folder_name": folder_name, "qnum": qnum, "count": len(new_qnums)}
     except Exception as exc:
         logger.error("remove_question_from_custom_folder RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc
 
 
 @router.delete("/folders/{folder_name}")
@@ -695,4 +695,4 @@ def delete_custom_folder(request: Request, folder_name: str, user: dict = Depend
         return {"success": True, "folder_name": clean_name}
     except Exception as exc:
         logger.error("delete_custom_folder RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while processing your progress request.") from exc

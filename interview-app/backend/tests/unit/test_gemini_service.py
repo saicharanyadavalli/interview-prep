@@ -68,6 +68,8 @@ def test_build_prompt_contains_rules_and_inputs():
     assert "Can I do it iteratively?" in prompt
     assert "User: Hello" in prompt
     assert "Assistant: Hi! How can I help?" in prompt
+    assert "<user_doubt>" in prompt and "</user_doubt>" in prompt
+    assert "untrusted student input" in prompt
 
 
 # ── Text Extraction Tests ────────────────────────────────────────────────────

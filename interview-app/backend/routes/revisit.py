@@ -63,6 +63,6 @@ def remove_from_revisit(request: Request, qnum: int, user: dict = Depends(get_cu
         )
     except Exception as exc:
         logger.error("remove_from_revisit RDS error for user %s, qnum %d: %s", user.get("id"), qnum, exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while updating revisit list.") from exc
 
     return {"success": True}

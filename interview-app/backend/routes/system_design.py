@@ -62,7 +62,7 @@ def _build_learning_track_progress(track_id: str, user: dict) -> LearningTrackPr
             fetch="all",
         ) or []
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while updating system design progress.") from exc
 
     # Build lookup: step_no → row
     by_step: dict[int, dict] = {}
@@ -137,7 +137,7 @@ def _update_learning_track_progress(
         raw_updated = first_row.get("updated_at") if first_row else None
         updated_str = raw_updated.isoformat() if hasattr(raw_updated, "isoformat") else (str(raw_updated) if raw_updated else datetime.now(timezone.utc).isoformat())
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while updating system design progress.") from exc
 
     titles = load_learning_track_titles(track_id)
     return LearningTrackStepProgress(
@@ -207,7 +207,7 @@ def get_learning_track_lesson(
             fetch="one",
         )
     except Exception as exc:
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while updating system design progress.") from exc
 
     if not row:
         raise HTTPException(status_code=404, detail="Lesson not found")

@@ -464,10 +464,19 @@ def create_session(request: Request, response: Response, payload: SessionRequest
     if payload.id_token:
         try:
             id_claims = verify_cognito_id_token(payload.id_token)
+            if id_claims.get("sub") != claims.get("sub"):
+                logger.warning(
+                    "Cross-token subject mismatch in /auth/session: access_token sub %s != id_token sub %s",
+                    claims.get("sub"),
+                    id_claims.get("sub"),
+                )
+                raise HTTPException(status_code=401, detail="Token subject mismatch between access and ID tokens.")
             for key in ("email", "email_verified", "name", "preferred_username", "picture", "avatar_url"):
                 if key in id_claims:
                     if key not in claims or not claims[key] or key == "email_verified":
                         claims[key] = id_claims[key]
+        except HTTPException:
+            raise
         except Exception as exc:
             logger.warning("Session ID token verification failed: %s", exc)
             raise HTTPException(status_code=401, detail="Invalid or expired ID token.")
@@ -753,15 +762,7 @@ def provision_user_profile(request: Request, response: Response, payload: Provis
                 (final_username, final_name, user_id),
             )
 
-            if provided_sub:
-                rds_client.mutate(
-                    """
-                    INSERT INTO user_identities (user_id, provider, provider_sub, email)
-                    VALUES (%s, 'cognito', %s, %s)
-                    ON CONFLICT (provider, provider_sub) DO NOTHING;
-                    """,
-                    (user_id, provided_sub, clean_email),
-                )
+            # Unauthenticated requests must NEVER link user_identities (linking belongs strictly in resolve_user_identity)
         except Exception as exc:
             logger.error("Database error updating profile during provision: %s", exc)
             raise HTTPException(status_code=503, detail="Database service temporarily unavailable.") from exc
@@ -797,15 +798,7 @@ def provision_user_profile(request: Request, response: Response, payload: Provis
             (profile_id, clean_email, clean_username, clean_name),
         )
 
-        if provided_sub:
-            rds_client.mutate(
-                """
-                INSERT INTO user_identities (user_id, provider, provider_sub, email)
-                VALUES (%s, 'cognito', %s, %s)
-                ON CONFLICT (provider, provider_sub) DO NOTHING;
-                """,
-                (profile_id, provided_sub, clean_email),
-            )
+        # Unauthenticated requests must NEVER link user_identities (linking belongs strictly in resolve_user_identity)
     except Exception as exc:
         logger.error("Database error inserting profile during provision: %s", exc)
         raise HTTPException(status_code=503, detail="Database service temporarily unavailable.") from exc

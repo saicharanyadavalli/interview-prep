@@ -46,7 +46,7 @@ def add_comment(request: Request, payload: CommentRequest, user: dict = Depends(
             )
     except Exception as exc:
         logger.error("add_comment RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while saving your comment.") from exc
 
     return {"success": True}
 
@@ -95,6 +95,6 @@ def delete_comment(request: Request, comment_id: str, user: dict = Depends(get_c
         raise
     except Exception as exc:
         logger.error("delete_comment RDS error: %s", exc)
-        raise HTTPException(status_code=500, detail=f"Database error: {exc}") from exc
+        raise HTTPException(status_code=500, detail="An error occurred while deleting your comment.") from exc
 
     return {"success": True}

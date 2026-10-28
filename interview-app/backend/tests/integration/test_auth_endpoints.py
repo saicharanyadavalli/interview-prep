@@ -551,9 +551,9 @@ def test_provision_user_profile_success(unauth_client: TestClient):
         assert data["username"] == "newbie"
         assert data["name"] == "New User"
         assert data["id"] == "12345678-1234-1234-1234-123456789012"
-        assert len(mutations) == 2
+        assert len(mutations) == 1
         assert "INSERT INTO user_profiles" in mutations[0][0]
-        assert "INSERT INTO user_identities" in mutations[1][0]
+        assert not any("user_identities" in m[0] for m in mutations)
 
 
 def test_provision_user_profile_idempotent_existing_preserves_username(unauth_client: TestClient):
@@ -623,3 +623,49 @@ def test_provision_user_profile_rejects_extra_fields(unauth_client: TestClient):
     assert res.status_code == 422
 
 
+def test_provision_does_not_link_identities_without_auth(unauth_client: TestClient):
+    """SECURITY REGRESSION: Verify unauthenticated POST /auth/provision never inserts into user_identities."""
+    mutations = []
+
+    def mock_query(sql, params=None, fetch="one"):
+        if "LOWER(username) = LOWER(%s)" in sql:
+            return None
+        if "LOWER(email) = LOWER(%s)" in sql:
+            return {
+                "id": "victim-uuid-1111",
+                "email": "victim@example.com",
+                "username": "victim",
+                "name": "Victim User",
+                "avatar_url": "",
+            }
+        return None
+
+    with patch("routes.auth.rds_client.query", side_effect=mock_query), \
+         patch("routes.auth.rds_client.mutate", side_effect=lambda s, p: mutations.append((s, p)) or 1):
+        res = unauth_client.post(
+            "/auth/provision",
+            json={
+                "email": "victim@example.com",
+                "username": "victim",
+                "name": "Victim Updated",
+                "user_id": "attacker-cognito-sub-7777",
+            },
+        )
+        assert res.status_code == 200
+        # Assert user_identities was NOT mutated
+        assert not any("user_identities" in m[0] for m in mutations)
+
+
+def test_session_rejects_cross_token_sub_mismatch(unauth_client: TestClient):
+    """SECURITY REGRESSION: Verify POST /auth/session rejects mismatched access and ID token subs."""
+    with patch("routes.auth.verify_cognito_token", return_value={"sub": "attacker-sub-111"}), \
+         patch("routes.auth.verify_cognito_id_token", return_value={"sub": "victim-sub-222", "email": "victim@example.com", "email_verified": True}):
+        res = unauth_client.post(
+            "/auth/session",
+            json={
+                "access_token": "valid.access.token",
+                "id_token": "valid.id.token",
+            },
+        )
+        assert res.status_code == 401
+        assert "Token subject mismatch" in res.json()["detail"]
